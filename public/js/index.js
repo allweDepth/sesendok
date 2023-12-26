@@ -85,7 +85,8 @@ $(document).ready(function () {
 		}
 	}
 
-
+	// let dropdown = new DropdownConstructor(".satuan.ui.dropdown");
+	// dropdown.satuan();
 
 
 

@@ -3,11 +3,7 @@ class Login extends Controller
 {
     public function index()
     {
-        // unset($_SESSION["user"]);
-        // unset($_SESSION["key_encrypt"]);
-        // $msx = rand(33, 99);
-        // $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()<>?{}#$&=-*^@';
-        // $keyEnc = substr(str_shuffle($permitted_chars), 0, $msx);
+
         if (KEY_ENCRYPT) {
             session_start();
             //var_dump($_SESSION);

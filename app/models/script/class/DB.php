@@ -3,7 +3,7 @@ class DB
 {
     // Property untuk koneksi ke database mysql
     private $_host = 'localhost';
-    private $_dbname = 'db_ahsp';
+    private $_dbname = 'sesendokneo_db';
     private $_username = 'root';
     private $_password = '';
     // Property internal dari class DB

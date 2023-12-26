@@ -20,7 +20,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AHSP Admin</title>
+    <title>seSendok</title>
     <link rel="stylesheet" href="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.min.css">
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/admin.css">
     <link rel="shortcut icon" href="<?= BASEURL; ?>img/logo.png">
@@ -44,7 +44,17 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 </div><button class="ui button submit" style="display: none;"></button>
             </form>
         </div>
-        <a class="item" href="#" data-tab="home"><i class="home icon"></i>Home</a><a class="item" href="#" data-tab="proyek" tbl="get_all_proyek"><i class="folder icon"></i>Dokumen Pekerjaan</a>
+        <a class="item" href="#" data-tab="home"><i class="home icon"></i>Home</a>
+        <div class="ui accordion inverted item">
+            <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
+            <div class="content">
+                <a class="item" href="#" data-tab="renstra" tbl="list"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
+                <a class="item" href="#" data-tab="renja" tbl="list"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
+                <a class="item" href="#" data-tab="dpa" tbl="list"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
+                
+            </div>
+        </div>
+        <a class="item" href="#" data-tab="kontrak" tbl="get_list"><i class="money icon"></i>Kontrak</a>
         <div class="ui accordion inverted item menu_utama analisa">
             <div class="title item"><i class="dropdown icon"></i><span></span>Analisa AHSP </div>
             <div class="content">
@@ -117,7 +127,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <div class="ui icon message dashboard"><i class="home icon"></i>
                 <div class="content">
                     <div class="header">DASHBOARD </div>
-                    <p>AHSP Pekerjaan Konstruksi</p>
+                    <p>seSendok</p>
                 </div>
             </div>
         </div>
@@ -150,7 +160,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         <h2 class="ui dividing header">Pengantar untuk <?php echo $type_user ?> </h2>
                         <div class="ui large info message">
                             <h2 class="ui header dash_header"><i class="settings icon"></i>
-                                <div class="content">AHSP <div class="sub header">Analisis Harga Satuan Pekerjaan yang selanjutnya disingkat AHSP adalah perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan untuk mendapatkan harga satuan untuk satu jenis pekerjaan tertentu untuk Penyusunan Perkiraan Biaya Pekerjaan Konstruksi Berbasis web</div>
+                                <div class="content">seSendok <div class="sub header">merupakan aplikasi perencanaan, angaran dan realisasi Berbasis web</div>
                                 </div>
                             </h2>
                         </div>
