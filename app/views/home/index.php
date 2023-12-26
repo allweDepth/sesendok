@@ -48,45 +48,45 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         <div class="ui accordion inverted item">
             <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
             <div class="content">
-                <a class="item" href="#" data-tab="renstra" tbl="list"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
-                <a class="item" href="#" data-tab="renja" tbl="list"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
-                <a class="item" href="#" data-tab="dpa" tbl="list"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
+                <a class="item" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
+                <a class="item" href="#" data-tab="tab_renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
+                <a class="item" href="#" data-tab="tab_dpa"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
                 
             </div>
         </div>
-        <a class="item" href="#" data-tab="kontrak" tbl="get_list"><i class="money icon"></i>Kontrak</a>
-        <div class="ui accordion inverted item menu_utama analisa">
-            <div class="title item"><i class="dropdown icon"></i><span></span>Analisa AHSP </div>
+        <a class="item" href="#" data-tab="kontrak"><i class="money icon"></i>Kontrak</a>
+        <div class="ui accordion inverted item">
+            <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
             <div class="content">
-                <a class="item" href="#" data-tab="informasi_umum" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="purple sitemap icon"></i>Informasi Umum</a>
-                <a class="item" href="#" data-tab="harga_satuan" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="violet users cog icon"></i>Harga Satuan</a>
-                <a class="item" href="#" data-tab="analisa_alat" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="yellow snowplow icon"></i>Analisa Peralatan</a>
-                <a class="item" href="#" data-tab="analisa_quarry" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="olive truck monster icon"></i>Analisa Quarry (bahan)</a>
-                <a class="item" href="#" data-tab="analisa_bm" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="teal road icon"></i>Analisa Pek. Binamarga</a>
-                <a class="item" href="#" data-tab="analisa_ck" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="green city icon"></i>Analisa Pek. Ciptakarya</a>
-                <a class="item" href="#" data-tab="analisa_sda" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="blue water icon"></i>Analisa Pek. SDA</a>
+                <a class="item" href="#" data-tab="tab_input_realisasi"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
+                <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>SPJ</a>
+                <a class="item" href="#" data-tab="tab_laporan"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
+                
             </div>
         </div>
-        <a class="item" href="#" data-tab="rab" tbl="get_list"><i class="money icon"></i>Rencana Anggaran Biaya</a>
-        <a class="item" href="#" data-tab="schedule" tbl="get_list"><i class="chart bar outline icon"></i>Schedule</a>
-        <a class="item" href="#" data-tab="lokasi" tbl="get_list"></i></span><i class="map icon"></i>Lokasi</a>
-        <a class="item" href="#" data-tab="monev"><i class="chartline icon"></i>Monev</a>
         <div class="ui accordion inverted item menu_utama">
-            <div class="title item"><i class="dropdown icon"></i>Data Umum</div>
+            <div class="title item"><i class="dropdown icon"></i>Referensi</div>
             <div class="content">
-                <a class="item" href="#" data-tab="satuan" tbl="list"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Satuan</a>
-                <a class="item" href="#" data-tab="rekanan" tbl="get_list"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Rekanan</a>
-                <a class="item" href="#" data-tab="divisi"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Divisi</a>
-                <a class="item" href="#" data-tab="template"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Template</a>
-                <a class="item" href="#" data-tab="peraturan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Peraturan</a>
+                <a class="item" href="#" data-tab="tab_bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
+                <a class="item" href="#" data-tab="tab_prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
+                <a class="item" href="#" data-tab="tab_keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
+                <a class="item" href="#" data-tab="tab_sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>
+                <a class="item" href="#" data-tab="tab_akunbelanja"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Akun</a>
+                <a class="item" href="#" data-tab="tab_sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sumber Dana</a>
+                <a class="item" href="#" data-tab="tab_peraturan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Peraturan</a>
+                <a class="item" href="#" data-tab="tab_rekanan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Rekanan</a>
+            </div>
+        </div>
+        <div class="ui accordion inverted item menu_utama">
+            <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
+            <div class="content">
+                <a class="item" href="#" data-tab="tab_ssh"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>SSH</a>
+                <a class="item" href="#" data-tab="tab_hspk"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>HSPK</a>
+                <a class="item" href="#" data-tab="tab_asb"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>ASB</a>
+                <a class="item" href="#" data-tab="tab_sbu"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SBU</a>
             </div>
         </div>
         <a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a>
-        <?php
-        if ($type_user == 'admin') {
-            echo '<a class="item" href="#" data-tab="user" tbl="list"><i class="users icon"></i>Users Aplikasi</a>';
-        }
-        ?>
         <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
         <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
     </div>

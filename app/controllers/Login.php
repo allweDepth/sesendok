@@ -12,9 +12,6 @@ class Login extends Controller
         } else {
             //header("Location: login");
         }
-
-
-
         $dataHeader['awalHeader'] = '';
         $dataHeader['title'] = '| Login';
         $dataHeader['css'] = 'css/login.css';
