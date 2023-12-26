@@ -1,0 +1,39 @@
+<?php
+class Login extends Controller
+{
+    public function index()
+    {
+        // unset($_SESSION["user"]);
+        // unset($_SESSION["key_encrypt"]);
+        // $msx = rand(33, 99);
+        // $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()<>?{}#$&=-*^@';
+        // $keyEnc = substr(str_shuffle($permitted_chars), 0, $msx);
+        if (KEY_ENCRYPT) {
+            session_start();
+            //var_dump($_SESSION);
+            $_SESSION["key_encrypt"] = KEY_ENCRYPT;
+            // var_dump($_SESSION);
+        } else {
+            //header("Location: login");
+        }
+
+
+
+        $dataHeader['awalHeader'] = '';
+        $dataHeader['title'] = '| Login';
+        $dataHeader['css'] = 'css/login.css';
+        $dataHeader['tambahan_css'] = '';
+        $dataFooter['js'] = 'js/login.js';
+        $dataFooter['tambahan_js'] = '';
+
+        $dataFooter['key_encrypt'] = KEY_ENCRYPT;
+        $this->view('templates/header', $dataHeader);
+        $this->view('login/index');
+        $this->view('templates/footer', $dataFooter);
+    }
+    public function masuk()
+    {
+        $data = $this->script("masuk")->masuk();
+        echo $data;
+    }
+}

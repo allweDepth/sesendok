@@ -1,0 +1,23 @@
+body {
+    background-image: url("http://localhost/ahsp_mvc/public/img/bg.jpeg");
+    background-color: #DADADA;
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
+}
+
+body>.grid {
+    height: 100%;
+}
+
+.image {
+    margin-top: -100px;
+}
+
+.column {
+    max-width: 450px;
+}
