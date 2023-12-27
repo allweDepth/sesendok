@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 26 Des 2023 pada 19.33
+-- Waktu pembuatan: 27 Des 2023 pada 07.14
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `akun` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(17) NOT NULL,
+  `kode` varchar(17) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `pendapatan` tinyint(1) NOT NULL,
   `belanja` tinyint(1) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `akun` (
 
 CREATE TABLE `asb` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(22) NOT NULL,
+  `kode` varchar(22) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `spesifikasi` varchar(400) DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `asb` (
 
 CREATE TABLE `bidang_urusan` (
   `id` int(11) NOT NULL,
-  `no_rek` varchar(4) NOT NULL,
+  `kode` varchar(4) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `peraturan` varchar(255) NOT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
@@ -85,12 +85,12 @@ CREATE TABLE `bidang_urusan` (
 
 CREATE TABLE `dpa` (
   `id` int(11) NOT NULL,
-  `rek_opd` varchar(22) NOT NULL,
-  `rek_bidang_urusan` varchar(22) NOT NULL,
-  `rek_program` varchar(22) NOT NULL,
-  `rek_kegiatan` varchar(22) NOT NULL,
-  `rek_sub_kegiatan` varchar(22) NOT NULL,
-  `rek_akun` varchar(22) NOT NULL,
+  `kode_opd` varchar(22) NOT NULL,
+  `kode_bidang_urusan` varchar(22) NOT NULL,
+  `kode_program` varchar(22) NOT NULL,
+  `kode_kegiatan` varchar(22) NOT NULL,
+  `kode_sub_kegiatan` varchar(22) NOT NULL,
+  `kode_akun` varchar(22) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `jenis_kelompok` varchar(255) NOT NULL,
   `kelompok` varchar(255) NOT NULL,
@@ -111,6 +111,7 @@ CREATE TABLE `dpa` (
   `sat_4` varchar(50) NOT NULL,
   `sat_5` varchar(50) NOT NULL,
   `jumlah` decimal(12,0) NOT NULL,
+  `sumber_dana` varchar(255) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL,
   `tahun` int(11) NOT NULL,
   `tgl_input` date NOT NULL,
@@ -126,7 +127,7 @@ CREATE TABLE `dpa` (
 
 CREATE TABLE `hspk` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(22) NOT NULL,
+  `kode` varchar(22) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `spesifikasi` varchar(400) DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
@@ -147,7 +148,24 @@ CREATE TABLE `hspk` (
 
 CREATE TABLE `kegiatan` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(8) NOT NULL,
+  `kode` varchar(8) NOT NULL,
+  `uraian` varchar(400) NOT NULL,
+  `peraturan` varchar(255) NOT NULL,
+  `disable` tinyint(1) NOT NULL DEFAULT 0,
+  `aksi` varchar(255) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `organisasi`
+--
+
+CREATE TABLE `organisasi` (
+  `id` int(8) NOT NULL,
+  `kode_urusan` varchar(2) NOT NULL,
+  `kode` varchar(19) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `peraturan` varchar(255) NOT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
@@ -163,7 +181,7 @@ CREATE TABLE `kegiatan` (
 
 CREATE TABLE `program` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(8) NOT NULL,
+  `kode` varchar(8) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `peraturan` varchar(255) NOT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
@@ -174,12 +192,26 @@ CREATE TABLE `program` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `satuan`
+--
+
+CREATE TABLE `satuan` (
+  `id` int(11) NOT NULL,
+  `uraian` varchar(255) NOT NULL,
+  `disable` tinyint(1) NOT NULL,
+  `aksi` varchar(50) NOT NULL,
+  `keterangan` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `sbu`
 --
 
 CREATE TABLE `sbu` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(22) NOT NULL,
+  `kode` varchar(22) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `spesifikasi` varchar(400) DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
@@ -200,7 +232,7 @@ CREATE TABLE `sbu` (
 
 CREATE TABLE `ssh` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(22) NOT NULL,
+  `kode` varchar(22) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `spesifikasi` varchar(400) DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
@@ -221,7 +253,7 @@ CREATE TABLE `ssh` (
 
 CREATE TABLE `sub_kegiatan` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(18) NOT NULL,
+  `kode` varchar(18) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `peraturan` varchar(255) NOT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
@@ -237,7 +269,7 @@ CREATE TABLE `sub_kegiatan` (
 
 CREATE TABLE `sumber_dana` (
   `id` int(8) NOT NULL,
-  `no_rek` varchar(9) NOT NULL,
+  `kode` varchar(9) NOT NULL,
   `uraian` varchar(400) NOT NULL,
   `peraturan` varchar(255) NOT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
@@ -253,7 +285,6 @@ CREATE TABLE `sumber_dana` (
 
 CREATE TABLE `user_ahsp` (
   `id` int(11) NOT NULL,
-  `id_admin` int(11) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `nama` varchar(255) NOT NULL,
@@ -263,28 +294,28 @@ CREATE TABLE `user_ahsp` (
   `photo` varchar(255) NOT NULL DEFAULT 'default.jpeg',
   `tgl_daftar` datetime NOT NULL,
   `tgl_login` datetime NOT NULL,
-  `thn_aktif_anggaran` year(4) DEFAULT NULL,
-  `kd_proyek_aktif` varchar(150) DEFAULT NULL,
-  `ket` varchar(250) DEFAULT NULL,
-  `aktif` tinyint(1) NOT NULL DEFAULT 0,
-  `aktif_edit` int(11) NOT NULL DEFAULT 1,
   `kontak_person` varchar(255) DEFAULT NULL,
   `font_size` decimal(5,2) DEFAULT NULL,
-  `aktif_chat` int(11) DEFAULT NULL,
   `warna_tbl` varchar(150) DEFAULT NULL,
-  `scrolling_table` varchar(50) DEFAULT NULL
+  `scrolling_table` varchar(50) DEFAULT NULL,
+  `disable_login` tinyint(1) NOT NULL DEFAULT 1,
+  `disable_anggaran` tinyint(1) NOT NULL DEFAULT 1,
+  `disable_kontrak` tinyint(1) NOT NULL DEFAULT 1,
+  `disable_realisasi` tinyint(1) NOT NULL DEFAULT 1,
+  `disable_chat` tinyint(1) NOT NULL DEFAULT 1,
+  `ket` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data untuk tabel `user_ahsp`
 --
 
-INSERT INTO `user_ahsp` (`id`, `id_admin`, `username`, `email`, `nama`, `password`, `nama_org`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `thn_aktif_anggaran`, `kd_proyek_aktif`, `ket`, `aktif`, `aktif_edit`, `kontak_person`, `font_size`, `aktif_chat`, `warna_tbl`, `scrolling_table`) VALUES
-(1, 0, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$phmt521EHu3PEkilYD/TJ.i1U.ZcMjAHAJt4y88r3O0tfbgs8HQl6', 'Alwi Mansyur', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2023-12-25 13:42:54', NULL, 'P001', 'apa yang dapat saya berikan', 1, 1, 'pasangkayu ji', 90.00, NULL, 'non', 'short'),
-(2, 0, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2023-12-27 01:26:36', '2023', 'P01', 'Apa yang dapat saya berikan untuk Pasangkayu', 1, 1, '08128888', 80.00, NULL, 'non', 'short'),
-(3, 0, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$J1RLk2kaKqYeuFs2q76vxuoPYTi3cA8dCjRISJlnwlsi3sdHoAKg.', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', NULL, NULL, 'dimana mana hatiku senang oke', 1, 1, '', 80.00, NULL, NULL, 'short'),
-(4, 0, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$V.f/.ElwettBd3jyJfMR5epHT0s8NVqaU/mL8ZIqIJo.HBb.6x/Qi', 'Prof', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', NULL, NULL, 'Apa yang dapat saya berikan untuk Pasangkayu.', 1, 1, '', 80.00, NULL, NULL, 'short'),
-(5, NULL, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$cFR8KdFGXUFBZ5C5payBEOb3aPEXtvYwAKO6Gc6Zdqyjo7WRuDY8.', 'administrator AHSP', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2023', 'M001', 'Apa yang dapat saya berikan untuk mu', 1, 1, '08128886665', 80.00, 0, 'non', 'short');
+INSERT INTO `user_ahsp` (`id`, `username`, `email`, `nama`, `password`, `nama_org`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `kontak_person`, `font_size`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`) VALUES
+(1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$phmt521EHu3PEkilYD/TJ.i1U.ZcMjAHAJt4y88r3O0tfbgs8HQl6', 'Alwi Mansyur', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2023-12-25 13:42:54', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
+(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2023-12-27 01:26:36', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
+(3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$J1RLk2kaKqYeuFs2q76vxuoPYTi3cA8dCjRISJlnwlsi3sdHoAKg.', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
+(4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$V.f/.ElwettBd3jyJfMR5epHT0s8NVqaU/mL8ZIqIJo.HBb.6x/Qi', 'Prof', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
+(5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$cFR8KdFGXUFBZ5C5payBEOb3aPEXtvYwAKO6Gc6Zdqyjo7WRuDY8.', 'administrator AHSP', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');
 
 --
 -- Indexes for dumped tables
@@ -306,6 +337,12 @@ ALTER TABLE `dpa`
 -- Indeks untuk tabel `program`
 --
 ALTER TABLE `program`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `satuan`
+--
+ALTER TABLE `satuan`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -337,6 +374,12 @@ ALTER TABLE `dpa`
 --
 ALTER TABLE `program`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `satuan`
+--
+ALTER TABLE `satuan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_ahsp`

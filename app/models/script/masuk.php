@@ -26,13 +26,15 @@ class Masuk
                 'required' => true,
                 'min_char' => 4
             ]);
+            
             //var_dump($password);
             //$password = $crypto->decrypt($password, $keyEncrypt);
             if ($validate->passed()) {
                 $data = $DB->getQuery('SELECT * FROM user_ahsp WHERE username = ? OR email = ?', [$username, $username])[0];
                 //var_dump(sizeof((array)$data));
-                if (sizeof((array)$data) > 0) { // ubah ke array sebelum menggunakan sizeof
+                if (sizeof((array)$data) > 0 && $data->disable_login <= 0) { // ubah ke array sebelum menggunakan sizeof
                     $pesanError = '';
+                    //var_dump($data->disable_login);
                     //$pesanError = $user->validasiLogin($_POST);
                     if (empty($pesanError)) {
                         $status = session_status();
@@ -64,7 +66,9 @@ class Masuk
                     } else {
                         $session = 4;
                     }
-                } else {
+                } elseif ($data->disable_login > 0) {
+                    $session = 6;
+                }else {
                     $session = 5;
                 }
             } else {

@@ -65,8 +65,8 @@ $(document).ready(function () {
                 cry: true
             }
             $.ajax({
-                type: "POST", // karna tanpa data yg dikirim
-                data: data, //'username=' + username + '&password=' + password + '&login=login&dok=' + dok, // ambil semua data di form
+                type: "POST",
+                data: data,
                 url: url,
                 dataType: 'JSon',
                 success: function (result) {
