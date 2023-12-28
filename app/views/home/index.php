@@ -32,7 +32,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
     <div class="ui inverted left fixed vertical sidebar menu">
         <div class="item">
             <h2 class="ui inverted center red aligned icon header dash_header"><i class="circular colored blue building icon"></i>
-                <div class="content">AHSP <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
+                <div class="content">seSendok <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
                     <div class="sub header">Manage Project</div>
                 </div>
             </h2>
@@ -44,7 +44,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 </div><button class="ui button submit" style="display: none;"></button>
             </form>
         </div>
-        <a class="item" href="#" data-tab="home"><i class="home icon"></i>Home</a>
+        <a class="item" href="#" data-tab="tab_home"><i class="home icon"></i>Home</a>
         <div class="ui accordion inverted item">
             <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
             <div class="content">
@@ -54,17 +54,17 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 
             </div>
         </div>
-        <a class="item" href="#" data-tab="kontrak"><i class="money icon"></i>Kontrak</a>
+        <a class="item" href="#" data-tab="tab_kontrak"><i class="money icon"></i>Kontrak</a>
         <div class="ui accordion inverted item">
             <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
             <div class="content">
-                <a class="item" href="#" data-tab="tab_input_realisasi"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
+                <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
                 <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>SPJ</a>
-                <a class="item" href="#" data-tab="tab_laporan"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
+                <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
                 
             </div>
         </div>
-        <div class="ui accordion inverted item menu_utama">
+        <div class="ui accordion inverted item">
             <div class="title item"><i class="dropdown icon"></i>Referensi</div>
             <div class="content">
                 <a class="item" href="#" data-tab="tab_bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
@@ -77,7 +77,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <a class="item" href="#" data-tab="tab_rekanan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Rekanan</a>
             </div>
         </div>
-        <div class="ui accordion inverted item menu_utama">
+        <div class="ui accordion inverted item">
             <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
             <div class="content">
                 <a class="item" href="#" data-tab="tab_ssh"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>SSH</a>
@@ -126,8 +126,8 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         <div class="ui sticky">
             <div class="ui icon message dashboard"><i class="home icon"></i>
                 <div class="content">
-                    <div class="header">DASHBOARD </div>
-                    <p>seSendok</p>
+                    <div class="header">DASHBOARD</div>
+                    <div class="pDashboard">seSendok</div>
                 </div>
             </div>
         </div>
@@ -154,7 +154,9 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         <div class="ui massive text blue elastic loader">Loading...</div>
                     </div>
                 </div>
+                <!-- ============== -->
                 <!-- tab home -->
+                <!-- ============== -->
                 <div class="ui tab basic segment active" data-tab="home">
                     <div class="main ui intro container">
                         <h2 class="ui dividing header">Pengantar untuk <?php echo $type_user ?> </h2>
@@ -216,6 +218,91 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- ============== -->
+                <!-- tab_renstra -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_renstra">
+                </div>
+                <!-- ============== -->
+                <!-- tab_renja -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_renja">
+                </div>
+                <!-- ============== -->
+                <!-- tab_dpa -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_dpa">
+                </div>
+                <!-- ============== -->
+                <!-- tab_bidang_urusan -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_bidang_urusan">
+                </div>
+                <!-- ============== -->
+                <!-- tab_prog -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_prog">
+                </div>
+                <!-- ============== -->
+                <!-- tab_keg -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_keg">
+                </div>
+                <!-- ============== -->
+                <!-- tab_sub_keg -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_sub_keg">
+                </div>
+                <!-- ============== -->
+                <!-- tab_akunbelanja -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_akunbelanja">
+                </div>
+                <!-- ============== -->
+                <!-- tab_sumber_dana -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_sumber_dana">
+                </div>
+                <!-- ============== -->
+                <!-- tab_peraturan -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_peraturan">
+                </div>
+                <!-- ============== -->
+                <!-- tab_rekanan -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_rekanan">
+                </div>
+                <!-- ============== -->
+                <!-- tab_ssh -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_ssh">
+                </div>
+                <!-- ============== -->
+                <!-- tab_hspk -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_hspk">
+                </div>
+                <!-- ============== -->
+                <!-- tab_asb -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_asb">
+                </div>
+                <!-- ============== -->
+                <!-- tab_sbu -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_sbu">
+                </div>
+                <!-- ============== -->
+                <!-- wallchat -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="wallchat">
+                </div>
+                <!-- ============== -->
+                <!-- profil -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="profil">
                 </div>
             </div>
         </div>

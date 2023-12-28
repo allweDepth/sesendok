@@ -1,6 +1,6 @@
 /*agar border radius di tepi semua element = 0*/
 * {
-    border-radius: 0px !important;
+    /* border-radius: 0px !important; */
 }
 
 #map {
