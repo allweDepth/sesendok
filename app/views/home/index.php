@@ -8,7 +8,7 @@ $warna_tbl = $_SESSION["user"]["warna_tbl"];
 $classRow = '';
 $invertedColor = '';
 
-$keyEnc=$_SESSION["user"]["key_encrypt"];
+$keyEnc = $_SESSION["user"]["key_encrypt"];
 if ($warna_tbl != '' && $warna_tbl != 'non') {
     $classRow = ' class="' . $warna_tbl . '"';
     $invertedColor = ' inverted';
@@ -16,6 +16,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 ?>
 <!doctype html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,7 +52,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <a class="item" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
                 <a class="item" href="#" data-tab="tab_renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
                 <a class="item" href="#" data-tab="tab_dpa"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
-                
+
             </div>
         </div>
         <a class="item" href="#" data-tab="tab_kontrak"><i class="money icon"></i>Kontrak</a>
@@ -61,7 +62,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
                 <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>SPJ</a>
                 <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
-                
+
             </div>
         </div>
         <div class="ui accordion inverted item">
@@ -80,10 +81,10 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         <div class="ui accordion inverted item">
             <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
             <div class="content">
-                <a class="item" href="#" data-tab="tab_ssh"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>SSH</a>
-                <a class="item" href="#" data-tab="tab_hspk"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>HSPK</a>
-                <a class="item" href="#" data-tab="tab_asb"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>ASB</a>
-                <a class="item" href="#" data-tab="tab_sbu"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SBU</a>
+                <a class="item" href="#" data-tab="tab_hargasat" tbl="ssh"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>SSH</a>
+                <a class="item" href="#" data-tab="tab_hargasat" tbl="hspk"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>HSPK</a>
+                <a class="item" href="#" data-tab="tab_hargasat" tbl="asb"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>ASB</a>
+                <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SBU</a>
             </div>
         </div>
         <a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a>
@@ -277,23 +278,37 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <!-- ============== -->
                 <!-- tab_ssh -->
                 <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_ssh">
+                <div class="ui tab basic segment container" data-tab="tab_hargasat">
+                    <div class="ui info message" name="kethargasat">Nabiilainayah</div>
+                    <div class="ui hidden divider"></div>
+                    
+                        <div class="ui right floated stackable basic icon buttons">
+                            <button class="ui button" data-tooltip="Tambah Data" data-position="bottom center"><i class="plus icon"></i></button>
+                            <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center"><i class="upload icon"></i></button>
+                            <button class="ui button" data-tooltip="Download" data-position="bottom center"><i class="alternate download icon"></i></button>
+                        </div>
+                        <div class="ui section divider"></div>
+                    <table class="ui very basic table">
+                        <thead>
+                            <tr>
+                                <th>Kode Komponen</th>
+                                <th>Uraian Komponen</th>
+                                <th>Spesifikasi</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>TKDN</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- ============== -->
-                <!-- tab_hspk -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_hspk">
-                </div>
-                <!-- ============== -->
-                <!-- tab_asb -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_asb">
-                </div>
-                <!-- ============== -->
-                <!-- tab_sbu -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_sbu">
-                </div>
+
                 <!-- ============== -->
                 <!-- wallchat -->
                 <!-- ============== -->

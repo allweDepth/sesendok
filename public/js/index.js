@@ -49,7 +49,7 @@ $(document).ready(function () {
 			tab_renja: ["clipboard list icon", "RENJA", "Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD."],
 			tab_dpa: ["clipboard list icon", "DPA", "Dokumen Pelaksanaan Anggaran"],
 			tab_dpa_perubahan: ["clipboard list icon", "DPA", "Dokumen Pelaksanaan Perubahan Anggaran"],
-			tab_kontrak: ["clipboard list icon", "Renja", "Rencana Kerja"],
+			tab_kontrak: ["clipboard list icon", "KONTRAK", "perjanjian"],
 			tab_input_real: ["clipboard list icon", "Realisasi", "Input Realisasi"],
 			tab_spj: ["clipboard list icon", "Renja", "Rencana Kerja"],
 			tab_lap: ["clipboard list icon", "Renja", "Rencana Kerja"],
@@ -61,10 +61,7 @@ $(document).ready(function () {
 			tab_sumber_dana: ["clipboard list icon", "Sumber Dana", "Klasifikasi, Kodefikasi, dan Nomenklatur Sumber Pendanaan ditujukan untuk memberikan informasi atas sumber dana berdasarkan tujuan penggunaan dana dari setiap pelaksanaan urusan pemerintahan daerah yang dijabarkan berdasarkan program, kegiatan dan sub kegiatan dalam rangka pengendalian masing-masing kelompok dana meliputi pengawasan/control, akuntabilitas/accountability dan transparansi/transparency (CAT)."],
 			tab_peraturan: ["clipboard list icon", "Peraturan", "ketentuan yang dengan sendirinya memiliki suatu makna normatif; ketentuan yang menyatakan bahwa sesuatu harus (tidak harus) dilakukan, atau boleh (tidak boleh) dilakukan."],
 			tab_rekanan: ["clipboard list icon", "REKANAN", "Penyedia barang dan/atau jasa"],
-			tab_ssh: ['clipboard list icon', 'SSH', 'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>'],
-			tab_hspk: ["clipboard list icon", "Renja", "Rencana Kerja"],
-			tab_asb: ["clipboard list icon", "Renja", "Rencana Kerja"],
-			tab_sbu: ["clipboard list icon", "Renja", "Rencana Kerja"],
+			tab_hargasat: ['clipboard list icon', 'SSH', "Standar Harga Satuan", 'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>'],
 			tab_peraturan: ["table icon", "Peraturan", "peraturan yang digunakan"],
 			tab_reset: ["red table icon", "Reset Tabel", "menghapus seluruh data tabel"],
 			tab_template: ["download icon", "Template", "Ungguh Contoh Template AHSP"],
@@ -91,8 +88,32 @@ $(document).ready(function () {
 			pDashboard = arrayDasboard[jenis][2];
 		}
 		dasboard.find($("i")).attr("class", "").addClass(iconDashboard);
-		dasboard.find($("div.header")).text(headerDashboard);
+		let dasboardheader= dasboard.find($("div.header"));
+		dasboardheader.text(headerDashboard);
 		dasboard.find($("div.pDashboard")).html(pDashboard);
+		switch (jenis) {
+			case 'tab_hargasat':
+				let tbl = ini.attr('tbl');
+				dasboardheader.text(tbl.toUpperCase());
+				$('div[name="kethargasat"]').html(arrayDasboard[jenis][3]);
+				switch (tbl) {
+					case 'ssh':
+						break;
+					case 'hspk':
+						break;
+					case 'asb':
+						break;
+					case 'sbu':
+						break;
+					default:
+						break;
+				};
+				break;
+			case 'xxxx':
+				break;
+			default:
+				break;
+		}
 	})
 	//===================================
 	//=========== class dropdown ========
