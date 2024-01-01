@@ -29,132 +29,129 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 </head>
 
 <body>
-    <!-- sidebar -->
-    <div class="ui inverted left fixed vertical sidebar menu">
-        <div class="item">
-            <h2 class="ui inverted center red aligned icon header dash_header"><i class="circular colored blue building icon"></i>
-                <div class="content">seSendok <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
-                    <div class="sub header">Manage Project</div>
+    <div class="ui teal top attached inverted stackable menu">
+        <a class="item nabiila">
+            <i class="sidebar icon"></i>
+        </a>
+        <div class="right menu">
+            <div class="ui inline inverted dropdown item lain" id="countRow"><span><i class="list icon"></i></span><input type="hidden" name="countRow" value="5">
+                <div class="text">5</div>
+                <div class="menu">
+                    <div class="item" data-value="all">All</div>
+                    <div class="item selected" data-value="5">5</div>
+                    <div class="item" data-value="10">10</div>
+                    <div class="item" data-value="15">15</div>
+                    <div class="item" data-value="20">20</div>
+                    <div class="item" data-value="30">30</div>
+                    <div class="item" data-value="40">40</div>
+                    <div class="item" data-value="50">50</div>
+                    <div class="item" data-value="100">100</div>
                 </div>
-            </h2>
-        </div>
-        <div class="item">
-            <form class="ui form" style="margin: 0;" name="cari_data">
-                <div class="ui search suggestion fluid transparent icon inverted input"><input type="text" placeholder="Cari..."><i class="search icon"></i>
-                    <div class="results"></div>
-                </div><button class="ui button submit" style="display: none;"></button>
-            </form>
-        </div>
-        <a class="item" href="#" data-tab="tab_home"><i class="home icon"></i>Home</a>
-        <div class="ui accordion inverted item">
-            <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
-            <div class="content">
-                <a class="item" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
-                <a class="item" href="#" data-tab="tab_renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
-                <a class="item" href="#" data-tab="tab_dpa"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
-
             </div>
-        </div>
-        <a class="item" href="#" data-tab="tab_kontrak"><i class="money icon"></i>Kontrak</a>
-        <div class="ui accordion inverted item">
-            <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
-            <div class="content">
-                <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
-                <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>SPJ</a>
-                <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
-
+            <div class="item">
+                <div class="ui inverted transparent icon input">
+                    <input type="text" placeholder="Search..." name="cari_data" id="cari_data">
+                    <i class="search link icon"></i>
+                </div>
             </div>
+            <a class="ui item" onclick="window.location.href='home/logout'">
+                Logout
+            </a>
         </div>
-        <div class="ui accordion inverted item">
-            <div class="title item"><i class="dropdown icon"></i>Referensi</div>
-            <div class="content">
-                <a class="item" href="#" data-tab="tab_bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
-                <a class="item" href="#" data-tab="tab_prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
-                <a class="item" href="#" data-tab="tab_keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
-                <a class="item" href="#" data-tab="tab_sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>
-                <a class="item" href="#" data-tab="tab_akunbelanja"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Akun</a>
-                <a class="item" href="#" data-tab="tab_sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sumber Dana</a>
-                <a class="item" href="#" data-tab="tab_peraturan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Peraturan</a>
-                <a class="item" href="#" data-tab="tab_rekanan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Rekanan</a>
-            </div>
-        </div>
-        <div class="ui accordion inverted item">
-            <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
-            <div class="content">
-                <a class="item" href="#" data-tab="tab_hargasat" tbl="ssh"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>SSH</a>
-                <a class="item" href="#" data-tab="tab_hargasat" tbl="hspk"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>HSPK</a>
-                <a class="item" href="#" data-tab="tab_hargasat" tbl="asb"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>ASB</a>
-                <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SBU</a>
-            </div>
-        </div>
-        <a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a>
-        <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
-        <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
     </div>
-    <div class="context example pushable pusher">
-        <!-- compact disc,toggle off outline,toggle off,toggle on -->
-        <div class="ui basic top attached demo red inverted menu">
-            <div class="ui dropdown icon item" id="toggle"><i class="th icon"></i></div>
-            <div class="right menu">
-                <div class="item">
-                    <div class="ui transparent icon inverted input"><input type="text" name="cari_data" id="cari_data" placeholder="Search..."><i class="search link icon"></i></div>
-                </div>
-                <div class="right red inverted menu">
-                    <div class="ui inline inverted dropdown item lain" id="countRow"><span><i class="list icon"></i></span><input type="hidden" name="countRow" value="5">
-                        <div class="text">5</div>
-                        <div class="menu">
-                            <div class="item" data-value="all">All</div>
-                            <div class="item selected" data-value="5">5</div>
-                            <div class="item" data-value="10">10</div>
-                            <div class="item" data-value="15">15</div>
-                            <div class="item" data-value="20">20</div>
-                            <div class="item" data-value="30">30</div>
-                            <div class="item" data-value="40">40</div>
-                            <div class="item" data-value="50">50</div>
-                            <div class="item" data-value="100">100</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="right red inverted menu">
-                    <div class="ui dropdown item lain"><span><i class="inverted teal user icon"></i></span><i class="dropdown icon"></i>
-                        <div class="menu"><a class="item" data-tab="wallchat"><i class="circular inverted teal comments outline icon"></i>Pesan</a><a class="item" data-tab="profil"><i class="circular inverted teal qrcode icon"></i>Pengaturan</a><a class="item" onclick="window.location.href='home/logout'"><i class="circular inverted teal sign out alternate icon"></i>Log Out</a></div>
-                    </div>
+    <div class="ui bottom attached segment stackable pushable">
+
+        <!-- sidebar-->
+        <div class="ui inverted left vertical sidebar menu" style="">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Search mail...">
+                    <i class="search icon"></i>
                 </div>
             </div>
-
-        </div>
-        <!-- sticky-->
-        <div class="ui sticky">
-            <div class="ui icon message dashboard"><i class="home icon"></i>
+            <a class="item" href="#" data-tab="tab_home"><i class="home icon"></i>Home</a>
+            <div class="ui accordion inverted item">
+                <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
                 <div class="content">
-                    <div class="header">DASHBOARD</div>
-                    <div class="pDashboard">seSendok</div>
+                    <a class="item nabiila" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_dpa"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
+
+                </div>
+            </div>
+            <a class="item" href="#" data-tab="tab_kontrak"><i class="money icon"></i>Kontrak</a>
+            <div class="ui accordion inverted item">
+                <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
+                <div class="content">
+                    <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
+                    <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>SPJ</a>
+                    <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
+
+                </div>
+            </div>
+            <div class="ui accordion inverted item">
+                <div class="title item"><i class="dropdown icon"></i>Referensi</div>
+                <div class="content">
+                    <a class="item" href="#" data-tab="tab_ref" tbl="bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="akun_belanja"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Akun</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sumber Dana</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Peraturan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="rekanan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Rekanan</a>
+                </div>
+            </div>
+            <div class="ui accordion inverted item">
+                <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
+                <div class="content">
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="ssh"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>SSH</a>
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="hspk"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>HSPK</a>
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="asb"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>ASB</a>
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SBU</a>
+                </div>
+            </div>
+            <a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a>
+            <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
+            <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
+
+        </div>
+
+        <!-- flyout-->
+        <div class="ui flyout right" tabindex="-1">
+            <i class="close icon"></i>
+            <div class="ui header">
+                <i class="question icon"></i>
+                <div class="content">
+                    Archive Old Messages
+                </div>
+            </div>
+            <div class="scrolling content" style="min-height: 240.4375px;">
+                <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+            </div>
+            <div class="actions">
+                <div class="ui red cancel button">
+                    <i class="remove icon"></i>
+                    No
+                </div>
+                <div class="ui green ok button">
+                    <i class="checkmark icon"></i>
+                    Yes
                 </div>
             </div>
         </div>
-        <!--  stretched masuk pusher <div class="pusher" style="height: calc(100vh - 45px - 70px); overflow-y: auto;">-->
-        <div class="ui bottom attached segment pushable" style="height: calc(100vh - 45px - 70px) !important; overflow-y: auto;">
-            <!-- flyout -->
-            <div class="ui right flyout" style="overflow-y: auto;">
-                <i class="close icon"></i>
-                <div class="ui header"><i class="folder icon" name="icon_flyout"></i>
-                    <div class="content" name="content_flyout">Lengkapi Data </div>
-                </div>
-                <form class="ui form content" name="form_flyout">
-                </form>
-                <div class="left actions">
-                    <div class="ui red cancel button"><i class="remove icon"></i>Tutup </div>
-                    <div class="ui green ok button"><i class="checkmark icon"></i>Submit </div>
-                </div>
-            </div>
 
-            <!-- pusher <div class="pusher">-->
-            <div class="flyout pusher">
-                <div class="basic segment">
-                    <div class="ui demo page dimmer light">
-                        <div class="ui massive text blue elastic loader">Loading...</div>
+        <div class="pusher">
+            <!-- sticky-->
+            <div class="ui sticky">
+                <div class="ui icon message dashboard"><i class="home icon"></i>
+                    <div class="content">
+                        <div class="header">DASHBOARD</div>
+                        <div class="pDashboard">seSendok</div>
                     </div>
                 </div>
+            </div>
+            <div class="ui basic segment">
                 <!-- ============== -->
                 <!-- tab home -->
                 <!-- ============== -->
@@ -236,58 +233,19 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <div class="ui tab basic segment" data-tab="tab_dpa">
                 </div>
                 <!-- ============== -->
-                <!-- tab_bidang_urusan -->
+                <!-- tab_referensi -->
                 <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_bidang_urusan">
-                </div>
-                <!-- ============== -->
-                <!-- tab_prog -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_prog">
-                </div>
-                <!-- ============== -->
-                <!-- tab_keg -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_keg">
-                </div>
-                <!-- ============== -->
-                <!-- tab_sub_keg -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_sub_keg">
-                </div>
-                <!-- ============== -->
-                <!-- tab_akunbelanja -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_akunbelanja">
-                </div>
-                <!-- ============== -->
-                <!-- tab_sumber_dana -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_sumber_dana">
-                </div>
-                <!-- ============== -->
-                <!-- tab_peraturan -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_peraturan">
-                </div>
-                <!-- ============== -->
-                <!-- tab_rekanan -->
-                <!-- ============== -->
-                <div class="ui tab basic segment" data-tab="tab_rekanan">
-                </div>
-                <!-- ============== -->
-                <!-- tab_ssh -->
-                <!-- ============== -->
-                <div class="ui tab basic segment container" data-tab="tab_hargasat">
-                    <div class="ui info message" name="kethargasat">Nabiilainayah</div>
+                <div class="ui tab basic segment container" data-tab="tab_ref">
+                    <div class="ui info message" name="ketref">Nabiilainayah</div>
                     <div class="ui hidden divider"></div>
-                    
-                        <div class="ui right floated stackable basic icon buttons">
-                            <button class="ui button" data-tooltip="Tambah Data" data-position="bottom center"><i class="plus icon"></i></button>
-                            <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center"><i class="upload icon"></i></button>
-                            <button class="ui button" data-tooltip="Download" data-position="bottom center"><i class="alternate download icon"></i></button>
-                        </div>
-                        <div class="ui section divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center"><i class="plus icon"></i></button>
+                        <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center"><i class="upload icon"></i></button>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
                     <table class="ui very basic table">
                         <thead>
                             <tr>
@@ -303,7 +261,51 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         <tbody>
                             <tr>
                                 <td></td>
-                                <td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- ============== -->
+                <!-- tab_hargasat -->
+                <!-- ============== -->
+                <div class="ui tab basic segment container" data-tab="tab_hargasat">
+                    <div class="ui info message" name="kethargasat">Nabiilainayah</div>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <button class="ui button" data-tooltip="Tambah Data" data-position="bottom center"><i class="plus icon"></i></button>
+                        <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center"><i class="upload icon"></i></button>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
+                    <table class="ui very basic table">
+                        <thead>
+                            <tr>
+                                <th>Kode Komponen</th>
+                                <th>Uraian Komponen</th>
+                                <th>Spesifikasi</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>TKDN</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>

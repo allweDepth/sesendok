@@ -7,9 +7,8 @@ class del_data
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-        $edit_user = $_SESSION["user"]["aktif_edit"];
+        
         $id_user = $_SESSION["user"]["id"];
-        $btn_edit = '';
         $hasilServer = [
             1 => 'berhasil run',
             2 => 'berhasil tambah data',
