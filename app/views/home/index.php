@@ -124,7 +124,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         </div>
 
         <!-- flyout-->
-        <div class="ui flyout right" tabindex="-1">
+        <div class="ui flyout right">
             <i class="close icon"></i>
             <div class="ui header">
                 <i class="question icon"></i>
@@ -157,7 +157,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     </div>
                 </div>
             </div>
-            <div class="ui basic segment">
+            <div class="ui basic segment" style="max-height:100%-45px">
                 <!-- ============== -->
                 <!-- tab home -->
                 <!-- ============== -->
