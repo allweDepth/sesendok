@@ -60,11 +60,17 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         </div>
     </div>
     <div class="ui bottom attached segment stackable pushable">
-
         <!-- sidebar-->
         <div class="ui inverted left vertical sidebar menu" style="">
             <div class="item">
-                <div class="ui transparent icon input">
+                <h2 class="ui inverted center red aligned icon header dash_header"><i class="circular colored blue building icon"></i>
+                    <div class="content">seSendok <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
+                        <div class="sub header">Manage Project</div>
+                    </div>
+                </h2>
+            </div>
+            <div class="item">
+                <div class="ui inverted transparent icon input">
                     <input type="text" placeholder="Search mail...">
                     <i class="search icon"></i>
                 </div>
@@ -92,7 +98,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i>Referensi</div>
                 <div class="content">
-                    <a class="item" href="#" data-tab="tab_ref" tbl="bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
+                    <a class="item" href="<?= BASEURL; ?>bidang_urusan" data-tab="tab_ref" tbl="bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>

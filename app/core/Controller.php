@@ -3,6 +3,13 @@ class Controller
 {
     public function view($view, $data = [])
     {
+        // session_start();
+        // if (isset($_SESSION["user"])) {
+        //     require_once '../app/views/' . $view . '.php';
+        // }else{
+        //     $data['key_encrypt'] = KEY_ENCRYPT;
+        //     require_once '../app/views/login/index.php';
+        // }
         require_once '../app/views/' . $view . '.php';
     }
     public function model($model)

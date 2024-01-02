@@ -239,7 +239,7 @@ $(document).ready(function () {
 	//====================================
 	$(".ui.flyout").flyout({
 		//non aktifkan toggle jika tekan dimmer
-		// selector: { pusher: '.flyout.pusher' },
+		selector: { pusher: '.flyout' },
 		className: { pushable: '.bottom.pushable' },
 		closable: false,
 		onShow: function () {

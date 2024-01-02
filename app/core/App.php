@@ -11,19 +11,31 @@ class App
             get_include_path()
         )));
         $url = $this->parseURL();
-       
+
         //controller
         if ($url && file_exists('../app/controllers/' . $url[0] . '.php')) {
-            $this->controller = $url[0];
+
+            session_start();
+            if (isset($_SESSION["user"])) {
+                if ($url[0] == 'login' || $url[0] == 'register'){
+                    $url[0] = 'home';
+                }
+                $this->controller = $url[0];
+            } else {
+                $this->controller = 'login';
+            }
+
+
             unset($url[0]);
         }
         require_once '../app/controllers/' . $this->controller . '.php';
         $this->controller = new $this->controller;
         //method
+        
         if (isset($url[1])) {
             if (method_exists($this->controller, $url[1])) {
                 $this->method = $url[1];
-                unset($url[1]); 
+                unset($url[1]);
             }
         }
         //params
@@ -32,7 +44,7 @@ class App
             $this->params = array_values($url);
         }
         // var_dump([$this->controller,$this->method,$this->params]);
-        call_user_func_array([$this->controller,$this->method],$this->params);
+        call_user_func_array([$this->controller, $this->method], $this->params);
     }
     public function parseURL()
     {
