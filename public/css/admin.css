@@ -8,7 +8,16 @@
     height: 500px;
     /*height: 80vh;*/
 }
-
+.pushable {
+    margin-top: 44px !important;
+    max-height: 100% !important;
+}
+/* .flyout {
+    margin-top: 45px !important;
+} */
+/* .ui.sticky.dasboard {
+    margin-top: 45px !important;
+} */
 .ui.inverted.menu .active.item {
     background-color: transparent;
 }

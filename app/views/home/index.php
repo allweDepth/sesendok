@@ -29,7 +29,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 </head>
 
 <body>
-    <div class="ui teal top attached inverted stackable menu">
+    <div class="ui teal top fixed inverted stackable main menu">
         <a class="item nabiila">
             <i class="sidebar icon"></i>
         </a>
@@ -61,7 +61,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
     </div>
     <div class="ui bottom attached segment stackable pushable">
         <!-- sidebar-->
-        <div class="ui inverted left vertical sidebar menu" style="">
+        <div class="ui inverted left vertical sidebar menu">
             <div class="item">
                 <h2 class="ui inverted center red aligned icon header dash_header"><i class="circular colored blue building icon"></i>
                     <div class="content">seSendok <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
@@ -98,7 +98,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i>Referensi</div>
                 <div class="content">
-                    <a class="item" href="<?= BASEURL; ?>bidang_urusan" data-tab="tab_ref" tbl="bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>
@@ -124,7 +124,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         </div>
 
         <!-- flyout-->
-        <div class="ui flyout right">
+        <div class="ui flyout right attached">
             <i class="close icon"></i>
             <div class="ui header">
                 <i class="question icon"></i>
@@ -149,7 +149,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 
         <div class="pusher">
             <!-- sticky-->
-            <div class="ui sticky">
+            <div class="ui sticky main">
                 <div class="ui icon message dashboard"><i class="home icon"></i>
                     <div class="content">
                         <div class="header">DASHBOARD</div>
@@ -161,7 +161,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <!-- ============== -->
                 <!-- tab home -->
                 <!-- ============== -->
-                <div class="ui tab basic segment active" data-tab="home">
+                <div class="ui tab basic segment active" data-tab="tab_home">
                     <div class="main ui intro container">
                         <h2 class="ui dividing header">Pengantar untuk <?php echo $type_user ?> </h2>
                         <div class="ui large info message">
@@ -222,6 +222,26 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- ============== -->
+                <!-- tab_kontrak -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_kontrak">
+                </div>
+                <!-- ============== -->
+                <!-- tab_input_real -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_input_real">
+                </div>
+                <!-- ============== -->
+                <!-- tab_spj -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_spj">
+                </div>
+                <!-- ============== -->
+                <!-- tab_lap -->
+                <!-- ============== -->
+                <div class="ui tab basic segment" data-tab="tab_lap">
                 </div>
                 <!-- ============== -->
                 <!-- tab_renstra -->

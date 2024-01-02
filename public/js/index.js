@@ -18,7 +18,14 @@ $(document).ready(function () {
 	$(".ui.dropdown").dropdown();
 
 	$(".menu .item").tab();
-
+	// fix main menu to page on passing
+	$('.main.menu, .sticky.main').visibility({
+		type: 'fixed'
+	});
+	$('.overlay').visibility({
+		type: 'fixed',
+		offset: 45
+	});
 
 	$(".ui.accordion").accordion(
 		{
@@ -34,7 +41,7 @@ $(document).ready(function () {
 	});
 	//menu lain
 
-	
+
 	//logout
 	$("body").on('click', "[name='log_out']", function () {
 		setTimeout(function () {
@@ -48,12 +55,12 @@ $(document).ready(function () {
 	$("body").on('click', 'a[data-tab]', function (e) {
 		e.preventDefault();
 		let arrayDasboard = {
-			tab_home: ["home icon", "DASHBOARD", "seSendok",''],
-			tab_rentra: ["clipboard list icon", "RENSTRA", "Rencana Startegi",''],
-			tab_renja: ["clipboard list icon", "RENJA", "Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",''],
-			tab_dpa: ["clipboard list icon", "DPA", "Dokumen Pelaksanaan Anggaran",''],
-			tab_dpa_perubahan: ["clipboard list icon", "DPA", "Dokumen Pelaksanaan Perubahan Anggaran",''],
-			tab_kontrak: ["clipboard list icon", "KONTRAK", "perjanjian",''],
+			tab_home: ["home icon", "DASHBOARD", "seSendok", ''],
+			tab_rentra: ["clipboard list icon", "RENSTRA", "Rencana Startegi", ''],
+			tab_renja: ["clipboard list icon", "RENJA", "Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.", ''],
+			tab_dpa: ["clipboard list icon", "DPA", "Dokumen Pelaksanaan Anggaran", ''],
+			tab_dpa_perubahan: ["clipboard list icon", "DPA", "Dokumen Pelaksanaan Perubahan Anggaran", ''],
+			tab_kontrak: ["clipboard list icon", "KONTRAK", "perjanjian", ''],
 			tab_input_real: ["clipboard list icon", "Realisasi", "Input Realisasi"],
 			tab_spj: ["clipboard list icon", "Renja", "Rencana Kerja"],
 			tab_lap: ["clipboard list icon", "Renja", "Rencana Kerja"],
@@ -230,9 +237,9 @@ $(document).ready(function () {
 		}
 		if (attrName === "flyout" && jalankanAjax === false) {
 			// $(".ui.flyout").flyout("toggle");
-			
+
 		}
-		
+
 	});
 	//====================================
 	//=========== flyout =================
@@ -263,7 +270,7 @@ $(document).ready(function () {
 	// }).flyout('attach events', '[name="flyout"]');
 	$('.ui.flyout').flyout({
 		closable: false,
-		context: $('.bottom.segment')
+		context: $('.bottom.segment.pushable')
 	}).flyout('attach events', '[name="flyout"]');
 	//===================================
 	//=========== class dropdown ========
