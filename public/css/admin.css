@@ -10,7 +10,8 @@
 }
 .pushable {
     margin-top: 44px !important;
-    max-height: 100% !important;
+    max-height: calc(100vh - 44px ) !important;
+    -webkit-max-logical-height: calc(100vh - 44px ) !important;
 }
 /* .flyout {
     margin-top: 45px !important;

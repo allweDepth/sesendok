@@ -29,7 +29,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 </head>
 
 <body>
-    <div class="ui teal top fixed inverted stackable main menu">
+    <div class="ui teal fixed inverted main menu">
         <a class="item nabiila">
             <i class="sidebar icon"></i>
         </a>

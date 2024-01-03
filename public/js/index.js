@@ -19,13 +19,13 @@ $(document).ready(function () {
 
 	$(".menu .item").tab();
 	// fix main menu to page on passing
-	$('.main.menu, .sticky.main').visibility({
-		type: 'fixed'
-	});
-	$('.overlay').visibility({
-		type: 'fixed',
-		offset: 45
-	});
+	// $('.main.menu, .sticky.main').visibility({
+	// 	type: 'fixed'
+	// });
+	// $('.overlay').visibility({
+	// 	type: 'fixed',
+	// 	offset: 45
+	// });
 
 	$(".ui.accordion").accordion(
 		{
