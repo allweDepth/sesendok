@@ -5,11 +5,6 @@ $(document).ready(function () {
 	//remove session storage
 	sessionStorage.clear()
 	var halaman = 1;
-
-
-
-
-
 	//sidebar toggle
 	$('.ui.sidebar').sidebar({
 		context: $('.bottom.segment')
@@ -111,7 +106,7 @@ $(document).ready(function () {
 		let dasboardheader = dasboard.find($("div.header"));
 		dasboardheader.text(headerDashboard);
 		dasboard.find($("div.pDashboard")).html(pDashboard);
-
+		$(`div[data-tab=${jenis}]`).attr('tbl', tbl);
 		switch (jenis) {
 			case 'tab_hargasat':
 				dasboardheader.text(tbl.toUpperCase());
@@ -181,26 +176,318 @@ $(document).ready(function () {
 	//=====================================================
 	$("body").on("click", '[name="get_data"],[name="flyout"]', function (e) {
 		e.preventDefault();
-		var ini = $(this);
-		var attrName = ini.attr("name");
+		let ini = $(this);
+		let attrName = ini.attr("name");
 		let jenis = ini.attr("jns");
-		var tbl = ini.attr("tbl");
+		let tbl = ini.attr("tbl");
+		if (typeof tbl === "undefined") {
+			tbl = ini.closest("tr").attr("tbl");
+			if (typeof tbl === "undefined") {
+				tbl = ini.closest(`div[data-tab]`).attr("tbl");
+				if (typeof tbl === "undefined") {
+					tbl = ini.closest("div.item").attr("tbl");
+				}
+			}
+		}
 		let formIni = $('form[name="form_flyout"]');
 		//removeRulesForm(formIni);
-		var url = "script/get_data";
-		var jalankanAjax = false;
-		var htmlForm = "";
-		var dataHtmlku = {};
-		var iconFlyout = $('i[name="icon_flyout"]'); //icon flyout
-		var headerFlyout = $('div[name="content_flyout"]'); //header flyout
-		var data = {
+		let url = "script/get_data";
+		let jalankanAjax = false;
+		let htmlForm = "";
+		let dataHtmlku = {};
+		let iconFlyout = $('i[name="icon_flyout"]'); //icon flyout
+		let headerFlyout = $('div[name="content_flyout"]'); //header flyout
+		let data = {
 			cari: cari(jenis),
 			rows: countRows(),
 			jenis: jenis,
 			tbl: tbl,
 			halaman: halaman,
 		};
+		let id_row = ini.attr("id_row");
+		if (typeof id_row === "undefined") {
+			id_row = ini.closest("tr").attr("id_row");
+			if (typeof id_row === "undefined") {
+				id_row = ini.closest("div.item").attr("id_row");
+			}
+		}
+		if (attrName === "flyout") {
+			switch (jenis) {
+				//EDIT DATA ROWS
+				case 'edit':
+					data.id_row = id_row;
+					dataHtmlku.icon = "edit icon";
+					dataHtmlku.header = "Edit data";
+					jalankanAjax = true;
+				//TAMBAH ROWS DATA
+				case 'add':
+					switch (tbl) {
+						case 'bidang_urusan':
+						case 'prog':
+						case 'keg':
+						case 'sub_keg':
+						case 'akun_belanja':
+						case 'sumber_dana':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldTextAction", {
+									label: "Kode",
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Type Dok",
+									atribut: 'name="type"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["file", "Peraturan Perundang-undangan Pusat"],
+										["peraturan", "Peraturan Kementerian / Lembaga"],
+										["tutorial", "Peraturan Perundang-undangan Daerah"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["proyek", "File Kegiatan"],
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Judul",
+									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Nomor",
+									atribut: 'name="nomor" placeholder="Nomor..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Bentuk",
+									atribut: 'name="bentuk" placeholder="Pereaturan Menteri Dalam Negeri..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Bentuk SIngkat",
+									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Tempat Penetapan",
+									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Penetapan",
+									atribut:
+										'placeholder="Input Tanggal.." name="tgl_penetapan" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Pengundangan",
+									atribut:
+										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Type Data",
+									atribut: 'name="type"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["file", "File"],
+										["peraturan", "Peraturan"],
+										["tutorial", "Tutorial"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["proyek", "File Kegiatan"],
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal",
+									atribut:
+										'placeholder="Input Tanggal.." name="tanggal" readonly',
+									kelas: "date",
+								}) +
 
+								buatElemenHtml("fieldDropdown", {
+									label: "Status Data",
+									atribut: 'name="status"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["umum", "Umum"],
+										["rahasia", "Rahasia"],
+										["proyek", "Dokumen kegiatan"]
+									],
+								}) +
+								buatElemenHtml("fieldFileInput2", {
+									label: "Pilih File Dokumen",
+									placeholderData: "Pilih File...",
+									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+								});
+							if (tbl === 'edit') {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+						case 'peraturan':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldTextAction", {
+									label: "Kode",
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Type Dok",
+									atribut: 'name="type"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["file", "Peraturan Perundang-undangan Pusat"],
+										["peraturan", "Peraturan Kementerian / Lembaga"],
+										["tutorial", "Peraturan Perundang-undangan Daerah"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["proyek", "File Kegiatan"],
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Judul",
+									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Nomor",
+									atribut: 'name="nomor" placeholder="Nomor..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Bentuk",
+									atribut: 'name="bentuk" placeholder="Pereaturan Menteri Dalam Negeri..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Bentuk SIngkat",
+									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Tempat Penetapan",
+									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Penetapan",
+									atribut:
+										'placeholder="Input Tanggal.." name="tgl_penetapan" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Pengundangan",
+									atribut:
+										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Type Data",
+									atribut: 'name="type"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["file", "File"],
+										["peraturan", "Peraturan"],
+										["tutorial", "Tutorial"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["proyek", "File Kegiatan"],
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal",
+									atribut:
+										'placeholder="Input Tanggal.." name="tanggal" readonly',
+									kelas: "date",
+								}) +
+
+								buatElemenHtml("fieldDropdown", {
+									label: "Status Data",
+									atribut: 'name="status"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["umum", "Umum"],
+										["rahasia", "Rahasia"],
+										["proyek", "Dokumen kegiatan"]
+									],
+								}) +
+								buatElemenHtml("fieldFileInput2", {
+									label: "Pilih File Dokumen",
+									placeholderData: "Pilih File...",
+									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+								});
+							if (tbl === 'edit') {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+						case 'value1':
+
+							break;
+						default:
+
+							break;
+					};
+
+					break;
+				case 'import':
+					dataHtmlku.icon = "file excel icon green";
+					dataHtmlku.header = "Import data dari file Excel";
+					//file
+					dataHtmlku.konten = buatElemenHtml("fieldFileInput2", {
+						label: "Pilih File Dokumen",
+						placeholderData: "Pilih File (*.xlsx)...",
+						accept: ".xlsx",
+					}); //non_data(artinya tidak di dicek form)
+					//dropdown
+					dataHtmlku.konten += buatElemenHtml("fieldDropdown", {
+						label: "Jumlah Header Tabel",
+						atribut: 'name="jml_header"',
+						kelas: "lainnya selection",
+						dataArray: [
+							[0, "0 Baris Header"],
+							[1, "1 Baris Header"],
+							[2, "2 Baris Header"],
+							[3, "3 Baris Header"],
+							[4, "4 Baris Header"],
+							[5, "5 Baris Header"],
+						],
+					});
+					break;
+				default:
+
+					break;
+			};
+			//atur form
+			htmlForm = `${dataHtmlku.konten}<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
+			iconFlyout.attr("class", "").addClass(dataHtmlku.icon);
+			headerFlyout.text(dataHtmlku.header);
+			formIni.html(htmlForm);
+			addRulesForm(formIni);
+			let calendarDate = new CalendarConstructor(".ui.calendar.date");
+			calendarDate.runCalendar();
+			let calendarYear = new CalendarConstructor(".ui.calendar.year");
+			calendarYear.Type('year');
+			calendarYear.runCalendar();
+			$('div[name="jml_header"]').dropdown("set selected", 1);
+			$('.ui.accordion').accordion();
+			formIni.find('.ui.dropdown.lainnya').dropdown();
+			$("[rms]").mathbiila();
+		};
+		//
+
+
+		addRulesForm(formIni);
 		//JALANKAN AJAX
 		if (jalankanAjax) {
 			loaderShow();
@@ -350,7 +637,88 @@ $(document).ready(function () {
 			this.element.dropdown('set selected', val);
 		}
 	}
+	//===================================
+	//=========== class calendar ========
+	//===================================
+	class CalendarConstructor {//@audit-ok CalendarConstructor
+		constructor(element) {//constructor(element,tglAwal=new Date(),tglAkhir=new Date()) {
+			this.element = $(element);
+		}
+		typeOnChange = ''
+		disableDate = []
+		enableDate = [];
+		type = 'date'
+		typeDate = "dddd D MMMM Y";
+		disabledDaysOfWeek = []
+		tanggal = new Date();
+		minDate = null;//new Date(tanggal.getFullYear(), tanggal.getMonth(), tanggal.getDate());
+		maxDate = null;//new Date(tglAwal.getFullYear(), tglAwal.getMonth(), tglAwal.getDate());
+		startCalendar = null;
+		endCalendar = null;
+		//panggil methode ini untuk mengganti type dan format
+		Type(typeDay) {
+			let format = "dddd D MMMM Y"
+			switch (typeDay) {
+				case 'date':
+					format = "dddd D MMMM Y"
+					this.type = 'date'
+					break;
+				case 'datetime':
+					format = "dddd D MMMM Y h:mm A"
+					this.type = 'datetime'
+					break;
+				case 'time':
+					this.type = 'time'
+					break;
+				case 'year':
+					this.type = 'year'
+					break;
+				default:
+					break;
+			}
+			this.typeDate = format;
+		}
+		runCalendar() {
+			let typeOnChange = this.typeOnChange;
+			this.element.calendar({
+				minDate: this.minDate,
+				maxDate: this.maxDate,
+				disableDate: this.disableDate,
+				disabledDaysOfWeek: this.disabledDaysOfWeek,
+				type: this.type,
+				startCalendar: this.startCalendar,
+				endCalendar: this.endCalendar,
+				formatter: {
+					date: this.typeDate,
+					time: 'H:mm',
+					cellTime: 'H:mm',
+				},
+				text: {
+					dayNames: ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu",],
+					months: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember",],
+				}, onChange: function (date, text, mode) {
+					//let tanggalAwal = new Date(tglAwal.getFullYear(), tglAwal.getMonth(), tglAwal.getDate());
+					switch (typeOnChange) {
+						case 'tab="lap-harian"':
+							var tanggal = new Date(date)
+							//console.log(tanggal);
+							tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
+							//console.log(tanggal);
+							$('a[data-tab="lap-harian"][tbl="get_list"]').trigger('click');
+							break;
+						case 'value2':
 
+							break;
+						case 'value3':
+							break;
+						default:
+							break;
+					}
+				},
+			});
+		}
+
+	}
 	// let dropdown = new DropdownConstructor(".satuan.ui.dropdown");
 	// dropdown.satuan();
 	function tok(elm) {
@@ -493,4 +861,372 @@ $(document).ready(function () {
 	function loaderHide() {
 		$(".demo.page.dimmer:first").dimmer("hide");
 	}
+	//====MEMBUAT ELEMEN HTML================
+	//====contohdataElemen={atribut:'name="tambah" jns="harga_satuan" tbl="input"'}
+	//================================
+	function buatElemenHtml(namaElemen = "", dataElemen = {}) {
+		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
+		let content = "content" in dataElemen ? dataElemen.content : "";
+		let atributData = "atribut" in dataElemen ? dataElemen.atribut : "";
+		let atributData2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
+		let atributLabel =
+			"atributLabel" in dataElemen ? dataElemen.atributLabel : "";
+		let kelasData = "kelas" in dataElemen ? dataElemen.kelas : "";
+		let labelData = "label" in dataElemen ? dataElemen.label : "";
+		let textDrpdown =
+			"textDrpdown" in dataElemen ? dataElemen.textDrpdown : "Pilih...";
+		let placeholderData =
+			"placeholderData" in dataElemen ? dataElemen.placeholderData : "";
+		let elemen1Data = "elemen1" in dataElemen ? dataElemen.elemen1 : "";
+		let iconData = "icon" in dataElemen ? dataElemen.icon : "download icon";
+		let icon = "icon" in dataElemen ? dataElemen.icon : "calendar";
+		let posisi = "posisi" in dataElemen ? dataElemen.posisi : "left";
+		let colorData = "color" in dataElemen ? dataElemen.color : "positive";
+		let valueData = "value" in dataElemen ? dataElemen.value : "";
+		let iconDataSeach = "icon" in dataElemen ? dataElemen.icon : "search icon";
+		let txtLabelData = "txtLabel" in dataElemen ? dataElemen.txtLabel : "@";
+		let dataArray = "dataArray" in dataElemen ? dataElemen.dataArray : []; //contoh untuk dropdown
+		let dataArray2 = "dataArray2" in dataElemen ? dataElemen.dataArray2 : [[]]; //contoh buat dropdown yang ada deskripsi
+		let jenisListDropdown =
+			"jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : "@"; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]
+		// let file
+		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
+		switch (namaElemen) {
+			case "text":
+				elemen = `<div class="field"><input type="text" ${atributData}></div>`;
+				break;
+			case "accordionField":
+				elemen = `<div class="ui accordion field" ${atributData}><div class="title"><i class="icon dropdown"></i>${labelData} </div><div class="content field">${content} </div></div>`;
+				break;
+			case "fieldTextAccordion":
+				elemen = `<div><label class="visible" style="display: block !important;">${labelData}</label><input ${atributData} type="text" class="visible" style="display: inline-block !important;"></div>`;
+				break;
+			case "segment":
+				elemen = `<div class="ui segments"><div class="ui segment"></div><div class="ui segment"></div></div>`;
+				break;
+			case "messageLink":
+				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${labelData} </div><a ${atributData}  target="_blank">${valueData}</a></div></div>`;
+				break;
+			case "dividerHeader":
+				elemen = `<h3 class="ui dividing header">${labelData}</h3>`;
+				break;
+			case "dividerClearing":
+				var elemen = '<div class="ui clearing divider"></div>';
+				break;
+			case "dividerFitted":
+				var elemen = '<div class="ui fitted divider"></div>';
+				break;
+			case "dividerIcon":
+				var elemen = '<div class="ui horizontal divider"></div>';
+				break;
+			case "dividerHidden":
+				elemen = `<div class="ui hidden divider"></div>`;
+				break;
+			case "fieldSearch":
+				var elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui fluid category scrolling search ' +
+					kelasData +
+					'"><div class="ui icon fluid input"><input class="prompt" type="text" ' +
+					atributData +
+					' placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>';
+				break;
+			case "calendar":
+				elemen = `<div class="field"><div class="ui calendar ${kelasData}"><div class="ui fluid input left icon"><i class="calendar icon"></i><input type="text" ${atributData}></div></div></div>`;
+				break;
+			case "fieldCalendar":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui calendar ' +
+					kelasData +
+					'" ' +
+					atributData2 +
+					'><div class="ui input left icon"><i class="calendar icon"></i><input type="text" ' +
+					atributData +
+					"></div></div></div>";
+				break;
+			case "fieldAndLabel":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					"</label> " +
+					elemen1Data +
+					" </div>";
+				break;
+			case "fieldText":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui ' +
+					kelasData +
+					' input"><input ' +
+					placeholderData +
+					' type="text" ' +
+					atributData +
+					"></div></div>";
+				break;
+			case "fieldTextAction":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui action input"><input type="text" ' +
+					atributData +
+					'><button class="ui teal button" ' +
+					atributLabel +
+					">" +
+					txtLabelData +
+					"</button></div></div>";
+				break;
+			case "fieldTextLabelKanan":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui fluid right labeled input"><input type="text" ' +
+					placeholderData +
+					" " +
+					atributData +
+					'><div class="ui basic label" ' +
+					atributLabel +
+					">" +
+					txtLabelData +
+					"</div></div></div>";
+				break;
+			case "fieldTextIcon":
+				elemen =
+					`<div class="field"><label>${labelData}</label><div class="ui fluid ${posisi} icon input"><input type="text" ${atributData}><i class="${icon} icon"></i></div></div>`;
+				break;
+			case "textIcon":
+				elemen =
+					'<div class="ui icon fluid input"><input type="text" ' +
+					placeholderData +
+					" " +
+					atributData +
+					'><i class="' +
+					iconDataSeach +
+					'"></i></div>';
+				break;
+			case "fieldText2":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					"</label><input " +
+					placeholderData +
+					' name="username" type="text" ' +
+					atributData +
+					"></div>";
+				break;
+			case "fieldFileInput":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui file input"><input type="file" ' +
+					atributData +
+					"></div></div>";
+				break;
+			case "fieldFileInput2":
+				//atributData file hanya placeholder
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="' +
+					placeholderData +
+					'" readonly="" name="dum_file" ' +
+					atributData +
+					'><input hidden="" type="file" nama="file" name="file" accept="' +
+					accept +
+					'" non_data><button class="ui red icon button" name="del_file"><i class="erase icon"></i></button></div></div>';
+				break;
+			case "fieldTextarea":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					"</label><textarea " +
+					atributData +
+					"></textarea></div>";
+				break;
+			case "fieldCheckbox":
+				elemen = `<div class="inline field"><div class="ui checkbox"><input type="checkbox" tabindex="0" class="hidden" ${atributData}><label>${labelData}</label></div></div>`;
+				break;
+			case "fielToggleCheckbox":
+				elemen =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui toggle checkbox"><input type="checkbox" ' +
+					atributData +
+					"><label>" +
+					txtLabelData +
+					"</label></div></div>";
+				break;
+			case "fieldDropdown":
+				var elemen1 =
+					'<div class="field"><label>' +
+					labelData +
+					'</label><div class="ui dropdown ' +
+					kelasData +
+					'" ' +
+					atributData +
+					'><input type="hidden" ' +
+					atributData +
+					'><i class="dropdown icon"></i><div class="default text">' +
+					textDrpdown +
+					'</div><div class="menu">';
+				///Memisahkan array
+				let elemen2 = "";
+				for (let x in dataArray) {
+					let rowsData = dataArray[x];
+					let dataValue = rowsData[0];
+					if (rowsData.length === 1) {
+
+						let txt = dataValue;
+						elemen2 +=
+							'<div class="item" data-value="' +
+							dataValue +
+							'">' +
+							txt +
+							"</div>";
+					} else if (rowsData.length === 2) {
+
+						let txt = rowsData[1];
+						elemen2 +=
+							'<div class="item" data-value="' +
+							dataValue +
+							'">' +
+							txt +
+							"</div>";
+					} else if (rowsData.length === 3) {
+						//mempunyai deskripsi
+
+						let txt = rowsData[1];
+						deskripsi = rowsData[2];
+						elemen2 +=
+							'<div class="item" data-value="' +
+							dataValue +
+							'"><span class="description">' +
+							deskripsi +
+							'</span><span class="text">' +
+							txt +
+							"</span></div>";
+					}
+				}
+				/*
+				for (let x in dataArray) {
+					rowsData = dataArray[x]
+					dataValue = rowsData.dataValue;
+					txt = rowsData.text;
+				  //console.log(rowsData.dataValue);
+				  //console.log(rowsData.text);
+					elemen2 += '<div class="item" data-value="' + dataValue + '">' + txt + '</div>';
+				}
+				*/
+				var elemen3 = "</div></div></div>";
+				elemen = elemen1 + elemen2 + elemen3;
+				break;
+			default:
+				break;
+		}
+		return elemen;
+	}
+	//========================================
+	//=================get ip addres==========
+	//========================================
+	function getIpAddress() {
+		return $.getJSON('http://ip-api.com/json', function (ipData) {
+			document.write(ipData.query)
+		});
+	}
+	/**
+	 * Dark mode
+	 *
+	 * Adds .inverted to all components.
+	 */
+	function ready() {
+		const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
+		if (darkModePreference.matches) {
+			const usedComponents = ["container", "grid", "button", "calendar", "card", "checkbox", "dimmer", "divider", "dropdown", "form", "header", "icon", "image", "input", "label", "list", "loader", "menu", "message", "modal", "placeholder", "popup", "progress", "segment", "sidebar", "statistics", "step", "tab", "table", "text", "toast", "api", "transition"];
+
+			usedComponents.forEach(usedComponent => {
+				let uiComponents = document.querySelectorAll('.ui.' + usedComponent);
+
+				uiComponents.forEach(component => {
+					if (component.classList.contains('inverted')) {
+						component.classList.remove('inverted');
+					} else {
+						component.classList.add('inverted');
+					}
+				});
+			});
+
+		}
+	}
+	// harus darkModePreference = true
+	// document.addEventListener("DOMContentLoaded", ready);
+	//============================================================
+	// . FUNGSI ADD RULE UNTUK SEMUA INPUT DAN TEXT AREA
+	//============================================================
+	function addRulesForm(formku) {
+		var attrName = formku.find($("input[name],textarea[name]"));
+		var i = 0;
+		for (i = 0; i < attrName.length; i++) {
+			var atribut = $(attrName[i]).attr("name");
+			var lbl = $(attrName[i]).attr("placeholder");
+			if (lbl === undefined) {
+				lbl = $(attrName[i]).closest(".field").find("label").text();
+				if (lbl === undefined || lbl === "") {
+					lbl = $(attrName[i]).closest(".field").find("div.sub.header").text();
+				}
+				if (lbl === undefined || lbl === "") {
+					lbl = atribut.replaceAll(/_/g, " ");
+				}
+			}
+			var non_data = $(attrName[i]).attr("non_data");
+			if (typeof non_data === "undefined") {
+				formku.form("add rule", atribut, {
+					rules: [
+						{
+							type: "empty",
+							prompt: "Lengkapi Data " + lbl,
+						},
+					],
+				});
+			} else {
+				//console.log($(attrName[i]).is)
+				//if ($(attrName[i]).is)
+				//$(attrName[i]).addClass('enabled').attr('readonly').val(0);
+			}
+		}
+	}
+	//
+	function removeRulesForm(formku) {
+		var attrName = formku.find($("input[name],textarea[name]"));
+		var i = 0;
+		//console.log(formku)
+		for (i = 0; i < attrName.length; i++) {
+			var atribut = $(attrName[i]).attr("name");
+			var lbl = $(attrName[i]).attr("placeholder");
+			if (lbl === undefined) {
+				lbl = $(attrName[i]).closest(".field").find("label").text();
+				if (lbl === undefined || lbl === "") {
+					lbl = $(attrName[i]).closest(".field").find("div.sub.header").text();
+				}
+				if (lbl === undefined || lbl === "") {
+					lbl = atribut.replaceAll(/_/g, " ");
+				}
+			}
+			var non_data = $(attrName[i]).attr("non_data");
+			if (typeof non_data === "undefined") {
+				if (atribut) {
+					//formku.form("remove rule", atribut);
+					formku.form("remove field", atribut);
+					//console.log('atribut remove rule: ' + atribut)
+				}
+			} else {
+				//console.log($(attrName[i]).is)
+				//if ($(attrName[i]).is)
+				//$(attrName[i]).addClass('enabled').attr('readonly').val(0);
+			}
+		}
+	}
+	//
 });

@@ -28,8 +28,9 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 
 </head>
 
-<body>
-    <div class="ui teal fixed inverted main menu">
+<body class="dimmable">
+    <!-- MAIN TOOLBAR MENU -->
+    <div class="ui teal top fixed inverted main menu">
         <a class="item nabiila">
             <i class="sidebar icon"></i>
         </a>
@@ -54,12 +55,16 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     <i class="search link icon"></i>
                 </div>
             </div>
-            <a class="ui item" onclick="window.location.href='home/logout'">
-                Logout
-            </a>
+            <div class="right inverted menu">
+                <div class="ui dropdown item lain"><span><i class="user icon"></i></span><i class="dropdown icon"></i>
+                    <div class="menu"><a class="item" data-tab="wallchat"><i class="circular comments outline icon"></i>Pesan</a><a class="item" data-tab="profil"><i class="circular qrcode icon"></i>Pengaturan</a><a class="item" onclick="window.location.href='home/logout'"><i class="circular sign out alternate icon"></i>Log Out</a></div>
+                </div>
+            </div>
         </div>
     </div>
+    
     <div class="ui bottom attached segment stackable pushable">
+
         <!-- sidebar-->
         <div class="ui inverted left vertical sidebar menu">
             <div class="item">
@@ -122,32 +127,22 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
 
         </div>
-
         <!-- flyout-->
-        <div class="ui flyout right attached">
+        <div class="ui right flyout" style="overflow-y: auto;">
             <i class="close icon"></i>
-            <div class="ui header">
-                <i class="question icon"></i>
-                <div class="content">
-                    Archive Old Messages
-                </div>
+            <div class="ui header"><i class="folder icon" name="icon_flyout"></i>
+                <div class="content" name="content_flyout">Lengkapi Data </div>
             </div>
-            <div class="scrolling content" style="min-height: 240.4375px;">
-                <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
-            </div>
-            <div class="actions">
-                <div class="ui red cancel button">
-                    <i class="remove icon"></i>
-                    No
-                </div>
-                <div class="ui green ok button">
-                    <i class="checkmark icon"></i>
-                    Yes
-                </div>
+            <form class="ui form scrolling content" name="form_flyout">
+            </form>
+            <div class="left actions">
+                <div class="ui red cancel button"><i class="remove icon"></i>Tutup </div>
+                <div class="ui green ok button"><i class="checkmark icon"></i>Submit </div>
             </div>
         </div>
 
         <div class="pusher">
+
             <!-- sticky-->
             <div class="ui sticky main">
                 <div class="ui icon message dashboard"><i class="home icon"></i>
@@ -261,13 +256,13 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <!-- ============== -->
                 <!-- tab_referensi -->
                 <!-- ============== -->
-                <div class="ui tab basic segment container" data-tab="tab_ref">
+                <div class="ui tab basic segment container" data-tab="tab_ref" tbl="">
                     <div class="ui info message" name="ketref">Nabiilainayah</div>
                     <div class="ui hidden divider"></div>
                     <div class="ui right floated basic icon buttons">
-                        <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center"><i class="plus icon"></i></button>
-                        <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center"><i class="upload icon"></i></button>
-                        <button class="ui button" data-tooltip="Download" data-position="bottom center"><i class="alternate download icon"></i></button>
+                        <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+                        <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center" jns="ungguh"><i class="alternate download icon"></i></button>
                     </div>
                     <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                     <div class="ui hidden divider"></div>
