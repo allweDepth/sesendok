@@ -62,7 +62,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             </div>
         </div>
     </div>
-    
+
     <div class="ui bottom attached segment stackable pushable">
 
         <!-- sidebar-->
@@ -109,7 +109,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="akun_belanja"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Akun</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sumber Dana</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Peraturan</a>
+                    <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="gavel icon"></i>Peraturan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="rekanan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Rekanan</a>
                 </div>
             </div>
@@ -142,7 +142,6 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         </div>
 
         <div class="pusher">
-
             <!-- sticky-->
             <div class="ui sticky main">
                 <div class="ui icon message dashboard"><i class="home icon"></i>
@@ -152,7 +151,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     </div>
                 </div>
             </div>
-            <div class="ui basic segment" style="max-height:100%-45px">
+            <div class="ui basic segment">
                 <!-- ============== -->
                 <!-- tab home -->
                 <!-- ============== -->
@@ -290,6 +289,57 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 <td></td>
                             </tr>
                         </tbody>
+                    </table>
+                </div>
+                <!-- ============== -->
+                <!-- tab_peraturan -->
+                <!-- ============== -->
+                <div class="ui tab basic segment container" data-tab="tab_peraturan" tbl="peraturan">
+
+                    <div class="ui hidden divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+                        <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center" jns="ungguh"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
+                    <table class="ui very basic table">
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Uraian</th>
+                                <th>Nomor</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4">
+                                    <div class="ui right floated pagination menu">
+                                        <a class="icon item">
+                                            <i class="left chevron icon"></i>
+                                        </a>
+                                        <a class="item">1</a>
+                                        <a class="item">2</a>
+                                        <a class="item">3</a>
+                                        <a class="item">4</a>
+                                        <a class="icon item">
+                                            <i class="right chevron icon"></i>
+                                        </a>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <!-- ============== -->

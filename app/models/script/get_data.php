@@ -7,7 +7,7 @@ class get_data
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-        
+
         $id_user = $_SESSION["user"]["id"];
         $keyEncrypt = $_SESSION["user"]["key_encrypt"];
         //var_dump($keyEncrypt);
@@ -64,10 +64,10 @@ class get_data
             1432  => 'I Love You Too', #1 artinya I, 4 artinya Love, 3 artinya You, 2 artinya Too. bisa diberikan untuk pasangan kekasih.
             224  => 'I Love You Too' #Artinya adalah Today, Tomorrow dan Forever.Angka 2 artinya two yang artinya twoday,today,
         ];
-        
+
         //var_dump(sys_get_temp_dir());lokasi tempoerer
         $DB = DB::getInstance();
-        
+
         $sukses = false;
         $code = 39;
         $pesan = 'posting kosong';
@@ -76,7 +76,7 @@ class get_data
         $data = array();
         $dataJson = array();
         if (!empty($_POST) && $id_user > 0) {
-            if (isset($_POST['jenis'])) {
+            if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
                 $validate = new Validate($_POST);
                 $jenis = $validate->setRules('jenis', 'jenis', [
                     'sanitize' => 'string',
@@ -108,7 +108,6 @@ class get_data
                 $limit = 'all';
                 if (!empty($_POST['rows'])) {
                     if ($_POST['rows'] != 'all') {
-
                         $limit = $validate->setRules('rows', 'Jumlah Halaman', [
                             'numeric' => true
                         ]);
@@ -118,108 +117,50 @@ class get_data
                 //================
                 //PROSES VALIDASI
                 //================
-                switch ($tbl) {
+                switch ($jenis) {
                     case 'edit':
-                        switch ($jenis) {
-                            case 'analisa_quarry':
-                                $id_row = $validate->setRules('id_row', 'id_row', [
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                break;
-                            default:
-                                $id_row = $validate->setRules('id_row', 'id_row', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                break;
-                        }
+                        $id_row = $validate->setRules('id_row', 'id_row', [
+                            'required' => true,
+                            'sanitize' => 'string',
+                            'min_char' => 1,
+                            'max_char' => 100
+                        ]);
                         break;
+                    case 'get_tbl':
+                        
+                        break;
+                        case 'xxxx':
+                            $posisi = $validate->setRules('posisi', 'posisi', [
+                                'sanitize' => 'string',
+                                'required' => true,
+                                'in_array' => ['top', 'bottom']
+                            ]);
+                            break;
                     default:
                         # code...
                         break;
                 }
-                switch ($jenis) {
-                    case 'wall':
-                        switch ($tbl) {
-                            case 'get':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                if ($id_row != 'nol') {
-                                    $id_row = $validate->setRules('id_row', 'id', [
-                                        'required' => true,
-                                        'numeric' => true,
-                                        'min_char' => 1
-                                    ]);
-                                } else {
-                                    $id_row = 0;
-                                }
-                                $posisi = $validate->setRules('posisi', 'posisi', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['top', 'bottom']
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
+                switch ($tbl) {
                     case 'peraturan':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'rekanan':
-                        switch ($tbl) {
-                            case 'cek_kode':
-                                $text = $validate->setRules('kode', 'Nama Rekanan/Perusahaan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                break;
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
+                        $like = "disable <= ? AND (judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
+                        $data_like = [0, $cari, $cari, $cari, $cari];
+                        $order = "ORDER BY tgl_pengundangan ASC";
+                        $posisi = " LIMIT ?, ?";
+                        $where1 = "disable <= ?";
+                        $data_where1 =  [0];
+                        $jumlah_kolom = 4;
                         break;
                     case 'sbu':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
+
+                        break;
+                    case 'dpa':
+                        $like = "kd_proyek = ? AND kd_analisa = nomor AND(uraian LIKE CONCAT('%',?,'%') OR kd_analisa LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                        $data_like = [$kd_proyek, $cari, $cari, $cari];
+                        $order = "ORDER BY id ASC";
+                        $posisi = " LIMIT ?, ?";
+                        $where1 = "username != ?";
+                        $data_where1 =  ['gila'];
+                        $jumlah_kolom = 4;
                         break;
                     default:
                         $err = 6;
@@ -228,15 +169,55 @@ class get_data
                 $Fungsi = new MasterFungsi();
                 if ($validate->passed()) {
                     //tabel pakai
-                    switch ($jenis) {
-                        case 'rekanan':
-                            $tabel_pakai = 'rekanan';
+                    switch ($tbl) {
+                        case 'peraturan':
+                            $tabel_pakai = 'peraturan_neo';
                             break;
-                        case "proyek":
-                            $tabel_pakai = 'nama_pkt_proyek';
+                        case "akun":
+                            $tabel_pakai = 'akun_neo';
                             break;
-                        case 'tabel_satuan':
-
+                        case 'bidang_urusan':
+                            $tabel_pakai = 'bidang_urusan_neo';
+                            break;
+                        case 'dpa':
+                            $tabel_pakai = 'dpa_neo';
+                            break;
+                        case 'hspk':
+                            $tabel_pakai = 'hspk_neo';
+                            break;
+                        case 'kegiatan':
+                            $tabel_pakai = 'kegiatan_neo';
+                            break;
+                        case 'mapping_aset':
+                            $tabel_pakai = 'mapping_aset_akun';
+                            break;
+                        case 'organisasi':
+                            $tabel_pakai = 'organisasi_neo';
+                            break;
+                        case "peraturan":
+                            $tabel_pakai = 'peraturan_neo';
+                            break;
+                        case 'program':
+                            $tabel_pakai = 'program_neo';
+                            break;
+                        case 'satuan':
+                            $tabel_pakai = 'satuan_neo';
+                            break;
+                        case 'sbu':
+                            $tabel_pakai = 'sbu_neo';
+                            break;
+                        case 'ssh':
+                            $tabel_pakai = 'ssh_neo';
+                            break;
+                        case 'sub_kegiatan':
+                            $tabel_pakai = 'sub_kegiatan_neo';
+                            break;
+                        case 'sumber_dana':
+                            $tabel_pakai = 'sumber_dana_neo';
+                            break;
+                        case 'user':
+                            $tabel_pakai = 'user_ahsp';
+                            break;
                         case 'inbox':
                         case 'outbox':
                         case 'wall':
@@ -246,17 +227,17 @@ class get_data
                     }
                     $sukses = true;
                     $err = 0;
-                    $kodePosting = '';
+                    
                     $jumlah_kolom = 0;
-                    $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
+                    // $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
 
                     //$tahun_anggaran = 0;
-                    $jumlahArray = is_array($data_kd_proyek) ? count($data_kd_proyek) : 0;
-                    
+                    // $jumlahArray = is_array($data_kd_proyek) ? count($data_kd_proyek) : 0;
+
                     //================================================
                     //==========JENIS POST DATA/INSERT DATA===========
                     //================================================
-                    switch ($kodePosting) {
+                    switch ($jenis) {
                         case 'get_row': //  ambil data 1 baris 
                             $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where1", $data_where1);
                             //var_dump($resul[0]);
@@ -305,13 +286,8 @@ class get_data
                                     $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1);
                                 }
                             }
-
                             break;
-                        case 'insert':
-                            $resul = $DB->insert($tabel_pakai, $set);
-                            $code = 2;
-                            break;
-                        case 'buatTabel':
+                        case 'get_tbl':
                             //get data
                             // var_dump($limit);
                             if ($limit !== "all") {
@@ -324,7 +300,6 @@ class get_data
                                         $get_data = $DB->runQuery2("SELECT * FROM $tabel_pakai");
                                     }
                                 }
-
                                 $jmldata = sizeof($get_data); //$get_data->fetchColumn();
                                 $jmlhalaman = ceil($jmldata / $limit);
                             } else {
@@ -360,6 +335,7 @@ class get_data
                                     }
                                 }
                             }
+                            $dataTabel = $Fungsi->getTabel($tbl, $tbl, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user);
                             break;
                         case 'buatDropdown':
                             $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1);
@@ -394,23 +370,6 @@ class get_data
                     case 'get_users_list':
                     case 'edit':
                     case 'input':
-                        $json = array('success' => $sukses,  'results' => $dataJson['results'],  'data' => $data);
-                        break;
-                    default:
-                        $item = array('code' => $code, 'message' => $hasilServer[$code]);
-                        $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
-                        break;
-                }
-                break;
-
-            case 'sbu':
-            case 'analisa_quarry':
-            case 'satuan':
-                switch ($tbl) {
-                    case 'sda':
-                    case 'ck':
-                    case 'bm':
-                    case 'get':
                         $json = array('success' => $sukses,  'results' => $dataJson['results'],  'data' => $data);
                         break;
                     default:

@@ -84,17 +84,19 @@ $(document).ready(function () {
 		let url = "script/get_data";
 		const dasboard = $(".message.dashboard");
 		let ini = $(this);
-		let jenis = ini.attr('data-tab');
-		$(`#cari_data`).attr('name', jenis);
+		let tab = ini.attr('data-tab');
+		let jenis = 'get_tbl';//get data
+		let tbl = ini.attr('tbl');
+		$(`#cari_data`).attr('name', tbl);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
 		let pDashboard = "seSendok";
 		let cryptos = false;
-		let tbl = ini.attr('tbl');
-		if (jenis in arrayDasboard) {
-			iconDashboard = arrayDasboard[jenis][0];
-			headerDashboard = arrayDasboard[jenis][1];
-			pDashboard = arrayDasboard[jenis][2];
+		
+		if (tab in arrayDasboard) {
+			iconDashboard = arrayDasboard[tab][0];
+			headerDashboard = arrayDasboard[tab][1];
+			pDashboard = arrayDasboard[tab][2];
 		} else if (tbl in arrayDasboard) {
 			iconDashboard = arrayDasboard[tbl][0];
 			headerDashboard = arrayDasboard[tbl][1];
@@ -106,11 +108,11 @@ $(document).ready(function () {
 		let dasboardheader = dasboard.find($("div.header"));
 		dasboardheader.text(headerDashboard);
 		dasboard.find($("div.pDashboard")).html(pDashboard);
-		$(`div[data-tab=${jenis}]`).attr('tbl', tbl);
-		switch (jenis) {
+		$(`div[data-tab=${tab}]`).attr('tbl', tbl);
+		switch (tab) {
 			case 'tab_hargasat':
 				dasboardheader.text(tbl.toUpperCase());
-				$('div[name="kethargasat"]').html(arrayDasboard[jenis][3]);
+				$('div[name="kethargasat"]').html(arrayDasboard[tab][3]);
 				jalankanAjax = true;
 				switch (tbl) {
 					case 'ssh':
@@ -126,7 +128,6 @@ $(document).ready(function () {
 				};
 				break;
 			case 'tab_ref':
-
 				// dasboardheader.text(tbl.toUpperCase());
 				$('div[name="ketref"]').html(arrayDasboard[tbl][3]);
 				jalankanAjax = true;
@@ -151,17 +152,20 @@ $(document).ready(function () {
 						break;
 				};
 				break;
-			case 'xxxx':
+			case 'tab_peraturan':
+				jalankanAjax = true;
 				break;
+				case 'xxxx':
+					break;
 			default:
 				break;
 		}
 		let data = {
-			cari: cari(jenis),
+			cari: cari(tab),
 			rows: countRows(),
 			jenis: jenis,
 			tbl: tbl,
-			halaman: halaman,
+			halaman: halaman
 		};
 		if (jalankanAjax) {
 			loaderShow();
@@ -235,45 +239,10 @@ $(document).ready(function () {
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
 								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Type Dok",
-									atribut: 'name="type"',
-									kelas: "lainnya selection",
-									dataArray: [
-										["file", "Peraturan Perundang-undangan Pusat"],
-										["peraturan", "Peraturan Kementerian / Lembaga"],
-										["tutorial", "Peraturan Perundang-undangan Daerah"],
-										["pengumuman", "Pengumuman"],
-										["artikel", "Artikel"],
-										["lain", "Data Lainnya"],
-										["proyek", "File Kegiatan"],
-									],
-								}) +
+								
 								buatElemenHtml("fieldTextarea", {
-									label: "Judul",
-									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Nomor",
-									atribut: 'name="nomor" placeholder="Nomor..."',
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Bentuk",
-									atribut: 'name="bentuk" placeholder="Pereaturan Menteri Dalam Negeri..."',
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Bentuk SIngkat",
-									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Tempat Penetapan",
-									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
-								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Tanggal Penetapan",
-									atribut:
-										'placeholder="Input Tanggal.." name="tgl_penetapan" readonly',
-									kelas: "date",
+									label: "Uraian",
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tanggal Pengundangan",
@@ -281,45 +250,15 @@ $(document).ready(function () {
 										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
 									kelas: "date",
 								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Type Data",
-									atribut: 'name="type"',
-									kelas: "lainnya selection",
-									dataArray: [
-										["file", "File"],
-										["peraturan", "Peraturan"],
-										["tutorial", "Tutorial"],
-										["pengumuman", "Pengumuman"],
-										["artikel", "Artikel"],
-										["lain", "Data Lainnya"],
-										["proyek", "File Kegiatan"],
-									],
-								}) +
+								
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4"',
 								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Tanggal",
-									atribut:
-										'placeholder="Input Tanggal.." name="tanggal" readonly',
-									kelas: "date",
-								}) +
-
-								buatElemenHtml("fieldDropdown", {
-									label: "Status Data",
-									atribut: 'name="status"',
-									kelas: "lainnya selection",
-									dataArray: [
-										["umum", "Umum"],
-										["rahasia", "Rahasia"],
-										["proyek", "Dokumen kegiatan"]
-									],
-								}) +
-								buatElemenHtml("fieldFileInput2", {
-									label: "Pilih File Dokumen",
-									placeholderData: "Pilih File...",
-									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
 								});
 							if (tbl === 'edit') {
 								data.id_row = id_row;
@@ -382,20 +321,6 @@ $(document).ready(function () {
 									atribut:
 										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
 									kelas: "date",
-								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Type Data",
-									atribut: 'name="type"',
-									kelas: "lainnya selection",
-									dataArray: [
-										["file", "File"],
-										["peraturan", "Peraturan"],
-										["tutorial", "Tutorial"],
-										["pengumuman", "Pengumuman"],
-										["artikel", "Artikel"],
-										["lain", "Data Lainnya"],
-										["proyek", "File Kegiatan"],
-									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
