@@ -87,12 +87,13 @@ $(document).ready(function () {
 		let tab = ini.attr('data-tab');
 		let jenis = 'get_tbl';//get data
 		let tbl = ini.attr('tbl');
+		let divTab = $(`div[data-tab="${ini.attr('data-tab')}"]`)
 		$(`#cari_data`).attr('name', tbl);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
 		let pDashboard = "seSendok";
 		let cryptos = false;
-		
+
 		if (tab in arrayDasboard) {
 			iconDashboard = arrayDasboard[tab][0];
 			headerDashboard = arrayDasboard[tab][1];
@@ -155,8 +156,8 @@ $(document).ready(function () {
 			case 'tab_peraturan':
 				jalankanAjax = true;
 				break;
-				case 'xxxx':
-					break;
+			case 'xxxx':
+				break;
 			default:
 				break;
 		}
@@ -170,7 +171,67 @@ $(document).ready(function () {
 		if (jalankanAjax) {
 			loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
-				loaderHide();
+				if (result.success === true) {
+					let hasKey = result.hasOwnProperty("error");
+					if (hasKey) {
+						loaderHide();
+						switch (jenis) {
+							case 'get_tbl':
+								const elmTable = divTab.find('table');
+								const elmtbody = elmTable.find(`tbody`);
+								const elmtfoot = elmTable.find(`tfoot`);
+								console.log(elmTable);
+								elmtbody.html(result.data.tbody);
+								elmtfoot.html(result.data.tfoot);
+								switch (tbl) {
+									case 'peraturan':
+
+										break;
+									case 'xxx':
+
+										break;
+									default:
+										break;
+								}
+								break;
+							case 'get_data':
+								switch (tbl) {
+									case 'peraturan':
+
+										break;
+									case 'xxx':
+
+										break;
+									default:
+										break;
+								}
+								break;
+							default:
+								break;
+						}
+						hasKey = result.error.hasOwnProperty("message");
+						let error_code = result.error.code;
+						let kelasToast = "success";
+						let iconToast = "check circle icon";
+						if (hasKey) {
+							switch (error_code) {
+								case 9:
+									kelasToast = "error";
+									iconToast = "exclamation triangle yellow icon";
+									break;
+								default:
+									break;
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: iconToast,
+							});
+						}
+					} else {
+						loaderHide();
+					}
+				}
+
 			};
 			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
 		}
@@ -199,6 +260,7 @@ $(document).ready(function () {
 		let jalankanAjax = false;
 		let htmlForm = "";
 		let dataHtmlku = {};
+		dataHtmlku.icon = "plus icon";
 		let iconFlyout = $('i[name="icon_flyout"]'); //icon flyout
 		let headerFlyout = $('div[name="content_flyout"]'); //header flyout
 		let data = {
@@ -239,10 +301,24 @@ $(document).ready(function () {
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
 								}) +
-								
+
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Type Dok",
+									atribut: 'name="type"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["file", "Peraturan Perundang-undangan Pusat"],
+										["peraturan", "Peraturan Kementerian / Lembaga"],
+										["tutorial", "Peraturan Perundang-undangan Daerah"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["proyek", "File Kegiatan"],
+									],
 								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tanggal Pengundangan",
@@ -250,7 +326,7 @@ $(document).ready(function () {
 										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
 									kelas: "date",
 								}) +
-								
+
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4"',
@@ -270,12 +346,6 @@ $(document).ready(function () {
 							break;
 						case 'peraturan':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldTextAction", {
-									label: "Kode",
-									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
-									txtLabel: "cek",
-									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
-								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Type Dok",
 									atribut: 'name="type"',
@@ -294,52 +364,47 @@ $(document).ready(function () {
 									label: "Judul",
 									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldText", {
-									label: "Nomor",
-									atribut: 'name="nomor" placeholder="Nomor..."',
+								buatElemenHtml("fieldTextAction", {
+									label: "Kode",
+									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Bentuk",
-									atribut: 'name="bentuk" placeholder="Pereaturan Menteri Dalam Negeri..."',
+									atribut: 'name="bentuk" placeholder="Bentuk(Peraturan Menteri Dalam Negeri...)"',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Bentuk SIngkat",
-									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
+									label: "Bentuk Singkat",
+									atribut: 'name="bentuk_singkat" placeholder="bentuk singkat(permendagri)..."',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Tempat Penetapan",
-									atribut: 'name="bentuk_singkat" placeholder="permendagri..."',
+									atribut: 'name="bentuk_singkat" placeholder="tempat penetapan..."',
 								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tanggal Penetapan",
 									atribut:
-										'placeholder="Input Tanggal.." name="tgl_penetapan" readonly',
+										'placeholder="Input tanggal penetapan.." name="tgl_penetapan" readonly',
 									kelas: "date",
 								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tanggal Pengundangan",
 									atribut:
-										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
+										'placeholder="Input Tanggal pengundangan.." name="tgl_pengundangan" readonly',
 									kelas: "date",
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4"',
 								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Tanggal",
-									atribut:
-										'placeholder="Input Tanggal.." name="tanggal" readonly',
-									kelas: "date",
-								}) +
-
 								buatElemenHtml("fieldDropdown", {
 									label: "Status Data",
 									atribut: 'name="status"',
 									kelas: "lainnya selection",
 									dataArray: [
 										["umum", "Umum"],
-										["rahasia", "Rahasia"],
+										["rahasia", "Rahasia/Pribadi"],
 										["proyek", "Dokumen kegiatan"]
 									],
 								}) +
@@ -397,6 +462,7 @@ $(document).ready(function () {
 			htmlForm = `${dataHtmlku.konten}<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
 			iconFlyout.attr("class", "").addClass(dataHtmlku.icon);
 			headerFlyout.text(dataHtmlku.header);
+			
 			formIni.html(htmlForm);
 			addRulesForm(formIni);
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
@@ -412,38 +478,38 @@ $(document).ready(function () {
 		//
 
 
-		addRulesForm(formIni);
+		// addRulesForm(formIni);
 		//JALANKAN AJAX
 		if (jalankanAjax) {
 			loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
-
-				}
-				var hasKey = result.hasOwnProperty("error");
-				if (hasKey) {
-					loaderHide();
-					hasKey = result.error.hasOwnProperty("message");
-					let error_code = result.error.code;
-					let kelasToast = "success";
-					let iconToast = "check circle icon";
+					let hasKey = result.hasOwnProperty("error");
 					if (hasKey) {
-						switch (error_code) {
-							case 9:
-								kelasToast = "error";
-								iconToast = "exclamation triangle yellow icon";
-								break;
-							default:
-								break;
+						loaderHide();
+						hasKey = result.error.hasOwnProperty("message");
+						let error_code = result.error.code;
+						let kelasToast = "success";
+						let iconToast = "check circle icon";
+						if (hasKey) {
+							switch (error_code) {
+								case 9:
+									kelasToast = "error";
+									iconToast = "exclamation triangle yellow icon";
+									break;
+								default:
+									break;
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: iconToast,
+							});
 						}
-						showToast(result.error.message, {
-							class: kelasToast,
-							icon: iconToast,
-						});
+					} else {
+						loaderHide();
 					}
-				} else {
-					loaderHide();
 				}
+
 			};
 			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
 		}
@@ -482,7 +548,20 @@ $(document).ready(function () {
 	// }).flyout('attach events', '[name="flyout"]');
 	$('.ui.flyout').flyout({
 		closable: false,
-		context: $('.bottom.segment.pushable')
+		context: $('.bottom.segment.pushable'),
+		onHide: function (choice) {
+			// 		//console.log(choice);
+			// 		// let form = $(".ui.flyout form");
+			// 		// form.form('clear');
+			// 		// removeRulesForm(form);
+			// 		// //inisialize kembali agar tidak error di console
+			// 		// var reinitForm = new FormGlobal(form);
+			// 		// reinitForm.run();
+		},
+		onApprove: function (elemen) {
+			$(elemen).closest('div.flyout').find('form').form('submit');
+			return false;
+		},
 	}).flyout('attach events', '[name="flyout"]');
 	//===================================
 	//=========== class dropdown ========
@@ -646,6 +725,920 @@ $(document).ready(function () {
 	}
 	// let dropdown = new DropdownConstructor(".satuan.ui.dropdown");
 	// dropdown.satuan();
+
+	//=======================================
+	//===============FORM GLOBAL=============@audit-ok form global
+	//=======================================
+	class FormGlobal {
+		constructor(form) {
+			this.form = $(form);//element;
+		}
+		run() {
+			let MyForm = this.form;
+			MyForm.form({
+				autoCheckRequired: true,
+				onSuccess: function (e) {
+					e.preventDefault();
+					console.log("masuk form global");
+					var jalankanAjax = false;
+					var ini = $(this);
+					var tbl = ini.attr("tbl");
+					var dataType = "Json";
+					let jenis = ini.attr("jns");
+					var nama_form = ini.attr("name");
+					var cryptos = false;
+					//loaderShow();
+					var formData = new FormData(this);
+					formData.append("jenis", jenis);
+					formData.append("tbl", tbl);
+					var url = "script/post_data";
+					formData.set('cari', cari(jenis));
+					formData.set('rows', countRows());
+					var id_row = ini.attr("id_row");
+					if (typeof id_row === "undefined") {
+						id_row = ini.closest("tr").attr("id_row");
+						if (typeof id_row === "undefined") {
+							id_row = ini.closest("div.item").attr("id_row");
+						}
+					}
+					if (typeof id_row !== "undefined") {
+						formData.set('id_row', id_row);
+					}
+					//tampilkan form data
+					// formData.forEach((value, key) => {
+					// 	console.log(key + " " + value)
+					// });
+					switch (tbl) {
+						case "import":
+							url = "script/impor_xlsx";
+							jalankanAjax = true;
+							break;
+						case "edit":
+							url = "script/post_data";
+							jalankanAjax = true;
+							break;
+						default:
+							break;
+					}
+					switch (nama_form) {
+						// =================
+						// UNTUK FORM MODAL
+						// =================
+						case "form_modal":
+							var tbody_tbl = ini.find("tbody");
+							//console.log(tbody_tbl);
+							var tr = tbody_tbl.children();
+							//console.log(tr);
+							var data_row = new Object();
+							switch (jenis) {
+								case "analisa_alat_custom":
+								case "analisa_quarry":
+								case "analisa_sda":
+								case "analisa_bm":
+								case "analisa_ck":
+									formData.append("id_row", id_row);
+									var rowCount = 0;
+									var no_id = "";
+									let nmrRandom = 250909 + Math.floor(Math.random() * 1001);
+									//console.log('element tr = ');
+									//console.log(tr);
+									tr.each(function (ii, elm) {
+										switch (tbl) {
+											case "edit":
+												break;
+											case "input":
+												break;
+											default:
+												break;
+										}
+										no_id = $(this).attr("id_row");
+										if (typeof no_id === "undefined") {
+											// jika id row undefined
+											no_id = nmrRandom + rowCount + "n";
+										}
+										var elementTD = elm.children;
+										//var no_idKu = 'a'+no_id//sortir kembali di php menurut no_sortir karena index int tdk bisa di sortir
+										data_row[no_id] = {};
+										//console.log('elementTD = ' + no_id);
+										//console.log(elementTD);
+										Object.keys(elementTD).forEach((key) => {
+											var element = $(elementTD[key]);
+											var nama_kolom = element.attr("klm");
+											if (typeof nama_kolom !== "undefined") {
+												var txt = element.text().trim();
+												let tryNumbers = txt.replaceAll(".", "");
+												tryNumbers = tryNumbers.replaceAll(",", "");
+												//console.log(tryNumbers);
+												if (
+													containsOnlyNumbers(tryNumbers) ||
+													nama_kolom === "harga_satuan" ||
+													nama_kolom === "koefisien"
+												) {
+													data_row[no_id][nama_kolom] = accounting.unformat(
+														txt,
+														","
+													)
+														? accounting.unformat(txt, ",")
+														: 0;
+													//console.log(`${nama_kolom} : ${containsOnlyNumbers(tryNumbers)} hasil =  ${data_row[no_id][nama_kolom]}`);
+												} else {
+													data_row[no_id][nama_kolom] = txt;
+												}
+											}
+										});
+										rowCount++;
+										data_row[no_id]["no_sortir"] = rowCount;
+										//console.log(data_row);
+									});
+									//var data_row= data_row.sort( compare );
+									//console.log(data_row);
+									break;
+								case "analisa_alat":
+									tr.children("td").each(function () {
+										var nama_kolom = $(this).attr("klm");
+										if (typeof nama_kolom !== "undefined") {
+											//console.log(nama_kolom);
+											//console.log($(this).text().trim());
+											data_row[nama_kolom] = accounting.unformat(
+												$(this).text().trim(),
+												","
+											);
+										}
+									});
+									//console.log(data_row);
+									//tambahkan id pada data
+									formData.append("id", ini.attr("id_row"));
+									break;
+								case "y":
+									break;
+								case "z":
+									break;
+							}
+							formData.append("dataArray", JSON.stringify(data_row));
+							jalankanAjax = true;
+							break;
+						// =================
+						// UNTUK FORM FLYOUT
+						// =================
+						case "form_flyout":
+							switch (tbl) {
+								case 'outbox':
+									jalankanAjax = true;
+									break;
+								case 'peraturan':
+									switch (tbl) {
+										case 'edit':
+										case 'input':
+											let property = ini.find(".ui.calendar.date");
+											let nameAttr = $(property).find("[name]").attr("name");
+											let tanggal = $(property).first().calendar("get date");
+											console.log(tanggal);
+											if (tanggal) {
+												tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
+												formData.set(nameAttr, tanggal);
+											}
+											jalankanAjax = true;
+
+											break;
+										default:
+											break;
+									}
+									break;
+								case 'rekanan':
+									switch (tbl) {
+										case 'edit':
+										case 'input':
+											let property = ini.find(".ui.calendar.date");
+											let nameAttr = $(property).find("[name]").attr("name");
+											let tanggal = $(property).first().calendar("get date");
+											console.log(tanggal);
+											if (tanggal) {
+												tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
+												formData.set(nameAttr, tanggal);
+											}
+											jalankanAjax = true;
+											let obj = ini.find('[name="notaris_perubahan"]').extractObject('name');
+											formData.set('notaris_perubahan', JSON.stringify(obj));
+											obj = ini.find('[name="data_lain"]').extractObject('name');
+											formData.set('data_lain', JSON.stringify(obj));
+											console.log(obj);
+											break;
+										default:
+											break;
+									}
+									break;
+								case "copy":
+									switch (tbl) {
+										case "analisa_alat":
+										case "analisa_bm":
+										case "analisa_ck":
+										case "analisa_sda":
+										case "analisa_quarry":
+										case "analisa_alat_custom":
+											jalankanAjax = true;
+											break;
+										case 'copy_lap_harian':
+											let tanggal = $(ini.find('[name="tanggal_copy"]').closest('.ui.calendar.laporan')).calendar("get date");
+											tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;
+											formData.set('tanggal_copy', tanggal);
+											tanggal = $(ini.find('[name="tanggal"]').closest('.ui.calendar.laporan')).calendar("get date");
+											tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
+											formData.set('tanggal', tanggal);
+											jalankanAjax = true;
+											break;
+										case 'proyek':
+											//jika toogle tidak on maka tambahahkan data  di form data sebagai toggle off
+											formData.has("aktifkan_proyek") === false
+												? formData.append("aktifkan_proyek", "off")
+												: console.log("del"); // Returns false
+											formData.has("copy_realisasi_proyek") === false
+												? formData.append("copy_realisasi_proyek", "off")
+												: console.log("del"); // Returns false
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
+								case "monev": //input realisasi harian
+									switch (tbl) {
+										case 'import':
+											url = "script/impor_xlsx";
+											jalankanAjax = true;
+											break;
+										case 'lap-harian_edit':
+										case 'lap-harian':// input baru laporan harian
+											let typeLapHarian = formData.get('type');
+											switch (typeLapHarian) {
+												case 'upah':
+													formData.set('value-jumlah', accounting.unformat(parseFloat(formData.get('value-jumlah')), ","));
+													break;
+												case 'bahan':
+													formData.set('value-diterima', accounting.unformat(parseFloat(formData.get('value-diterima')), ","));
+													formData.set('value-ditolak', accounting.unformat(parseFloat(formData.get('value-ditolak')), ","));
+													break;
+												case 'peralatan':
+													formData.set('value-diterima', accounting.unformat(parseFloat(formData.get('value-diterima')), ","));
+													formData.set('value-ditolak', accounting.unformat(parseFloat(formData.get('value-ditolak')), ","));
+													break;
+												default:
+													break;
+											}
+											break;
+										default:
+											let calendarUi = ini.find(".ui.calendar");
+											calendarUi.map(function (key, property) {
+												let nameAttr = $(property).find("[name]").attr("name");
+												let tanggal = $(property).calendar("get date");
+												//console.log(tanggal);
+												if (tanggal) {
+													tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
+													formData.set(nameAttr, tanggal);
+												}
+											});
+											//ubah accounting realisasi fisik dan keuangan
+											formData.set(
+												"realisasi_fisik",
+												accounting.unformat(
+													ini.form("get value", "realisasi_fisik"),
+													","
+												)
+											);
+											formData.set(
+												"realisasi_keu",
+												accounting.unformat(ini.form("get value", "realisasi_keu"), ",")
+											);
+											break;
+									}
+
+									jalankanAjax = true;
+									break;
+								case "rab":
+									switch (tbl) {
+										case "add_row":
+											formData.set(
+												"volume",
+												Number.parseFloat(
+													accounting.unformat(formData.get("volume"), ",")
+												)
+											);
+											jalankanAjax = true;
+											break;
+										case "edit":
+											var tabel = $('table[name="tabel_rab"]');
+											//var id_row = ini.attr('id_row');
+											formData.set(
+												"volume",
+												Number.parseFloat(
+													accounting.unformat(formData.get("volume"), ",")
+												)
+											);
+											formData.append("id_row", id_row);
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
+								case "schedule":
+									switch (tbl) {
+										case "edit":
+
+											let task = ini.find('div[name="data_schedule"]').children();
+
+											if (typeof task !== "undefined") {
+												let baris = {};
+
+												task.map(function (key, property) {
+													//console.log(key, property);
+													const nomor = `nomor_${key}`;
+													baris[nomor] = {};
+													baris[nomor].start = Number.parseInt(accounting.unformat($(this).find(`input[name^="mulai"]`).val(), ","));
+													baris[nomor].durasi = Number.parseInt(accounting.unformat($(this).find(`input[name^="durasi"]`).val(), ","));
+													baris[nomor].bobot = Number.parseFloat(accounting.unformat($(this).find(`input[name^="bobot"]`).val(), ","));
+												});
+												formData.append("dataArray", JSON.stringify(baris));
+											}
+											var tabel = $('table[name="tabel_schedule"]');
+											//var id_row = ini.attr('id_row');
+											formData.append("id_row", id_row);
+											jalankanAjax = true;
+											formData.set(
+												"mulai",
+												Number.parseFloat(
+													accounting.unformat(formData.get("mulai"), ",")
+												)
+											);
+											formData.set(
+												"bobot_selesai",
+												Number.parseFloat(
+													accounting.unformat(formData.get("bobot_selesai"), ",")
+												)
+											);
+											formData.set(
+												"durasi",
+												Number.parseFloat(accounting.unformat(formData.get("durasi"), ","))
+											);
+											break;
+										default:
+											break;
+									}
+									break;
+								case "sbu": //add row rab
+									switch (tbl) {
+										case "ck":
+										case "bm":
+										case "sda":
+											formData.set(
+												"volume",
+												Number.parseFloat(
+													accounting.unformat(formData.get("volume"), ",")
+												)
+											);
+											var tabel = $('table[name="tabel_rab"]');
+											formData.set("id_row", ini.form("get value", "kode"));
+											formData.set("tbl", "add_row");
+											formData.set("jenis", "rab");
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
+								case "proyek":
+									switch (tbl) {
+										case "edit":
+										case "tambah_proyek":
+											jalankanAjax = true;
+											//jika toogle tidak on maka tambahahkan data  di form data sebagai toggle off
+											formData.has("aktifkan_proyek") === false
+												? formData.append("aktifkan_proyek", "off")
+												: console.log("del"); // Returns false
+											break;
+										case "c":
+											break;
+										default:
+											break;
+									}
+									break;
+								case "harga_satuan":
+									switch (tbl) {
+										case "input":
+										//formData.set('harga_satuan', accounting.formatNumber(formData.get('harga_satuan'), 6, '.', ','));//update formdata
+										//Number.parseFloat(accounting.unformat(formData.get('harga_satuan'), ","))
+										case "edit":
+											formData.set(
+												"harga_satuan",
+												Number.parseFloat(
+													accounting.unformat(formData.get("harga_satuan"), ",")
+												)
+											); //update formdata
+											jalankanAjax = true;
+											formData.append("id_row", id_row);
+											break;
+										case "import":
+											url = "script/impor_xlsx";
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
+								case "divisi":
+									switch (tbl) {
+										case "input":
+										//formData.set('harga_satuan', accounting.formatNumber(formData.get('harga_satuan'), 6, '.', ','));//update formdata
+										//Number.parseFloat(accounting.unformat(formData.get('harga_satuan'), ","))
+										case "edit":
+											break;
+										case "import":
+											url = "script/impor_xlsx";
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
+								case "satuan":
+									switch (tbl) {
+										case "import_satuan":
+											url = "script/impor_xlsx";
+											jalankanAjax = true;
+											break;
+										case "edit":
+											formData.append("id_row", id_row);
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
+								case "analisa_alat":
+									switch (tbl) {
+										case "import":
+											url = "script/impor_xlsx";
+											break;
+										case "edit":
+											url = "script/post_data";
+											break;
+										default:
+											break;
+									}
+									jalankanAjax = true;
+									break;
+								case "analisa_alat_custom":
+									switch (tbl) {
+										case "import":
+											formData.set('kapasitas', accounting.unformat(parseFloat(formData.get('kapasitas')), ","));
+											break;
+										default:
+											break;
+									}
+									break;
+								case "profil":
+									jalankanAjax = true;
+									break;
+								case "informasi_umum":
+									switch (tbl) {
+										case "edit":
+										case "input":
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
+								default:
+									break;
+							}
+							break;
+						// =================
+						// UNTUK MODAL 2====
+						// =================
+						case "form_modal_kedua":
+							var atributFormAwal = ini.attr("nama_modal_awal");
+							var mdlTujuan = $('div[name="' + atributFormAwal + '"]');
+							var formTujuan = mdlTujuan.find("form");
+							var dataForm = ini.form("get values");
+							var tbodyFormAwal = formTujuan.find("table tbody");
+							var indexTr = ini.attr("indextr");
+							var trTable = tbodyFormAwal.children();
+							console.log(mdlTujuan);
+							var tdEdit = trTable.eq(indexTr).find("td");
+							//console.log(dataForm);
+							//console.log(dataForm['kode']);
+							Object.keys(tdEdit).forEach((key) => {
+								var element = $(tdEdit[key]);
+								var nama_kolom = element.attr("klm");
+								if (typeof dataForm[nama_kolom] !== "undefined") {
+									var elemenku = element.children();
+									if (elemenku.length > 0) {
+										element.children().text(dataForm[nama_kolom]); // jika ada div contenteditable
+									} else {
+										element.text(dataForm[nama_kolom]);
+									}
+								}
+							});
+							switch (jenis) {
+								case "analisa_bm":
+									break;
+								default:
+									break;
+							}
+							break;
+						// =================
+						// UNTUK PROFIL====
+						// =================
+						case "profil":
+							//[name="ket"]
+							formData.set('ket', $('textarea[name="ket"]').val());
+							jalankanAjax = true;
+							break;
+						default:
+							break;
+					}
+					if (jalankanAjax) {
+						const start = new Date().getTime();
+						if (cryptos) {
+							formData.forEach((value, key) => {
+								//console.log(key + " " + value)
+								formData.set(key, enc.encrypt(value, halAwal));
+							});
+							formData.set('cry', cryptos);
+						}
+						const end = new Date().getTime();
+						const diff = end - start;
+						const seconds = diff / 1000;//Math.floor(diff / 1000 % 60);
+						// console.log(`selisih ecrypt form (s) : ${seconds}`);
+						suksesAjax["ajaxku"] = function (result) {
+							var kelasToast = "success";
+							if (result.success === true) {
+								if (tbl === "import") {
+									var pesan = "";
+									var hasil = 0;
+									if (result.data.hasOwnProperty("note")) {
+										if (result.data.note.hasOwnProperty("add row")) {
+											hasil = result.data.note["add row"];
+											pesan += "<p>" + hasil.length + " row ditambahkan</p> ";
+										}
+										if (result.data.note.hasOwnProperty("gagal")) {
+											hasil = result.data.note["gagal"];
+											pesan += "<p>" + hasil.length + " row gagal running</p> ";
+										}
+										if (result.data.note.hasOwnProperty("row update")) {
+											hasil = result.data.note["row update"];
+											pesan += "<p>" + hasil.length + " row diupdate</p> ";
+										}
+									}
+								}
+								//console.log(nama_form);
+								let jenisTrigger = '';//jenisTrigger = jenis;
+								switch (nama_form) {
+									// ===========================
+									// UNTUK FORM form_chat
+									// ===========================
+									case 'form_chat':
+										switch (jenis) {//@audit chat now
+											case 'wall':
+
+												switch (tbl) {
+													case 'add_coment':
+														var tabAktif = $('a[data-tab="wall"]').closest('.vertical.pointing.menu').find('.item.active');
+														if (tabAktif.length > 0) {
+															$(tabAktif).trigger('click');
+														}
+														break;
+													case 'reply':
+														break;
+													default:
+														break;
+												}
+												break;
+											default:
+												break;
+										}
+
+										break;
+									// ===========================
+									// UNTUK FORM form_range_date
+									// ===========================
+									case "form_range_date":
+										$('table[name="laporan"] tbody').html(result.data.tbody);
+										break;
+									case "monev[informasi]":
+										break;
+									// =================
+									// UNTUK FORM LOKASI
+									// =================
+									case "lokasi":
+										switch (jenis) {
+											case "lokasi":
+											case "lokasi-lokasi":
+											case "lokasi-marker":
+											case "lokasi-polyline":
+											case "lokasi-polygon":
+												break;
+											default:
+												break;
+										}
+										break;
+									// ==================
+									// =UNTUK FORM MODAL=
+									// ==================
+									case "form_modal":
+										switch (jenis) {
+											case "analisa_alat_custom":
+												jenisTrigger = "analisa_alat";
+											case "analisa_ck":
+											case "analisa_bm":
+											case "analisa_sda":
+											case "analisa_quarry":
+											case "analisa_alat":
+												jenisTrigger = jenis;
+												break;
+											case "analisa_alat":
+												break;
+											case "y":
+												break;
+											case "z":
+												break;
+										}
+										break;
+									// =================
+									// UNTUK FORM FLYOUT
+									// =================
+									case "form_flyout":
+										switch (jenis) {
+											case 'peraturan':
+												switch (tbl) {
+													case 'edit':
+													case 'input':
+														jenisTrigger = jenis;
+														break;
+													default:
+														break;
+												}
+												break;
+											case 'rekanan':
+												switch (tbl) {
+													case 'import':
+													case 'edit':
+													case 'input':
+														jenisTrigger = jenis;
+														break;
+													default:
+														break;
+												}
+												break;
+											case "copy":
+												switch (tbl) {
+													case "analisa_alat":
+													case "analisa_bm":
+													case "analisa_ck":
+													case "analisa_sda":
+													case "analisa_quarry":
+													case "analisa_alat_custom":
+														jenisTrigger = tbl;
+														break;
+													case 'copy_lap_harian':
+														break;
+													case 'proyek':
+														break;
+													default:
+														break;
+												}
+												break;
+											case "monev":
+												switch (tbl) {
+													case 'lap-harian_edit':
+														jenisTrigger = "lap-harian";
+														break;
+													case 'input':
+														jenisTrigger = "monev[realisasi]";
+														break;
+													default:
+														break;
+												}
+												break;
+											case "informasi_umum":
+												switch (tbl) {
+													case "edit":
+													case "input":
+														if (result.error.code === 2) {
+															jenisTrigger = jenis;
+														};
+														break;
+													default:
+														break;
+												}
+												break;
+											case "rab":
+												switch (tbl) {
+													case "add_row":
+														break;
+													case "edit":
+														if (result.error.code === 3) {
+															tabel = $('table[name="tabel_rab"]');
+															let tdTable = tabel.find(`tr[id_row="${id_row}"] td`);
+															tdTable.each(function () {
+																let atributTd = $(this).attr("klm");
+																if (typeof atributTd !== "undefined") {
+																	let nilaitTd = result.data.rows[atributTd];
+																	switch (atributTd) {
+																		case "volume":
+																		case "jumlah_harga":
+																		case "harga_satuan":
+																			let jumlahDesimal = nilaitTd.countDecimals();
+																			nilaitTd = accounting.formatNumber(
+																				nilaitTd,
+																				jumlahDesimal,
+																				".",
+																				","
+																			);
+																			break;
+																		default:
+																			break;
+																	}
+																	if ($(this).children().length > 0) {
+																		$(this).children().text(nilaitTd);
+																	} else {
+																		$(this).text(nilaitTd);
+																	}
+																}
+															});
+															//tambahkan jumlah analisa do tfoot table
+															var hasKey = result.data.hasOwnProperty("sum");
+															if (hasKey) {
+																tabel
+																	.find("tfoot")
+																	.html(
+																		`<tr><td colspan="5"><td>${accounting.formatNumber(
+																			result.data.sum,
+																			2,
+																			".",
+																			","
+																		)}</td></td><td colspan="2"></td></tr>`
+																	);
+															}
+														}
+														break;
+													default:
+														break;
+												}
+												break;
+											case "schedule":
+												if (result.error.code === 3) {
+													jenisTrigger = jenis;
+												}
+												break;
+											case "sbu": // add row rab dari analisa
+												switch (tbl) {
+													case "ck":
+													case "bm":
+													case "sda":
+														var hasKey = result.data.hasOwnProperty("tbody");
+														console.log(hasKey);
+														if (hasKey) {
+															var rows = result.data.tbody;
+															if (tabel.find("tbody tr:last").length > 0) {
+																tabel.find("tbody tr:last").after(rows);
+															} else {
+																tabel.find("tbody").html(rows);
+															}
+														}
+														break;
+													default:
+														break;
+												}
+												break;
+											case "proyek":
+												switch (tbl) {
+													case "edit":
+													case "tambah_proyek":
+														jenisTrigger = jenis;
+														break;
+													case "c":
+														break;
+													default:
+														break;
+												}
+												break;
+											case "harga_satuan":
+												switch (tbl) {
+													case "import":
+													case "import":
+														jenisTrigger = jenis;
+														break;
+													default:
+														break;
+												}
+												break;
+											case "satuan":
+												switch (tbl) {
+													case "import_satuan":
+													case "import":
+														jenisTrigger = jenis;
+														//$(`[data-tab="${jenisTrigger}"]`).trigger("click");
+														break;
+													case "edit":
+														break;
+													default:
+														break;
+												}
+												break;
+											case "analisa_alat_custom":
+												jenisTrigger = "analisa_alat";
+												break;
+											case "analisa_ck":
+											case "analisa_bm":
+											case "analisa_sda":
+											case "analisa_quarry":
+											case "analisa_alat":
+												jenisTrigger = jenis;
+												//console.log(jenisTrigger);
+												break;
+											case "profil":
+												switch (tbl) {
+													case "edit":
+														jenisTrigger = 'user';
+														break;
+													case "profil":
+														break;
+													default:
+														break;
+												}
+												break;
+											default:
+												break;
+										}
+										break;
+									// =================
+									// UNTUK TAB PROFIL====
+									// =================
+									case "profil":
+										//jika warna tabel != default tambahkan warna di row thead dan row tfoot
+										const warna = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
+										let warna_tbl = formData.get('warna_tbl');
+										//ambil seluruh row thead dan row tfoot
+										const elmRow = $('table tr');//$('table tfoot tr, table thead tr');
+										console.log(elmRow)
+										warna.forEach((value, key) => {
+											elmRow.removeClass(value);
+											$('table').removeClass('inverted');
+										})
+										if (warna_tbl !== 'non') {
+											elmRow.addClass(warna_tbl);
+											$('table').addClass('inverted');
+										}
+										break;
+									default:
+										break;
+								}
+								console.log(jenisTrigger);
+
+								if (jenisTrigger.length > 0) {
+									$(`a[data-tab="${jenisTrigger}"]`).trigger("click");
+								}
+								$("[rms]").mathbiila();
+							} else {
+								kelasToast = "warning"; //'success'
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: "check circle icon",
+							});
+						};
+						runAjax(url, "POST", formData, dataType, false, false, "ajaxku", cryptos);
+						//runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
+						//runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
+					} else {
+					}
+					switch (nama_form) {
+						case "form_modal":
+							$(".ui.modal.mdl_general").modal("hide");
+							break;
+						case "form_flyout":
+							//$('.ui.flyout').flyout('hide');
+							break;
+						case "form_modal_kedua":
+							$('div[name="mdl_kedua"]').modal("hide");
+							break;
+						default:
+							break;
+					}
+				},
+				onDirty: function (e) {
+					//return true
+				},
+				onFailure: function (e) {
+					loaderHide();
+					return false;
+				},
+			});
+		}
+	}
+	let InitializeForm = new FormGlobal('.ui.form');
+	InitializeForm.run();
 	function tok(elm) {
 		$(".ui.sidebar").sidebar("hide");
 		// elm.closest('.ui.accordion').find('.active').removeClass('active');
@@ -1093,6 +2086,7 @@ $(document).ready(function () {
 	function addRulesForm(formku) {
 		var attrName = formku.find($("input[name],textarea[name]"));
 		var i = 0;
+		$(formku).form("set auto check");
 		for (i = 0; i < attrName.length; i++) {
 			var atribut = $(attrName[i]).attr("name");
 			var lbl = $(attrName[i]).attr("placeholder");
@@ -1121,6 +2115,7 @@ $(document).ready(function () {
 				//$(attrName[i]).addClass('enabled').attr('readonly').val(0);
 			}
 		}
+		
 	}
 	//
 	function removeRulesForm(formku) {
@@ -1152,6 +2147,54 @@ $(document).ready(function () {
 				//$(attrName[i]).addClass('enabled').attr('readonly').val(0);
 			}
 		}
+		$(formku).form("set auto check");
 	}
 	//
+	function showToast(message, settings) {
+		//settings = {}
+		/*{
+		position: 'top center',
+		icon:'info circle',
+		showProgress: 'bottom'
+		classActions: 'left vertical attached',//Vertical actions can also be displayed as button groups using vertical attached
+		actions:	[{
+		text: 'Yes, really',
+		class: 'green',
+		click: function() {
+			$.toast({message:'You clicked "yes", toast closes by default'});
+			}
+		},{
+			text: 'Maybe later',
+			class: 'red',
+			click: function() {
+			$.toast({message:'You clicked "maybe", toast closes by default'});
+			}
+		}]
+	}*/
+		settings.title = settings.title === undefined ? "info !" : settings.title;
+		settings.position = settings.position === undefined ? "top right" : settings.position;
+		settings.class = settings.class === undefined ? "info" : settings.class; //warna
+		settings.icon = settings.icon === undefined ? false : settings.icon;
+		settings.showProgress = settings.showProgress === undefined ? "bottom" : settings.showProgress;
+		settings.displayTime = settings.displayTime === undefined ? 4500 : settings.displayTime;//0 jika ingin tampil terus sebelum diklik
+		settings.showMethod = settings.showMethod === undefined ? 'zoom' : settings.showMethod;
+		settings.showDuration = settings.showDuration === undefined ? 1000 : settings.showDuration;
+		settings.hideMethod = settings.hideMethod === undefined ? 'fade' : settings.hideMethod;
+		settings.hideDuration = settings.hideDuration === undefined ? 1000 : settings.hideDuration;
+		$("body").toast({
+			title: settings.title,
+			position: settings.position,
+			class: settings.class,
+			showIcon: settings.icon,
+			message: message,
+			showProgress: settings.showProgress,
+			displayTime: settings.displayTime,
+			transition: {
+				showMethod: settings.showMethod,
+				showDuration: settings.showDuration,
+				hideMethod: settings.hideMethod,
+				hideDuration: settings.hideDuration
+			}
+		});
+	}
 });

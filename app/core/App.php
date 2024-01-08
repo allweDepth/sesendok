@@ -16,7 +16,7 @@ class App
         if ($url && file_exists('../app/controllers/' . $url[0] . '.php')) {
 
             session_start();
-            if (isset($_SESSION["user"])) {
+            if (isset($_SESSION["user"]) && $_SESSION["user"]['disable_login'] <=0 ) {
                 if ($url[0] == 'login' || $url[0] == 'register'){
                     $url[0] = 'home';
                 }
