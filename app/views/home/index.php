@@ -28,9 +28,9 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 
 </head>
 
-<body class="dimmable">
+<body>
     <!-- MAIN TOOLBAR MENU -->
-    <div class="ui teal top fixed inverted main menu">
+    <div class="ui teal fixed inverted main menu">
         <a class="item nabiila">
             <i class="sidebar icon"></i>
         </a>
@@ -57,14 +57,12 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             </div>
             <div class="right inverted menu">
                 <div class="ui dropdown item lain"><span><i class="user icon"></i></span><i class="dropdown icon"></i>
-                    <div class="menu"><a class="item" data-tab="wallchat"><i class="circular comments outline icon"></i>Pesan</a><a class="item" data-tab="profil"><i class="circular qrcode icon"></i>Pengaturan</a><a class="item" onclick="window.location.href='home/logout'"><i class="circular sign out alternate icon"></i>Log Out</a></div>
+                    <div class="menu"><a class="item" data-tab="wallchat"><i class="circular comments outline icon"></i>Pesan</a><a class="item" name="change_themes"><i class="circular moon icon"></i>Change Themes</a><a class="item" data-tab="profil"><i class="circular qrcode icon"></i>Pengaturan</a><a class="item" onclick="window.location.href='home/logout'"><i class="circular sign out alternate icon"></i>Log Out</a></div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="ui bottom attached segment stackable pushable">
-
         <!-- sidebar-->
         <div class="ui inverted left vertical sidebar menu">
             <div class="item">
@@ -203,7 +201,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         <p></p>
                         <p></p>
                     </div>
-                    <div class="ui red vertical footer segment">
+                    <div class="ui vertical footer segment">
                         <div class="three column divided stackable center aligned ui grid">
                             <div class="column">
                                 <div class="ui icon header"><i class="teal rocket circular icon"></i>AHSP : <a href="javascript: void(0)">efisiensi dan efektif</a></div>

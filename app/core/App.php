@@ -22,7 +22,7 @@ class App
                 }
                 $this->controller = $url[0];
             } else {
-                $this->controller = 'login';
+                $this->controller = $url[0];
             }
 
 

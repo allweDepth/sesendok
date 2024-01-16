@@ -8,7 +8,7 @@ $(document).ready(function () {
 	//sidebar toggle
 	$('.ui.sidebar').sidebar({
 		context: $('.bottom.segment')
-	}).sidebar('attach events', '.menu .item.nabiila');
+	}).sidebar('attach events', '.menu .item.nabiila').sidebar('setting', 'transition', 'push');
 
 	$(".ui.dropdown").dropdown();
 
@@ -43,7 +43,19 @@ $(document).ready(function () {
 			window.location.href = "script/logout";
 		}, 400);
 	});
-
+	//theme dark
+	let darkmodeEnabled = $(`a[name="change_themes"] i`).hasClass('sun');
+	$("body").on('click', "[name='change_themes']", function () {
+		// ready();
+		darkmodeEnabled = $(`a[name="change_themes"] i`).hasClass('sun');
+		if (darkmodeEnabled) {
+			toggleLightMode();
+			darkmodeEnabled = false;
+		} else {
+			toggleDarkMode();
+			darkmodeEnabled = true;
+		}
+	});
 	//=====================
 	//======DATA TAB=======@audit-ok data tab
 	//=====================
@@ -278,6 +290,7 @@ $(document).ready(function () {
 			}
 		}
 		if (attrName === "flyout") {
+			formIni.attr('jns', jenis).attr('tbl', tbl);
 			switch (jenis) {
 				//EDIT DATA ROWS
 				case 'edit':
@@ -299,7 +312,7 @@ $(document).ready(function () {
 									label: "Kode",
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
-									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
+									atributLabel: `name="get_data"  jns="cek_dt" tbl="${tbl}"`,
 								}) +
 
 								buatElemenHtml("fieldTextarea", {
@@ -368,7 +381,7 @@ $(document).ready(function () {
 									label: "Kode",
 									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
 									txtLabel: "cek",
-									atributLabel: `name="get_data"  jns="cek_kode" tbl="${tbl}"`,
+									atributLabel: `name="get_data"  jns="cek_dt" tbl="${tbl}"`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Bentuk",
@@ -462,7 +475,7 @@ $(document).ready(function () {
 			htmlForm = `${dataHtmlku.konten}<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
 			iconFlyout.attr("class", "").addClass(dataHtmlku.icon);
 			headerFlyout.text(dataHtmlku.header);
-			
+
 			formIni.html(htmlForm);
 			addRulesForm(formIni);
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
@@ -474,10 +487,33 @@ $(document).ready(function () {
 			$('.ui.accordion').accordion();
 			formIni.find('.ui.dropdown.lainnya').dropdown();
 			$("[rms]").mathbiila();
+		} else if (attrName === "get_data") {
+			switch (jenis) {
+				case 'cek_dt':
+					data.text = ini.closest(".input").find('input[name="kode"]').val();
+					if (typeof data.text === 'undefined') {
+						data.text = ini.closest(".input").find('input[name]').val();
+					}
+					console.log(data);
+
+					if (data.text.length > 1) {
+						jalankanAjax = true;
+					} else {
+						showToast("Input sebelum cek data", {
+							class: "warning",
+							icon: "check circle icon",
+						});
+					}
+					break;
+				case 'value1':
+
+					break;
+				default:
+
+					break;
+			};
+
 		};
-		//
-
-
 		// addRulesForm(formIni);
 		//JALANKAN AJAX
 		if (jalankanAjax) {
@@ -519,6 +555,7 @@ $(document).ready(function () {
 		}
 
 	});
+
 	//====================================
 	//=========== flyout =================
 	//====================================
@@ -563,6 +600,161 @@ $(document).ready(function () {
 			return false;
 		},
 	}).flyout('attach events', '[name="flyout"]');
+
+	///=================================
+	///==== IMPOR FILE XLSX=============
+	///=================================
+	//untik import menjadi baris di tabel modal
+	$("body").on("click", "label[for]", function () {
+		$("#invisibleupload1")
+			.attr("jns", $(this).attr("jns"))
+			.attr("tbl", $(this).attr("tbl"));
+		$("#invisibleupload1").val("");
+	});
+	$("body").on("click", 'input[name="dum_file"]', function (e) {
+		e.preventDefault();
+		//console.log('masuk dum file')
+		var himp = $(this).closest(".action");
+		//console.log(himp.find('input[type="file"]'))
+		var inputFile = himp.find('input[nama="file"]');
+		inputFile.val("");
+		//inputFile.click();
+		inputFile.trigger("click");
+		//button.on("click", function () { buttonClick(button, popup); });
+	});
+	$("body").on("change", 'input[type="file"]', function (e) {
+		let ini = $(this);
+		//Membaca File Excel dengan sheetJS
+		let jenis = ini.attr("jns");
+		let tbl = ini.attr("tbl");
+		let formIni = $('form[name="form_modal"]');
+		//console.log('jenis input file :' + jenis);
+		if (tbl === "add_row_tabel") {
+			let jsonData = [];
+			let reader = new FileReader();
+			reader.readAsArrayBuffer(e.target.files[0]);
+			reader.onload = function (e) {
+				let data = new Uint8Array(reader.result);
+				let workbook = XLSX.read(data, { type: "array" });
+				let first_sheet_name = workbook.SheetNames[0];
+				jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[first_sheet_name], {
+					header: 1,
+				});
+				//console.log(jsonData);
+				//console.log(jsonData[0]);
+				//console.log(JSON.stringify(jsonData));
+				jsonData.forEach((value, key) => {
+					//console.log(key + " " + value)
+					//console.log(value.length)
+					let jumlahData = value.length;
+					let jumlahKolom = 8;
+					switch (jenis) {
+						case "analisa_ck":
+							jumlahKolom = 7;
+							break;
+						default:
+							break;
+					}
+					for (var i = 0; i < jumlahKolom; i++) {
+						//console.log(value[i])
+						if (typeof value[i] === "undefined") {
+							value[i] = "";
+						}
+					}
+					let elmForm2 = "";
+					let tenporer1 = parseFloat(value[3]);
+					let tenporer2 = parseFloat(value[5]);
+					switch (true) {
+						case jenis == "analisa_ck":
+						case jenis == "analisa_sda":
+						case jenis == "analisa_bm":
+						case jenis == "analisa_alat_custom":
+						case jenis == "analisa_quarry":
+							let nmrHtml = `<td klm="nomor"><div contenteditable>${value[0]}</div></td>`;
+							let ketHtml = `<td klm="keterangan"><div contenteditable>${value[7]}</div></td>`;
+							let jumlahHtml = "";
+							if (jenis === "analisa_ck") {
+								nmrHtml = "";
+								ketHtml = "";
+								jumlahHtml = '<td klm="jumlah_harga"></td>';
+							}
+							tenporer1 = parseFloat(value[4]);
+							tenporer2 = parseFloat(value[5]);
+							elmForm2 = `<tr>${nmrHtml}<td klm="uraian"><div contenteditable>${value[1]
+								}</div></td><td klm="kode"><div contenteditable>${value[2]
+								}</div></td><td klm="satuan"><div contenteditable>${value[3]
+								}</div></td><td klm="koefisien"><div contenteditable rms>${accounting.formatNumber(
+									value[4],
+									tenporer1.countDecimals(),
+									".",
+									","
+								)}</div></td><td klm="harga_satuan"><div contenteditable rms>${accounting.formatNumber(
+									value[5],
+									tenporer2.countDecimals(),
+									".",
+									","
+								)}</div></td>${jumlahHtml}<td klm="rumus"><div contenteditable>${value[6]
+								}</div></td>${ketHtml}<td><div class="ui mini basic icon buttons"><button class="ui button" name="modal_2"><i class="edit teal icon"></i></button><button class="ui button" name="del_row" jns="direct" tbl="del_row"><i class="trash alternate outline icon"></i></button><button class="ui button up_row"><i class="angle up icon"></i></button></div></td></tr>`;
+							break;
+						default:
+							//console.log(`koq ${jenis}`);
+							break;
+					}
+					//console.log(formIni.find('tbody tr:last').length);
+					if (formIni.find("tbody tr:last").length > 0) {
+						//console.log('opo1');
+						//formIni.find('tbody tr:last').after(elmForm2);
+						if (jenis === "analisa_ck") {
+							//console.log("opo");
+							let jumlahRow = formIni.find("tbody tr").length;
+							formIni.find("tbody tr:last").before(elmForm2);
+						} else {
+							formIni.find("tbody tr:last").after(elmForm2);
+						}
+					} else {
+						formIni.find("tbody").html(elmForm2);
+					}
+				});
+				addRulesForm(formIni);
+				$("[rms]").mathbiila();
+				//var htmlstr = XLSX.write(workbook, { sheet: first_sheet_name, type: 'binary', bookType: 'html' });
+				//console.log(htmlstr);
+				//$('#wrapper')[0].innerHTML += htmlstr;
+			};
+		}
+		//console.log(e)
+		var himp = ini.closest(".action");
+		var nama_file = e.target.files[0].name;
+		himp.find('input[name="dum_file"]').val(nama_file);
+		var file = $(this)[0].files[0].name.toLowerCase(); //this.files[0];
+		var arrayAccept = $(this).attr("accept");
+		if (arrayAccept !== undefined && arrayAccept.length > 0) {
+			arrayAccept = arrayAccept.split(",");
+		} else {
+			arrayAccept = [".xlsx"];
+		}
+		//console.log(arrayAccept);
+		var fileExp = file.split(".");
+		//console.log(fileExp);
+		var extFile = "." + fileExp[fileExp.length - 1];
+		//console.log(extFile);
+		//console.log(arrayAccept.indexOf(extFile));
+		if (arrayAccept.indexOf(extFile) < 0) {
+			//if (!file.endsWith('.xlsx')) {
+			modal_notif(
+				'<i class="green file excel icon"></i>Pilih File Excel',
+				"Pilih file extension " + arrayAccept
+			);
+			ini.val("");
+			return false;
+		} else {
+		}
+	});
+	$("body").on("click", 'button[name="del_file"]', function (e) {
+		e.preventDefault();
+		var himp = $(this).closest(".action");
+		himp.find("input").val("");
+	});
 	//===================================
 	//=========== class dropdown ========
 	//===================================
@@ -768,7 +960,7 @@ $(document).ready(function () {
 					// formData.forEach((value, key) => {
 					// 	console.log(key + " " + value)
 					// });
-					switch (tbl) {
+					switch (jenis) {
 						case "import":
 							url = "script/impor_xlsx";
 							jalankanAjax = true;
@@ -785,106 +977,13 @@ $(document).ready(function () {
 						// UNTUK FORM MODAL
 						// =================
 						case "form_modal":
-							var tbody_tbl = ini.find("tbody");
-							//console.log(tbody_tbl);
-							var tr = tbody_tbl.children();
-							//console.log(tr);
-							var data_row = new Object();
-							switch (jenis) {
-								case "analisa_alat_custom":
-								case "analisa_quarry":
-								case "analisa_sda":
-								case "analisa_bm":
-								case "analisa_ck":
-									formData.append("id_row", id_row);
-									var rowCount = 0;
-									var no_id = "";
-									let nmrRandom = 250909 + Math.floor(Math.random() * 1001);
-									//console.log('element tr = ');
-									//console.log(tr);
-									tr.each(function (ii, elm) {
-										switch (tbl) {
-											case "edit":
-												break;
-											case "input":
-												break;
-											default:
-												break;
-										}
-										no_id = $(this).attr("id_row");
-										if (typeof no_id === "undefined") {
-											// jika id row undefined
-											no_id = nmrRandom + rowCount + "n";
-										}
-										var elementTD = elm.children;
-										//var no_idKu = 'a'+no_id//sortir kembali di php menurut no_sortir karena index int tdk bisa di sortir
-										data_row[no_id] = {};
-										//console.log('elementTD = ' + no_id);
-										//console.log(elementTD);
-										Object.keys(elementTD).forEach((key) => {
-											var element = $(elementTD[key]);
-											var nama_kolom = element.attr("klm");
-											if (typeof nama_kolom !== "undefined") {
-												var txt = element.text().trim();
-												let tryNumbers = txt.replaceAll(".", "");
-												tryNumbers = tryNumbers.replaceAll(",", "");
-												//console.log(tryNumbers);
-												if (
-													containsOnlyNumbers(tryNumbers) ||
-													nama_kolom === "harga_satuan" ||
-													nama_kolom === "koefisien"
-												) {
-													data_row[no_id][nama_kolom] = accounting.unformat(
-														txt,
-														","
-													)
-														? accounting.unformat(txt, ",")
-														: 0;
-													//console.log(`${nama_kolom} : ${containsOnlyNumbers(tryNumbers)} hasil =  ${data_row[no_id][nama_kolom]}`);
-												} else {
-													data_row[no_id][nama_kolom] = txt;
-												}
-											}
-										});
-										rowCount++;
-										data_row[no_id]["no_sortir"] = rowCount;
-										//console.log(data_row);
-									});
-									//var data_row= data_row.sort( compare );
-									//console.log(data_row);
-									break;
-								case "analisa_alat":
-									tr.children("td").each(function () {
-										var nama_kolom = $(this).attr("klm");
-										if (typeof nama_kolom !== "undefined") {
-											//console.log(nama_kolom);
-											//console.log($(this).text().trim());
-											data_row[nama_kolom] = accounting.unformat(
-												$(this).text().trim(),
-												","
-											);
-										}
-									});
-									//console.log(data_row);
-									//tambahkan id pada data
-									formData.append("id", ini.attr("id_row"));
-									break;
-								case "y":
-									break;
-								case "z":
-									break;
-							}
-							formData.append("dataArray", JSON.stringify(data_row));
-							jalankanAjax = true;
+							
 							break;
 						// =================
 						// UNTUK FORM FLYOUT
 						// =================
 						case "form_flyout":
 							switch (tbl) {
-								case 'outbox':
-									jalankanAjax = true;
-									break;
 								case 'peraturan':
 									switch (tbl) {
 										case 'edit':
@@ -899,310 +998,6 @@ $(document).ready(function () {
 											}
 											jalankanAjax = true;
 
-											break;
-										default:
-											break;
-									}
-									break;
-								case 'rekanan':
-									switch (tbl) {
-										case 'edit':
-										case 'input':
-											let property = ini.find(".ui.calendar.date");
-											let nameAttr = $(property).find("[name]").attr("name");
-											let tanggal = $(property).first().calendar("get date");
-											console.log(tanggal);
-											if (tanggal) {
-												tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
-												formData.set(nameAttr, tanggal);
-											}
-											jalankanAjax = true;
-											let obj = ini.find('[name="notaris_perubahan"]').extractObject('name');
-											formData.set('notaris_perubahan', JSON.stringify(obj));
-											obj = ini.find('[name="data_lain"]').extractObject('name');
-											formData.set('data_lain', JSON.stringify(obj));
-											console.log(obj);
-											break;
-										default:
-											break;
-									}
-									break;
-								case "copy":
-									switch (tbl) {
-										case "analisa_alat":
-										case "analisa_bm":
-										case "analisa_ck":
-										case "analisa_sda":
-										case "analisa_quarry":
-										case "analisa_alat_custom":
-											jalankanAjax = true;
-											break;
-										case 'copy_lap_harian':
-											let tanggal = $(ini.find('[name="tanggal_copy"]').closest('.ui.calendar.laporan')).calendar("get date");
-											tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;
-											formData.set('tanggal_copy', tanggal);
-											tanggal = $(ini.find('[name="tanggal"]').closest('.ui.calendar.laporan')).calendar("get date");
-											tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
-											formData.set('tanggal', tanggal);
-											jalankanAjax = true;
-											break;
-										case 'proyek':
-											//jika toogle tidak on maka tambahahkan data  di form data sebagai toggle off
-											formData.has("aktifkan_proyek") === false
-												? formData.append("aktifkan_proyek", "off")
-												: console.log("del"); // Returns false
-											formData.has("copy_realisasi_proyek") === false
-												? formData.append("copy_realisasi_proyek", "off")
-												: console.log("del"); // Returns false
-											jalankanAjax = true;
-											break;
-										default:
-											break;
-									}
-									break;
-								case "monev": //input realisasi harian
-									switch (tbl) {
-										case 'import':
-											url = "script/impor_xlsx";
-											jalankanAjax = true;
-											break;
-										case 'lap-harian_edit':
-										case 'lap-harian':// input baru laporan harian
-											let typeLapHarian = formData.get('type');
-											switch (typeLapHarian) {
-												case 'upah':
-													formData.set('value-jumlah', accounting.unformat(parseFloat(formData.get('value-jumlah')), ","));
-													break;
-												case 'bahan':
-													formData.set('value-diterima', accounting.unformat(parseFloat(formData.get('value-diterima')), ","));
-													formData.set('value-ditolak', accounting.unformat(parseFloat(formData.get('value-ditolak')), ","));
-													break;
-												case 'peralatan':
-													formData.set('value-diterima', accounting.unformat(parseFloat(formData.get('value-diterima')), ","));
-													formData.set('value-ditolak', accounting.unformat(parseFloat(formData.get('value-ditolak')), ","));
-													break;
-												default:
-													break;
-											}
-											break;
-										default:
-											let calendarUi = ini.find(".ui.calendar");
-											calendarUi.map(function (key, property) {
-												let nameAttr = $(property).find("[name]").attr("name");
-												let tanggal = $(property).calendar("get date");
-												//console.log(tanggal);
-												if (tanggal) {
-													tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`;//local time
-													formData.set(nameAttr, tanggal);
-												}
-											});
-											//ubah accounting realisasi fisik dan keuangan
-											formData.set(
-												"realisasi_fisik",
-												accounting.unformat(
-													ini.form("get value", "realisasi_fisik"),
-													","
-												)
-											);
-											formData.set(
-												"realisasi_keu",
-												accounting.unformat(ini.form("get value", "realisasi_keu"), ",")
-											);
-											break;
-									}
-
-									jalankanAjax = true;
-									break;
-								case "rab":
-									switch (tbl) {
-										case "add_row":
-											formData.set(
-												"volume",
-												Number.parseFloat(
-													accounting.unformat(formData.get("volume"), ",")
-												)
-											);
-											jalankanAjax = true;
-											break;
-										case "edit":
-											var tabel = $('table[name="tabel_rab"]');
-											//var id_row = ini.attr('id_row');
-											formData.set(
-												"volume",
-												Number.parseFloat(
-													accounting.unformat(formData.get("volume"), ",")
-												)
-											);
-											formData.append("id_row", id_row);
-											jalankanAjax = true;
-											break;
-										default:
-											break;
-									}
-									break;
-								case "schedule":
-									switch (tbl) {
-										case "edit":
-
-											let task = ini.find('div[name="data_schedule"]').children();
-
-											if (typeof task !== "undefined") {
-												let baris = {};
-
-												task.map(function (key, property) {
-													//console.log(key, property);
-													const nomor = `nomor_${key}`;
-													baris[nomor] = {};
-													baris[nomor].start = Number.parseInt(accounting.unformat($(this).find(`input[name^="mulai"]`).val(), ","));
-													baris[nomor].durasi = Number.parseInt(accounting.unformat($(this).find(`input[name^="durasi"]`).val(), ","));
-													baris[nomor].bobot = Number.parseFloat(accounting.unformat($(this).find(`input[name^="bobot"]`).val(), ","));
-												});
-												formData.append("dataArray", JSON.stringify(baris));
-											}
-											var tabel = $('table[name="tabel_schedule"]');
-											//var id_row = ini.attr('id_row');
-											formData.append("id_row", id_row);
-											jalankanAjax = true;
-											formData.set(
-												"mulai",
-												Number.parseFloat(
-													accounting.unformat(formData.get("mulai"), ",")
-												)
-											);
-											formData.set(
-												"bobot_selesai",
-												Number.parseFloat(
-													accounting.unformat(formData.get("bobot_selesai"), ",")
-												)
-											);
-											formData.set(
-												"durasi",
-												Number.parseFloat(accounting.unformat(formData.get("durasi"), ","))
-											);
-											break;
-										default:
-											break;
-									}
-									break;
-								case "sbu": //add row rab
-									switch (tbl) {
-										case "ck":
-										case "bm":
-										case "sda":
-											formData.set(
-												"volume",
-												Number.parseFloat(
-													accounting.unformat(formData.get("volume"), ",")
-												)
-											);
-											var tabel = $('table[name="tabel_rab"]');
-											formData.set("id_row", ini.form("get value", "kode"));
-											formData.set("tbl", "add_row");
-											formData.set("jenis", "rab");
-											jalankanAjax = true;
-											break;
-										default:
-											break;
-									}
-									break;
-								case "proyek":
-									switch (tbl) {
-										case "edit":
-										case "tambah_proyek":
-											jalankanAjax = true;
-											//jika toogle tidak on maka tambahahkan data  di form data sebagai toggle off
-											formData.has("aktifkan_proyek") === false
-												? formData.append("aktifkan_proyek", "off")
-												: console.log("del"); // Returns false
-											break;
-										case "c":
-											break;
-										default:
-											break;
-									}
-									break;
-								case "harga_satuan":
-									switch (tbl) {
-										case "input":
-										//formData.set('harga_satuan', accounting.formatNumber(formData.get('harga_satuan'), 6, '.', ','));//update formdata
-										//Number.parseFloat(accounting.unformat(formData.get('harga_satuan'), ","))
-										case "edit":
-											formData.set(
-												"harga_satuan",
-												Number.parseFloat(
-													accounting.unformat(formData.get("harga_satuan"), ",")
-												)
-											); //update formdata
-											jalankanAjax = true;
-											formData.append("id_row", id_row);
-											break;
-										case "import":
-											url = "script/impor_xlsx";
-											jalankanAjax = true;
-											break;
-										default:
-											break;
-									}
-									break;
-								case "divisi":
-									switch (tbl) {
-										case "input":
-										//formData.set('harga_satuan', accounting.formatNumber(formData.get('harga_satuan'), 6, '.', ','));//update formdata
-										//Number.parseFloat(accounting.unformat(formData.get('harga_satuan'), ","))
-										case "edit":
-											break;
-										case "import":
-											url = "script/impor_xlsx";
-											jalankanAjax = true;
-											break;
-										default:
-											break;
-									}
-									break;
-								case "satuan":
-									switch (tbl) {
-										case "import_satuan":
-											url = "script/impor_xlsx";
-											jalankanAjax = true;
-											break;
-										case "edit":
-											formData.append("id_row", id_row);
-											jalankanAjax = true;
-											break;
-										default:
-											break;
-									}
-									break;
-								case "analisa_alat":
-									switch (tbl) {
-										case "import":
-											url = "script/impor_xlsx";
-											break;
-										case "edit":
-											url = "script/post_data";
-											break;
-										default:
-											break;
-									}
-									jalankanAjax = true;
-									break;
-								case "analisa_alat_custom":
-									switch (tbl) {
-										case "import":
-											formData.set('kapasitas', accounting.unformat(parseFloat(formData.get('kapasitas')), ","));
-											break;
-										default:
-											break;
-									}
-									break;
-								case "profil":
-									jalankanAjax = true;
-									break;
-								case "informasi_umum":
-									switch (tbl) {
-										case "edit":
-										case "input":
-											jalankanAjax = true;
 											break;
 										default:
 											break;
@@ -1239,12 +1034,7 @@ $(document).ready(function () {
 									}
 								}
 							});
-							switch (jenis) {
-								case "analisa_bm":
-									break;
-								default:
-									break;
-							}
+							
 							break;
 						// =================
 						// UNTUK PROFIL====
@@ -2044,6 +1834,9 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+		if (darkmodeEnabled === true) {
+			elemen = elemen.replace(/class="ui/g, `class="ui inverted`);
+		}
 		return elemen;
 	}
 	//========================================
@@ -2054,6 +1847,33 @@ $(document).ready(function () {
 			document.write(ipData.query)
 		});
 	}
+	function toggleDarkMode() {
+		// add fomantic's inverted class to all ui elements
+		$('body').find('.ui').addClass('inverted');
+		// add custom inverted class to body
+		$('body').addClass('inverted');
+
+		// simple toggle icon change
+		$(`a[name="change_themes"] > i`).removeClass('moon');
+		$(`a[name="change_themes"] > i`).addClass('sun');
+		console.log($(`a[name="change_themes"] > i`));
+
+		return;
+	}
+
+
+	function toggleLightMode() {
+		// remove fomantic's inverted from all ui elements
+		$('body').find('.ui').removeClass('inverted');
+		// remove custom inverted class to body
+		$('body').removeClass('inverted');
+
+		// change button icon
+		$(`a[name="change_themes"] > i`).removeClass('sun')
+		$(`a[name="change_themes"] > i`).addClass('moon');
+		console.log($(`a[name="change_themes"] > i`));
+		return;
+	}
 	/**
 	 * Dark mode
 	 *
@@ -2062,7 +1882,7 @@ $(document).ready(function () {
 	function ready() {
 		const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
 		if (darkModePreference.matches) {
-			const usedComponents = ["container", "grid", "button", "calendar", "card", "checkbox", "dimmer", "divider", "dropdown", "form", "header", "icon", "image", "input", "label", "list", "loader", "menu", "message", "modal", "placeholder", "popup", "progress", "segment", "sidebar", "statistics", "step", "tab", "table", "text", "toast", "api", "transition"];
+			const usedComponents = ["container", "grid", "button", "calendar", "card", "checkbox", "dimmer", "divider", "dropdown", "form", "flyout", "header", "icon", "items", "image", "input", "label", "list", "loader", "menu", "message", "modal", "placeholder", "popup", "progress", "segment", "sidebar", "statistics", "step", "tab", "table", "text", "toast", "api", "transition"];
 
 			usedComponents.forEach(usedComponent => {
 				let uiComponents = document.querySelectorAll('.ui.' + usedComponent);
@@ -2078,8 +1898,19 @@ $(document).ready(function () {
 
 		}
 	}
+	function darkMode() {
+		let uiComponents = document.querySelectorAll('.ui');
+		uiComponents.forEach(component => {
+			if (component.classList.contains('inverted')) {
+				component.classList.remove('inverted');
+			} else {
+				component.classList.add('inverted');
+			}
+		});
+	}
+	// ready();
 	// harus darkModePreference = true
-	// document.addEventListener("DOMContentLoaded", ready);
+	// document.addEventListener("DOMContentLoaded", darkMode());
 	//============================================================
 	// . FUNGSI ADD RULE UNTUK SEMUA INPUT DAN TEXT AREA
 	//============================================================
@@ -2115,7 +1946,7 @@ $(document).ready(function () {
 				//$(attrName[i]).addClass('enabled').attr('readonly').val(0);
 			}
 		}
-		
+
 	}
 	//
 	function removeRulesForm(formku) {

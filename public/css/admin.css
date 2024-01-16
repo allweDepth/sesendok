@@ -4,6 +4,13 @@
     border-radius: 0px !important; 
 }
 */
+:root {
+    --darkBG: #232B32;
+}
+
+body.inverted {
+    background-color: var(--darkBG) !important;
+}
 
 #map {
     width: 100%;
@@ -13,24 +20,26 @@
 
 .ui.bottom.attached.pushable {
     margin-top: 44px !important;
-   
+
 }
+
+
 /* .pusher,.pushable{
     max-height: calc(100% - 45px) !important;
-} */
-/* .right.flyout {
+}
+.right.flyout {
     max-height: calc(100% - 45px) !important;
     -webkit-max-logical-height: calc(100% - 45px) !important;
-}  */
-/* .flyout {
+}  
+.flyout {
     margin-top: 45px !important;
-} */
-/* .ui.sticky.dasboard {
+}
+.ui.sticky.dasboard {
     margin-top: 45px !important;
-} */
+}
 .ui.inverted.menu .active.item {
     background-color: transparent;
-}
+} */
 
 .ui.accordion.item {
     padding: 0px;
@@ -42,7 +51,7 @@
 
 .ui.accordion.item>.title:NOT(.active):hover {
     background: rgba(255, 255, 255, .1);
-    color: #ffffff;
+    /* color: #ffffff; */
 }
 
 .cobaColor {

@@ -13,7 +13,7 @@ class get_data
         //var_dump($keyEncrypt);
         //var_dump(sys_get_temp_dir());lokasi tempoerer
         $DB = DB::getInstance();
-        
+
         $sukses = false;
         $code = 39;
         $pesan = 'posting kosong';
@@ -74,6 +74,12 @@ class get_data
                         ]);
                         break;
                     case 'get_tbl':
+
+                        break;
+                    case 'get_rows':
+
+                        break;
+                    case 'get_search':
 
                         break;
                     case 'xxxx':
@@ -179,7 +185,7 @@ class get_data
                     $sukses = true;
                     $err = 0;
 
-                    
+
                     // $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
 
                     //$tahun_anggaran = 0;
@@ -311,7 +317,6 @@ class get_data
                         $keterangan .= '<li class="item">' . $value . '</li>';
                     }
                     $keterangan .= '</ol>';
-                    
                 }
             } else {
                 $pesan = 'tidak didefinisikan';
