@@ -394,7 +394,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Tempat Penetapan",
-									atribut: 'name="bentuk_singkat" placeholder="tempat penetapan..."',
+									atribut: 'name="tempat" placeholder="tempat penetapan..."',
 								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tanggal Penetapan",
