@@ -56,6 +56,7 @@ $(document).ready(function () {
 			darkmodeEnabled = true;
 		}
 	});
+	
 	//=====================
 	//======DATA TAB=======@audit-ok data tab
 	//=====================
@@ -312,7 +313,7 @@ $(document).ready(function () {
 									label: "Kode",
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
-									atributLabel: `name="get_data"  jns="cek_dt" tbl="${tbl}"`,
+									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 								}) +
 
 								buatElemenHtml("fieldTextarea", {
@@ -324,13 +325,13 @@ $(document).ready(function () {
 									atribut: 'name="type"',
 									kelas: "lainnya selection",
 									dataArray: [
-										["file", "Peraturan Perundang-undangan Pusat"],
-										["peraturan", "Peraturan Kementerian / Lembaga"],
-										["tutorial", "Peraturan Perundang-undangan Daerah"],
+										["peraturan_undang_undang_pusat", "Peraturan Perundang-undangan Pusat"],
+										["peraturan_menteri_lembaga", "Peraturan Kementerian / Lembaga"],
+										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
 										["pengumuman", "Pengumuman"],
 										["artikel", "Artikel"],
 										["lain", "Data Lainnya"],
-										["proyek", "File Kegiatan"],
+										["kegiatan", "File Kegiatan"],
 									],
 								}) +
 								buatElemenHtml("fieldCalendar", {
@@ -364,13 +365,13 @@ $(document).ready(function () {
 									atribut: 'name="type"',
 									kelas: "lainnya selection",
 									dataArray: [
-										["file", "Peraturan Perundang-undangan Pusat"],
-										["peraturan", "Peraturan Kementerian / Lembaga"],
-										["tutorial", "Peraturan Perundang-undangan Daerah"],
+										["peraturan_undang_undang_pusat", "Peraturan Perundang-undangan Pusat"],
+										["peraturan_menteri_lembaga", "Peraturan Kementerian / Lembaga"],
+										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
 										["pengumuman", "Pengumuman"],
 										["artikel", "Artikel"],
 										["lain", "Data Lainnya"],
-										["proyek", "File Kegiatan"],
+										["kegiatan", "File Kegiatan"],
 									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
@@ -378,10 +379,10 @@ $(document).ready(function () {
 									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
 								}) +
 								buatElemenHtml("fieldTextAction", {
-									label: "Kode",
+									label: "Nomor",
 									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
 									txtLabel: "cek",
-									atributLabel: `name="get_data"  jns="cek_dt" tbl="${tbl}"`,
+									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Bentuk",
@@ -418,7 +419,7 @@ $(document).ready(function () {
 									dataArray: [
 										["umum", "Umum"],
 										["rahasia", "Rahasia/Pribadi"],
-										["proyek", "Dokumen kegiatan"]
+										["kegiatan", "Dokumen kegiatan"]
 									],
 								}) +
 								buatElemenHtml("fieldFileInput2", {
@@ -489,7 +490,7 @@ $(document).ready(function () {
 			$("[rms]").mathbiila();
 		} else if (attrName === "get_data") {
 			switch (jenis) {
-				case 'cek_dt':
+				case 'get_data':
 					data.text = ini.closest(".input").find('input[name="kode"]').val();
 					if (typeof data.text === 'undefined') {
 						data.text = ini.closest(".input").find('input[name]').val();
@@ -586,21 +587,25 @@ $(document).ready(function () {
 	$('.ui.flyout').flyout({
 		closable: false,
 		context: $('.bottom.segment.pushable'),
+		onShow: function () {
+					// loaderHide();
+					// console.log('onShow flyout');
+				},
 		onHide: function (choice) {
 			// 		//console.log(choice);
-			// 		// let form = $(".ui.flyout form");
-			// 		// form.form('clear');
-			// 		// removeRulesForm(form);
+					let form = $(".ui.flyout form");
+					form.form('clear');
+					removeRulesForm(form);
 			// 		// //inisialize kembali agar tidak error di console
-			// 		// var reinitForm = new FormGlobal(form);
-			// 		// reinitForm.run();
+					var reinitForm = new FormGlobal(form);
+					reinitForm.run();
 		},
 		onApprove: function (elemen) {
 			$(elemen).closest('div.flyout').find('form').form('submit');
 			return false;
 		},
 	}).flyout('attach events', '[name="flyout"]');
-
+	
 	///=================================
 	///==== IMPOR FILE XLSX=============
 	///=================================
@@ -977,7 +982,7 @@ $(document).ready(function () {
 						// UNTUK FORM MODAL
 						// =================
 						case "form_modal":
-							
+
 							break;
 						// =================
 						// UNTUK FORM FLYOUT
@@ -985,7 +990,8 @@ $(document).ready(function () {
 						case "form_flyout":
 							switch (tbl) {
 								case 'peraturan':
-									switch (tbl) {
+									switch (jenis) {
+										case 'add':
 										case 'edit':
 										case 'input':
 											let property = ini.find(".ui.calendar.date");
@@ -1034,7 +1040,7 @@ $(document).ready(function () {
 									}
 								}
 							});
-							
+
 							break;
 						// =================
 						// UNTUK PROFIL====

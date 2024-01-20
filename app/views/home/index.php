@@ -173,6 +173,9 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 </div>
                             </h3>
                         </div>
+                        <button id="toggle-dark-mode" class="ui basic button">
+                            mode
+                        </button>
                         <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
                         <p>Tutorial cara menggunakan aplikasi AHSP untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
                         <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>

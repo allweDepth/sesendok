@@ -65,6 +65,14 @@ class get_data
                 //PROSES VALIDASI
                 //================
                 switch ($jenis) {
+                    case 'get_data':
+                        $text = $validate->setRules('text', 'text', [
+                            'required' => true,
+                            'sanitize' => 'string',
+                            'min_char' => 1,
+                            'max_char' => 255
+                        ]);
+                        break;
                     case 'edit':
                         $id_row = $validate->setRules('id_row', 'id_row', [
                             'required' => true,
@@ -93,32 +101,7 @@ class get_data
                         # code...
                         break;
                 }
-                switch ($tbl) {
-                    case 'peraturan':
-                        $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
-                        $data_like = [0, $cari, $cari, $cari, $cari];
-                        $order = "ORDER BY tgl_pengundangan ASC";
-                        $posisi = " LIMIT ?, ?";
-                        $where1 = "disable <= ?";
-                        $data_where1 =  [0];
-                        $jumlah_kolom = 4;
 
-                        break;
-                    case 'sbu':
-
-                        break;
-                    case 'dpa':
-                        $like = "kd_proyek = ? AND kd_analisa = nomor AND(uraian LIKE CONCAT('%',?,'%') OR kd_analisa LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                        $data_like = [$kd_proyek, $cari, $cari, $cari];
-                        $order = "ORDER BY id ASC";
-                        $posisi = " LIMIT ?, ?";
-                        $where1 = "username != ?";
-                        $data_where1 =  ['gila'];
-                        $jumlah_kolom = 4;
-                        break;
-                    default:
-                        $err = 6;
-                }
                 $jumlah_kolom = 0;
                 //FINISH PROSES VALIDASI
                 $Fungsi = new MasterFungsi();
@@ -182,9 +165,50 @@ class get_data
                             break;
                         default:
                     }
+                    $kolom = '*';
                     $sukses = true;
                     $err = 0;
+                    switch ($tbl) {
+                        case 'peraturan':
+                            $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY tgl_pengundangan ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 4;
+                            switch ($jenis) {
+                                case 'get_data':
+                                    $where1 = "nomor = ?";
+                                    $data_where1 =  [$text];
+                                    
+                                    break;
+                                case 'value1':
+                                    #code...
+                                    break;
+                                default:
+                                    #code...
+                                    break;
+                            };
 
+                            break;
+                        case 'sbu':
+
+                            break;
+                        case 'dpa':
+                            $like = "kd_proyek = ? AND kd_analisa = nomor AND(uraian LIKE CONCAT('%',?,'%') OR kd_analisa LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                            $data_like = [$kd_proyek, $cari, $cari, $cari];
+                            $order = "ORDER BY id ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "username != ?";
+                            $data_where1 =  ['gila'];
+                            $jumlah_kolom = 4;
+                            break;
+                        default:
+                            $err = 6;
+                    }
 
                     // $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
 
@@ -195,13 +219,16 @@ class get_data
                     //==========JENIS POST DATA/INSERT DATA===========
                     //================================================
                     switch ($jenis) {
+                        case 'get_data':
                         case 'get_row': //  ambil data 1 baris 
                             $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where1", $data_where1);
-                            //var_dump($resul[0]);
+                            //var_dump($resul);
                             $jumlahArray = is_array($resul) ? count($resul) : 0;
                             if ($jumlahArray > 0) {
                                 $code = 202; //202
                                 $data['users'] = $resul[0];
+                            }else{
+                                $code = 41; //202
                             }
                             break;
                         case 'get_row_json': // ambil data > 1 baris 

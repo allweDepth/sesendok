@@ -18,6 +18,28 @@ body.inverted {
     /*height: 80vh;*/
 }
 
+/* Dark Mode */
+.dark-mode {
+    background-color: #121212;
+    /* Ganti dengan warna latar belakang dark mode */
+    color: #ffffff;
+    /* Ganti dengan warna teks pada dark mode */
+    /* Tambahkan gaya tambahan sesuai kebutuhan */
+}
+
+/* Contoh: Mengubah warna teks untuk semua elemen UI */
+.dark-mode .ui {
+    color: #ffffff;
+    background-color: #1a1a1a;
+    /* Ganti dengan warna teks untuk elemen UI pada dark mode */
+}
+
+/* Contoh: Mengubah warna latar belakang untuk semua elemen UI */
+.dark-mode .ui.segment {
+    background-color: #1a1a1a;
+    /* Ganti dengan warna latar belakang elemen segment pada dark mode */
+}
+
 .ui.bottom.attached.pushable {
     margin-top: 44px !important;
 
