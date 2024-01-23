@@ -369,12 +369,12 @@ class MasterFungsi
         //svar_dump($dataWall);
         return $dataWall;
     }
-    public function importFile($jenis, $kd_proyek = '', $nameFileDel = '')
+    public function importFile($tbl, $nameFileDel = '')
     {
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-        $edit_user = $_SESSION["user"]["aktif_edit"];
+        
         $id_user = $_SESSION["user"]["id"];
         $maxsize = 1024 * 8000;
         $fileName = 'avatar.jpg';
@@ -395,7 +395,9 @@ class MasterFungsi
             'doc' => 'application/msword',
             'pdf' => 'application/pdf'
         );
-        switch ($jenis) {
+        $path1 = 'upload';
+        switch ($tbl) {
+            
             case 'profil':
                 $path1 = 'img';
                 $path2 = 'avatar';
@@ -413,7 +415,7 @@ class MasterFungsi
                 $path2 = 'peraturan';
                 break;
             case 'monev':
-                $path1 = 'upload';
+                
                 $path2 = 'realisasi';
                 break;
             case 'rekanan':
@@ -587,8 +589,6 @@ class MasterFungsi
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-        $warna_tbl = $_SESSION["user"]["warna_tbl"];
-        
         $id_user = $_SESSION["user"]["id"];
         $DB = DB::getInstance();
         $userAktif = $DB->getWhereCustom('user_ahsp', [['id', '=', $id_user]]);
@@ -637,7 +637,7 @@ class MasterFungsi
             $myrow = 0;
             foreach ($get_data as $row) {
                 $myrow++;
-                switch ($jenis) {
+                switch ($tbl) {
                     case 'peraturan':
                         $buttons = '';
                         $divAwal = '';
@@ -652,20 +652,15 @@ class MasterFungsi
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="nama_perusahaan">' . $divAwal . $row->nama_perusahaan . $divAkhir . '</td>
-                                    <td klm="alamat">' . $divAwal . $row->alamat . $divAkhir . '</td>
-                                    <td klm="npwp">' . $divAwal . $row->npwp . $divAkhir . '</td>
-                                    <td klm="direktur">' . $divAwal . $row->direktur . $divAkhir . '</td>
-                                    <td klm="no_akta_pendirian">' . $divAwal . $row->no_akta_pendirian . $divAkhir . '</td>
-                                    <td klm="tgl_akta_pendirian">' . $row->tgl_akta_pendirian  . '</td>
-                                    <td klm="lokasi_notaris_pendirian">' . $divAwal . $row->lokasi_notaris_pendirian . $divAkhir . '</td>
-                                    <td klm="nama_notaris_pendirian">' . $divAwal . $row->nama_notaris_pendirian . $divAkhir . '</td>
-                                    <td klm="file">' . $fileTag . '</td>
+                                    <td klm="nomor">' . $divAwal . $row->nomor . $divAkhir . '</td>
+                                    <td klm="judul">' . $divAwal . $row->judul . $divAkhir . '</td>
+                                    <td klm="tgl_pengundangan">' . $divAwal . $row->tgl_pengundangan . $divAkhir . '</td>
                                     <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $fileTag . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;

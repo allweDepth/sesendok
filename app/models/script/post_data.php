@@ -24,6 +24,7 @@ class post_data
         }
         $sukses = false;
         $code = 40;
+        $hasilServer = hasilServer[$code];
         $pesan = 'posting kosong';
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
@@ -119,7 +120,7 @@ class post_data
                                 $type_dok = $validate->setRules('type', 'type', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'in_array' => ['peraturan_undang_undang_pusat','peraturan_menteri_lembaga','peraturan_daerah', 'pengumuman', 'artikel', 'lain']
+                                    'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
                                 ]);
                                 $judul = $validate->setRules('judul', 'judul', [
                                     'sanitize' => 'string',
@@ -152,7 +153,7 @@ class post_data
                                     'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
                                     'min_char' => 8
                                 ]);
-                                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal', [
+                                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
@@ -163,6 +164,12 @@ class post_data
                                     'required' => true,
                                     'min_char' => 1
                                 ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0 ; 
                                 $status = $validate->setRules('status', 'status', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -847,101 +854,65 @@ class post_data
                     default:
                         $err = 6;
                 }
-                switch ($tbl) {
-                    case 'sortir':
-                        $id_row = $validate->setRules('id_row', 'id_row', [
-                            'required' => true,
-                            'numeric' => true,
-                            'min_char' => 1
-                        ]);
-                        $mode_sortir = $validate->setRules('srt', 'Mode Sortir', [
-                            'sanitize' => 'string',
-                            'required' => true,
-                            'min_char' => 6,
-                            'max_char' => 8,
-                            'in_array' => ['up_row', 'down_row']
-                        ]);
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
+                
                 //FINISH PROSES VALIDASI
                 $kodePosting = '';
+                
                 if ($validate->passed()) {
+                    
                     //tabel pakai
-                    switch ($jenis) {
-                        case 'rekanan':
-                            $tabel_pakai = 'rekanan';
+                    switch ($tbl) {
+                        case 'peraturan':
+                            $tabel_pakai = 'peraturan_neo';
+                            $jumlah_kolom = 4;
                             break;
-                        case "proyek":
-                            $tabel_pakai = 'nama_pkt_proyek';
+                        case "akun":
+                            $tabel_pakai = 'akun_neo';
+                            $jumlah_kolom = 4;
                             break;
-                        case 'tabel_satuan':
+                        case 'bidang_urusan':
+                            $tabel_pakai = 'bidang_urusan_neo';
+                            break;
+                        case 'dpa':
+                            $tabel_pakai = 'dpa_neo';
+                            break;
+                        case 'hspk':
+                            $tabel_pakai = 'hspk_neo';
+                            break;
+                        case 'kegiatan':
+                            $tabel_pakai = 'kegiatan_neo';
+                            break;
+                        case 'mapping_aset':
+                            $tabel_pakai = 'mapping_aset_akun';
+                            break;
+                        case 'organisasi':
+                            $tabel_pakai = 'organisasi_neo';
+                            break;
+                        case "peraturan":
+                            $tabel_pakai = 'peraturan_neo';
+                            break;
+                        case 'program':
+                            $tabel_pakai = 'program_neo';
+                            break;
                         case 'satuan':
-                            $tabel_pakai =  'daftar_satuan';
+                            $tabel_pakai = 'satuan_neo';
                             break;
                         case 'sbu':
-                        case 'harga_satuan':
-                            $tabel_pakai = 'harga_sat_upah_bahan';
+                            $tabel_pakai = 'sbu_neo';
                             break;
-                        case 'divisi':
-                        case 'divisiBM':
-                        case 'divisiCK':
-                        case 'divisiSDA':
-                            $tabel_pakai = 'divisi';
+                        case 'ssh':
+                            $tabel_pakai = 'ssh_neo';
                             break;
-                        case 'informasi_umum':
-                        case 'tabel_informasi':
-                            $tabel_pakai =  'informasi_umum';
+                        case 'sub_kegiatan':
+                            $tabel_pakai = 'sub_kegiatan_neo';
                             break;
-                        case 'analisa_alat':
-                            $tabel_pakai =  'analisa_alat';
+                        case 'sumber_dana':
+                            $tabel_pakai = 'sumber_dana_neo';
                             break;
-                        case 'analisa_alat_custom':
-                            $tabel_pakai =  'analisa_alat_custom';
+                        case 'user':
+                            $tabel_pakai = 'user_ahsp';
                             break;
-                        case 'analisa_quarry':
-                            $tabel_pakai =  'analisa_quarry';
-                            break;
-                        case 'analisa_bm':
-                            $tabel_pakai =  'analisa_pekerjaan_bm';
-                            break;
-                        case 'analisa_ck':
-                            $tabel_pakai =  'analisa_pekerjaan_ck';
-                            break;
-                        case 'analisa_sda':
-                            $tabel_pakai =  'analisa_pekerjaan_sda';
-                            break;
-                        case 'rab':
-                            $tabel_pakai = 'rencana_anggaran_biaya';
-                            break;
-                        case 'schedule':
-                        case 'tabel_schedule':
-                            $tabel_pakai = 'schedule_table';
-                            break;
-                        case 'lokasi':
-                        case 'lokasi-lokasi':
-                        case 'lokasi-marker':
-                        case 'lokasi-polyline':
-                        case 'lokasi-polygon':
-                            $tabel_pakai = 'lokasi_proyek';
-                            break;
-                        case 'peraturan':
-                            $tabel_pakai = 'peraturan_data_umum';
-                            break;
-                        case 'monev':
-                        case 'monev[informasi]':
-                        case 'monev[realisasi]':
-                        case 'monev[laporan]':
-                            $tabel_pakai = 'monev';
-                            break;
-                        case 'lap-harian':
-                            $tabel_pakai = 'laporan_harian';
-                            break;
-                        case 'profil':
-                            $tabel_pakai =  'user_ahsp';
-                            break;
+                        case 'inbox':
                         case 'outbox':
                         case 'wall':
                             $tabel_pakai = 'ruang_chat';
@@ -954,50 +925,9 @@ class post_data
                     $columnName = "*";
                     $Tk = 0;
                     $op = 0;
-                    //$tahun_anggaran = 0;
-                    $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
-                    $jumlahArray = is_array($data_kd_proyek) ? count($data_kd_proyek) : 0;
-                    if ($jumlahArray > 0) {
-                        $kd_proyek = $data_kd_proyek[0]->kd_proyek_aktif;
-                        $data['dataProyek'] = $DB->getWhere('nama_pkt_proyek', ['kd_proyek', '=', $kd_proyek]);
-                        //var_dump($tahun_anggaran);
-                        $jumlahArray = is_array($data['dataProyek']) ? count($data['dataProyek']) : 0;
-                        if ($jumlahArray > 0) {
-                            $data['dataProyek'] = $data['dataProyek'][0];
-                            $tahun_anggaran = $data['dataProyek']->tahun_anggaran;
-                            #informasi umum
-                            $informasi = $DB->getWhere('informasi_umum', ['kd_proyek', '=', $kd_proyek]);
-                            $jumlahArray = is_array($informasi) ? count($informasi) : 0;
-                            if ($jumlahArray > 0) {
-                                foreach ($informasi as $key => $value) {
-                                    $kode_informasi = $value->kode;
-                                    ${$value->kode} = $value->nilai;
-                                    switch ($kode_informasi) {
-                                        case 'sukuBunga_i':
-                                            $sukuBunga_i = $value->sukuBunga_i;
-                                            break;
-                                        case 'op': //overhead and profit
-                                            $op = $value->nilai; // jam kerja efektif
-                                            break;
-                                        case 'Tk':
-                                            $Tk = $value->nilai; // jam kerja efektif
-                                            break;
-                                        case 'MPP':
-                                            $MPP = $value->nilai; // waktu pelaksanaan
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if ($tbl == 'sortir') {
-                        $jenis = 'sortir';
-                    }
+                    
                     //start buat property
-                    switch ($jenis) {
+                    switch ($tbl) {
                         case 'outbox':
                             switch ($tbl) {
                                 case 'add_coment':
@@ -1069,31 +999,36 @@ class post_data
                             }
                             break;
                         case 'peraturan':
-                            switch ($tbl) {
+                            switch ($jenis) {
                                 case 'edit':
                                     $kondisi = [['id', '=', $id_row]];
                                     $kodePosting = 'update_row';
-                                case 'input':
-                                    if ($tbl == 'input') {
-                                        $kondisi = [['uraian', '=', $uraian]];
+                                case 'add':
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['judul', '=', $judul],['nomor', '=', $nomor,'AND']];
                                         $kodePosting = 'cek_insert';
                                     }
                                     $set = [
-                                        'uraian' => $uraian,
+                                        'type_dok' => $type_dok,
+                                        'judul' => $judul,
+                                        'nomor' => $nomor,
+                                        'bentuk' => $bentuk,
+                                        'bentuk_singkat' => $bentuk_singkat,
+                                        't4_penetapan' => $t4_penetapan,
+                                        'tgl_penetapan' => $tgl_penetapan,
+                                        'tgl_pengundangan' => $tgl_pengundangan,
+                                        'disable' => $disable,
                                         'keterangan' => $keterangan,
-                                        'type' => $type,
-                                        'tanggal' => $tanggal,
-                                        'tanggal_upload' => date('Y-m-d H:i:s'),
                                         'status' => $status,
-                                        'id_user' => $id_user,
-                                        'kd_proyek' => $kd_proyek, //jika status = proyek
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'file' => '',
                                         'username' => $_SESSION["user"]["username"]
                                     ];
+                                    //var_dump($set);
                                     //pengolahan file
-
                                     if ($_FILES['file']) {
                                         //var_dump($_FILES['file']);
-                                        $file = $Fungsi->importFile($jenis, '');
+                                        $file = $Fungsi->importFile($tbl, '');
                                         if ($file['result'] == 'ok') {
                                             $set['file'] = $file['file'];
                                         }
@@ -1165,210 +1100,6 @@ class post_data
                                     break;
                             }
                             break;
-                        case 'monev':
-                            switch ($tbl) {
-                                case 'lap-harian_edit':
-                                    $tabel_pakai = 'laporan_harian';
-                                    $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
-                                    $set = [
-                                        'kd_proyek' => $kd_proyek,
-                                        'kd_analisa' => $kd_analisa, //jika cuaca kd analisa='cuaca', catatan='note'
-                                        'kode' => $kode, //jika cuaca kd analisa='cuaca', catatan='note'
-                                        'tanggal' => $tanggal,
-                                        'type' => $type, //upah, bahan, peralatan,quarry=bahan,cuaca, catatan
-                                        'uraian' => $uraian,
-                                        'value' => $value_encode,
-                                        'keterangan' => $keterangan
-                                    ];
-                                    $kodePosting = 'cek_insert';
-                                    break;
-                                case 'lap-harian': //input manual laporan harian
-                                    $tabel_pakai = 'laporan_harian';
-                                    //lalu json_decode untuk decode object.
-                                    $set = [
-                                        'kd_proyek' => $kd_proyek,
-                                        'kd_analisa' => $kd_analisa, //jika cuaca kd analisa='cuaca', catatan='note'
-                                        'kode' => $kode, //jika cuaca kd analisa='cuaca', catatan='note'
-                                        'tanggal' => $tanggal,
-                                        'type' => $type, //upah, bahan, peralatan,quarry=bahan,cuaca, catatan
-                                        'uraian' => $uraian,
-                                        'value' => $value_encode,
-                                        'keterangan' => $keterangan
-                                    ];
-                                    $kodePosting = 'insert';
-                                    break;
-                                case 'edit':
-                                case 'input':
-                                    //ambil data rab
-                                    $condition = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_rab, 'AND']];
-                                    $DB->orderBy('no_sortir');
-                                    $result = $DB->getWhereCustom('rencana_anggaran_biaya', $condition);
-                                    $jumlahArray = is_array($result) ? count($result) : 0;
-                                    if ($jumlahArray) {
-                                        foreach ($result as $key => $value) {
-                                            $kd_analisa = $value->kd_analisa;
-                                            $uraian = $value->uraian;
-                                            $volume = $value->volume;
-                                            $satuan = $value->satuan;
-                                            $jumlah_harga = $value->jumlah_harga;
-                                        };
-                                        //ambil realisasi item pek di tabel monev
-                                        $where = "kd_proyek = ? AND id_rab = ?";
-                                        $data_where =  [$kd_proyek, $id_rab];
-                                        $sum = $DB->getQuery("SELECT SUM(realisasi_fisik) AS realisasiFisik, SUM(realisasi_keu) AS realisasiKeuangan FROM $tabel_pakai WHERE $where", $data_where);
-                                        if ($sum) {
-                                            $sumRealisasi_fisik = (float)$sum[0]->realisasiFisik;
-                                            $sumRealisasi_keu = (float)$sum[0]->realisasiKeuangan;
-                                            //olah data dan insert
-                                            $sisaVolume = $volume - $sumRealisasi_fisik;
-                                            $sisaVolume = ($sisaVolume >= 0) ? $sisaVolume : 0;
-                                            $sisaKeu = $jumlah_harga - $sumRealisasi_keu;
-                                            $sisaKeu = ($sisaKeu >= 0) ? $sisaKeu : 0;
-                                            $realisasi_fisik = ($realisasi_fisik <= $sisaVolume) ? $realisasi_fisik : $sisaVolume;
-                                            $realisasi_keu = ($realisasi_keu <= $sisaKeu) ? $realisasi_keu : $sisaKeu;
-                                            $file = ''; // masih maintenance
-                                            $where1 = 'kd_proyek = ?';
-                                            $data_where1 = [$kd_proyek];
-                                            $max = $DB->getQuery("SELECT MAX(no_sortir) AS max_no_sortir FROM $tabel_pakai WHERE $where1", $data_where1);
-                                            $max_no_sortir = $max[0]->{'max_no_sortir'} + 1;
-                                            $no_sortir = $max_no_sortir;
-                                            $set = [
-                                                'kd_proyek' => $kd_proyek,
-                                                'id_rab' => $id_rab,
-                                                'uraian' => $uraian,
-                                                'satuan' => $satuan,
-                                                'tanggal' => $tanggal,
-                                                'realisasi_fisik' => $realisasi_fisik,
-                                                'realisasi_keu' => $realisasi_keu,
-                                                'tgl_input' => date('Y-m-d H:i:s'),
-                                                'keterangan' => $keterangan,
-                                                'no_sortir' => $no_sortir
-                                            ];
-                                            //pengolahan file
-                                            if ($_FILES['file']) {
-                                                $file = $Fungsi->importFile($jenis, $kd_proyek);
-                                                if ($file['result'] == 'ok') {
-                                                    $set['file'] = $file['file'];
-                                                }
-                                            }
-
-                                            //================================================
-                                            //tambahkan juga tenaga alat dan bahan dari analisa di tabel laporan_harian
-                                            //================================================
-                                            //Binamarga
-                                            $condition = 'WHERE kd_proyek = ? AND kd_analisa = ? AND nomor = ?';
-                                            $tableName = 'analisa_pekerjaan_bm';
-                                            $bindValue = [$kd_proyek, $kd_analisa, '>>'];
-                                            $DB->orderBy('jenis_kode');
-                                            $resulAnalisa = $DB->get($tableName, $condition, $bindValue);
-                                            //var_dump($bindValue);
-                                            //var_dump($resulAnalisa);
-                                            $jumlahArray = is_array($resulAnalisa) ? count($resulAnalisa) : 0;
-                                            $type = 'header'; //1. analisa,2.keterangan, 3.header
-                                            if ($jumlahArray) {
-                                                $type = 'analisa';
-                                            } else {
-                                                //Cipta Karya
-                                                $condition = 'WHERE kd_proyek = ? AND kd_analisa = ? AND uraian != ?';
-                                                $tableName = 'analisa_pekerjaan_ck';
-                                                $bindValue = [$kd_proyek, $kd_analisa, $uraian];
-                                                $resulAnalisa = $DB->get($tableName, $condition, $bindValue);
-                                                $jumlahArray = is_array($resulAnalisa) ? count($resulAnalisa) : 0;
-                                                if ($jumlahArray) {
-                                                    $type = 'analisa';
-                                                } else {
-                                                    //SDA
-                                                    $condition = 'WHERE kd_proyek = ? AND kd_analisa = ? AND nomor = ?';
-                                                    $tableName = 'analisa_pekerjaan_sda';
-                                                    $bindValue = [$kd_proyek, $kd_analisa, '>>'];
-                                                    $resulAnalisa = $DB->get($tableName, $condition, $bindValue);
-                                                    $jumlahArray = is_array($resulAnalisa) ? count($resulAnalisa) : 0;
-                                                    if ($jumlahArray) {
-                                                        $type = 'analisa';
-                                                    }
-                                                }
-                                            }
-                                            //var_dump($resulAnalisa);
-                                            $code = 202;
-                                            if (($realisasi_fisik + $realisasi_keu) > 0) {
-                                                switch ($tbl) {
-                                                    case 'input':
-                                                        $kodePosting = 'insert';
-                                                        break;
-                                                    case 'edit':
-                                                        //var_dump($kd_proyek);
-                                                        $kodePosting = 'cek_insert';
-                                                        //$kondisi, $columnName
-                                                        $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
-                                                        //$columnName = '';
-                                                        break;
-                                                    default:
-                                                        #code...
-                                                        break;
-                                                };
-                                            } else {
-                                                $code = 405;
-                                            }
-                                        } else {
-                                            $code = 404;
-                                            $data = $sum;
-                                        }
-                                        $code = 202;
-                                    } else {
-                                        $code = 36;
-                                    }
-                                    break;
-                            }
-                            break;
-                        case 'monev[informasi]':
-                            //$menetapkan_1 = mb_convert_encoding(strip_tags($_POST['tabel_menetapkan_1']), 'UTF-8', 'ISO-8859-1');//utf8_encode(strip_tags($_POST['tabel_menetapkan_1']));
-                            switch ($tbl) {
-                                case 'get_list':
-                                    $condition = [['kd_proyek', '=', $kd_proyek]];
-                                    $DB->orderBy('no_sortir');
-                                    $result = $DB->getWhereCustom('nama_pkt_proyek', $condition);
-                                    $jumlahArray = is_array($result) ? count($result) : 0;
-                                    //var_dump($result);
-                                    if ($jumlahArray) {
-                                        $data['users'] = $result;
-                                        $code = 202;
-                                    } else {
-                                        $code = 36;
-                                    }
-                                    break;
-                                case 'edit':
-                                    //cek kode proyek
-                                    $cek = $DB->getWhereOnce('nama_pkt_proyek', ['kd_proyek', '=', $kd_proyek]);
-                                    if ($cek) { //data sudah ada
-                                        # update data$nilai_kontrak
-                                        $set = ['id_pelaksana' => $id_pelaksana, 'id_konsultan' => $id_konsultan, 'nilai_kontrak' => $nilai_kontrak, 'no_kontrak' => $no_kontrak, 'tgl_kontrak' => $tgl_kontrak, 'no_spm' => $no_spm, 'tgl_spm' => $tgl_spm, 'no_pho' => $no_pho, 'tgl_pho' => $tgl_pho, 'no_fho' => $no_fho, 'tgl_fho' => $tgl_fho, 'addendum' => $dataAddendum, 'owner' => "[$owner]"];
-                                        //var_dump($set);
-                                        $condition = [['kd_proyek', '=', $kd_proyek], ['id_user', '=', $id_user, 'AND']];
-                                        if ($type_user == 'admin') {
-                                            $condition = [['kd_proyek', '=', $kd_proyek]];
-                                        }
-                                        $cek = $DB->update_array('nama_pkt_proyek', $set, $condition);
-                                        $code = ($cek) ? $code = 3 : $code = 33;
-                                    } else {
-                                        $code = 404;
-                                    }
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
-                        case 'monev[realisasi]':
-                        case 'monev[laporan]':
-                            switch ($tbl) {
-                                case 'get_list':
-                                    # code...
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
                         case 'sortir':
                             $condition = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
                             $DB->orderBy('no_sortir');
@@ -1430,272 +1161,6 @@ class post_data
                                 $code = 404;
                             }
                             break;
-                        case 'lokasi':
-                        case 'lokasi-lokasi':
-                        case 'lokasi-marker':
-                        case 'lokasi-trase':
-                            switch ($tbl) {
-                                case 'add_row':
-                                    $type = $dataArray->geometry->type;
-                                    $kode = $dataArray->properties->kode;
-                                    //var_dump($type);
-                                    switch ($type) {
-                                        case 'LineString':
-                                            $klm = 'polyline';
-                                            break;
-                                        case 'Polygon':
-                                            $klm = 'polygon';
-                                            break;
-                                        case 'Point':
-                                            $klm = 'marker';
-                                            if (property_exists($dataArray->properties, 'radius')) {
-                                                $Radius = $dataArray->properties->radius;
-                                                $type = 'Circle';
-                                                $klm = 'circle';
-                                            }
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-
-                                    $geometry = json_encode($dataArray); //$dataArray_awal = $dataArray;
-                                    //$geometry = $dataArray;
-                                    //ambil jumlah data json dengan SELECT JSON_LENGTH(sort) FROM channels WHERE bouquet='["28"]';
-                                    $query = "SELECT JSON_LENGTH($klm) AS jumlah FROM $tabel_pakai WHERE kd_proyek = ?";
-                                    $result = $DB->getQuery($query, [$kd_proyek]); //$resul = $DB->runQuery($query, $bindValue);
-                                    $jumlahDataJson = $result[0]->jumlah;
-                                    //query insert
-                                    $query = "UPDATE $tabel_pakai SET $klm = JSON_INSERT($klm, '$.$kode', ?) WHERE kd_proyek = ?";
-                                    //$query = "UPDATE $tabel_pakai SET $klm = JSON_UNQUOTE(JSON_INSERT($klm, '$.$kode', ?)) WHERE kd_proyek = ?";
-                                    $bindValue = [$geometry, $kd_proyek];
-                                    $kodePosting = 'insert_json';
-                                    break;
-                                case 'update':
-                                    $uraianDataArray = $dataArray->properties->uraian;
-                                    //var_dump($uraianDataArray);
-                                    switch ($uraianDataArray) {
-                                        case 'lokasi proyek':
-                                            //var_dump($kd_proyek);
-                                            $validate = new Validate($dataArray->geometry->coordinates);
-                                            //var_dump($validate );
-                                            $latitude = $validate->setRules(0, 'latitude', [
-                                                'required' => true,
-                                                'numeric' => true,
-                                                'min_char' => 1
-                                            ]);
-                                            $longitude = $validate->setRules(1, 'longitude', [
-                                                'required' => true,
-                                                'numeric' => true,
-                                                'min_char' => 1
-                                            ]);
-                                            //var_dump($latitude);
-                                            if ($validate->passed()) {
-                                                $kodePosting = 'update_row';
-                                                $kondisi = [['kd_proyek', '=', $kd_proyek]];
-                                                $set = [
-                                                    'sta_pengenal_X' => (float)$latitude,
-                                                    'sta_pengenal_Y' => (float)$longitude,
-                                                    'keterangan' => $uraianDataArray
-                                                ];
-                                            } else {
-                                                //var_dump($validate->getError());
-                                            }
-
-                                            break;
-                                        case 'value':
-                                            # code...
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-                                    break;
-                                case 'edit':
-                                    $kodePosting = 'update_row';
-                                    $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
-                                    $set = [
-                                        'sta_pengenal_X' => $durasi,
-                                        'sta_pengenal_Y' => $mulai,
-                                        'bobot' => $bobot,
-                                        'bobot_selesai' => $bobot_selesai,
-                                        'dependent' => $dependent,
-                                        'keterangan' => $keterangan
-                                    ];
-                                    break;
-                                default:
-
-                                    break;
-                            }
-                            break;
-                        case 'schedule':
-                            $tabel_pakai = 'schedule_table';
-                            switch ($tbl) {
-                                case 'edit':
-                                    $kodePosting = 'update_row';
-                                    $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
-                                    $set = [
-                                        'data' => $dataArray,
-                                        'durasi' => $durasi,
-                                        'mulai' => $mulai,
-                                        'dependent' => "[$dependent]", //json format array
-                                        'keterangan' => $keterangan
-                                    ];
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
-                        case 'divisi':
-                        case 'divisiBM':
-                        case 'divisiCK':
-                        case 'divisiSDA':
-                            switch ($tbl) {
-                                case 'edit':
-                                    break;
-                                case 'input':
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                        case 'rab':
-                            switch ($tbl) {
-                                case 'edit':
-                                case 'add_row':
-                                    // analisa bisa > 1 tiap RAB makanya langsung insert
-                                    //
-                                    #ambil data di analisa
-                                    //Binamarga
-                                    $condition = 'WHERE kd_proyek = ? AND kd_analisa = ? AND uraian = ?';
-                                    $tableName = 'analisa_pekerjaan_bm';
-                                    $bindValue = [$kd_proyek, $kd_analisa, $uraian];
-                                    $resul = $DB->get($tableName, $condition, $bindValue);
-                                    $jumlahArray = is_array($resul) ? count($resul) : 0;
-                                    $type = 'header'; //1. analisa,2.keterangan, 3.header
-                                    if ($jumlahArray) {
-                                        $type = 'analisa';
-                                    } else {
-                                        //Cipta Karya
-                                        $tableName = 'analisa_pekerjaan_ck';
-                                        $bindValue = [$kd_proyek, $kd_analisa, $uraian];
-                                        $resul = $DB->get($tableName, $condition, $bindValue);
-                                        $jumlahArray = is_array($resul) ? count($resul) : 0;
-                                        if ($jumlahArray) {
-                                            $type = 'analisa';
-                                        } else {
-                                            //SDA
-                                            $tableName = 'analisa_pekerjaan_sda';
-                                            $bindValue = [$kd_proyek, $kd_analisa, $uraian];
-                                            $resul = $DB->get($tableName, $condition, $bindValue);
-                                            $jumlahArray = is_array($resul) ? count($resul) : 0;
-                                            if ($jumlahArray) {
-                                                $type = 'analisa';
-                                            }
-                                        }
-                                    }
-                                    // var_dump((array)$resul);
-                                    //$resul = json_decode(json_encode($resul), TRUE);
-                                    //var_dump($resul);
-                                    $jumlahArray = is_array((array)$resul[0]) ? count((array)$resul[0]) : 0;
-                                    if ($jumlahArray) {
-                                        $resul = (array)$resul[0];
-                                        //$satuan = $satuan;
-                                        $harga_dasar = (float)$resul['koefisien'];
-                                        $volume = (float)$volume;
-
-                                        $jumlah_op = $op / 100 * $harga_dasar;
-                                        $harga_satuan = $jumlah_op + $harga_dasar;
-                                        $jumlah_harga = (float)$harga_satuan * $volume; //diluar ppn
-                                        $keterangan = $resul['keterangan'];
-                                    } else {
-                                        $harga_dasar = 0;
-                                        $jumlah_op = 0;
-                                        $harga_satuan = 0;
-                                        $jumlah_harga = 0; //diluar ppn
-                                    }
-                                    switch ($tbl) {
-                                        case 'edit':
-                                            $kodePosting = 'update_row';
-                                            $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
-                                            $set = [
-                                                'kd_analisa' => $kd_analisa,
-                                                'uraian' => $uraian,
-                                                'volume' => $volume,
-                                                'satuan' => $satuan,
-                                                'harga_dasar' => $harga_dasar,
-                                                'harga_satuan' => $harga_satuan,
-                                                'jumlah_harga' => $jumlah_harga,
-                                                'jumlah_op' => $jumlah_op,
-                                                'keterangan' => $keterangan
-                                            ];
-                                            break;
-                                        case 'add_row':
-                                            // ambil data nor_sortir maksimal tambahkan 1 
-                                            $where1 = 'kd_proyek = ?';
-                                            $data_where1 = [$kd_proyek];
-                                            $max = $DB->getQuery("SELECT MAX(no_sortir) AS max_no_sortir FROM $tabel_pakai WHERE $where1", $data_where1);
-                                            $max_no_sortir = $max[0]->{'max_no_sortir'} + 1; //cara mengambil value object di array
-                                            //var_dump($max_no_sortir);
-                                            $set = ['kd_proyek' => $kd_proyek, 'kd_analisa' => $kd_analisa, 'uraian' => $uraian, 'volume' => $volume, 'satuan' => $satuan, 'harga_dasar' => $harga_dasar, 'harga_satuan' => $harga_satuan, 'jumlah_harga' => $jumlah_harga, 'jumlah_op' => $jumlah_op, 'keterangan' => $keterangan, 'no_sortir' => $max_no_sortir, 'type' => $type];
-                                            $kodePosting = 'insert';
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
-                        case 'proyek':
-                            switch ($tbl) {
-                                case 'edit':
-                                    //cek kode proyek
-                                    $cek = $DB->getWhereOnce($tabel_pakai, ['kd_proyek', '=', $kode]);
-                                    //var_dump($cek);
-                                    if ($cek) { //data sudah ada
-                                        # update data
-                                        $set = ['tahun_anggaran' => $tahun_proyek, 'nama_proyek' => $uraian, 'tanggal_buat' => date('Y-m-d H:i:s'), 'id_user' => $id_user, 'nama_user' => $username, 'keterangan' => $keterangan, 'status' => $status_proyek];
-                                        $cek = $DB->update_array($tabel_pakai, $set, [['kd_proyek', '=', $kode], ['id_user', '=', $id_user, 'AND']]);
-                                        $code = ($cek) ? $code = 31 : 33;
-                                    } else {
-                                        $kodePosting = 'insert';
-                                        $set = ['kd_proyek' => $kode, 'tahun_anggaran' => $tahun_proyek, 'nama_proyek' => $uraian, 'tanggal_buat' => date('Y-m-d H:i:s'), 'id_user' => $id_user, 'nama_user' => $username, 'keterangan' => $keterangan, 'status' => $status_proyek];
-                                    }
-                                    //update data user kode proyek aktif
-                                    if ($aktifkan_proyek == 'on') {
-                                        $cek = $DB->update('user_ahsp', ['kd_proyek_aktif' => $kode], ['username', '=', $username]);
-                                        $kode = ($cek) ? $_SESSION["user"]["kd_proyek_aktif"] = $kode : $cek;
-                                    }
-                                    //tambahkan informasi umum
-                                    break;
-                                case 'tambah_proyek':
-                                    //cek kode proyek
-                                    $cek = $DB->getWhereOnce($tabel_pakai, ['kd_proyek', '=', $kode]);
-                                    //var_dump($cek);
-                                    if ($cek) { //data sudah ada
-                                        # update data
-                                        $code = 30;
-                                    } else {
-                                        $kodePosting = 'insert';
-                                        $set = ['kd_proyek' => $kode, 'tahun_anggaran' => $tahun_proyek, 'nama_proyek' => $uraian, 'tanggal_buat' => date('Y-m-d H:i:s'), 'id_user' => $id_user, 'nama_user' => $username, 'keterangan' => $keterangan, 'status' => $status_proyek];
-                                    }
-                                    //update data user kode proyek aktif
-                                    if ($aktifkan_proyek == 'on') {
-                                        $cek = $DB->update('user_ahsp', ['kd_proyek_aktif' => $kode], ['username', '=', $username]);
-                                        $retVal = ($cek) ? $_SESSION["user"]["kd_proyek_aktif"] = $kode : $cek;
-                                    }
-                                    //tambahkan informasi umum
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
                         case 'profil':
                             switch ($tbl) {
                                 case 'edit':
@@ -1752,228 +1217,6 @@ class post_data
                     }
                     //JENIS POST DATA/INSERT DATA
                     switch ($kodePosting) {
-                        case 'insert_select': //copy rows dan insert kembali dengan tabel yang sama
-                            switch ($tbl) {
-                                case 'proyek':
-                                    # untuk proyek insert dulu data di tabel nama_pkt_proyek setelah berhasil lalu insert select tabel lain
-                                    $tabel_pakai = 'nama_pkt_proyek';
-                                    $set = ['kd_proyek' => $kode, 'tahun_anggaran' => $tahun_proyek, 'nama_proyek' => $uraian, 'tanggal_buat' => date('Y-m-d H:i:s'), 'id_user' => $id_user, 'nama_user' => $username, 'keterangan' => $keterangan, 'status' => $type_user];
-                                    $resul = $DB->insert($tabel_pakai, $set);
-                                    if ($DB->lastInsertId()) {
-                                        $data['note']['add row'] = $DB->lastInsertId(); //$resul->count;
-                                        //update data user kode proyek aktif
-                                        if ($aktifkan_proyek == 'on') {
-                                            $cek = $DB->update('user_ahsp', ['kd_proyek_aktif' => $kode], ['username', '=', $username]);
-                                            $retVal = ($cek) ? $_SESSION["user"]["kd_proyek_aktif"] = $kode : $cek;
-                                        }
-                                        $code = 2;
-                                    }
-                                    //
-                                    $where = 'kd_proyek = ?';
-                                    $data_where = [$kd_proyek_copy];
-                                    break;
-                                case 'copy_lap_harian':
-                                    $where = 'kd_proyek = ? AND tanggal = ?';
-                                    $data_where = [$kd_proyek, $tanggal_copy];
-                                    break;
-                                case 'analisa_quarry':
-                                case 'analisa_sda':
-                                case 'analisa_ck':
-                                case 'analisa_bm':
-                                case 'analisa_alat_custom':
-                                    $where = 'kd_proyek = ? AND kd_analisa = ?';
-                                    $data_where = [$kd_proyek, $kd_analisa_copy];
-                                    break;
-                                case 'analisa_alat':
-                                    $where = 'kd_proyek = ? AND kode = ?';
-                                    $data_where = [$kd_proyek, $kd_analisa_copy];
-                                    break;
-                                default:
-                                    break;
-                            }
-                            //$setTabelCopy : kumpulan tabel yang akan di copy paste row
-                            foreach ($setTabelCopy as $key => $value) {
-                                $tableName = $value;
-                                //var_dump($tableName);
-                                //ambil nama kolom
-                                /*
-                        SELECT `COLUMN_NAME` 
-                        FROM `INFORMATION_SCHEMA`.`COLUMNS` 
-                        WHERE `TABLE_SCHEMA`='yourdatabasename' 
-                        AND `TABLE_NAME`='yourtablename';
-                        */
-                                $namaKolomArr = $DB->runQuery2("SHOW columns FROM $tableName");
-                                //var_dump($namaKolomArr);
-                                $namaKolom = [];
-                                foreach ($namaKolomArr as $key1 => $value1) {
-                                    //var_dump($key1);
-                                    //var_dump($value1);
-                                    if ($namaKolomArr[$key1]['Field']) {
-                                        $namaKolom[] = $namaKolomArr[$key1]['Field'];
-                                    }
-                                }
-                                if (($key = array_search('id', $namaKolom)) !== false) {
-                                    unset($namaKolom[$key]);
-                                }
-                                $columnArrayInsert = $namaKolom;
-                                switch ($tbl) {
-                                    case 'proyek':
-                                        //keluarkan jg kd_proyek dengan kd_proyek baru
-                                        if (($key = array_search('kd_proyek', $columnArrayInsert)) !== false) {
-                                            $columnArrayInsert[$key] = "'$kode'";
-                                        }
-                                        break;
-                                    case 'copy_lap_harian':
-                                        if (($key = array_search('tanggal', $columnArrayInsert)) !== false) {
-                                            $columnArrayInsert[$key] = "'$tanggal'";
-                                        }
-                                        break;
-                                    case 'analisa_quarry':
-                                    case 'analisa_bm':
-                                    case 'analisa_sda':
-                                    case 'analisa_ck':
-                                    case 'analisa_alat_custom':
-                                        if (($key = array_search('kd_analisa', $columnArrayInsert)) !== false) {
-                                            $columnArrayInsert[$key] = "'$kode'";
-                                        }
-                                        break;
-                                    case 'analisa_alat':
-                                        if (($key = array_search('kode', $columnArrayInsert)) !== false) {
-                                            $columnArrayInsert[$key] = "'$kode'";
-                                        }
-                                        if (($key = array_search('jenis_peralatan', $columnArrayInsert)) !== false) {
-                                            $columnArrayInsert[$key] = "'$uraian'";
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                $namaKolom = implode(",", $namaKolom); //array_map('strval', $namaKolom);
-                                $columnArray = $namaKolom;
-                                $columnArrayInsert = implode(",", $columnArrayInsert);
-                                //$data_where = '';
-                                $bindValue = $data_where;
-                                $query = "INSERT INTO $tableName ($columnArray) SELECT $columnArrayInsert FROM $tableName WHERE $where";
-                                //var_dump($bindValue);
-                                //var_dump($query);
-                                $resul = $DB->runQuery($query, $bindValue);
-                                $code = 50;
-                                // harus dirubah kolom kode dan uraian untuk ck atau kolom nomor ut bm/sda/quarry/alat_custom 
-                                //yang mempunyai nilai sama dengan $kd_analisa_copy
-                                //harus di rubah id terakhir yang dirubah jangan semua
-                                switch ($tbl) {
-                                    case 'analisa_quarry':
-                                    case 'analisa_bm':
-                                    case 'analisa_sda':
-                                    case 'analisa_ck':
-                                    case 'analisa_alat_custom':
-                                        switch ($tbl) {
-                                            case 'analisa_quarry':
-                                                $keterangan = '{"lokasi":"' . $lokasiQuarry . '", "tujuan":"' . $tujuanQuarry . '"}';
-                                                $setUpdate = ['nomor' => $kode, 'uraian' => $uraian, 'keterangan' => $keterangan, 'jenis_kode' =>  'summary:' . $kode];
-                                                $kondisi = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kode, 'AND'], ['nomor', '=', $kd_analisa_copy, 'AND']];
-                                                break;
-                                            case 'analisa_ck':
-                                                $setUpdate = ['kode' => $kode, 'nomor' => $kode, 'uraian' => $uraian, 'jenis_kode' =>  'summary:' . $kode];
-                                                //$kondisi = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kode, 'AND'], ['nomor', '=', $kd_analisa_copy, 'AND'], ['kode', '=', $kd_analisa_copy, 'OR']];
-                                                $kondisi = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kode, 'AND'], ['nomor', '=', $kd_analisa_copy, 'AND'], ['kode', '=', $kd_analisa_copy, 'AND']];
-                                                break;
-                                            case 'analisa_bm':
-                                            case 'analisa_sda':
-                                            case 'analisa_alat_custom':
-                                                $kondisi = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kode, 'AND'], ['nomor', '=', $kd_analisa_copy, 'AND']];
-                                                $setUpdate = ['nomor' => $kode, 'uraian' => $uraian, 'jenis_kode' =>  'summary:' . $kode];
-                                                //insert ke tabel analisa alat
-                                                $dataInsertAlat = [
-                                                    'kd_proyek' => $kd_proyek,
-                                                    'kode' => $kode,
-                                                    'kapasitas' => $kapasitas,
-                                                    'sat_kapasitas' => $sat_kapasitas,
-                                                    'jenis_peralatan' => $uraian,
-                                                    'total_biaya_sewa' => 0,
-                                                    'keterangan' => 'analisa_alat_custom'
-                                                ];
-                                                $resul = $DB->insert('analisa_alat', $dataInsertAlat);
-                                                break;
-                                                // case 'analisa_alat':
-                                                //     break;
-                                            default:
-                                                break;
-                                        }
-                                        $resul = $DB->update_array($tableName, $setUpdate, $kondisi);
-
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            break;
-                        case 'update_analisa': // untuk analisa
-                            //var_dump($hasil);
-                            //hapus id row yang terdapat di $id_delete (kumpulan row dihapus)
-                            if ($id_delete) {
-                                foreach ($id_delete as $key_del => $val_del) {
-                                    $condition = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kd_analisa, 'AND'], ['id', '=', $val_del, 'AND']];
-                                    $resul_del = $DB->delete_array($tabel_pakai, $condition);
-                                }
-                            }
-                            //rekam ulang/update
-                            foreach ($hasil as $key => $val) {
-                                //var_dump($val);
-                                if (array_key_exists('id', $val)) {
-                                    $id_rows = $val['id'];
-                                }
-                                $sumRows = 0;
-                                if ($id_rows) {
-                                    $kondisi = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kd_analisa, 'AND'], ['id', '=', $id_rows, 'AND']];
-                                    //cari id klo ditemukan update kalo tidak ditemukan insert baru
-                                    //$set = unset($val["id"], $val["kd_proyek"], $val["key3"]);
-                                    $val_update = $val;
-                                    unset($val_update["id"], $val_update["kd_proyek"], $val_update["kd_analisa"]);
-                                    $set = $val_update;
-                                    //var_dump($set);
-                                    $sumRows = $DB->getWhereArray($tabel_pakai, $kondisi);
-                                    //var_dump($sumRows);
-                                }
-                                $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
-                                if ($jumlahArray) {
-                                    $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
-                                    //var_dump($DB->count());
-                                    //$jumlahArray = is_array($DB->count()) ? count($DB->count()) : 0;
-                                    if ($DB->count()) {
-                                        $code = 3;
-                                        $data['update'][] = $id_rows; //$DB->count();
-                                        // ambil data yang diupdate untuk tabel website
-                                        $data['dtupdate'][] = $val;
-                                        //jika analisa peralatan custom update row tabel analisa_alat
-                                        if ($jenis == 'analisa_alat_custom') {
-                                            $nomor_row = $val_update['nomor'];
-                                            if ($nomor_row == $id) {
-                                                $kondisi2 = [['kd_proyek', '=', $kd_proyek], ['kode', '=', $id, 'AND'], ['keterangan', '=', 'analisa_alat_custom', 'AND']];
-                                                $set2 = ['total_biaya_sewa' => $val_update['koefisien']];
-                                                $DB->update_array('analisa_alat', $set2, $kondisi2);
-                                            }
-                                        }
-                                    } else {
-
-                                        $data['NA'][] = $id_rows; //$DB->count();
-                                    }
-                                } else {
-                                    // data id tidak terupdate di server
-                                    $val_insert = $val;
-                                    unset($val_insert["id"]);
-                                    $resul = $DB->insert($tabel_pakai, $val_insert);
-                                    //$jumlahArray = is_array($DB->count()) ? count($DB->count()) : 0;
-                                    if ($DB->count()) {
-                                        $data['add_row'][] = $key;
-                                        //jika nomor=kd_analisa
-                                        //jika jns analisa alat_custom masukkan di peralatan
-                                    } else {
-                                        $data['NA'][] = $id_rows;
-                                    }
-                                }
-                            }
-                            break;
                         case 'update_rows': // untuk banyak row
                             foreach ($dataArray as $key => $val) {
                                 $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id, 'AND']];
@@ -2002,90 +1245,13 @@ class post_data
                             if ($DB->count()) {
                                 $code = 3;
                                 $data['update'] = $DB->count();
-                                switch ($jenis) {
-                                    case 'sortir':
-                                        //update sortir
-                                        $resul = $DB->update_array($tabel_pakai, $set2, $kondisi2);
-                                        break;
-                                    case 'rab':
-                                        $data['rows'] = $set;
-                                        $where1 = 'kd_proyek = ?';
-                                        $data_where1 = [$kd_proyek];
-                                        $sum = $DB->getQuery("SELECT SUM(jumlah_harga) FROM $tabel_pakai WHERE $where1", $data_where1);
-                                        $data['sum'] = $sum[0]->{'SUM(jumlah_harga)'}; //cara mengambil value object di array
-                                        break;
-                                    case 'schedule':
-                                        switch ($tbl) {
-                                            case 'edit':
-                                                $data['set'] = $set;
-                                                //ambil jumlah rab
-                                                break;
-                                            default:
-                                                # code...
-                                                break;
-                                        }
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
                             } else {
                                 $code = 33;
                             }
                             break;
-                        case 'del_insert_rows':
-                            $data[$tabel_pakai] = $DB->delete_array($tabel_pakai, $kondisi_delete);
-                            //insert rows baru
-                            $dataInsert = ['kd_proyek' => $kd_proyek, 'kode' => $kd_analisa, 'keterangan' => 'analisa_alat_custom'];
-                            $okDummy = false;
-                            foreach ($hasil_insert as $key => $value) {
-                                //tambahkan object kd_proyek dan kd_analisa di value
-                                //var_dump($value);
-                                $value['kd_proyek'] = $kd_proyek;
-                                $value['kd_analisa'] = $kd_analisa;
-                                //var_dump($value);
-                                if (strlen($value['uraian']) > 0 || strlen($value['kode'])) {
-                                    $resul = $DB->insert($tabel_pakai, $value);
-                                    $data['note']['add row'] = $DB->lastInsertId();
-                                    if ($value['nomor'] == $kd_analisa) {
-                                        $dataInsert['total_biaya_sewa'] = $value['koefisien'];
-                                        $dataInsert['jenis_peralatan'] = $jenis_pek;
-                                        $okDummy = true;
-                                    }
-                                }
-                            }
-                            if ($okDummy == false) {
-                                $dataInsert['total_biaya_sewa'] = 0;
-                                $dataInsert['jenis_peralatan'] = $jenis_pek;
-                            }
-                            //$resul = $DB->insert('analisa_alat', $dataInsert);
-                            $code = 2;
-                            $tabel_pakai2 = 'analisa_alat';
-                            $update_arrayData = [['kd_proyek', "=", $kd_proyek], ['kode', "=", $kode, 'AND']];
-                            $getWhereArrayData = [['kd_proyek', "=", $kd_proyek], ['kode', "=", $kode, 'AND']];
-                            $sumRows = $DB->getWhereArray($tabel_pakai2, $getWhereArrayData);
-                            $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
-                            if ($jumlahArray <= 0) {
-                                $resul = $DB->insert($tabel_pakai2, $dataInsert);
-                                $jumlahArray = is_array($DB->count()) ? count($DB->count()) : 0;
-                                if ($jumlahArray) {
-                                    $data['add_row'][] = $sum;
-                                }
-                            } else {
-                                //update row
-                                $resul = $DB->update_array($tabel_pakai2, $dataInsert, $update_arrayData);
-                                $jumlahArray = is_array($DB->count()) ? count($DB->count()) : 0;
-                                if ($resul) {
-                                    $data['row_update'][] = $sum;
-                                } else {
-                                    array_push($data['gagal'], $sum);
-                                    $data['gagal'][] = $sum;
-                                }
-                            }
-                            break;
                         case 'cek_insert': //cek data klo tidak ada teruskan insert
                             $ListRow = $DB->select_array($tabel_pakai, $kondisi, $columnName);
-                            //var_dump(sizeof($resul));
+                            var_dump($ListRow);
 
                             $jumlahArray = is_array($ListRow) ? count($ListRow) : 0;
                             if ($jumlahArray) {
@@ -2095,129 +1261,6 @@ class post_data
                                 if ($DB->count()) {
                                     $code = 3;
                                     $data['update'] = $DB->count(); //$DB->count();
-                                    switch ($tbl) {
-                                        case 'monev':
-                                            switch ($tbl) {
-                                                case 'edit':
-                                                    // input file jika ada
-                                                    // input/update tenaga bahan, peralatan di tabel laporan_harian dikalikan volume 
-                                                    //var_dump($resulAnalisa);
-                                                    foreach ($resulAnalisa as $r => $getData) {
-                                                        $kode = $getData->kode;
-                                                        $kd_analisa = $getData->kd_analisa;
-                                                        $uraian = $getData->uraian;
-                                                        $jenis_kode = $getData->jenis_kode;
-                                                        $type = $jenis_kode;
-                                                        $koefisien = $getData->koefisien;
-                                                        $satuan = $getData->satuan;
-                                                        $value = new stdClass;
-                                                        //var_dump("$realisasi_fisik * $koefisien");
-                                                        //var_dump($value);
-                                                        switch ($jenis_kode) {
-                                                            case 'upah':
-                                                                $value->jumlah = round($realisasi_fisik * $koefisien, 12);
-                                                                $value->satuan = $satuan;
-                                                                break;
-                                                            case 'bahan':
-                                                                $value->diterima = round($realisasi_fisik * $koefisien, 12);
-                                                                $value->ditolak = 0;
-                                                                $value->satuan = $satuan;
-                                                                break;
-                                                            case 'peralatan':
-                                                                $value->diterima = round($realisasi_fisik * $koefisien, 12);
-                                                                $value->ditolak = 0; //alasan di keterangan
-                                                                $value->merk_type = '';
-                                                                $value->satuan = $satuan;
-                                                                break;
-                                                            case 'quarry':
-                                                                //$type = 'bahan';
-                                                                $value->diterima = round($realisasi_fisik * $koefisien, 12);
-                                                                $value->ditolak = 0;
-                                                                $value->satuan = $satuan;
-                                                                break;
-                                                            case 'cuaca':
-                                                                break;
-                                                            case 'note':
-                                                                break;
-                                                            default:
-                                                                $type = 'NA';
-                                                                break;
-                                                        }
-                                                        if ($type != 'NA') {
-                                                            $kondisi = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kd_analisa, 'AND'], ['kode', '=', $kode, 'AND'], ['tanggal', '=', $tanggal, 'AND']];
-                                                            //var_dump($value);
-                                                            $value_encode = json_encode($value); //lalu json_decode untuk decode object.
-                                                            $set = [
-                                                                'kd_proyek' => $kd_proyek,
-                                                                'kd_analisa' => $kd_analisa, //jika cuaca kd analisa='cuaca', catatan='note'
-                                                                'kode' => $kode, //jika cuaca kd analisa='cuaca', catatan='note'
-                                                                'tanggal' => $tanggal,
-                                                                'type' => $type, //upah, bahan, peralatan,quarry=bahan,cuaca, catatan
-                                                                'uraian' => $uraian,
-                                                                'value' => $value_encode,
-                                                                'keterangan' => ''
-                                                            ];
-                                                            //dapatkan dari $ListRow data realisasi edit
-                                                            $valueListRow = json_decode($ListRow[0]->value);
-                                                            $resul = $DB->select_array('laporan_harian', $kondisi, $columnName);
-                                                            $jumlahArray = is_array($resul) ? count($resul) : 0;
-                                                            if ($jumlahArray) {
-                                                                //ubah kembali kolom value tambhkan data baru+data lama
-                                                                //var_dump($resul);
-                                                                $valueResul = json_decode($resul[0]->value);
-                                                                //var_dump($value);
-                                                                switch ($jenis_kode) {
-                                                                    case 'upah':
-                                                                        $value->jumlah = round((float)$valueResul->jumlah - $valueListRow->jumlah + (float) $value->jumlah, 6);
-                                                                        break;
-                                                                    case 'bahan':
-                                                                        $value->diterima = round((float)$valueResul->diterima - $valueListRow->jumlah + (float) $value->diterima, 6);
-                                                                        break;
-                                                                    case 'peralatan':
-                                                                        $value->diterima = round((float)$valueResul->diterima - $valueListRow->diterima + (float) $value->diterima, 6);
-                                                                        break;
-                                                                    case 'quarry':
-                                                                        $value->diterima = round((float)$valueResul->diterima - $valueListRow->diterima + (float) $value->diterima, 6);
-                                                                        break;
-                                                                    case 'cuaca':
-                                                                        break;
-                                                                    case 'note':
-                                                                        break;
-                                                                    default:
-                                                                        break;
-                                                                }
-                                                                //var_dump($value);
-                                                                $set['value'] = json_encode($value);
-                                                                //update data
-                                                                $resul = $DB->update_array('laporan_harian', $set, $kondisi);
-                                                                if ($DB->count()) {
-                                                                    $code = 3;
-                                                                    $data['update'] = $DB->count();
-                                                                } else {
-                                                                    $code = 33;
-                                                                }
-                                                            } else {
-                                                                // inser row
-                                                                $resul = $DB->insert('laporan_harian', $set);
-                                                                $jumlahArray = is_array($resul) ? count($resul) : 0;
-                                                                $data['note']['add row'] = $jumlahArray;
-                                                                $code = 2;
-                                                            }
-                                                        }
-                                                    }
-                                                    break;
-                                                default:
-                                                    #code...
-                                                    break;
-                                            };
-                                            break;
-                                        case 'value1':
-                                            #code...
-                                            break;
-                                        default:
-                                            #code...
-                                            break;
-                                    };
                                 } else {
                                     $code = 33;
                                 }
@@ -2252,177 +1295,6 @@ class post_data
                             } else {
                                 $code = 32;
                             }
-                            if ($code == 2) {
-                                switch ($jenis) {
-                                    case 'monev':
-                                        switch ($tbl) {
-                                            case 'input':
-                                                // input file jika ada
-                                                // input/update tenaga bahan, peralatan di tabel laporan_harian di kalikan volume 
-                                                //var_dump($resulAnalisa);
-                                                foreach ($resulAnalisa as $r => $getData) {
-                                                    $kode = $getData->kode;
-                                                    $kd_analisa = $getData->kd_analisa;
-                                                    $uraian = $getData->uraian;
-                                                    $jenis_kode = $getData->jenis_kode;
-                                                    $type = $jenis_kode;
-                                                    $koefisien = $getData->koefisien;
-                                                    $satuan = $getData->satuan;
-                                                    $value = new stdClass;
-                                                    //var_dump("$realisasi_fisik * $koefisien");
-                                                    //var_dump($value);
-                                                    switch ($jenis_kode) {
-                                                        case 'upah':
-                                                            $value->jumlah = round($realisasi_fisik * $koefisien, 12);
-                                                            $value->satuan = $satuan;
-                                                            break;
-                                                        case 'bahan':
-                                                            $value->diterima = round($realisasi_fisik * $koefisien, 12);
-                                                            $value->ditolak = 0;
-                                                            $value->satuan = $satuan;
-                                                            break;
-                                                        case 'peralatan':
-                                                            $value->diterima = round($realisasi_fisik * $koefisien, 12);
-                                                            $value->ditolak = 0; //alasan di keterangan
-                                                            $value->merk_type = '';
-                                                            $value->satuan = $satuan;
-                                                            break;
-                                                        case 'quarry':
-                                                            //$type = 'bahan';
-                                                            $value->diterima = round($realisasi_fisik * $koefisien, 12);
-                                                            $value->ditolak = 0;
-                                                            $value->satuan = $satuan;
-                                                            break;
-                                                        case 'cuaca':
-                                                            break;
-                                                        case 'note':
-                                                            break;
-                                                        default:
-                                                            $type = 'NA';
-                                                            break;
-                                                    }
-                                                    if ($type != 'NA') {
-                                                        $kondisi = [['kd_proyek', '=', $kd_proyek], ['kd_analisa', '=', $kd_analisa, 'AND'], ['kode', '=', $kode, 'AND'], ['tanggal', '=', $tanggal, 'AND']];
-                                                        //var_dump($value);
-                                                        $value_encode = json_encode($value); //lalu json_decode untuk decode object.
-                                                        $set = [
-                                                            'kd_proyek' => $kd_proyek,
-                                                            'kd_analisa' => $kd_analisa, //jika cuaca kd analisa='cuaca', catatan='note'
-                                                            'kode' => $kode, //jika cuaca kd analisa='cuaca', catatan='note'
-                                                            'tanggal' => $tanggal,
-                                                            'type' => $type, //upah, bahan, peralatan,quarry=bahan,cuaca, catatan
-                                                            'uraian' => $uraian,
-                                                            'value' => $value_encode,
-                                                            'keterangan' => ''
-                                                        ];
-                                                        $resul = $DB->select_array('laporan_harian', $kondisi, $columnName);
-                                                        $jumlahArray = is_array($resul) ? count($resul) : 0;
-                                                        if ($jumlahArray) {
-                                                            //ubah kembali kolom value tambhkan data baru+data lama
-                                                            //var_dump($resul);
-                                                            $valueResul = json_decode($resul[0]->value);
-                                                            //var_dump($value);
-                                                            switch ($jenis_kode) {
-                                                                case 'upah':
-                                                                    $value->jumlah = round((float)$valueResul->jumlah + (float) $value->jumlah, 6);
-                                                                    break;
-                                                                case 'bahan':
-                                                                    $value->diterima = round((float)$valueResul->diterima + (float) $value->diterima, 6);
-                                                                    break;
-                                                                case 'peralatan':
-                                                                    $value->diterima = round((float)$valueResul->diterima + (float) $value->diterima, 6);
-                                                                    break;
-                                                                case 'quarry':
-                                                                    $value->diterima = round((float)$valueResul->diterima + (float) $value->diterima, 6);
-                                                                    break;
-                                                                case 'cuaca':
-                                                                    break;
-                                                                case 'note':
-                                                                    break;
-                                                                default:
-                                                                    break;
-                                                            }
-                                                            //var_dump($value);
-                                                            $set['value'] = json_encode($value);
-                                                            //update data
-                                                            $resul = $DB->update_array('laporan_harian', $set, $kondisi);
-                                                            if ($DB->count()) {
-                                                                $code = 3;
-                                                                $data['update'] = $DB->count();
-                                                            } else {
-                                                                $code = 33;
-                                                            }
-                                                        } else {
-                                                            // inser row
-                                                            $resul = $DB->insert('laporan_harian', $set);
-                                                            $jumlahArray = is_array($resul) ? count($resul) : 0;
-                                                            $data['note']['add row'] = $jumlahArray;
-                                                            $code = 2;
-                                                        }
-                                                    }
-                                                }
-                                                break;
-                                        }
-                                        break;
-                                    case 'proyek':
-                                        //tambahkan informasi umum
-                                        $setData = [
-                                            ['kd_proyek' => $kode, 'kode' => 'kegiatan', 'nomor_uraian' => 1, 'uraian' => 'Nama Paket', 'nilai' => 0, 'satuan' => '-', 'keterangan' => $uraian],
-                                            ['kd_proyek' => $kode, 'kode' => 'lokasi', 'nomor_uraian' => 2, 'uraian' => 'Lokasi', 'nilai' => 0, 'satuan' => '-', 'keterangan' => 'Pasangkayu'],
-                                            ['kd_proyek' => $kode, 'kode' => 'kab/kota/prov', 'nomor_uraian' => 3, 'uraian' => 'Propinsi / Kabupaten / Kotamadya', 'nilai' => 0, 'satuan' => '-', 'keterangan' => 'Pasangkayu'],
-                                            ['kd_proyek' => $kode, 'kode' => 'KJL', 'nomor_uraian' => 4, 'uraian' => 'Kondisi jalan lama', 'nilai' => 0, 'satuan' => '-', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'Leff', 'nomor_uraian' => 5, 'uraian' => 'Panjang efektif', 'nilai' => 14.9, 'satuan' => 'km', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'LJL', 'nomor_uraian' => 6, 'uraian' => 'Lebar jalan lama', 'nilai' => 5.5, 'satuan' => 'm', 'keterangan' => '( bahu + perkerasan + bahu )', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'BJLKN', 'nomor_uraian' => 0, 'uraian' => 'Bahu', 'nilai' => 0.5, 'satuan' => 'm', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'PJL', 'nomor_uraian' => 0, 'uraian' => 'Perkerasan', 'nilai' => '4.5', 'satuan' => 'm', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'BJLKR', 'nomor_uraian' => 0, 'uraian' => 'Bahu', 'nilai' => 0.5, 'satuan' => 'm', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'LJR', 'nomor_uraian' => 7, 'uraian' => 'Lebar Rencana', 'nilai' => 8, 'satuan' => 'm', 'keterangan' => '( bahu + perkerasan + bahu )', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'BJRKN', 'nomor_uraian' => 0, 'uraian' => 'Bahu', 'nilai' => 1, 'satuan' => 'm', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'PJR', 'nomor_uraian' => 0, 'uraian' => 'Perkerasan', 'nilai' => 6, 'satuan' => 'm', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'BJRKN', 'nomor_uraian' => 0, 'uraian' => 'Bahu', 'nilai' => 1, 'satuan' => 'm', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'PJ', 'nomor_uraian' => 8, 'uraian' => 'Penampang jalan, jenis dan volume pekerjaan pokok', 'nilai' => 0, 'satuan' => '-', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'MPP', 'nomor_uraian' => 9, 'uraian' => 'Jangka waktu pelaksanaan pekerjaan', 'nilai' => 180, 'satuan' => 'hari', 'keterangan' => '-'],
-                                            ['kd_proyek' => $kode, 'kode' => 'LBCLP', 'nomor_uraian' => 10, 'uraian' => 'Jarak rata-rata Base Camp ke lokasi pekerjaan', 'nilai' => 8.725, 'satuan' => 'km', 'keterangan' => '-'],
-                                            ['kd_proyek' => $kode, 'kode' => 'Tk', 'nomor_uraian' => 11, 'uraian' => 'Jam kerja efektif dalam 1 hari', 'nilai' => 7.0, 'satuan' => 'jam', 'keterangan' => '-'],
-                                            ['kd_proyek' => $kode, 'kode' => 'APDLL', 'nomor_uraian' => 12, 'uraian' => 'Asuransi, Pajak, dsb. untuk Peralatan', 'nilai' => 0.002, 'satuan' => '-', 'keterangan' => 'x  Harga Pokok Alat'],
-                                            ['kd_proyek' => $kode, 'kode' => 'suku_bunga_i', 'nomor_uraian' => 13, 'uraian' => 'Tingkat Suku Bunga Investasi Alat', 'nilai' => 10.18, 'satuan' => '%', 'keterangan' => '-'],
-                                            ['kd_proyek' => $kode, 'kode' => 'op', 'nomor_uraian' => 14, 'uraian' => 'Biaya Umum dan Keuntungan', 'nilai' => 10.00, 'satuan' => '%', 'keterangan' => '% x Biaya Langsung'], //OVERHEAD & PROFIT
-                                            ['kd_proyek' => $kode, 'kode' => 'ppn', 'nomor_uraian' => 15, 'uraian' => 'Pajak Pertambahan Nilai', 'nilai' => 11.00, 'satuan' => '%', 'keterangan' => '% x Biaya Langsung'],
-                                            ['kd_proyek' => $kode, 'kode' => 'nJbt', 'nomor_uraian' => 16, 'uraian' => 'Jumlah Jembatan', 'nilai' => 0, 'satuan' => 'Buah', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'lJbt', 'nomor_uraian' => 17, 'uraian' => 'Total Bentang Jembatan', 'nilai' => 0, 'satuan' => 'm', 'keterangan' => '-', 'type' => 'custom'],
-                                            ['kd_proyek' => $kode, 'kode' => 'RMP', 'nomor_uraian' => 18, 'uraian' => 'RINGKASAN METODE PELAKSANAAN', 'nilai' => '0', 'satuan' => '-', 'keterangan' => '-']
-                                        ];
-                                        foreach ($setData as $r => $getData) {
-                                            $DB->insert('informasi_umum', $getData);
-                                        }
-                                        // jika menjadi proyek aktif update di tabel user tahun anggaran aktif
-                                        //$DB->insert('informasi_umum', $set);
-                                        //inset dipeta lokasi default [-1.18327, 119.36295]
-                                        $set = ['kd_proyek' => $kode, 'sta_pengenal_Y' => -1.18327, 'sta_pengenal_X' => 119.36295, 'polyline' => '{}', 'polygon' => '{}', 'marker' => '{}', 'circle' => '{}', 'keterangan' => $uraian];
-                                        $DB->insert('lokasi_proyek', $set);
-                                        break;
-                                    case 'rab':
-                                        //tambahkan baris di schedule jika berhasil tambah data di rab
-                                        if ($DB->lastInsertId()) {
-                                            $lastInsertId = $DB->lastInsertId();
-                                            $warna = 'blue';
-                                            //elemen row
-                                            $desimal = ($Fungsi->countDecimals($harga_satuan) < 2) ? 2 : $Fungsi->countDecimals($harga_satuan);
-                                            $harga_satuan = number_format($harga_satuan, $desimal, ',', '.');
-                                            $desimal = ($Fungsi->countDecimals($jumlah_harga) < 2) ? 2 : $Fungsi->countDecimals($jumlah_harga);
-                                            $jumlah_harga = number_format($jumlah_harga, $desimal, ',', '.');
-                                            //var_dump($lastInsertId);
-                                            $data['tbody'] = '<tr id_row="' . $lastInsertId . '"><td>' . $kd_analisa . '</td><td>' . $uraian . '</td><td klm="volume"><div contenteditable rms onkeypress="return rumus(event);">' . $volume . '</div></td><td klm="satuan"><div contenteditable>' . $satuan . '</div></td><td klm="harga_satuan">' . $harga_satuan . '</td><td klm="jumlah_harga">' . $jumlah_harga . '</td><td klm="keterangan"><div contenteditable>' . $keterangan . '</div></td><td><div class="ui icon buttons"><button class="ui ' . $warna . ' mini button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $lastInsertId . '"><i class="folder open outline icon"></i></button><button class="ui red mini button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $lastInsertId . '"><i class="trash alternate outline icon"></i></button><button class="ui mini button up_row"><i class="angle double up icon"></i></button></div></td></tr>';
-                                            $set2 = ['kd_proyek' => $kd_proyek, 'kd_analisa' => $kd_analisa, 'id_rab' => $DB->lastInsertId(), 'uraian' => $uraian, 'type' => 'analisa', 'no_sortir' => $max_no_sortir];
-                                            $DB->insert('schedule_table', $set2);
-                                            //tambahkan
-                                        }
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                            }
                             break;
                         default:
                             # code...
@@ -2431,6 +1303,7 @@ class post_data
                 } else {
                     $code = 29;
                     $pesan = $validate->getError();
+                    //var_dump($pesan);
                     $data['error_validate'][] = $pesan;
                     $keterangan = '<ol class="ui horizontal ordered suffixed list">';
                     foreach ($pesan as $key => $value) {
@@ -2446,6 +1319,7 @@ class post_data
         }
         $item = array('code' => $code, 'message' => $hasilServer[$code]);
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
-        return json_encode($json);
+        // return json_encode($json);
+        return json_encode($json, JSON_HEX_APOS);
     }
 }
