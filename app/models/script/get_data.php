@@ -168,6 +168,7 @@ class get_data
                     $kolom = '*';
                     $sukses = true;
                     $err = 0;
+                    $kodePosting = 'get_data';
                     switch ($tbl) {
                         case 'peraturan':
                             $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
@@ -178,15 +179,19 @@ class get_data
                             $data_where1 =  [0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
-                            $jumlah_kolom = 4;
+                            $jumlah_kolom = 6;
                             switch ($jenis) {
+                                case 'get_tbl':
+                                    $kodePosting = 'get_tbl';
+                                    break;
                                 case 'get_data':
                                     $where1 = "nomor = ?";
                                     $data_where1 =  [$text];
-                                    
                                     break;
-                                case 'value1':
-                                    #code...
+                                case 'edit':
+                                    $kodePosting = 'get_data';
+                                    $where1 = "id = ?";
+                                    $data_where1 =  [$id_row];
                                     break;
                                 default:
                                     #code...
@@ -218,7 +223,7 @@ class get_data
                     //================================================
                     //==========JENIS POST DATA/INSERT DATA===========
                     //================================================
-                    switch ($jenis) {
+                    switch ($kodePosting) {
                         case 'get_data':
                         case 'get_row': //  ambil data 1 baris 
                             $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where1", $data_where1);
@@ -322,6 +327,8 @@ class get_data
                             $jumlah_rows = is_array($get_data) ? count($get_data) : 0;
                             if ($jumlah_rows <= 0) {
                                 $code = 404;
+                            }else{
+                                $code = 202; //202
                             }
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user);
                             $data = array_merge($dataTabel, $data);

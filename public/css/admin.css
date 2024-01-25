@@ -10,8 +10,8 @@
 
 body.inverted {
     background-color: var(--darkBG) !important;
+    
 }
-
 #map {
     width: 100%;
     height: 500px;
@@ -44,7 +44,9 @@ body.inverted {
     margin-top: 44px !important;
 
 }
-
+/* .ui.segment.pushable {
+    max-height: calc(100vh - 45px) !important;
+} */
 
 /* .pusher,.pushable{
     max-height: calc(100% - 45px) !important;

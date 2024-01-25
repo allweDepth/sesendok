@@ -342,7 +342,7 @@ $(document).ready(function () {
 		let url = "script/get_data";
 		let jalankanAjax = false;
 		let htmlForm = "";
-		let dataHtmlku = {};
+		let dataHtmlku = {konten:''};
 		dataHtmlku.icon = "plus icon";
 		let iconFlyout = $('i[name="icon_flyout"]'); //icon flyout
 		let headerFlyout = $('div[name="content_flyout"]'); //header flyout
@@ -433,10 +433,10 @@ $(document).ready(function () {
 							}
 							break;
 						case "peraturan":
-							dataHtmlku.konten =
+							dataHtmlku.konten +=
 								buatElemenHtml("fieldDropdown", {
 									label: "Type Dok",
-									atribut: 'name="type"',
+									atribut: 'name="type_dok"',
 									kelas: "lainnya selection",
 									dataArray: [
 										[
@@ -476,7 +476,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Tempat Penetapan",
-									atribut: 'name="tempat" placeholder="tempat penetapan..."',
+									atribut: 'name="t4_penetapan" placeholder="tempat penetapan..."',
 								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tanggal Penetapan",
@@ -508,13 +508,13 @@ $(document).ready(function () {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
-								})+
+								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
-								});;
-							if (tbl === "edit") {
+								});
+							if (jenis === "edit") {
 								data.id_row = id_row;
 								jalankanAjax = true;
 								formIni.attr("id_row", id_row);
@@ -623,6 +623,44 @@ $(document).ready(function () {
 								icon: iconToast,
 							});
 						}
+						switch (attrName) {
+							case 'flyout':
+								switch (jenis) {
+									case 'edit':
+										let attrName = formIni.find('input[name],textarea[name]');
+										for (const iterator of attrName) {
+											// console.log(attrName);
+											let attrElm = $(iterator).attr('name');
+
+											if (attrElm === 'file') {
+												formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
+											} else {
+												formIni.form("set value", attrElm, result.data?.users[attrElm]);
+											}
+											// console.log(attrElm);
+										}
+										addRulesForm(formIni);
+										switch (tbl) {
+											case 'peraturan':
+												break;
+											default:
+												break;
+										}
+										break;
+
+									default:
+										break;
+								}
+								$(".ui.flyout").flyout("toggle");
+								break;
+							case 'value1':
+
+								break;
+							default:
+
+								break;
+						};
+
 					} else {
 						loaderHide();
 					}
@@ -1097,6 +1135,7 @@ $(document).ready(function () {
 									switch (jenis) {
 										case "add":
 										case "edit":
+											//formData.append("id_row", tbl);
 										case "input":
 											let property = ini.find(".ui.calendar.date");
 											for (const key of property) {

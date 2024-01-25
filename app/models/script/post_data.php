@@ -117,7 +117,7 @@ class post_data
                                     'min_char' => 1
                                 ]);
                             case 'add':
-                                $type_dok = $validate->setRules('type', 'type', [
+                                $type_dok = $validate->setRules('type_dok', 'type', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
@@ -132,7 +132,7 @@ class post_data
                                     'required' => true,
                                     'min_char' => 4
                                 ]);
-                                $bentuk = $validate->setRules('judul', 'judul', [
+                                $bentuk = $validate->setRules('bentuk', 'bentuk', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 4
@@ -142,7 +142,7 @@ class post_data
                                     'required' => true,
                                     'min_char' => 4
                                 ]);
-                                $t4_penetapan = $validate->setRules('tempat', 'tempat', [
+                                $t4_penetapan = $validate->setRules('t4_penetapan', 'tempat', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 4
@@ -1021,7 +1021,6 @@ class post_data
                                         'keterangan' => $keterangan,
                                         'status' => $status,
                                         'tanggal' => date('Y-m-d H:i:s'),
-                                        'file' => '',
                                         'username' => $_SESSION["user"]["username"]
                                     ];
                                     //var_dump($set);
@@ -1300,6 +1299,7 @@ class post_data
                             # code...
                             break;
                     }
+                    $hasilServer = hasilServer[$code];
                 } else {
                     $code = 29;
                     $pesan = $validate->getError();
@@ -1317,7 +1317,7 @@ class post_data
                 $code = 39;
             }
         }
-        $item = array('code' => $code, 'message' => $hasilServer[$code]);
+        $item = array('code' => $code, 'message' => $hasilServer);
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         // return json_encode($json);
         return json_encode($json, JSON_HEX_APOS);

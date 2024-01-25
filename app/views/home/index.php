@@ -131,7 +131,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <div class="ui header"><i class="folder icon" name="icon_flyout"></i>
                 <div class="content" name="content_flyout">Lengkapi Data </div>
             </div>
-            <form class="ui form scrolling content" name="form_flyout">
+            <form class="ui form scrolling content" name="form_flyout" style="min-height: calc(100%-45px) !important;">
             </form>
             <div class="left actions">
                 <div class="ui red cancel button"><i class="remove icon"></i>Tutup </div>
@@ -313,9 +313,11 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     <table class="ui very basic table">
                         <thead>
                             <tr>
-                                <th>Kode</th>
-                                <th>Uraian</th>
                                 <th>Nomor</th>
+                                <th>Uraian</th>
+                                <th>Tanggal Pengundangan</th>
+                                <th>Keterangan</th>
+                                <th>Tautan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
