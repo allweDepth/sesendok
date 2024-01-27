@@ -168,7 +168,24 @@ class get_data
                     $kolom = '*';
                     $sukses = true;
                     $err = 0;
-                    $kodePosting = 'get_data';
+                    $kodePosting = '';
+                    switch ($jenis) {
+                        case 'get_tbl':
+                            $kodePosting = 'get_tbl';
+                            break;
+                        case 'get_data':
+                            $where1 = "nomor = ?";
+                            $data_where1 =  [$text];
+                            break;
+                        case 'edit':
+                            $kodePosting = 'get_data';
+                            $where1 = "id = ?";
+                            $data_where1 =  [$id_row];
+                            break;
+                        default:
+                            #code...
+                            break;
+                    };
                     switch ($tbl) {
                         case 'peraturan':
                             $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
@@ -180,27 +197,19 @@ class get_data
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 6;
-                            switch ($jenis) {
-                                case 'get_tbl':
-                                    $kodePosting = 'get_tbl';
-                                    break;
-                                case 'get_data':
-                                    $where1 = "nomor = ?";
-                                    $data_where1 =  [$text];
-                                    break;
-                                case 'edit':
-                                    $kodePosting = 'get_data';
-                                    $where1 = "id = ?";
-                                    $data_where1 =  [$id_row];
-                                    break;
-                                default:
-                                    #code...
-                                    break;
-                            };
-
+                            break;
+                        case 'sumber_dana':
+                            $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 7;
                             break;
                         case 'sbu':
-
                             break;
                         case 'dpa':
                             $like = "kd_proyek = ? AND kd_analisa = nomor AND(uraian LIKE CONCAT('%',?,'%') OR kd_analisa LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
@@ -212,6 +221,7 @@ class get_data
                             $jumlah_kolom = 4;
                             break;
                         default:
+                            $kodePosting = '';
                             $err = 6;
                     }
 
@@ -232,7 +242,7 @@ class get_data
                             if ($jumlahArray > 0) {
                                 $code = 202; //202
                                 $data['users'] = $resul[0];
-                            }else{
+                            } else {
                                 $code = 41; //202
                             }
                             break;
@@ -327,7 +337,7 @@ class get_data
                             $jumlah_rows = is_array($get_data) ? count($get_data) : 0;
                             if ($jumlah_rows <= 0) {
                                 $code = 404;
-                            }else{
+                            } else {
                                 $code = 202; //202
                             }
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user);

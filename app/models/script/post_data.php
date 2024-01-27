@@ -26,6 +26,7 @@ class post_data
         $code = 40;
         $hasilServer = hasilServer[$code];
         $pesan = 'posting kosong';
+        $tambahan_pesan = '';
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
@@ -169,7 +170,7 @@ class post_data
                                     'numeric' => true,
                                     'in_array' => ['off', 'on']
                                 ]);
-                                $disable = ($disable == 'on') ? 1 : 0 ; 
+                                $disable = ($disable == 'on') ? 1 : 0;
                                 $status = $validate->setRules('status', 'status', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -854,12 +855,12 @@ class post_data
                     default:
                         $err = 6;
                 }
-                
+
                 //FINISH PROSES VALIDASI
                 $kodePosting = '';
-                
+
                 if ($validate->passed()) {
-                    
+
                     //tabel pakai
                     switch ($tbl) {
                         case 'peraturan':
@@ -925,7 +926,7 @@ class post_data
                     $columnName = "*";
                     $Tk = 0;
                     $op = 0;
-                    
+
                     //start buat property
                     switch ($tbl) {
                         case 'outbox':
@@ -1005,7 +1006,7 @@ class post_data
                                     $kodePosting = 'update_row';
                                 case 'add':
                                     if ($jenis == 'add') {
-                                        $kondisi = [['judul', '=', $judul],['nomor', '=', $nomor,'AND']];
+                                        $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     }
                                     $set = [
@@ -1026,10 +1027,13 @@ class post_data
                                     //var_dump($set);
                                     //pengolahan file
                                     if ($_FILES['file']) {
-                                        //var_dump($_FILES['file']);
+
                                         $file = $Fungsi->importFile($tbl, '');
+                                        //var_dump($file);
                                         if ($file['result'] == 'ok') {
                                             $set['file'] = $file['file'];
+                                        }else{
+                                            $tambahan_pesan = "(".$file['file'].")" ;
                                         }
                                     }
 
@@ -1310,14 +1314,14 @@ class post_data
                         $keterangan .= '<li class="item">' . $value . '</li>';
                     }
                     $keterangan .= '</ol>';
-                    $hasilServer = [$code => 'Validasi Kembali :<br>' . $keterangan];
+                    $tambahan_pesan = [$code => 'Validasi Kembali :<br>' . $keterangan];
                 }
             } else {
                 $pesan = 'tidak didefinisikan';
                 $code = 39;
             }
         }
-        $item = array('code' => $code, 'message' => $hasilServer);
+        $item = array('code' => $code, 'message' => hasilServer[$code]." $tambahan_pesan" );
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         // return json_encode($json);
         return json_encode($json, JSON_HEX_APOS);

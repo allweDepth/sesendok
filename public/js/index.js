@@ -8,7 +8,7 @@ $(document).ready(function () {
 	//sidebar toggle
 	$(".ui.sidebar")
 		.sidebar({
-			context: $(".bottom.segment"),
+			context: $(".bottom.pushable"),
 		})
 		.sidebar("attach events", ".menu .item.nabiila")
 		.sidebar("setting", "transition", "push");
@@ -211,6 +211,7 @@ $(document).ready(function () {
 				// dasboardheader.text(tbl.toUpperCase());
 				$('div[name="ketref"]').html(arrayDasboard[tbl][3]);
 				jalankanAjax = true;
+				divTab.find('[tbl]').attr('tbl', tbl);
 				switch (tbl) {
 					case "bidang_urusan":
 						break;
@@ -224,8 +225,6 @@ $(document).ready(function () {
 						break;
 					case "sumber_dana":
 						break;
-					case "peraturan":
-						break;
 					case "rekanan":
 						break;
 					default:
@@ -233,6 +232,10 @@ $(document).ready(function () {
 				}
 				break;
 			case "tab_peraturan":
+				jalankanAjax = true;
+				break;
+			case "pengaturan":
+				jenis = "get_rowid";
 				jalankanAjax = true;
 				break;
 			case "xxxx":
@@ -342,7 +345,7 @@ $(document).ready(function () {
 		let url = "script/get_data";
 		let jalankanAjax = false;
 		let htmlForm = "";
-		let dataHtmlku = {konten:''};
+		let dataHtmlku = { konten: '' };
 		dataHtmlku.icon = "plus icon";
 		let iconFlyout = $('i[name="icon_flyout"]'); //icon flyout
 		let headerFlyout = $('div[name="content_flyout"]'); //header flyout
@@ -703,7 +706,7 @@ $(document).ready(function () {
 	$(".ui.flyout")
 		.flyout({
 			closable: false,
-			context: $(".bottom.segment.pushable"),
+			context: $(".bottom.pushable"),
 			onShow: function () {
 				// loaderHide();
 				// console.log('onShow flyout');
@@ -723,7 +726,213 @@ $(document).ready(function () {
 			},
 		})
 		.flyout("attach events", '[name="flyout"]');
-
+	//============================
+	//===========DEL ROW==========
+	//============================
+	$("body").on("click", '[name="del_row"]', function (e) {
+		e.stopImmediatePropagation();
+		e.preventDefault();
+		var ini = $(this);
+		let jenis = ini.attr("jns");
+		var tbl = ini.attr("tbl");
+		var id_row = ini.attr("id_row");
+		if (typeof id_row === "undefined") {
+			id_row = ini.closest("tr").attr("id_row");
+			if (typeof id_row === "undefined") {
+				id_row = ini.closest("div.item").attr("id_row");
+				if (typeof id_row === "undefined") {
+					id_row = ini.closest("div.comment").attr("id_row");
+				}
+			}
+		}
+		var url = "script/del_data";
+		var jalankanAjax = false;
+		var contentModal = [
+			'<i class="trash alternate icon"></i>anda yakin akan hapus data ini?',
+			"menghapus data tidak dapat di batalkan...!",
+		];
+		var data = {
+			cari: cari(jenis),
+			rows: countRows(),
+			jenis: jenis,
+			tbl: tbl,
+			halaman: halaman,
+			id_row: id_row,
+		};
+		switch (jenis) {
+			case "reset":
+				//contentModal = ['<i class="trash alternate icon"></i>anda yakin akan mereset tabel data ini?', 'mereset tabel tidak dapat di batalkan...!']
+				var tabelreset = ini.closest(".card").find(".content .header").text();
+				contentModal = [
+					'<i class="trash alternate icon"></i>anda yakin akan mereset tabel ' +
+					tabelreset +
+					" ini?",
+					"mereset tabel tidak dapat di batalkan...!",
+				];
+				jalankanAjax = true;
+				//data.tbl = "reset";
+				break;
+			case "del_row":
+				if (id_row && jenis !== 'direct') {
+					jalankanAjax = true;
+				}
+				break;
+			default:
+				break;
+		}
+		modal_notif_hapus(contentModal[0], contentModal[1]);
+		$(".ui.hapus.modal")
+			.modal({
+				allowMultiple: true,
+				//observeChanges: true,
+				closable: false,
+				onApprove: function () {
+					if (jalankanAjax) {
+						suksesAjax["ajaxku"] = function (result) {
+							if (result.error.code === 4) {
+								var obj = ini.closest("tr");
+								if (obj.length <= 0) {
+									obj = ini.closest(".item");
+									if (obj.length <= 0) {
+										obj = ini.closest(".comment");
+									}
+								}
+								//console.log(obj);
+								obj.find('input, textarea').addClass("transparent");
+								obj.css("background-color", "#EF617C");
+								obj.fadeOut(600, function () {
+									obj.remove();
+								});
+								switch (jenis) {
+									case "z":
+										break;
+									case "x":
+										switch (tbl) {
+											case "y":
+												break;
+											case "z":
+												break;
+											default:
+												break;
+										}
+										break;
+									default:
+										showToast(result.error.message, {
+											class: "success",
+											icon: "check circle icon",
+										});
+										break;
+								}
+							} else {
+								showToast(result.error.message, {
+									class: "warning",
+									icon: "check circle icon",
+								});
+							}
+						};
+						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
+					} else {
+						switch (jenis) {
+							case "direct":
+								let form = ini.closest("form");
+								let direct = ini.attr("direct"); //jika ada atribut direct hapus direct
+								var obj = ini.closest("tr");
+								if (direct) {
+									obj = ini.closest('[direct="del"]');
+								}
+								obj.find('input, textarea').addClass("transparent");
+								obj.css("background-color", "#EF617C");
+								obj.fadeOut(500, function () {
+									obj.remove();
+									if (typeof form !== "undefined") {
+										//console.log(form);
+										removeRulesForm(form);
+										var reinitForm = new FormGlobal(form);
+										reinitForm.run();
+										addRulesForm(form);
+									}
+								});
+								break;
+							default:
+								break;
+						}
+					}
+				},
+			})
+			.modal("show");
+	});
+	//==================================
+	// download dokumen ke xls/exel
+	//==================================
+	// download dokumen perencanaan xlsx
+	$("body").on("click", '[name="ungguh"]', function (e) {
+		e.preventDefault();
+		//action="script/eksport_xlsx"
+		let dok = $(this).attr('dok');
+		let jenis = $(this).attr('jns');
+		let tbl = $(this).attr('tbl');
+		if (jenis !== '') {
+			$('#form_ungguh_dok input[name="jenis"]').val(jenis);
+			$('#form_ungguh_dok input[name="tbl"]').val(tbl);
+			$('#form_ungguh_dok input[name="dok"]').val(dok);
+			$('#form_ungguh_dok').submit();
+		} else {
+			modal_notif('<i class="info icon"></i>Pilih Dokumen', 'pilih dokumen perencanaan yang ingin di ungguh');
+		}
+	});
+	//==========================================
+	//===========merubah susunan row tabel====
+	//==========================================
+	$("body").on("click", ".up_row,.down_row", function (e) {
+		e.preventDefault();
+		var row = $(this).parents("tr:first");
+		let srt = "down_row";
+		if ($(this).is(".up_row")) {
+			row.insertBefore(row.prev());
+			srt = "up_row";
+		} else {
+			row.insertAfter(row.next());
+		}
+		let jalankanAjax = false;
+		let jenis = $(this).attr("jns");
+		let id_row = $(this).closest("tr").attr("id_row");
+		if (jenis && id_row) {
+			switch (jenis) {
+				case "rab":
+					jalankanAjax = true;
+					break;
+				default:
+					break;
+			}
+			if (jalankanAjax) {
+				var data = {
+					jenis: jenis,
+					tbl: "sortir",
+					srt: srt,
+					id_row: id_row,
+				};
+				var url = "script/post_data";
+				suksesAjax["ajaxku"] = function (result) {
+					let iconToast = "check circle icon";
+					let classToast = "success";
+					if (result.success === true) {
+						if (result.error.code === 404) {
+							classToast = "error";
+							iconToast = "exclamation circle icon";
+						}
+					} else {
+						classToast = "error";
+						iconToast = "exclamation circle icon";
+					}
+					showToast(result.error.message, {
+						class: classToast,
+						icon: iconToast,
+					});
+				};
+				runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
+			}
+		}
+	});
 	///=================================
 	///==== IMPOR FILE XLSX=============
 	///=================================
@@ -1135,7 +1344,7 @@ $(document).ready(function () {
 									switch (jenis) {
 										case "add":
 										case "edit":
-											//formData.append("id_row", tbl);
+										//formData.append("id_row", tbl);
 										case "input":
 											let property = ini.find(".ui.calendar.date");
 											for (const key of property) {

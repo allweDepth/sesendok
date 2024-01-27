@@ -8,7 +8,8 @@ use FormulaParser\FormulaParser;
 //$jenis = 'koef'(rumus koefisien dan hasil pencarian ke koef semua) $jenis = 'harga'(untuk rumus di tempatkan harga satuan dan pencarian juga di harga satuan) atau $jenis = 'koef_harga'(untuk rumus ke koefisien, dan harga pencarian di harga satuan)
 class MasterFungsi
 {
-    public function safe_json_encode($value, $options = 0, $depth = 512, $utfErrorFlag = false) {
+    public function safe_json_encode($value, $options = 0, $depth = 512, $utfErrorFlag = false)
+    {
         $encoded = json_encode($value, $options, $depth);
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
@@ -29,16 +30,17 @@ class MasterFungsi
                 return $this->safe_json_encode($clean, $options, $depth, true);
             default:
                 return 'Unknown error'; // or trigger_error() or throw new Exception()
-    
+
         }
     }
-    
-    public function utf8ize($mixed) {
+
+    public function utf8ize($mixed)
+    {
         if (is_array($mixed)) {
             foreach ($mixed as $key => $value) {
                 $mixed[$key] = $this->utf8ize($value);
             }
-        } else if (is_string ($mixed)) {
+        } else if (is_string($mixed)) {
             return mb_convert_encoding($mixed, "UTF-8");
         }
         return $mixed;
@@ -144,8 +146,8 @@ class MasterFungsi
                     $namaPengirimTampak = $userWithId->nama;
                     $photo = $userWithId->photo;
                     $photo = explode('/', $photo);
-                    ($photo[0] != 'img') ? $photo[0]='img' :  0;
-                    $photo = implode('/',$photo);
+                    ($photo[0] != 'img') ? $photo[0] = 'img' :  0;
+                    $photo = implode('/', $photo);
                 } else {
                     $namaPengirimTampak = 'admin';
                     $photo = './img/avatar/default.jpeg';
@@ -314,8 +316,8 @@ class MasterFungsi
                     $namaPengirimTampak = $userWithId->nama;
                     $photo = $userWithId->photo;
                     $photo = explode('/', $photo);
-                    ($photo[0] != 'img') ? $photo[0]='img' :  0;
-                     $photo = implode('/',$photo);
+                    ($photo[0] != 'img') ? $photo[0] = 'img' :  0;
+                    $photo = implode('/', $photo);
                 } else {
                     $namaPengirimTampak = 'untuk semua user';
                     $photo = './img/avatar/default.jpeg';
@@ -374,11 +376,11 @@ class MasterFungsi
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-        
+
         $id_user = $_SESSION["user"]["id"];
-        $maxsize = 1024 * 8000;
+        $maxsize = 1024 * 15000; //15 MB
         $fileName = 'avatar.jpg';
-        $nama_files_hapus = '';
+
         //jenis os
         /*
         unlink($fileee . $fileee1 . $nama_files_hapus);
@@ -397,7 +399,7 @@ class MasterFungsi
         );
         $path1 = 'upload';
         switch ($tbl) {
-            
+
             case 'profil':
                 $path1 = 'img';
                 $path2 = 'avatar';
@@ -415,7 +417,7 @@ class MasterFungsi
                 $path2 = 'peraturan';
                 break;
             case 'monev':
-                
+
                 $path2 = 'realisasi';
                 break;
             case 'rekanan':
@@ -499,8 +501,16 @@ class MasterFungsi
                 throw new RuntimeException('Failed to move uploaded file.');
             }
             //var_dump($nameFileDel);
+            //===============
+            //hapus file
+            //===============
             if (file_exists($nameFileDel) && strlen($nameFileDel)) {
                 unlink($nameFileDel);
+                $status  = unlink($nameFileDel) ? 'The file ' . $nameFileDel . ' has been deleted' : 'Error deleting ' . $nameFileDel;
+                return ['result' => 'ok', 'file' => $nameFileDel, 'status' => $status];
+            } else {
+                $status = 'The file ' . $nameFileDel . ' doesnot exist';
+                //return ['result' => 'ok', 'file' => $nameFileDel, 'status' => $status];
             }
             //unlink($nameFileDel);
             return ['result' => 'ok', 'file' => $namaFile]; //'File is uploaded successfully.'
@@ -582,7 +592,7 @@ class MasterFungsi
         return str_replace("\r\n", "", $hasil);
     }
     //get tabel data
-    public function getTabel($tbl = '',$nama_tabel = '', $get_data = [], $jmlhalaman = 0, $halaman = 1, $jumlah_kolom = 1, $type_user = 'user')
+    public function getTabel($tbl = '', $nama_tabel = '', $get_data = [], $jmlhalaman = 0, $halaman = 1, $jumlah_kolom = 1, $type_user = 'user')
     {
         //var_dump("dmn($get_data)");
         //ambil data user untuk warna
@@ -608,7 +618,7 @@ class MasterFungsi
         $paginationnext = '';
         $pagination2 = '';
         $rowData = ['tbody' => '', 'tfoot' => ''];
-        
+
         //var_dump($nama_tabel,$get_data, $jmlhalaman , $halaman,$jumlah_kolom);
         //var_dump($jumlah_kolom);
         //$rowData['sumData'] =sizeof($get_data);
@@ -623,10 +633,10 @@ class MasterFungsi
                 case 'analisa_sda':
                 case 'analisa_quarry':
                 case 'analisa_alat_custom':
-                    $rowData['tbody'] = '<div class="ui scrolling container"><table class="ui first head foot stuck unstackable mini compact celled table" tbl="' . $tbl . '"><thead><tr' . $classRow . '><th class="one wide">No.</th><th class="five wide">URAIAN</th><th>KODE</th><th>KOEF.</th><th>SATUAN</th><th>HARGA SATUAN</th><th>RUMUS KOEF.</th><th>KET</th><th class="center aligned collapsing"><div class="ui mini basic icon buttons"><button class="ui button" name="add_row" jns="' . $tbl . '" tbl="add_row_tabel" data-tooltip="add row" data-position="left center" data-inverted><i class="plus icon"></i></button><label jns="' .$tbl . '" tbl="add_row_tabel" for="invisibleupload1" class="ui button" data-tooltip="ambil data excel" data-position="left center" data-inverted><i class="excel green file outline icon"></i></label></div></th></tr></thead><tbody>';
+                    $rowData['tbody'] = '<div class="ui scrolling container"><table class="ui first head foot stuck unstackable mini compact celled table" tbl="' . $tbl . '"><thead><tr' . $classRow . '><th class="one wide">No.</th><th class="five wide">URAIAN</th><th>KODE</th><th>KOEF.</th><th>SATUAN</th><th>HARGA SATUAN</th><th>RUMUS KOEF.</th><th>KET</th><th class="center aligned collapsing"><div class="ui mini basic icon buttons"><button class="ui button" name="add_row" jns="' . $tbl . '" tbl="add_row_tabel" data-tooltip="add row" data-position="left center" data-inverted><i class="plus icon"></i></button><label jns="' . $tbl . '" tbl="add_row_tabel" for="invisibleupload1" class="ui button" data-tooltip="ambil data excel" data-position="left center" data-inverted><i class="excel green file outline icon"></i></label></div></th></tr></thead><tbody>';
                     break;
                 case 'analisa_ck':
-                    $rowData['tbody'] = '<div class="ui scrolling container"><table class="ui first head foot stuck unstackable mini compact celled table" tbl="' . $tbl . '"><thead><tr' . $tbl . '><th class="five wide">URAIAN</th><th>KODE</th><th>SATUAN</th><th>KOEF.</th><th>HARGA SATUAN</th><th>JUMLAH</th><th>RUMUS HARGA SATUAN</th><th class="center aligned collapsing"><div class="ui mini basic icon buttons"><button class="ui button" name="add_row" jns="' . $tbl. '" tbl="add_row_tabel" data-tooltip="add row" data-position="left center" data-inverted><i class="plus icon"></i></button><label jns="' . $tbl. '" tbl="add_row_tabel" for="invisibleupload1" class="ui button" data-tooltip="ambil data excel" data-position="left center" data-inverted><i class="excel green file outline icon"></i></label></div></th></tr></thead><tbody>';
+                    $rowData['tbody'] = '<div class="ui scrolling container"><table class="ui first head foot stuck unstackable mini compact celled table" tbl="' . $tbl . '"><thead><tr' . $tbl . '><th class="five wide">URAIAN</th><th>KODE</th><th>SATUAN</th><th>KOEF.</th><th>HARGA SATUAN</th><th>JUMLAH</th><th>RUMUS HARGA SATUAN</th><th class="center aligned collapsing"><div class="ui mini basic icon buttons"><button class="ui button" name="add_row" jns="' . $tbl . '" tbl="add_row_tabel" data-tooltip="add row" data-position="left center" data-inverted><i class="plus icon"></i></button><label jns="' . $tbl . '" tbl="add_row_tabel" for="invisibleupload1" class="ui button" data-tooltip="ambil data excel" data-position="left center" data-inverted><i class="excel green file outline icon"></i></label></div></th></tr></thead><tbody>';
                     break;
                 case 'user':
                     break;
@@ -695,7 +705,7 @@ class MasterFungsi
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
-                    
+
                     case 'divisiSDA':
                         $nama_tabel = $tbl;
                         if ($type_user == 'admin') {
@@ -864,7 +874,7 @@ class MasterFungsi
         } else {
             $rowData['tfoot'] = str_replace("\r\n", "", '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"></th></tr>');
         }
-        
+
         $rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
         return $rowData;
     }

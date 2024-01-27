@@ -40,10 +40,10 @@ body.inverted {
     /* Ganti dengan warna latar belakang elemen segment pada dark mode */
 }
 
-.ui.bottom.attached.pushable {
+/* .ui.bottom.attached.pushable {
     margin-top: 44px !important;
 
-}
+} */
 /* .ui.segment.pushable {
     max-height: calc(100vh - 45px) !important;
 } */
@@ -55,7 +55,7 @@ body.inverted {
     max-height: calc(100% - 45px) !important;
     -webkit-max-logical-height: calc(100% - 45px) !important;
 }  
-.flyout {
+.ui.flyout {
     margin-top: 45px !important;
 }
 .ui.sticky.dasboard {
@@ -64,7 +64,10 @@ body.inverted {
 .ui.inverted.menu .active.item {
     background-color: transparent;
 } */
-
+/* [name="form_flyout"] {
+    min-height: calc(100% - 45px) !important;
+    max-height: calc(100% - 45px) !important;
+} */
 .ui.accordion.item {
     padding: 0px;
 }

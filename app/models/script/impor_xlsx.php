@@ -20,10 +20,8 @@ class Impor_xlsx
         $user->cekUserSession();
         //math
         $type_user = $_SESSION["user"]["type_user"];
-        $edit_user = $_SESSION["user"]["aktif_edit"];
         $id_user = $_SESSION["user"]["id"];
         $DB = DB::getInstance();
-        $tahun = $_SESSION["user"]["thn_aktif_anggaran"];
         $Fungsi = new MasterFungsi();
         $kd_proyek = '';
         $type_user = $_SESSION["user"]["type_user"];
@@ -35,6 +33,7 @@ class Impor_xlsx
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
+        $tambahan_pesan = '';
         //$data['note'] = [];
         //$data['add_row'] = [];
         //$data['row_update'] = [];
@@ -91,54 +90,6 @@ class Impor_xlsx
                             'numeric' => true
                         ]);*/
                                 break;
-                            case 'analisa_quarry':
-                                $kd_analisa = $validate->setRules('kode_quarry', 'Kode Analisa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                $lokasiQuarry = $validate->setRules('lokasi', 'Lokasi', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 200
-                                ]);
-                                //var_dump($lokasi);
-                                $tujuan = $validate->setRules('tujuan', 'Tujuan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 200
-                                ]);
-                                break;
-                            case 'analisa_alat_custom':
-                                $kd_analisa = $validate->setRules('kd_analisa', 'Kode Analisa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                $jenis_pek = $validate->setRules('jenis_pek', 'Jenis', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 200
-                                ]);
-                                $kapasitas = $validate->setRules('kapasitas', 'kapasitas alat', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $sat_kapasitas = $validate->setRules('sat_kapasitas', 'Satuan Kapasitas', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 200
-                                ]);
-                                $satuan_pembayaran = '';
-                                break;
-                            case 'analisa_sda':
                             case 'analisa_bm':
                                 $kd_analisa = $validate->setRules('kd_analisa', 'Kode Analisa', [
                                     'sanitize' => 'string',
@@ -167,65 +118,7 @@ class Impor_xlsx
                             // mulai proses impor
                             $filename = $_FILES["file"]["tmp_name"];
                             if ($xlsx = SimpleXLSX::parse($filename)) {
-                                //ambil data proyek
-                                $tahun_anggaran = 0;
-                                $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
-                                $jumlahArray = is_array($data_kd_proyek) ? count($data_kd_proyek) : 0;
-                                if ($jumlahArray) {
-                                    $kd_proyek = $data_kd_proyek[0]->kd_proyek_aktif;
-                                    if (strlen($kd_proyek) > 0) {
-                                        # code...
-                                        $data['dataProyek'] = $DB->getWhere('nama_pkt_proyek', ['kd_proyek', '=', $kd_proyek]);
-                                        //
-                                        $jumlahArray = is_array($data['dataProyek']) ? count($data['dataProyek']) : 0;
-                                        if ($jumlahArray > 0) {
-                                            $fileDokumenKegiatan = 1;
-                                            $data['dataProyek'] = $data['dataProyek'][0];
-                                            $tahun_anggaran = $data['dataProyek']->tahun_anggaran;
-                                            #informasi umum
-                                            $informasi = $DB->getWhere('informasi_umum', ['kd_proyek', '=', $kd_proyek]);
-                                            $Tk = 0;
-                                            $jumlahArray = is_array($informasi) ? count($informasi) : 0;
-                                            if ($jumlahArray > 0) {
-                                                foreach ($informasi as $key => $value) {
-                                                    $kode_informasi = $value->kode;
-                                                    ${$value->kode} = $value->nilai;
-                                                    switch ($kode_informasi) {
-                                                        case 'Tk':
-                                                            $Tk = $value->nilai; // jam kerja efektif
-                                                            break;
-                                                        case 'MPP':
-                                                            $MPP = $value->nilai; // waktu pelaksanaan
-                                                            break;
-                                                        default:
-                                                            # code...
-                                                            break;
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            //jangan lanjutkan import harga satuan/analisa, jika $fileDokumenKegiatan == 0;
-                                            switch ($jenis) {
-                                                case 'analisa_bm':
-                                                case 'analisa_ck':
-                                                case 'analisa_sda':
-                                                case 'analisa_alat_custom':
-                                                case 'analisa_alat':
-                                                case 'analisa_quarry':
-                                                case 'harga_satuan':
-                                                case 'monev':
-                                                    $code = 56;
-                                                    $item = array('code' => $code, 'message' => $hasilServer[$code]);
-                                                    $json = array('success' => false, 'data' => $data, 'error' => $item);
-                                                    echo json_encode($json);
-                                                    return;
-                                                    break;
-                                            }
-                                        }
-                                    }
-
-                                    //$tahun_anggaran = $data['dataProyek'][0]->tahun_anggaran;
-                                }
+                                
                                 //var_dump($tahun_anggaran);
                                 $code = 1;
                                 $sukses = true;
@@ -233,34 +126,18 @@ class Impor_xlsx
                                 //menentukan data
                                 switch ($tbl) {
                                     case 'peraturan':
-                                        $count_col_min = 4;
-                                        $tabel_pakai = 'daftar_satuan';
+                                        $count_col_min = 10;
+                                        $tabel_pakai = 'peraturan_neo';
                                         $RowHeaderValidate = ['Type Dok', 'Judul', 'Nomor', 'Bentuk', 'Bentuk singkat', 'Tempat Penetapan', 'Tanggal Penetapan', 'Tanggal Pengundangan', 'Keterangan', 'Status Data'];
+                                        $count_col_min = count($RowHeaderValidate);
                                         break;
                                     case 'rekanan':
                                         $tabel_pakai = 'rekanan';
                                         $RowHeaderValidate = ['Nama Perusahaan/Pribadi', 'Alamat', 'Email', 'NPWP', 'Nomor Rekening Bank', 'Nama Bank Rekening', 'Atas Nama Bank Rekening', 'Nama Penanggung Jawab', 'Jabatan', 'Nomor KTP', 'Alamat Penanggung Jawab', 'Nomor Akta Pendirian', 'Tanggal Akta Pendirian', 'Lokasi Notaris Pendirian', 'Nama Notaris Pendirian', 'Nomor Akta Perubahan', 'Tanggal Akta Perubahan', 'Lokasi Notaris Perubahan', 'Nama Notaris Perubahan', 'Nama Pelaksana', 'Jabatan Pelaksana', 'KETERANGAN'];
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
-                                    case 'monev':
-                                        if (strlen($kd_proyek) <= 0) {
-                                        }
-                                        $tabel_pakai = 'monev';
-                                        $RowHeaderValidate = ['MATA PEMBAYARAN', 'URAIAN', 'VOLUME', 'SATUAN', 'JUMLAH HARGA (Rp) (NON PPN)', 'TANGGAL', 'REALISASI FISIK (sat)', 'REALISASI KEUANGAN (Rp) (NON PPN)', 'KETERANGAN'];
-                                        //var_dump($RowHeaderValidate);
-                                        $count_col_min = count($RowHeaderValidate);
-                                        $id_rab = 0;
-                                        $kd_analisa = '';
-                                        $uraian = '';
-                                        $volume = 0;
-                                        $satuan = '';
-                                        $jumlah_harga = 0;
-                                        break;
-                                    case 'divisi':
-                                        $tabel_pakai = 'divisi';
-                                        $RowHeaderValidate = ['kode', 'Uraian', 'satuan', 'Keterangan'];
-                                        $count_col_min = count($RowHeaderValidate);
-                                        break;
+                                    
+                                    
                                     case 'harga_satuan':
                                         $count_col_min = 8;
                                         $tabel_pakai = 'harga_sat_upah_bahan';
@@ -358,19 +235,19 @@ class Impor_xlsx
                                                                 'min_char' => 4
                                                             ]);
                                                             $tgl_penetapan = $validateRow->setRules(6, 'tanggal penetapan', [
-                                                                'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', 
+                                                                'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                 'required' => true,
                                                                 'max_char' => 100,
                                                                 'min_char' => 8
                                                             ]);
                                                             $tgl_penetapan = $Fungsi->tanggal($tgl_penetapan)['tanggalMysql'];
                                                             $tgl_pengundangan = $validateRow->setRules(7, 'tanggal pengundangan', [
-                                                                'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', 
+                                                                'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                 'required' => true,
                                                                 'max_char' => 100,
                                                                 'min_char' => 8
                                                             ]);
-                                                            $tgl_pengundangan  = $Fungsi->tanggal($tgl_pengundangan )['tanggalMysql'];
+                                                            $tgl_pengundangan  = $Fungsi->tanggal($tgl_pengundangan)['tanggalMysql'];
                                                             $keterangan = $validateRow->setRules(8, 'keterangan', [
                                                                 'sanitize' => 'string',
                                                                 'required' => true,
@@ -397,8 +274,8 @@ class Impor_xlsx
                                                                 'tanggal' => date('Y-m-d H:i:s'),
                                                                 'username' => $_SESSION["user"]["username"]
                                                             ];
-                                                            $update_arrayData = [['judul', '=', $judul],['nomor', '=', $nomor,'AND']];
-                                                            $getWhereArrayData = [['judul', '=', $judul],['nomor', '=', $nomor,'AND']];
+                                                            $update_arrayData = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND'], ['tgl_pengundangan', '=', $tgl_pengundangan, 'AND']];
+                                                            $getWhereArrayData = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND'], ['tgl_pengundangan', '=', $tgl_pengundangan, 'AND']];
                                                             $no_sort++;
                                                             break;
                                                         case 'rekanan':
@@ -844,7 +721,7 @@ class Impor_xlsx
                                                 $keterangan .= '<li class="item">' . $value . '</li>';
                                             }
                                             $keterangan .= '</ol>';
-                                            $hasilServer = [401 => 'ikuti format header(kop) tabel :<br>' . $keterangan];
+                                            $tambahan_pesan = [401 => 'ikuti format header(kop) tabel :<br>' . $keterangan];
                                         }
                                     }
                                 }
@@ -869,7 +746,7 @@ class Impor_xlsx
         } else {
             $code = 41;
         }
-        $item = array('code' => $code, 'message' => $hasilServer[$code]);
+        $item = array('code' => $code, 'message' => hasilServer[$code]." $tambahan_pesan" );
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         return json_encode($json);
     }
