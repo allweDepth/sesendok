@@ -288,10 +288,11 @@ $(document).ready(function () {
 								switch (tbl) {
 									case "pengaturan":
 										// result.data?.tahun;
-										$('form[name="form_pengaturan"] .ui.dropdown').dropdown({
+										let formPengaturan = $('form[name="form_pengaturan"]');
+										$('form[name="form_pengaturan"] .ui.dropdown[name!="tahun"]').dropdown({
 											values: result?.data?.peraturan,
 										})
-										let formPengaturan = $('form[name="form_pengaturan"]');
+										
 										let attrName = formPengaturan.find('input[name],textarea[name]');
 										for (const iterator of attrName) {
 											let attrElm = $(iterator).attr('name');

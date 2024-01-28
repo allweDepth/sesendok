@@ -64,7 +64,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         </div>
     </div>
 
-    <div class="ui bottom attached stackable pushable" style="margin-top: 45px;">
+    <div class="ui bottom attached stackable pushable" style="height: calc(100vh) !important; overflow-y: auto;margin-top: 45px;">
         <!-- sidebar-->
         <div class="ui inverted left vertical sidebar menu">
             <div class="item">
@@ -497,7 +497,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     <form class="ui form segment" name="form_pengaturan">
                         <div class="field">
                             <label>Tahun</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="tahun">
                                 <input type="hidden" name="tahun">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Tahun Anggaran</div>
@@ -519,7 +519,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </h4>
                         <div class="field">
                             <label>Akun Belanja</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="aturan_akun">
                                 <input type="hidden" name="aturan_akun">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Akun Belanja</div>
@@ -530,7 +530,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </div>
                         <div class="field">
                             <label>Sumber Dana</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="aturan_sumber_dana">
                                 <input type="hidden" name="aturan_sumber_dana">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Sumber Dana</div>
@@ -541,7 +541,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </div>
                         <div class="field">
                             <label>Sub Kegiatan</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="aturan_sub_kegiatan">
                                 <input type="hidden" name="aturan_sub_kegiatan">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Sub Kegiatan</div>
@@ -552,7 +552,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </div>
                         <div class="field">
                             <label>SSH</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="aturan_ssh">
                                 <input type="hidden" name="aturan_ssh">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">SSH</div>
@@ -563,7 +563,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </div>
                         <div class="field">
                             <label>HSPK</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="aturan_hspk">
                                 <input type="hidden" name="aturan_hspk">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">HSPK</div>
@@ -574,7 +574,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </div>
                         <div class="field">
                             <label>ASB</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="aturan_asb">
                                 <input type="hidden" name="aturan_asb">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">ASB</div>
@@ -585,7 +585,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </div>
                         <div class="field">
                             <label>SBU</label>
-                            <div class="ui fluid search selection dropdown">
+                            <div class="ui fluid search selection dropdown" name="aturan_sbu">
                                 <input type="hidden" name="aturan_sbu">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">SBU</div>
