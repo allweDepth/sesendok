@@ -54,7 +54,7 @@ $(document).ready(function () {
 			darkmodeEnabled = true;
 		}
 	});
-
+	
 	//=====================
 	//======DATA TAB=======@audit-ok data tab
 	//=====================
@@ -235,7 +235,7 @@ $(document).ready(function () {
 				jalankanAjax = true;
 				break;
 			case "pengaturan":
-				jenis = "get_rowid";
+				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
 			case "xxxx":
@@ -277,6 +277,29 @@ $(document).ready(function () {
 							case "get_data":
 								switch (tbl) {
 									case "peraturan":
+										break;
+									case "xxx":
+										break;
+									default:
+										break;
+								}
+								break;
+							case "get_pengaturan":
+								switch (tbl) {
+									case "pengaturan":
+										// result.data?.tahun;
+										$('form[name="form_pengaturan"] .ui.dropdown').dropdown({
+											values: result?.data?.peraturan,
+										})
+										let formPengaturan = $('form[name="form_pengaturan"]');
+										let attrName = formPengaturan.find('input[name],textarea[name]');
+										for (const iterator of attrName) {
+											let attrElm = $(iterator).attr('name');
+											if (attrElm !== 'file') {
+												formPengaturan.form("set value", attrElm, result?.data?.row_tahun[attrElm]);
+											}
+										}
+										addRulesForm(formPengaturan);
 										break;
 									case "xxx":
 										break;
@@ -1095,7 +1118,7 @@ $(document).ready(function () {
 		constructor(element) {
 			this.element = $(element); //element;
 		}
-		satuan(get) {
+		returnList(jenis = "list_dropdown", tbl = "satuan") {
 			get = this.element.dropdown("get query");
 			this.element.dropdown({
 				apiSettings: {
@@ -1106,15 +1129,18 @@ $(document).ready(function () {
 					//throttle: 1000,//delay perintah
 					// passed via POST
 					data: {
-						jenis: "satuan",
-						tbl: "get",
+						jenis: jenis,
+						tbl: tbl,
 						cari: function (value) {
 							return get;
 							//console.log($('.satuan.ui.dropdown').dropdown('get query'));
 						},
 						rows: "all",
 						halaman: 1,
+					}, fields: {
+						results: "results",
 					},
+					filterRemoteData: true,
 				},
 
 				filterRemoteData: true,
@@ -1165,6 +1191,17 @@ $(document).ready(function () {
 		setVal(val) {
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown("set selected", val);
+		}
+		onChange(val) {
+			//this.element.dropdown('preventChangeTrigger', true);
+			this.element.dropdown({
+				onChange: function (value, text, $choice) {
+					let dataChoice = $($choice).find('span.description').text();
+
+				},
+				saveRemoteData: true,
+				filterRemoteData: true
+			});
 		}
 	}
 	//===================================

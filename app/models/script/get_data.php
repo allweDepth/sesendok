@@ -7,7 +7,7 @@ class get_data
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-
+        $username = $_SESSION["user"]["username"];
         $id_user = $_SESSION["user"]["id"];
         $keyEncrypt = $_SESSION["user"]["key_encrypt"];
         //var_dump($keyEncrypt);
@@ -134,6 +134,9 @@ class get_data
                         case 'organisasi':
                             $tabel_pakai = 'organisasi_neo';
                             break;
+                        case "pengaturan":
+                            $tabel_pakai = 'pengaturan_neo';
+                            break;
                         case "peraturan":
                             $tabel_pakai = 'peraturan_neo';
                             break;
@@ -168,8 +171,39 @@ class get_data
                     $kolom = '*';
                     $sukses = true;
                     $err = 0;
+                    $dataJson = [];
                     $kodePosting = '';
                     switch ($jenis) {
+                        case 'get_pengaturan':
+                            //$kodePosting = 'get_tbl';
+                            $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+                            //var_dump($rowUsername);
+
+                            $tahun = (int) $rowUsername->tahun;
+                            $rowTahunAktif = $DB->getWhereOnce($tabel_pakai, ['tahun', '=', $tahun]);
+
+                            if ($rowTahunAktif) {
+                                $rowTahun = $rowTahunAktif;
+                            } else {
+                                $rowTahun = "pengaturan tahun $tahun tidak ditemukan";
+                            }
+                            $data['tahun'] = $tahun;
+                            $data['row_tahun'] = $rowTahun;
+                            //pilih kolom yang diambil
+                            $DB->select('id, judul, nomor, tgl_pengundangan, keterangan');
+                            $peraturan = $DB->getWhereArray('peraturan_neo', [['disable', '=', 0], ['status', '=', 'umum', 'AND']]);
+                            //var_dump(count($peraturan));
+                            $jumlahArray = is_array($peraturan) ? count($peraturan) : 0;
+                            //@audit
+                            $dataJson['results'] = [];
+                            if ($jumlahArray > 0) {
+                                foreach ($peraturan as $row) {
+                                    $dataJson['results'][] = ['name' => $row->judul, 'value' => $row->id, 'description' => $row->nomor];
+                                }
+                            }
+                            //var_dump($peraturan);
+                            $data['peraturan'] = $dataJson['results'];
+                            break;
                         case 'get_tbl':
                             $kodePosting = 'get_tbl';
                             break;

@@ -318,6 +318,7 @@ class DB
         return $this->getQuery($query, $dataValues);
     }
     // Method untuk mengambil isi tabel dengan kondisi WHERE dan hanya baris pertama saja
+    //kita tidak harus menulis index [0] setiap kali ingin menampilkan hasil tabel.
     public
     function getWhereOnce($tableName, $condition)
     {

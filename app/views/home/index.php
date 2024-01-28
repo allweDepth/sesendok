@@ -176,9 +176,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             </div>
                         </h3>
                     </div>
-                    <button id="toggle-dark-mode" class="ui basic button">
-                        mode nabiila
-                    </button>
+                    
                     <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
                     <p>Tutorial cara menggunakan aplikasi AHSP untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
                     <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
@@ -485,7 +483,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <div class="ui segments">
 
                     <div class="ui teal inverted segment top attached">
-                        
+
                         <h2 class="ui header left">
                             <i class="settings icon"></i>
                             <div class="content">
@@ -496,7 +494,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </h2>
 
                     </div>
-                    <form class="ui form segment">
+                    <form class="ui form segment" name="form_pengaturan">
                         <div class="field">
                             <label>Tahun</label>
                             <div class="ui fluid search selection dropdown">
@@ -510,6 +508,8 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                     <div class="item" data-value="2023"><i class="podcast icon"></i>2023</div>
                                     <div class="item" data-value="2024"><i class="podcast icon"></i>2024</div>
                                     <div class="item" data-value="2025"><i class="podcast icon"></i>2025</div>
+                                    <div class="item" data-value="2026"><i class="podcast icon"></i>2026</div>
+                                    <div class="item" data-value="2027"><i class="podcast icon"></i>2027</div>
                                 </div>
                             </div>
                         </div>

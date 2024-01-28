@@ -949,41 +949,7 @@ class MasterFungsi
                             </div>
                         </div>';
                         break;
-                    case 'analisa_alat':
-                        if ($row->keterangan == 'berat') {
-                            $ket = "Pek. Berat";
-                        } elseif ($row->keterangan == 'sedang') {
-                            $ket = "Pek. Sedang";
-                        } else {
-                            $ket = "Pek. Ringan";
-                        }
-                        $keterangan = $row->keterangan;
-                        if ($keterangan == 'analisa_alat_custom') {
-                            $gabung = 'Kapasitas : ' . $row->kapasitas . ' ' . $row->sat_kapasitas . ', ' . $ket . ' (Rp ' . number_format($row->total_biaya_sewa, 2, ',', '.') . ') |<i class="asterisk loading icon"></i><i class="angle double right icon"></i> alat custom';
-                            $ketJenis = 'analisa_alat_custom';
-                            $id_row = $row->kode;
-                        } else {
-                            $gabung = 'Kapasitas : ' . $row->kapasitas . ' ' . $row->sat_kapasitas . ', ' . $ket . ' (Rp ' . number_format($row->total_biaya_sewa, 2, ',', '.') . ')';
-                            $ketJenis = $jenis;
-                            $id_row = $row->id;
-                        }
-                        $jenisVal = ($keterangan == 'analisa_alat_custom') ? 'analisa_alat_custom' : $jenis;
-                        $rowData['list'] .= trim('<div class="item">
-                        <div class="right floated content">
-                            <div class="ui icon buttons basic compact">
-                                <button class="ui icon button" name="modal_show" tbl="edit" jns="' . $ketJenis . '" id_row="' . $id_row . '">
-                                    <i class="edit blue icon"></i>
-                                </button><button class="ui button" name="flyout" jns="copy" tbl="' . $jenisVal . '" id_row="' . $row->id . '"  data-tooltip="salin analisa" data-position="left center"><i class="copy icon"></i></button>
-                                <button class="ui icon button" name="del_row" tbl="del_row" jns="' . $ketJenis . '" id_row="' . $id_row . '">
-                                    <i class="trash alternate outline red icon"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <img class="ui avatar image" src="img/Alat Berat/default.jpg" alt="Inayah">
-                        <div class="content">
-                        <div class="header">' . $row->kode  . ' : ' . $row->jenis_peralatan . '</div>' . $gabung . '</div>
-                    </div>');
-                        break;
+                    
                     case 'harga_satuan':
                         break;
                     case 'daftar_satuan':
