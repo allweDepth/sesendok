@@ -38,6 +38,7 @@ class writer_xlsx
         $LTRB_vc_fillRed_b_20 = array('border' => 'left,right,top,bottom', 'color' => '#ffffff', 'border-style' => 'thin', 'wrap_text' => 'true', 'fill' => '#ee3939', 'font-style' => 'bold', 'height' => 20, 'valign' => 'center'); //'#8e2f2f'
         //cetak kotak dan tulisan ditengah tanpa style
         $LTRB_hc = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'wrap_text' => 'true');
+        $LTRB_vt = array('border' => 'left,right,top,bottom', 'border-style' => 'thin','valign' => 'top', 'wrap_text' => 'true');
         //
         $style_Non_Data = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#ffc', 'wrap_text' => 'true', 'height' => 25, 'font-size' => 16);
         //wrap text and all center warna kuning
@@ -439,7 +440,7 @@ class writer_xlsx
                                             $row['spesifikasi'],
                                             $row['keterangan']
                                         );
-                                        $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB);
+                                        $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
                                         break;
                                     default:
                                         break;
@@ -465,6 +466,7 @@ class writer_xlsx
                 $code = 701;
             }
         } else {
+            $writer->writeSheetRow($nama_sheet, $rowdata = array('DATA YANG DIMINTA TIDAK SIKON', '', '', '', '', '', '', ''), $style_Non_Data);
             $code = 39;
         }
         header('Content-disposition: attachment; filename="' . XLSXWriter::sanitize_filename($filename) . '"');

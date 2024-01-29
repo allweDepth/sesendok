@@ -10,64 +10,7 @@ class Edit_cell
         $edit_user = $_SESSION["user"]["aktif_edit"];
         $id_user = $_SESSION["user"]["id"];
         $btn_edit = '';
-        $hasilServer = [
-            1 => 'berhasil run',
-            2 => 'berhasil tambah data',
-            3 => 'berhasil update',
-            4 => 'berhasil delete',
-            5 => 'berhasil select',
-            6 => 'berhasil insert/data ganda(berhasil update)',
-            7 => 'berhasil impor file',
-            8 => 'berhasil import file dengan catatan',
-            9 => 'data sudah ada',
-            10 => 'berhasil validasi',
-            11 => 'berhasil data posting',
-            12 => 'berhasil data jenis tabel',
-            15 => 'berhasil reset',
-            29 => 'gagal validasi',
-            30 => 'gagal tambah data/data ganda',
-            31 => 'gagal tambah data/berhasil update',
-            32 => 'gagal tambah data',
-            33 => 'gagal update',
-            34 => 'gagal update/berhasil tambah data',
-            35 => 'gagal delete',
-            36 => 'gagal select/tidak ditemukan',
-            37 => 'gagal tambah data/data ganda',
-            38 => 'gagal import file',
-            39 => 'gagal menentukan jenis data',
-            40 => 'proses anda tidak dikenali',
-            41 => 'data tidak ditemukan',
-            45 => 'tabel yang digunakan tidak ditemukan',
-            46 => 'gagal run',
-            47 => 'data telah ada',
-            48 => 'data telah ada dan telah diupdate',
-            49 => 'data telah diproses kembali',
-            50 => 'kode bisa digunakan',
-            51 => 'data telah di salin',
-            100 => 'Continue', #server belum menolak header permintaan dan meminta klien untuk mengirim body (isi/konten) pesan
-            200 => 'data telah diproses kembali',
-            405 => 'data telah diproses kembali tapi tidak menghasilkan result',
-            //File
-            701 => 'File Tidak Lengkap',
-            702 => 'file yang ada terlalu besar',
-            703 => 'type file tidak sesuai',
-            704 => 'Gagal Upload',
-            705 => 'File Telah dibuat',
-            707 => 'File Gagal dibuat',
-            401  => 'Unauthorized', #pengunjung website tidak memiliki hak akses untuk file / folder yang diproteksi oleh password (kata kunci).
-            403  => 'Forbidden', #pengunjung sama sekali tidak dapat mengakses ke folder tujuan. Angka 403 muncul disebabkan oleh kesalahan pengaturan hak akses pada folder.
-            202  => 'Accepted',
-            404  => 'Not Found', #bahwa file / folder yang diminta, tidak ditemukan didalam database pada suatu website.
-            406  => 'Not Acceptable', #pernyataan bahwa permintaan dari browser tidak dapat dipenuhi oleh server.
-            500  => ' Internal Server Error', #menyatakan bahwa ada kesalahan konfigurasi pada akun hosting.
-            509  => 'Bandwidth Limit Exceeded', #penggunaan bandwidth pada account hosting sudah melebihi quota yang ditetapkan untuk akun hosting Anda
-            //Bahasa Gaul
-            530  => 'I Miss You', #I Miss You dalam bahasa Mandarin adalah Wo Xiang Ni
-            831  => 'I Love You', #Memiliki jumlah 8 huruf dalam kalimat "I Love You",Kemudian ada 3 jumlah total kata dalam frasa "I Love You",Dan 1 memiliki satu makna, yaitu "Aku Cinta Kamu"
-            24434   => 'Sudahkah anda sholat', #diambil dari jumlah rakaat di setiap Sholat lima waktu atau shalat fardhu
-            1432  => 'I Love You Too', #1 artinya I, 4 artinya Love, 3 artinya You, 2 artinya Too. bisa diberikan untuk pasangan kekasih.
-            224  => 'I Love You Too' #Artinya adalah Today, Tomorrow dan Forever.Angka 2 artinya two yang artinya twoday,today,
-        ];
+       
         $DB = DB::getInstance();
         $Fungsi = new MasterFungsi();
         //$data_user = $DB->getQuery( 'SELECT * FROM user_ahsp WHERE id = ?', [ $id_user ] );
@@ -425,8 +368,7 @@ class Edit_cell
                                         ];
                                         $dataArrayHasil[] = $dataInsert;
                                     }
-                                    //var_dump($dataArrayHasil);
-                                    $hasil = $Fungsi->analisa($kd_proyek, $kd_analisa, $dataArrayHasil, $jenisImporData, $tbl);
+                                    
                                     //var_dump($hasil);
                                     $jumlahArray = is_array($hasil) ? count($hasil) : 0;
                                     if ($jumlahArray) {
@@ -469,13 +411,13 @@ class Edit_cell
                                             //var_dump($key . ' ' . $val);
                                             $result[0]->{$key} = $val;
                                         }
-                                        //var_dump($result[0]);
-                                        $data = $Fungsi->analisaAlat($kd_proyek, $result[0], $sukuBunga_i, $M22, $M21, $L04, $L05);
-                                        if (count($data[0]) > 0) {
-                                            $code =  200;
-                                        } else {
-                                            $code = 405;
-                                        }
+                                        // //var_dump($result[0]);
+                                        // $data = $Fungsi->analisaAlat($kd_proyek, $result[0], $sukuBunga_i, $M22, $M21, $L04, $L05);
+                                        // if (count($data[0]) > 0) {
+                                        //     $code =  200;
+                                        // } else {
+                                        //     $code = 405;
+                                        // }
                                     } elseif ($ubah == 'non') {
                                         $kondisiOnce = ['id', '=', $id];
                                         $kondisiUpdateArray = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id, 'AND']];
@@ -594,7 +536,7 @@ class Edit_cell
                                     case 'harga_satuan':
                                         //update analisa dan quarry/alat
                                         if ($ubah != 'non') {
-                                            $updateAnalisa = $Fungsi->hargaSatuan($kd_proyek, $id);
+                                            
                                         }
                                         break;
                                     default:

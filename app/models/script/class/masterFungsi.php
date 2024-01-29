@@ -8,6 +8,184 @@ use FormulaParser\FormulaParser;
 //$jenis = 'koef'(rumus koefisien dan hasil pencarian ke koef semua) $jenis = 'harga'(untuk rumus di tempatkan harga satuan dan pencarian juga di harga satuan) atau $jenis = 'koef_harga'(untuk rumus ke koefisien, dan harga pencarian di harga satuan)
 class MasterFungsi
 {
+
+    /*
+    * Copyright (c) 2011-2013 Philipp Tempel
+    *
+    * Permission is hereby granted, free of charge, to any person obtaining a copy
+    * of this software and associated documentation files (the "Software"), to deal
+    * in the Software without restriction, including without limitation the rights
+    * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    * copies of the Software, and to permit persons to whom the Software is
+    * furnished to do so, subject to the following conditions:
+    *
+    * The above copyright notice and this permission notice shall be included in
+    * all copies or substantial portions of the Software.
+    *
+    * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    * THE SOFTWARE.
+    */
+
+    /**
+     * Get the user's operating system.
+     *
+     * @param string $userAgent The user's user agent
+     *
+     * @return string returns the user's operating system as human readable string,
+     *                if it cannot be determined 'n/a' is returned
+     */
+    public function getOS($userAgent)
+    {
+        // Create list of operating systems with operating system name as array key
+        $oses = array(
+            'iPhone' => '(iPhone)',
+            'Windows 3.11' => 'Win16',
+            'Windows 95' => '(Windows 95)|(Win95)|(Windows_95)',
+            'Windows 98' => '(Windows 98)|(Win98)',
+            'Windows 2000' => '(Windows NT 5.0)|(Windows 2000)',
+            'Windows XP' => '(Windows NT 5.1)|(Windows XP)',
+            'Windows 2003' => '(Windows NT 5.2)',
+            'Windows Vista' => '(Windows NT 6.0)|(Windows Vista)',
+            'Windows 7' => '(Windows NT 6.1)|(Windows 7)',
+            'Windows NT 4.0' => '(Windows NT 4.0)|(WinNT4.0)|(WinNT)|(Windows NT)',
+            'Windows ME' => 'Windows ME',
+            'Open BSD' => 'OpenBSD',
+            'Sun OS' => 'SunOS',
+            'Linux' => '(Linux)|(X11)',
+            'Safari' => '(Safari)',
+            'Mac OS' => '(Mac_PowerPC)|(Macintosh)',
+            'QNX' => 'QNX',
+            'BeOS' => 'BeOS',
+            'OS/2' => 'OS/2',
+            'Search Bot' => '(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp/cat)|(msnbot)|(ia_archiver)',
+        );
+
+        // Loop through $oses array
+        foreach ($oses as $os => $preg_pattern) {
+            // Use regular expressions to check operating system type
+            if (preg_match('@' . $preg_pattern . '@', $userAgent)) {
+                // Operating system was matched so return $oses key
+                return $os;
+            }
+        }
+        return 'n/a';
+    }
+
+    public function getBrowser()
+    {
+        global $user_agent;
+
+        $browser = 'Unknown Browser';
+
+        $browser_array = array(
+            '/msie/i' => 'Internet Explorer',
+            '/firefox/i' => 'Firefox',
+            '/safari/i' => 'Safari',
+            '/chrome/i' => 'Chrome',
+            '/opera/i' => 'Opera',
+            '/netscape/i' => 'Netscape',
+            '/maxthon/i' => 'Maxthon',
+            '/konqueror/i' => 'Konqueror',
+            '/mobile/i' => 'Handheld Browser',
+        );
+
+        foreach ($browser_array as $regex => $value) {
+            if (preg_match($regex, $user_agent)) {
+                $browser = $value;
+            }
+        }
+
+        return $browser;
+    }
+    // mencari file di folder dan sub folder
+
+    public function cariFile($f, $p = null, $l = 1000)
+    { // Recursively find a file $f in directory $p (compare up to $l files)
+        // Returns the full path of the first occurrence (relative to current directory)
+        //$fileku = cariFile('renja.pdf','../dokumen_upl');
+        //var_dump($f);
+        //var_dump($p);
+        $cd = $p == null ? getcwd() : $p;
+        if (substr($cd, -1, 1) != '/') {
+            $cd .= '/';
+        }
+        if (is_dir($cd)) {
+            $dh = opendir($cd);
+            while ($fn = readdir($dh)) { // traverse directories and compare files:
+                if (is_file($cd . $fn) && $fn == $f) {
+                    closedir($dh);
+
+                    return $cd . $fn;
+                }
+                if ($fn != '.' && $fn != '..' && is_dir($cd . $fn)) {
+                    $m = $this->cariFile($f, $cd . $fn, $l);
+                    if ($m) {
+                        closedir($dh);
+
+                        return $m;
+                    }
+                }
+            }
+            closedir($dh);
+        }
+
+        return false;
+    }
+
+    public function getFileAll($dir, $pola, $results = array())
+    {
+        $files = scandir($dir);
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if ($value != '.' && $value != '..' && !is_dir($path)) {
+                $this->getDirContents($path, $results);
+                var_dump($value);
+                if ($value == $pola) {
+                    $results[] = $path;
+                }
+                if (preg_match("/$pola/", $value)) {
+                    $results[] = $path;
+                }
+            }
+        }
+
+        return $results;
+    }
+
+    public function getDirContents($dir, &$results = array())
+    {
+        $files = scandir($dir);
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = $path;
+            } elseif ($value != '.' && $value != '..') {
+                $this->getDirContents($path, $results);
+                $results[] = $path;
+            }
+        }
+
+        return $results;
+    }
+    // fungsi zero padding
+    /*
+    1. %s = String.
+    2. %d = desimal.
+    3. %x = hexadesimal.
+    4. %o = Octal.
+    5. %f = Float.
+    */
+    public function zero_pad($angka, $jumlahChar)
+    {
+        $fzeropadded = sprintf('%0' . $jumlahChar . 'd', $angka);
+
+        return  $fzeropadded;
+    }
     public function safe_json_encode($value, $options = 0, $depth = 512, $utfErrorFlag = false)
     {
         $encoded = json_encode($value, $options, $depth);
@@ -949,7 +1127,7 @@ class MasterFungsi
                             </div>
                         </div>';
                         break;
-                    
+
                     case 'harga_satuan':
                         break;
                     case 'daftar_satuan':

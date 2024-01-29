@@ -42,6 +42,7 @@ body.inverted {
 }
 
 .pusher .ui.tab.basic.segment {
+    margin-top: 0px !important;
     height: calc(100vh - 45px - 90px) !important;
     overflow-y: auto;
 }
@@ -50,7 +51,7 @@ body.inverted {
     overflow-y: auto;
 }
 .ui.visible.overlay.flyout .form.scrolling {
-    height: calc(100vh - 45px - 145px) !important;
+    height: calc(100vh - 45px - 145px - 14px) !important;
     overflow-y: auto;
 }
 /* .ui.bottom.attached.pushable {

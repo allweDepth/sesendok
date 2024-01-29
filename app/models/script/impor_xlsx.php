@@ -118,11 +118,27 @@ class Impor_xlsx
                             // mulai proses impor
                             $filename = $_FILES["file"]["tmp_name"];
                             if ($xlsx = SimpleXLSX::parse($filename)) {
-                                
+
                                 //var_dump($tahun_anggaran);
                                 $code = 1;
                                 $sukses = true;
                                 $RowHeaderValidate = [];
+                                //tentukan peraturan yang membutuhkan
+                                switch ($tbl) {
+                                    case 'sumber_dana':
+                                        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+                                        //var_dump($rowUsername);
+
+                                        $tahun = (int) $rowUsername->tahun;
+                                        $rowTahunAktif = $DB->getWhereOnce('pengaturan', ['tahun', '=', $tahun]);
+
+                                        if ($rowTahunAktif) {
+                                            $rowTahun = $rowTahunAktif;
+                                        } else {
+                                            $rowTahun = "pengaturan tahun $tahun tidak ditemukan";
+                                        }
+                                        break;
+                                }
                                 //menentukan data
                                 switch ($tbl) {
                                     case 'peraturan':
@@ -131,13 +147,19 @@ class Impor_xlsx
                                         $RowHeaderValidate = ['Type Dok', 'Judul', 'Nomor', 'Bentuk', 'Bentuk singkat', 'Tempat Penetapan', 'Tanggal Penetapan', 'Tanggal Pengundangan', 'Keterangan', 'Status Data'];
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
+                                    case 'sumber_dana':
+                                        $count_col_min = 8;
+                                        $tabel_pakai = 'sumber_dana_neo';
+                                        $RowHeaderValidate = ['Sumber Dana', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
                                     case 'rekanan':
                                         $tabel_pakai = 'rekanan';
                                         $RowHeaderValidate = ['Nama Perusahaan/Pribadi', 'Alamat', 'Email', 'NPWP', 'Nomor Rekening Bank', 'Nama Bank Rekening', 'Atas Nama Bank Rekening', 'Nama Penanggung Jawab', 'Jabatan', 'Nomor KTP', 'Alamat Penanggung Jawab', 'Nomor Akta Pendirian', 'Tanggal Akta Pendirian', 'Lokasi Notaris Pendirian', 'Nama Notaris Pendirian', 'Nomor Akta Perubahan', 'Tanggal Akta Perubahan', 'Lokasi Notaris Perubahan', 'Nama Notaris Perubahan', 'Nama Pelaksana', 'Jabatan Pelaksana', 'KETERANGAN'];
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
-                                    
-                                    
+
+
                                     case 'harga_satuan':
                                         $count_col_min = 8;
                                         $tabel_pakai = 'harga_sat_upah_bahan';
@@ -248,6 +270,7 @@ class Impor_xlsx
                                                                 'min_char' => 8
                                                             ]);
                                                             $tgl_pengundangan  = $Fungsi->tanggal($tgl_pengundangan)['tanggalMysql'];
+                                                            $kode  = "$nomor:$tgl_pengundangan";
                                                             $keterangan = $validateRow->setRules(8, 'keterangan', [
                                                                 'sanitize' => 'string',
                                                                 'required' => true,
@@ -260,6 +283,7 @@ class Impor_xlsx
                                                             ]);
 
                                                             $arrayDataRows = [
+                                                                'kode' => $kode,
                                                                 'type_dok' => $type_dok,
                                                                 'judul' => $judul,
                                                                 'nomor' => $nomor,
@@ -276,6 +300,57 @@ class Impor_xlsx
                                                             ];
                                                             $update_arrayData = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND'], ['tgl_pengundangan', '=', $tgl_pengundangan, 'AND']];
                                                             $getWhereArrayData = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND'], ['tgl_pengundangan', '=', $tgl_pengundangan, 'AND']];
+                                                            $no_sort++;
+                                                            break;
+                                                        case 'sumber_dana':
+                                                            $sumber_dana = $validateRow->setRules(0, 'sumber dana', [
+                                                                'required' => true,
+                                                                'numeric' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $kelompok = $validateRow->setRules(1, 'kelompok', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $jenis = $validateRow->setRules(2, 'jenis', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $objek = $validateRow->setRules(3, 'objek', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $rincian_objek = $validateRow->setRules(4, 'rincian objek', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $sub_rincian_objek = $validateRow->setRules(5, 'sub rincian_objek', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $uraian = $validateRow->setRules(6, 'uraian', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $keterangan = $validateRow->setRules(7, 'keterangan', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $kode = "$sumber_dana.$kelompok.$jenis.$objek.$rincian_objek.$sub_rincian_objek";
+
+                                                            $arrayDataRows = [
+                                                                'sumber_dana' => $sumber_dana,
+                                                                'kelompok' => $kelompok,
+                                                                'jenis' => $jenis,
+                                                                'objek' => $objek,
+                                                                'rincian_objek' => $rincian_objek,
+                                                                'sub_rincian_objek' => $sub_rincian_objek,
+                                                                'uraian' => $uraian,
+                                                                'kode' => $kode,
+                                                                'disable' => 0,
+                                                                'keterangan' => $keterangan,
+                                                                'tanggal' => date('Y-m-d H:i:s'),
+                                                                'username' => $_SESSION["user"]["username"]
+                                                            ];
+                                                            $update_arrayData = [['kode', '=', $kode]];
+                                                            $getWhereArrayData = [['kode', '=', $kode]];
                                                             $no_sort++;
                                                             break;
                                                         case 'rekanan':
@@ -644,6 +719,7 @@ class Impor_xlsx
                                                     //=====================================
                                                     if ($validateRow->passed()) {
                                                         switch ($tbl) {
+                                                            case 'sumber_dana':
                                                             case 'peraturan':
                                                                 //var_dump($tabel_pakai);
                                                                 $sumRows = $DB->getWhereArray($tabel_pakai, $getWhereArrayData);
@@ -746,7 +822,7 @@ class Impor_xlsx
         } else {
             $code = 41;
         }
-        $item = array('code' => $code, 'message' => hasilServer[$code]." $tambahan_pesan" );
+        $item = array('code' => $code, 'message' => hasilServer[$code] . " $tambahan_pesan");
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         return json_encode($json);
     }

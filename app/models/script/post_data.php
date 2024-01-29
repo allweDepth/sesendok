@@ -1009,7 +1009,9 @@ class post_data
                                         $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     }
+                                    $kode  = "$nomor:$tgl_pengundangan";
                                     $set = [
+                                        'kode' => $kode,
                                         'type_dok' => $type_dok,
                                         'judul' => $judul,
                                         'nomor' => $nomor,
