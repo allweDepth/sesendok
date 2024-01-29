@@ -10,8 +10,9 @@
 
 body.inverted {
     background-color: var(--darkBG) !important;
-    
+
 }
+
 #map {
     width: 100%;
     height: 500px;
@@ -40,6 +41,18 @@ body.inverted {
     /* Ganti dengan warna latar belakang elemen segment pada dark mode */
 }
 
+.pusher .ui.tab.basic.segment {
+    height: calc(100vh - 45px - 90px) !important;
+    overflow-y: auto;
+}
+.ui.visible.overlay.flyout {
+    height: calc(100vh - 45px) !important;
+    overflow-y: auto;
+}
+.ui.visible.overlay.flyout .form.scrolling {
+    height: calc(100vh - 45px - 145px) !important;
+    overflow-y: auto;
+}
 /* .ui.bottom.attached.pushable {
     margin-top: 44px !important;
 

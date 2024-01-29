@@ -28,7 +28,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 
 </head>
 
-<body>
+<body style="overflow: hidden;margin-top: 45px;">
 
     <!-- MAIN TOOLBAR MENU -->
     <div class="ui teal top fixed inverted main menu">
@@ -64,7 +64,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         </div>
     </div>
 
-    <div class="ui bottom attached stackable pushable" style="height: calc(100vh) !important; overflow-y: auto;margin-top: 45px;">
+    <div class="ui bottom attached stackable pushable" style="height: calc(100vh - 45px) !important;margin-top: 45px;">
         <!-- sidebar-->
         <div class="ui inverted left vertical sidebar menu">
             <div class="item">
@@ -145,7 +145,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
         <div class="pusher">
 
             <!-- sticky-->
-            <div class="ui top attached main">
+            <div class="ui sticky">
                 <div class="ui icon message dashboard"><i class="home icon"></i>
                     <div class="content">
                         <div class="header">DASHBOARD</div>
@@ -176,7 +176,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             </div>
                         </h3>
                     </div>
-                    
+
                     <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
                     <p>Tutorial cara menggunakan aplikasi AHSP untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
                     <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
@@ -494,7 +494,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </h2>
 
                     </div>
-                    <form class="ui form segment" name="form_pengaturan">
+                    <form class="ui form scrolling segment" name="form_pengaturan">
                         <div class="field">
                             <label>Tahun</label>
                             <div class="ui fluid search selection dropdown" name="tahun">

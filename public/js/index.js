@@ -31,7 +31,7 @@ $(document).ready(function () {
 
 	$(".bottom.attached.segment .ui.sticky").sticky({
 		context: ".bottom.segment",
-		pushing: true,
+		pushing: false,
 	});
 	//menu lain
 
