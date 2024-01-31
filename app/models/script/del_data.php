@@ -71,6 +71,7 @@ class del_data
                             $tabel_pakai = 'peraturan_neo';
                             break;
                         case "akun":
+                            case "akun_belanja":
                             $tabel_pakai = 'akun_neo';
                             break;
                         case 'bidang_urusan':

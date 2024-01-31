@@ -427,6 +427,7 @@ $(document).ready(function () {
 						case "prog":
 						case "keg":
 						case "sub_keg":
+							break;
 						case "akun_belanja":
 							dataHtmlku.konten =
 								buatElemenHtml("multiFieldTextAction", {

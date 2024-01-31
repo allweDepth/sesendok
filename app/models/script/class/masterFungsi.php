@@ -820,9 +820,9 @@ class MasterFungsi
                     <th>AKSI</th>
                 </tr>');
                     break;
-                    case 'akun':
-                        $rowData['thead'] = trim('<tr>
-                        <th>sumber dana</th>
+                case 'akun_belanja':
+                    $rowData['thead'] = trim('<tr>
+                        <th>Akun</th>
                         <th>kelompok</th>
                         <th>jenis</th>
                         <th>objek</th>
@@ -832,7 +832,7 @@ class MasterFungsi
                         <th>keterangan</th>
                         <th>AKSI</th>
                     </tr>');
-                        break;
+                    break;
                 case 'user':
                     break;
                 default:
@@ -873,8 +873,6 @@ class MasterFungsi
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
-
-
                         if ($type_user == 'admin') {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
@@ -894,6 +892,29 @@ class MasterFungsi
                                         <td>' . $buttons . '</td>
                                     </tr>');
                         break;
+                        case 'akun_belanja':
+                            $buttons = '';
+                            $divAwal = '';
+                            $divAkhir = '';
+                            if ($type_user == 'admin') {
+                                $divAwal = '<div contenteditable>';
+                                $divAkhir = '</div>';
+                                $buttons = '<div class="ui icon basic mini buttons">
+                                    <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                    <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            }
+                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                            <td klm="akun">' . $divAwal . $row->akun . $divAkhir . '</td>
+                                            <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
+                                            <td klm="jenis">' . $divAwal . $row->jenis . $divAkhir . '</td>
+                                            <td klm="objek">' . $divAwal . $row->objek . $divAkhir . '</td>
+                                            <td klm="rincian_objek">' . $divAwal . $row->rincian_objek . $divAkhir . '</td>
+                                            <td klm="sub_rincian_objek">' . $divAwal . $row->sub_rincian_objek . $divAkhir . '</td>
+                                            <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
+                                            <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                            <td>' . $buttons . '</td>
+                                        </tr>');
+                            break;
                     case 'rekanan':
                         $buttons = '';
                         $divAwal = '';

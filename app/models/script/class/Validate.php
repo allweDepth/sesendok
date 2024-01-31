@@ -112,10 +112,28 @@ class Validate
               $formValue = $formValue; // 0 as numeric
             }
             //var_dump($formValue);
-
           }
           break;
-
+        case 'numeric_zero':
+          if ($ruleValue === TRUE) { //|| !is_int($formValue)//($ruleValue === TRUE && (!is_numeric($formValue) ))
+            if ($formValue != 0) {
+              if (is_numeric((float)$formValue)) {
+                $formValue = $formValue; // numeric
+              } else { // is not numeric 
+                if ($formValue == '') {
+                  $formValue = 0;
+                }else{
+                  
+                  $this->_errors[$item] = "$itemLabel harus diisi angka";
+                }
+                
+              }
+            } else {
+              $formValue = $formValue; // 0 as numeric
+            }
+            //var_dump($formValue);
+          }
+          break;
         case 'min_value':
           if ($formValue < $ruleValue) {
             $this->_errors[$item] = "$itemLabel minimal $ruleValue";

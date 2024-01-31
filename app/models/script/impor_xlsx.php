@@ -132,6 +132,7 @@ class Impor_xlsx
                                     case 'ssh':
                                     case 'hspk':
                                     case 'sumber_dana':
+                                        case 'sub_keg':
                                         $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
                                         //var_dump($rowUsername);
 
@@ -327,21 +328,50 @@ class Impor_xlsx
                                                                 'numeric' => true,
                                                                 'min_char' => 1
                                                             ]);
+                                                            $kode = $sumber_dana;
                                                             $kelompok = $validateRow->setRules(1, 'kelompok', [
-                                                                'numeric' => true,
+                                                                'numeric_zero' => true,
                                                             ]);
-                                                            $jenis = $validateRow->setRules(2, 'jenis', [
-                                                                'numeric' => true,
-                                                            ]);
-                                                            $objek = $validateRow->setRules(3, 'objek', [
-                                                                'numeric' => true,
-                                                            ]);
-                                                            $rincian_objek = $validateRow->setRules(4, 'rincian objek', [
-                                                                'numeric' => true,
-                                                            ]);
-                                                            $sub_rincian_objek = $validateRow->setRules(5, 'sub rincian_objek', [
-                                                                'numeric' => true,
-                                                            ]);
+                                                            if ($kelompok) {
+                                                                $kode .= ".$kelompok";
+                                                            }
+                                                            $jenis = 0;
+                                                            $objek = 0;
+                                                            $rincian_objek = 0;
+                                                            $sub_rincian_objek = 0;
+                                                            if ($kelompok) {
+                                                                $jenis = $validateRow->setRules(2, 'jenis', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                if ($jenis) {
+                                                                    $kode .= ".$jenis";
+                                                                }
+                                                                if ($jenis) {
+                                                                    $objek = $validateRow->setRules(3, 'objek', [
+                                                                        'numeric_zero' => true,
+                                                                    ]);
+                                                                    if ($objek) {
+                                                                        $kode .= "." . $Fungsi->zero_pad($objek, 2);
+                                                                    }
+                                                                    if ($objek) {
+                                                                        $rincian_objek = $validateRow->setRules(4, 'rincian objek', [
+                                                                            'numeric_zero' => true,
+                                                                        ]);
+                                                                        if ($rincian_objek) {
+                                                                            $kode .= "." . $Fungsi->zero_pad($rincian_objek, 2);
+                                                                        }
+                                                                        if ($rincian_objek) {
+                                                                            $sub_rincian_objek = $validateRow->setRules(5, 'sub rincian_objek', [
+                                                                                'numeric_zero' => true,
+                                                                            ]);
+                                                                            if ($sub_rincian_objek) {
+                                                                                $kode .= "." . $Fungsi->zero_pad($sub_rincian_objek, 2);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
                                                             $uraian = $validateRow->setRules(6, 'uraian', [
                                                                 'sanitize' => 'string',
                                                                 'required' => true,
@@ -350,15 +380,15 @@ class Impor_xlsx
                                                             $keterangan = $validateRow->setRules(7, 'keterangan', [
                                                                 'sanitize' => 'string',
                                                             ]);
-                                                            $kode = "$sumber_dana.$kelompok.$jenis.$objek.$rincian_objek.$sub_rincian_objek";
+
 
                                                             $arrayDataRows = [
-                                                                'sumber_dana' => $sumber_dana,
-                                                                'kelompok' => $kelompok,
-                                                                'jenis' => $jenis,
-                                                                'objek' => $objek,
-                                                                'rincian_objek' => $rincian_objek,
-                                                                'sub_rincian_objek' => $sub_rincian_objek,
+                                                                'sumber_dana' => (int)$sumber_dana,
+                                                                'kelompok' => (int)$kelompok,
+                                                                'jenis' => (int)$jenis,
+                                                                'objek' => (int)$objek,
+                                                                'rincian_objek' => (int)$rincian_objek,
+                                                                'sub_rincian_objek' => (int)$sub_rincian_objek,
                                                                 'uraian' => $uraian,
                                                                 'peraturan' => $id_aturan_sumber_dana,
                                                                 'kode' => $kode,
@@ -367,6 +397,7 @@ class Impor_xlsx
                                                                 'tanggal' => date('Y-m-d H:i:s'),
                                                                 'username' => $_SESSION["user"]["username"]
                                                             ];
+                                                            // var_dump($arrayDataRows);
                                                             $update_arrayData = [['kode', '=', $kode]];
                                                             $getWhereArrayData = [['kode', '=', $kode]];
                                                             $no_sort++;
@@ -378,21 +409,43 @@ class Impor_xlsx
                                                                 'numeric' => true,
                                                                 'min_char' => 1
                                                             ]);
+                                                            $kode = "$akun";
                                                             $kelompok = $validateRow->setRules(1, 'kelompok', [
-                                                                'numeric' => true,
+                                                                'numeric_zero' => true,
                                                             ]);
-                                                            $jenis = $validateRow->setRules(2, 'jenis', [
-                                                                'numeric' => true,
-                                                            ]);
-                                                            $objek = $validateRow->setRules(3, 'objek', [
-                                                                'numeric' => true,
-                                                            ]);
-                                                            $rincian_objek = $validateRow->setRules(4, 'rincian objek', [
-                                                                'numeric' => true,
-                                                            ]);
-                                                            $sub_rincian_objek = $validateRow->setRules(5, 'sub rincian_objek', [
-                                                                'numeric' => true,
-                                                            ]);
+                                                            if ($kelompok) {
+                                                                $kode .= ".$kelompok";
+                                                            }
+                                                            $jenis = 0;
+                                                            $objek = 0;
+                                                            $rincian_objek = 0;
+                                                            $sub_rincian_objek = 0;
+                                                            if ($kelompok) {
+                                                                $jenis = $validateRow->setRules(2, 'jenis', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                if ($jenis) {
+                                                                    $kode .= ".$jenis";
+                                                                    $objek = $validateRow->setRules(3, 'objek', [
+                                                                        'numeric_zero' => true,
+                                                                    ]);
+                                                                    if ($objek) {
+                                                                        $kode .= "." . $Fungsi->zero_pad($objek, 2);
+                                                                        $rincian_objek = $validateRow->setRules(4, 'rincian objek', [
+                                                                            'numeric_zero' => true,
+                                                                        ]);
+                                                                        if ($rincian_objek) {
+                                                                            $kode .= "." . $Fungsi->zero_pad($rincian_objek, 2);
+                                                                            $sub_rincian_objek = $validateRow->setRules(5, 'sub rincian_objek', [
+                                                                                'numeric_zero' => true,
+                                                                            ]);
+                                                                            if ($sub_rincian_objek) {
+                                                                                $kode .= "." . $Fungsi->zero_pad($sub_rincian_objek, 4);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
                                                             $uraian = $validateRow->setRules(6, 'uraian', [
                                                                 'sanitize' => 'string',
                                                                 'required' => true,
@@ -401,17 +454,89 @@ class Impor_xlsx
                                                             $keterangan = $validateRow->setRules(7, 'keterangan', [
                                                                 'sanitize' => 'string',
                                                             ]);
-                                                            $kode = "$akun.$kelompok.$jenis.$objek.$rincian_objek.$sub_rincian_objek";
-
                                                             $arrayDataRows = [
-                                                                'akun' => $akun,
-                                                                'kelompok' => $kelompok,
-                                                                'jenis' => $jenis,
-                                                                'objek' => $objek,
-                                                                'rincian_objek' => $rincian_objek,
-                                                                'sub_rincian_objek' => $sub_rincian_objek,
+                                                                'akun' => (int)$akun,
+                                                                'kelompok' => (int)$kelompok,
+                                                                'jenis' => (int)$jenis,
+                                                                'objek' => (int)$objek,
+                                                                'rincian_objek' => (int)$rincian_objek,
+                                                                'sub_rincian_objek' => (int)$sub_rincian_objek,
                                                                 'uraian' => $uraian,
                                                                 'peraturan' => $id_aturan_akun,
+                                                                'kode' => $kode,
+                                                                'disable' => 0,
+                                                                'keterangan' => $keterangan,
+                                                                'tanggal' => date('Y-m-d H:i:s'),
+                                                                'username' => $_SESSION["user"]["username"]
+                                                            ];
+                                                            $update_arrayData = [['kode', '=', $kode]];
+                                                            $getWhereArrayData = [['kode', '=', $kode]];
+                                                            $no_sort++;
+                                                            break;
+                                                        case 'sub_keg':
+                                                            $urusan = $validateRow->setRules(0, 'urusan', [
+                                                                'required' => true,
+                                                                'numeric' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $kode = "$urusan";
+                                                            $bidang = $validateRow->setRules(1, 'bidang', [
+                                                                'numeric_zero' => true,
+                                                            ]);
+                                                            if ($bidang) {
+                                                                $kode .= ".$bidang";
+                                                            }
+                                                            $prog = 0;
+                                                            $keg = 0;
+                                                            $sub_keg = 0;
+                                                            if ($bidang) {
+                                                                $prog = $validateRow->setRules(2, 'prog', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                if ($prog) {
+                                                                    $kode .= ".$prog";
+                                                                    $keg = $validateRow->setRules(3, 'keg', [
+                                                                        'numeric_zero' => true,
+                                                                    ]);
+                                                                    if ($keg) {
+                                                                        $kode .= "." . $Fungsi->zero_pad($keg, 2);
+                                                                        $sub_keg = $validateRow->setRules(4, 'sub_keg', [
+                                                                            'numeric_zero' => true,
+                                                                        ]);
+                                                                        if ($sub_keg) {
+                                                                            $kode .= "." . $Fungsi->zero_pad($sub_keg, 2);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            $nomenklatur_urusan = $validateRow->setRules(5, 'nomenklatur urusan', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $kinerja = $validateRow->setRules(6, 'kinerja', [
+                                                                'sanitize' => 'string',
+                                                            ]);
+                                                            $indikator = $validateRow->setRules(7, 'indikator', [
+                                                                'sanitize' => 'string',
+                                                            ]);
+                                                            $satuan = $validateRow->setRules(8, 'satuan', [
+                                                                'sanitize' => 'string',
+                                                            ]);
+                                                            $keterangan = $validateRow->setRules(9, 'keterangan', [
+                                                                'sanitize' => 'string',
+                                                            ]);
+                                                            $arrayDataRows = [
+                                                                'urusan' => (int)$urusan,
+                                                                'bidang' => (int)$bidang,
+                                                                'prog' => (int)$prog,
+                                                                'keg' => (int)$keg,
+                                                                'sub_keg' => (int)$sub_keg,
+                                                                'nomenklatur_urusan' => $nomenklatur_urusan,
+                                                                'kinerja' => $kinerja,
+                                                                'indikator' => $indikator,
+                                                                'satuan' => $satuan,
+                                                                'peraturan' => $id_aturan_sub_kegiatan,
                                                                 'kode' => $kode,
                                                                 'disable' => 0,
                                                                 'keterangan' => $keterangan,
@@ -790,7 +915,7 @@ class Impor_xlsx
                                                         switch ($tbl) {
                                                             case 'sumber_dana':
                                                             case 'peraturan':
-                                                                case 'akun_belanja':
+                                                            case 'akun_belanja':
                                                                 //var_dump($tabel_pakai);
                                                                 $sumRows = $DB->getWhereArray($tabel_pakai, $getWhereArrayData);
                                                                 $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
