@@ -427,6 +427,47 @@ $(document).ready(function () {
 						case "prog":
 						case "keg":
 						case "sub_keg":
+							dataHtmlku.konten =
+								buatElemenHtml("multiFieldTextAction", {
+									label: "Kode",
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
+									dataArray: ['name="urusan"', 'name="bidang"', 'name="prog"', 'name="keg"', 'name="sub_keg"']
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Nomenklatur Urusan",
+									atribut: 'name="nomenklatur_urusan" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Kinerja",
+									atribut: 'name="kinerja" rows="4" placeholder="kinerja..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Indikator",
+									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Satuan",
+									atribut:
+										'name="Satuan" placeholder="satuan..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (tbl === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
 							break;
 						case "akun_belanja":
 							dataHtmlku.konten =
@@ -435,37 +476,11 @@ $(document).ready(function () {
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
-									dataArray: ['name="sumber_dana"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
+									dataArray: ['name="akun"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
-								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Type Dok",
-									atribut: 'name="type"',
-									kelas: "lainnya selection",
-									dataArray: [
-										[
-											"peraturan_undang_undang_pusat",
-											"Peraturan Perundang-undangan Pusat",
-										],
-										[
-											"peraturan_menteri_lembaga",
-											"Peraturan Kementerian / Lembaga",
-										],
-										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
-										["pengumuman", "Pengumuman"],
-										["artikel", "Artikel"],
-										["lain", "Data Lainnya"],
-										["kegiatan", "File Kegiatan"],
-									],
-								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Tanggal Pengundangan",
-									atribut:
-										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
-									kelas: "date",
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
