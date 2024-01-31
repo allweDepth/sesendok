@@ -125,17 +125,31 @@ class Impor_xlsx
                                 $RowHeaderValidate = [];
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
+                                    case 'akun':
+                                    case 'sub_kegiatan':
+                                    case 'asb':
+                                    case 'sbu':
+                                    case 'ssh':
+                                    case 'hspk':
                                     case 'sumber_dana':
                                         $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
                                         //var_dump($rowUsername);
 
                                         $tahun = (int) $rowUsername->tahun;
-                                        $rowTahunAktif = $DB->getWhereOnce('pengaturan', ['tahun', '=', $tahun]);
-
+                                        $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+                                        //var_dump($rowTahunAktif);
                                         if ($rowTahunAktif) {
-                                            $rowTahun = $rowTahunAktif;
+                                            $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
+                                            $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
+                                            $id_aturan_akun = $rowTahunAktif->aturan_akun;
+                                            $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
+                                            $id_aturan_asb = $rowTahunAktif->aturan_asb;
+                                            $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
+                                            $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
+                                            $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
+                                            $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
                                         } else {
-                                            $rowTahun = "pengaturan tahun $tahun tidak ditemukan";
+                                            $id_peraturan = 0;
                                         }
                                         break;
                                 }
@@ -343,6 +357,7 @@ class Impor_xlsx
                                                                 'rincian_objek' => $rincian_objek,
                                                                 'sub_rincian_objek' => $sub_rincian_objek,
                                                                 'uraian' => $uraian,
+                                                                'peraturan' => $id_aturan_sumber_dana,
                                                                 'kode' => $kode,
                                                                 'disable' => 0,
                                                                 'keterangan' => $keterangan,

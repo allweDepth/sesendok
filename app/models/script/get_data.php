@@ -213,8 +213,9 @@ class get_data
                             break;
                         case 'edit':
                             $kodePosting = 'get_data';
-                            $where1 = "id = ?";
-                            $data_where1 =  [$id_row];
+                            $where_row = "id = ?";
+                            
+                            $data_where_row =  [$id_row];
                             break;
                         default:
                             #code...
@@ -241,7 +242,7 @@ class get_data
                             $data_where1 =  [0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
-                            $jumlah_kolom = 7;
+                            $jumlah_kolom = 9;
                             break;
                         case 'sbu':
                             break;
@@ -270,7 +271,7 @@ class get_data
                     switch ($kodePosting) {
                         case 'get_data':
                         case 'get_row': //  ambil data 1 baris 
-                            $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where1", $data_where1);
+                            $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where_row", $data_where_row);
                             //var_dump($resul);
                             $jumlahArray = is_array($resul) ? count($resul) : 0;
                             if ($jumlahArray > 0) {

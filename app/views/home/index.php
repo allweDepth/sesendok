@@ -176,7 +176,12 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             </div>
                         </h3>
                     </div>
-
+                    <div class="ui action input multi">
+                        <input type="text" placeholder="Search...">
+                        <input type="text" placeholder="Search...">
+                        <input type="text" placeholder="Search...">
+                        <button class="ui button">Search</button>
+                    </div>
                     <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
                     <p>Tutorial cara menggunakan aplikasi AHSP untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
                     <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
@@ -295,6 +300,9 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             <td></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+
+                    </tfoot>
                 </table>
             </div>
 

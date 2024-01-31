@@ -54,11 +54,11 @@ $(document).ready(function () {
 			darkmodeEnabled = true;
 		}
 	});
-	
+
 	//=====================
 	//======DATA TAB=======@audit-ok data tab
 	//=====================
-	$("body").on("click", "a[data-tab]", function (e) {
+	$("body").on("click", 'a[data-tab], a[name="page"]', function (e) {
 		e.preventDefault();
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
@@ -167,6 +167,20 @@ $(document).ready(function () {
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
+		if (ini.attr('name') === 'page') {
+			halaman = ini.attr("hal");
+			let ret = ini.attr("ret");
+			switch (ret) {
+				case "prev":
+					halaman = halaman - 1;
+					break;
+				case "next":
+					halaman = parseInt(halaman) + 1;
+					break;
+			}
+			tab = tbl;
+			divTab = ini.closest('div[data-tab]');
+		}
 		$(`#cari_data`).attr("name", tbl);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
@@ -238,6 +252,9 @@ $(document).ready(function () {
 				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
+			case "sumber_dana":
+				jalankanAjax = true;
+				break;
 			case "xxxx":
 				break;
 			default:
@@ -259,12 +276,18 @@ $(document).ready(function () {
 						loaderHide();
 						switch (jenis) {
 							case "get_tbl":
+								console.log(divTab);
 								const elmTable = divTab.find("table");
 								const elmtbody = elmTable.find(`tbody`);
 								const elmtfoot = elmTable.find(`tfoot`);
-								console.log(elmTable);
+
 								elmtbody.html(result.data.tbody);
 								elmtfoot.html(result.data.tfoot);
+								console.log(result?.data?.thead);
+								if (result?.data?.thead) {
+									const elmthead = elmTable.find(`thead`);
+									elmthead.html(result.data.thead);
+								}
 								switch (tbl) {
 									case "peraturan":
 										break;
@@ -292,7 +315,7 @@ $(document).ready(function () {
 										$('form[name="form_pengaturan"] .ui.dropdown[name!="tahun"]').dropdown({
 											values: result?.data?.peraturan,
 										})
-										
+
 										let attrName = formPengaturan.find('input[name],textarea[name]');
 										for (const iterator of attrName) {
 											let attrElm = $(iterator).attr('name');
@@ -404,13 +427,13 @@ $(document).ready(function () {
 						case "keg":
 						case "sub_keg":
 						case "akun_belanja":
-						case "sumber_dana":
 							dataHtmlku.konten =
-								buatElemenHtml("fieldTextAction", {
+								buatElemenHtml("multiFieldTextAction", {
 									label: "Kode",
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
+									dataArray: ['name="sumber_dana"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
@@ -441,6 +464,36 @@ $(document).ready(function () {
 									atribut:
 										'placeholder="Input Tanggal.." name="tgl_pengundangan" readonly',
 									kelas: "date",
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (tbl === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+						case "sumber_dana":
+							dataHtmlku.konten =
+								buatElemenHtml("multiFieldTextAction", {
+									label: "Kode",
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
+									dataArray: ['name="sumber_dana"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Uraian",
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -2121,6 +2174,19 @@ $(document).ready(function () {
 					' type="text" ' +
 					atributData +
 					"></div></div>";
+				break;
+			case "multiFieldTextAction"://@audit
+				let inputElm = '';
+				for (let x in dataArray) {
+					let rowsData = dataArray[x];
+					inputElm += `<input type="text" ${rowsData}>`;
+				}
+				elemen =
+					`<div class="field"><label>
+					${labelData}
+					</label><div class="ui action fluid input multi">
+					${inputElm}
+					<button class="ui teal button" ${atributLabel}>${txtLabelData}</button> </div></div>`;
 				break;
 			case "fieldTextAction":
 				elemen =

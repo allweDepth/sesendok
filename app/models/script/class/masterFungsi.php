@@ -805,16 +805,20 @@ class MasterFungsi
 
         $jumlahArray = is_array($get_data) ? count($get_data) : 0;
         if ($jumlahArray > 0) {
-            // jika tabel dibuat bersama header
+            // jika tabel  header
             switch ($tbl) {
-                case 'analisa_bm':
-                case 'analisa_sda':
-                case 'analisa_quarry':
-                case 'analisa_alat_custom':
-                    $rowData['tbody'] = '<div class="ui scrolling container"><table class="ui first head foot stuck unstackable mini compact celled table" tbl="' . $tbl . '"><thead><tr' . $classRow . '><th class="one wide">No.</th><th class="five wide">URAIAN</th><th>KODE</th><th>KOEF.</th><th>SATUAN</th><th>HARGA SATUAN</th><th>RUMUS KOEF.</th><th>KET</th><th class="center aligned collapsing"><div class="ui mini basic icon buttons"><button class="ui button" name="add_row" jns="' . $tbl . '" tbl="add_row_tabel" data-tooltip="add row" data-position="left center" data-inverted><i class="plus icon"></i></button><label jns="' . $tbl . '" tbl="add_row_tabel" for="invisibleupload1" class="ui button" data-tooltip="ambil data excel" data-position="left center" data-inverted><i class="excel green file outline icon"></i></label></div></th></tr></thead><tbody>';
-                    break;
-                case 'analisa_ck':
-                    $rowData['tbody'] = '<div class="ui scrolling container"><table class="ui first head foot stuck unstackable mini compact celled table" tbl="' . $tbl . '"><thead><tr' . $tbl . '><th class="five wide">URAIAN</th><th>KODE</th><th>SATUAN</th><th>KOEF.</th><th>HARGA SATUAN</th><th>JUMLAH</th><th>RUMUS HARGA SATUAN</th><th class="center aligned collapsing"><div class="ui mini basic icon buttons"><button class="ui button" name="add_row" jns="' . $tbl . '" tbl="add_row_tabel" data-tooltip="add row" data-position="left center" data-inverted><i class="plus icon"></i></button><label jns="' . $tbl . '" tbl="add_row_tabel" for="invisibleupload1" class="ui button" data-tooltip="ambil data excel" data-position="left center" data-inverted><i class="excel green file outline icon"></i></label></div></th></tr></thead><tbody>';
+                case 'sumber_dana':
+                    $rowData['thead'] = trim('<tr>
+                    <th>sumber dana</th>
+                    <th>kelompok</th>
+                    <th>jenis</th>
+                    <th>objek</th>
+                    <th>rincian objek</th>
+                    <th>sub rincian objek</th>
+                    <th>uraian</th>
+                    <th>keterangan</th>
+                    <th>AKSI</th>
+                </tr>');
                     break;
                 case 'user':
                     break;
@@ -851,6 +855,31 @@ class MasterFungsi
                                     <td>' . $fileTag . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
+                        break;
+                    case 'sumber_dana':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+
+
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                        <td klm="sumber_dana">' . $divAwal . $row->sumber_dana . $divAkhir . '</td>
+                                        <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
+                                        <td klm="jenis">' . $divAwal . $row->jenis . $divAkhir . '</td>
+                                        <td klm="objek">' . $divAwal . $row->objek . $divAkhir . '</td>
+                                        <td klm="rincian_objek">' . $divAwal . $row->rincian_objek . $divAkhir . '</td>
+                                        <td klm="sub_rincian_objek">' . $divAwal . $row->sub_rincian_objek . $divAkhir . '</td>
+                                        <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
+                                        <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                        <td>' . $buttons . '</td>
+                                    </tr>');
                         break;
                     case 'rekanan':
                         $buttons = '';
@@ -1215,13 +1244,13 @@ class MasterFungsi
             if ($halaman == 1) {
                 $pagination1 .= '<a class="disabled icon item"><i class="angle left icon"></i></a>';
             } else {
-                $pagination1 .= '<a class="icon item" name="page" hal="' . $id_aktif . '" ret="prev" tbl="' . $nama_tabel . '"><i class="angle left icon"></i></a>';
+                $pagination1 .= '<a class="icon item"  jns="get_tbl" name="page" hal="' . $id_aktif . '" ret="prev" tbl="' . $nama_tabel . '"><i class="angle left icon"></i></a>';
             }
             // panah next
             if ($halaman == $jmlhalaman) {
                 $pagination2 .= '<a class="disabled icon item"><i class="angle right icon"></i></a>';
             } else {
-                $pagination2 .= '<a class="icon item" name="page" hal="' . $id_aktif . '" ret="next" tbl="' . $nama_tabel . '"><i class="angle right icon"></i></a>';
+                $pagination2 .= '<a class="icon item" name="page" hal="' . $id_aktif . '" ret="next" jns="get_tbl" tbl="' . $nama_tabel . '"><i class="angle right icon"></i></a>';
             }
             //var_dump( $pagination );
             $rowData['foot'] = trim('<div class="ui center pagination menu">' . $pagination1 . $pagination . $paginationnext . $pagination2 . '</div>');

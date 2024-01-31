@@ -28,9 +28,9 @@ class writer_xlsx
             'max_char' => 100
         ]);
         $filename = 'nabiilaInayah.xlsx';
-        
+
         $writer = new XLSXWriter();
-        
+
         // hanya text bold tengah
         $LTRB = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'wrap_text' => 'true');
         $LTRB_20 = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'wrap_text' => 'true', 'height' => 20);
@@ -38,7 +38,7 @@ class writer_xlsx
         $LTRB_vc_fillRed_b_20 = array('border' => 'left,right,top,bottom', 'color' => '#ffffff', 'border-style' => 'thin', 'wrap_text' => 'true', 'fill' => '#ee3939', 'font-style' => 'bold', 'height' => 20, 'valign' => 'center'); //'#8e2f2f'
         //cetak kotak dan tulisan ditengah tanpa style
         $LTRB_hc = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'wrap_text' => 'true');
-        $LTRB_vt = array('border' => 'left,right,top,bottom', 'border-style' => 'thin','valign' => 'top', 'wrap_text' => 'true');
+        $LTRB_vt = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'valign' => 'top', 'wrap_text' => 'true');
         //
         $style_Non_Data = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#ffc', 'wrap_text' => 'true', 'height' => 25, 'font-size' => 16);
         //wrap text and all center warna kuning
@@ -51,13 +51,28 @@ class writer_xlsx
         if ($validate->passed()) {
             $sukses = true;
             //var_dump('Content');
-            
+
             $query = '';
             switch ($tbl) {
                 case 'peraturan':
                     $tabel_pakai = 'peraturan_neo';
                     $filename = 'peraturan.xlsx';
                     $nama_sheet = 'Peraturan';
+                    switch ($jenis) {
+                        case 'dok':
+                            $where1 = "id > 0";
+                            $order = "ORDER BY id ASC";
+                            $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    break;
+                case 'sumber_dana':
+                    $tabel_pakai = 'sumber_dana_neo';
+                    $filename = 'sumber_dana.xlsx';
+                    $nama_sheet = 'sumberdana';
                     switch ($jenis) {
                         case 'dok':
                             $where1 = "id > 0";
@@ -84,12 +99,12 @@ class writer_xlsx
             //ambil quary
             if (strlen($where1) > 0) {
                 $get_data = $DB->runQuery2($query);
-                
+
                 //$code = 100;
                 //$hasilServer['100'] = $get_data[0][3];
                 $jumlahArray = is_array($get_data) ? count($get_data) : 0;
                 if ($jumlahArray > 0) {
-                    
+
                     #=============================
                     #==== HEADER KOP TABEL =======
                     #=============================
@@ -110,13 +125,13 @@ class writer_xlsx
                                         '10' => 'string', //status
                                         '11' => 'string', //disable
                                         '12' => 'string' //keterangan
-                                    ), $col_options = array('widths' => [10, 30, 50, 40, 40, 40, 30, 20,20,20,20,40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 2, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    ), $col_options = array('widths' => [10, 30, 50, 40, 40, 40, 30, 20, 20, 20, 20, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 2, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = 11);
                                     $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
-                                    
+
                                     $row_tabel = ['NO.', 'TYPE DOK', 'JUDUL', 'NOMOR', 'BENTUK', 'BENTUK SINGKAT', 'LOKASI PENETAPAN', '="TANGGAL PENETAPAN"', '="TANGGAL PENGUNDANGAN"', 'STATUS', 'DISABLE', 'KETERANGAN'];
                                     for ($x = 1; $x <= 12; ++$x) {
-                                        $colHeader[] = '="('.$x.')"';
+                                        $colHeader[] = '="(' . $x . ')"';
                                     }
                                     $writer->writeSheetRow($nama_sheet, $row_tabel, ['height' => 40, 'border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#d76e6e', 'wrap_text' => true, 'freeze_rows' => 1]);
                                     $writer->writeSheetRow($nama_sheet, $colHeader, $LTRB_hc);
@@ -125,6 +140,35 @@ class writer_xlsx
                                     break;
                             }
                             break;
+                        case 'sumber_dana':
+                            switch ($jenis) {
+                                case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                    $writer->writeSheetHeader($nama_sheet, $rowdata = array(
+                                        'SUMBER DANA' => '0', //No
+                                        '2' => 'string', //type_dok
+                                        '3' => 'string', //judul
+                                        '4' => 'string', //nomor
+                                        '5' => 'string', //bentuk
+                                        '6' => 'string', //bentuk_singkat
+                                        '7' => 'string', //t4_penetapan
+                                        '8' => 'string', //status
+                                        '9' => 'string' //keterangan
+                                    ), $col_options = array('widths' => [10,10,10,10,10,10,10, 80, 70], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = 11);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
+
+                                    $row_tabel = ['NO.', 'SUMBER DANA', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
+                                    for ($x = 1; $x <= 9; ++$x) {
+                                        $colHeader[] = '="(' . $x . ')"';
+                                    }
+                                    $writer->writeSheetRow($nama_sheet, $row_tabel, ['height' => 40, 'border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#d76e6e', 'wrap_text' => true, 'freeze_rows' => 1]);
+                                    $writer->writeSheetRow($nama_sheet, $colHeader, $LTRB_hc);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+
                         case 'rab':
                             //SHEET BOQ
                             $writer->writeSheetHeader($nama_sheet, $rowdata = array(
@@ -234,7 +278,7 @@ class writer_xlsx
                             );
                             $writer->writeSheetRow($nama_sheet3, $rowdata, $LTRB_hcvcwrap_b_fill);
                             break;
-                        
+
                         case 'analisa_alat':
                             switch ($tbl) {
                                 case 'one_by_one': //semua alat tapi dengan detail
@@ -426,6 +470,26 @@ class writer_xlsx
                                         break;
                                 }
                                 break;
+                            case 'sumber_dana':
+                                switch ($jenis) {
+                                    case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                        $rowdata = array(
+                                            $myrow,
+                                            $row['sumber_dana'],
+                                            $row['kelompok'],
+                                            $row['jenis'],
+                                            $row['objek'],
+                                            $row['rincian_objek'],
+                                            $row['sub_rincian_objek'],
+                                            $row['uraian'],
+                                            $row['keterangan']
+                                        );
+                                        $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
                             case 'harga_satuan':
                                 switch ($tbl) {
                                     case 'dok': //mengambil seluruh data harga satuan sesuai proyek
@@ -453,7 +517,7 @@ class writer_xlsx
                     #=====================
                     #==== TAMBAHAN =======
                     #=====================
-                    
+
                 } else {
                     $writer->writeSheetRow($nama_sheet, $rowdata = array('DATA TIDAK DITEMUKAN', '', '', '', '', '', '', ''), $style_Non_Data);
                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = 7);
