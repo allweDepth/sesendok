@@ -113,6 +113,7 @@ class get_data
                             $jumlah_kolom = 4;
                             break;
                         case "akun":
+                        case "akun_belanja":
                             $tabel_pakai = 'akun_neo';
                             $jumlah_kolom = 4;
                             break;
@@ -214,7 +215,7 @@ class get_data
                         case 'edit':
                             $kodePosting = 'get_data';
                             $where_row = "id = ?";
-                            
+
                             $data_where_row =  [$id_row];
                             break;
                         default:
@@ -234,6 +235,28 @@ class get_data
                             $jumlah_kolom = 6;
                             break;
                         case 'sumber_dana':
+                            $like = "disable <= ? AND(uraian LIKE CONCAT('%',?,'%') OR kode LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 9;
+                            break;
+                        case 'akun_belanja':
+                            $like = "disable <= ? AND(uraian LIKE CONCAT('%',?,'%') OR kode LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 9;
+                            break;
+                        case 'akun':
                             $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY kode ASC";

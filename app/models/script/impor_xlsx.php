@@ -125,7 +125,7 @@ class Impor_xlsx
                                 $RowHeaderValidate = [];
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
-                                    case 'akun':
+                                    case 'akun_belanja':
                                     case 'sub_kegiatan':
                                     case 'asb':
                                     case 'sbu':
@@ -165,6 +165,11 @@ class Impor_xlsx
                                         $count_col_min = 8;
                                         $tabel_pakai = 'sumber_dana_neo';
                                         $RowHeaderValidate = ['Sumber Dana', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
+                                    case 'akun_belanja':
+                                        $tabel_pakai = 'akun_neo';
+                                        $RowHeaderValidate = ['Akun', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
                                     case 'rekanan':
@@ -344,8 +349,6 @@ class Impor_xlsx
                                                             ]);
                                                             $keterangan = $validateRow->setRules(7, 'keterangan', [
                                                                 'sanitize' => 'string',
-                                                                'required' => true,
-                                                                'min_char' => 1
                                                             ]);
                                                             $kode = "$sumber_dana.$kelompok.$jenis.$objek.$rincian_objek.$sub_rincian_objek";
 
@@ -358,6 +361,57 @@ class Impor_xlsx
                                                                 'sub_rincian_objek' => $sub_rincian_objek,
                                                                 'uraian' => $uraian,
                                                                 'peraturan' => $id_aturan_sumber_dana,
+                                                                'kode' => $kode,
+                                                                'disable' => 0,
+                                                                'keterangan' => $keterangan,
+                                                                'tanggal' => date('Y-m-d H:i:s'),
+                                                                'username' => $_SESSION["user"]["username"]
+                                                            ];
+                                                            $update_arrayData = [['kode', '=', $kode]];
+                                                            $getWhereArrayData = [['kode', '=', $kode]];
+                                                            $no_sort++;
+                                                            break;
+                                                        case 'akun_belanja':
+                                                        case 'akun':
+                                                            $akun = $validateRow->setRules(0, 'akun', [
+                                                                'required' => true,
+                                                                'numeric' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $kelompok = $validateRow->setRules(1, 'kelompok', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $jenis = $validateRow->setRules(2, 'jenis', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $objek = $validateRow->setRules(3, 'objek', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $rincian_objek = $validateRow->setRules(4, 'rincian objek', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $sub_rincian_objek = $validateRow->setRules(5, 'sub rincian_objek', [
+                                                                'numeric' => true,
+                                                            ]);
+                                                            $uraian = $validateRow->setRules(6, 'uraian', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $keterangan = $validateRow->setRules(7, 'keterangan', [
+                                                                'sanitize' => 'string',
+                                                            ]);
+                                                            $kode = "$akun.$kelompok.$jenis.$objek.$rincian_objek.$sub_rincian_objek";
+
+                                                            $arrayDataRows = [
+                                                                'akun' => $akun,
+                                                                'kelompok' => $kelompok,
+                                                                'jenis' => $jenis,
+                                                                'objek' => $objek,
+                                                                'rincian_objek' => $rincian_objek,
+                                                                'sub_rincian_objek' => $sub_rincian_objek,
+                                                                'uraian' => $uraian,
+                                                                'peraturan' => $id_aturan_akun,
                                                                 'kode' => $kode,
                                                                 'disable' => 0,
                                                                 'keterangan' => $keterangan,
@@ -736,6 +790,7 @@ class Impor_xlsx
                                                         switch ($tbl) {
                                                             case 'sumber_dana':
                                                             case 'peraturan':
+                                                                case 'akun_belanja':
                                                                 //var_dump($tabel_pakai);
                                                                 $sumRows = $DB->getWhereArray($tabel_pakai, $getWhereArrayData);
                                                                 $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;

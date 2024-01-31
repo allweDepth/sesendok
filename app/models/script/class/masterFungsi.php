@@ -805,7 +805,7 @@ class MasterFungsi
 
         $jumlahArray = is_array($get_data) ? count($get_data) : 0;
         if ($jumlahArray > 0) {
-            // jika tabel  header
+            // jika tabel mengganti thead
             switch ($tbl) {
                 case 'sumber_dana':
                     $rowData['thead'] = trim('<tr>
@@ -820,6 +820,19 @@ class MasterFungsi
                     <th>AKSI</th>
                 </tr>');
                     break;
+                    case 'akun':
+                        $rowData['thead'] = trim('<tr>
+                        <th>sumber dana</th>
+                        <th>kelompok</th>
+                        <th>jenis</th>
+                        <th>objek</th>
+                        <th>rincian objek</th>
+                        <th>sub rincian objek</th>
+                        <th>uraian</th>
+                        <th>keterangan</th>
+                        <th>AKSI</th>
+                    </tr>');
+                        break;
                 case 'user':
                     break;
                 default:

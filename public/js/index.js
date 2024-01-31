@@ -252,6 +252,7 @@ $(document).ready(function () {
 				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
+			case "akun_belanja":
 			case "sumber_dana":
 				jalankanAjax = true;
 				break;
@@ -490,6 +491,36 @@ $(document).ready(function () {
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 									dataArray: ['name="sumber_dana"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Uraian",
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (tbl === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+						case "sumber_dana":
+							dataHtmlku.konten =
+								buatElemenHtml("multiFieldTextAction", {
+									label: "Kode",
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
+									dataArray: ['name="akun"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
