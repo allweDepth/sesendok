@@ -369,9 +369,13 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <div class="ui info message" name="kethargasat">Nabiilainayah</div>
                 <div class="ui hidden divider"></div>
                 <div class="ui right floated basic icon buttons">
-                    <button class="ui button" data-tooltip="Tambah Data" data-position="bottom center"><i class="plus icon"></i></button>
-                    <button class="ui button" data-tooltip="Import XLSX" data-position="bottom center"><i class="upload icon"></i></button>
-                    <button class="ui button" data-tooltip="Download" data-position="bottom center"><i class="alternate download icon"></i></button>
+                <?php
+                    if ($type_user == 'admin') {
+                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+                            <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
+                    }
+                    ?>
+                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="asb" type="submit"><i class="alternate download icon"></i></button>
                 </div>
                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                 <div class="ui hidden divider"></div>

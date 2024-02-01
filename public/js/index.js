@@ -210,12 +210,10 @@ $(document).ready(function () {
 				jalankanAjax = true;
 				switch (tbl) {
 					case "ssh":
-						break;
 					case "hspk":
-						break;
 					case "asb":
-						break;
 					case "sbu":
+						divTab.find('[tbl]').attr('tbl', tbl);
 						break;
 					default:
 						break;
@@ -413,6 +411,9 @@ $(document).ready(function () {
 		}
 		if (attrName === "flyout") {
 			formIni.attr("jns", jenis).attr("tbl", tbl);
+			// console.log(`jenis : ${jenis}`);
+			// console.log(`tbl : ${tbl}`);
+			
 			switch (jenis) {
 				//EDIT DATA ROWS
 				case "edit":
@@ -423,6 +424,52 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
+						case "hspk":
+						case "ssh":
+						case "sbu":
+						case "asb":
+							dataHtmlku.konten =
+								buatElemenHtml("multiFieldTextAction", {
+									label: "Kode",
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
+									dataArray: ['name="urusan"', 'name="bidang"', 'name="prog"', 'name="keg"', 'name="sub_keg"']
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Nomenklatur Urusan",
+									atribut: 'name="nomenklatur_urusan" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Kinerja",
+									atribut: 'name="kinerja" rows="4" placeholder="kinerja..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Indikator",
+									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Satuan",
+									atribut:
+										'name="Satuan" placeholder="satuan..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (tbl === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
 						case "bidang_urusan":
 						case "prog":
 						case "keg":
@@ -529,36 +576,7 @@ $(document).ready(function () {
 								dataHtmlku.header = "Edit Data/Peraturan";
 							}
 							break;
-						case "sumber_dana":
-							dataHtmlku.konten =
-								buatElemenHtml("multiFieldTextAction", {
-									label: "Kode",
-									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
-									txtLabel: "cek",
-									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
-									dataArray: ['name="akun"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
-								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Uraian",
-									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
-								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
-								}) +
-								buatElemenHtml("fielToggleCheckbox", {
-									label: "",
-									atribut: 'name="disable" non_data',
-									txtLabel: "Non Aktif",
-								});
-							if (tbl === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
-							}
-							break;
+						
 						case "peraturan":
 							dataHtmlku.konten +=
 								buatElemenHtml("fieldDropdown", {

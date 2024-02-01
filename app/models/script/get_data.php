@@ -123,9 +123,7 @@ class get_data
                         case 'dpa':
                             $tabel_pakai = 'dpa_neo';
                             break;
-                        case 'hspk':
-                            $tabel_pakai = 'hspk_neo';
-                            break;
+
                         case 'kegiatan':
                             $tabel_pakai = 'kegiatan_neo';
                             break;
@@ -147,8 +145,14 @@ class get_data
                         case 'satuan':
                             $tabel_pakai = 'satuan_neo';
                             break;
+                        case 'hspk':
+                            $tabel_pakai = 'hspk_neo';
+                            break;
                         case 'sbu':
                             $tabel_pakai = 'sbu_neo';
+                            break;
+                        case 'asb':
+                            $tabel_pakai = 'asb_neo';
                             break;
                         case 'ssh':
                             $tabel_pakai = 'ssh_neo';
