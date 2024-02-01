@@ -834,8 +834,6 @@ class post_data
                             break;
                         case 'cek_insert': //cek data klo tidak ada teruskan insert
                             $ListRow = $DB->select_array($tabel_pakai, $kondisi, $columnName);
-                            
-
                             $jumlahArray = is_array($ListRow) ? count($ListRow) : 0;
                             if ($jumlahArray) {
                                 //update row

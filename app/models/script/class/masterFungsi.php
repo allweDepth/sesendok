@@ -782,6 +782,7 @@ class MasterFungsi
         $userAktif = $DB->getWhereCustom('user_ahsp', [['id', '=', $id_user]]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
         $classRow = '';
+        $Fungsi = new MasterFungsi();
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;
@@ -802,43 +803,62 @@ class MasterFungsi
         //$rowData['sumData'] =sizeof($get_data);
         $warna = 'green';
         //var_dump("dmn($myrow)");
-
+        // jika tabel mengganti thead
+        switch ($tbl) {
+            case 'sumber_dana':
+                $rowData['thead'] = trim('<tr>
+        <th>sumber dana</th>
+        <th>kel</th>
+        <th>jenis</th>
+        <th>objek</th>
+        <th>rincian objek</th>
+        <th>sub rincian objek</th>
+        <th>uraian</th>
+        <th>keterangan</th>
+        <th>AKSI</th>
+    </tr>');
+                break;
+            case 'akun_belanja':
+                $rowData['thead'] = trim('<tr>
+            <th>Akun</th>
+            <th>kel</th>
+            <th>jenis</th>
+            <th>objek</th>
+            <th>rincian objek</th>
+            <th>sub rincian objek</th>
+            <th>uraian</th>
+            <th>keterangan</th>
+            <th>AKSI</th>
+        </tr>');
+                break;
+            case 'bidang_urusan':
+            case 'prog':
+            case 'keg':
+            case 'sub_keg':
+                $rowData['thead'] = trim('<tr>
+                <th>urusan</th>
+                <th>bidang</th>
+                <th>prog</th>
+                <th>keg</th>
+                <th>sub keg</th>
+                <th>nomenklatur urusan</th>
+                <th>kinerja</th>
+                <th>indikator</th>
+                <th>satuan</th>
+                <th>keterangan</th>
+                <th>AKSI</th>
+            </tr>');
+                break;
+                
+            case 'user':
+                break;
+            default:
+                # code...
+                break;
+        }
         $jumlahArray = is_array($get_data) ? count($get_data) : 0;
         if ($jumlahArray > 0) {
-            // jika tabel mengganti thead
-            switch ($tbl) {
-                case 'sumber_dana':
-                    $rowData['thead'] = trim('<tr>
-                    <th>sumber dana</th>
-                    <th>kelompok</th>
-                    <th>jenis</th>
-                    <th>objek</th>
-                    <th>rincian objek</th>
-                    <th>sub rincian objek</th>
-                    <th>uraian</th>
-                    <th>keterangan</th>
-                    <th>AKSI</th>
-                </tr>');
-                    break;
-                case 'akun_belanja':
-                    $rowData['thead'] = trim('<tr>
-                        <th>Akun</th>
-                        <th>kelompok</th>
-                        <th>jenis</th>
-                        <th>objek</th>
-                        <th>rincian objek</th>
-                        <th>sub rincian objek</th>
-                        <th>uraian</th>
-                        <th>keterangan</th>
-                        <th>AKSI</th>
-                    </tr>');
-                    break;
-                case 'user':
-                    break;
-                default:
-                    # code...
-                    break;
-            }
+
             $myrow = 0;
             foreach ($get_data as $row) {
                 $myrow++;
@@ -880,41 +900,80 @@ class MasterFungsi
                                 <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
+                        $k = ((int)$row->kelompok > 0) ?$row->kelompok : '';
+                        $j = ((int)$row->jenis > 0) ?$row->jenis : '';
+                        $o = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
+                        $ro = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
+                        $sro = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                         <td klm="sumber_dana">' . $divAwal . $row->sumber_dana . $divAkhir . '</td>
-                                        <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
-                                        <td klm="jenis">' . $divAwal . $row->jenis . $divAkhir . '</td>
-                                        <td klm="objek">' . $divAwal . $row->objek . $divAkhir . '</td>
-                                        <td klm="rincian_objek">' . $divAwal . $row->rincian_objek . $divAkhir . '</td>
-                                        <td klm="sub_rincian_objek">' . $divAwal . $row->sub_rincian_objek . $divAkhir . '</td>
+                                        <td klm="kelompok">' . $divAwal . $k . $divAkhir . '</td>
+                                        <td klm="jenis">' . $divAwal .$j . $divAkhir . '</td>
+                                        <td klm="objek">' . $divAwal . $o  . $divAkhir . '</td>
+                                        <td klm="rincian_objek">' . $divAwal . $ro . $divAkhir . '</td>
+                                        <td klm="sub_rincian_objek">' . $divAwal . $sro . $divAkhir . '</td>
                                         <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
                                         <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                         <td>' . $buttons . '</td>
                                     </tr>');
                         break;
-                        case 'akun_belanja':
-                            $buttons = '';
-                            $divAwal = '';
-                            $divAkhir = '';
-                            if ($type_user == 'admin') {
-                                $divAwal = '<div contenteditable>';
-                                $divAkhir = '</div>';
-                                $buttons = '<div class="ui icon basic mini buttons">
+                    case 'akun_belanja':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
                                     <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                     <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                            }
-                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                        }
+                        $n = ((int)$row->kelompok > 0) ?$row->kelompok : '';
+                        $g = ((int)$row->jenis > 0) ?$row->jenis : '';
+                        $s = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
+                        $se = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
+                        $sr = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
+                        
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                             <td klm="akun">' . $divAwal . $row->akun . $divAkhir . '</td>
-                                            <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
-                                            <td klm="jenis">' . $divAwal . $row->jenis . $divAkhir . '</td>
-                                            <td klm="objek">' . $divAwal . $row->objek . $divAkhir . '</td>
-                                            <td klm="rincian_objek">' . $divAwal . $row->rincian_objek . $divAkhir . '</td>
-                                            <td klm="sub_rincian_objek">' . $divAwal . $row->sub_rincian_objek . $divAkhir . '</td>
+                                            <td klm="kelompok">' . $divAwal . $n . $divAkhir . '</td>
+                                            <td klm="jenis">' . $divAwal . $g. $divAkhir . '</td>
+                                            <td klm="objek">' . $divAwal . $s . $divAkhir . '</td>
+                                            <td klm="rincian_objek">' . $divAwal . $se . $divAkhir . '</td>
+                                            <td klm="sub_rincian_objek">' . $divAwal . $sr . $divAkhir . '</td>
                                             <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
                                             <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                             <td>' . $buttons . '</td>
                                         </tr>');
-                            break;
+                        break;
+                    case 'bidang_urusan':
+                    case 'prog':
+                    case 'keg':
+                    case 'sub_keg':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                        <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                        <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                                <td klm="urusan">' . $divAwal . $row->urusan . $divAkhir . '</td>
+                                                <td klm="bidang">' . $divAwal . $row->bidang . $divAkhir . '</td>
+                                                <td klm="prog">' . $divAwal . $row->prog . $divAkhir . '</td>
+                                                <td klm="keg">' . $divAwal . $row->keg . $divAkhir . '</td>
+                                                <td klm="sub_keg">' . $divAwal . $row->sub_keg . $divAkhir . '</td>
+                                                <td klm="nomenklatur_urusan">' . $divAwal . $row->nomenklatur_urusan . $divAkhir . '</td>
+                                                <td klm="kinerja">' . $divAwal . $row->kinerja . $divAkhir . '</td>
+                                                <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
+                                                <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                                                <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                                <td>' . $buttons . '</td>
+                                            </tr>');
+                        break;
                     case 'rekanan':
                         $buttons = '';
                         $divAwal = '';
