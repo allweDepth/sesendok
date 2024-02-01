@@ -54,7 +54,30 @@ $(document).ready(function () {
 			darkmodeEnabled = true;
 		}
 	});
-
+	//============================
+	//=========CARI DATA======
+	//============================
+	$(document).on("keyup", "#cari_data", function () {
+		let ini = $(this);
+		let elm_load = ini.closest("div.ui.input");
+		let jenis = ini.attr("name");
+		let tbl = ini.attr("tbl");
+		let txt = ini.val().trim();
+		if (jenis !== undefined && jenis.length > 0) {
+			elm_load.addClass("loading");
+			delay(function () {
+				switch (jenis) {
+					case "kd_akun":
+						$('a[data-tab="get"][tbl="' + jenis + '"]').click();
+						break;
+					default:
+						$('a[tbl="' + tbl + '"]').first().trigger('click');
+						// $('a[data-tab="' + jenis + '"]').first().trigger('click');
+				}
+				elm_load.removeClass("loading");
+			}, 1000);
+		}
+	});
 	//=====================
 	//======DATA TAB=======@audit-ok data tab
 	//=====================
@@ -108,6 +131,12 @@ $(document).ready(function () {
 				"SUB KEGIATAN",
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi dan kodefikasi sub kegiatan disusun berdasarkan aktivitas atau layanan dalam penyelesaian permasalahan daerah sesuai kewenangannya.",
+			],
+			aset: [
+				"clipboard list icon",
+				"ASET",
+				"Klasifikasi dan kodefikasi",
+				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
 			],
 			akun_belanja: [
 				"clipboard list icon",
@@ -166,6 +195,7 @@ $(document).ready(function () {
 		let tab = ini.attr("data-tab");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
+		$(`#cari_data`).attr("tbl", tbl);
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		if (ini.attr('name') === 'page') {
 			halaman = ini.attr("hal");
@@ -181,7 +211,7 @@ $(document).ready(function () {
 			tab = tbl;
 			divTab = ini.closest('div[data-tab]');
 		}
-		$(`#cari_data`).attr("name", tbl);
+		
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
 		let pDashboard = "seSendok";
@@ -250,6 +280,7 @@ $(document).ready(function () {
 				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
+			case "sub_keg":
 			case "akun_belanja":
 			case "sumber_dana":
 				jalankanAjax = true;
@@ -413,7 +444,7 @@ $(document).ready(function () {
 			formIni.attr("jns", jenis).attr("tbl", tbl);
 			// console.log(`jenis : ${jenis}`);
 			// console.log(`tbl : ${tbl}`);
-			
+
 			switch (jenis) {
 				//EDIT DATA ROWS
 				case "edit":
@@ -516,6 +547,7 @@ $(document).ready(function () {
 								dataHtmlku.header = "Edit Data/Peraturan";
 							}
 							break;
+						case "aset":
 						case "akun_belanja":
 							dataHtmlku.konten =
 								buatElemenHtml("multiFieldTextAction", {
@@ -538,7 +570,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (tbl === "edit") {
+							if (jenis === "edit") {
 								data.id_row = id_row;
 								jalankanAjax = true;
 								formIni.attr("id_row", id_row);
@@ -576,7 +608,7 @@ $(document).ready(function () {
 								dataHtmlku.header = "Edit Data/Peraturan";
 							}
 							break;
-						
+
 						case "peraturan":
 							dataHtmlku.konten +=
 								buatElemenHtml("fieldDropdown", {
@@ -1530,7 +1562,7 @@ $(document).ready(function () {
 						// UNTUK PENGATURAN====
 						// ====================
 						case "form_pengaturan"://@audit
-							
+
 							formData.has("disable") === false
 								? formData.append("disable", 'off')
 								: formData.set("disable", 'on'); // Returns false
@@ -2655,4 +2687,11 @@ $(document).ready(function () {
 			},
 		});
 	}
+	var delay = (function () {
+		var timer = 0;
+		return function (callback, ms) {
+			clearTimeout(timer);
+			timer = setTimeout(callback, ms);
+		};
+	})();
 });

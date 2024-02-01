@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 01 Feb 2024 pada 11.19
+-- Waktu pembuatan: 01 Feb 2024 pada 21.22
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -66,6 +66,32 @@ CREATE TABLE `asb_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `aset_neo`
+--
+
+CREATE TABLE `aset_neo` (
+  `id` int(8) NOT NULL,
+  `akun` int(11) NOT NULL,
+  `kelompok` int(11) DEFAULT NULL,
+  `jenis` int(11) DEFAULT NULL,
+  `objek` int(11) DEFAULT NULL,
+  `rincian_objek` int(11) DEFAULT NULL,
+  `sub_rincian_objek` int(11) DEFAULT NULL,
+  `kode` varchar(25) NOT NULL,
+  `uraian` varchar(400) NOT NULL,
+  `belanja` tinyint(1) DEFAULT NULL,
+  `pembiayaan` tinyint(1) DEFAULT NULL,
+  `peraturan` varchar(255) NOT NULL,
+  `disable` tinyint(1) NOT NULL DEFAULT 0,
+  `aksi` varchar(255) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `tanggal` datetime NOT NULL,
+  `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -355,16 +381,18 @@ CREATE TABLE `sub_kegiatan_neo` (
   `keg` varchar(4) DEFAULT NULL,
   `sub_keg` int(11) DEFAULT NULL,
   `kode` varchar(25) NOT NULL,
-  `nomenklatur_urusan` varchar(400) NOT NULL,
-  `kinerja` varchar(400) DEFAULT NULL,
-  `indikator` varchar(400) DEFAULT NULL,
+  `kd_prov` varchar(25) NOT NULL,
+  `kd_kab` varchar(25) NOT NULL,
+  `nomenklatur_urusan` text NOT NULL,
+  `kinerja` text DEFAULT NULL,
+  `indikator` text DEFAULT NULL,
   `satuan` varchar(100) DEFAULT NULL,
   `peraturan` varchar(255) NOT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
-  `username` datetime NOT NULL
+  `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -428,7 +456,7 @@ CREATE TABLE `user_ahsp` (
 
 INSERT INTO `user_ahsp` (`id`, `username`, `email`, `nama`, `password`, `kd_organisasi`, `nama_org`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `tahun`, `kontak_person`, `font_size`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`) VALUES
 (1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$phmt521EHu3PEkilYD/TJ.i1U.ZcMjAHAJt4y88r3O0tfbgs8HQl6', '', 'Alwi Mansyur', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-01-26 14:17:26', '2024', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
-(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-01 18:15:30', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
+(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-02 03:50:11', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
 (3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$J1RLk2kaKqYeuFs2q76vxuoPYTi3cA8dCjRISJlnwlsi3sdHoAKg.', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
 (4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$V.f/.ElwettBd3jyJfMR5epHT0s8NVqaU/mL8ZIqIJo.HBb.6x/Qi', '', 'Prof', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
 (5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$cFR8KdFGXUFBZ5C5payBEOb3aPEXtvYwAKO6Gc6Zdqyjo7WRuDY8.', '', 'administrator AHSP', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');
@@ -441,6 +469,12 @@ INSERT INTO `user_ahsp` (`id`, `username`, `email`, `nama`, `password`, `kd_orga
 -- Indeks untuk tabel `akun_neo`
 --
 ALTER TABLE `akun_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `aset_neo`
+--
+ALTER TABLE `aset_neo`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -492,6 +526,12 @@ ALTER TABLE `satuan_neo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `sub_kegiatan_neo`
+--
+ALTER TABLE `sub_kegiatan_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `sumber_dana_neo`
 --
 ALTER TABLE `sumber_dana_neo`
@@ -513,6 +553,12 @@ ALTER TABLE `user_ahsp`
 -- AUTO_INCREMENT untuk tabel `akun_neo`
 --
 ALTER TABLE `akun_neo`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `aset_neo`
+--
+ALTER TABLE `aset_neo`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
 
 --
@@ -562,6 +608,12 @@ ALTER TABLE `program_neo`
 --
 ALTER TABLE `satuan_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `sub_kegiatan_neo`
+--
+ALTER TABLE `sub_kegiatan_neo`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `sumber_dana_neo`

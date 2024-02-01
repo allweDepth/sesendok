@@ -132,7 +132,7 @@ class Impor_xlsx
                                     case 'ssh':
                                     case 'hspk':
                                     case 'sumber_dana':
-                                        case 'sub_keg':
+                                    case 'sub_keg':
                                         $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
                                         //var_dump($rowUsername);
 
@@ -173,13 +173,21 @@ class Impor_xlsx
                                         $RowHeaderValidate = ['Akun', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
+                                    case 'aset':
+                                        $tabel_pakai = 'aset_neo';
+                                        $RowHeaderValidate = ['Akun', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
+                                    case 'sub_keg':
+                                        $tabel_pakai = 'sub_kegiatan_neo';
+                                        $RowHeaderValidate = ['URUSAN/UNSUR', 'BIDANG URUSAN/BIDANG UNSUR', 'PROGRAM', 'KEGIATAN', 'SUB KEGIATAN', 'NOMENKLATUR URUSAN', 'KINERJA', 'INDIKATOR', 'SATUAN', 'Keterangan'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
                                     case 'rekanan':
                                         $tabel_pakai = 'rekanan';
                                         $RowHeaderValidate = ['Nama Perusahaan/Pribadi', 'Alamat', 'Email', 'NPWP', 'Nomor Rekening Bank', 'Nama Bank Rekening', 'Atas Nama Bank Rekening', 'Nama Penanggung Jawab', 'Jabatan', 'Nomor KTP', 'Alamat Penanggung Jawab', 'Nomor Akta Pendirian', 'Tanggal Akta Pendirian', 'Lokasi Notaris Pendirian', 'Nama Notaris Pendirian', 'Nomor Akta Perubahan', 'Tanggal Akta Perubahan', 'Lokasi Notaris Perubahan', 'Nama Notaris Perubahan', 'Nama Pelaksana', 'Jabatan Pelaksana', 'KETERANGAN'];
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
-
-
                                     case 'harga_satuan':
                                         $count_col_min = 8;
                                         $tabel_pakai = 'harga_sat_upah_bahan';
@@ -212,24 +220,22 @@ class Impor_xlsx
                                     //============================
                                     //validasi row header excel
                                     //var_dump(((int)$jml_header - 1));
-                                    if ($r == ($jml_header - 1)) {
-                                        if (count($RowHeaderValidate) > 0) {
-                                            $getData = array_map('strtolower', $getData); //menjadikan huruf kecil semua value
-                                            //var_dump($getData);
-                                            $validateTabel = new Validate($getData);
-                                            //var_dump($validateTabel);
-                                            foreach ($RowHeaderValidate as $keyValid => $valueValid) {
-                                                $headerValid = strtolower($valueValid);
-                                                $data_column = $validateTabel->setRules($keyValid, "header kolom $headerValid", [
-                                                    'sanitize' => 'string',
-                                                    'required' => true,
-                                                    'min_char' => 1,
-                                                    'max_char' => 100,
-                                                    'in_array' => [$headerValid]
-                                                ]);
-                                                //var_dump($valueValid);
-                                                //var_dump($data_column);
-                                            }
+                                    if ($r == ($jml_header - 1) && count($RowHeaderValidate) > 0) {
+                                        $getData = array_map('strtolower', $getData); //menjadikan huruf kecil semua value
+                                        //var_dump($getData);
+                                        $validateTabel = new Validate($getData);
+                                        //var_dump($validateTabel);
+                                        foreach ($RowHeaderValidate as $keyValid => $valueValid) {
+                                            $headerValid = preg_replace('/(\s\s+|\t|\n)/', ' ', strtolower($valueValid));
+                                            $data_column = $validateTabel->setRules($keyValid, "header kolom $headerValid", [
+                                                'sanitize' => 'string',
+                                                'required' => true,
+                                                'min_char' => 1,
+                                                'max_char' => 100,
+                                                'in_array' => [$headerValid]
+                                            ]);
+                                            //var_dump($valueValid);
+                                            //var_dump($data_column);
                                         }
                                     }
                                     if ($r > ($jml_header - 1)) {
@@ -402,6 +408,7 @@ class Impor_xlsx
                                                             $getWhereArrayData = [['kode', '=', $kode]];
                                                             $no_sort++;
                                                             break;
+                                                        case 'aset':
                                                         case 'akun_belanja':
                                                         case 'akun':
                                                             $akun = $validateRow->setRules(0, 'akun', [
@@ -425,7 +432,7 @@ class Impor_xlsx
                                                                     'numeric_zero' => true,
                                                                 ]);
                                                                 if ($jenis) {
-                                                                    $kode .= ".$jenis";
+                                                                    $kode .= "." . $Fungsi->zero_pad($jenis, 2);
                                                                     $objek = $validateRow->setRules(3, 'objek', [
                                                                         'numeric_zero' => true,
                                                                     ]);
@@ -475,17 +482,31 @@ class Impor_xlsx
                                                             $no_sort++;
                                                             break;
                                                         case 'sub_keg':
-                                                            $urusan = $validateRow->setRules(0, 'urusan', [
-                                                                'required' => true,
-                                                                'numeric' => true,
-                                                                'min_char' => 1
-                                                            ]);
+                                                            $urusan_temporer = strtolower($getData[0]);
+                                                            if ($urusan_temporer == 'x') {
+                                                                $urusan = $urusan_temporer;
+                                                            } else {
+                                                                $urusan = $validateRow->setRules(0, 'urusan', [
+                                                                    'required' => true,
+                                                                    'numeric' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                            }
                                                             $kode = "$urusan";
-                                                            $bidang = $validateRow->setRules(1, 'bidang', [
-                                                                'numeric_zero' => true,
-                                                            ]);
+                                                            $kd_prov = "$urusan";
+                                                            $kd_kab = "$urusan";
+                                                            $bidang_temporer = strtolower($getData[1]);
+                                                            if ($bidang_temporer == 'xx') {
+                                                                $bidang = $bidang_temporer;
+                                                            } else {
+                                                                $bidang = $validateRow->setRules(1, 'bidang', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                            }
                                                             if ($bidang) {
                                                                 $kode .= ".$bidang";
+                                                                $kd_prov .= ".$bidang";
+                                                                $kd_kab .= ".$bidang";
                                                             }
                                                             $prog = 0;
                                                             $keg = 0;
@@ -496,16 +517,34 @@ class Impor_xlsx
                                                                 ]);
                                                                 if ($prog) {
                                                                     $kode .= ".$prog";
-                                                                    $keg = $validateRow->setRules(3, 'keg', [
-                                                                        'numeric_zero' => true,
-                                                                    ]);
-                                                                    if ($keg) {
+                                                                    $kd_prov .= ".$prog";
+                                                                    $kd_kab .= ".$prog";
+                                                                    $keg_temporer = $getData[3];
+                                                                    // var_dump($keg_temporer);
+                                                                    if (strpos($keg_temporer, '.')) {
+                                                                        $arrayKeg = explode('.', $keg_temporer);
+                                                                        // var_dump($arrayKeg);$sum
+                                                                        // var_dump("baris:{$sum}");
+                                                                        // var_dump((int) $arrayKeg[1]);
+                                                                        $keg = $validateRow->setRules((int)$arrayKeg[1], 'keg', [
+                                                                            'numeric' => true,
+                                                                        ]);
+                                                                    } else {
+                                                                        $keg = $validateRow->setRules(3, 'keg', [
+                                                                            'numeric_zero' => true,
+                                                                        ]);
+                                                                    }
+                                                                    if ((int) $keg > 0) {
                                                                         $kode .= "." . $Fungsi->zero_pad($keg, 2);
+                                                                        $kd_prov .= ".1." . $Fungsi->zero_pad($keg, 2);
+                                                                        $kd_kab .= ".2." . $Fungsi->zero_pad($keg, 2);
                                                                         $sub_keg = $validateRow->setRules(4, 'sub_keg', [
                                                                             'numeric_zero' => true,
                                                                         ]);
                                                                         if ($sub_keg) {
-                                                                            $kode .= "." . $Fungsi->zero_pad($sub_keg, 2);
+                                                                            $kode .= "." . $Fungsi->zero_pad($sub_keg, 4);
+                                                                            $kd_prov .= "." . $Fungsi->zero_pad($sub_keg, 4);
+                                                                            $kd_kab .= "." . $Fungsi->zero_pad($sub_keg, 4);
                                                                         }
                                                                     }
                                                                 }
@@ -528,17 +567,19 @@ class Impor_xlsx
                                                                 'sanitize' => 'string',
                                                             ]);
                                                             $arrayDataRows = [
-                                                                'urusan' => (int)$urusan,
-                                                                'bidang' => (int)$bidang,
+                                                                'urusan' => $urusan,
+                                                                'bidang' => $bidang,
                                                                 'prog' => (int)$prog,
                                                                 'keg' => (int)$keg,
                                                                 'sub_keg' => (int)$sub_keg,
-                                                                'nomenklatur_urusan' => $nomenklatur_urusan,
-                                                                'kinerja' => $kinerja,
-                                                                'indikator' => $indikator,
-                                                                'satuan' => $satuan,
-                                                                'peraturan' => $id_aturan_sub_kegiatan,
+                                                                'nomenklatur_urusan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nomenklatur_urusan),
+                                                                'kinerja' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kinerja),
+                                                                'indikator' => preg_replace('/(\s\s+|\t|\n)/', ' ', $indikator),
+                                                                'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
+                                                                'peraturan' => (int)$id_aturan_sub_kegiatan,
                                                                 'kode' => $kode,
+                                                                'kd_prov' => $kd_prov,
+                                                                'kd_kab' => $kd_kab,
                                                                 'disable' => 0,
                                                                 'keterangan' => $keterangan,
                                                                 'tanggal' => date('Y-m-d H:i:s'),
@@ -914,6 +955,7 @@ class Impor_xlsx
                                                     //=====================================
                                                     if ($validateRow->passed()) {
                                                         switch ($tbl) {
+                                                            case 'sub_keg':
                                                             case 'sumber_dana':
                                                             case 'peraturan':
                                                             case 'akun_belanja':

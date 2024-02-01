@@ -818,6 +818,7 @@ class MasterFungsi
         <th>AKSI</th>
     </tr>');
                 break;
+            case 'aset':
             case 'akun_belanja':
                 $rowData['thead'] = trim('<tr>
             <th>Akun</th>
@@ -849,7 +850,7 @@ class MasterFungsi
                 <th>AKSI</th>
             </tr>');
                 break;
-                
+
             case 'user':
                 break;
             default:
@@ -900,15 +901,15 @@ class MasterFungsi
                                 <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
-                        $k = ((int)$row->kelompok > 0) ?$row->kelompok : '';
-                        $j = ((int)$row->jenis > 0) ?$row->jenis : '';
+                        $k = ((int)$row->kelompok > 0) ? $row->kelompok : '';
+                        $j = ((int)$row->jenis > 0) ? $row->jenis : '';
                         $o = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
                         $ro = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
                         $sro = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                         <td klm="sumber_dana">' . $divAwal . $row->sumber_dana . $divAkhir . '</td>
                                         <td klm="kelompok">' . $divAwal . $k . $divAkhir . '</td>
-                                        <td klm="jenis">' . $divAwal .$j . $divAkhir . '</td>
+                                        <td klm="jenis">' . $divAwal . $j . $divAkhir . '</td>
                                         <td klm="objek">' . $divAwal . $o  . $divAkhir . '</td>
                                         <td klm="rincian_objek">' . $divAwal . $ro . $divAkhir . '</td>
                                         <td klm="sub_rincian_objek">' . $divAwal . $sro . $divAkhir . '</td>
@@ -917,6 +918,7 @@ class MasterFungsi
                                         <td>' . $buttons . '</td>
                                     </tr>');
                         break;
+                    case 'aset':
                     case 'akun_belanja':
                         $buttons = '';
                         $divAwal = '';
@@ -928,16 +930,16 @@ class MasterFungsi
                                     <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                     <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
-                        $n = ((int)$row->kelompok > 0) ?$row->kelompok : '';
-                        $g = ((int)$row->jenis > 0) ?$row->jenis : '';
+                        $n = ((int)$row->kelompok > 0) ? $row->kelompok : '';
+                        $g = ((int)$row->jenis > 0) ? $row->jenis : '';
                         $s = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
                         $se = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
                         $sr = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
-                        
+
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                             <td klm="akun">' . $divAwal . $row->akun . $divAkhir . '</td>
                                             <td klm="kelompok">' . $divAwal . $n . $divAkhir . '</td>
-                                            <td klm="jenis">' . $divAwal . $g. $divAkhir . '</td>
+                                            <td klm="jenis">' . $divAwal . $g . $divAkhir . '</td>
                                             <td klm="objek">' . $divAwal . $s . $divAkhir . '</td>
                                             <td klm="rincian_objek">' . $divAwal . $se . $divAkhir . '</td>
                                             <td klm="sub_rincian_objek">' . $divAwal . $sr . $divAkhir . '</td>

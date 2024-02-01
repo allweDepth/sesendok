@@ -53,7 +53,7 @@ class del_data
                                     'min_char' => 1
                                 ]);
                                 break;
-                            
+
                             default:
                                 # code...
                                 break;
@@ -70,8 +70,11 @@ class del_data
                         case 'peraturan':
                             $tabel_pakai = 'peraturan_neo';
                             break;
+                        case "aset":
+                            $tabel_pakai = 'aset_neo';
+                            break;
                         case "akun":
-                            case "akun_belanja":
+                        case "akun_belanja":
                             $tabel_pakai = 'akun_neo';
                             break;
                         case 'bidang_urusan':
@@ -107,6 +110,7 @@ class del_data
                         case 'ssh':
                             $tabel_pakai = 'ssh_neo';
                             break;
+                        case 'sub_keg':
                         case 'sub_kegiatan':
                             $tabel_pakai = 'sub_kegiatan_neo';
                             break;
@@ -181,7 +185,7 @@ class del_data
                             }
                             break;
                         case 'profil':
-                            
+
                             break;
 
                         default:
@@ -230,7 +234,7 @@ class del_data
                                 default:
                                     //standar delete id
                                     $data_row = $DB->getWhereCustom($tabel_pakai, $kondisi);
-                                    var_dump($data_row );
+                                    var_dump($data_row);
                                     $data[$tabel_pakai] = $DB->delete_array($tabel_pakai, $kondisi);
                                     if ($DB->count() > 0) {
                                         $code = 4;

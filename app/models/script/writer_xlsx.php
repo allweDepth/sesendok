@@ -97,7 +97,7 @@ class writer_xlsx
                     );
                     $row_header = ['NO.', 'SUMBER DANA', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
                     $jmlKolom = 9;
-                    
+
                     break;
                 case 'akun_belanja':
                     $tabel_pakai = 'akun_neo';
@@ -127,7 +127,37 @@ class writer_xlsx
                     );
                     $row_header = ['NO.', 'AKUN', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
                     $jmlKolom = 9;
-                    
+
+                    break;
+                case 'aset':
+                    $tabel_pakai = 'aset_neo';
+                    $filename = 'aset.xlsx';
+                    $nama_sheet = 'kd aset';
+                    switch ($jenis) {
+                        case 'dok':
+                            $where1 = "id > 0";
+                            $order = "ORDER BY akun ASC, kelompok ASC, jenis ASC, objek ASC, rincian_objek ASC, sub_rincian_objek ASC";
+                            $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    //data cetak
+                    $headerSet = array(
+                        'AKUN ASET' => '0', //No
+                        '2' => 'string', //type_dok
+                        '3' => 'string', //judul
+                        '4' => 'string', //nomor
+                        '5' => 'string', //bentuk
+                        '6' => 'string', //bentuk_singkat
+                        '7' => 'string', //t4_penetapan
+                        '8' => 'string', //status
+                        '9' => 'string', //disable
+                    );
+                    $row_header = ['NO.', 'AKUN', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
+                    $jmlKolom = 9;
+
                     break;
                 case 'rekanan':
                     $tabel_pakai =  'rekanan';
@@ -187,6 +217,7 @@ class writer_xlsx
                             break;
                         case 'akun_belanja':
                         case 'sumber_dana':
+                        case 'aset':
                             switch ($jenis) {
                                 case 'dok': //mengambil seluruh data harga satuan sesuai proyek
                                     $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [10, 10, 10, 10, 10, 10, 10, 80, 70], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
@@ -523,6 +554,7 @@ class writer_xlsx
                                                     $row['keterangan']
                                                 );
                                                 break;
+                                            case 'aset':
                                             case 'akun_belanja':
                                                 $rowdata = array(
                                                     $myrow,
@@ -540,7 +572,7 @@ class writer_xlsx
                                                 #code...
                                                 break;
                                         };
-                                        
+
                                         $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
                                         break;
                                     default:

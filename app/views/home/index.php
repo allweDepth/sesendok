@@ -28,7 +28,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 
 </head>
 
-<body style="overflow: hidden;margin-top: 45px;">
+<body style="overflow: hidden;margin-top: 45px;" class="dimmable">
 
     <!-- MAIN TOOLBAR MENU -->
     <div class="ui teal top fixed inverted main menu">
@@ -107,6 +107,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     <a class="item" href="#" data-tab="tab_ref" tbl="prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="aset"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Neraca</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="akun_belanja"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Akun</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sumber Dana</a>
                     <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="gavel icon"></i>Peraturan</a>
@@ -143,7 +144,11 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             </div>
         </div>
         <div class="pusher">
-
+            <div class="basic segment">
+                <div class="ui demo page dimmer light">
+                    <div class="ui massive text blue elastic loader">Loading...</div>
+                </div>
+            </div>
             <!-- sticky-->
             <div class="ui sticky">
                 <div class="ui icon message dashboard"><i class="home icon"></i>
@@ -369,7 +374,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <div class="ui info message" name="kethargasat">Nabiilainayah</div>
                 <div class="ui hidden divider"></div>
                 <div class="ui right floated basic icon buttons">
-                <?php
+                    <?php
                     if ($type_user == 'admin') {
                         echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
@@ -624,8 +629,16 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             </div>
                         </div>
                         <div class="field"><label>Keterangan</label><textarea name="keterangan" rows="4"></textarea></div>
-                        <div class="field"><label></label><div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non Aktif</label></div></div>
-                        <div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>
+                        <div class="field"><label></label>
+                            <div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non Aktif</label></div>
+                        </div>
+                        <div class="ui icon success message"><i class="check icon"></i>
+                            <div class="content">
+                                <div class="header">Form sudah lengkap</div>
+                                <p>anda bisa submit form</p>
+                            </div>
+                        </div>
+                        <div class="ui error message"></div>
                         <button style="display: none;" type="submit" id="form-atur"></button>
                     </form>
                     <div class="ui yellow segment left actions">
