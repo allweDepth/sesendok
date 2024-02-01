@@ -122,11 +122,10 @@ class Validate
               } else { // is not numeric 
                 if ($formValue == '') {
                   $formValue = 0;
-                }else{
-                  
+                } else {
+
                   $this->_errors[$item] = "$itemLabel harus diisi angka";
                 }
-                
               }
             } else {
               $formValue = $formValue; // 0 as numeric
@@ -239,6 +238,15 @@ class Validate
           //['user','username',[[ 'id', '=', $id_user][ 'id', '=', $id_user , 'AND']]]
           if ($DB->checkArray($ruleValue[0], $ruleValue[1], $ruleValue[2], $formValue)) {
             $this->_errors[$item] = "$itemLabel sudah terpakai, silahkan pilih nama lain";
+          }
+          break;
+        case 'inDB':
+          require_once 'DB.php';
+          $DB = DB::getInstance();
+          //checkArray( $tableName, $columnName, $condition )
+          //['user','username',[[ 'id', '=', $id_user][ 'id', '=', $id_user , 'AND']]]
+          if (!$DB->checkArray($ruleValue[0], $ruleValue[1], $ruleValue[2], $formValue)) {
+            $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
           }
           break;
       }

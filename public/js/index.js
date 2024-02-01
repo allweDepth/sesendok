@@ -856,7 +856,7 @@ $(document).ready(function () {
 	$("body").on("click", '[name="del_row"]', function (e) {
 		e.stopImmediatePropagation();
 		e.preventDefault();
-		var ini = $(this);
+		let ini = $(this);
 		let jenis = ini.attr("jns");
 		var tbl = ini.attr("tbl");
 		var id_row = ini.attr("id_row");
@@ -960,7 +960,7 @@ $(document).ready(function () {
 							case "direct":
 								let form = ini.closest("form");
 								let direct = ini.attr("direct"); //jika ada atribut direct hapus direct
-								var obj = ini.closest("tr");
+								let obj = ini.closest("tr");
 								if (direct) {
 									obj = ini.closest('[direct="del"]');
 								}
@@ -1507,6 +1507,16 @@ $(document).ready(function () {
 								default:
 									break;
 							}
+							break;
+						// ====================
+						// UNTUK PENGATURAN====
+						// ====================
+						case "form_pengaturan"://@audit
+							
+							formData.has("disable") === false
+								? formData.append("disable", 'off')
+								: formData.set("disable", 'on'); // Returns false
+							jalankanAjax = true;
 							break;
 						// =================
 						// UNTUK MODAL 2====

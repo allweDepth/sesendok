@@ -183,6 +183,92 @@ class post_data
                                 break;
                         }
                         break;
+                    case 'pengaturan':
+                        switch ($jenis) {
+                            case 'edit':
+                                $id_row = $validate->setRules('id_row', 'id', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                            case 'add':
+                                $tahun = $validate->setRules('tahun', 'tahun', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 4
+                                ]);
+                                $aturan_anggaran = $validate->setRules('aturan_anggaran', 'Peraturan anggaran', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_anggaran']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_pengadaan = $validate->setRules('aturan_pengadaan', 'Peraturan pengadaan', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_pengadaan']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_akun = $validate->setRules('aturan_akun', 'Peraturan Akun', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_akun']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_sumber_dana = $validate->setRules('aturan_sumber_dana', 'Peraturan sumber dana', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sumber_dana']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_sub_kegiatan = $validate->setRules('aturan_sub_kegiatan', 'Peraturan sub kegiatan', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sub_kegiatan']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_ssh = $validate->setRules('aturan_ssh', 'Peraturan ssh', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_ssh']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_hspk = $validate->setRules('aturan_hspk', 'Peraturan hspk', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_hspk']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_asb = $validate->setRules('aturan_asb', 'Peraturan asb', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_asb']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_sbu = $validate->setRules('aturan_sbu', 'Peraturan sbu', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sbu']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        break;
                     case 'rekanan':
                         switch ($tbl) {
                             case 'edit':
@@ -375,474 +461,6 @@ class post_data
                                 break;
                         }
                         break;
-                    case 'copy':
-                        switch ($tbl) {
-                            case 'analisa_quarry':
-                            case 'analisa_sda':
-                            case 'analisa_ck':
-                            case 'analisa_bm':
-                            case 'analisa_alat':
-                            case 'analisa_alat_custom':
-                                $kolomCekUnique = 'kd_analisa';
-                                switch ($tbl) {
-                                    case 'analisa_alat':
-                                        $tabel_pakai =  'analisa_alat';
-                                        $kolomCekUnique = 'kode';
-                                        break;
-                                    case 'analisa_alat_custom':
-                                        $tabel_pakai =  'analisa_alat_custom';
-                                        break;
-                                    case 'analisa_quarry':
-                                        $tabel_pakai =  'analisa_quarry';
-                                        $lokasiQuarry = $validate->setRules('lokasi', 'Lokasi Quarry', [
-                                            'sanitize' => 'string',
-                                            'required' => true,
-                                            'min_char' => 1,
-                                            'max_char' => 200
-                                        ]);
-                                        //var_dump($lokasi);
-                                        $tujuanQuarry = $validate->setRules('tujuan', 'Tujuan Quarry', [
-                                            'sanitize' => 'string',
-                                            'required' => true,
-                                            'min_char' => 1,
-                                            'max_char' => 200
-                                        ]);
-                                        break;
-                                    case 'analisa_bm':
-                                        $tabel_pakai =  'analisa_pekerjaan_bm';
-                                        break;
-                                    case 'analisa_ck':
-                                        $tabel_pakai =  'analisa_pekerjaan_ck';
-                                        break;
-                                    case 'analisa_sda':
-                                        $tabel_pakai =  'analisa_pekerjaan_sda';
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                                $kd_analisa_copy = $validate->setRules('kode_copy', 'kode analisa yang ingin di copy', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                $kode = $validate->setRules('kode', 'kode', [ //kode baru
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100,
-                                    'uniqueArray' => [$tabel_pakai, $kolomCekUnique, [['kd_proyek', '=', $kd_proyek_aktif]]]
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                break;
-                            case 'copy_lap_harian':
-                                $tanggal_copy = $validate->setRules('tanggal_copy', 'Tanggal copy', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/', //'/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/',
-                                    'min_char' => 8
-                                ]);
-                                $tanggal = $validate->setRules('tanggal', 'Tanggal paste', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/', //'/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/',
-                                    'min_char' => 8
-                                ]);
-                                break;
-                            case 'proyek':
-                                $kd_proyek_copy = $validate->setRules('kd_proyek_copy', 'kode dokumen yang ingin dicopy', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                //kode proyek baru yang di insert
-                                $kode = $validate->setRules('kode', 'kode', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100,
-                                    'unique' => ['nama_pkt_proyek', 'kd_proyek']
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $tahun_proyek = $validate->setRules('tahun', 'tahun', [
-                                    'required' => true,
-                                    'numeric' => true
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $copy_realisasi_proyek = $validate->setRules('copy_realisasi_proyek', 'Salin Realisasi', [
-                                    'sanitize' => 'string',
-                                    'in_array' => ['on', 'off']
-                                ]);
-                                $aktifkan_proyek = $validate->setRules('aktifkan_proyek', 'aktifkan_proyek', [
-                                    'sanitize' => 'string',
-                                    'in_array' => ['on', 'off']
-                                ]);
-                                break;
-                        }
-                        break;
-                    case 'lokasi':
-                        switch ($tbl) {
-                            case 'add_row':
-                            case 'update':
-                                $dataArray = $validate->setRules('data', 'dataArray', [
-                                    'json' => true,
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                //var_dump($dataArray);
-                                $dataArray_awal = $dataArray;
-                                $dataArray = json_decode($dataArray);
-
-                                break;
-                            case 'edit':
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 'satuan':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id_row', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'input':
-                                $valueSatuan = $validate->setRules('value', 'value', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $item = $validate->setRules('item', 'item', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $sebutan_lain = $validate->setRules('sebutan_lain', 'sebutan_lain', [
-                                    'sanitize' => 'string'
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'harga_satuan':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id_row', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'input':
-                                $kode = $validate->setRules('kode', 'kode', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $jenis_basic_price = $validate->setRules('jenis_basic_price', 'jenis basic price', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100,
-                                    'in_array' => ['upah', 'royalty', 'bahan', 'peralatan']
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'satuan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $harga_sat = $validate->setRules('harga_satuan', 'harga satuan', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $sumber_data = $validate->setRules('sumber_data', 'sumber data', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $spesifikasi = $validate->setRules('spesifikasi', 'spesifikasi', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                break;
-                            case 'y':
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'analisa_alat':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id = $validate->setRules('id', 'id row', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $dataArray = $validate->setRules('dataArray', 'dataArray', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $dataArray = json_decode($dataArray);
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 'analisa_quarry':
-                    case 'analisa_sda':
-                    case 'analisa_ck':
-                    case 'analisa_bm':
-                    case 'analisa_alat_custom':
-                        switch ($tbl) {
-                            case 'edit':
-                                $kd_analisa = $validate->setRules('kd_analisa', 'Kode Analisa Alat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                //var_dump($dataArray);
-                                $jenis_pek = $validate->setRules('jenis_pek', 'jenis_pek', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                if ($jenis == 'analisa_alat_custom') {
-                                    $kapasitas = $validate->setRules('kapasitas', 'kapasitas alat', [
-                                        'required' => true,
-                                        'numeric' => true,
-                                        'min_char' => 1
-                                    ]);
-                                    $sat_kapasitas = $validate->setRules('sat_kapasitas', 'Satuan Kapasitas', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 1,
-                                        'max_char' => 200
-                                    ]);
-                                }
-
-                                $id = $validate->setRules('id_row', 'id row', [ //ini juga bersisi kode analisa
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 1
-                                ]);
-                                $dataArray = $validate->setRules('dataArray', 'dataArray', [
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $dataArray = json_decode($dataArray);
-                                if ($jenis == 'analisa_quarry') {
-                                    $lokasiQuarry = $validate->setRules('lokasi', 'Lokasi Quarry', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 1,
-                                        'max_char' => 200
-                                    ]);
-                                    //var_dump($lokasi);
-                                    $tujuanQuarry = $validate->setRules('tujuan', 'Tujuan Quarry', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 1,
-                                        'max_char' => 200
-                                    ]);
-                                }
-                                //var_dump($dataArray);
-                                break;
-                            case 'input':
-                                $jenis_pek = $validate->setRules('jenis_pek', 'jenis_pek', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $kd_analisa = $validate->setRules('kd_analisa', 'Kode Analisa Alat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                if ($jenis == 'analisa_alat_custom') {
-                                    $kapasitas = $validate->setRules('kapasitas', 'kapasitas alat', [
-                                        'required' => true,
-                                        'numeric' => true,
-                                        'min_char' => 1
-                                    ]);
-                                    $sat_kapasitas = $validate->setRules('sat_kapasitas', 'Satuan Kapasitas', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 1,
-                                        'max_char' => 200
-                                    ]);
-                                }
-                                $dataArray = $validate->setRules('dataArray', 'dataArray', [
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $dataArray = json_decode($dataArray);
-                                if ($jenis == 'analisa_quarry') {
-                                    $lokasiQuarry = $validate->setRules('lokasi', 'Lokasi Quarry', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 1,
-                                        'max_char' => 200
-                                    ]);
-                                    //var_dump($lokasi);
-                                    $tujuanQuarry = $validate->setRules('tujuan', 'Tujuan Quarry', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 1,
-                                        'max_char' => 200
-                                    ]);
-                                }
-                                //var_dump($dataArray);
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 'divisi':
-                    case 'divisiBM':
-                    case 'divisiCK':
-                    case 'divisiSDA':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id_row', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'input':
-                                $tahun = $validate->setRules('tahun', 'tahun', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $bidang = $validate->setRules('bidang', 'Bidang', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 3,
-                                    'in_array' => ['bm', 'ck', 'sda']
-                                ]);
-                                $kode = $validate->setRules('kode', 'Kode', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'Uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 'rab':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'ID', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add_row':
-                                $kd_analisa = $validate->setRules('kode', 'Kode Analisa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'Uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $volume = $validate->setRules('volume', 'Volume', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'Satuan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'Keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'schedule':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'ID', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $kd_analisa = $validate->setRules('kd_analisa', 'Kode Analisa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $durasi = $validate->setRules('durasi', 'durasi', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 0
-                                ]);
-                                $mulai = $validate->setRules('mulai', 'mulai', [
-                                    'numeric' => true
-                                ]);
-                                $dataArray = $validate->setRules('dataArray', 'dataArray', [
-                                    'json' => true,
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                //$dataArray = json_decode($dataArray);
-                                $dependent = $validate->setRules('dependent', 'dependent', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'Keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
                     case 'x':
                         switch ($tbl) {
                             case 'y':
@@ -860,7 +478,6 @@ class post_data
                 $kodePosting = '';
 
                 if ($validate->passed()) {
-
                     //tabel pakai
                     switch ($tbl) {
                         case 'peraturan':
@@ -889,8 +506,8 @@ class post_data
                         case 'organisasi':
                             $tabel_pakai = 'organisasi_neo';
                             break;
-                        case "peraturan":
-                            $tabel_pakai = 'peraturan_neo';
+                        case "pengaturan":
+                            $tabel_pakai = 'pengaturan_neo';
                             break;
                         case 'program':
                             $tabel_pakai = 'program_neo';
@@ -929,76 +546,6 @@ class post_data
 
                     //start buat property
                     switch ($tbl) {
-                        case 'outbox':
-                            switch ($tbl) {
-                                case 'add_coment':
-                                    $set = [
-                                        'waktu_input' => date('Y-m-d H:i:s'),
-                                        'uraian' => $Fungsi->enskripsiText($uraian, $encryption_key = $_SESSION["user"]["nama"]),
-                                        'id_tujuan' => $id_tujuan,
-                                        'id_pengirim' => $_SESSION["user"]["id"]
-                                    ];
-                                    $kodePosting = 'insert';
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                        case 'wall':
-                            switch ($tbl) {
-                                case 'reply':
-                                    $kodePosting = 'insert';
-                                    $set = [
-                                        'waktu_input' => date('Y-m-d H:i:s'),
-                                        'uraian' => $Fungsi->enskripsiText($uraian, $_SESSION["user"]["nama"]),
-                                        'id_pengirim' => $_SESSION["user"]["id"],
-                                        'id_reply' => $id_row
-                                    ];
-                                    // var_dump($set);
-                                    break;
-                                case 'add_coment':
-                                    $datetime = mb_convert_encoding(html_entity_decode(date('Y-m-d H:i:s')), "UTF-8");
-                                    //catatan uraian ganti menjadi jenis blob di mysql
-                                    $set = [
-                                        'waktu_input' => $datetime,
-                                        'uraian' => $Fungsi->enskripsiText($uraian, $encryption_key = $_SESSION["user"]["nama"]),
-                                        'id_pengirim' => $_SESSION["user"]["id"]
-                                    ];
-                                    $kodePosting = 'insert';
-                                    //var_dump($set);
-                                    break;
-                                case 'edit':
-                                    $kondisi = [['id', '=', $id_row]];
-                                    $kodePosting = 'update_row';
-                                    $set = [
-                                        'waktu_edit' => date('Y-m-d H:i:s'),
-                                        'uraian' => $Fungsi->enskripsiText($uraian, $encryption_key = $_SESSION["user"]["nama"]),
-                                        'id_pengirim' => $_SESSION["user"]["id"],
-                                    ];
-                                    break;
-                                case 'like':
-                                    //$like ['like', 'unlike', 'non']
-                                    $id_pengirim = $_SESSION["user"]["id"];
-                                    $set = [
-                                        'like' => "JSON_INSERT(like, '$.like', '{id:$id_pengirim}')" //$klm = JSON_INSERT($klm, '$.$kode ', ?)
-                                    ];
-                                    break;
-                                case 'pesan':
-                                    $set = [
-                                        'waktu_input' => date('Y-m-d H:i:s'),
-                                        'uraian' => $Fungsi->enskripsiText($uraian, $encryption_key = $_SESSION["user"]["nama"]),
-                                        'id_pengirim' => $_SESSION["user"]["id"],
-                                        'id_tujuan' => $id_tujuan,
-                                        'dibaca' => $dibaca,
-                                        'like' => $like
-                                    ];
-
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
                         case 'peraturan':
                             switch ($jenis) {
                                 case 'edit':
@@ -1034,11 +581,42 @@ class post_data
                                         //var_dump($file);
                                         if ($file['result'] == 'ok') {
                                             $set['file'] = $file['file'];
-                                        }else{
-                                            $tambahan_pesan = "(".$file['file'].")" ;
+                                        } else {
+                                            $tambahan_pesan = "(" . $file['file'] . ")";
                                         }
                                     }
 
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 'pengaturan':
+                            switch ($jenis) {
+                                case 'edit':
+                                    $kondisi = [['id', '=', $id_row]];
+                                    $kodePosting = 'update_row';
+                                case 'add':
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['tahun', '=', $tahun]];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    $set = [
+                                        'tahun' => $tahun,
+                                        'aturan_anggaran' => $aturan_anggaran,
+                                        'aturan_pengadaan' => $aturan_pengadaan,
+                                        'aturan_akun' => $aturan_akun,
+                                        'aturan_asb' => $aturan_asb,
+                                        'aturan_sbu' => $aturan_sbu,
+                                        'aturan_ssh' => $aturan_ssh,
+                                        'aturan_hspk' => $aturan_hspk,
+                                        'aturan_sumber_dana' => $aturan_sumber_dana,
+                                        'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
+                                        'disable' => $disable,
+                                        'keterangan' => $keterangan,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
                                     break;
                                 default:
                                     break;
@@ -1256,7 +834,7 @@ class post_data
                             break;
                         case 'cek_insert': //cek data klo tidak ada teruskan insert
                             $ListRow = $DB->select_array($tabel_pakai, $kondisi, $columnName);
-                            var_dump($ListRow);
+                            
 
                             $jumlahArray = is_array($ListRow) ? count($ListRow) : 0;
                             if ($jumlahArray) {
@@ -1323,7 +901,7 @@ class post_data
                 $code = 39;
             }
         }
-        $item = array('code' => $code, 'message' => hasilServer[$code]." $tambahan_pesan" );
+        $item = array('code' => $code, 'message' => hasilServer[$code] . " $tambahan_pesan");
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         // return json_encode($json);
         return json_encode($json, JSON_HEX_APOS);

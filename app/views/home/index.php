@@ -310,7 +310,6 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <!-- tab_peraturan -->
             <!-- ============== -->
             <div class="ui tab basic segment container" data-tab="tab_peraturan" tbl="peraturan">
-
                 <div class="ui hidden divider"></div>
                 <div class="ui right floated basic icon buttons">
                     <?php
@@ -447,7 +446,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             $data_card->peraturan = ['header' => 'Peraturan', 'meta' => 'peraturan terkait aplikasi', 'description' => 'ketentuan yang dengan sendirinya memiliki suatu makna normatif; ketentuan yang menyatakan bahwa sesuatu harus (tidak harus) dilakukan, atau boleh (tidak boleh) dilakukan', 'icon' => 'teal road'];
                             $data_card->sumber_dana = ['header' => 'Sumber Dana', 'meta' => 'Sumber dana kegiatan', 'description' => 'Klasifikasi, Kodefikasi, dan Nomenklatur Sumber Pendanaan ditujukan untuk memberikan informasi atas sumber dana berdasarkan tujuan penggunaan dana dari setiap pelaksanaan urusan pemerintahan daerah yang dijabarkan berdasarkan program, kegiatan dan sub kegiatan dalam rangka pengendalian masing-masing kelompok dana meliputi pengawasan/control, akuntabilitas/accountability dan transparansi/transparency (CAT).', 'icon' => 'purple money'];
                             $data_card->akun_belanja = ['header' => 'Akun Belanja', 'meta' => 'Aplikasi Standar Satuan Harga (SSH)', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'teal money bill alternate outline'];
-                            $data_card->harga_satuan = ['header' => 'Harga Satuan', 'meta' => 'Aplikasi Standar Satuan Harga (SSH)', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'violet users cog'];
+                            $data_card->sub_keg = ['header' => 'Sub Kegiatan', 'meta' => 'SUB KEGIATAN', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'violet users cog'];
                             $data_card->analisa_alat = ['header' => 'Analisa Peralatan', 'meta' => 'Aplikasi Standar Satuan Harga (SSH)', 'description' => 'Alat berat merupakan alat yang digunakan untuk mempermudah proses pekerjaan sehingga menjadi lebih cepat, mudah dan hasilnya sesuai dengan harapan', 'icon' => 'yellow snowplow'];
                             $data_card->analisa_quarry = ['header' => 'Analisa Quarry', 'meta' => 'Analisa satuan dasar satuan bahan', 'description' => 'quarry atau lahan tambang terbuka', 'icon' => 'olive truck monster'];
                             $data_card->analisa_bm = ['header' => 'AHSP Bidang Bina Marga', 'meta' => 'Analisis Harga Satuan Pekerjaan', 'description' => 'acuan untuk menghitung harga satuan pekerjaan (HSP) yang menganalisis biaya upah tenaga kerja dan/atau harga bahan-bahan bangunan ataupun peralatan sebagai koefisien kebutuhan penggunaan tenaga kerja, bahan dan peralatan untuk satu satuan kuantitas pekerjaan', 'icon' => 'teal road'];
@@ -489,20 +488,16 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <!-- ============== -->
             <div class="ui tab basic segment container" data-tab="pengaturan">
                 <div class="ui segments">
-
                     <div class="ui teal inverted segment top attached">
-
                         <h2 class="ui header left">
                             <i class="settings icon"></i>
                             <div class="content">
                                 Sesendok Settings
                                 <div class="sub header">Manage your preferences</div>
                             </div>
-
                         </h2>
-
                     </div>
-                    <form class="ui form scrolling segment" name="form_pengaturan">
+                    <form class="ui form scrolling segment" jns="add" tbl="pengaturan" name="form_pengaturan">
                         <div class="field">
                             <label>Tahun</label>
                             <div class="ui fluid search selection dropdown" name="tahun">
@@ -525,6 +520,28 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             <i class="tag icon"></i>
                             Description
                         </h4>
+                        <div class="field">
+                            <label>Anggaran</label>
+                            <div class="ui fluid search selection dropdown" name="aturan_anggaran">
+                                <input type="hidden" name="aturan_anggaran">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Anggaran</div>
+                                <div class="menu">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Pengadaan Barang/Jasa</label>
+                            <div class="ui fluid search selection dropdown" name="aturan_pengadaan">
+                                <input type="hidden" name="aturan_pengadaan">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">aturan pengadaan</div>
+                                <div class="menu">
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="field">
                             <label>Akun Belanja</label>
                             <div class="ui fluid search selection dropdown" name="aturan_akun">
@@ -602,10 +619,13 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 </div>
                             </div>
                         </div>
-                        <button class="ui button" type="submit">Submit</button>
+                        <div class="field"><label>Keterangan</label><textarea name="keterangan" rows="4"></textarea></div>
+                        <div class="field"><label></label><div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non Aktif</label></div></div>
+                        <div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>
+                        <button style="display: none;" type="submit" id="form-atur"></button>
                     </form>
-                    <div class="ui yellow segment">
-
+                    <div class="ui yellow segment left actions">
+                        <label class="ui green button" for="form-atur" tabindex="0">Simpan</label>
                     </div>
                 </div>
             </div>
