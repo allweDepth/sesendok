@@ -389,11 +389,11 @@ class Impor_xlsx
                                                                 'objek' => (int)$objek,
                                                                 'rincian_objek' => (int)$rincian_objek,
                                                                 'sub_rincian_objek' => (int)$sub_rincian_objek,
-                                                                'uraian' => $uraian,
+                                                                'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
                                                                 'peraturan' => $id_aturan_sumber_dana,
                                                                 'kode' => $kode,
                                                                 'disable' => 0,
-                                                                'keterangan' => $keterangan,
+                                                                'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                 'tanggal' => date('Y-m-d H:i:s'),
                                                                 'username' => $_SESSION["user"]["username"]
                                                             ];
@@ -461,14 +461,15 @@ class Impor_xlsx
                                                                 'objek' => (int)$objek,
                                                                 'rincian_objek' => (int)$rincian_objek,
                                                                 'sub_rincian_objek' => (int)$sub_rincian_objek,
-                                                                'uraian' => $uraian,
+                                                                'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
                                                                 'peraturan' => $id_aturan_akun,
                                                                 'kode' => $kode,
                                                                 'disable' => 0,
-                                                                'keterangan' => $keterangan,
+                                                                'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                 'tanggal' => date('Y-m-d H:i:s'),
                                                                 'username' => $_SESSION["user"]["username"]
                                                             ];
+                                                            //$string = preg_replace('/\s/', ' ', $string);
                                                             $update_arrayData = [['kode', '=', $kode]];
                                                             $getWhereArrayData = [['kode', '=', $kode]];
                                                             $no_sort++;
