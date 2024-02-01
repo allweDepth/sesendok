@@ -482,7 +482,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Satuan",
 									atribut:
-										'name="Satuan" placeholder="satuan..."',
+										'name="satuan" placeholder="satuan..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -528,7 +528,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Satuan",
 									atribut:
-										'name="Satuan" placeholder="satuan..."',
+										'name="satuan" placeholder="satuan..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
