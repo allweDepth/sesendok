@@ -70,6 +70,9 @@ class del_data
                         case 'peraturan':
                             $tabel_pakai = 'peraturan_neo';
                             break;
+                        case "mapping":
+                            $tabel_pakai = 'mapping_aset_akun';
+                            break;
                         case "aset":
                             $tabel_pakai = 'aset_neo';
                             break;

@@ -121,17 +121,17 @@ class get_data
                             $tabel_pakai = 'aset_neo';
                             $jumlah_kolom = 4;
                             break;
-                        // case 'bidang_urusan':
-                        //     $tabel_pakai = 'bidang_urusan_neo';
-                        //     break;
                         case 'dpa':
                             $tabel_pakai = 'dpa_neo';
                             break;
-                        // case 'kegiatan':
-                        //     $tabel_pakai = 'kegiatan_neo';
-                        //     break;
                         case 'mapping_aset':
+                        case 'mapping':
                             $tabel_pakai = 'mapping_aset_akun';
+                            $jumlah_kolom = 10;
+                            break;
+                        case 'wilayah':
+                            $tabel_pakai = 'wilayah_neo';
+                            $jumlah_kolom = 10;
                             break;
                         case 'organisasi':
                             $tabel_pakai = 'organisasi_neo';
@@ -234,6 +234,25 @@ class get_data
                             break;
                     };
                     switch ($tbl) {
+                        case 'wilayah':
+                            $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR status LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            break;
+                        case 'organisasi':
+                            $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 7;
+                            break;
                         case 'peraturan':
                             $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, $cari, $cari, $cari, $cari];
@@ -272,9 +291,20 @@ class get_data
                         case 'prog':
                         case 'keg':
                         case 'sub_keg':
-                            $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR kd_prov LIKE CONCAT('%',?,'%') OR kd_kab LIKE CONCAT('%',?,'%'))";
-                            $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 11;
+                            break;
+                        case 'mapping':
+                            $like = "disable <= ? AND(kode_aset LIKE CONCAT('%',?,'%') OR uraian_aset LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kode_akun LIKE CONCAT('%',?,'%') OR uraian_akun LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY kode_aset ASC";
                             $posisi = " LIMIT ?, ?";
                             $where1 = "disable <= ?";
                             $data_where1 =  [0];

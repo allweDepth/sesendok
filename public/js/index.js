@@ -72,7 +72,7 @@ $(document).ready(function () {
 						break;
 					default:
 						$('a[tbl="' + tbl + '"]').first().trigger('click');
-						// $('a[data-tab="' + jenis + '"]').first().trigger('click');
+					// $('a[data-tab="' + jenis + '"]').first().trigger('click');
 				}
 				elm_load.removeClass("loading");
 			}, 1000);
@@ -144,6 +144,24 @@ $(document).ready(function () {
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
 			],
+			mapping: [
+				"clipboard list icon",
+				"Mapping",
+				"Klasifikasi dan kodefikasi",
+				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
+			],
+			wilayah: [
+				"clipboard list icon",
+				"LOKASI/WILAYAH",
+				"Klasifikasi dan kodefikasi",
+				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
+			],
+			organisasi: [
+				"clipboard list icon",
+				"SKPD",
+				"Organisasi Perangkat Daerag",
+				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
+			],
 			sumber_dana: [
 				"clipboard list icon",
 				"Sumber Dana",
@@ -211,7 +229,7 @@ $(document).ready(function () {
 			tab = tbl;
 			divTab = ini.closest('div[data-tab]');
 		}
-		
+
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
 		let pDashboard = "seSendok";
@@ -280,9 +298,15 @@ $(document).ready(function () {
 				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
+			case "aset":
 			case "sub_keg":
 			case "akun_belanja":
 			case "sumber_dana":
+			case "organisasi":
+			case "wilayah":
+			case "mapping":
+			case "organisasi":
+			case "wilayah":
 				jalankanAjax = true;
 				break;
 			case "xxxx":
@@ -680,6 +704,192 @@ $(document).ready(function () {
 										["rahasia", "Rahasia/Pribadi"],
 										["kegiatan", "Dokumen kegiatan"],
 									],
+								}) +
+								buatElemenHtml("fieldFileInput2", {
+									label: "Pilih File Dokumen",
+									placeholderData: "Pilih File...",
+									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (jenis === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+						case "mapping":
+							dataHtmlku.konten +=
+								buatElemenHtml("fieldDropdown", {
+									label: "Type Dok",
+									atribut: 'name="type_dok"',
+									kelas: "lainnya selection",
+									dataArray: [
+										[
+											"peraturan_undang_undang_pusat",
+											"Peraturan Perundang-undangan Pusat",
+										],
+										[
+											"peraturan_menteri_lembaga",
+											"Peraturan Kementerian / Lembaga",
+										],
+										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["kegiatan", "File Kegiatan"],
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Judul",
+									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldTextAction", {
+									label: "Nomor",
+									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Bentuk",
+									atribut:
+										'name="bentuk" placeholder="Bentuk(Peraturan Menteri Dalam Negeri...)"',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Bentuk Singkat",
+									atribut:
+										'name="bentuk_singkat" placeholder="bentuk singkat(permendagri)..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Tempat Penetapan",
+									atribut: 'name="t4_penetapan" placeholder="tempat penetapan..."',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Penetapan",
+									atribut:
+										'placeholder="Input tanggal penetapan.." name="tgl_penetapan" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Pengundangan",
+									atribut:
+										'placeholder="Input Tanggal pengundangan.." name="tgl_pengundangan" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Status Data",
+									atribut: 'name="status"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["umum", "Umum"],
+										["rahasia", "Rahasia/Pribadi"],
+										["kegiatan", "Dokumen kegiatan"],
+									],
+								}) +
+								buatElemenHtml("fieldFileInput2", {
+									label: "Pilih File Dokumen",
+									placeholderData: "Pilih File...",
+									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (jenis === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+						case "organisasi":
+							dataHtmlku.konten +=
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="kode" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Nama SKPD",
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="alamat" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="nama_kepala" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="nip_kepala" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fieldFileInput2", {
+									label: "Pilih File Dokumen",
+									placeholderData: "Pilih File...",
+									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (jenis === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+						case "wilayah":
+							dataHtmlku.konten +=
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="kode" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Nama SKPD",
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="alamat" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="nama_kepala" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut:
+										'name="nip_kepala" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
 								}) +
 								buatElemenHtml("fieldFileInput2", {
 									label: "Pilih File Dokumen",
