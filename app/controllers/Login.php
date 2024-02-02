@@ -18,7 +18,7 @@ class Login extends Controller
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
         $dataFooter['key_encrypt'] = KEY_ENCRYPT;
-        $this->view('templates/header', $dataHeader);
+        $this->view('templates/header_login', $dataHeader);
         $this->view('login/index');
         $this->view('templates/footer', $dataFooter);
         

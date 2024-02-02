@@ -1,6 +1,23 @@
 var dok = '';
 $(document).ready(function () {
     "use strict";
+    // fix menu when passed
+    $('.masthead')
+        .visibility({
+            once: false,
+            onBottomPassed: function () {
+                $('.fixed.menu').transition('fade in');
+            },
+            onBottomPassedReverse: function () {
+                $('.fixed.menu').transition('fade out');
+            }
+        })
+        ;
+
+    // create sidebar and attach to menu open
+    $('.ui.sidebar')
+        .sidebar('attach events', '.toc.item')
+        ;
     $(".ui.accordion").accordion();
     $(".ui.accordion.menu_utama").accordion({
         exclusive: false
@@ -21,7 +38,13 @@ $(document).ready(function () {
         $('#conten_notifikasi').html('<p>' + conten + '</p>');
         $('.ui.basic.modal.info').modal('show');
     }
-    $(document).on('click', "div[name='login']", function (event) {
+    $(document).on('click', "a[name='modal']", function (event) {
+        event.preventDefault();
+        $('.ui.modal.login')
+            .modal('show')
+            ;
+    })
+    $(document).on('click', "button[name='login']", function (event) {
         event.preventDefault();
         dok = $(this).attr('value');
         $('.ui.form').form('submit');

@@ -853,12 +853,6 @@ class Impor_xlsx
                                                             $update_arrayData = [['npwp', "=", $npwp]];
                                                             $getWhereArrayData = [['npwp', "=", $npwp]];
                                                             $no_sort++;
-                                                            //var_dump($arrayDataRows);
-                                                            /*KTP
-                                                    Kesatu, 6 digit pertama adalah kode wilayah dimana NIK pertama kali didaftarkan (2 digit pertama untuk kode provinsi, 2 digit kedua untuk kode kabupaten/kota, dan 2 digit ketiga untuk kode kecamatan).
-                                                    Kedua, 6 digit berikutnya adalah tanggal lahir pemilik NIK (2 digit untuk tanggal, 2 digit untuk bulan, dan 2 digit untuk tahun). Untuk penduduk berjenis kelamin perempuan, ditambahkan angka 40 pada tanggal lahir. 
-                                                    Ketiga, 4 digit selanjutnya adalah nomor urut yang ditentukan secara sistem. 
-                                                    */
                                                             break;
                                                         case 'monev':
                                                             $kd_analisa_temporer = $getData[0];
