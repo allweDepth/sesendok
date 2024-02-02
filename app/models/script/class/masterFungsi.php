@@ -904,12 +904,6 @@ class MasterFungsi
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
-
-                        $file = $row->file;
-                        $fileTag = '';
-                        if (strlen($file)) {
-                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
-                        }
                         if ($type_user == 'admin') {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
@@ -927,7 +921,6 @@ class MasterFungsi
                                     <td klm="luas">' . $divAwal . $row->luas . $divAkhir . '</td>
                                     <td klm="penduduk">' . $divAwal . $row->penduduk . $divAkhir . '</td>
                                     <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                    <td>' . $fileTag . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
