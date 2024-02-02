@@ -284,7 +284,7 @@ class Impor_xlsx
                                                             $status = $validateRow->setRules(2, 'status', [
                                                                 'sanitize' => 'string',
                                                                 'required' => true,
-                                                                'min_char' => 4,
+                                                                'min_char' => 3,
                                                                 'in_array' => ['prov', 'kab', 'kota', 'kel', 'kec', 'desa', 'dusun', 'lain']
                                                             ]);
                                                             $jml_kec = $validateRow->setRules(3, 'Jumlah Kecamatan', [
