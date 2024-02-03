@@ -430,6 +430,7 @@ class Impor_xlsx
                                                                 'sanitize' => 'string',
                                                             ]);
                                                             $arrayDataRows = [
+                                                                'kd_wilayah' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_wilayah),
                                                                 'kode' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kode),
                                                                 'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
                                                                 'disable' => 0,

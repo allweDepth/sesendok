@@ -676,10 +676,18 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Name</th>
+                                        <th>Name</th>
+                                        <th>Name</th>
+                                        <th>Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td data-label="Name">James</td>
+                                        <td data-label="Name">James</td>
+                                        <td data-label="Name">James</td>
+                                        <td data-label="Name">James</td>
                                         <td data-label="Name">James</td>
                                     </tr>
 

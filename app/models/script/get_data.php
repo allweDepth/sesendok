@@ -276,12 +276,12 @@ class get_data
                             $data_where1 =  [0];
                             break;
                         case 'organisasi':
-                            $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
-                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
+                            $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY kode ASC";
                             $posisi = " LIMIT ?, ?";
-                            $where1 = "disable <= ?";
-                            $data_where1 =  [0];
+                            $where1 = "kd_wilayah = ? AND disable <= ?";
+                            $data_where1 =  [$kd_wilayah, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 7;
