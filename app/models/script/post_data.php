@@ -478,6 +478,26 @@ class post_data
                 $kodePosting = '';
 
                 if ($validate->passed()) {
+                    $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+                    $tahun = (int) $rowUsername->tahun;
+                    $kd_wilayah = $rowUsername->kd_wilayah;
+                    $kd_skpd = $rowUsername->kd_organisasi;
+                    $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+                    //var_dump($rowTahunAktif);
+                    if ($rowTahunAktif) {
+                        $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
+                        $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
+                        $id_aturan_akun = $rowTahunAktif->aturan_akun;
+                        $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
+                        $id_aturan_asb = $rowTahunAktif->aturan_asb;
+                        $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
+                        $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
+                        $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
+                        $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
+                        $tahun_pengaturan = $rowTahunAktif->tahun;
+                    } else {
+                        $id_peraturan = 0;
+                    }
                     //tabel pakai
                     switch ($tbl) {
                         case 'peraturan':
@@ -558,6 +578,7 @@ class post_data
                                     }
                                     $kode  = "$nomor:$tgl_pengundangan";
                                     $set = [
+                                        'kd_wilayah' => $kd_wilayah,
                                         'kode' => $kode,
                                         'type_dok' => $type_dok,
                                         'judul' => $judul,
