@@ -92,6 +92,7 @@ class Impor_xlsx
                                     case 'aset':
                                     case 'mapping':
                                     case 'organisasi':
+                                    case 'peraturan':
                                     case 'satuan':
                                     case 'wilayah':
                                         $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
@@ -163,7 +164,6 @@ class Impor_xlsx
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
                                     case 'peraturan':
-                                        $count_col_min = 10;
                                         $tabel_pakai = 'peraturan_neo';
                                         $RowHeaderValidate = ['Type Dok', 'Judul', 'Nomor', 'Bentuk', 'Bentuk singkat', 'Tempat Penetapan', 'Tanggal Penetapan', 'Tanggal Pengundangan', 'Keterangan', 'Status Data'];
                                         $count_col_min = count($RowHeaderValidate);
@@ -549,6 +549,7 @@ class Impor_xlsx
                                                             ]);
 
                                                             $arrayDataRows = [
+                                                                'kd_wilayah' => $kd_wilayah,
                                                                 'kode' => $kode,
                                                                 'type_dok' => $type_dok,
                                                                 'judul' => $judul,
@@ -1188,7 +1189,6 @@ class Impor_xlsx
                                                                     $resul = $DB->insert($tabel_pakai, $arrayDataRows);
                                                                     if ($DB->count()) {
                                                                         $data['add_row'][] = $sum;
-
                                                                     } else {
                                                                         $data['gagal'][] = $sum;
                                                                         $data['gagal'][$sum] = $arrayDataRows;

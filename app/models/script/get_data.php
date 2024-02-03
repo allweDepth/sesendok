@@ -251,7 +251,7 @@ class get_data
                             $kodePosting = 'get_data';
                             $where_row = "id = ?";
                             $data_where_row =  [$id_row];
-                            
+
 
                             break;
                         default:
@@ -287,12 +287,12 @@ class get_data
                             $jumlah_kolom = 7;
                             break;
                         case 'peraturan':
-                            $like = "disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
-                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $like = "kd_wilayah = ? AND disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
+                            $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY tgl_pengundangan ASC";
                             $posisi = " LIMIT ?, ?";
-                            $where1 = "disable <= ?";
-                            $data_where1 =  [0];
+                            $where1 = "kd_wilayah = ? AND disable <= ?";
+                            $data_where1 = [$kd_wilayah, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 6;
@@ -431,7 +431,7 @@ class get_data
                                                 $kd_aset = $resul[0]->kd_aset;
                                                 $data['aset'] = $DB->getQuery("SELECT kode, uraian FROM aset_neo WHERE kode LIKE CONCAT('%',?,'%')", [$kd_aset]);
                                                 $satuan = $resul[0]->satuan;
-                                                $data['satuan'] = $DB->getQuery("SELECT value, item FROM satuan_neo WHERE value LIKE CONCAT('%',?,'%')", [$satuan ]);
+                                                $data['satuan'] = $DB->getQuery("SELECT value, item FROM satuan_neo WHERE value LIKE CONCAT('%',?,'%')", [$satuan]);
                                                 break;
                                             case 'value1':
                                                 break;
@@ -446,7 +446,6 @@ class get_data
                                         #code...
                                         break;
                                 };
-                                
                             } else {
                                 $code = 41; //202
                             }
