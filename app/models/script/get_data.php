@@ -106,6 +106,26 @@ class get_data
                 //FINISH PROSES VALIDASI
                 $Fungsi = new MasterFungsi();
                 if ($validate->passed()) {
+                    $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+                    $tahun = (int) $rowUsername->tahun;
+                    $kd_wilayah = $rowUsername->kd_wilayah;
+                    $kd_skpd = $rowUsername->kd_organisasi;
+                    $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+                    //var_dump($rowTahunAktif);
+                    if ($rowTahunAktif) {
+                        $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
+                        $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
+                        $id_aturan_akun = $rowTahunAktif->aturan_akun;
+                        $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
+                        $id_aturan_asb = $rowTahunAktif->aturan_asb;
+                        $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
+                        $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
+                        $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
+                        $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
+                        $tahun_pengaturan = $rowTahunAktif->tahun;
+                    } else {
+                        $id_peraturan = 0;
+                    }
                     //tabel pakai
                     switch ($tbl) {
                         case 'peraturan':
@@ -299,8 +319,38 @@ class get_data
                             $jumlah_kolom = 9;
                             break;
                         case 'bidang_urusan':
+                            $like = "disable <= ? AND(bidang LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%')) AND prog < ?";
+                            $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari, 0];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ? AND prog <= ?";
+                            $data_where1 =  [0, 0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 11;
+                            break;
                         case 'prog':
+                            $like = "disable <= ? AND(bidang LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%')) AND keg < ?";
+                            $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari, 0];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ? AND keg <= ?";
+                            $data_where1 =  [0, 0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 11;
+                            break;
                         case 'keg':
+                            $like = "disable <= ? AND(bidang LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%')) AND sub_keg < ?";
+                            $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari, 0];
+                            $order = "ORDER BY kode ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ? AND sub_keg <= ?";
+                            $data_where1 =  [0, 0];
+                            // $where = "nomor = ?";
+                            // $data_where =  [$text];
+                            $jumlah_kolom = 11;
+                            break;
                         case 'sub_keg':
                             $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari];
@@ -327,12 +377,12 @@ class get_data
                         case 'sbu':
                         case 'ssh':
                         case 'asb':
-                            $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%'))";
-                            $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
-                            $order = "ORDER BY kode ASC";
+                            $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
+                            $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY kd_aset ASC";
                             $posisi = " LIMIT ?, ?";
-                            $where1 = "disable <= ?";
-                            $data_where1 =  [0];
+                            $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
+                            $data_where1 =  [$kd_wilayah, $tahun, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 11;

@@ -181,7 +181,6 @@ class Validate
           break;
           //tambahan alwi
         case 'in_array':
-          //var_dump(in_array($formValue, $ruleValue,  TRUE));
           $formValue = (gettype($formValue) == 'string') ? strtolower($formValue) : $formValue;
           if (!in_array($formValue, $ruleValue, TRUE)) {
             $this->_errors[$item] = "Periksa baris $itemLabel";

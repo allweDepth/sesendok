@@ -33,7 +33,7 @@ class Impor_xlsx
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
-        $tambahan_pesan = '';
+        $tambahan_pesan = '.';
         //$data['note'] = [];
         //$data['add_row'] = [];
         //$data['row_update'] = [];
@@ -68,7 +68,7 @@ class Impor_xlsx
                             'min_char' => 1,
                             'max_char' => 100
                         ]);
-                        
+
                         $kodePosting = '';
                         if ($validate->passed()) {
                             // mulai proses impor
@@ -92,11 +92,12 @@ class Impor_xlsx
                                     case 'aset':
                                     case 'mapping':
                                     case 'organisasi':
-                                        case 'wilayah':
+                                    case 'satuan':
+                                    case 'wilayah':
                                         $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
-                                        //var_dump($rowUsername);
-
                                         $tahun = (int) $rowUsername->tahun;
+                                        $kd_wilayah = $rowUsername->kd_wilayah;
+                                        $kd_skpd = $rowUsername->kd_organisasi;
                                         $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                                         //var_dump($rowTahunAktif);
                                         if ($rowTahunAktif) {
@@ -109,6 +110,7 @@ class Impor_xlsx
                                             $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
                                             $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
                                             $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
+                                            $tahun = $rowTahunAktif->tahun;
                                         } else {
                                             $id_peraturan = 0;
                                         }
@@ -116,9 +118,33 @@ class Impor_xlsx
                                 }
                                 //menentukan data
                                 switch ($tbl) {
+                                    case 'hspk':
+                                        $id_aturan = $id_aturan_hspk;
+                                        $tabel_pakai = 'hspk_neo';
+                                        $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
+                                    case 'ssh':
+                                        $id_aturan = $id_aturan_ssh;
+                                        $tabel_pakai = 'ssh_neo';
+                                        $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
+                                    case 'asb':
+                                        $id_aturan = $id_aturan_asb;
+                                        $tabel_pakai = 'asb_neo';
+                                        $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
+                                    case 'sbu':
+                                        $id_aturan = $id_aturan_sbu;
+                                        $tabel_pakai = 'sbu_neo';
+                                        $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
+                                        $count_col_min = count($RowHeaderValidate);
+                                        break;
                                     case 'satuan':
                                         $tabel_pakai = 'satuan_neo';
-                                        $RowHeaderValidate = ['Kode', 'ITEM', 'Keterangan', 'Sebutan lain'];
+                                        $RowHeaderValidate = ['Value', 'Item', 'Keterangan', 'Sebutan Lain'];
                                         $count_col_min = count($RowHeaderValidate);
                                         break;
                                     case 'wilayah':
@@ -207,11 +233,14 @@ class Impor_xlsx
                                         //var_dump($validateTabel);
                                         foreach ($RowHeaderValidate as $keyValid => $valueValid) {
                                             $headerValid = preg_replace('/(\s\s+|\t|\n)/', ' ', strtolower($valueValid));
+                                            // var_dump($keyValid);
+                                            // var_dump($valueValid);
+                                            // var_dump($headerValid);
                                             $data_column = $validateTabel->setRules($keyValid, "header kolom $headerValid", [
                                                 'sanitize' => 'string',
                                                 'required' => true,
                                                 'min_char' => 1,
-                                                'max_char' => 100,
+                                                'max_char' => 255,
                                                 'in_array' => [$headerValid]
                                             ]);
                                             //var_dump($valueValid);
@@ -231,6 +260,77 @@ class Impor_xlsx
                                                     //PROSES VALIDASI CELL EXCELL
                                                     //============================
                                                     switch ($tbl) {
+                                                        case 'hspk':
+                                                        case 'ssh':
+                                                        case 'asb':
+                                                        case 'sbu':
+                                                            $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $uraian_kel = $validateRow->setRules(1, 'uraian kelompok', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $uraian_barang = $validateRow->setRules(2, 'uraian_barang', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $spesifikasi = $validateRow->setRules(3, 'spesifikasi', [
+                                                                'sanitize' => 'string'
+                                                            ]);
+                                                            $satuan = $validateRow->setRules(4, 'satuan', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $harga_satuan = $validateRow->setRules(5, 'harga satuan', [
+                                                                'numeric' => true,
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            $tkdn = $validateRow->setRules(6, 'TKDN', [
+                                                                'numeric_zero' => true
+                                                            ]);
+                                                            $kd_rek_standar = $validateRow->setRules(7, 'kd rek standar', [
+                                                                'sanitize' => 'string',
+                                                                'required' => true,
+                                                                'min_char' => 1
+                                                            ]);
+                                                            // ubah $kd_rek_standar menjadi array dan ubah ke json mysql
+                                                            $array_kd_rek = explode(",", $kd_rek_standar);
+
+
+                                                            $keterangan = $validateRow->setRules(8, 'keterangan', [
+                                                                'sanitize' => 'string',
+                                                            ]);
+                                                            $arrayDataRows = [
+                                                                'kd_wilayah' => $kd_wilayah,
+                                                                'tahun' => $tahun,
+                                                                'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
+                                                                'uraian_kel' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_kel),
+                                                                'uraian_barang' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_barang),
+                                                                'spesifikasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $spesifikasi),
+                                                                'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
+                                                                'harga_satuan' => $harga_satuan,
+                                                                'tkdn' => $tkdn,
+                                                                'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
+                                                                'kd_rek_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $array_kd_rek),
+                                                                'kd_rek_akun_asli' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_rek_standar),
+                                                                'peraturan' => $id_aturan,
+                                                                'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                                                'disable' => 0,
+                                                                'tanggal' => date('Y-m-d H:i:s'),
+                                                                'username' => $_SESSION["user"]["username"]
+                                                            ];
+                                                            //$string = preg_replace('/\s/', ' ', $string);
+                                                            $update_arrayData = [['uraian_barang', '=', $uraian_barang], ['kd_aset', '=', $kd_aset, 'AND'], ['harga_satuan', '=', $harga_satuan, 'AND']];
+                                                            $getWhereArrayData = [['uraian_barang', '=', $uraian_barang], ['kd_aset', '=', $kd_aset, 'AND'], ['harga_satuan', '=', $harga_satuan, 'AND']];
+                                                            $no_sort++;
+                                                            break;
                                                         case 'satuan':
                                                             $value = $validateRow->setRules(0, 'Value', [
                                                                 'sanitize' => 'string',
@@ -241,27 +341,27 @@ class Impor_xlsx
                                                                 'required' => true,
                                                                 'min_char' => 1
                                                             ]);
-                                                            $keterangan = $validateRow->setRules(8, 'keterangan', [
+                                                            $keterangan = $validateRow->setRules(2, 'keterangan', [
                                                                 'sanitize' => 'string',
                                                             ]);
-                                                            $sebutan_lain = $validateRow->setRules(8, 'sebutan lainnya', [
+                                                            $sebutan_lain = $validateRow->setRules(3, 'sebutan lainnya', [
                                                                 'sanitize' => 'string',
                                                             ]);
                                                             $arrayDataRows = [
-                                                                'kode' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kode),
-                                                                'item' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
+                                                                'value' => preg_replace('/(\s\s+|\t|\n)/', ' ', $value),
+                                                                'item' => preg_replace('/(\s\s+|\t|\n)/', ' ', $item),
                                                                 'sebutan_lain' => preg_replace('/(\s\s+|\t|\n)/', ' ', $sebutan_lain),
                                                                 'peraturan' => $id_aturan_anggaran,
                                                                 'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                                                'disable' => 0,
                                                                 'tanggal' => date('Y-m-d H:i:s'),
                                                                 'username' => $_SESSION["user"]["username"]
                                                             ];
                                                             //$string = preg_replace('/\s/', ' ', $string);
-                                                            $update_arrayData = [['kode', '=', $kode]];
-                                                            $getWhereArrayData = [['kode', '=', $kode]];
+                                                            $update_arrayData = [['value', '=', $value]];
+                                                            $getWhereArrayData = [['value', '=', $value]];
                                                             $no_sort++;
                                                             break;
-                                                        
                                                         case 'wilayah':
                                                             $kode = $validateRow->setRules(0, 'kode Wilayah', [
                                                                 'sanitize' => 'string',
@@ -1067,6 +1167,10 @@ class Impor_xlsx
                                                     //=====================================
                                                     if ($validateRow->passed()) {
                                                         switch ($tbl) {
+                                                            case 'hspk':
+                                                            case 'ssh':
+                                                            case 'asb':
+                                                            case 'sbu':
                                                             case 'satuan':
                                                             case 'wilayah':
                                                             case 'organisasi':
@@ -1079,11 +1183,13 @@ class Impor_xlsx
                                                                 //var_dump($tabel_pakai);
                                                                 $sumRows = $DB->getWhereCustom($tabel_pakai, $getWhereArrayData);
                                                                 $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
+                                                                //var_dump($arrayDataRows);
                                                                 if ($jumlahArray <= 0) {
 
                                                                     $resul = $DB->insert($tabel_pakai, $arrayDataRows);
                                                                     if ($DB->count()) {
                                                                         $data['add_row'][] = $sum;
+
                                                                     } else {
                                                                         $data['gagal'][] = $sum;
                                                                         $data['gagal'][$sum] = $arrayDataRows;
@@ -1179,7 +1285,8 @@ class Impor_xlsx
         } else {
             $code = 41;
         }
-        $item = array('code' => $code, 'message' => hasilServer[$code] . " $tambahan_pesan");
+        $tambahanNote = (is_array($tambahan_pesan)) ? implode($tambahan_pesan) : $tambahan_pesan;
+        $item = array('code' => $code, 'message' => hasilServer[$code] . " " . $tambahanNote, "note" => $tambahan_pesan);
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         return json_encode($json);
     }

@@ -96,11 +96,9 @@ class del_data
                         case 'kegiatan':
                             $tabel_pakai = 'kegiatan_neo';
                             break;
-
                         case 'organisasi':
                             $tabel_pakai = 'organisasi_neo';
                             break;
-
                         case 'program':
                             $tabel_pakai = 'program_neo';
                             break;
@@ -170,27 +168,6 @@ class del_data
                                     break;
                             }
                             break;
-                        case 'satuan':
-                            switch ($tbl) {
-                                case 'reset':
-                                    $kodePosting = 'reset';
-                                    break;
-                                case 'del_all':
-                                    $kodePosting = 'delete_all_table';
-                                    break;
-                                case 'del_row':
-                                    $kodePosting = 'del_row';
-                                    $kondisi = [['tahun', '=', $tahun_anggaran], ['id', '=', $id_row, 'AND']];
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
-                        case 'profil':
-
-                            break;
-
                         default:
                             switch ($jenis) {
                                 case 'reset':

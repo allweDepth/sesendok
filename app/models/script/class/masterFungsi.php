@@ -806,6 +806,21 @@ class MasterFungsi
         // jika tabel mengganti thead
         switch ($tbl) {
             case 'wilayah':
+                case 'hspk':
+                case 'sbu':
+                case 'asb':
+                case 'ssh':
+                    //Kode Komponen	Uraian Komponen	Spesifikasi	Satuan	Harga Satuan	TKDN	Aksi
+                    $rowData['thead'] = trim('<tr>
+                                <th>Kode Komponen</th>
+                                <th>Uraian Komponen</th>
+                                <th>Spesifikasi</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>TKDN</th>
+                                <th>AKSI</th>
+                            </tr>');
+                    break;
                 $rowData['thead'] = trim('<tr class="center aligned">
                             <th rowspan="2">Kode</th>
                             <th rowspan="2">Uraian</th>

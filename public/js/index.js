@@ -305,6 +305,9 @@ $(document).ready(function () {
 				jalankanAjax = true;
 				break;
 			case "aset":
+				case "keg":
+					case "bidang_urusan":
+					case "prog":
 			case "sub_keg":
 			case "akun_belanja":
 			case "sumber_dana":
@@ -2113,6 +2116,7 @@ $(document).ready(function () {
 								class: kelasToast,
 								icon: "check circle icon",
 							});
+							loaderHide();
 						};
 						runAjax(
 							url,

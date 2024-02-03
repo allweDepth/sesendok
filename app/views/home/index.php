@@ -32,9 +32,11 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 
     <!-- MAIN TOOLBAR MENU -->
     <div class="ui teal top fixed inverted main menu">
+
         <a class="item nabiila">
             <i class="sidebar icon"></i>
         </a>
+
         <div class="right menu">
             <div class="ui inline inverted dropdown item lain" id="countRow"><span><i class="list icon"></i></span><input type="hidden" name="countRow" value="5">
                 <div class="text">5</div>
@@ -70,13 +72,15 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <div class="item">
                 <h2 class="ui inverted center red aligned icon header dash_header"><i class="circular colored blue building icon"></i>
                     <div class="content">seSendok <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
-                        <div class="sub header">Manage Project</div>
+                        <div class="sub header">pemerintahan</div>
+                        <a class="ui blue center basic label inverted"><?php echo $_SESSION["user"]["tahun"]; ?></a>
                     </div>
                 </h2>
             </div>
+            
             <div class="item">
                 <div class="ui inverted transparent icon input">
-                    <input type="text" placeholder="Search mail...">
+                    <input type="text" placeholder="Menu...">
                     <i class="search icon"></i>
                 </div>
             </div>
