@@ -302,8 +302,6 @@ class Impor_xlsx
                                                             ]);
                                                             // ubah $kd_rek_standar menjadi array dan ubah ke json mysql
                                                             $array_kd_rek = explode(",", $kd_rek_standar);
-
-
                                                             $keterangan = $validateRow->setRules(8, 'keterangan', [
                                                                 'sanitize' => 'string',
                                                             ]);
@@ -318,7 +316,7 @@ class Impor_xlsx
                                                                 'harga_satuan' => $harga_satuan,
                                                                 'tkdn' => $tkdn,
                                                                 'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
-                                                                'kd_rek_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $array_kd_rek),
+                                                                'kd_rek_akun' => json_encode($array_kd_rek),
                                                                 'kd_rek_akun_asli' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_rek_standar),
                                                                 'peraturan' => $id_aturan,
                                                                 'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),

@@ -251,6 +251,8 @@ class get_data
                             $kodePosting = 'get_data';
                             $where_row = "id = ?";
                             $data_where_row =  [$id_row];
+                            
+
                             break;
                         default:
                             #code...
@@ -378,14 +380,14 @@ class get_data
                         case 'ssh':
                         case 'asb':
                             $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
-                            $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY kd_aset ASC";
                             $posisi = " LIMIT ?, ?";
                             $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
                             $data_where1 =  [$kd_wilayah, $tahun, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
-                            $jumlah_kolom = 11;
+                            $jumlah_kolom = 7;
                             break;
                         case 'dpa':
                             $like = "kd_proyek = ? AND kd_analisa = nomor AND(uraian LIKE CONCAT('%',?,'%') OR kd_analisa LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
@@ -418,6 +420,30 @@ class get_data
                             if ($jumlahArray > 0) {
                                 $code = 202; //202
                                 $data['users'] = $resul[0];
+                                switch ($jenis) {
+                                    case 'edit':
+                                        switch ($tbl) {
+                                            case 'asb':
+                                            case 'sbu':
+                                            case 'hspk':
+                                            case 'ssh':
+                                                // ambil data kd_aset dari tabel aset dan satuan list ut dropdown
+                                                
+                                                break;
+                                            case 'value1':
+                                                break;
+                                            default:
+                                                break;
+                                        };
+                                        break;
+                                    case 'value1':
+                                        #code...
+                                        break;
+                                    default:
+                                        #code...
+                                        break;
+                                };
+                                
                             } else {
                                 $code = 41; //202
                             }

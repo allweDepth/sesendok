@@ -219,11 +219,12 @@ $(document).ready(function () {
 		let tab = ini.attr("data-tab");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
-		$(`#cari_data`).attr("tbl", tbl);
+		$(`#cari_data`).attr("tbl", tbl).attr("dt-tab", tab);
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		if (ini.attr('name') === 'page') {
 			halaman = ini.attr("hal");
 			let ret = ini.attr("ret");
+			//tab = ini.attr("dt-tab");
 			switch (ret) {
 				case "prev":
 					halaman = halaman - 1;
@@ -305,9 +306,9 @@ $(document).ready(function () {
 				jalankanAjax = true;
 				break;
 			case "aset":
-				case "keg":
-					case "bidang_urusan":
-					case "prog":
+			case "keg":
+			case "bidang_urusan":
+			case "prog":
 			case "sub_keg":
 			case "akun_belanja":
 			case "sumber_dana":
@@ -496,29 +497,59 @@ $(document).ready(function () {
 						case "sbu":
 						case "asb":
 							dataHtmlku.konten =
-								buatElemenHtml("multiFieldTextAction", {
-									label: "Kode",
-									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
-									txtLabel: "cek",
-									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
-									dataArray: ['name="urusan"', 'name="bidang"', 'name="prog"', 'name="keg"', 'name="sub_keg"']
+								buatElemenHtml("fieldDropdown", {//@audit
+									label: "Kode Kelompok Barang/Jasa",
+									atribut: 'name="kd_aset"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["peraturan_undang_undang_pusat", "Peraturan Perundang-undangan Pusat"],
+										["peraturan_menteri_lembaga","Peraturan Kementerian / Lembaga"],
+										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["kegiatan", "File Kegiatan"]
+									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									label: "Nomenklatur Urusan",
-									atribut: 'name="nomenklatur_urusan" rows="4" placeholder="Uraian..."',
+									label: "Uraian Kelompok Barang/Jasa",
+									atribut: 'name="uraian_kel" rows="4" placeholder="Kelompok Barang/Jasa..." disabled',
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									label: "Kinerja",
-									atribut: 'name="kinerja" rows="4" placeholder="kinerja..."',
+									label: "Uraian Barang/Jasa",
+									atribut: 'name="uraian_barang" rows="4" placeholder="Uraian Barang/Jasa..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									label: "Indikator",
-									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+									label: "Spesifikasi",
+									atribut: 'name="spesifikasi" rows="4" placeholder="Spesifikasi..."',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Satuan",
+									atribut: 'name="satuan"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["peraturan_undang_undang_pusat", "Peraturan Perundang-undangan Pusat"],
+										["peraturan_menteri_lembaga","Peraturan Kementerian / Lembaga"],
+										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
+										["pengumuman", "Pengumuman"],
+										["artikel", "Artikel"],
+										["lain", "Data Lainnya"],
+										["kegiatan", "File Kegiatan"]
+									],
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Satuan",
+									label: "Harga Satuan",
 									atribut:
-										'name="satuan" placeholder="satuan..."',
+										'name="harga_satuan" placeholder="harga satuan..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "TKDN",
+									atribut:
+										'name="tkdn" placeholder="tkdn..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Kode Rekening",
+									atribut: 'name="kd_rek_akun_asli" rows="4" placeholder="Kode Rekening..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -534,7 +565,7 @@ $(document).ready(function () {
 								jalankanAjax = true;
 								formIni.attr("id_row", id_row);
 								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
+								dataHtmlku.header = "Edit Data";
 							}
 							break;
 						case "bidang_urusan":
@@ -947,7 +978,7 @@ $(document).ready(function () {
 								dataHtmlku.header = "Edit Data/Peraturan";
 							}
 							break;
-							case "satuan":
+						case "satuan":
 							dataHtmlku.konten +=
 								buatElemenHtml("fieldText", {
 									label: "Kode",

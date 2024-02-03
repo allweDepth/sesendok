@@ -805,13 +805,12 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
-            case 'wilayah':
-                case 'hspk':
-                case 'sbu':
-                case 'asb':
-                case 'ssh':
-                    //Kode Komponen	Uraian Komponen	Spesifikasi	Satuan	Harga Satuan	TKDN	Aksi
-                    $rowData['thead'] = trim('<tr>
+            case 'hspk':
+            case 'sbu':
+            case 'asb':
+            case 'ssh':
+                //Kode Komponen	Uraian Komponen	Spesifikasi	Satuan	Harga Satuan	TKDN	Aksi
+                $rowData['thead'] = trim('<tr>
                                 <th>Kode Komponen</th>
                                 <th>Uraian Komponen</th>
                                 <th>Spesifikasi</th>
@@ -820,7 +819,8 @@ class MasterFungsi
                                 <th>TKDN</th>
                                 <th>AKSI</th>
                             </tr>');
-                    break;
+                break;
+            case 'wilayah':
                 $rowData['thead'] = trim('<tr class="center aligned">
                             <th rowspan="2">Kode</th>
                             <th rowspan="2">Uraian</th>
@@ -924,6 +924,31 @@ class MasterFungsi
             foreach ($get_data as $row) {
                 $myrow++;
                 switch ($tbl) {
+                    case 'hspk':
+                    case 'sbu':
+                    case 'asb':
+                    case 'ssh':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                        <td klm="kd_aset">' . $divAwal . $row->kd_aset . $divAkhir . '</td>
+                                        <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
+                                        <td klm="spesifikasi">' . $divAwal . $row->spesifikasi . $divAkhir . '</td>
+                                        <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                                        <td klm="harga_satuan">' . $divAwal . $row->harga_satuan . $divAkhir . '</td>
+                                        <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
+                                        <td>' . $buttons . '</td>
+                                    </tr>');
+                        break;
                     case 'satuan':
                         $buttons = '';
                         $divAwal = '';

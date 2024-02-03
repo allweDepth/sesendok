@@ -314,11 +314,9 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         </tr>
                     </tbody>
                     <tfoot>
-
                     </tfoot>
                 </table>
             </div>
-
             <!-- ============ -->
             <!-- tab_peraturan -->
             <!-- ============== -->
@@ -416,6 +414,8 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             <td></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                    </tfoot>
                 </table>
             </div>
             <!-- ============== -->
