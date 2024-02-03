@@ -917,6 +917,9 @@ class MasterFungsi
                 # code...
                 break;
         }
+        if (isset($rowData['thead'])) {
+            $rowData['thead'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['thead']);
+        }
         $jumlahArray = is_array($get_data) ? count($get_data) : 0;
         if ($jumlahArray > 0) {
 
@@ -1350,9 +1353,15 @@ class MasterFungsi
         } else {
             $rowData['tfoot'] = str_replace("\r\n", "", '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"></th></tr>');
         }
-        $rowData['thead'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['thead']);
-        $rowData['tbody'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tbody']);
-        $rowData['tfoot'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tfoot']);
+        if (isset($rowData['tbody'])) {
+            $rowData['tbody'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tbody']);
+        }
+        // /if (property_exists($object, 'a_property'))
+        //cek data ada atau tidak
+        if (isset($rowData['tfoot'])) {
+            $rowData['tfoot'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tfoot']);
+        }
+        
         //$rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
         return $rowData;
     }

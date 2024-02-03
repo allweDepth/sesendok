@@ -77,7 +77,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     </div>
                 </h2>
             </div>
-            
+
             <div class="item">
                 <div class="ui inverted transparent icon input">
                     <input type="text" placeholder="Menu...">
@@ -132,7 +132,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 </div>
             </div>
             <!-- ut admin-->
-            <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="pengaturan" tbl="pengaturan"><i class="comments outline icon"></i>Pengaturan</a>' : ''; ?>
+            <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="atur_satu"><i class="comments outline icon"></i>Pengaturan</a>' : ''; ?>
 
             <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
             <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
@@ -506,156 +506,195 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <!-- ============== -->
             <!-- tab_pengaturan -->
             <!-- ============== -->
-            <div class="ui tab basic segment container" data-tab="pengaturan">
-                <div class="ui segments">
-                    <div class="ui teal inverted segment top attached">
-                        <h2 class="ui header left">
-                            <i class="settings icon"></i>
-                            <div class="content">
-                                Sesendok Settings
-                                <div class="sub header">Manage your preferences</div>
-                            </div>
-                        </h2>
+            <div class="ui tab basic segment" data-tab="atur_satu">
+                <div class="ui stackable grid">
+                    <div class="two wide left column">
+                        <div class="ui red secondary vertical pointing menu">
+                            <a class="active item" data-tab="pengaturan" tbl="pengaturan">
+                                Tahun Anggaran
+                            </a>
+                            <a class="item" data-tab="atur-2">
+                                Users
+                            </a>
+                            <a class="item" data-tab="atur-3">
+                                Profil
+                            </a>
+                        </div>
                     </div>
-                    <form class="ui form scrolling segment" jns="add" tbl="pengaturan" name="form_pengaturan">
-                        <div class="field">
-                            <label>Tahun</label>
-                            <div class="ui fluid search selection dropdown" name="tahun">
-                                <input type="hidden" name="tahun">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Tahun Anggaran</div>
-                                <div class="menu">
-                                    <div class="item" data-value="2020"><i class="podcast icon"></i>2020</div>
-                                    <div class="item" data-value="2021"><i class="podcast icon"></i>2021</div>
-                                    <div class="item" data-value="2022"><i class="podcast icon"></i>2022</div>
-                                    <div class="item" data-value="2023"><i class="podcast icon"></i>2023</div>
-                                    <div class="item" data-value="2024"><i class="podcast icon"></i>2024</div>
-                                    <div class="item" data-value="2025"><i class="podcast icon"></i>2025</div>
-                                    <div class="item" data-value="2026"><i class="podcast icon"></i>2026</div>
-                                    <div class="item" data-value="2027"><i class="podcast icon"></i>2027</div>
-                                </div>
+                    <div class="twelve wide stretched right column">
+                        <div class="ui tab basic active" data-tab="pengaturan">
+                            <div class="ui teal inverted segment top attached">
+                                <h2 class="ui header left">
+                                    <i class="settings icon"></i>
+                                    <div class="content">
+                                        Sesendok Settings
+                                        <div class="sub header">Manage your preferences</div>
+                                    </div>
+                                </h2>
                             </div>
-                        </div>
-                        <h4 class="ui horizontal divider header">
-                            <i class="tag icon"></i>
-                            Description
-                        </h4>
-                        <div class="field">
-                            <label>Anggaran</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_anggaran">
-                                <input type="hidden" name="aturan_anggaran">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Anggaran</div>
-                                <div class="menu">
+                            <form class="ui form scrolling segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
+                                <div class="field">
+                                    <label>Tahun</label>
+                                    <div class="ui fluid search selection dropdown" name="tahun">
+                                        <input type="hidden" name="tahun">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Tahun Anggaran</div>
+                                        <div class="menu">
+                                            <div class="item" data-value="2020"><i class="podcast icon"></i>2020</div>
+                                            <div class="item" data-value="2021"><i class="podcast icon"></i>2021</div>
+                                            <div class="item" data-value="2022"><i class="podcast icon"></i>2022</div>
+                                            <div class="item" data-value="2023"><i class="podcast icon"></i>2023</div>
+                                            <div class="item" data-value="2024"><i class="podcast icon"></i>2024</div>
+                                            <div class="item" data-value="2025"><i class="podcast icon"></i>2025</div>
+                                            <div class="item" data-value="2026"><i class="podcast icon"></i>2026</div>
+                                            <div class="item" data-value="2027"><i class="podcast icon"></i>2027</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="ui horizontal divider header">
+                                    <i class="tag icon"></i>
+                                    Description
+                                </h4>
+                                <div class="field">
+                                    <label>Anggaran</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_anggaran">
+                                        <input type="hidden" name="aturan_anggaran">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Anggaran</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>Pengadaan Barang/Jasa</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_pengadaan">
-                                <input type="hidden" name="aturan_pengadaan">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">aturan pengadaan</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>Pengadaan Barang/Jasa</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_pengadaan">
+                                        <input type="hidden" name="aturan_pengadaan">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">aturan pengadaan</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>Akun Belanja</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_akun">
-                                <input type="hidden" name="aturan_akun">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Akun Belanja</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>Akun Belanja</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_akun">
+                                        <input type="hidden" name="aturan_akun">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Akun Belanja</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>Sumber Dana</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_sumber_dana">
-                                <input type="hidden" name="aturan_sumber_dana">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Sumber Dana</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>Sumber Dana</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_sumber_dana">
+                                        <input type="hidden" name="aturan_sumber_dana">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Sumber Dana</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>Sub Kegiatan</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_sub_kegiatan">
-                                <input type="hidden" name="aturan_sub_kegiatan">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Sub Kegiatan</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>Sub Kegiatan</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_sub_kegiatan">
+                                        <input type="hidden" name="aturan_sub_kegiatan">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Sub Kegiatan</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>SSH</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_ssh">
-                                <input type="hidden" name="aturan_ssh">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">SSH</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>SSH</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_ssh">
+                                        <input type="hidden" name="aturan_ssh">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">SSH</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>HSPK</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_hspk">
-                                <input type="hidden" name="aturan_hspk">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">HSPK</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>HSPK</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_hspk">
+                                        <input type="hidden" name="aturan_hspk">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">HSPK</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>ASB</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_asb">
-                                <input type="hidden" name="aturan_asb">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">ASB</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>ASB</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_asb">
+                                        <input type="hidden" name="aturan_asb">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">ASB</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>SBU</label>
-                            <div class="ui fluid search selection dropdown" name="aturan_sbu">
-                                <input type="hidden" name="aturan_sbu">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">SBU</div>
-                                <div class="menu">
+                                <div class="field">
+                                    <label>SBU</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_sbu">
+                                        <input type="hidden" name="aturan_sbu">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">SBU</div>
+                                        <div class="menu">
 
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="field"><label>Keterangan</label><textarea name="keterangan" rows="4"></textarea></div>
+                                <div class="field"><label></label>
+                                    <div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non Aktif</label></div>
+                                </div>
+                                <div class="ui icon success message"><i class="check icon"></i>
+                                    <div class="content">
+                                        <div class="header">Form sudah lengkap</div>
+                                        <p>anda bisa submit form</p>
+                                    </div>
+                                </div>
+                                <div class="ui error message"></div>
+                                <button style="display: none;" type="submit" id="form-atur"></button>
+                            </form>
+                            <div class="ui yellow segment left actions bottom attached">
+                                <label class="ui green button" for="form-atur" tabindex="0">Simpan</label>
                             </div>
                         </div>
-                        <div class="field"><label>Keterangan</label><textarea name="keterangan" rows="4"></textarea></div>
-                        <div class="field"><label></label>
-                            <div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non Aktif</label></div>
+                        <div class="ui tab basic" data-tab="atur-2">
+                            <table class="ui table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Name">James</td>
+                                    </tr>
+
+                                </tbody>
+                                <tfoot>
+
+                                </tfoot>
+                            </table>
                         </div>
-                        <div class="ui icon success message"><i class="check icon"></i>
-                            <div class="content">
-                                <div class="header">Form sudah lengkap</div>
-                                <p>anda bisa submit form</p>
-                            </div>
+                        <div class="ui tab basic" data-tab="atur-3">
                         </div>
-                        <div class="ui error message"></div>
-                        <button style="display: none;" type="submit" id="form-atur"></button>
-                    </form>
-                    <div class="ui yellow segment left actions">
-                        <label class="ui green button" for="form-atur" tabindex="0">Simpan</label>
                     </div>
+
                 </div>
+
             </div>
             <!-- ============== -->
             <!-- wallchat -->
