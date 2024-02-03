@@ -1674,9 +1674,9 @@ $(document).ready(function () {
 	// dropdown.satuan();
 
 	//=======================================
-	//===============FORM GLOBAL=============@audit-ok form global
+	//===============FORM GLOBAL=============
 	//=======================================
-	class FormGlobal {
+	class FormGlobal {//@audit-ok Form
 		constructor(form) {
 			this.form = $(form); //element;
 		}
@@ -1687,21 +1687,21 @@ $(document).ready(function () {
 				onSuccess: function (e) {
 					e.preventDefault();
 					console.log("masuk form global");
-					var jalankanAjax = false;
-					var ini = $(this);
-					var tbl = ini.attr("tbl");
-					var dataType = "Json";
+					let jalankanAjax = false;
+					let ini = $(this);
+					let tbl = ini.attr("tbl");
+					let dataType = "Json";
 					let jenis = ini.attr("jns");
-					var nama_form = ini.attr("name");
-					var cryptos = false;
+					let nama_form = ini.attr("name");
+					let cryptos = false;
 					//loaderShow();
-					var formData = new FormData(this);
+					let formData = new FormData(this);
 					formData.append("jenis", jenis);
 					formData.append("tbl", tbl);
-					var url = "script/post_data";
+					let url = "script/post_data";
 					formData.set("cari", cari(jenis));
 					formData.set("rows", countRows());
-					var id_row = ini.attr("id_row");
+					let id_row = ini.attr("id_row");
 					if (typeof id_row === "undefined") {
 						id_row = ini.closest("tr").attr("id_row");
 						if (typeof id_row === "undefined") {
@@ -1771,7 +1771,7 @@ $(document).ready(function () {
 						// ====================
 						// UNTUK PENGATURAN====
 						// ====================
-						case "form_pengaturan"://@audit
+						case "form_pengaturan":
 
 							formData.has("disable") === false
 								? formData.append("disable", 'off')
@@ -1860,7 +1860,7 @@ $(document).ready(function () {
 									// ===========================
 									case "form_chat":
 										switch (
-										jenis //@audit chat now
+										jenis
 										) {
 											case "wall":
 												switch (tbl) {
@@ -1918,7 +1918,7 @@ $(document).ready(function () {
 											case "analisa_sda":
 											case "analisa_quarry":
 											case "analisa_alat":
-												jenisTrigger = jenis;
+												jenisTrigger = tbl;
 												break;
 											case "analisa_alat":
 												break;
@@ -1932,130 +1932,34 @@ $(document).ready(function () {
 									// UNTUK FORM FLYOUT
 									// =================
 									case "form_flyout":
-										switch (jenis) {
+										switch (tbl) {
+											case "aset":
+											case "mapping":
+											case "sub_keg":
+											case "organisasi":
+											case "sumber_dana":
+											case "akun_belanja":
+											case "wilayah":
 											case "peraturan":
-												switch (tbl) {
+												switch (jenis) {
+													case "import":
 													case "edit":
-													case "input":
-														jenisTrigger = jenis;
+													case "add":
+														jenisTrigger = tbl;
 														break;
 													default:
 														break;
 												}
 												break;
 											case "rekanan":
-												switch (tbl) {
+												switch (jenis) {
 													case "import":
 													case "edit":
 													case "input":
-														jenisTrigger = jenis;
-														break;
-													default:
-														break;
-												}
-												break;
-											case "copy":
-												switch (tbl) {
-													case "analisa_alat":
-													case "analisa_bm":
-													case "analisa_ck":
-													case "analisa_sda":
-													case "analisa_quarry":
-													case "analisa_alat_custom":
 														jenisTrigger = tbl;
 														break;
-													case "copy_lap_harian":
-														break;
-													case "proyek":
-														break;
 													default:
 														break;
-												}
-												break;
-											case "monev":
-												switch (tbl) {
-													case "lap-harian_edit":
-														jenisTrigger = "lap-harian";
-														break;
-													case "input":
-														jenisTrigger = "monev[realisasi]";
-														break;
-													default:
-														break;
-												}
-												break;
-											case "informasi_umum":
-												switch (tbl) {
-													case "edit":
-													case "input":
-														if (result.error.code === 2) {
-															jenisTrigger = jenis;
-														}
-														break;
-													default:
-														break;
-												}
-												break;
-											case "rab":
-												switch (tbl) {
-													case "add_row":
-														break;
-													case "edit":
-														if (result.error.code === 3) {
-															tabel = $('table[name="tabel_rab"]');
-															let tdTable = tabel.find(
-																`tr[id_row="${id_row}"] td`
-															);
-															tdTable.each(function () {
-																let atributTd = $(this).attr("klm");
-																if (typeof atributTd !== "undefined") {
-																	let nilaitTd = result.data.rows[atributTd];
-																	switch (atributTd) {
-																		case "volume":
-																		case "jumlah_harga":
-																		case "harga_satuan":
-																			let jumlahDesimal =
-																				nilaitTd.countDecimals();
-																			nilaitTd = accounting.formatNumber(
-																				nilaitTd,
-																				jumlahDesimal,
-																				".",
-																				","
-																			);
-																			break;
-																		default:
-																			break;
-																	}
-																	if ($(this).children().length > 0) {
-																		$(this).children().text(nilaitTd);
-																	} else {
-																		$(this).text(nilaitTd);
-																	}
-																}
-															});
-															//tambahkan jumlah analisa do tfoot table
-															var hasKey = result.data.hasOwnProperty("sum");
-															if (hasKey) {
-																tabel
-																	.find("tfoot")
-																	.html(
-																		`<tr><td colspan="5"><td>${accounting.formatNumber(
-																			result.data.sum,
-																			2,
-																			".",
-																			","
-																		)}</td></td><td colspan="2"></td></tr>`
-																	);
-															}
-														}
-														break;
-													default:
-														break;
-												}
-												break;
-											case "schedule":
-												if (result.error.code === 3) {
-													jenisTrigger = jenis;
 												}
 												break;
 											case "sbu": // add row rab dari analisa
@@ -2078,54 +1982,8 @@ $(document).ready(function () {
 														break;
 												}
 												break;
-											case "proyek":
-												switch (tbl) {
-													case "edit":
-													case "tambah_proyek":
-														jenisTrigger = jenis;
-														break;
-													case "c":
-														break;
-													default:
-														break;
-												}
-												break;
-											case "harga_satuan":
-												switch (tbl) {
-													case "import":
-													case "import":
-														jenisTrigger = jenis;
-														break;
-													default:
-														break;
-												}
-												break;
-											case "satuan":
-												switch (tbl) {
-													case "import_satuan":
-													case "import":
-														jenisTrigger = jenis;
-														//$(`[data-tab="${jenisTrigger}"]`).trigger("click");
-														break;
-													case "edit":
-														break;
-													default:
-														break;
-												}
-												break;
-											case "analisa_alat_custom":
-												jenisTrigger = "analisa_alat";
-												break;
-											case "analisa_ck":
-											case "analisa_bm":
-											case "analisa_sda":
-											case "analisa_quarry":
-											case "analisa_alat":
-												jenisTrigger = jenis;
-												//console.log(jenisTrigger);
-												break;
 											case "profil":
-												switch (tbl) {
+												switch (jenis) {
 													case "edit":
 														jenisTrigger = "user";
 														break;
@@ -2178,7 +2036,7 @@ $(document).ready(function () {
 								console.log(jenisTrigger);
 
 								if (jenisTrigger.length > 0) {
-									$(`a[data-tab="${jenisTrigger}"]`).trigger("click");
+									$(`a[data-tab][tbl="${jenisTrigger}"]`).trigger("click");
 								}
 								$("[rms]").mathbiila();
 							} else {
@@ -2492,7 +2350,7 @@ $(document).ready(function () {
 					atributData +
 					"></div></div>";
 				break;
-			case "multiFieldTextAction"://@audit
+			case "multiFieldTextAction":
 				let inputElm = '';
 				for (let x in dataArray) {
 					let rowsData = dataArray[x];

@@ -756,4 +756,6 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
     </script>
     <script src="<?= BASEURL; ?>js/index.js"></script>
 
+</body>
+
 </html>
