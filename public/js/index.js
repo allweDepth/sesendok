@@ -503,7 +503,7 @@ $(document).ready(function () {
 									kelas: "lainnya selection",
 									dataArray: [
 										["peraturan_undang_undang_pusat", "Peraturan Perundang-undangan Pusat"],
-										["peraturan_menteri_lembaga","Peraturan Kementerian / Lembaga"],
+										["peraturan_menteri_lembaga", "Peraturan Kementerian / Lembaga"],
 										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
 										["pengumuman", "Pengumuman"],
 										["artikel", "Artikel"],
@@ -529,7 +529,7 @@ $(document).ready(function () {
 									kelas: "lainnya selection",
 									dataArray: [
 										["peraturan_undang_undang_pusat", "Peraturan Perundang-undangan Pusat"],
-										["peraturan_menteri_lembaga","Peraturan Kementerian / Lembaga"],
+										["peraturan_menteri_lembaga", "Peraturan Kementerian / Lembaga"],
 										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
 										["pengumuman", "Pengumuman"],
 										["artikel", "Artikel"],
@@ -1114,11 +1114,25 @@ $(document).ready(function () {
 							case 'flyout':
 								switch (jenis) {
 									case 'edit':
+										switch (tbl) {
+											case "hspk":
+											case "ssh":
+											case "sbu":
+											case "asb":
+												let dropdownAset = result?.data?.aset;
+												let dropdownSatuan = result?.data?.satuan;
+												if (dropdownAset.length) {
+													
+												}
+												break;
+											default:
+												break;
+										}
+										//isi form dengan data
 										let attrName = formIni.find('input[name],textarea[name]');
 										for (const iterator of attrName) {
 											// console.log(attrName);
 											let attrElm = $(iterator).attr('name');
-
 											if (attrElm === 'file') {
 												formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 											} else {

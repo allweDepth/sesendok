@@ -939,15 +939,15 @@ class MasterFungsi
                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                        <td klm="kd_aset">' . $divAwal . $row->kd_aset . $divAkhir . '</td>
-                                        <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
-                                        <td klm="spesifikasi">' . $divAwal . $row->spesifikasi . $divAkhir . '</td>
-                                        <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
-                                        <td klm="harga_satuan">' . $divAwal . $row->harga_satuan . $divAkhir . '</td>
-                                        <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
-                                        <td>' . $buttons . '</td>
-                                    </tr>');
+                        $rowData['tbody'] .= preg_replace('/(\s\s+|\t|\n)/', ' ', '<tr id_row="' . $row->id . '">
+                        <td klm="kd_aset">' . $divAwal . $row->kd_aset . $divAkhir . '</td>
+                        <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
+                        <td klm="spesifikasi">' . $divAwal . $row->spesifikasi . $divAkhir . '</td>
+                        <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                        <td klm="harga_satuan">' . $divAwal . $row->harga_satuan . $divAkhir . '</td>
+                        <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
+                        <td>' . $buttons . '</td>
+                    </tr>');
                         break;
                     case 'satuan':
                         $buttons = '';
@@ -1301,6 +1301,7 @@ class MasterFungsi
                         break;
                 }
             }
+            
         } else { //jika data tidak ditemukan
             $rowData['tbody'] .= '<tr><td colspan="' . $jumlah_kolom . '"><div class="ui icon info message"><i class="yellow exclamation circle icon"></i><div class="content"><div class="header">Data Tidak ditemukan </div><p>input data baru atau hubungi administrator</p></div></div></td></tr>';
             $rowData['tfoot'] = '<tr></tr>';
@@ -1349,8 +1350,10 @@ class MasterFungsi
         } else {
             $rowData['tfoot'] = str_replace("\r\n", "", '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"></th></tr>');
         }
-
-        $rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
+        $rowData['thead'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['thead']);
+        $rowData['tbody'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tbody']);
+        $rowData['tfoot'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tfoot']);
+        //$rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
         return $rowData;
     }
     //============================

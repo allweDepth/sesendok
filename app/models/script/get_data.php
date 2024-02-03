@@ -428,7 +428,10 @@ class get_data
                                             case 'hspk':
                                             case 'ssh':
                                                 // ambil data kd_aset dari tabel aset dan satuan list ut dropdown
-                                                
+                                                $kd_aset = $resul[0]->kd_aset;
+                                                $data['aset'] = $DB->getQuery("SELECT kode, uraian FROM aset_neo WHERE kode LIKE CONCAT('%',?,'%')", [$kd_aset]);
+                                                $satuan = $resul[0]->satuan;
+                                                $data['satuan'] = $DB->getQuery("SELECT value, item FROM satuan_neo WHERE value LIKE CONCAT('%',?,'%')", [$satuan ]);
                                                 break;
                                             case 'value1':
                                                 break;
