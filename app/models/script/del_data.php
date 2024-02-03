@@ -70,6 +70,10 @@ class del_data
                         case 'peraturan':
                             $tabel_pakai = 'peraturan_neo';
                             break;
+                        case 'wilayah':
+                            $tabel_pakai = 'wilayah_neo';
+                            break;
+                        case 'mapping_aset':
                         case "mapping":
                             $tabel_pakai = 'mapping_aset_akun';
                             break;
@@ -92,15 +96,11 @@ class del_data
                         case 'kegiatan':
                             $tabel_pakai = 'kegiatan_neo';
                             break;
-                        case 'mapping_aset':
-                            $tabel_pakai = 'mapping_aset_akun';
-                            break;
+
                         case 'organisasi':
                             $tabel_pakai = 'organisasi_neo';
                             break;
-                        case "peraturan":
-                            $tabel_pakai = 'peraturan_neo';
-                            break;
+
                         case 'program':
                             $tabel_pakai = 'program_neo';
                             break;

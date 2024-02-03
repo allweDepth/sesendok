@@ -180,6 +180,12 @@ $(document).ready(function () {
 				"Klasifikasi dan kodefikasi",
 				"Penyedia barang dan/atau jasa",
 			],
+			satuan: [
+				"clipboard list icon",
+				"SATUAN",
+				"Klasifikasi dan kodefikasi",
+				"Penyedia barang dan/atau jasa",
+			],
 			tab_hargasat: [
 				"clipboard list icon",
 				"SSH",
@@ -307,6 +313,11 @@ $(document).ready(function () {
 			case "mapping":
 			case "organisasi":
 			case "wilayah":
+			case "sbu":
+			case "ssh":
+			case "asb":
+			case "hspk":
+			case "satuan":
 				jalankanAjax = true;
 				break;
 			case "xxxx":
@@ -334,10 +345,8 @@ $(document).ready(function () {
 								const elmTable = divTab.find("table");
 								const elmtbody = elmTable.find(`tbody`);
 								const elmtfoot = elmTable.find(`tfoot`);
-
 								elmtbody.html(result.data.tbody);
 								elmtfoot.html(result.data.tfoot);
-								console.log(result?.data?.thead);
 								if (result?.data?.thead) {
 									const elmthead = elmTable.find(`thead`);
 									elmthead.html(result.data.thead);
@@ -815,27 +824,28 @@ $(document).ready(function () {
 							break;
 						case "organisasi":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldText", {
+								buatElemenHtml("fieldTextAction", {
 									label: "Kode",
-									atribut:
-										'name="kode" placeholder="Kode..."',
+									atribut: 'name="kode" placeholder="Nomor Peraturan..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Nama SKPD",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Kode",
+									label: "Alamat",
 									atribut:
 										'name="alamat" placeholder="Kode..."',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Kode",
+									label: "Kepala OPD",
 									atribut:
 										'name="nama_kepala" placeholder="Kode..."',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Kode",
+									label: "Nip. Kepala OPD",
 									atribut:
 										'name="nip_kepala" placeholder="Kode..."',
 								}) +
@@ -863,29 +873,54 @@ $(document).ready(function () {
 							break;
 						case "wilayah":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldText", {
+								buatElemenHtml("fieldTextAction", {
 									label: "Kode",
-									atribut:
-										'name="kode" placeholder="Kode..."',
+									atribut: 'name="kode" placeholder="Nomor Peraturan..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									label: "Nama SKPD",
+									label: "Nama Wilayah",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldText", {
-									label: "Kode",
-									atribut:
-										'name="alamat" placeholder="Kode..."',
+								buatElemenHtml("fieldDropdown", {
+									label: "Type Dok",
+									atribut: 'name="status"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["prov", "Provinsi"],
+										["kab", "Kabupaten"],
+										["kota", "Kota"],
+										["desa", "Desa"],
+										["kel", "Kelurahan"],
+										["dusun", "Dusun"],
+										["lain", "Lainnya"],
+									],
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Kode",
+									label: "Jumlah Kecamatan",
 									atribut:
-										'name="nama_kepala" placeholder="Kode..."',
+										'name="jml_kec" placeholder="Jumlah Kecamatan..."',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Kode",
+									label: "Jumlah Keluarahan",
 									atribut:
-										'name="nip_kepala" placeholder="Kode..."',
+										'name="jml_kel" placeholder="Jumlah Keluarahan..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Jumlah Desa",
+									atribut:
+										'name="jml_desa" placeholder="Jumlah Desa..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Luas Wilayah (km2)",
+									atribut:
+										'name="luas" placeholder="Luas Wilayah (km2)..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Jumlah Penduduk (jiwa)",
+									atribut:
+										'name="penduduk" placeholder="Jumlah penduduk (jiwa)..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -907,6 +942,37 @@ $(document).ready(function () {
 								formIni.attr("id_row", id_row);
 								dataHtmlku.icon = "edit icon";
 								dataHtmlku.header = "Edit Data/Peraturan";
+							}
+							break;
+							case "satuan":
+							dataHtmlku.konten +=
+								buatElemenHtml("fieldText", {
+									label: "Kode",
+									atribut: 'name="value" rows="4" placeholder="Kode..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Uraian HTML",
+									atribut: 'name="item" rows="4"',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Sebutan Lain",
+									atribut: 'name="sebutan_lain" rows="4"',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4"',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							if (jenis === "edit") {
+								data.id_row = id_row;
+								jalankanAjax = true;
+								formIni.attr("id_row", id_row);
+								dataHtmlku.icon = "edit icon";
+								dataHtmlku.header = "Edit Data";
 							}
 							break;
 						case "value1":
@@ -1686,6 +1752,7 @@ $(document).ready(function () {
 				autoCheckRequired: true,
 				onSuccess: function (e) {
 					e.preventDefault();
+					loaderShow();
 					console.log("masuk form global");
 					let jalankanAjax = false;
 					let ini = $(this);

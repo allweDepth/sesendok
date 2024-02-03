@@ -133,6 +133,10 @@ class get_data
                             $tabel_pakai = 'wilayah_neo';
                             $jumlah_kolom = 10;
                             break;
+                        case 'satuan':
+                            $tabel_pakai = 'satuan_neo';
+                            $jumlah_kolom = 5;
+                            break;
                         case 'organisasi':
                             $tabel_pakai = 'organisasi_neo';
                             break;
@@ -226,7 +230,6 @@ class get_data
                         case 'edit':
                             $kodePosting = 'get_data';
                             $where_row = "id = ?";
-
                             $data_where_row =  [$id_row];
                             break;
                         default:
@@ -234,6 +237,14 @@ class get_data
                             break;
                     };
                     switch ($tbl) {
+                        case 'satuan':
+                            $like = "disable <= ? AND(value LIKE CONCAT('%',?,'%') OR item LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR sebutan_lain LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY value ASC";
+                            $posisi = " LIMIT ?, ?";
+                            $where1 = "disable <= ?";
+                            $data_where1 =  [0];
+                            break;
                         case 'wilayah':
                             $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR status LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, $cari, $cari, $cari, $cari];

@@ -822,14 +822,23 @@ class MasterFungsi
                             <th>DESA</th>
                     </tr>');
                 break;
-                case 'organisasi':
-                    $rowData['thead'] = trim('<tr>
+            case 'satuan':
+                $rowData['thead'] = trim('<tr>
+                            <th>VALUE</th>
+                            <th>ITEM</th>
+                            <th>SEBUTAN LAIN</th>
+                            <th>KETERANGAN</th>
+                            <th>AKSI</th>
+                        </tr>');
+                break;
+            case 'organisasi':
+                $rowData['thead'] = trim('<tr>
                             <th>Kode</th>
                             <th>Uraian</th>
                             <th>keterangan</th>
                             <th>AKSI</th>
                         </tr>');
-                    break;
+                break;
             case 'mapping':
                 $rowData['thead'] = trim('<tr>
                         <th>Kode Neraca</th>
@@ -900,7 +909,7 @@ class MasterFungsi
             foreach ($get_data as $row) {
                 $myrow++;
                 switch ($tbl) {
-                    case 'wilayah':
+                    case 'satuan':
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
@@ -912,6 +921,30 @@ class MasterFungsi
                             <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="value">' . $divAwal . $row->value . $divAkhir . '</td>
+                                    <td klm="item">' . $divAwal . $row->item . $divAkhir . '</td>
+                                    <td klm="sebutan_lain">' . $divAwal . $row->sebutan_lain . $divAkhir . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
+                    case 'wilayah':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file)) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
                                     <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
                                     <td klm="status">' . $divAwal . $row->status . $divAkhir . '</td>
@@ -921,6 +954,7 @@ class MasterFungsi
                                     <td klm="luas">' . $divAwal . $row->luas . $divAkhir . '</td>
                                     <td klm="penduduk">' . $divAwal . $row->penduduk . $divAkhir . '</td>
                                     <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $fileTag . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
@@ -1057,24 +1091,24 @@ class MasterFungsi
                                                     <td>' . $buttons . '</td>
                                                 </tr>');
                         break;
-                        case 'organisasi':
-                            $buttons = '';
-                            $divAwal = '';
-                            $divAkhir = '';
-                            if ($type_user == 'admin') {
-                                $divAwal = '<div contenteditable>';
-                                $divAkhir = '</div>';
-                                $buttons = '<div class="ui icon basic mini buttons">
+                    case 'organisasi':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
                                                 <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                            }
-                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                                         <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
                                                         <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
                                                         <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                                         <td>' . $buttons . '</td>
                                                     </tr>');
-                            break;
+                        break;
                     case 'rekanan':
                         $buttons = '';
                         $divAwal = '';

@@ -44,6 +44,12 @@ $(document).ready(function () {
             .modal('show')
             ;
     })
+    $(document).on('click', "a[name='modal-register']", function (event) {
+        event.preventDefault();
+        $('.ui.modal.register')
+            .modal('show')
+            ;
+    })
     $(document).on('click', "button[name='login']", function (event) {
         event.preventDefault();
         dok = $(this).attr('value');

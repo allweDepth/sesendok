@@ -10,7 +10,7 @@
                 <a class="ui button" name="modal">Log in</a>
             </div>
             <div class="item">
-                <a class="ui primary button" href="register" target=”_blank”>Sign Up</a>
+                <a class="ui primary button" name="modal-register">Sign Up</a>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
     <a class="item">Company</a>
     <a class="item">Careers</a>
     <a class="item" name="modal">Login</a>
-    <a class="item" href="register" target=”_blank”>Signup</a>
+    <a class="item" name="modal-register">Signup</a>
 </div>
 
 
@@ -42,7 +42,7 @@
                 <a class="item">Careers</a>
                 <div class="right item">
                     <a class="ui inverted button" name="modal">Log in</a>
-                    <a class="ui inverted button" href="register" target=”_blank”>Sign Up</a>
+                    <a class="ui inverted button" name="modal-register">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -160,41 +160,114 @@
     </div>
 </div>
 
-<!-- modal pemberitahuan notif-->
-<div class="ui modal login">
-    <i class="close icon"></i>
-    <div class="header">
-        Login
-    </div>
-    <form class="ui large form content">
-        <div class="field">
-            <div class="ui left icon input">
-                <i class="user icon"></i>
-                <input type="text" name="username" placeholder="username or E-mail address">
+<!-- modal login-->
+<div class="ui basic modal login">
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <form class="ui large form login content">
+                <div class="ui stacked segment">
+                <h2 class="ui teal image header"><i class="home icon"></i>
+                        <div class="content"> Login seSendok
+                            <div class="sub header"> Manajeemen Anggaran</div>
+                        </div>
+                    </h2>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="username" placeholder="username or E-mail address">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui right labeled left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password">
+                            <a onclick="changePassView()" class="ui tag label">
+                                <i class="eye icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ui error message"></div>
+                </div>
+            </form>
+            <div class="ui message"> Buat akun baru ? <a href="register" target=”_blank”>Buat akun</a></div>
+            <div class="actions">
+                <button class="ui black deny button">
+                    Batal
+                </button>
+                <button class="ui positive right labeled icon button" type="submit" name="login" value="anggaran">
+                    Login
+                    <i class="checkmark icon"></i>
+                </button>
             </div>
+
         </div>
-        <div class="field">
-            <div class="ui right labeled left icon input">
-                <i class="lock icon"></i>
-                <input type="password" name="password" placeholder="Password">
-                <a onclick="changePassView()" class="ui tag label">
-                    <i class="eye icon"></i>
-                </a>
-            </div>
+    </div>
+</div>
+<!-- modal register-->
+<div class="ui basic modal register">
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <form class="ui form register" method="POST">
+                <div class="ui stacked segment">
+                    <h2 class="ui teal image header"><i class="home icon"></i>
+                        <div class="content"> Register seSendok
+                            <div class="sub header"> Manage project </div>
+                        </div>
+                    </h2>
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="user icon"></i>
+                            <input type="text" name="username" placeholder="username">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="envelope open icon"></i>
+                            <input type="text" name="email" placeholder="E-mail address">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="user icon"></i>
+                            <input type="text" name="nama" placeholder="Nama Lengkap">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="fax icon"></i>
+                            <input type="text" name="kontak_person" placeholder="kontak person">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="home icon"></i>
+                            <input type="text" name="organisasi" placeholder="Organisasi">
+                        </div>
+                    </div>
+
+                    <div class="inline field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="setuju" checked>
+                            <label href="dok/Basic Price 1 Header.xlsx" target="_blank">Saya setuju dengan <a href="dok/syarat_dan_ketentuan_AHSP.pdf" target="_blank">ketentuan</a> penggunaan aplikasi ini</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ui error message"></div>
+                <div class="actions">
+                    <div class="ui red basic cancel inverted button">
+                        <i class="remove icon"></i>
+                        Batal
+                    </div>
+                    <div class="ui green ok inverted button" name="register" value="Daftar">
+                        <i class="checkmark icon"></i>
+                        Register
+                    </div>
+                </div>
+            </form>
+
         </div>
-        <div class="ui error message"></div>
-    </form>
-    <div class="ui message">
-        Buat akun baru ?
-        <a href="register" target=”_blank”>Buat akun</a>
     </div>
-    <div class="actions">
-        <button class="ui black deny button">
-            Batal
-        </button>
-        <button class="ui positive right labeled icon button" type="submit" name="login" value="anggaran">
-            Login
-            <i class="checkmark icon"></i>
-        </button>
-    </div>
+
 </div>
