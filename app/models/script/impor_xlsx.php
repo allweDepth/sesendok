@@ -124,7 +124,7 @@ class Impor_xlsx
                                     //menentukan data
                                     switch ($tbl) {
                                         case 'rekanan':
-                                            $tabel_pakai = 'rekanan';
+                                            $tabel_pakai = 'rekanan_neo';
                                             $RowHeaderValidate = ['Nama Perusahaan/Pribadi', 'Alamat', 'Email', 'NPWP', 'Nomor Rekening Bank', 'Nama Bank Rekening', 'Atas Nama Bank Rekening', 'Nama Penanggung Jawab', 'Jabatan', 'Nomor KTP', 'Alamat Penanggung Jawab', 'Nomor Akta Pendirian', 'Tanggal Akta Pendirian', 'Lokasi Notaris Pendirian', 'Nama Notaris Pendirian', 'Nomor Akta Perubahan', 'Tanggal Akta Perubahan', 'Lokasi Notaris Perubahan', 'Nama Notaris Perubahan', 'Nama Pelaksana', 'Jabatan Pelaksana', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
@@ -1178,6 +1178,7 @@ class Impor_xlsx
                                                         //=====================================
                                                         if ($validateRow->passed()) {
                                                             switch ($tbl) {
+                                                                case 'rekanan':
                                                                 case 'hspk':
                                                                 case 'ssh':
                                                                 case 'asb':

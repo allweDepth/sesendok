@@ -953,8 +953,8 @@ class MasterFungsi
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="nama_perusahaan">' . $divAwal . $row->nama_perusahaan . $divAkhir . '</td>

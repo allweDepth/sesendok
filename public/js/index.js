@@ -490,9 +490,99 @@ $(document).ready(function () {
 					dataHtmlku.icon = "edit icon";
 					dataHtmlku.header = "Edit data";
 					jalankanAjax = true;
+					if (jenis === "edit") {
+						data.id_row = id_row;
+						jalankanAjax = true;
+						formIni.attr("id_row", id_row);
+						dataHtmlku.icon = "edit icon";
+						dataHtmlku.header = "Edit Data";
+					}
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
+						case 'rekanan':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldTextAction", {
+									label: "Nama Perusahaan",
+									atribut: 'name="nama_perusahaan" placeholder="Nama Perusahaan..."',
+									atributLabel: `name="get_data" jns="${jenis}" tbl="cek_kode"`,
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Alamat",
+									atribut: 'name="alamat" placeholder="Alamat..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "NPWP",
+									atribut: 'name="npwp" placeholder="NPWP..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Nama Pemilik/Direktur",
+									atribut: 'name="direktur" placeholder="Direktur..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "No. KTP Direktur",
+									atribut: 'name="no_ktp" placeholder="KTP Direktur..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Alamat Pemilik",
+									atribut: 'name="alamat_dir" placeholder="Alamat Pemilik..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "No. Akta Pendirian",
+									atribut: 'name="no_akta_pendirian" placeholder="No. Akta pendirian..."',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Notaris Pendirian",
+									kelas: "date",
+									atribut:
+										'placeholder="Tanggal.." name="tgl_akta_pendirian" readonly',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Alamat Notaris",
+									atribut: 'name="lokasi_notaris_pendirian" placeholder="Alamat Notaris pendirian..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Notaris",
+									atribut: 'name="nama_notaris_pendirian" placeholder="Nama Notaris pendirian..."',
+								}) +
+								buatElemenHtml("fieldFileInput2", {
+									label: "Pilih File Dokumen",
+									placeholderData: "Pilih File...",
+									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+									atribut: 'non_data name="file"',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
+								}) +
+								buatElemenHtml("accordionField", {
+									label: "Akta Notaris Perubahan",
+									content: buatElemenHtml("text", {
+										atribut: `name="nomor[1]" placeholder="Nomor" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tanggal[1]" placeholder="Tanggal" non_data`, kelas: "date"//atribut: `data-name='["satu", "tanggal"]' placeholder="Tanggal" non_data`, kelas: "date"
+									}) + buatElemenHtml("text", {
+										atribut: `name="alamat_notaris[1]" placeholder="Alamat" non_data`,
+									}) + buatElemenHtml("text", {
+										atribut: `name="notaris[1]" placeholder="Notaris" non_data`,
+									}),
+									atribut: 'name="notaris_perubahan"',
+								}) +
+								buatElemenHtml("accordionField", {
+									label: "Pelaksana",
+									content: buatElemenHtml("text", {
+										atribut: `name="pelaksana[nama][1]" placeholder="Nama" non_data`,//gunakan object $(elm).data('name') jquery
+									}) + buatElemenHtml("text", {
+										atribut: `name="pelaksana[jabatan][1]" placeholder="Jabatan" non_data`,
+									}),
+									atribut: 'name="data_lain"',
+								});
+							if (tbl === 'input') {
+								dataHtmlku.icon = "plus icon";
+								dataHtmlku.header = "Tambah data";
+							}
+
+							break;
 						case "hspk":
 						case "ssh":
 						case "sbu":
@@ -561,13 +651,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (tbl === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data";
-							}
+							
 							break;
 						case "bidang_urusan":
 						case "prog":
@@ -607,13 +691,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (tbl === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
-							}
+							
 							break;
 						case "aset":
 						case "akun_belanja":
@@ -638,13 +716,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (jenis === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
-							}
+							
 							break;
 						case "sumber_dana":
 							dataHtmlku.konten =
@@ -759,13 +831,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (jenis === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
-							}
+							
 							break;
 						case "mapping":
 							dataHtmlku.konten +=
@@ -849,13 +915,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (jenis === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
-							}
+							
 							break;
 						case "organisasi":
 							dataHtmlku.konten +=
@@ -898,13 +958,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (jenis === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
-							}
+							
 							break;
 						case "wilayah":
 							dataHtmlku.konten +=
@@ -971,13 +1025,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (jenis === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data/Peraturan";
-							}
+							
 							break;
 						case "satuan":
 							dataHtmlku.konten +=
@@ -1002,13 +1050,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							if (jenis === "edit") {
-								data.id_row = id_row;
-								jalankanAjax = true;
-								formIni.attr("id_row", id_row);
-								dataHtmlku.icon = "edit icon";
-								dataHtmlku.header = "Edit Data";
-							}
+							
 							break;
 						case "value1":
 							break;
