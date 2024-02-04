@@ -312,7 +312,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 <div class="ui right floated basic icon buttons">
                                     <?php
                                     if ($type_user == 'admin') {
-                                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+                                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl="tujuan_sasaran_renstra"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
                                     }
                                     ?>

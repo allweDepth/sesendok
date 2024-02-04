@@ -79,6 +79,11 @@ class Impor_xlsx
                                 $code = 1;
                                 $sukses = true;
                                 $RowHeaderValidate = [];
+
+                                $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+                                $tahun = (int) $rowUsername->tahun;
+                                $kd_wilayah = $rowUsername->kd_wilayah;
+                                $kd_skpd = $rowUsername->kd_organisasi;
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
                                     case 'akun_belanja':
@@ -95,13 +100,8 @@ class Impor_xlsx
                                         // case 'peraturan':
                                     case 'satuan':
                                     case 'rekanan':
-                                        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
-                                        $tahun = (int) $rowUsername->tahun;
-                                        $kd_wilayah = $rowUsername->kd_wilayah;
-                                        $kd_skpd = $rowUsername->kd_organisasi;
-
                                         $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-                                        //var_dump($rowTahunAktif);
+                                        // var_dump($rowTahunAktif);
                                         if ($rowTahunAktif) {
                                             $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
                                             $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
@@ -198,7 +198,7 @@ class Impor_xlsx
                                             $RowHeaderValidate = ['URUSAN/UNSUR', 'BIDANG URUSAN/BIDANG UNSUR', 'PROGRAM', 'KEGIATAN', 'SUB KEGIATAN', 'NOMENKLATUR URUSAN', 'KINERJA', 'INDIKATOR', 'SATUAN', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
-                                        
+
                                         case 'harga_satuan':
                                             $count_col_min = 8;
                                             $tabel_pakai = 'harga_sat_upah_bahan';
@@ -1300,8 +1300,13 @@ class Impor_xlsx
         } else {
             $code = 41;
         }
+        if ($disableImport) {
+            $sukses = false;
+            $code = 405;
+            $tambahan_pesan = 'pengaturan tahun anggaran belum di input';
+        }
         $tambahanNote = (is_array($tambahan_pesan)) ? implode($tambahan_pesan) : $tambahan_pesan;
-        $item = array('code' => $code, 'message' => hasilServer[$code] . " " . $tambahanNote, "note" => $tambahan_pesan);
+        $item = array('code' => $code, 'message' => hasilServer[$code] . ", " . $tambahanNote, "note" => $tambahan_pesan);
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         return json_encode($json);
     }

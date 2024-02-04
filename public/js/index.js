@@ -500,9 +500,19 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
-						case 'rekanan':
+						case 'renstra':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldTextAction", {
+							buatElemenHtml("fieldTextarea", {
+								label: "Tujuan",
+								atribut: 'name="tujuan" rows="4" placeholder="Kelompok Barang/Jasa..." disabled',
+							}) +
+							buatElemenHtml("fieldTextarea", {
+								label: "Uraian Barang/Jasa",
+								atribut: 'name="uraian_barang" rows="4" placeholder="Uraian Barang/Jasa..."',
+							}) ;
+							break;
+						case 'rekanan':
+							dataHtmlku.konten = buatElemenHtml("fieldTextAction", {
 									label: "Nama Perusahaan",
 									atribut: 'name="nama_perusahaan" placeholder="Nama Perusahaan..."',
 									atributLabel: `name="get_data" jns="${jenis}" tbl="cek_kode"`,
@@ -2192,8 +2202,7 @@ $(document).ready(function () {
 										break;
 								}
 								console.log(jenisTrigger);
-
-								if (jenisTrigger.length > 0) {
+								if (jenisTrigger.length > 0 ) {
 									$(`a[data-tab][tbl="${jenisTrigger}"]`).trigger("click");
 								}
 								$("[rms]").mathbiila();
