@@ -805,6 +805,18 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'rekanan':
+                $rowData['thead'] = '<tr class="center aligned">
+                <th rowspan="2">URAIAN</th>
+                <th rowspan="2">ALAMAT</th>
+                <th rowspan="2">NPWP</th>
+                <th rowspan="2">DIREKTUR</th>
+                <th colspan="4">AKTA PENDIRIAN</th>
+                <th rowspan="2" class="collapsing">FILE</th>
+                <th rowspan="2" class="collapsing">KETERANGAN</th>
+                <th class="collapsing" rowspan="2">AKSI</th>
+            </tr>';
+                break;
             case 'hspk':
             case 'sbu':
             case 'asb':
@@ -927,6 +939,37 @@ class MasterFungsi
             foreach ($get_data as $row) {
                 $myrow++;
                 switch ($tbl) {
+                    case 'rekanan':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+
+                        $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file)) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="nama_perusahaan">' . $divAwal . $row->nama_perusahaan . $divAkhir . '</td>
+                                    <td klm="alamat">' . $divAwal . $row->alamat . $divAkhir . '</td>
+                                    <td klm="npwp">' . $divAwal . $row->npwp . $divAkhir . '</td>
+                                    <td klm="direktur">' . $divAwal . $row->direktur . $divAkhir . '</td>
+                                    <td klm="no_akta_pendirian">' . $divAwal . $row->no_akta_pendirian . $divAkhir . '</td>
+                                    <td klm="tgl_akta_pendirian">' . $row->tgl_akta_pendirian  . '</td>
+                                    <td klm="lokasi_notaris_pendirian">' . $divAwal . $row->lokasi_notaris_pendirian . $divAkhir . '</td>
+                                    <td klm="nama_notaris_pendirian">' . $divAwal . $row->nama_notaris_pendirian . $divAkhir . '</td>
+                                    <td klm="file">' . $fileTag . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'hspk':
                     case 'sbu':
                     case 'asb':
@@ -941,7 +984,7 @@ class MasterFungsi
                                 <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
-                        
+
                         $rowData['tbody'] .= preg_replace('/(\s\s+|\t|\n)/', ' ', '<tr id_row="' . $row->id . '">
                         <td klm="kd_aset">' . $divAwal . $row->kd_aset . $divAkhir . '</td>
                         <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
@@ -1304,7 +1347,6 @@ class MasterFungsi
                         break;
                 }
             }
-            
         } else { //jika data tidak ditemukan
             $rowData['tbody'] .= '<tr><td colspan="' . $jumlah_kolom . '"><div class="ui icon info message"><i class="yellow exclamation circle icon"></i><div class="content"><div class="header">Data Tidak ditemukan </div><p>input data baru atau hubungi administrator</p></div></div></td></tr>';
             $rowData['tfoot'] = '<tr></tr>';
@@ -1361,7 +1403,7 @@ class MasterFungsi
         if (isset($rowData['tfoot'])) {
             $rowData['tfoot'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tfoot']);
         }
-        
+
         //$rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
         return $rowData;
     }

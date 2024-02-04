@@ -322,6 +322,7 @@ $(document).ready(function () {
 			case "asb":
 			case "hspk":
 			case "satuan":
+			case "rekanan":
 				jalankanAjax = true;
 				break;
 			case "xxxx":
@@ -1122,7 +1123,7 @@ $(document).ready(function () {
 												let dropdownAset = result?.data?.aset;
 												let dropdownSatuan = result?.data?.satuan;
 												if (dropdownAset.length) {
-													
+
 												}
 												break;
 											default:

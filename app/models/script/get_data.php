@@ -128,6 +128,10 @@ class get_data
                     }
                     //tabel pakai
                     switch ($tbl) {
+                        case 'rekanan':
+                            $tabel_pakai = 'rekanan_neo';
+                            $jumlah_kolom = 11;
+                            break;
                         case 'peraturan':
                             $tabel_pakai = 'peraturan_neo';
                             $jumlah_kolom = 4;
@@ -259,6 +263,14 @@ class get_data
                             break;
                     };
                     switch ($tbl) {
+                        case 'rekanan':
+                            $like = "kd_wilayah = ? AND nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%')";
+                            $data_like = [$kd_wilayah, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY nama_perusahaan, id ASC";
+                            $where1 = "kd_wilayah = ? AND disable <= ?";
+                            $data_where1 =  [$kd_wilayah, 0];
+                            
+                            break;
                         case 'satuan':
                             $like = "disable <= ? AND(value LIKE CONCAT('%',?,'%') OR item LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR sebutan_lain LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, $cari, $cari, $cari, $cari];
