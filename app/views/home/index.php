@@ -120,8 +120,8 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                     <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Organisasi</a>
                     <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="gavel icon"></i>Peraturan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Wilayah</a>
-                    
-                    
+
+
                 </div>
             </div>
             <div class="ui accordion inverted item">
@@ -198,7 +198,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                         <button class="ui button">Search</button>
                     </div>
                     <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
-                    <p>Tutorial cara menggunakan aplikasi AHSP untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
+                    <p>Tutorial cara menggunakan aplikasi seSendok untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
                     <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
                     <div class="ui items">
                         <div class="item">
@@ -240,6 +240,123 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 </div>
             </div>
             <!-- ============== -->
+            <!-- tab_renstra -->
+            <!-- ============== -->
+            <div class="ui tab basic segment" data-tab="tab_renstra">
+                <div class="ui stackable grid">
+                    <div class="two wide left column">
+                        <div class="ui red secondary vertical pointing menu">
+                            <a class="active item" data-tab="tujuan_sasaran" tbl="">
+                                Tujuan dan Sasaran
+                            </a>
+                            <a class="item" data-tab="prog_keg_renstra">
+                                Program dan Kegiatan
+                            </a>
+                            <a class="item" data-tab="rensta_tbl">
+                                Renstra
+                            </a>
+                        </div>
+                    </div>
+                    <div class="twelve wide stretched right column">
+                        <h1 class="ui header">Rencana Strategis (Renstra) <div class="sub header">dokumen perencanaan berorientasi pada hasil yang ingin dicapai</div>
+                        </h1>
+                        <div class="ui hidden divider"></div>
+                        <div class="ui stretched stackable five column grid">
+                            <div class="column">
+                                <div class="ui orange icon message goyang"><i class="book icon"></i>
+                                    <div class="content">
+                                        <div class="header">Total Anggaran</div>
+                                        <p name="total-anggaran"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui icon yellow message goyang">
+                                    <i class="chart icon" name="chart-realisasi-fisik-mini"></i>
+                                    <div class="content">
+                                        <div class="header">Jumlah Program</div>
+                                        <p name="realisasi-fisik"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column">
+                                <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini"></i>
+                                    <div class="content">
+                                        <div class="header">Jumlah Kegiatan</div>
+                                        <p name="realisasi-keu"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui icon red message goyang"><i class="spinner loading icon"></i>
+                                    <div class="content">
+                                        <div class="header">Jumlah Sub Kegiatan</div>
+                                        <p name="sisa-fisik"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui positive icon message goyang"><i class="spinner loading icon"></i>
+                                    <div class="content">
+                                        <div class="header">Sisa Keuangan</div>
+                                        <p name="sisa-keu"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui tab basic active" data-tab="tujuan_sasaran">
+                            <div class="ui fluid container">
+                                <div class="ui hidden divider"></div>
+                                <div class="ui right floated basic icon buttons">
+                                    <?php
+                                    if ($type_user == 'admin') {
+                                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+                            <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
+                                    }
+                                    ?>
+                                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+                                </div>
+                                <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                                <div class="ui hidden divider"></div>
+                                <div class="ui hidden divider"></div>
+                            </div>
+                        </div>
+                        <div class="ui tab basic" data-tab="prog_keg_renstra">
+
+                        </div>
+                        <div class="ui tab basic" data-tab="rensta_tbl">
+                            <table class="ui table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Name</th>
+                                        <th>Name</th>
+                                        <th>Name</th>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Name">James</td>
+                                        <td data-label="Name">James</td>
+                                        <td data-label="Name">James</td>
+                                        <td data-label="Name">James</td>
+                                        <td data-label="Name">James</td>
+                                    </tr>
+
+                                </tbody>
+                                <tfoot>
+
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ============== -->
             <!-- tab_kontrak -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_kontrak">
@@ -259,11 +376,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_lap">
             </div>
-            <!-- ============== -->
-            <!-- tab_renstra -->
-            <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_renstra">
-            </div>
+
             <!-- ============== -->
             <!-- tab_renja -->
             <!-- ============== -->
