@@ -500,23 +500,28 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
-						case 'renstra':
+						case 'tujuan_sasaran_renstra':
 							dataHtmlku.konten =
-							buatElemenHtml("fieldTextarea", {
-								label: "Tujuan",
-								atribut: 'name="tujuan" rows="4" placeholder="Kelompok Barang/Jasa..." disabled',
-							}) +
-							buatElemenHtml("fieldTextarea", {
-								label: "Uraian Barang/Jasa",
-								atribut: 'name="uraian_barang" rows="4" placeholder="Uraian Barang/Jasa..."',
-							}) ;
+								buatElemenHtml("fieldDropdown", {//@audit
+									label: "Kelompok",
+									atribut: 'name="kelompok"',
+									kelas: "tujuan_sasaran selection",
+									dataArray: [
+										["tujuan", "Tujuan"],
+										["sasaran", "Sasaran"]
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Uraian",
+									atribut: 'name="uraian" rows="4" placeholder="uraian..." disabled',
+								});
 							break;
 						case 'rekanan':
 							dataHtmlku.konten = buatElemenHtml("fieldTextAction", {
-									label: "Nama Perusahaan",
-									atribut: 'name="nama_perusahaan" placeholder="Nama Perusahaan..."',
-									atributLabel: `name="get_data" jns="${jenis}" tbl="cek_kode"`,
-								}) +
+								label: "Nama Perusahaan",
+								atribut: 'name="nama_perusahaan" placeholder="Nama Perusahaan..."',
+								atributLabel: `name="get_data" jns="${jenis}" tbl="cek_kode"`,
+							}) +
 								buatElemenHtml("fieldText", {
 									label: "Alamat",
 									atribut: 'name="alamat" placeholder="Alamat..."',
@@ -661,7 +666,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "bidang_urusan":
 						case "prog":
@@ -701,7 +706,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "aset":
 						case "akun_belanja":
@@ -726,7 +731,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "sumber_dana":
 							dataHtmlku.konten =
@@ -841,7 +846,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "mapping":
 							dataHtmlku.konten +=
@@ -925,7 +930,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "organisasi":
 							dataHtmlku.konten +=
@@ -968,7 +973,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "wilayah":
 							dataHtmlku.konten +=
@@ -1035,7 +1040,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "satuan":
 							dataHtmlku.konten +=
@@ -1060,7 +1065,7 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
-							
+
 							break;
 						case "value1":
 							break;
@@ -1112,6 +1117,25 @@ $(document).ready(function () {
 			$(".ui.accordion").accordion();
 			formIni.find(".ui.dropdown.lainnya").dropdown();
 			$("[rms]").mathbiila();
+			switch (jenis) {
+				case 'add':
+					switch (tbl) {
+						case 'tujuan_sasaran_renstra'://@audit
+							let dropdownTujuanSasaran = new DropdownConstructor('.tujuan_sasaran.selection')
+							break;
+
+						default:
+							break;
+					}
+					break;
+				case 'value1':
+
+					break;
+				default:
+
+					break;
+			};
+
 		} else if (attrName === "get_data") {
 			switch (jenis) {
 				case "get_data":
@@ -1643,6 +1667,8 @@ $(document).ready(function () {
 	//===================================
 	class DropdownConstructor {
 		//@audit-ok DropdownConstructor
+		jenis = '';
+		tbl = '';
 		constructor(element) {
 			this.element = $(element); //element;
 		}
@@ -1720,12 +1746,30 @@ $(document).ready(function () {
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown("set selected", val);
 		}
-		onChange(val) {
+		onChange(jenis = "list_dropdown", tbl = "satuan", ajax = false) {
+
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown({
 				onChange: function (value, text, $choice) {
 					let dataChoice = $($choice).find('span.description').text();
+					if (this.jenis = true) {
 
+						suksesAjax["ajaxku"] = function (result) {
+							var kelasToast = "success";
+							if (result.success === true) {
+
+							} else {
+								kelasToast = "warning"; //'success'
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: "check circle icon",
+							});
+							loaderHide();
+						};
+						
+						runAjax(url, "POST", data, "Json" ,undefined, undefined, "ajaxku", cryptos);
+					}
 				},
 				saveRemoteData: true,
 				filterRemoteData: true
@@ -2202,7 +2246,7 @@ $(document).ready(function () {
 										break;
 								}
 								console.log(jenisTrigger);
-								if (jenisTrigger.length > 0 ) {
+								if (jenisTrigger.length > 0) {
 									$(`a[data-tab][tbl="${jenisTrigger}"]`).trigger("click");
 								}
 								$("[rms]").mathbiila();
