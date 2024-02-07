@@ -944,6 +944,12 @@ $(document).ready(function () {
 									label: "Nama SKPD",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
+
+								buatElemenHtml("fieldCalendar", {
+									label: "Renstra",
+									kelas: "year",
+									atribut: 'name="tahun" placeholder="tahun renstra..."',
+								}) +
 								buatElemenHtml("fieldText", {
 									label: "Alamat",
 									atribut:
@@ -958,11 +964,6 @@ $(document).ready(function () {
 									label: "Nip. Kepala OPD",
 									atribut:
 										'name="nip_kepala" placeholder="Nip. Kepala SKPD..."',
-								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Renstra",
-									kelas: "year",
-									atribut: 'name="tahun" placeholder="tahun renstra..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",

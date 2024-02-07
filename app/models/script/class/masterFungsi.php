@@ -8,7 +8,95 @@ use FormulaParser\FormulaParser;
 //$jenis = 'koef'(rumus koefisien dan hasil pencarian ke koef semua) $jenis = 'harga'(untuk rumus di tempatkan harga satuan dan pencarian juga di harga satuan) atau $jenis = 'koef_harga'(untuk rumus ke koefisien, dan harga pencarian di harga satuan)
 class MasterFungsi
 {
+    public function tabel_pakai($tbl){
+        switch ($tbl) {
+            case 'tujuan_sasaran_renstra':
+            case 'tujuan_sasaran':
+                $tabel_pakai = 'tujuan_sasaran_renstra_neo';
+                $jumlah_kolom = 11;
+                break;
+            case 'rekanan':
+                $tabel_pakai = 'rekanan_neo';
+                $jumlah_kolom = 11;
+                break;
+            case 'peraturan':
+                $tabel_pakai = 'peraturan_neo';
+                $jumlah_kolom = 4;
+                break;
+            case "akun":
+            case "akun_belanja":
+                $tabel_pakai = 'akun_neo';
+                $jumlah_kolom = 4;
+                break;
+            case "aset":
+                $tabel_pakai = 'aset_neo';
+                $jumlah_kolom = 4;
+                break;
+            case 'dpa':
+                $tabel_pakai = 'dpa_neo';
+                break;
+            case 'mapping_aset':
+            case 'mapping':
+                $tabel_pakai = 'mapping_aset_akun';
+                $jumlah_kolom = 10;
+                break;
+            case 'wilayah':
+                $tabel_pakai = 'wilayah_neo';
+                $jumlah_kolom = 10;
+                break;
+            case 'satuan':
+                $tabel_pakai = 'satuan_neo';
+                $jumlah_kolom = 5;
+                break;
+            case 'organisasi':
+                $tabel_pakai = 'organisasi_neo';
+                break;
+            case "pengaturan":
+                $tabel_pakai = 'pengaturan_neo';
+                break;
+            case "peraturan":
+                $tabel_pakai = 'peraturan_neo';
+                break;
+            case 'program':
+                $tabel_pakai = 'program_neo';
+                break;
+            case 'satuan':
+                $tabel_pakai = 'satuan_neo';
+                break;
+            case 'hspk':
+                $tabel_pakai = 'hspk_neo';
+                break;
+            case 'sbu':
+                $tabel_pakai = 'sbu_neo';
+                break;
+            case 'asb':
+                $tabel_pakai = 'asb_neo';
+                break;
+            case 'ssh':
+                $tabel_pakai = 'ssh_neo';
+                break;
+            case 'bidang_urusan':
+            case 'prog':
+            case 'keg':
+            case 'sub_keg':
+            case 'sub_kegiatan':
+                $tabel_pakai = 'sub_kegiatan_neo';
+                break;
+            case 'sumber_dana':
+                $tabel_pakai = 'sumber_dana_neo';
+                break;
+            case 'user':
+                $tabel_pakai = 'user_ahsp';
+                break;
+            case 'inbox':
+            case 'outbox':
+            case 'wall':
+                $tabel_pakai = 'ruang_chat';
+                break;
+            default:
+        }
 
+    }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
     *
