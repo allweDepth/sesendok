@@ -947,17 +947,22 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Alamat",
 									atribut:
-										'name="alamat" placeholder="Kode..."',
+										'name="alamat" placeholder="Alamat OPD..."',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Kepala OPD",
 									atribut:
-										'name="nama_kepala" placeholder="Kode..."',
+										'name="nama_kepala" placeholder="Nama Kepala SKPD..."',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Nip. Kepala OPD",
 									atribut:
-										'name="nip_kepala" placeholder="Kode..."',
+										'name="nip_kepala" placeholder="Nip. Kepala SKPD..."',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Renstra",
+									kelas: "year",
+									atribut: 'name="tahun" placeholder="tahun renstra..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -967,6 +972,7 @@ $(document).ready(function () {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+									atribut: 'non_data',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
@@ -2522,6 +2528,7 @@ $(document).ready(function () {
 		let iconDataSeach = "icon" in dataElemen ? dataElemen.icon : "search icon";
 		let txtLabelData = "txtLabel" in dataElemen ? dataElemen.txtLabel : "@";
 		let dataArray = "dataArray" in dataElemen ? dataElemen.dataArray : []; //contoh untuk dropdown
+		let typeText =  "typeText" in dataElemen ? dataElemen.typeText :`type="text"`;
 		let dataArray2 = "dataArray2" in dataElemen ? dataElemen.dataArray2 : [[]]; //contoh buat dropdown yang ada deskripsi
 		let jenisListDropdown =
 			"jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : "@"; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]
@@ -2593,15 +2600,7 @@ $(document).ready(function () {
 				break;
 			case "fieldText":
 				elemen =
-					'<div class="field"><label>' +
-					labelData +
-					'</label><div class="ui ' +
-					kelasData +
-					' input"><input ' +
-					placeholderData +
-					' type="text" ' +
-					atributData +
-					"></div></div>";
+					`<div class="field"><label> ${labelData} </label><div class="ui ${kelasData} input"><input ${placeholderData}  ${typeText} ${atributData} ></div></div>`;
 				break;
 			case "multiFieldTextAction":
 				let inputElm = '';
@@ -2682,7 +2681,7 @@ $(document).ready(function () {
 					placeholderData +
 					'" readonly="" name="dum_file" ' +
 					atributData +
-					'><input hidden="" type="file" nama="file" name="file" accept="' +
+					'><input hidden type="file" nama="file" name="file" accept="' +
 					accept +
 					'" non_data><button class="ui red icon button" name="del_file"><i class="erase icon"></i></button></div></div>';
 				break;
