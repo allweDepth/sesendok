@@ -1121,7 +1121,9 @@ $(document).ready(function () {
 				case 'add':
 					switch (tbl) {
 						case 'tujuan_sasaran_renstra'://@audit
-							let dropdownTujuanSasaran = new DropdownConstructor('.tujuan_sasaran.selection')
+							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
+							let dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
+							dropdownTujuanSasaran.onChange(jenis = "get_data", tbl = "tujuan_rentra", true)
 							break;
 
 						default:
@@ -1326,7 +1328,7 @@ $(document).ready(function () {
 			'<i class="trash alternate icon"></i>anda yakin akan hapus data ini?',
 			"menghapus data tidak dapat di batalkan...!",
 		];
-		var data = {
+		let data = {
 			cari: cari(jenis),
 			rows: countRows(),
 			jenis: jenis,
@@ -1669,6 +1671,8 @@ $(document).ready(function () {
 		//@audit-ok DropdownConstructor
 		jenis = '';
 		tbl = '';
+		ajax = false;
+		result_ajax = {};
 		constructor(element) {
 			this.element = $(element); //element;
 		}
@@ -1747,13 +1751,45 @@ $(document).ready(function () {
 			this.element.dropdown("set selected", val);
 		}
 		onChange(jenis = "list_dropdown", tbl = "satuan", ajax = false) {
-
-			//this.element.dropdown('preventChangeTrigger', true);
+			let ajaxSend = ajax;
 			this.element.dropdown({
 				onChange: function (value, text, $choice) {
 					let dataChoice = $($choice).find('span.description').text();
-					if (this.jenis = true) {
-
+					switch (jenis) {
+						case 'get_data':
+							switch (tbl) {
+								case 'tujuan_rentra'://tujuan sasaran renstra
+									if (value === 'tujuan') {
+										ajaxSend = false;
+									}else{
+										ajaxSend = true;
+										//tambahkan dropdown
+									}
+									break;
+							
+								default:
+									break;
+							}
+							break;
+						case 'value1':
+							
+							break;
+						default:
+							
+							break;
+					};
+					
+					if (ajaxSend == true) {
+						let data = {
+							cari: cari(jenis),
+							rows: countRows(),
+							jenis: jenis,
+							tbl: tbl,
+							halaman: halaman,
+						};
+						console.log(jenis);
+						let url='script/get_data';
+						let cryptos = false;
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";
 							if (result.success === true) {
@@ -1767,8 +1803,7 @@ $(document).ready(function () {
 							});
 							loaderHide();
 						};
-						
-						runAjax(url, "POST", data, "Json" ,undefined, undefined, "ajaxku", cryptos);
+						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
 					}
 				},
 				saveRemoteData: true,

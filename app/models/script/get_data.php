@@ -128,6 +128,11 @@ class get_data
                     }
                     //tabel pakai
                     switch ($tbl) {
+                        case 'tujuan_sasaran_renstra':
+                        case 'tujuan_sasaran':
+                            $tabel_pakai = 'tujuan_sasaran_renstra_neo';
+                            $jumlah_kolom = 11;
+                            break;
                         case 'rekanan':
                             $tabel_pakai = 'rekanan_neo';
                             $jumlah_kolom = 11;
