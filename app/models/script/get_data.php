@@ -268,6 +268,14 @@ class get_data
                             break;
                     };
                     switch ($tbl) {
+                        case 'sasaran':
+                            $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                            $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $order = "ORDER BY nama_perusahaan, id ASC";
+                            $where1 = "kd_wilayah = ? AND disable <= ?";
+                            $data_where1 =  [$kd_wilayah, 0];
+                            
+                            break;
                         case 'rekanan':
                             $like = "kd_wilayah = ? AND nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%')";
                             $data_like = [$kd_wilayah, $cari, $cari, $cari, $cari, $cari, $cari];

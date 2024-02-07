@@ -625,19 +625,19 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing menu">
-                            <a class="active item" data-tab="pengaturan" tbl="pengaturan">
+                            <a class="item" data-tab="pengaturan" tbl="pengaturan">
                                 Tahun Anggaran
                             </a>
-                            <a class="item" data-tab="atur-2">
-                                Users
+                            <a class="item" data-tab="atur" tbl="organisasi">
+                                SKPD
                             </a>
-                            <a class="item" data-tab="atur-3">
-                                Profil
+                            <a class="item" data-tab="atur" tbl="users">
+                                Users
                             </a>
                         </div>
                     </div>
                     <div class="twelve wide stretched right column">
-                        <div class="ui tab basic active" data-tab="pengaturan">
+                        <div class="ui tab basic" data-tab="pengaturan">
                             <div class="ui teal inverted segment top attached">
                                 <h2 class="ui header left">
                                     <i class="settings icon"></i>
@@ -786,7 +786,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 <label class="ui green button" for="form-atur" tabindex="0">Simpan</label>
                             </div>
                         </div>
-                        <div class="ui tab basic" data-tab="atur-2">
+                        <div class="ui tab basic" data-tab="atur" tbl="">
                             <table class="ui table">
                                 <thead>
                                     <tr>
@@ -811,8 +811,6 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
 
                                 </tfoot>
                             </table>
-                        </div>
-                        <div class="ui tab basic" data-tab="atur-3">
                         </div>
                     </div>
 

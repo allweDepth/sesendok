@@ -2180,6 +2180,12 @@ $(document).ready(function () {
 									// =================
 									case "form_flyout":
 										switch (tbl) {
+											case "hspk":
+											case "ssh":
+											case "sbu":
+											case "asb":
+											case "rekanan":
+											case "satuan":
 											case "aset":
 											case "mapping":
 											case "sub_keg":
