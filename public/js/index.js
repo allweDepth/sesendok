@@ -1768,24 +1768,21 @@ $(document).ready(function () {
 								case 'tujuan_rentra'://tujuan sasaran renstra
 									if (value === 'tujuan') {
 										ajaxSend = false;
-									}else{
+									} else {
 										ajaxSend = true;
 										//tambahkan dropdown
 									}
 									break;
-							
 								default:
 									break;
 							}
 							break;
 						case 'value1':
-							
 							break;
 						default:
-							
 							break;
 					};
-					
+
 					if (ajaxSend == true) {
 						let data = {
 							cari: cari(jenis),
@@ -1795,12 +1792,40 @@ $(document).ready(function () {
 							halaman: halaman,
 						};
 						console.log(jenis);
-						let url='script/get_data';
+						let url = 'script/get_data';
 						let cryptos = false;
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";
 							if (result.success === true) {
-
+								switch (jenis) {
+									case 'get_data':
+										switch (tbl) {
+											case 'tujuan_rentra'://tujuan sasaran renstra
+												if (value === 'tujuan') {
+													//@audit proses
+													let drpdown = buatElemenHtml("fieldDropdown", {
+														label: "Tujuan",
+														atribut: 'name="tujuan"',
+														kelas: "lainnya selection",
+														dataArray: [
+															["prov", "Provinsi"],
+															["kab", "Kabupaten"]
+														],
+													});
+													let elmDrop = this.element.after(drpdown);
+												} else {
+													//tambahkan dropdown
+												}
+												break;
+											default:
+												break;
+										}
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
 							} else {
 								kelasToast = "warning"; //'success'
 							}
@@ -2529,7 +2554,7 @@ $(document).ready(function () {
 		let iconDataSeach = "icon" in dataElemen ? dataElemen.icon : "search icon";
 		let txtLabelData = "txtLabel" in dataElemen ? dataElemen.txtLabel : "@";
 		let dataArray = "dataArray" in dataElemen ? dataElemen.dataArray : []; //contoh untuk dropdown
-		let typeText =  "typeText" in dataElemen ? dataElemen.typeText :`type="text"`;
+		let typeText = "typeText" in dataElemen ? dataElemen.typeText : `type="text"`;
 		let dataArray2 = "dataArray2" in dataElemen ? dataElemen.dataArray2 : [[]]; //contoh buat dropdown yang ada deskripsi
 		let jenisListDropdown =
 			"jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : "@"; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]

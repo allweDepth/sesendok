@@ -54,6 +54,80 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($tbl) {
+                    case 'organisasi':
+                        switch ($jenis) {
+                            case 'edit':
+                                $id_row = $validate->setRules('id_row', 'id', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                            case 'add':
+                                $type_dok = $validate->setRules('type_dok', 'type', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
+                                ]);
+                                $judul = $validate->setRules('judul', 'judul', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $nomor = $validate->setRules('nomor', 'nomor', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $bentuk = $validate->setRules('bentuk', 'bentuk', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $bentuk_singkat = $validate->setRules('bentuk_singkat', 'bentuk_singkat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $t4_penetapan = $validate->setRules('t4_penetapan', 'tempat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $tgl_penetapan = $validate->setRules('tgl_penetapan', 'tanggal penetapan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                $status = $validate->setRules('status', 'status', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['rahasia', 'umum', 'proyek']
+                                ]);
+
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        break;
                     case 'outbox':
                         switch ($jenis) {
                             case 'add_coment':
@@ -501,95 +575,112 @@ class post_data
                     //tabel pakai
                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                     $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
-                    
+
                     $code = 10;
                     $sukses = true;
                     $err = 0;
                     $columnName = "*";
-                    $Tk = 0;
-                    $op = 0;
-
+                    switch ($jenis) {
+                        case 'edit':
+                            $kondisi = [['id', '=', $id_row]];
+                            $kodePosting = 'update_row';
+                            break;
+                        case 'add':
+                            if ($_FILES['file']) {
+                                $file = $Fungsi->importFile($tbl, '');
+                                //var_dump($file);
+                                if ($file['result'] == 'ok') {
+                                    $set['file'] = $file['file'];
+                                } else {
+                                    $tambahan_pesan = "(" . $file['file'] . ")";
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                     //start buat property
                     switch ($tbl) {
+                        case 'organisasi':
+                            if ($jenis == 'add') {
+                                $kondisi = [['kd_wilayah', '=', $kd_wilayah],['kode', '=', $kd_organisasi, 'AND']];
+                                $kodePosting = 'cek_insert';
+                            }
+                            $set = [
+                                'kd_wilayah' => $kd_wilayah,
+                                'kode' => $kode,
+                                'aturan_pengadaan' => $aturan_pengadaan,
+                                'uraian' => $uraian,
+                                'alamat' => $alamat,
+                                'nama_kepala' => $nama_kepala,
+                                'nip_kepala' => $nip_kepala,
+                                'peraturan' =>  $id_aturan_anggaran,
+                                'tahun_renstra' => $tahun_renstra,
+                                'disable' => $disable,
+                                'keterangan' => $keterangan,
+                                'tanggal' => date('Y-m-d H:i:s'),
+                                'username' => $_SESSION["user"]["username"]
+                            ];
+                            break;
                         case 'peraturan':
-                            switch ($jenis) {
-                                case 'edit':
-                                    $kondisi = [['id', '=', $id_row]];
-                                    $kodePosting = 'update_row';
-                                case 'add':
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    $kode  = "$nomor:$tgl_pengundangan";
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kode' => $kode,
-                                        'type_dok' => $type_dok,
-                                        'judul' => $judul,
-                                        'nomor' => $nomor,
-                                        'bentuk' => $bentuk,
-                                        'bentuk_singkat' => $bentuk_singkat,
-                                        't4_penetapan' => $t4_penetapan,
-                                        'tgl_penetapan' => $tgl_penetapan,
-                                        'tgl_pengundangan' => $tgl_pengundangan,
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'status' => $status,
-                                        'tanggal' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
-                                    ];
-                                    //var_dump($set);
-                                    //pengolahan file
-                                    if ($_FILES['file']) {
-
-                                        $file = $Fungsi->importFile($tbl, '');
-                                        //var_dump($file);
-                                        if ($file['result'] == 'ok') {
-                                            $set['file'] = $file['file'];
-                                        } else {
-                                            $tambahan_pesan = "(" . $file['file'] . ")";
-                                        }
-                                    }
-
-                                    break;
-                                default:
-                                    break;
+                            if ($jenis == 'add') {
+                                $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
+                                $kodePosting = 'cek_insert';
+                            }
+                            $kode  = "$nomor:$tgl_pengundangan";
+                            $set = [
+                                'kd_wilayah' => $kd_wilayah,
+                                'kode' => $kode,
+                                'type_dok' => $type_dok,
+                                'judul' => $judul,
+                                'nomor' => $nomor,
+                                'bentuk' => $bentuk,
+                                'bentuk_singkat' => $bentuk_singkat,
+                                't4_penetapan' => $t4_penetapan,
+                                'tgl_penetapan' => $tgl_penetapan,
+                                'tgl_pengundangan' => $tgl_pengundangan,
+                                'disable' => $disable,
+                                'keterangan' => $keterangan,
+                                'status' => $status,
+                                'tanggal' => date('Y-m-d H:i:s'),
+                                'username' => $_SESSION["user"]["username"]
+                            ];
+                            //var_dump($set);
+                            //pengolahan file
+                            if ($_FILES['file']) {
+                                $file = $Fungsi->importFile($tbl, '');
+                                //var_dump($file);
+                                if ($file['result'] == 'ok') {
+                                    $set['file'] = $file['file'];
+                                } else {
+                                    $tambahan_pesan = "(" . $file['file'] . ")";
+                                }
                             }
                             break;
                         case 'pengaturan':
-                            switch ($jenis) {
-                                case 'edit':
-                                    $kondisi = [['id', '=', $id_row]];
-                                    $kodePosting = 'update_row';
-                                case 'add':
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['tahun', '=', $tahun]];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    $set = [
-                                        'tahun' => $tahun,
-                                        'aturan_anggaran' => $aturan_anggaran,
-                                        'aturan_pengadaan' => $aturan_pengadaan,
-                                        'aturan_akun' => $aturan_akun,
-                                        'aturan_asb' => $aturan_asb,
-                                        'aturan_sbu' => $aturan_sbu,
-                                        'aturan_ssh' => $aturan_ssh,
-                                        'aturan_hspk' => $aturan_hspk,
-                                        'aturan_sumber_dana' => $aturan_sumber_dana,
-                                        'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'tanggal' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
-                                    ];
-                                    break;
-                                default:
-                                    break;
+                            if ($jenis == 'add') {
+                                $kondisi = [['tahun', '=', $tahun]];
+                                $kodePosting = 'cek_insert';
                             }
+                            $set = [
+                                'tahun' => $tahun,
+                                'aturan_anggaran' => $aturan_anggaran,
+                                'aturan_pengadaan' => $aturan_pengadaan,
+                                'aturan_akun' => $aturan_akun,
+                                'aturan_asb' => $aturan_asb,
+                                'aturan_sbu' => $aturan_sbu,
+                                'aturan_ssh' => $aturan_ssh,
+                                'aturan_hspk' => $aturan_hspk,
+                                'aturan_sumber_dana' => $aturan_sumber_dana,
+                                'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
+                                'disable' => $disable,
+                                'keterangan' => $keterangan,
+                                'tanggal' => date('Y-m-d H:i:s'),
+                                'username' => $_SESSION["user"]["username"]
+                            ];
                             break;
                         case 'rekanan':
-                            switch ($tbl) {
+                            switch ($jns) {
                                 case 'edit':
                                     $kondisi = [['id', '=', $id_row]];
                                     $kodePosting = 'update_row';
