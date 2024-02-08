@@ -8,7 +8,10 @@ use FormulaParser\FormulaParser;
 //$jenis = 'koef'(rumus koefisien dan hasil pencarian ke koef semua) $jenis = 'harga'(untuk rumus di tempatkan harga satuan dan pencarian juga di harga satuan) atau $jenis = 'koef_harga'(untuk rumus ke koefisien, dan harga pencarian di harga satuan)
 class MasterFungsi
 {
-    public function tabel_pakai($tbl){
+    public function tabel_pakai($tbl)
+    {
+        $tabel_pakai = 'wilayah_neo';
+        $jumlah_kolom = 10;
         switch ($tbl) {
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':
@@ -95,7 +98,8 @@ class MasterFungsi
                 break;
             default:
         }
-
+        $dataku = array('tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom);
+        return $dataku;
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
