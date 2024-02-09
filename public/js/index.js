@@ -2016,6 +2016,12 @@ $(document).ready(function () {
 						// UNTUK FORM FLYOUT
 						// =================
 						case "form_flyout":
+							if (MyForm.find('[name="disable"]')) {
+								formData.has("disable") === false
+								? formData.append("disable", 'off')
+								: formData.set("disable", 'on'); // Returns false
+							}
+							
 							switch (tbl) {
 								case "peraturan":
 									switch (jenis) {
@@ -2033,9 +2039,7 @@ $(document).ready(function () {
 													formData.set(nameAttr, tanggal);
 												}
 											}
-											formData.has("disable") === false
-												? formData.append("disable", 'off')
-												: formData.set("disable", 'on'); // Returns false
+
 											jalankanAjax = true;
 
 											break;

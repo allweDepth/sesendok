@@ -105,11 +105,7 @@ class post_data
                                     'in_array' => ['off', 'on']
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
-                                $status = $validate->setRules('status', 'status', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['rahasia', 'umum', 'proyek']
-                                ]);
+                                
                                 break;
                             default:
                                 # code...
@@ -944,7 +940,8 @@ class post_data
                 $code = 39;
             }
         }
-        $item = array('code' => $code, 'message' => hasilServer[$code] . " $tambahan_pesan");
+        $tambahanNote = (is_array($tambahan_pesan)) ? implode($tambahan_pesan) : $tambahan_pesan;
+        $item = array('code' => $code, 'message' => hasilServer[$code] . ", " . $tambahanNote, "note" => $tambahan_pesan);
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         // return json_encode($json);
         return json_encode($json, JSON_HEX_APOS);
