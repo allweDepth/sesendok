@@ -948,7 +948,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldCalendar", {
 									label: "Renstra",
 									kelas: "year",
-									atribut: 'name="tahun" placeholder="tahun renstra..."',
+									atribut: 'name="tahun_renstra" placeholder="tahun renstra..."',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Alamat",

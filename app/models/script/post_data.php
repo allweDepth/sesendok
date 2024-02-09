@@ -63,47 +63,36 @@ class post_data
                                     'min_char' => 1
                                 ]);
                             case 'add':
-                                $type_dok = $validate->setRules('type_dok', 'type', [
+                                $kode = $validate->setRules('kode', 'kode', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
+                                    'min_char' => 3
                                 ]);
-                                $judul = $validate->setRules('judul', 'judul', [
+                                $uraian = $validate->setRules('uraian', 'uraian', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 4
                                 ]);
-                                $nomor = $validate->setRules('nomor', 'nomor', [
+                                $alamat = $validate->setRules('alamat', 'alamat', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 4
                                 ]);
-                                $bentuk = $validate->setRules('bentuk', 'bentuk', [
+                                $nama_kepala = $validate->setRules('nama_kepala', 'Nama Kepala SKPD', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'min_char' => 4
+                                    'min_char' => 3
                                 ]);
-                                $bentuk_singkat = $validate->setRules('bentuk_singkat', 'bentuk_singkat', [
+                                $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'min_char' => 4
+                                    'min_char' => 18
                                 ]);
-                                $t4_penetapan = $validate->setRules('t4_penetapan', 'tempat', [
-                                    'sanitize' => 'string',
+                                $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
+                                    'numeric' => true,
                                     'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $tgl_penetapan = $validate->setRules('tgl_penetapan', 'tanggal penetapan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
+                                    'min_char' => 4,
+                                    'max_char' => 4
                                 ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'sanitize' => 'string',
@@ -121,7 +110,6 @@ class post_data
                                     'required' => true,
                                     'in_array' => ['rahasia', 'umum', 'proyek']
                                 ]);
-
                                 break;
                             default:
                                 # code...
