@@ -10,9 +10,11 @@ class get_data
         $username = $_SESSION["user"]["username"];
         $id_user = $_SESSION["user"]["id"];
         $keyEncrypt = $_SESSION["user"]["key_encrypt"];
+        $kd_opd = $_SESSION["user"]["kd_organisasi"];
         //var_dump($keyEncrypt);
         //var_dump(sys_get_temp_dir());lokasi tempoerer
         $DB = DB::getInstance();
+
 
         $sukses = false;
         $code = 39;
@@ -21,6 +23,17 @@ class get_data
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
         $dataJson = array();
+        //ambil row user
+        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        if ($rowUsername != false) {
+            $tahun = (int) $rowUsername->tahun;
+            $kd_wilayah = $rowUsername->kd_wilayah;
+            $kd_opd = $rowUsername->kd_organisasi;
+            $id_user = $rowUsername->id;
+        } else {
+            $id_user = 0;
+            $code = 407;
+        }
         if (!empty($_POST) && $id_user > 0) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
 
@@ -106,10 +119,7 @@ class get_data
                 //FINISH PROSES VALIDASI
                 $Fungsi = new MasterFungsi();
                 if ($validate->passed()) {
-                    $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
-                    $tahun = (int) $rowUsername->tahun;
-                    $kd_wilayah = $rowUsername->kd_wilayah;
-                    $kd_skpd = $rowUsername->kd_organisasi;
+
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                     //var_dump($rowTahunAktif);
                     if ($rowTahunAktif) {
@@ -136,11 +146,7 @@ class get_data
                     $kodePosting = '';
                     switch ($jenis) {
                         case 'get_pengaturan':
-                            //$kodePosting = 'get_tbl';
-                            $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
-                            //var_dump($rowUsername);
 
-                            $tahun = (int) $rowUsername->tahun;
                             $rowTahunAktif = $DB->getWhereOnce($tabel_pakai, ['tahun', '=', $tahun]);
 
                             if ($rowTahunAktif) {
@@ -190,7 +196,7 @@ class get_data
                             $order = "ORDER BY nama_perusahaan, id ASC";
                             $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                             $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
-                            
+
                             break;
                         case 'sasaran':
                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
@@ -543,16 +549,5 @@ class get_data
         }
         //var_dump($json);
         return json_encode($json, JSON_HEX_APOS);
-        //var_dump($json);
-        // if (json_encode($json, JSON_HEX_APOS)) {
-        //     return json_encode($json, JSON_HEX_APOS);
-        // } else {
-        //     foreach ($data as $key => $value) {
-        //         $data[$key] = $Fungsi->safe_json_encode($value);
-        //     }
-        //     $item = array('code' => $code, 'message' => hasilServer[$code]);
-        //     $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
-        //     return json_encode($json); //json_last_error();
-        // }
     }
 }

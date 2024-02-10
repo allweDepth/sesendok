@@ -41,6 +41,16 @@ class Impor_xlsx
         //$data['note'][] = 'row update';
         //$data['note'][] = 'add row';
         //$data['note'][] = 'gagal';
+        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        if ($rowUsername != false) {
+            $tahun = (int) $rowUsername->tahun;
+            $kd_wilayah = $rowUsername->kd_wilayah;
+            $kd_opd = $rowUsername->kd_organisasi;
+            $id_user = $rowUsername->id;
+        } else {
+            $id_user = 0;
+            $code = 407;
+        }
         if (!empty($_POST) && $id_user > 0 && !empty($_FILES["file"]["name"])) {
             if (isset($_POST['jenis'])) {
                 $targetDir = "uploads/";

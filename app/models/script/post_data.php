@@ -30,6 +30,17 @@ class post_data
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
+        //ambil row user
+        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        if ($rowUsername != false) {
+            $tahun = (int) $rowUsername->tahun;
+            $kd_wilayah = $rowUsername->kd_wilayah;
+            $kd_opd = $rowUsername->kd_organisasi;
+            $id_user = $rowUsername->id;
+        } else {
+            $id_user = 0;
+            $code = 407;
+        }
         if (!empty($_POST) && $id_user > 0) {
             $code = 11;
             if (isset($_POST['jenis'])) {
@@ -105,7 +116,7 @@ class post_data
                                     'in_array' => ['off', 'on']
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
-                                
+
                                 break;
                             default:
                                 # code...
@@ -536,10 +547,7 @@ class post_data
                 $kodePosting = '';
 
                 if ($validate->passed()) {
-                    $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
-                    $tahun = (int) $rowUsername->tahun;
-                    $kd_wilayah = $rowUsername->kd_wilayah;
-                    $kd_skpd = $rowUsername->kd_organisasi;
+
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                     //var_dump($rowTahunAktif);
                     if ($rowTahunAktif) {
@@ -586,7 +594,7 @@ class post_data
                     switch ($tbl) {
                         case 'organisasi':
                             if ($jenis == 'add') {
-                                $kondisi = [['kd_wilayah', '=', $kd_wilayah],['kode', '=', $kd_organisasi, 'AND']];
+                                $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']];
                                 $kodePosting = 'cek_insert';
                             }
                             $set = [
