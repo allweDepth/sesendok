@@ -65,6 +65,7 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($tbl) {
+                    case 'tujuan_sasaran_renstra':
                     case 'sasaran_renstra':
                     case 'tujuan_renstra':
                         switch ($jenis) {
@@ -75,36 +76,24 @@ class post_data
                                     'min_char' => 1
                                 ]);
                             case 'add':
-                                $id_tujuan = $validate->setRules('tujuan', 'tujuan', [
-                                    'numeric' => true,
+                                
+                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                                    'sanitize' => 'string',
                                     'required' => true,
-                                    'min_char' => 1
+                                    'in_array' => ['tujuan', 'sasaran'],
+                                    'min_char' => 4
                                 ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
+                                if ($kelompok == 'sasaran') {
+                                    $id_tujuan = $validate->setRules('tujuan', 'tujuan', [
+                                        'numeric' => true,
+                                        'required' => true,
+                                        'min_char' => 1
+                                    ]);
+                                }
+                                $text = $validate->setRules('text', 'uraian', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 4
-                                ]);
-                                $alamat = $validate->setRules('alamat', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $nama_kepala = $validate->setRules('nama_kepala', 'Nama Kepala SKPD', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 18
-                                ]);
-                                $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 4
                                 ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'sanitize' => 'string',

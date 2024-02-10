@@ -376,6 +376,20 @@ class get_data
                     //==========JENIS POST DATA/INSERT DATA===========
                     //================================================
                     switch ($kodePosting) {
+                        case 'getAllValJson':
+                            //pilih kolom yang diambil
+                            $DB->select('id, judul, nomor, tgl_pengundangan, keterangan');
+                            $peraturan = $DB->getWhereArray($tabel_pakai, [['disable', '=', 0], ['status', '=', 'umum', 'AND']]);
+                            //var_dump(count($peraturan));
+                            $jumlahArray = is_array($peraturan) ? count($peraturan) : 0;
+                            //@audit
+                            $dataJson['results'] = [];
+                            if ($jumlahArray > 0) {
+                                foreach ($peraturan as $row) {
+                                    $dataJson['results'][] = ['name' => $row->judul, 'value' => $row->id, 'description' => $row->nomor];
+                                }
+                            }
+                            break;
                         case 'get_data':
                         case 'get_row': //  ambil data 1 baris 
                             $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where_row", $data_where_row);
