@@ -1835,7 +1835,7 @@ $(document).ready(function () {
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";
 							if (result.success === true) {
-
+								MethodConstructor.tujuanRenstra(result);
 							} else {
 								kelasToast = "warning"; //'success'
 							}
