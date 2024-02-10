@@ -65,8 +65,8 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($tbl) {
-                    case 'tujuan_renstra':
                     case 'sasaran_renstra':
+                    case 'tujuan_renstra':
                         switch ($jenis) {
                             case 'edit':
                                 $id_row = $validate->setRules('id_row', 'id', [
