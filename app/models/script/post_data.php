@@ -76,7 +76,6 @@ class post_data
                                     'min_char' => 1
                                 ]);
                             case 'add':
-                                
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [
                                     'sanitize' => 'string',
                                     'required' => true,
