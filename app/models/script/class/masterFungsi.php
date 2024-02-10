@@ -10,8 +10,13 @@ class MasterFungsi
 {
     public function tabel_pakai($tbl)
     {
+<<<<<<< HEAD
         $tabel_pakai = 'wilayah_neo';
         $jumlah_kolom = 10;
+=======
+        $tabel_pakai = '';
+        $jumlah_kolom = 11;
+>>>>>>> 13149ab (revisi)
         switch ($tbl) {
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':
@@ -98,8 +103,12 @@ class MasterFungsi
                 break;
             default:
         }
+<<<<<<< HEAD
         $dataku = array('tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom);
         return $dataku;
+=======
+        return ['tabel_pakai'=>$tabel_pakai,'jumlah_kolom'=>$jumlah_kolom];
+>>>>>>> 13149ab (revisi)
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
@@ -1001,16 +1010,12 @@ class MasterFungsi
             case 'keg':
             case 'sub_keg':
                 $rowData['thead'] = trim('<tr>
-                <th>urusan</th>
-                <th>bidang</th>
-                <th>prog</th>
-                <th>keg</th>
-                <th>sub keg</th>
-                <th>nomenklatur urusan</th>
-                <th>kinerja</th>
-                <th>indikator</th>
-                <th>satuan</th>
-                <th>keterangan</th>
+                <th>KODE KOMPONEN</th>
+                <th>NOMENKLATUR URUSAN</th>
+                <th>KINERJA</th>
+                <th>INDIKATOR</th>
+                <th>SATUAN</th>
+                <th>KETERANGAN</th>
                 <th>AKSI</th>
             </tr>');
                 break;
@@ -1235,11 +1240,7 @@ class MasterFungsi
                                         <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                                <td klm="urusan">' . $divAwal . $row->urusan . $divAkhir . '</td>
-                                                <td klm="bidang">' . $divAwal . $row->bidang . $divAkhir . '</td>
-                                                <td klm="prog">' . $divAwal . $row->prog . $divAkhir . '</td>
-                                                <td klm="keg">' . $divAwal . $row->keg . $divAkhir . '</td>
-                                                <td klm="sub_keg">' . $divAwal . $row->sub_keg . $divAkhir . '</td>
+                                                <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
                                                 <td klm="nomenklatur_urusan">' . $divAwal . $row->nomenklatur_urusan . $divAkhir . '</td>
                                                 <td klm="kinerja">' . $divAwal . $row->kinerja . $divAkhir . '</td>
                                                 <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>

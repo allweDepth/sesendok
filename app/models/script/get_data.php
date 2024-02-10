@@ -129,7 +129,10 @@ class get_data
                     //tabel pakai
                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                     $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
+<<<<<<< HEAD
                     
+=======
+>>>>>>> 13149ab (revisi)
                     $kolom = '*';
                     $sukses = true;
                     $err = 0;
@@ -199,7 +202,7 @@ class get_data
                             $order = "ORDER BY nama_perusahaan, id ASC";
                             $where1 = "kd_wilayah = ? AND disable <= ?";
                             $data_where1 =  [$kd_wilayah, 0];
-                            
+
                             break;
                         case 'rekanan':
                             $like = "kd_wilayah = ? AND nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%')";
@@ -207,7 +210,7 @@ class get_data
                             $order = "ORDER BY nama_perusahaan, id ASC";
                             $where1 = "kd_wilayah = ? AND disable <= ?";
                             $data_where1 =  [$kd_wilayah, 0];
-                            
+
                             break;
                         case 'satuan':
                             $like = "disable <= ? AND(value LIKE CONCAT('%',?,'%') OR item LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR sebutan_lain LIKE CONCAT('%',?,'%'))";
