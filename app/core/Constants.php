@@ -37,6 +37,7 @@ define('hasilServer', [
     49 => 'data telah diproses kembali',
     50 => 'kode bisa digunakan',
     56 => 'belum ada dokumen pekerjaan yang aktif',
+    70 => 'data belum lengkap',
     701 => 'File Tidak Lengkap',
     702 => 'file yang ada terlalu besar',
     703 => 'type file tidak sesuai',

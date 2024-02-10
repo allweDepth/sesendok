@@ -15,7 +15,7 @@ class get_data
         //var_dump(sys_get_temp_dir());lokasi tempoerer
         $DB = DB::getInstance();
 
-
+        $message_tambah = '';
         $sukses = false;
         $code = 39;
         $pesan = 'posting kosong';
@@ -35,8 +35,8 @@ class get_data
             $code = 407;
         }
         if (!empty($_POST) && $id_user > 0) {
-            if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
 
+            if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
                 $validate = new Validate($_POST);
                 $jenis = $validate->setRules('jenis', 'jenis', [
                     'sanitize' => 'string',
@@ -57,7 +57,6 @@ class get_data
                         'max_char' => 100
                     ]);
                 }
-
                 $halaman = 1;
                 if (!empty($_POST['halaman'])) {
                     $halaman = $validate->setRules('halaman', 'Halaman aktif ', [
@@ -119,7 +118,6 @@ class get_data
                 //FINISH PROSES VALIDASI
                 $Fungsi = new MasterFungsi();
                 if ($validate->passed()) {
-
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                     //var_dump($rowTahunAktif);
                     if ($rowTahunAktif) {
@@ -146,7 +144,6 @@ class get_data
                     $kodePosting = '';
                     switch ($jenis) {
                         case 'get_pengaturan':
-
                             $rowTahunAktif = $DB->getWhereOnce($tabel_pakai, ['tahun', '=', $tahun]);
 
                             if ($rowTahunAktif) {
@@ -182,7 +179,9 @@ class get_data
                             $kodePosting = 'get_data';
                             $where_row = "id = ?";
                             $data_where_row =  [$id_row];
-
+                        case 'get_rows':
+                            $kodePosting = 'get_data';
+                            break;
 
                             break;
                         default:
@@ -191,11 +190,27 @@ class get_data
                     };
                     switch ($tbl) {
                         case 'tujuan_renstra':
-                            $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                            $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
-                            $order = "ORDER BY nama_perusahaan, id ASC";
-                            $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                            $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                            if ($rowOrganisasi) {
+                                $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                if ($tahun_renstra > 2000) {
+                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY nama_perusahaan, id ASC";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                                    $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                    $data_where_row =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                                } else {
+                                    $message_tambah = ' (atur tahun renstra OPD)';
+                                    $code = 70;
+                                    $kodePosting = '';
+                                }
+                            } else {
+                                $message_tambah = ' (atur organisasi OPD)';
+                                $kodePosting = '';
+                                $code = 70;
+                            }
 
                             break;
                         case 'sasaran':
@@ -357,12 +372,6 @@ class get_data
                             $kodePosting = '';
                             $err = 6;
                     }
-
-                    // $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
-
-                    //$tahun_anggaran = 0;
-                    // $jumlahArray = is_array($data_kd_proyek) ? count($data_kd_proyek) : 0;
-
                     //================================================
                     //==========JENIS POST DATA/INSERT DATA===========
                     //================================================
@@ -370,7 +379,6 @@ class get_data
                         case 'get_data':
                         case 'get_row': //  ambil data 1 baris 
                             $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where_row", $data_where_row);
-                            //var_dump($resul);
                             $jumlahArray = is_array($resul) ? count($resul) : 0;
                             if ($jumlahArray > 0) {
                                 $code = 202; //202
@@ -390,12 +398,27 @@ class get_data
                                                 break;
                                             case 'value1':
                                                 break;
+                                            case 'value1':
+                                                break;
                                             default:
                                                 break;
                                         };
                                         break;
-                                    case 'value1':
-                                        #code...
+                                    case 'get_rows':
+                                        switch ($tbl) {
+                                            case 'tujuan_renstra':
+                                                // buatkan json dropdown tujuan renstra
+                                                foreach ($resul as $row) {
+                                                }
+                                                break;
+                                            case 'value1':
+                                                #code...
+                                                break;
+                                            default:
+                                                #code...
+                                                break;
+                                        };
+
                                         break;
                                     default:
                                         #code...
@@ -508,7 +531,7 @@ class get_data
                             $data['dropdown'] = $dataTabel;
                             break;
                         default:
-                            # code...
+
                             break;
                     }
                 } else {
@@ -525,6 +548,8 @@ class get_data
                 $pesan = 'tidak didefinisikan';
                 $code = 39;
             }
+        } else {
+            $code = 407;
         }
         // cara menampilkan json
         switch ($jenis) {
@@ -537,13 +562,13 @@ class get_data
                         $json = array('success' => $sukses,  'results' => $dataJson['results'],  'data' => $data);
                         break;
                     default:
-                        $item = array('code' => $code, 'message' => hasilServer[$code]);
+                        $item = array('code' => $code, 'message' => hasilServer[$code] . $message_tambah);
                         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
                         break;
                 }
                 break;
             default:
-                $item = array('code' => $code, 'message' => hasilServer[$code]);
+                $item = array('code' => $code, 'message' => hasilServer[$code] . $message_tambah);
                 $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
                 break;
         }

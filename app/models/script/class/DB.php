@@ -284,7 +284,7 @@ class DB
         }
     }
     public
-    function getWhereOnceCustom($tableName, $condition)
+    function getWhereOnceCustom($tableName, $condition = [])
     {
         $result = $this->getWhereCustom($tableName, $condition);
         if (!empty($result)) {

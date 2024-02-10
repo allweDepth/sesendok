@@ -547,16 +547,7 @@ $(document).ready(function () {
 										["sasaran", "Sasaran"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Tujuan",
-									atributField: "hidden",
-									atribut: 'name="tujuan"',
-									kelas: "tujuan_sasaran search clearable selection",
-									dataArray: [
-										["tujuan", "Tujuan"],
-										["sasaran", "Sasaran"]
-									],
-								}) +
+
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="uraian" rows="4" placeholder="uraian..."',
@@ -1168,7 +1159,7 @@ $(document).ready(function () {
 						case 'tujuan_sasaran_renstra'://@audit
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
 							let dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
-							dropdownTujuanSasaran.onChange(jenis = "get_data", tbl = "tujuan_rentra", true)
+							dropdownTujuanSasaran.onChange(jenis = "get_rows", tbl = "tujuan_renstra", true)
 							break;
 						default:
 							break;
@@ -1798,26 +1789,30 @@ $(document).ready(function () {
 				onChange: function (value, text, $choice) {
 					let dataChoice = $($choice).find('span.description').text();
 					switch (jenis) {
-						case 'get_data':
+						case 'get_rows':
 							switch (tbl) {
-								case 'tujuan_rentra'://tujuan sasaran renstra
+								case 'tujuan_renstra'://tujuan sasaran renstra
 									if (value === 'tujuan') {
 										ajaxSend = false;
+										let elmTujuan = $(`form[name="form_flyout"]`).find('[name="tujuan"]');
+										if (elmTujuan.length) {
+											elmTujuan.closest('.field').remove();
+										}
 									} else {
 										ajaxSend = true;
 										//tambahkan dropdown
 									}
 									break;
-							
+
 								default:
 									break;
 							}
 							break;
 						case 'value1':
-							
+
 							break;
 						default:
-							
+
 							break;
 					};
 
@@ -1832,10 +1827,12 @@ $(document).ready(function () {
 						console.log(jenis);
 						let url = 'script/get_data';
 						let cryptos = false;
+
 						suksesAjax["ajaxku"] = function (result) {
+							MethodConstructor.tujuanRenstra(result);
 							var kelasToast = "success";
 							if (result.success === true) {
-								MethodConstructor.tujuanRenstra(result);
+								
 							} else {
 								kelasToast = "warning"; //'success'
 							}
@@ -1862,8 +1859,30 @@ $(document).ready(function () {
 			//constructor(element,tglAwal=new Date(),tglAkhir=new Date()) {
 			this.element = $(element);
 		}
-		static tujuanRenstra(data={}){
-
+		static tujuanRenstra(result = {}) {
+			if (result.success === true) {
+								
+			} else {
+				
+			}
+			let elm = $(`form[name="form_flyout"] .field:first-child`);
+			let dropdownInsert = buatElemenHtml("fieldDropdown", {
+				label: "Tujuan",
+				atributField: "",
+				atribut: 'name="tujuan"',
+				kelas: "search clearable selection",
+				dataArray: [
+					["tujuan", "Tujuan"],
+					["sasaran", "Sasaran"]
+				],
+			})
+			let elmTujuan = $(`form[name="form_flyout"]`).find('[name="tujuan"]');
+			console.log(elmTujuan.length);
+			if (elmTujuan.length <= 0) {
+				elm.after(dropdownInsert);
+				
+			}
+			
 		}
 	}
 	//===================================
@@ -2041,10 +2060,9 @@ $(document).ready(function () {
 						case "form_flyout":
 							if (MyForm.find('[name="disable"]')) {
 								formData.has("disable") === false
-								? formData.append("disable", 'off')
-								: formData.set("disable", 'on'); // Returns false
+									? formData.append("disable", 'off')
+									: formData.set("disable", 'on'); // Returns false
 							}
-							
 							switch (tbl) {
 								case "peraturan":
 									switch (jenis) {
@@ -2062,13 +2080,14 @@ $(document).ready(function () {
 													formData.set(nameAttr, tanggal);
 												}
 											}
-
 											jalankanAjax = true;
-
 											break;
 										default:
 											break;
 									}
+									break;
+								case "tujuan_sasaran_renstra":
+									jalankanAjax = true;
 									break;
 								default:
 									break;
@@ -2078,7 +2097,6 @@ $(document).ready(function () {
 						// UNTUK PENGATURAN====
 						// ====================
 						case "form_pengaturan":
-
 							formData.has("disable") === false
 								? formData.append("disable", 'off')
 								: formData.set("disable", 'on'); // Returns false
@@ -2125,18 +2143,6 @@ $(document).ready(function () {
 							break;
 					}
 					if (jalankanAjax) {
-						const start = new Date().getTime();
-						if (cryptos) {
-							formData.forEach((value, key) => {
-								//console.log(key + " " + value)
-								formData.set(key, enc.encrypt(value, halAwal));
-							});
-							formData.set("cry", cryptos);
-						}
-						const end = new Date().getTime();
-						const diff = end - start;
-						const seconds = diff / 1000; //Math.floor(diff / 1000 % 60);
-						// console.log(`selisih ecrypt form (s) : ${seconds}`);
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";
 							if (result.success === true) {
@@ -2239,6 +2245,7 @@ $(document).ready(function () {
 									// =================
 									case "form_flyout":
 										switch (tbl) {
+											case "tujuan_sasaran_renstra":
 											case "hspk":
 											case "ssh":
 											case "sbu":

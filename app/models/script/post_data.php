@@ -43,7 +43,7 @@ class post_data
         }
         if (!empty($_POST) && $id_user > 0) {
             $code = 11;
-            if (isset($_POST['jenis'])) {
+            if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
                 $code = 12;
                 $validate = new Validate($_POST);
                 //var_dump($_POST);
@@ -65,6 +65,65 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($tbl) {
+                    case 'tujuan_renstra':
+                    case 'sasaran_renstra':
+                        switch ($jenis) {
+                            case 'edit':
+                                $id_row = $validate->setRules('id_row', 'id', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                            case 'add':
+                                $id_tujuan = $validate->setRules('tujuan', 'tujuan', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $uraian = $validate->setRules('uraian', 'uraian', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $alamat = $validate->setRules('alamat', 'alamat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $nama_kepala = $validate->setRules('nama_kepala', 'Nama Kepala SKPD', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 18
+                                ]);
+                                $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 4
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        break;
                     case 'organisasi':
                         switch ($jenis) {
                             case 'edit':
@@ -577,21 +636,59 @@ class post_data
                             $kodePosting = 'update_row';
                             break;
                         case 'add':
-                            if ($_FILES['file']) {
-                                $file = $Fungsi->importFile($tbl, '');
-                                //var_dump($file);
-                                if ($file['result'] == 'ok') {
-                                    $set['file'] = $file['file'];
-                                } else {
-                                    $tambahan_pesan = "(" . $file['file'] . ")";
+                            if ($_FILES) {
+                                if ($_FILES['file']) {
+                                    $file = $Fungsi->importFile($tbl, '');
+                                    //var_dump($file);
+                                    if ($file['result'] == 'ok') {
+                                        $set['file'] = $file['file'];
+                                    } else {
+                                        $tambahan_pesan = "(" . $file['file'] . ")";
+                                    }
                                 }
                             }
+
                             break;
                         default:
                             break;
                     }
                     //start buat property
                     switch ($tbl) {
+                        case 'tujuan_renstra':
+                            $id_tujuan = 0;
+                        case 'sasaran_renstra':
+                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                            if ($rowOrganisasi) {
+                                $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                if ($tahun_renstra > 2000) {
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kd_opd' => $kd_opd,
+                                        'tahun' => $tahun,
+                                        'id_tujuan' => $id_tujuan,
+                                        'kelompok' => $kelompok,
+                                        'text' => $text,
+                                        'disable' => $disable,
+                                        'keterangan' => $keterangan,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                } else {
+                                    $message_tambah = ' (atur tahun renstra OPD)';
+                                    $code = 70;
+                                    $kodePosting = '';
+                                }
+                            } else {
+                                $message_tambah = ' (atur organisasi OPD)';
+                                $kodePosting = '';
+                                $code = 70;
+                            }
+
+                            break;
                         case 'organisasi':
                             if ($jenis == 'add') {
                                 $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']];
@@ -600,7 +697,6 @@ class post_data
                             $set = [
                                 'kd_wilayah' => $kd_wilayah,
                                 'kode' => $kode,
-                                'aturan_pengadaan' => $aturan_pengadaan,
                                 'uraian' => $uraian,
                                 'alamat' => $alamat,
                                 'nama_kepala' => $nama_kepala,
@@ -710,27 +806,7 @@ class post_data
                                     break;
                             }
                             break;
-                        case 'copy':
-                            switch ($tbl) {
-                                case 'analisa_quarry':
-                                case 'analisa_sda':
-                                case 'analisa_ck':
-                                case 'analisa_bm':
-                                case 'analisa_alat_custom':
-                                case 'analisa_alat':
-                                    $setTabelCopy = [$tabel_pakai];
-                                    $kodePosting = 'insert_select';
-                                    break;
-                                case 'copy_lap_harian':
-                                    $setTabelCopy = ['laporan_harian'];
-                                    $kodePosting = 'insert_select';
-                                    break;
-                                case 'proyek':
-                                    $setTabelCopy = ['analisa_alat', 'analisa_alat_custom', 'analisa_pekerjaan_bm', 'analisa_pekerjaan_ck', 'analisa_pekerjaan_sda', 'analisa_quarry', 'harga_sat_upah_bahan', 'informasi_umum', 'lokasi_proyek', 'rencana_anggaran_biaya', 'schedule_table'];
-                                    $kodePosting = 'insert_select';
-                                    break;
-                            }
-                            break;
+
                         case 'sortir':
                             $condition = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
                             $DB->orderBy('no_sortir');

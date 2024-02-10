@@ -8,12 +8,643 @@ use FormulaParser\FormulaParser;
 //$jenis = 'koef'(rumus koefisien dan hasil pencarian ke koef semua) $jenis = 'harga'(untuk rumus di tempatkan harga satuan dan pencarian juga di harga satuan) atau $jenis = 'koef_harga'(untuk rumus ke koefisien, dan harga pencarian di harga satuan)
 class MasterFungsi
 {
+    //get tabel data
+    public function getTabel($tbl = '', $nama_tabel = '', $get_data = [], $jmlhalaman = 0, $halaman = 1, $jumlah_kolom = 1, $type_user = 'user')
+    {
+        //var_dump("dmn($get_data)");
+        //ambil data user untuk warna
+        $user = new User();
+        $user->cekUserSession();
+        $type_user = $_SESSION["user"]["type_user"];
+        $id_user = $_SESSION["user"]["id"];
+        $DB = DB::getInstance();
+        $userAktif = $DB->getWhereCustom('user_ahsp', [['id', '=', $id_user]]);
+        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
+        $classRow = '';
+        $Fungsi = new MasterFungsi();
+        if ($jumlahArray > 0) {
+            foreach ($userAktif[0] as $key => $value) {
+                ${$key} = $value;
+            }
+        }
+        if ($warna_tbl != '' && $warna_tbl != 'non') {
+            $classRow = ' class="' . $warna_tbl . '"';
+        }
+        $pagination = '';
+        $pagination1 = '';
+        $pagination = '';
+        $paginationnext = '';
+        $pagination2 = '';
+        $rowData = ['tbody' => '', 'tfoot' => ''];
+
+        //var_dump($nama_tabel,$get_data, $jmlhalaman , $halaman,$jumlah_kolom);
+        //var_dump($jumlah_kolom);
+        //$rowData['sumData'] =sizeof($get_data);
+        $warna = 'green';
+        //var_dump("dmn($myrow)");
+        // jika tabel mengganti thead
+        switch ($tbl) {
+            case 'rekanan':
+                $rowData['thead'] = '<tr class="center aligned">
+                <th rowspan="2">URAIAN</th>
+                <th rowspan="2">ALAMAT</th>
+                <th rowspan="2">NPWP</th>
+                <th rowspan="2">DIREKTUR</th>
+                <th colspan="4">AKTA PENDIRIAN</th>
+                <th rowspan="2" class="collapsing">FILE</th>
+                <th rowspan="2" class="collapsing">KETERANGAN</th>
+                <th class="collapsing" rowspan="2">AKSI</th>
+            </tr>';
+                break;
+            case 'hspk':
+            case 'sbu':
+            case 'asb':
+            case 'ssh':
+                //Kode Komponen	Uraian Komponen	Spesifikasi	Satuan	Harga Satuan	TKDN	Aksi
+                $rowData['thead'] = trim('<tr>
+                                <th>Kode Komponen</th>
+                                <th>Uraian Komponen</th>
+                                <th>Spesifikasi</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>TKDN</th>
+                                <th>AKSI</th>
+                            </tr>');
+                break;
+            case 'wilayah':
+                $rowData['thead'] = trim('<tr class="center aligned">
+                            <th rowspan="2">Kode</th>
+                            <th rowspan="2">Uraian</th>
+                            <th rowspan="2">Status</th>
+                            <th colspan="3">Jumlah</th>
+                            <th rowspan="2">Luas Wilayah (km2)</th>
+                            <th rowspan="2">Jumlah Penduduk (jiwa)</th>
+                            <th rowspan="2">keterangan</th>
+                            <th rowspan="2">AKSI</th>
+                        </tr>
+                        <tr class="center aligned">
+                            <th>KEC</th>
+                            <th>KEL</th>
+                            <th>DESA</th>
+                    </tr>');
+                break;
+            case 'satuan':
+                $rowData['thead'] = trim('<tr>
+                            <th>VALUE</th>
+                            <th>ITEM</th>
+                            <th>SEBUTAN LAIN</th>
+                            <th>KETERANGAN</th>
+                            <th>AKSI</th>
+                        </tr>');
+                break;
+            case 'organisasi':
+                $rowData['thead'] = trim('<tr>
+                            <th>Kode</th>
+                            <th>Uraian</th>
+                            <th>keterangan</th>
+                            <th>AKSI</th>
+                        </tr>');
+                break;
+            case 'mapping':
+                $rowData['thead'] = trim('<tr>
+                        <th>Kode Neraca</th>
+                        <th>Uraian Neraca</th>
+                        <th>Kode Akun</th>
+                        <th>Uraian Akun</th>
+                        <th>kelompok</th>
+                        <th>keterangan</th>
+                        <th>AKSI</th>
+                    </tr>');
+                break;
+            case 'sumber_dana':
+                $rowData['thead'] = trim('<tr>
+                        <th>sumber dana</th>
+                        <th>kel</th>
+                        <th>jenis</th>
+                        <th>objek</th>
+                        <th>rincian objek</th>
+                        <th>sub rincian objek</th>
+                        <th>uraian</th>
+                        <th>keterangan</th>
+                        <th>AKSI</th>
+                    </tr>');
+                break;
+            case 'aset':
+            case 'akun_belanja':
+                $rowData['thead'] = trim('<tr>
+                        <th>Akun</th>
+                        <th>kel</th>
+                        <th>jenis</th>
+                        <th>objek</th>
+                        <th>rincian objek</th>
+                        <th>sub rincian objek</th>
+                        <th>uraian</th>
+                        <th>keterangan</th>
+                        <th>AKSI</th>
+                    </tr>');
+                break;
+            case 'bidang_urusan':
+            case 'prog':
+            case 'keg':
+            case 'sub_keg':
+                $rowData['thead'] = trim('<tr>
+                <th>KODE KOMPONEN</th>
+                <th>NOMENKLATUR URUSAN</th>
+                <th>KINERJA</th>
+                <th>INDIKATOR</th>
+                <th>SATUAN</th>
+                <th>KETERANGAN</th>
+                <th>AKSI</th>
+            </tr>');
+                break;
+
+            case 'user':
+                break;
+            default:
+                # code...
+                break;
+        }
+        if (isset($rowData['thead'])) {
+            $rowData['thead'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['thead']);
+        }
+        $jumlahArray = is_array($get_data) ? count($get_data) : 0;
+        if ($jumlahArray > 0) {
+
+            $myrow = 0;
+            foreach ($get_data as $row) {
+                $myrow++;
+                switch ($tbl) {
+                    case 'rekanan':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+
+                        $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file)) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="nama_perusahaan">' . $divAwal . $row->nama_perusahaan . $divAkhir . '</td>
+                                    <td klm="alamat">' . $divAwal . $row->alamat . $divAkhir . '</td>
+                                    <td klm="npwp">' . $divAwal . $row->npwp . $divAkhir . '</td>
+                                    <td klm="direktur">' . $divAwal . $row->direktur . $divAkhir . '</td>
+                                    <td klm="no_akta_pendirian">' . $divAwal . $row->no_akta_pendirian . $divAkhir . '</td>
+                                    <td klm="tgl_akta_pendirian">' . $row->tgl_akta_pendirian  . '</td>
+                                    <td klm="lokasi_notaris_pendirian">' . $divAwal . $row->lokasi_notaris_pendirian . $divAkhir . '</td>
+                                    <td klm="nama_notaris_pendirian">' . $divAwal . $row->nama_notaris_pendirian . $divAkhir . '</td>
+                                    <td klm="file">' . $fileTag . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
+                    case 'hspk':
+                    case 'sbu':
+                    case 'asb':
+                    case 'ssh':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+
+                        $rowData['tbody'] .= preg_replace('/(\s\s+|\t|\n)/', ' ', '<tr id_row="' . $row->id . '">
+                        <td klm="kd_aset">' . $divAwal . $row->kd_aset . $divAkhir . '</td>
+                        <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
+                        <td klm="spesifikasi">' . $divAwal . $row->spesifikasi . $divAkhir . '</td>
+                        <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                        <td klm="harga_satuan">' . $divAwal . $row->harga_satuan . $divAkhir . '</td>
+                        <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
+                        <td>' . $buttons . '</td>
+                    </tr>');
+                        break;
+                    case 'satuan':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="value">' . $divAwal . $row->value . $divAkhir . '</td>
+                                    <td klm="item">' . $divAwal . $row->item . $divAkhir . '</td>
+                                    <td klm="sebutan_lain">' . $divAwal . $row->sebutan_lain . $divAkhir . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
+                    case 'wilayah':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file)) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
+                                    <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
+                                    <td klm="status">' . $divAwal . $row->status . $divAkhir . '</td>
+                                    <td klm="jml_kec">' . $divAwal . $row->jml_kec . $divAkhir . '</td>
+                                    <td klm="jml_kel">' . $divAwal . $row->jml_kel . $divAkhir . '</td>
+                                    <td klm="jml_desa">' . $divAwal . $row->jml_desa . $divAkhir . '</td>
+                                    <td klm="luas">' . $divAwal . $row->luas . $divAkhir . '</td>
+                                    <td klm="penduduk">' . $divAwal . $row->penduduk . $divAkhir . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $fileTag . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
+                    case 'peraturan':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+
+                        $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file)) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="nomor">' . $divAwal . $row->nomor . $divAkhir . '</td>
+                                    <td klm="judul">' . $divAwal . $row->judul . $divAkhir . '</td>
+                                    <td klm="tgl_pengundangan">' . $divAwal . $row->tgl_pengundangan . $divAkhir . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $fileTag . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
+                    case 'sumber_dana':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $k = ((int)$row->kelompok > 0) ? $row->kelompok : '';
+                        $j = ((int)$row->jenis > 0) ? $row->jenis : '';
+                        $o = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
+                        $ro = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
+                        $sro = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                        <td klm="sumber_dana">' . $divAwal . $row->sumber_dana . $divAkhir . '</td>
+                                        <td klm="kelompok">' . $divAwal . $k . $divAkhir . '</td>
+                                        <td klm="jenis">' . $divAwal . $j . $divAkhir . '</td>
+                                        <td klm="objek">' . $divAwal . $o  . $divAkhir . '</td>
+                                        <td klm="rincian_objek">' . $divAwal . $ro . $divAkhir . '</td>
+                                        <td klm="sub_rincian_objek">' . $divAwal . $sro . $divAkhir . '</td>
+                                        <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
+                                        <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                        <td>' . $buttons . '</td>
+                                    </tr>');
+                        break;
+                    case 'aset':
+                    case 'akun_belanja':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                    <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                    <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $n = ((int)$row->kelompok > 0) ? $row->kelompok : '';
+                        $g = ((int)$row->jenis > 0) ? $row->jenis : '';
+                        $s = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
+                        $se = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
+                        $sr = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
+
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                            <td klm="akun">' . $divAwal . $row->akun . $divAkhir . '</td>
+                                            <td klm="kelompok">' . $divAwal . $n . $divAkhir . '</td>
+                                            <td klm="jenis">' . $divAwal . $g . $divAkhir . '</td>
+                                            <td klm="objek">' . $divAwal . $s . $divAkhir . '</td>
+                                            <td klm="rincian_objek">' . $divAwal . $se . $divAkhir . '</td>
+                                            <td klm="sub_rincian_objek">' . $divAwal . $sr . $divAkhir . '</td>
+                                            <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
+                                            <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                            <td>' . $buttons . '</td>
+                                        </tr>');
+                        break;
+                    case 'bidang_urusan':
+                    case 'prog':
+                    case 'keg':
+                    case 'sub_keg':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                        <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                        <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                                <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
+                                                <td klm="nomenklatur_urusan">' . $divAwal . $row->nomenklatur_urusan . $divAkhir . '</td>
+                                                <td klm="kinerja">' . $divAwal . $row->kinerja . $divAkhir . '</td>
+                                                <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
+                                                <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                                                <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                                <td>' . $buttons . '</td>
+                                            </tr>');
+                        break;
+                    case 'mapping':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                                    <td klm="kode_aset">' . $divAwal . $row->kode_aset . $divAkhir . '</td>
+                                                    <td klm="uraian_aset">' . $divAwal . $row->uraian_aset . $divAkhir . '</td>
+                                                    <td klm="kode_akun">' . $divAwal . $row->kode_akun . $divAkhir . '</td>
+                                                    <td klm="uraian_akun">' . $divAwal . $row->uraian_akun . $divAkhir . '</td>
+                                                    <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
+                                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                                    <td>' . $buttons . '</td>
+                                                </tr>');
+                        break;
+                    case 'organisasi':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                                        <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
+                                                        <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
+                                                        <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                                        <td>' . $buttons . '</td>
+                                                    </tr>');
+                        break;
+                    case 'rekanan':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+
+                        $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file)) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="nama_perusahaan">' . $divAwal . $row->nama_perusahaan . $divAkhir . '</td>
+                                    <td klm="alamat">' . $divAwal . $row->alamat . $divAkhir . '</td>
+                                    <td klm="npwp">' . $divAwal . $row->npwp . $divAkhir . '</td>
+                                    <td klm="direktur">' . $divAwal . $row->direktur . $divAkhir . '</td>
+                                    <td klm="no_akta_pendirian">' . $divAwal . $row->no_akta_pendirian . $divAkhir . '</td>
+                                    <td klm="tgl_akta_pendirian">' . $row->tgl_akta_pendirian  . '</td>
+                                    <td klm="lokasi_notaris_pendirian">' . $divAwal . $row->lokasi_notaris_pendirian . $divAkhir . '</td>
+                                    <td klm="nama_notaris_pendirian">' . $divAwal . $row->nama_notaris_pendirian . $divAkhir . '</td>
+                                    <td klm="file">' . $fileTag . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
+
+                    case 'divisiSDA':
+                        $nama_tabel = $tbl;
+                        if ($type_user == 'admin') {
+                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="kode"><div contenteditable>' . $row->kode . '</div></td>
+                                    <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
+                                    <td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td>
+                                    <td klm="keterangan"><div contenteditable>' . $row->keterangan . '</div></td>
+                                    <td>
+                                        <div class="ui icon basic mini buttons">
+                                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>');
+                        } else {
+                            $rowData['tbody'] .= '<tr>
+                            <td>' . $row->kode . '</td>
+                            <td>' . $row->uraian . '</td>
+                            <td>' . $row->satuan . '</td>
+                            <td>' . $row->keterangan . '</td>
+                            <td></td>
+                        </tr>';
+                        }
+                        break;
+                    case 'user':
+                        $phpdate = strtotime($row->tgl_daftar);
+                        $mysqldate = date('d-m-Y H:i:s', $phpdate);
+                        $phpdate2 = strtotime($row->tgl_login);
+                        $mysqldate2 = date('d-m-Y H:i:s', $phpdate2);
+                        $aktif = ($row->aktif > 0) ? 'checked="checked"' : '';
+                        $aktif_edit = ($row->aktif_edit > 0) ? 'checked="checked"' : '';
+                        $aktif_chat = ($row->aktif_chat > 0) ? 'checked="checked"' : '';
+                        $rowData['tbody'] .= '<tr id_row="' . $row->id . '">
+                        <td klm="username">' . $row->username  . '</td>
+                        <td klm="email">' . $row->email . '</td>
+                        <td klm="nama">' . $row->nama . '</td>
+                        <td klm="kontak_person">' . $row->kontak_person . '</td>
+                        <td klm="nama_org">' . $row->nama_org . '</td>
+                        <td klm="type_user">' . $row->type_user . '</td>
+                        <td klm="photo">' . $row->photo . '</td>
+                        <td klm="tgl_daftar">' . $mysqldate . '</td>
+                        <td klm="tgl_login">' . $mysqldate2 . '</td>
+                        <td klm="thn_aktif_anggaran">' . $row->thn_aktif_anggaran . '</td>
+                        <td klm="kd_proyek_aktif">' . $row->kd_proyek_aktif . '</td>
+                        <td><div class="ui toggle checkbox user" jns="profil" klm="aktif" tbl="edit"><input type="checkbox" tabindex="0" class="hidden" ' . $aktif . '"><label></label></td>
+                        <td><div class="ui toggle checkbox user" jns="profil" klm="aktif_edit" tbl="edit"><input type="checkbox" tabindex="0" class="hidden" ' . $aktif_edit . '"><label></label></td>
+                        <td><div class="ui toggle checkbox user" jns="profil" klm="aktif_chat" tbl="edit"><input type="checkbox" tabindex="0" class="hidden" ' . $aktif_chat . '"><label></label></td>
+                        <td klm="ket">' . $row->ket . '</td>
+                        <td> <div class="ui icon basic mini buttons"><button class="ui button" name="flyout" name="flyout" jns="profil" tbl="edit"><i class="edit outline ' . $warna . ' icon"></i></button><button class="ui red button" name="del_row" tbl="del_row" jns="profil"><i class="trash alternate outline red icon"></i></button></div></td></tr>';
+                        break;
+                    case 'harga_satuan':
+                        $desimal = ($this->countDecimals($row->harga_satuan) < 2) ? 2 : $this->countDecimals($row->harga_satuan); //memanggil fungsi kelas sendiri
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                <td>' . $row->kode . '</td>
+                                <td>' . $row->jenis . '</td>
+                                <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
+                                <td>' . $row->satuan . '</td>
+                                <td klm="harga_satuan"><div contenteditable rms onkeypress="return rumus(event);">' . number_format($row->harga_satuan, $desimal, ',', '.') . '</div></td>
+                                <td klm="sumber_data"><div contenteditable>' . $row->sumber_data . '</div></td>
+                                <td klm="spesifikasi"><div contenteditable>' . $row->spesifikasi . '</div></td>
+                                <td klm="keterangan"><div contenteditable>' . $row->keterangan . '</div></td>
+                                <td>
+                                    <div class="ui icon basic mini buttons">
+                                        <button class="ui button" name="flyout" name="flyout" jns="harga_satuan" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                                        <button class="ui button" name="del_row" jns="harga_satuan" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button>
+                                        <button class="ui button up_row"><i class="angle up icon"></i></button>
+                                    </div>
+                                </td>
+                            </tr>');
+                        break;
+                    case 'satuan':
+                        if ($type_user == 'admin') {
+                            $row = (array)$row;
+                            $rowData['tbody'] .= '<tr id_row="' . $row['id'] . '"><td klm="value"><div contenteditable>' . $row['value'] . '</div></td><td klm="item"><div contenteditable>' . $row['item'] . '</div></td><td klm="keterangan"><div contenteditable>' . $row['keterangan'] . '</div></td><td klm="sebutan_lain"><div contenteditable>' . $row['sebutan_lain'] . '</div></td><td><div class="ui icon basic mini buttons"><button class="ui button" name="flyout" name="flyout" jns="satuan" tbl="edit" id_row="' . $row['id'] . '"><i class="edit blue outline icon"></i></button><button class="ui button" name="del_row" jns="satuan" tbl="del_row" id_row="' . $row['id'] . '"><i class="trash alternate outline red icon"></i></button></div></td></tr>';
+                        } else {
+                            $rowData['tbody'] .= '<tr><td>' . $row['value'] . '</td><td>' . $row['item'] . '</td><td>' . $row['keterangan'] . '</td><td>' . $row['sebutan_lain'] . '</td><td></td></tr>';
+                        }
+                        break;
+                    case 'analisa_ck':
+                        $koef = $row->koefisien;
+                        if ($koef > 0) {
+                            $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
+                            $koef = '<td klm="koefisien"><div contenteditable rms>' . number_format($row->koefisien, $desimal, ',', '.') . '</div></td>';
+                        } else {
+                            $koef = '<td klm="koefisien"></td>';
+                        }
+                        if ($row->harga_satuan > 0) {
+                            $desimal = ($this->countDecimals($row->harga_satuan) < 2) ? 2 : $this->countDecimals($row->harga_satuan);
+                            $harga_sat = number_format($row->harga_satuan, $desimal, ',', '.');
+                        } else {
+                            $harga_sat = '';
+                        }
+                        if (strlen($row->rumus) > 0 || ($row->kode) == ($row->kd_analisa)) {
+                            $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
+                            $koef = '<td klm="koefisien">' . number_format($row->koefisien, $desimal, ',', '.') . '</td>';
+                        }
+                        $desimal = ($this->countDecimals($row->jumlah_harga) < 2) ? 2 : $this->countDecimals($row->jumlah_harga);
+                        if (($row->kode) == ($row->kd_analisa)) {
+                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '" class="warning"><td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td><td klm="kode">' . $row->kode . '</td><td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td><td></td><td klm="harga_satuan"></td>' . $koef . '<td klm="jumlah_harga"></td><td></td></tr>');
+                        } else {
+                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                            <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
+                            <td klm="kode"><div contenteditable>' . $row->kode . '</div></td>
+                            <td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td>
+                            ' . $koef . '
+                            <td klm="harga_satuan">' . $harga_sat . '</td>
+                            <td klm="jumlah_harga">' . number_format($row->jumlah_harga, $desimal, ',', '.') . '</td>
+                            <td klm="rumus"><div contenteditable>' . $row->rumus . '</div></td>
+                            <td> <div class="ui mini basic icon buttons"><button class="ui button" name="modal_2"><i class="edit blue icon"></i></button><button class="ui button" name="del_row" jns="direct" tbl="del_row"><i class="trash alternate outline icon"></i></button><button class="ui button up_row"><i class="angle up icon"></i></button></div></td></tr>');
+                        }
+                        break;
+                    case 'value2':
+                        # code...
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        } else { //jika data tidak ditemukan
+            $rowData['tbody'] .= '<tr><td colspan="' . $jumlah_kolom . '"><div class="ui icon info message"><i class="yellow exclamation circle icon"></i><div class="content"><div class="header">Data Tidak ditemukan </div><p>input data baru atau hubungi administrator</p></div></div></td></tr>';
+            $rowData['tfoot'] = '<tr></tr>';
+        }
+        // pagination
+        if ($jmlhalaman > 1) {
+            $id_aktif = 0;
+            $batas_bawah = $halaman - 2;
+            $batas_atas = $halaman + 2;
+            if ($batas_bawah <= 1) {
+                $batas_bawah = 1;
+            } else {
+                $pagination .= '<a class="item" name="page" hal="1" ret="go" tbl="' . $tbl . '"><i class="angle double left chevron icon"></i></a>';
+            }
+            $paginationnext = "";
+            if ($batas_atas < $jmlhalaman) {
+                $batas_atas = $halaman + 2;
+                $paginationnext = '<a class="item" name="page" hal="' . $jmlhalaman . '" ret="go" tbl="' . $tbl . '"><i class="angle double right chevron icon"></i></a>';
+            }
+            //var_dump( $paginationnext );
+            if ($batas_atas > $jmlhalaman) {
+                $batas_atas = $jmlhalaman;
+            }
+            for ($i = $batas_bawah; $i <= $batas_atas; $i++) {
+                if ($i != $halaman) {
+                    $pagination .= '<a class="item" name="page" hal="' . $i . '" ret="go" tbl="' . $tbl . '">' . $i . '</a>';
+                } else {
+                    $pagination .= '<a class="active item" tbl="' . $tbl . '">' . $i . '</a>';
+                    $id_aktif = $i;
+                }
+            }
+            // panah preview
+            if ($halaman == 1) {
+                $pagination1 .= '<a class="disabled icon item"><i class="angle left icon"></i></a>';
+            } else {
+                $pagination1 .= '<a class="icon item" name="page" hal="' . $id_aktif . '" ret="prev" tbl="' . $tbl . '"><i class="angle left icon"></i></a>';
+            }
+            // panah next
+            if ($halaman == $jmlhalaman) {
+                $pagination2 .= '<a class="disabled icon item"><i class="angle right icon"></i></a>';
+            } else {
+                $pagination2 .= '<a class="icon item" name="page" hal="' . $id_aktif . '" ret="next" tbl="' . $tbl . '"><i class="angle right icon"></i></a>';
+            }
+            //var_dump( $pagination );
+            $rowData['tfoot'] = '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"><div class="ui center pagination menu">' . $pagination1 . $pagination . $paginationnext . $pagination2 . '</div></th></tr>';
+        } else {
+            $rowData['tfoot'] = str_replace("\r\n", "", '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"></th></tr>');
+        }
+        if (isset($rowData['tbody'])) {
+            $rowData['tbody'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tbody']);
+        }
+        // /if (property_exists($object, 'a_property'))
+        //cek data ada atau tidak
+        if (isset($rowData['tfoot'])) {
+            $rowData['tfoot'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tfoot']);
+        }
+
+        //$rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
+        return $rowData;
+    }
     public function tabel_pakai($tbl)
     {
 
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'tujuan_renstra':
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':
                 $tabel_pakai = 'tujuan_sasaran_renstra_neo';
@@ -861,636 +1492,7 @@ class MasterFungsi
         $hasil .= '</div></div>';
         return str_replace("\r\n", "", $hasil);
     }
-    //get tabel data
-    public function getTabel($tbl = '', $nama_tabel = '', $get_data = [], $jmlhalaman = 0, $halaman = 1, $jumlah_kolom = 1, $type_user = 'user')
-    {
-        //var_dump("dmn($get_data)");
-        //ambil data user untuk warna
-        $user = new User();
-        $user->cekUserSession();
-        $type_user = $_SESSION["user"]["type_user"];
-        $id_user = $_SESSION["user"]["id"];
-        $DB = DB::getInstance();
-        $userAktif = $DB->getWhereCustom('user_ahsp', [['id', '=', $id_user]]);
-        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
-        $classRow = '';
-        $Fungsi = new MasterFungsi();
-        if ($jumlahArray > 0) {
-            foreach ($userAktif[0] as $key => $value) {
-                ${$key} = $value;
-            }
-        }
-        if ($warna_tbl != '' && $warna_tbl != 'non') {
-            $classRow = ' class="' . $warna_tbl . '"';
-        }
-        $pagination = '';
-        $pagination1 = '';
-        $pagination = '';
-        $paginationnext = '';
-        $pagination2 = '';
-        $rowData = ['tbody' => '', 'tfoot' => ''];
-
-        //var_dump($nama_tabel,$get_data, $jmlhalaman , $halaman,$jumlah_kolom);
-        //var_dump($jumlah_kolom);
-        //$rowData['sumData'] =sizeof($get_data);
-        $warna = 'green';
-        //var_dump("dmn($myrow)");
-        // jika tabel mengganti thead
-        switch ($tbl) {
-            case 'rekanan':
-                $rowData['thead'] = '<tr class="center aligned">
-                <th rowspan="2">URAIAN</th>
-                <th rowspan="2">ALAMAT</th>
-                <th rowspan="2">NPWP</th>
-                <th rowspan="2">DIREKTUR</th>
-                <th colspan="4">AKTA PENDIRIAN</th>
-                <th rowspan="2" class="collapsing">FILE</th>
-                <th rowspan="2" class="collapsing">KETERANGAN</th>
-                <th class="collapsing" rowspan="2">AKSI</th>
-            </tr>';
-                break;
-            case 'hspk':
-            case 'sbu':
-            case 'asb':
-            case 'ssh':
-                //Kode Komponen	Uraian Komponen	Spesifikasi	Satuan	Harga Satuan	TKDN	Aksi
-                $rowData['thead'] = trim('<tr>
-                                <th>Kode Komponen</th>
-                                <th>Uraian Komponen</th>
-                                <th>Spesifikasi</th>
-                                <th>Satuan</th>
-                                <th>Harga Satuan</th>
-                                <th>TKDN</th>
-                                <th>AKSI</th>
-                            </tr>');
-                break;
-            case 'wilayah':
-                $rowData['thead'] = trim('<tr class="center aligned">
-                            <th rowspan="2">Kode</th>
-                            <th rowspan="2">Uraian</th>
-                            <th rowspan="2">Status</th>
-                            <th colspan="3">Jumlah</th>
-                            <th rowspan="2">Luas Wilayah (km2)</th>
-                            <th rowspan="2">Jumlah Penduduk (jiwa)</th>
-                            <th rowspan="2">keterangan</th>
-                            <th rowspan="2">AKSI</th>
-                        </tr>
-                        <tr class="center aligned">
-                            <th>KEC</th>
-                            <th>KEL</th>
-                            <th>DESA</th>
-                    </tr>');
-                break;
-            case 'satuan':
-                $rowData['thead'] = trim('<tr>
-                            <th>VALUE</th>
-                            <th>ITEM</th>
-                            <th>SEBUTAN LAIN</th>
-                            <th>KETERANGAN</th>
-                            <th>AKSI</th>
-                        </tr>');
-                break;
-            case 'organisasi':
-                $rowData['thead'] = trim('<tr>
-                            <th>Kode</th>
-                            <th>Uraian</th>
-                            <th>keterangan</th>
-                            <th>AKSI</th>
-                        </tr>');
-                break;
-            case 'mapping':
-                $rowData['thead'] = trim('<tr>
-                        <th>Kode Neraca</th>
-                        <th>Uraian Neraca</th>
-                        <th>Kode Akun</th>
-                        <th>Uraian Akun</th>
-                        <th>kelompok</th>
-                        <th>keterangan</th>
-                        <th>AKSI</th>
-                    </tr>');
-                break;
-            case 'sumber_dana':
-                $rowData['thead'] = trim('<tr>
-                        <th>sumber dana</th>
-                        <th>kel</th>
-                        <th>jenis</th>
-                        <th>objek</th>
-                        <th>rincian objek</th>
-                        <th>sub rincian objek</th>
-                        <th>uraian</th>
-                        <th>keterangan</th>
-                        <th>AKSI</th>
-                    </tr>');
-                break;
-            case 'aset':
-            case 'akun_belanja':
-                $rowData['thead'] = trim('<tr>
-                        <th>Akun</th>
-                        <th>kel</th>
-                        <th>jenis</th>
-                        <th>objek</th>
-                        <th>rincian objek</th>
-                        <th>sub rincian objek</th>
-                        <th>uraian</th>
-                        <th>keterangan</th>
-                        <th>AKSI</th>
-                    </tr>');
-                break;
-            case 'bidang_urusan':
-            case 'prog':
-            case 'keg':
-            case 'sub_keg':
-                $rowData['thead'] = trim('<tr>
-                <th>KODE KOMPONEN</th>
-                <th>NOMENKLATUR URUSAN</th>
-                <th>KINERJA</th>
-                <th>INDIKATOR</th>
-                <th>SATUAN</th>
-                <th>KETERANGAN</th>
-                <th>AKSI</th>
-            </tr>');
-                break;
-
-            case 'user':
-                break;
-            default:
-                # code...
-                break;
-        }
-        if (isset($rowData['thead'])) {
-            $rowData['thead'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['thead']);
-        }
-        $jumlahArray = is_array($get_data) ? count($get_data) : 0;
-        if ($jumlahArray > 0) {
-
-            $myrow = 0;
-            foreach ($get_data as $row) {
-                $myrow++;
-                switch ($tbl) {
-                    case 'rekanan':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-
-                        $file = $row->file;
-                        $fileTag = '';
-                        if (strlen($file)) {
-                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
-                        }
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="nama_perusahaan">' . $divAwal . $row->nama_perusahaan . $divAkhir . '</td>
-                                    <td klm="alamat">' . $divAwal . $row->alamat . $divAkhir . '</td>
-                                    <td klm="npwp">' . $divAwal . $row->npwp . $divAkhir . '</td>
-                                    <td klm="direktur">' . $divAwal . $row->direktur . $divAkhir . '</td>
-                                    <td klm="no_akta_pendirian">' . $divAwal . $row->no_akta_pendirian . $divAkhir . '</td>
-                                    <td klm="tgl_akta_pendirian">' . $row->tgl_akta_pendirian  . '</td>
-                                    <td klm="lokasi_notaris_pendirian">' . $divAwal . $row->lokasi_notaris_pendirian . $divAkhir . '</td>
-                                    <td klm="nama_notaris_pendirian">' . $divAwal . $row->nama_notaris_pendirian . $divAkhir . '</td>
-                                    <td klm="file">' . $fileTag . '</td>
-                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                    <td>' . $buttons . '</td>
-                                </tr>');
-                        break;
-                    case 'hspk':
-                    case 'sbu':
-                    case 'asb':
-                    case 'ssh':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-
-                        $rowData['tbody'] .= preg_replace('/(\s\s+|\t|\n)/', ' ', '<tr id_row="' . $row->id . '">
-                        <td klm="kd_aset">' . $divAwal . $row->kd_aset . $divAkhir . '</td>
-                        <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
-                        <td klm="spesifikasi">' . $divAwal . $row->spesifikasi . $divAkhir . '</td>
-                        <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
-                        <td klm="harga_satuan">' . $divAwal . $row->harga_satuan . $divAkhir . '</td>
-                        <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
-                        <td>' . $buttons . '</td>
-                    </tr>');
-                        break;
-                    case 'satuan':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="value">' . $divAwal . $row->value . $divAkhir . '</td>
-                                    <td klm="item">' . $divAwal . $row->item . $divAkhir . '</td>
-                                    <td klm="sebutan_lain">' . $divAwal . $row->sebutan_lain . $divAkhir . '</td>
-                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                    <td>' . $buttons . '</td>
-                                </tr>');
-                        break;
-                    case 'wilayah':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $file = $row->file;
-                        $fileTag = '';
-                        if (strlen($file)) {
-                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
-                                    <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
-                                    <td klm="status">' . $divAwal . $row->status . $divAkhir . '</td>
-                                    <td klm="jml_kec">' . $divAwal . $row->jml_kec . $divAkhir . '</td>
-                                    <td klm="jml_kel">' . $divAwal . $row->jml_kel . $divAkhir . '</td>
-                                    <td klm="jml_desa">' . $divAwal . $row->jml_desa . $divAkhir . '</td>
-                                    <td klm="luas">' . $divAwal . $row->luas . $divAkhir . '</td>
-                                    <td klm="penduduk">' . $divAwal . $row->penduduk . $divAkhir . '</td>
-                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                    <td>' . $fileTag . '</td>
-                                    <td>' . $buttons . '</td>
-                                </tr>');
-                        break;
-                    case 'peraturan':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-
-                        $file = $row->file;
-                        $fileTag = '';
-                        if (strlen($file)) {
-                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
-                        }
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="nomor">' . $divAwal . $row->nomor . $divAkhir . '</td>
-                                    <td klm="judul">' . $divAwal . $row->judul . $divAkhir . '</td>
-                                    <td klm="tgl_pengundangan">' . $divAwal . $row->tgl_pengundangan . $divAkhir . '</td>
-                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                    <td>' . $fileTag . '</td>
-                                    <td>' . $buttons . '</td>
-                                </tr>');
-                        break;
-                    case 'sumber_dana':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $k = ((int)$row->kelompok > 0) ? $row->kelompok : '';
-                        $j = ((int)$row->jenis > 0) ? $row->jenis : '';
-                        $o = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
-                        $ro = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
-                        $sro = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                        <td klm="sumber_dana">' . $divAwal . $row->sumber_dana . $divAkhir . '</td>
-                                        <td klm="kelompok">' . $divAwal . $k . $divAkhir . '</td>
-                                        <td klm="jenis">' . $divAwal . $j . $divAkhir . '</td>
-                                        <td klm="objek">' . $divAwal . $o  . $divAkhir . '</td>
-                                        <td klm="rincian_objek">' . $divAwal . $ro . $divAkhir . '</td>
-                                        <td klm="sub_rincian_objek">' . $divAwal . $sro . $divAkhir . '</td>
-                                        <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
-                                        <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                        <td>' . $buttons . '</td>
-                                    </tr>');
-                        break;
-                    case 'aset':
-                    case 'akun_belanja':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                                    <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                    <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $n = ((int)$row->kelompok > 0) ? $row->kelompok : '';
-                        $g = ((int)$row->jenis > 0) ? $row->jenis : '';
-                        $s = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
-                        $se = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
-                        $sr = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
-
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                            <td klm="akun">' . $divAwal . $row->akun . $divAkhir . '</td>
-                                            <td klm="kelompok">' . $divAwal . $n . $divAkhir . '</td>
-                                            <td klm="jenis">' . $divAwal . $g . $divAkhir . '</td>
-                                            <td klm="objek">' . $divAwal . $s . $divAkhir . '</td>
-                                            <td klm="rincian_objek">' . $divAwal . $se . $divAkhir . '</td>
-                                            <td klm="sub_rincian_objek">' . $divAwal . $sr . $divAkhir . '</td>
-                                            <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
-                                            <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                            <td>' . $buttons . '</td>
-                                        </tr>');
-                        break;
-                    case 'bidang_urusan':
-                    case 'prog':
-                    case 'keg':
-                    case 'sub_keg':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                                        <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                        <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                                <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
-                                                <td klm="nomenklatur_urusan">' . $divAwal . $row->nomenklatur_urusan . $divAkhir . '</td>
-                                                <td klm="kinerja">' . $divAwal . $row->kinerja . $divAkhir . '</td>
-                                                <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
-                                                <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
-                                                <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                                <td>' . $buttons . '</td>
-                                            </tr>');
-                        break;
-                    case 'mapping':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                            <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                                    <td klm="kode_aset">' . $divAwal . $row->kode_aset . $divAkhir . '</td>
-                                                    <td klm="uraian_aset">' . $divAwal . $row->uraian_aset . $divAkhir . '</td>
-                                                    <td klm="kode_akun">' . $divAwal . $row->kode_akun . $divAkhir . '</td>
-                                                    <td klm="uraian_akun">' . $divAwal . $row->uraian_akun . $divAkhir . '</td>
-                                                    <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
-                                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                                    <td>' . $buttons . '</td>
-                                                </tr>');
-                        break;
-                    case 'organisasi':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                                                <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                                <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                                        <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
-                                                        <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
-                                                        <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                                        <td>' . $buttons . '</td>
-                                                    </tr>');
-                        break;
-                    case 'rekanan':
-                        $buttons = '';
-                        $divAwal = '';
-                        $divAkhir = '';
-
-                        $file = $row->file;
-                        $fileTag = '';
-                        if (strlen($file)) {
-                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
-                        }
-                        if ($type_user == 'admin') {
-                            $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="nama_perusahaan">' . $divAwal . $row->nama_perusahaan . $divAkhir . '</td>
-                                    <td klm="alamat">' . $divAwal . $row->alamat . $divAkhir . '</td>
-                                    <td klm="npwp">' . $divAwal . $row->npwp . $divAkhir . '</td>
-                                    <td klm="direktur">' . $divAwal . $row->direktur . $divAkhir . '</td>
-                                    <td klm="no_akta_pendirian">' . $divAwal . $row->no_akta_pendirian . $divAkhir . '</td>
-                                    <td klm="tgl_akta_pendirian">' . $row->tgl_akta_pendirian  . '</td>
-                                    <td klm="lokasi_notaris_pendirian">' . $divAwal . $row->lokasi_notaris_pendirian . $divAkhir . '</td>
-                                    <td klm="nama_notaris_pendirian">' . $divAwal . $row->nama_notaris_pendirian . $divAkhir . '</td>
-                                    <td klm="file">' . $fileTag . '</td>
-                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                    <td>' . $buttons . '</td>
-                                </tr>');
-                        break;
-
-                    case 'divisiSDA':
-                        $nama_tabel = $tbl;
-                        if ($type_user == 'admin') {
-                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="kode"><div contenteditable>' . $row->kode . '</div></td>
-                                    <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
-                                    <td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td>
-                                    <td klm="keterangan"><div contenteditable>' . $row->keterangan . '</div></td>
-                                    <td>
-                                        <div class="ui icon basic mini buttons">
-                                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>');
-                        } else {
-                            $rowData['tbody'] .= '<tr>
-                            <td>' . $row->kode . '</td>
-                            <td>' . $row->uraian . '</td>
-                            <td>' . $row->satuan . '</td>
-                            <td>' . $row->keterangan . '</td>
-                            <td></td>
-                        </tr>';
-                        }
-                        break;
-                    case 'user':
-                        $phpdate = strtotime($row->tgl_daftar);
-                        $mysqldate = date('d-m-Y H:i:s', $phpdate);
-                        $phpdate2 = strtotime($row->tgl_login);
-                        $mysqldate2 = date('d-m-Y H:i:s', $phpdate2);
-                        $aktif = ($row->aktif > 0) ? 'checked="checked"' : '';
-                        $aktif_edit = ($row->aktif_edit > 0) ? 'checked="checked"' : '';
-                        $aktif_chat = ($row->aktif_chat > 0) ? 'checked="checked"' : '';
-                        $rowData['tbody'] .= '<tr id_row="' . $row->id . '">
-                        <td klm="username">' . $row->username  . '</td>
-                        <td klm="email">' . $row->email . '</td>
-                        <td klm="nama">' . $row->nama . '</td>
-                        <td klm="kontak_person">' . $row->kontak_person . '</td>
-                        <td klm="nama_org">' . $row->nama_org . '</td>
-                        <td klm="type_user">' . $row->type_user . '</td>
-                        <td klm="photo">' . $row->photo . '</td>
-                        <td klm="tgl_daftar">' . $mysqldate . '</td>
-                        <td klm="tgl_login">' . $mysqldate2 . '</td>
-                        <td klm="thn_aktif_anggaran">' . $row->thn_aktif_anggaran . '</td>
-                        <td klm="kd_proyek_aktif">' . $row->kd_proyek_aktif . '</td>
-                        <td><div class="ui toggle checkbox user" jns="profil" klm="aktif" tbl="edit"><input type="checkbox" tabindex="0" class="hidden" ' . $aktif . '"><label></label></td>
-                        <td><div class="ui toggle checkbox user" jns="profil" klm="aktif_edit" tbl="edit"><input type="checkbox" tabindex="0" class="hidden" ' . $aktif_edit . '"><label></label></td>
-                        <td><div class="ui toggle checkbox user" jns="profil" klm="aktif_chat" tbl="edit"><input type="checkbox" tabindex="0" class="hidden" ' . $aktif_chat . '"><label></label></td>
-                        <td klm="ket">' . $row->ket . '</td>
-                        <td> <div class="ui icon basic mini buttons"><button class="ui button" name="flyout" name="flyout" jns="profil" tbl="edit"><i class="edit outline ' . $warna . ' icon"></i></button><button class="ui red button" name="del_row" tbl="del_row" jns="profil"><i class="trash alternate outline red icon"></i></button></div></td></tr>';
-                        break;
-                    case 'harga_satuan':
-                        $desimal = ($this->countDecimals($row->harga_satuan) < 2) ? 2 : $this->countDecimals($row->harga_satuan); //memanggil fungsi kelas sendiri
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                <td>' . $row->kode . '</td>
-                                <td>' . $row->jenis . '</td>
-                                <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
-                                <td>' . $row->satuan . '</td>
-                                <td klm="harga_satuan"><div contenteditable rms onkeypress="return rumus(event);">' . number_format($row->harga_satuan, $desimal, ',', '.') . '</div></td>
-                                <td klm="sumber_data"><div contenteditable>' . $row->sumber_data . '</div></td>
-                                <td klm="spesifikasi"><div contenteditable>' . $row->spesifikasi . '</div></td>
-                                <td klm="keterangan"><div contenteditable>' . $row->keterangan . '</div></td>
-                                <td>
-                                    <div class="ui icon basic mini buttons">
-                                        <button class="ui button" name="flyout" name="flyout" jns="harga_satuan" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                        <button class="ui button" name="del_row" jns="harga_satuan" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button>
-                                        <button class="ui button up_row"><i class="angle up icon"></i></button>
-                                    </div>
-                                </td>
-                            </tr>');
-                        break;
-                    case 'satuan':
-                        if ($type_user == 'admin') {
-                            $row = (array)$row;
-                            $rowData['tbody'] .= '<tr id_row="' . $row['id'] . '"><td klm="value"><div contenteditable>' . $row['value'] . '</div></td><td klm="item"><div contenteditable>' . $row['item'] . '</div></td><td klm="keterangan"><div contenteditable>' . $row['keterangan'] . '</div></td><td klm="sebutan_lain"><div contenteditable>' . $row['sebutan_lain'] . '</div></td><td><div class="ui icon basic mini buttons"><button class="ui button" name="flyout" name="flyout" jns="satuan" tbl="edit" id_row="' . $row['id'] . '"><i class="edit blue outline icon"></i></button><button class="ui button" name="del_row" jns="satuan" tbl="del_row" id_row="' . $row['id'] . '"><i class="trash alternate outline red icon"></i></button></div></td></tr>';
-                        } else {
-                            $rowData['tbody'] .= '<tr><td>' . $row['value'] . '</td><td>' . $row['item'] . '</td><td>' . $row['keterangan'] . '</td><td>' . $row['sebutan_lain'] . '</td><td></td></tr>';
-                        }
-                        break;
-                    case 'analisa_ck':
-                        $koef = $row->koefisien;
-                        if ($koef > 0) {
-                            $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
-                            $koef = '<td klm="koefisien"><div contenteditable rms>' . number_format($row->koefisien, $desimal, ',', '.') . '</div></td>';
-                        } else {
-                            $koef = '<td klm="koefisien"></td>';
-                        }
-                        if ($row->harga_satuan > 0) {
-                            $desimal = ($this->countDecimals($row->harga_satuan) < 2) ? 2 : $this->countDecimals($row->harga_satuan);
-                            $harga_sat = number_format($row->harga_satuan, $desimal, ',', '.');
-                        } else {
-                            $harga_sat = '';
-                        }
-                        if (strlen($row->rumus) > 0 || ($row->kode) == ($row->kd_analisa)) {
-                            $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
-                            $koef = '<td klm="koefisien">' . number_format($row->koefisien, $desimal, ',', '.') . '</td>';
-                        }
-                        $desimal = ($this->countDecimals($row->jumlah_harga) < 2) ? 2 : $this->countDecimals($row->jumlah_harga);
-                        if (($row->kode) == ($row->kd_analisa)) {
-                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '" class="warning"><td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td><td klm="kode">' . $row->kode . '</td><td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td><td></td><td klm="harga_satuan"></td>' . $koef . '<td klm="jumlah_harga"></td><td></td></tr>');
-                        } else {
-                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                            <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
-                            <td klm="kode"><div contenteditable>' . $row->kode . '</div></td>
-                            <td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td>
-                            ' . $koef . '
-                            <td klm="harga_satuan">' . $harga_sat . '</td>
-                            <td klm="jumlah_harga">' . number_format($row->jumlah_harga, $desimal, ',', '.') . '</td>
-                            <td klm="rumus"><div contenteditable>' . $row->rumus . '</div></td>
-                            <td> <div class="ui mini basic icon buttons"><button class="ui button" name="modal_2"><i class="edit blue icon"></i></button><button class="ui button" name="del_row" jns="direct" tbl="del_row"><i class="trash alternate outline icon"></i></button><button class="ui button up_row"><i class="angle up icon"></i></button></div></td></tr>');
-                        }
-                        break;
-                    case 'value2':
-                        # code...
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        } else { //jika data tidak ditemukan
-            $rowData['tbody'] .= '<tr><td colspan="' . $jumlah_kolom . '"><div class="ui icon info message"><i class="yellow exclamation circle icon"></i><div class="content"><div class="header">Data Tidak ditemukan </div><p>input data baru atau hubungi administrator</p></div></div></td></tr>';
-            $rowData['tfoot'] = '<tr></tr>';
-        }
-        // pagination
-        if ($jmlhalaman > 1) {
-            $id_aktif = 0;
-            $batas_bawah = $halaman - 2;
-            $batas_atas = $halaman + 2;
-            if ($batas_bawah <= 1) {
-                $batas_bawah = 1;
-            } else {
-                $pagination .= '<a class="item" name="page" hal="1" ret="go" tbl="' . $tbl . '"><i class="angle double left chevron icon"></i></a>';
-            }
-            $paginationnext = "";
-            if ($batas_atas < $jmlhalaman) {
-                $batas_atas = $halaman + 2;
-                $paginationnext = '<a class="item" name="page" hal="' . $jmlhalaman . '" ret="go" tbl="' . $tbl . '"><i class="angle double right chevron icon"></i></a>';
-            }
-            //var_dump( $paginationnext );
-            if ($batas_atas > $jmlhalaman) {
-                $batas_atas = $jmlhalaman;
-            }
-            for ($i = $batas_bawah; $i <= $batas_atas; $i++) {
-                if ($i != $halaman) {
-                    $pagination .= '<a class="item" name="page" hal="' . $i . '" ret="go" tbl="' . $tbl . '">' . $i . '</a>';
-                } else {
-                    $pagination .= '<a class="active item" tbl="' . $tbl . '">' . $i . '</a>';
-                    $id_aktif = $i;
-                }
-            }
-            // panah preview
-            if ($halaman == 1) {
-                $pagination1 .= '<a class="disabled icon item"><i class="angle left icon"></i></a>';
-            } else {
-                $pagination1 .= '<a class="icon item" name="page" hal="' . $id_aktif . '" ret="prev" tbl="' . $tbl . '"><i class="angle left icon"></i></a>';
-            }
-            // panah next
-            if ($halaman == $jmlhalaman) {
-                $pagination2 .= '<a class="disabled icon item"><i class="angle right icon"></i></a>';
-            } else {
-                $pagination2 .= '<a class="icon item" name="page" hal="' . $id_aktif . '" ret="next" tbl="' . $tbl . '"><i class="angle right icon"></i></a>';
-            }
-            //var_dump( $pagination );
-            $rowData['tfoot'] = '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"><div class="ui center pagination menu">' . $pagination1 . $pagination . $paginationnext . $pagination2 . '</div></th></tr>';
-        } else {
-            $rowData['tfoot'] = str_replace("\r\n", "", '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"></th></tr>');
-        }
-        if (isset($rowData['tbody'])) {
-            $rowData['tbody'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tbody']);
-        }
-        // /if (property_exists($object, 'a_property'))
-        //cek data ada atau tidak
-        if (isset($rowData['tfoot'])) {
-            $rowData['tfoot'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tfoot']);
-        }
-
-        //$rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
-        return $rowData;
-    }
+    
     //============================
     //===========BUAT LIST========
     //============================
