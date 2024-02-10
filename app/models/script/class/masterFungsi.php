@@ -10,13 +10,9 @@ class MasterFungsi
 {
     public function tabel_pakai($tbl)
     {
-<<<<<<< HEAD
-        $tabel_pakai = 'wilayah_neo';
-        $jumlah_kolom = 10;
-=======
+
         $tabel_pakai = '';
         $jumlah_kolom = 11;
->>>>>>> 13149ab (revisi)
         switch ($tbl) {
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':
@@ -103,12 +99,7 @@ class MasterFungsi
                 break;
             default:
         }
-<<<<<<< HEAD
-        $dataku = array('tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom);
-        return $dataku;
-=======
         return ['tabel_pakai'=>$tabel_pakai,'jumlah_kolom'=>$jumlah_kolom];
->>>>>>> 13149ab (revisi)
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel

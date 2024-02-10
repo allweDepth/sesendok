@@ -129,10 +129,6 @@ class get_data
                     //tabel pakai
                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                     $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
-<<<<<<< HEAD
-                    
-=======
->>>>>>> 13149ab (revisi)
                     $kolom = '*';
                     $sukses = true;
                     $err = 0;
