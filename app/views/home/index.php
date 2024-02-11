@@ -246,7 +246,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing menu">
-                            <a class="active item" data-tab="tujuan_sasaran" tbl="">
+                            <a class="active item" data-tab="tujuan_sasaran" tbl="tujuan_sasaran_renstra">
                                 Tujuan dan Sasaran
                             </a>
                             <a class="item" data-tab="prog_keg_renstra">
@@ -321,6 +321,21 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                                 <div class="ui hidden divider"></div>
                                 <div class="ui hidden divider"></div>
+                                <table class="ui very basic table">
+                                    <thead>
+                                        <tr>
+                                            <th>KELOMPOK</th>
+                                            <th>URAIAN</th>
+                                            <th>KETERANGAN</th>
+                                            <th>AKSI</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
                         <div class="ui tab basic" data-tab="prog_keg_renstra">

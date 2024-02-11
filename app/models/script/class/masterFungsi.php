@@ -117,29 +117,29 @@ class MasterFungsi
                     </tr>');
                 break;
             case 'sumber_dana':
-                $rowData['thead'] = trim('<tr>
-                        <th>sumber dana</th>
-                        <th>kel</th>
-                        <th>jenis</th>
-                        <th>objek</th>
-                        <th>rincian objek</th>
-                        <th>sub rincian objek</th>
-                        <th>uraian</th>
-                        <th>keterangan</th>
+                // trim('<tr>
+                //         <th>sumber dana</th>
+                //         <th>kel</th>
+                //         <th>jenis</th>
+                //         <th>objek</th>
+                //         <th>rincian objek</th>
+                //         <th>sub rincian objek</th>
+                //         <th>uraian</th>
+                //         <th>keterangan</th>
+                //         <th>AKSI</th>
+                //     </tr>')
+                $rowData['thead'] = trim('<tr><th>KODE KOMPONEN</th>
+                <th>KOMPONEN</th>
+                <th>KETERANGAN</th>
                         <th>AKSI</th>
                     </tr>');
                 break;
             case 'aset':
             case 'akun_belanja':
                 $rowData['thead'] = trim('<tr>
-                        <th>Akun</th>
-                        <th>kel</th>
-                        <th>jenis</th>
-                        <th>objek</th>
-                        <th>rincian objek</th>
-                        <th>sub rincian objek</th>
-                        <th>uraian</th>
-                        <th>keterangan</th>
+                        <th>KODE KOMPONEN</th>
+                        <th>KOMPONEN</th>
+                        <th>KETERANGAN</th>
                         <th>AKSI</th>
                     </tr>');
                 break;
@@ -174,6 +174,25 @@ class MasterFungsi
             foreach ($get_data as $row) {
                 $myrow++;
                 switch ($tbl) {
+                    case 'tujuan_sasaran_renstra':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
+                                    <td klm="text">' . $divAwal . $row->text . $divAkhir . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'rekanan':
                         $buttons = '';
                         $divAwal = '';
@@ -316,18 +335,13 @@ class MasterFungsi
                                 <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
-                        $k = ((int)$row->kelompok > 0) ? $row->kelompok : '';
-                        $j = ((int)$row->jenis > 0) ? $row->jenis : '';
-                        $o = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
-                        $ro = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
-                        $sro = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
+                        // $k = ((int)$row->kelompok > 0) ? $row->kelompok : '';
+                        // $j = ((int)$row->jenis > 0) ? $row->jenis : '';
+                        // $o = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
+                        // $ro = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
+                        // $sro = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                        <td klm="sumber_dana">' . $divAwal . $row->sumber_dana . $divAkhir . '</td>
-                                        <td klm="kelompok">' . $divAwal . $k . $divAkhir . '</td>
-                                        <td klm="jenis">' . $divAwal . $j . $divAkhir . '</td>
-                                        <td klm="objek">' . $divAwal . $o  . $divAkhir . '</td>
-                                        <td klm="rincian_objek">' . $divAwal . $ro . $divAkhir . '</td>
-                                        <td klm="sub_rincian_objek">' . $divAwal . $sro . $divAkhir . '</td>
+                                        <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
                                         <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
                                         <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                         <td>' . $buttons . '</td>
@@ -345,19 +359,14 @@ class MasterFungsi
                                     <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                     <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
-                        $n = ((int)$row->kelompok > 0) ? $row->kelompok : '';
-                        $g = ((int)$row->jenis > 0) ? $row->jenis : '';
-                        $s = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
-                        $se = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
-                        $sr = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
+                        // $n = ((int)$row->kelompok > 0) ? $row->kelompok : '';
+                        // $g = ((int)$row->jenis > 0) ? $row->jenis : '';
+                        // $s = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
+                        // $se = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
+                        // $sr = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
 
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                            <td klm="akun">' . $divAwal . $row->akun . $divAkhir . '</td>
-                                            <td klm="kelompok">' . $divAwal . $n . $divAkhir . '</td>
-                                            <td klm="jenis">' . $divAwal . $g . $divAkhir . '</td>
-                                            <td klm="objek">' . $divAwal . $s . $divAkhir . '</td>
-                                            <td klm="rincian_objek">' . $divAwal . $se . $divAkhir . '</td>
-                                            <td klm="sub_rincian_objek">' . $divAwal . $sr . $divAkhir . '</td>
+                                            <td klm="sub_rincian_objek">' . $divAwal . $row->kode . $divAkhir . '</td>
                                             <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
                                             <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                             <td>' . $buttons . '</td>

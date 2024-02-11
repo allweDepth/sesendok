@@ -36,6 +36,7 @@ define('hasilServer', [
     48 => 'data telah ada dan telah diupdate',
     49 => 'data telah diproses kembali',
     50 => 'kode bisa digunakan',
+    55 => 'teleh melewati validasi',
     56 => 'belum ada dokumen pekerjaan yang aktif',
     70 => 'data belum lengkap',
     701 => 'File Tidak Lengkap',

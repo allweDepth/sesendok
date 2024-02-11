@@ -323,6 +323,8 @@ $(document).ready(function () {
 			case "hspk":
 			case "satuan":
 			case "rekanan":
+			case "tujuan_sasaran_renstra":
+			case "tujuan_sasaran":
 				jalankanAjax = true;
 				break;
 			case "xxxx":
@@ -514,7 +516,12 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
-								});;
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
 							break;
 						case 'sasaran_renstra':
 							kelompok = (tbl = 'tujuan_renstra') ? 'tujuan' : 'sasaran';
@@ -534,7 +541,12 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
-								});;
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
 							break;
 						case 'tujuan_sasaran_renstra':
 							dataHtmlku.konten =
@@ -547,14 +559,18 @@ $(document).ready(function () {
 										["sasaran", "Sasaran"]
 									],
 								}) +
-
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
-									atribut: 'name="uraian" rows="4" placeholder="uraian..."',
+									atribut: 'name="text" rows="4" placeholder="uraian..."',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
 								});
 							break;
 						case 'rekanan':
@@ -632,6 +648,11 @@ $(document).ready(function () {
 										atribut: `name="pelaksana[jabatan][1]" placeholder="Jabatan" non_data`,
 									}),
 									atribut: 'name="data_lain"',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
 								});
 							if (tbl === 'input') {
 								dataHtmlku.icon = "plus icon";
@@ -1143,6 +1164,7 @@ $(document).ready(function () {
 			headerFlyout.text(dataHtmlku.header);
 
 			formIni.html(htmlForm);
+
 			addRulesForm(formIni);
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
 			calendarDate.runCalendar();
@@ -1152,14 +1174,14 @@ $(document).ready(function () {
 			$('div[name="jml_header"]').dropdown("set selected", 1);
 			$(".ui.accordion").accordion();
 			formIni.find(".ui.dropdown.lainnya").dropdown();
-			$("[rms]").mathbiila();
 			switch (jenis) {
 				case 'add':
+				case 'edit':
 					switch (tbl) {
 						case 'tujuan_sasaran_renstra'://@audit
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
 							let dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
-							dropdownTujuanSasaran.onChange(jenis = "get_rows", tbl = "tujuan_renstra", true)
+							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true)
 							break;
 						default:
 							break;
@@ -1170,6 +1192,8 @@ $(document).ready(function () {
 				default:
 					break;
 			};
+			$("[rms]").mathbiila();
+
 		} else if (attrName === "get_data") {
 			switch (jenis) {
 				case "get_data":
@@ -1196,90 +1220,96 @@ $(document).ready(function () {
 		}
 		// addRulesForm(formIni);
 		//JALANKAN AJAX
-		if (jalankanAjax) {
-			loaderShow();
-			suksesAjax["ajaxku"] = function (result) {
-				if (result.success === true) {
-					let hasKey = result.hasOwnProperty("error");
-					if (hasKey) {
-						loaderHide();
-						hasKey = result.error.hasOwnProperty("message");
-						let error_code = result.error.code;
-						let kelasToast = "success";
-						let iconToast = "check circle icon";
+		delay(function () {
+			if (jalankanAjax) {
+				loaderShow();
+				suksesAjax["ajaxku"] = function (result) {
+					if (result.success === true) {
+						let hasKey = result.hasOwnProperty("error");
 						if (hasKey) {
-							switch (error_code) {
-								case 9:
-									kelasToast = "error";
-									iconToast = "exclamation triangle yellow icon";
-									break;
-								default:
-									break;
-							}
-							showToast(result.error.message, {
-								class: kelasToast,
-								icon: iconToast,
-							});
-						}
-						switch (attrName) {
-							case 'flyout':
-								switch (jenis) {
-									case 'edit':
-										switch (tbl) {
-											case "hspk":
-											case "ssh":
-											case "sbu":
-											case "asb":
-												let dropdownAset = result?.data?.aset;
-												let dropdownSatuan = result?.data?.satuan;
-												if (dropdownAset.length) {
-
-												}
-												break;
-											default:
-												break;
-										}
-										//isi form dengan data
-										let attrName = formIni.find('input[name],textarea[name]');
-										for (const iterator of attrName) {
-											// console.log(attrName);
-											let attrElm = $(iterator).attr('name');
-											if (attrElm === 'file') {
-												formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
-											} else {
-												formIni.form("set value", attrElm, result.data?.users[attrElm]);
-											}
-											// console.log(attrElm);
-										}
-										addRulesForm(formIni);
-										switch (tbl) {
-											case 'peraturan':
-												break;
-											default:
-												break;
-										}
+							loaderHide();
+							hasKey = result.error.hasOwnProperty("message");
+							let error_code = result.error.code;
+							let kelasToast = "success";
+							let iconToast = "check circle icon";
+							if (hasKey) {
+								switch (error_code) {
+									case 9:
+										kelasToast = "error";
+										iconToast = "exclamation triangle yellow icon";
 										break;
-
 									default:
 										break;
 								}
-								$(".ui.flyout").flyout("toggle");
-								break;
-							case 'value1':
+								showToast(result.error.message, {
+									class: kelasToast,
+									icon: iconToast,
+								});
+							}
 
-								break;
-							default:
+							switch (attrName) {
+								case 'flyout':
+									console.log(jenis);
+									switch (jenis) {
+										case 'edit':
+											switch (tbl) {
+												case "hspk":
+												case "ssh":
+												case "sbu":
+												case "asb":
+													let dropdownAset = result?.data?.aset;
+													let dropdownSatuan = result?.data?.satuan;
+													if (dropdownAset.length) {
 
-								break;
-						};
+													}
+													break;
+												default:
+													break;
+											}
+											//isi form dengan data
+											delay(function () {
+												let elmAttrName = formIni.find('input[name],textarea[name]');
+												for (const iterator of elmAttrName) {
+													// console.log(elmAttrName);
+													//@audit delay
+													let attrElm = $(iterator).attr('name');
+													if (attrElm === 'file') {
+														formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
+													} else {
+														// console.log('set form global');
+														formIni.form("set value", attrElm, result.data?.users[attrElm]);
+													}
 
-					} else {
-						loaderHide();
+													// console.log(attrElm);
+												}
+												addRulesForm(formIni);
+											}, 100);
+
+
+											break;
+
+										default:
+											break;
+									}
+									$(".ui.flyout").flyout("toggle");
+									break;
+								case 'value1':
+
+									break;
+								default:
+
+									break;
+							};
+
+						} else {
+							loaderHide();
+						}
 					}
-				}
-			};
-			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
-		}
+				};
+				runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
+			}
+		}, 500);
+
 		if (attrName === "flyout" && jalankanAjax === false) {
 			// $(".ui.flyout").flyout("toggle");
 		}
@@ -1789,7 +1819,7 @@ $(document).ready(function () {
 				onChange: function (value, text, $choice) {
 					let dataChoice = $($choice).find('span.description').text();
 					switch (jenis) {
-						case 'get_rows':
+						case 'getJsonRows':
 							switch (tbl) {
 								case 'tujuan_renstra'://tujuan sasaran renstra
 									if (value === 'tujuan') {
@@ -1832,7 +1862,7 @@ $(document).ready(function () {
 							MethodConstructor.tujuanRenstra(result);
 							var kelasToast = "success";
 							if (result.success === true) {
-								
+
 							} else {
 								kelasToast = "warning"; //'success'
 							}
@@ -1861,9 +1891,9 @@ $(document).ready(function () {
 		}
 		static tujuanRenstra(result = {}) {
 			if (result.success === true) {
-								
+
 			} else {
-				
+
 			}
 			let elm = $(`form[name="form_flyout"] .field:first-child`);
 			let dropdownInsert = buatElemenHtml("fieldDropdown", {
@@ -1876,13 +1906,18 @@ $(document).ready(function () {
 					["sasaran", "Sasaran"]
 				],
 			})
+			let formIni = $(`form[name="form_flyout"]`);
 			let elmTujuan = $(`form[name="form_flyout"]`).find('[name="tujuan"]');
-			console.log(elmTujuan.length);
+
 			if (elmTujuan.length <= 0) {
 				elm.after(dropdownInsert);
-				
+				addRulesForm(formIni);
+				elmTujuan = $(`form[name="form_flyout"]`).find('[name="tujuan"]');
+				elmTujuan.dropdown({
+					values: result?.results,
+				})
 			}
-			
+
 		}
 	}
 	//===================================

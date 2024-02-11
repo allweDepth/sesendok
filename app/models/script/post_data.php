@@ -89,15 +89,13 @@ class post_data
                                         'min_char' => 1
                                     ]);
                                 }
-                                $text = $validate->setRules('text', 'uraian', [
+                                $text = $validate->setRules('text', 'text', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 4
                                 ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
+                                    'sanitize' => 'string'
                                 ]);
                                 $disable = $validate->setRules('disable', 'disable', [
                                     'sanitize' => 'string',
@@ -153,9 +151,7 @@ class post_data
                                     'max_char' => 4
                                 ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
+                                    'sanitize' => 'string'
                                 ]);
                                 $disable = $validate->setRules('disable', 'disable', [
                                     'sanitize' => 'string',
@@ -594,7 +590,7 @@ class post_data
                 $kodePosting = '';
 
                 if ($validate->passed()) {
-
+                    $code = 55;
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                     //var_dump($rowTahunAktif);
                     if ($rowTahunAktif) {
@@ -643,14 +639,17 @@ class post_data
                     //start buat property
                     switch ($tbl) {
                         case 'tujuan_renstra':
-                            $id_tujuan = 0;
+                        case 'tujuan_sasaran_renstra':
                         case 'sasaran_renstra':
+                            if ($kelompok == 'tujuan') {
+                                $id_tujuan = 0;
+                            }
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                             if ($rowOrganisasi) {
                                 $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                 if ($tahun_renstra > 2000) {
                                     if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kelompok', '=', $kelompok, 'AND'], ['text', '=', $text, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     }
                                     $set = [
@@ -663,6 +662,7 @@ class post_data
                                         'disable' => $disable,
                                         'keterangan' => $keterangan,
                                         'tanggal' => date('Y-m-d H:i:s'),
+                                        'tgl_update' => date('Y-m-d H:i:s'),
                                         'username' => $_SESSION["user"]["username"]
                                     ];
                                 } else {
