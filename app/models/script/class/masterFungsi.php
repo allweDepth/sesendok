@@ -661,6 +661,14 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'prog_keg_renstra':
+                $tabel_pakai = 'renstra_skpd_neo';
+                $jumlah_kolom = 6;
+                break;
+            case 'renstra':
+                $tabel_pakai = 'renstra_skpd_neo';
+                $jumlah_kolom = 17;
+                break;
             case 'tujuan_renstra':
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':
@@ -747,7 +755,7 @@ class MasterFungsi
                 break;
             default:
         }
-        return ['tabel_pakai'=>$tabel_pakai,'jumlah_kolom'=>$jumlah_kolom];
+        return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
@@ -1509,7 +1517,7 @@ class MasterFungsi
         $hasil .= '</div></div>';
         return str_replace("\r\n", "", $hasil);
     }
-    
+
     //============================
     //===========BUAT LIST========
     //============================

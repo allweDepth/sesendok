@@ -12,9 +12,22 @@ $(document).ready(function () {
 		})
 		.sidebar("attach events", ".menu .item.nabiila")
 		.sidebar("setting", "transition", "push");
-
+	let handler = {
+		activate: function () {
+			if (!$(this).hasClass('dropdown browse')) {
+				$(this)
+					.addClass('active')
+					.closest('.ui.menu')
+					.find('.item')
+					.not($(this))
+					.removeClass('active')
+					;
+			}
+		}
+	}
+	$(".menu .item.inayah").on('click', handler.activate);
 	$(".ui.dropdown").dropdown();
-
+	
 	$(".menu .item").tab();
 	// fix main menu to page on passing
 	// $('.main.menu, .sticky.main').visibility({
@@ -317,11 +330,11 @@ $(document).ready(function () {
 				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
-				case "tab_renstra":
-					if (tbl) {
-						jalankanAjax = true;
-					}
-				
+			case "tab_renstra":
+				if (tbl) {
+					
+					jalankanAjax = true;
+				}
 				break;
 			case "aset":
 			case "keg":
@@ -341,7 +354,6 @@ $(document).ready(function () {
 			case "hspk":
 			case "satuan":
 			case "rekanan":
-			
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
 				jalankanAjax = true;
