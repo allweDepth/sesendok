@@ -41,7 +41,7 @@ class Impor_xlsx
         //$data['note'][] = 'row update';
         //$data['note'][] = 'add row';
         //$data['note'][] = 'gagal';
-        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         if ($rowUsername != false) {
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
@@ -90,7 +90,7 @@ class Impor_xlsx
                                 $sukses = true;
                                 $RowHeaderValidate = [];
 
-                                $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+                                $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
                                 $tahun = (int) $rowUsername->tahun;
                                 $kd_wilayah = $rowUsername->kd_wilayah;
                                 $kd_skpd = $rowUsername->kd_organisasi;

@@ -30,7 +30,7 @@ class Masuk
             //var_dump($password);
             //$password = $crypto->decrypt($password, $keyEncrypt);
             if ($validate->passed()) {
-                $data = $DB->getQuery('SELECT * FROM user_ahsp WHERE username = ? OR email = ?', [$username, $username])[0];
+                $data = $DB->getQuery('SELECT * FROM user_sesendok_biila WHERE username = ? OR email = ?', [$username, $username])[0];
                 //var_dump(sizeof((array)$data));
                 if (sizeof((array)$data) > 0 && $data->disable_login <= 0) { // ubah ke array sebelum menggunakan sizeof
                     $pesanError = '';
@@ -56,8 +56,8 @@ class Masuk
                         $id = $_SESSION["user"]["id"];
                         //var_dump($id);
                         $type_user = $_SESSION["user"]["type_user"];
-                        //$DB->update('user_ahsp', ['tgl_login'=>NOW()], ['id','=',$id]);
-                        $DB->runQuery('UPDATE `user_ahsp` SET tgl_login = NOW() WHERE id = ?', [$id]);
+                        //$DB->update('user_sesendok_biila', ['tgl_login'=>NOW()], ['id','=',$id]);
+                        $DB->runQuery('UPDATE `user_sesendok_biila` SET tgl_login = NOW() WHERE id = ?', [$id]);
                         if ($type_user == 'admin') {
                             $session = 1;
                         } else {

@@ -31,7 +31,7 @@ class post_data
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
         //ambil row user
-        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         if ($rowUsername != false) {
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
@@ -532,7 +532,7 @@ class post_data
                                     'min_char' => 6,
                                     'max_char' => 100,
                                     'regexp' => "/^[A-Za-z_]{6,}$/",
-                                    'uniqueArray' => ['user_ahsp', 'username', [['id', '!=', $id_user]]]
+                                    'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '!=', $id_user]]]
                                 ]);
                                 $email = $validate->setRules('email', 'email', [
                                     'sanitize' => 'string',
@@ -540,7 +540,7 @@ class post_data
                                     'min_char' => 6,
                                     'max_char' => 255,
                                     'email' => true,
-                                    'uniqueArray' => ['user_ahsp', 'email', [['id', '!=', $id_user]]]
+                                    'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_user]]]
                                 ]);
                                 $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
                                     'sanitize' => 'string',

@@ -89,7 +89,7 @@ $(document).ready(function () {
 			"SSH",
 			"Standar Harga Satuan",
 			'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
-		]
+		];
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			tab_rentra: ["clipboard list icon", "RENSTRA", "Rencana Startegi", ""],
@@ -254,9 +254,6 @@ $(document).ready(function () {
 			tab = tbl;
 			divTab = ini.closest('div[data-tab]');
 		}
-
-
-
 		if (tab in arrayDasboard) {
 			iconDashboard = arrayDasboard[tab][0];
 			headerDashboard = arrayDasboard[tab][1];
@@ -320,6 +317,12 @@ $(document).ready(function () {
 				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
+				case "tab_renstra":
+					if (tbl) {
+						jalankanAjax = true;
+					}
+				
+				break;
 			case "aset":
 			case "keg":
 			case "bidang_urusan":
@@ -338,6 +341,7 @@ $(document).ready(function () {
 			case "hspk":
 			case "satuan":
 			case "rekanan":
+			
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
 				jalankanAjax = true;
@@ -576,7 +580,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
-									atribut: 'name="text" rows="4" placeholder="uraian..."',
+									atribut: 'name="text" rows="4" placeholder="uraian..." autofocus',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
@@ -1308,8 +1312,10 @@ $(document).ready(function () {
 																		}
 																	}
 																}
+															} else {
+
 															}
-														}, 2000);
+														}, 500);
 														break;
 													} else {
 

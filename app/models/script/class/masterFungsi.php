@@ -18,7 +18,7 @@ class MasterFungsi
         $type_user = $_SESSION["user"]["type_user"];
         $id_user = $_SESSION["user"]["id"];
         $DB = DB::getInstance();
-        $userAktif = $DB->getWhereCustom('user_ahsp', [['id', '=', $id_user]]);
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
         $classRow = '';
         $Fungsi = new MasterFungsi();
@@ -738,7 +738,7 @@ class MasterFungsi
                 $tabel_pakai = 'sumber_dana_neo';
                 break;
             case 'user':
-                $tabel_pakai = 'user_ahsp';
+                $tabel_pakai = 'user_sesendok_biila';
                 break;
             case 'inbox':
             case 'outbox':
@@ -1048,16 +1048,16 @@ class MasterFungsi
                 //deskripsi jika jenis=outbox atau inbox
                 $id_tujuan = $value->id_tujuan;
                 //var_dump($value);
-                $userWithIdPengirim = $DB->getWhereOnce('user_ahsp', ['id', '=', $id_pengirim]);
+                $userWithIdPengirim = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_pengirim]);
                 switch ($type) {
                     case 'outbox':
                         if ($id_tujuan != 'all') {
-                            // $userWithId = $DB->getWhereOnce('user_ahsp', ['id', '=', $id_tujuan]);
-                            $userWithId = $DB->getWhereOnce('user_ahsp', ['id', '=', $id_pengirim]);
+                            // $userWithId = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_tujuan]);
+                            $userWithId = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_pengirim]);
                         }
                         break;
                     default:
-                        $userWithId = $DB->getWhereOnce('user_ahsp', ['id', '=', $id_pengirim]);
+                        $userWithId = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_pengirim]);
                         break;
                 };
                 if ($id_tujuan != 'all') {
@@ -1218,15 +1218,15 @@ class MasterFungsi
                 $id_pengirim = $value->id_pengirim;
                 $id_tujuan = $value->id_tujuan;
 
-                $userWithIdPengirim = $DB->getWhereOnce('user_ahsp', ['id', '=', $id_pengirim]);
+                $userWithIdPengirim = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_pengirim]);
                 switch ($jenis) {
                     case 'outbox':
                         if ($id_tujuan != 'all') {
-                            $userWithId = $DB->getWhereOnce('user_ahsp', ['id', '=', $id_tujuan]);
+                            $userWithId = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_tujuan]);
                         }
                         break;
                     default:
-                        $userWithId = $DB->getWhereOnce('user_ahsp', ['id', '=', $id_pengirim]);
+                        $userWithId = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_pengirim]);
                         break;
                 };
                 //deskripsi jika jenis=outbox atau inbox

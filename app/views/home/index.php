@@ -4,15 +4,9 @@ $user = new User();
 $user->cekUserSession();
 $type_user = $_SESSION["user"]["type_user"];
 $id_user = $_SESSION["user"]["id"];
-$warna_tbl = $_SESSION["user"]["warna_tbl"];
 $classRow = '';
 $invertedColor = '';
-
 $keyEnc = $_SESSION["user"]["key_encrypt"];
-if ($warna_tbl != '' && $warna_tbl != 'non') {
-    $classRow = ' class="' . $warna_tbl . '"';
-    $invertedColor = ' inverted';
-}
 ?>
 <!doctype html>
 <html>
@@ -242,17 +236,17 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
             <!-- ============== -->
             <!-- tab_renstra -->
             <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_renstra">
+            <div class="ui tab basic segment" data-tab="tab_renstra" tbl="">
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing menu">
-                            <a class="active item" data-tab="tujuan_sasaran" tbl="tujuan_sasaran_renstra">
+                            <a class="active item" data-tab="tab_renstra" tbl="tujuan_sasaran_renstra">
                                 Tujuan dan Sasaran
                             </a>
-                            <a class="item" data-tab="prog_keg_renstra">
+                            <a class="item" data-tab="tab_renstra" tbl="prog_keg_renstra">
                                 Program dan Kegiatan
                             </a>
-                            <a class="item" data-tab="rensta_tbl">
+                            <a class="item" data-tab="tab_renstra" tbl="renstra">
                                 Renstra
                             </a>
                         </div>
@@ -304,9 +298,6 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="ui tab basic active" data-tab="tujuan_sasaran">
                             <div class="ui fluid container">
                                 <div class="ui hidden divider"></div>
                                 <div class="ui right floated basic icon buttons">
@@ -338,35 +329,8 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                                 </table>
                             </div>
                         </div>
-                        <div class="ui tab basic" data-tab="prog_keg_renstra">
 
-                        </div>
-                        <div class="ui tab basic" data-tab="rensta_tbl">
-                            <table class="ui table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Name</th>
-                                        <th>Name</th>
-                                        <th>Name</th>
-                                        <th>Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td data-label="Name">James</td>
-                                        <td data-label="Name">James</td>
-                                        <td data-label="Name">James</td>
-                                        <td data-label="Name">James</td>
-                                        <td data-label="Name">James</td>
-                                    </tr>
-
-                                </tbody>
-                                <tfoot>
-
-                                </tfoot>
-                            </table>
-                        </div>
+                       
                     </div>
 
                 </div>

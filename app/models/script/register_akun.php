@@ -75,7 +75,7 @@ class Register
 		if (isset($_POST['register']) and isset($_POST['setuju'])) {
 			$username = $validate->setRules('username', 'Username', [
 				'sanitize' => 'string',
-				'uniqueArray' => ['user_ahsp', 'username', [['id', '>', 0]]],
+				'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '>', 0]]],
 				'required' => true,
 				'regexp' => '/^[A-Za-z0-9]+$/',
 				'min_char' => 8
@@ -105,7 +105,7 @@ class Register
 				'sanitize' => 'string',
 				'email' => true,
 				'required' => true,
-				'uniqueArray' => ['user_ahsp', 'email', [['id', '>', 0]]],
+				'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '>', 0]]],
 				'min_char' => 3
 			]);
 
@@ -145,7 +145,7 @@ class Register
 					'warna_tbl' => 'non',
 					'scrolling_table' => 'short'
 				];
-				$resul = $DB->insert('user_ahsp', $set);
+				$resul = $DB->insert('user_sesendok_biila', $set);
 				// jika query simpan berhasil, maka user sudah terdaftar
 				// maka alihkan ke halaman login
 				//periksa hasil query
@@ -163,7 +163,7 @@ class Register
 			}
 		} else if (isset($_POST['jenis'])) {
 			// $user = mysqli_real_escape_string($koneksi, $_POST['search']);
-			// $sql = "SELECT `username`, `email` FROM `user_ahsp` WHERE username = '$user' OR email = '$user'";
+			// $sql = "SELECT `username`, `email` FROM `user_sesendok_biila` WHERE username = '$user' OR email = '$user'";
 			// $result = mysqli_query($koneksi, $sql);'in_array' => ['upah', 'royalty', 'bahan', 'peralatan']
 			$klm = $validate->setRules('klm', 'Organisasi', [
 				'sanitize' => 'string',
@@ -176,7 +176,7 @@ class Register
 					$username = $validate->setRules('search', 'pencarian username', [
 						'sanitize' => 'string',
 						'required' => true,
-						'unique' => ['user_ahsp', 'username', ['id', '!=', 0]],
+						'unique' => ['user_sesendok_biila', 'username', ['id', '!=', 0]],
 						'min_char' => 8
 					]);
 					break;
@@ -184,7 +184,7 @@ class Register
 					$email = $validate->setRules('search', 'pencarian email', [
 						'sanitize' => 'string',
 						'email' => true,
-						'unique' => ['user_ahsp', 'email', ['id', '!=', 0]]
+						'unique' => ['user_sesendok_biila', 'email', ['id', '!=', 0]]
 					]);
 					break;
 				default:

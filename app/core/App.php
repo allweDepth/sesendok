@@ -14,14 +14,18 @@ class App
 
         //controller
         if ($url && file_exists('../app/controllers/' . $url[0] . '.php')) {
-
             session_start();
-            if (isset($_SESSION["user"]) && $_SESSION["user"]['disable_login'] <=0 ) {
-                if ($url[0] == 'login' || $url[0] == 'register'){
-                    $url[0] = 'home';
+            //var_dump($_SESSION["user"]);
+            if (isset($_SESSION["user"]) ) {
+                if ($_SESSION["user"]['disable_login'] <=0) {
+                    if ($url[0] == 'login' || $url[0] == 'register'){
+                        $url[0] = 'home';
+                    }
+                    $this->controller = $url[0];
                 }
-                $this->controller = $url[0];
+                
             } else {
+                $url[0] == 'login';
                 $this->controller = $url[0];
             }
 

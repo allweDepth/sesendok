@@ -13,7 +13,7 @@ class Edit_cell
        
         $DB = DB::getInstance();
         $Fungsi = new MasterFungsi();
-        //$data_user = $DB->getQuery( 'SELECT * FROM user_ahsp WHERE id = ?', [ $id_user ] );
+        //$data_user = $DB->getQuery( 'SELECT * FROM user_sesendok_biila WHERE id = ?', [ $id_user ] );
         $tahun = $_SESSION["user"]["thn_aktif_anggaran"];
         $kd_proyek = '';
         $type_user = $_SESSION["user"]["type_user"];
@@ -178,13 +178,13 @@ class Edit_cell
                             $tabel_pakai = 'laporan_harian';
                             break;
                         case 'profil':
-                            $tabel_pakai =  'user_ahsp';
+                            $tabel_pakai =  'user_sesendok_biila';
                             break;
                         default:
                     }
                     $sukses = true;
                     $code = 1;
-                    $data_kd_proyek = $DB->getWhere('user_ahsp', ['id', '=', $id_user]);
+                    $data_kd_proyek = $DB->getWhere('user_sesendok_biila', ['id', '=', $id_user]);
                     $kd_proyek = $data_kd_proyek[0]->kd_proyek_aktif;
                     $caraUpdate = '';
                     //var_dump('resul'.$resul);

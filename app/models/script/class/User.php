@@ -12,7 +12,7 @@ class User
             'required' => true,
             'min_char' => 4,
             'regexp' => '/^[A-Za-z0-9]+$/',
-            'unique' => ['user_ahsp', 'username'],
+            'unique' => ['user_sesendok_biila', 'username'],
         ]);
         $this->_formItem['password'] = $validate->setRules('password', 'Password', [
             'sanitize' => 'string',
@@ -49,7 +49,7 @@ class User
             'password' => password_hash($this->getItem('password'), PASSWORD_DEFAULT),
             'email' => $this->getItem('email')
         ];
-        return $this->_db->insert('user_ahsp', $newUser);
+        return $this->_db->insert('user_sesendok_biila', $newUser);
     }
     public
     function validasiLogin($formMethod)
@@ -68,7 +68,7 @@ class User
         } else {
             $this->_db = DB::getInstance();
             $this->_db->select('password');
-            $result = $this->_db->getWhereOnce('user_ahsp', [
+            $result = $this->_db->getWhereOnce('user_sesendok_biila', [
                 'username', '=',
                 $this->_formItem['username']
             ]);
@@ -124,7 +124,7 @@ class User
     function generate($username)
     {
         $this->_db = DB::getInstance();
-        $result = $this->_db->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        $result = $this->_db->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         foreach ($result as $key => $val) {
             $this->_formItem[$key] = $val;
         }
@@ -153,7 +153,7 @@ class User
         } else {
             $this->_db = DB::getInstance();
             $this->_db->select('password');
-            $result = $this->_db->getWhereOnce('user_ahsp', [
+            $result = $this->_db->getWhereOnce('user_sesendok_biila', [
                 'username', '=',
                 $this->_formItem['username']
             ]);
@@ -175,7 +175,7 @@ class User
                 PASSWORD_DEFAULT
             )
         ];
-        $this->_db->update('user_ahsp', $newUserPassword, [
+        $this->_db->update('user_sesendok_biila', $newUserPassword, [
             'username', '=',
             $this->_formItem['username']
         ]);

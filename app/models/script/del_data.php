@@ -22,7 +22,7 @@ class del_data
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
-        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         if ($rowUsername != false) {
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
@@ -129,7 +129,7 @@ class del_data
                             $tabel_pakai = 'sumber_dana_neo';
                             break;
                         case 'user':
-                            $tabel_pakai = 'user_ahsp';
+                            $tabel_pakai = 'user_sesendok_biila';
                             break;
                         case 'inbox':
                         case 'outbox':

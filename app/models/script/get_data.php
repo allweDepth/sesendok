@@ -24,7 +24,7 @@ class get_data
         $data = array();
         $dataJson = array();
         //ambil row user
-        $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+        $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         if ($rowUsername != false) {
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
