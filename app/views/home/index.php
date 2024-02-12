@@ -604,13 +604,13 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing menu">
-                            <a class="item" data-tab="pengaturan" tbl="pengaturan">
+                            <a class="item inayah" data-tab="pengaturan" tbl="pengaturan">
                                 Tahun Anggaran
                             </a>
-                            <a class="item" data-tab="atur" tbl="organisasi">
+                            <a class="item inayah" data-tab="atur" tbl="organisasi">
                                 SKPD
                             </a>
-                            <a class="item" data-tab="atur" tbl="users">
+                            <a class="item inayah" data-tab="atur" tbl="users">
                                 Users
                             </a>
                         </div>

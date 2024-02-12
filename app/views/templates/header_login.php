@@ -27,7 +27,7 @@
     <link rel="stylesheet" type="text/css" href="<?= BASEURL; ?>/vendor/node_modules/fomantic-ui/dist/components/icon.css">
     <link rel="stylesheet" type="text/css" href="<?= BASEURL; ?>/vendor/node_modules/fomantic-ui/dist/components/sidebar.css">
     <link rel="stylesheet" type="text/css" href="<?= BASEURL; ?>/vendor/node_modules/fomantic-ui/dist/components/transition.css">
-
+    <link rel="shortcut icon" href="<?= BASEURL; ?>/public/img/logo.png">
     <style type="text/css">
         .hidden.menu {
             display: none;

@@ -83,7 +83,7 @@ class post_data
                                     'min_char' => 4
                                 ]);
                                 if ($kelompok == 'sasaran') {
-                                    $id_tujuan = $validate->setRules('tujuan', 'tujuan', [
+                                    $id_tujuan = $validate->setRules('id_tujuan', 'tujuan', [
                                         'numeric' => true,
                                         'required' => true,
                                         'min_char' => 1
