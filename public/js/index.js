@@ -581,8 +581,7 @@ $(document).ready(function () {
 							break;
 						case 'tujuan_sasaran_renstra':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {//@audit renstra
-									label: "Kelompok",
+								buatElemenHtml("fieldDropdown", {
 									atribut: 'name="kelompok"',
 									kelas: "tujuan_sasaran selection",
 									dataArray: [
@@ -606,22 +605,20 @@ $(document).ready(function () {
 							break;
 						case 'prog_keg_renstra':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {//@audit renstra
+								buatElemenHtml("fieldDropdown", {
 									label: "Sasaran",
 									atribut: 'name="sasaran"',
-									kelas: "sasaran_renstra selection",
+									kelas: "search clearable sasaran_renstra selection",
 									dataArray: [
-										["tujuan", "Tujuan"],
-										["sasaran", "Sasaran"]
+										["", ""]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {//@audit renstra
+								buatElemenHtml("fieldDropdown", {
 									label: "Sub Kegiatan",
 									atribut: 'name="kode" placeholder="pilih sub kegiatan..."',
-									kelas: "kode_renstra selection",
+									kelas: "search clearable kode selection",
 									dataArray: [
-										["tujuan", "Tujuan"],
-										["sasaran", "Sasaran"]
+										["", ""]
 									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
@@ -631,7 +628,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {//@audit renstra
 									label: "Satuan",
 									atribut: 'name="satuan" placeholder="pilih satuan..."',
-									kelas: "satuan selection",
+									kelas: "search clearable satuan selection",
 									dataArray: [
 										["paket", "Paket"],
 										["m", "m"]
@@ -680,17 +677,17 @@ $(document).ready(function () {
 									],
 								}) +
 								buatElemenHtml("fieldText", {
-									typeText : 'number',
+									typeText: 'number',
 									label: "Data Capaian Awal",
 									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
-									typeText : 'number',
+									typeText: 'number',
 									label: "Target tahun 1",
 									atribut: 'name="target_thn_1" placeholder="target I..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
-									typeText : 'number',
+									typeText: 'number',
 									label: "Dana tahun 1",
 									atribut: 'name="dana_thn_1" placeholder="Dana I..." non_data',
 								}) +
@@ -1309,10 +1306,19 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
-						case 'tujuan_sasaran_renstra'://@audit
+						case 'tujuan_sasaran_renstra':
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
 							let dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
 							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true)
+							break;
+						case 'prog_keg_renstra'://@audit renstra
+							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
+							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.sasaran_renstra.selection')
+							dropdownTujuan.returnList("get_row_json","sasaran_renstra");
+							let dropdownSubKeg = new DropdownConstructor('.ui.dropdown.kode.selection')
+							dropdownSubKeg.returnList("get_row_json", "sub_keg");
+							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.selection')
+							dropdownSatuan.returnList("get_row_json", "satuan");
 							break;
 						default:
 							break;
@@ -1897,13 +1903,13 @@ $(document).ready(function () {
 			this.methodConstructor = new MethodConstructor();
 		}
 		returnList(jenis = "list_dropdown", tbl = "satuan") {
-			get = this.element.dropdown("get query");
+			let get = this.element.dropdown("get query");
 			this.element.dropdown({
 				apiSettings: {
 					// this url just returns a list of tags (with API response expected above)
 					method: "POST",
 					url: "script/get_data",
-					//throttle: 500,
+					throttle: 500,
 					//throttle: 1000,//delay perintah
 					// passed via POST
 					data: {
@@ -1918,11 +1924,10 @@ $(document).ready(function () {
 					}, fields: {
 						results: "results",
 					},
-					filterRemoteData: true,
+					// filterRemoteData: true,
 				},
-
-				filterRemoteData: true,
-				saveRemoteData: false,
+				// filterRemoteData: true,
+				// saveRemoteData: false,
 			});
 		}
 		setSelected(val) {

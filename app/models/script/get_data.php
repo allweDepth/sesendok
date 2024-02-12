@@ -181,6 +181,9 @@ class get_data
                             $where_row = "id = ?";
                             $data_where_row =  [$id_row];
                             break;
+                            case 'get_row_json': //ambil semua rows untuk dropdown
+                                $kodePosting = 'get_row_json';
+                                break;
                         case 'getJsonRows': //ambil semua rows untuk dropdown
                             $kodePosting = 'getAllValJson';
                             break;
@@ -402,6 +405,7 @@ class get_data
                             $jumlah_kolom = 11;
                             break;
                         case 'sub_keg':
+                            // $kondisi = [['kode', '=', $kd_wilayah], ['nomenklatur_urusan', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND']];
                             $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY kode ASC";
