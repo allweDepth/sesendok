@@ -27,7 +27,7 @@ $(document).ready(function () {
 	}
 	$(".menu .item.inayah").on('click', handler.activate);
 	$(".ui.dropdown").dropdown();
-	
+
 	$(".menu .item").tab();
 	// fix main menu to page on passing
 	// $('.main.menu, .sticky.main').visibility({
@@ -332,8 +332,8 @@ $(document).ready(function () {
 				break;
 			case "tab_renstra":
 				if (tbl) {
-					
 					jalankanAjax = true;
+					divTab.find('button[jns]').attr('tbl', tbl)
 				}
 				break;
 			case "aset":
@@ -593,6 +593,106 @@ $(document).ready(function () {
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="text" rows="4" placeholder="uraian..." autofocus',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							break;
+						case 'prog_keg_renstra':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldDropdown", {//@audit renstra
+									label: "Sasaran",
+									atribut: 'name="sasaran"',
+									kelas: "sasaran_renstra selection",
+									dataArray: [
+										["tujuan", "Tujuan"],
+										["sasaran", "Sasaran"]
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {//@audit renstra
+									label: "Sub Kegiatan",
+									atribut: 'name="kode" placeholder="pilih sub kegiatan..."',
+									kelas: "kode_renstra selection",
+									dataArray: [
+										["tujuan", "Tujuan"],
+										["sasaran", "Sasaran"]
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Indikator",
+									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+								}) +
+								buatElemenHtml("fieldDropdown", {//@audit renstra
+									label: "Satuan",
+									atribut: 'name="satuan" placeholder="pilih satuan..."',
+									kelas: "satuan selection",
+									dataArray: [
+										["paket", "Paket"],
+										["m", "m"]
+									],
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Data Capaian Awal",
+									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Lokasi",
+									atribut: 'name="lokasi" placeholder="lokasi..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							break;
+						case 'renstra':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldDropdown", {
+									label: "Sub Kegiatan",
+									atribut: 'name="kode" placeholder="pilih sub kegiatan..."',
+									kelas: "kode_renstra selection",
+									dataArray: [
+										["tujuan", "Tujuan"],
+										["sasaran", "Sasaran"]
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Indikator",
+									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Satuan",
+									atribut: 'name="satuan" placeholder="pilih satuan..."',
+									kelas: "satuan selection",
+									dataArray: [
+										["paket", "Paket"],
+										["m", "m"]
+									],
+								}) +
+								buatElemenHtml("fieldText", {
+									typeText : 'number',
+									label: "Data Capaian Awal",
+									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									typeText : 'number',
+									label: "Target tahun 1",
+									atribut: 'name="target_thn_1" placeholder="target I..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									typeText : 'number',
+									label: "Dana tahun 1",
+									atribut: 'name="dana_thn_1" placeholder="Dana I..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
@@ -2733,13 +2833,13 @@ $(document).ready(function () {
 				elemen = `<div class="field" ${atributField}><label>${labelData}</label> ${elemen1Data}</div>`;
 				break;
 			case "fieldText":
-				elemen = `<div class="field" ${atributField}><label> ${labelData} </label><div class="ui ${kelasData} input"><input ${placeholderData}  ${typeText} ${atributData} ></div></div>`;
+				elemen = `<div class="field" ${atributField}><label> ${labelData} </label><div class="ui ${kelasData} input"><input ${placeholderData}  type="${typeText}" ${atributData} ></div></div>`;
 				break;
 			case "multiFieldTextAction":
 				let inputElm = '';
 				for (let x in dataArray) {
 					let rowsData = dataArray[x];
-					inputElm += `<input type="text" ${rowsData}>`;
+					inputElm += `<input type="${typeText}" ${rowsData}>`;
 				}
 				elemen =
 					`<div class="field" ${atributField}><label>
@@ -2750,18 +2850,18 @@ $(document).ready(function () {
 				break;
 			case "fieldTextAction":
 				elemen =
-					`<div class="field" ${atributField}><label>${labelData}</label><div class="ui action input"><input type="text" ${atributData}><button class="ui teal button"  ${atributLabel}>" ${txtLabelData}</button></div></div>`;
+					`<div class="field" ${atributField}><label>${labelData}</label><div class="ui action input"><input type="${typeText}" ${atributData}><button class="ui teal button"  ${atributLabel}>" ${txtLabelData}</button></div></div>`;
 				break;
 			case "fieldTextLabelKanan":
 				elemen =
-					`<div class="field" ${atributField}><label>${labelData}</label><div class="ui fluid right labeled input"><input type="text" ${placeholderData} ${atributData}><div class="ui basic label" ${atributLabel}>" ${txtLabelData}</div></div></div>`;
+					`<div class="field" ${atributField}><label>${labelData}</label><div class="ui fluid right labeled input"><input type="${typeText}" ${placeholderData} ${atributData}><div class="ui basic label" ${atributLabel}>" ${txtLabelData}</div></div></div>`;
 				break;
 			case "fieldTextIcon":
-				elemen = `<div class="field" ${atributField}><label>${labelData}</label><div class="ui fluid ${posisi} icon input"><input type="text" ${atributData}><i class="${icon} icon"></i></div></div>`;
+				elemen = `<div class="field" ${atributField}><label>${labelData}</label><div class="ui fluid ${posisi} icon input"><input type="${typeText}" ${atributData}><i class="${icon} icon"></i></div></div>`;
 				break;
 			case "textIcon":
 				elemen =
-					'<div class="ui icon fluid input"><input type="text" ' +
+					`<div class="ui icon fluid input"><input type="${typeText}" ` +
 					placeholderData +
 					" " +
 					atributData +
