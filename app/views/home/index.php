@@ -316,7 +316,7 @@ if ($warna_tbl != '' && $warna_tbl != 'non') {
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
                                     }
                                     ?>
-                                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+                                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
                                 </div>
                                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                                 <div class="ui hidden divider"></div>

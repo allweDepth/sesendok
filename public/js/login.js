@@ -119,8 +119,9 @@ $(document).ready(function () {
                 },
                 error: function (jqXHR, status, err) {
                     //loaderHide();
-                    console.log(jqXHR);
-                    modal_notif('<i class="info icon"></i>' + status, jqXHR);
+                    // console.log(jqXHR);
+                    // console.log(status);
+                    // modal_notif('<i class="info icon"></i>' + status, jqXHR);
                 }
             });
             (async () => {

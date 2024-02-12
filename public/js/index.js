@@ -81,8 +81,15 @@ $(document).ready(function () {
 	//=====================
 	//======DATA TAB=======@audit-ok data tab
 	//=====================
+
 	$("body").on("click", 'a[data-tab], a[name="page"]', function (e) {
 		e.preventDefault();
+		let harga_ssh_asb = [
+			"clipboard list icon",
+			"SSH",
+			"Standar Harga Satuan",
+			'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
+		]
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			tab_rentra: ["clipboard list icon", "RENSTRA", "Rencana Startegi", ""],
@@ -91,6 +98,12 @@ $(document).ready(function () {
 				"RENJA",
 				"Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
 				"",
+			],
+			tujuan_sasaran_renstra: [
+				"clipboard list icon",
+				"Tujuan Sasaran Renstra",
+				"Klasifikasi dan kodefikasi",
+				"Klasifikasi dan kodefikasi program disusun berdasarkan pembagian sub urusan dan kegiatan disusun berdasarkan pembagian kewenangan yang diatur dalam Lampiran Undang-Undang Nomor 23 Tahun 2014.Hal ini dilakukan untuk memastikan ruang lingkup penyelenggaraan pemerintahan daerah dilakukan sesuai dengan keenangannya, sehingga mendukung pelaksanaan asas prinsip akuntabilitas, efisiensi, eksternalitas serta kepentingan strategis nasional",
 			],
 			tab_dpa: [
 				"clipboard list icon",
@@ -192,7 +205,7 @@ $(document).ready(function () {
 				"Standar Harga Satuan",
 				'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
 			],
-
+			ssh: harga_ssh_asb, asb: harga_ssh_asb, sbu: harga_ssh_asb, hspk: harga_ssh_asb,
 			tab_reset: [
 				"red table icon",
 				"Reset Tabel",
@@ -221,7 +234,12 @@ $(document).ready(function () {
 		let tbl = ini.attr("tbl");
 		$(`#cari_data`).attr("tbl", tbl).attr("dt-tab", tab);
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
+		let iconDashboard = "home icon";
+		let headerDashboard = ini.text();
+		let pDashboard = "seSendok";
+		let cryptos = false;
 		if (ini.attr('name') === 'page') {
+			headerDashboard = ini.text();
 			halaman = ini.attr("hal");
 			let ret = ini.attr("ret");
 			//tab = ini.attr("dt-tab");
@@ -237,10 +255,7 @@ $(document).ready(function () {
 			divTab = ini.closest('div[data-tab]');
 		}
 
-		let iconDashboard = "home icon";
-		let headerDashboard = ini.text();
-		let pDashboard = "seSendok";
-		let cryptos = false;
+
 
 		if (tab in arrayDasboard) {
 			iconDashboard = arrayDasboard[tab][0];
@@ -1263,31 +1278,55 @@ $(document).ready(function () {
 
 													}
 													break;
+												case 'tujuan_sasaran_renstra':
+
+													break;
 												default:
 													break;
 											}
-											//isi form dengan data
-											delay(function () {
-												let elmAttrName = formIni.find('input[name],textarea[name]');
-												for (const iterator of elmAttrName) {
-													// console.log(elmAttrName);
-													//@audit delay
-													let attrElm = $(iterator).attr('name');
-													if (attrElm === 'file') {
-														formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
+											// set nilai form 
+											let elmAttrName = formIni.find('input[name],textarea[name]');
+											switch (tbl) {
+												case 'tujuan_sasaran_renstra':
+													if (result.data?.users['kelompok'] === 'sasaran') {
+														formIni.form("set value", 'kelompok', result.data?.users['kelompok']);
+														delay(function () {
+															let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
+															if (elmTujuan.length > 0) {
+																for (const iterator of elmAttrName) {
+																	// console.log(elmAttrName);
+																	//@audit delay
+																	let attrElm = $(iterator).attr('name');
+																	if (attrElm === 'file') {
+																		formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
+																	} else {
+																		if (attrElm !== 'kelompok') {
+																			formIni.form("set value", attrElm, result.data?.users[attrElm]);
+																		}
+																		if (attrElm !== 'id_tujuan') {
+																			formIni.form("set value", 'id_tujuan', result.data?.users['id_tujuan']);
+																		}
+																	}
+																}
+															}
+														}, 2000);
+														break;
 													} else {
-														// console.log('set form global');
-														formIni.form("set value", attrElm, result.data?.users[attrElm]);
+
 													}
-
-													// console.log(attrElm);
-												}
-												addRulesForm(formIni);
-											}, 100);
-
-
+												default://isi form dengan data
+													for (const iterator of elmAttrName) {
+														let attrElm = $(iterator).attr('name');
+														if (attrElm === 'file') {
+															formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
+														} else {
+															formIni.form("set value", attrElm, result.data?.users[attrElm]);
+														}
+													}
+													break;
+											}
+											addRulesForm(formIni);
 											break;
-
 										default:
 											break;
 									}
@@ -1899,7 +1938,7 @@ $(document).ready(function () {
 			let dropdownInsert = buatElemenHtml("fieldDropdown", {
 				label: "Tujuan",
 				atributField: "",
-				atribut: 'name="tujuan"',
+				atribut: 'name="id_tujuan"',
 				kelas: "search clearable selection",
 				dataArray: [
 					["tujuan", "Tujuan"],
@@ -1907,12 +1946,12 @@ $(document).ready(function () {
 				],
 			})
 			let formIni = $(`form[name="form_flyout"]`);
-			let elmTujuan = $(`form[name="form_flyout"]`).find('[name="tujuan"]');
+			let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
 
 			if (elmTujuan.length <= 0) {
 				elm.after(dropdownInsert);
 				addRulesForm(formIni);
-				elmTujuan = $(`form[name="form_flyout"]`).find('[name="tujuan"]');
+				elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
 				elmTujuan.dropdown({
 					values: result?.results,
 				})

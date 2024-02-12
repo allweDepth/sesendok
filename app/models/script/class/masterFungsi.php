@@ -44,6 +44,14 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'tujuan_sasaran_renstra':
+                $rowData['thead'] = trim('<tr>
+                            <th>KELOMPOK</th>
+                            <th>URAIAN</th>
+                            <th>KETERANGAN</th>
+                            <th class="collapsing">AKSI</th>
+                        </tr>');
+                break;
             case 'rekanan':
                 $rowData['thead'] = '<tr class="center aligned">
                 <th rowspan="2">URAIAN</th>
@@ -62,25 +70,25 @@ class MasterFungsi
             case 'ssh':
                 //Kode Komponen	Uraian Komponen	Spesifikasi	Satuan	Harga Satuan	TKDN	Aksi
                 $rowData['thead'] = trim('<tr>
-                                <th>Kode Komponen</th>
+                                <th class="collapsing">Kode Komponen</th>
                                 <th>Uraian Komponen</th>
                                 <th>Spesifikasi</th>
                                 <th>Satuan</th>
                                 <th>Harga Satuan</th>
                                 <th>TKDN</th>
-                                <th>AKSI</th>
+                                <th class="collapsing">AKSI</th>
                             </tr>');
                 break;
             case 'wilayah':
                 $rowData['thead'] = trim('<tr class="center aligned">
-                            <th rowspan="2">Kode</th>
+                            <th rowspan="2" class="collapsing">Kode</th>
                             <th rowspan="2">Uraian</th>
                             <th rowspan="2">Status</th>
                             <th colspan="3">Jumlah</th>
                             <th rowspan="2">Luas Wilayah (km2)</th>
                             <th rowspan="2">Jumlah Penduduk (jiwa)</th>
                             <th rowspan="2">keterangan</th>
-                            <th rowspan="2">AKSI</th>
+                            <th rowspan="2" class="collapsing">AKSI</th>
                         </tr>
                         <tr class="center aligned">
                             <th>KEC</th>
@@ -94,26 +102,26 @@ class MasterFungsi
                             <th>ITEM</th>
                             <th>SEBUTAN LAIN</th>
                             <th>KETERANGAN</th>
-                            <th>AKSI</th>
+                            <th class="collapsing">AKSI</th>
                         </tr>');
                 break;
             case 'organisasi':
                 $rowData['thead'] = trim('<tr>
-                            <th>Kode</th>
+                            <th class="collapsing">Kode</th>
                             <th>Uraian</th>
                             <th>keterangan</th>
-                            <th>AKSI</th>
+                            <th class="collapsing">AKSI</th>
                         </tr>');
                 break;
             case 'mapping':
                 $rowData['thead'] = trim('<tr>
-                        <th>Kode Neraca</th>
+                        <th class="collapsing">Kode Neraca</th>
                         <th>Uraian Neraca</th>
                         <th>Kode Akun</th>
                         <th>Uraian Akun</th>
                         <th>kelompok</th>
                         <th>keterangan</th>
-                        <th>AKSI</th>
+                        <th class="collapsing">AKSI</th>
                     </tr>');
                 break;
             case 'sumber_dana':
@@ -128,19 +136,19 @@ class MasterFungsi
                 //         <th>keterangan</th>
                 //         <th>AKSI</th>
                 //     </tr>')
-                $rowData['thead'] = trim('<tr><th>KODE KOMPONEN</th>
+                $rowData['thead'] = trim('<tr><th class="collapsing">KODE KOMPONEN</th>
                 <th>KOMPONEN</th>
                 <th>KETERANGAN</th>
-                        <th>AKSI</th>
+                        <th class="collapsing">AKSI</th>
                     </tr>');
                 break;
             case 'aset':
             case 'akun_belanja':
                 $rowData['thead'] = trim('<tr>
-                        <th>KODE KOMPONEN</th>
+                        <th class="collapsing">KODE KOMPONEN</th>
                         <th>KOMPONEN</th>
                         <th>KETERANGAN</th>
-                        <th>AKSI</th>
+                        <th class="collapsing">AKSI</th>
                     </tr>');
                 break;
             case 'bidang_urusan':
@@ -148,13 +156,13 @@ class MasterFungsi
             case 'keg':
             case 'sub_keg':
                 $rowData['thead'] = trim('<tr>
-                <th>KODE KOMPONEN</th>
+                <th class="collapsing">KODE KOMPONEN</th>
                 <th>NOMENKLATUR URUSAN</th>
                 <th>KINERJA</th>
                 <th>INDIKATOR</th>
                 <th>SATUAN</th>
                 <th>KETERANGAN</th>
-                <th>AKSI</th>
+                <th class="collapsing">AKSI</th>
             </tr>');
                 break;
 
@@ -657,7 +665,7 @@ class MasterFungsi
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':
                 $tabel_pakai = 'tujuan_sasaran_renstra_neo';
-                $jumlah_kolom = 11;
+                $jumlah_kolom = 4;
                 break;
             case 'rekanan':
                 $tabel_pakai = 'rekanan_neo';

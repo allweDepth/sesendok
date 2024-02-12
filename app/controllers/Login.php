@@ -4,7 +4,6 @@ class Login extends Controller
     public function index()
     {
         if (KEY_ENCRYPT) {
-                
             //var_dump($_SESSION);
             $_SESSION["key_encrypt"] = KEY_ENCRYPT;
             // var_dump($_SESSION);
@@ -26,7 +25,6 @@ class Login extends Controller
     public function masuk()
     { 
         $data = $this->script("masuk")->masuk();
-        //var_dump($data);
         echo $data;
     }
 }
