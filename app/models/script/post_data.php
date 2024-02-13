@@ -110,7 +110,7 @@ class post_data
                                 break;
                         }
                         break;
-                    case 'prog_keg_renstra':
+                    case 'renstra':
                         switch ($jenis) {
                             case 'edit':
                                 $id_row = $validate->setRules('id_row', 'id', [
@@ -767,7 +767,6 @@ class post_data
 
                             break;
                         case 'renstra':
-                        case 'prog_keg_renstra':
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                             if ($rowOrganisasi) {
                                 $tahun_renstra = $rowOrganisasi->tahun_renstra;

@@ -603,7 +603,7 @@ $(document).ready(function () {
 									txtLabel: "Non Aktif",
 								});
 							break;
-						case 'prog_keg_renstra':
+						case 'renstra':
 							dataHtmlku.konten =
 								buatElemenHtml("fieldDropdown", {
 									label: "Sasaran",
@@ -625,7 +625,7 @@ $(document).ready(function () {
 									label: "Indikator",
 									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
 								}) +
-								buatElemenHtml("fieldDropdown", {//@audit renstra
+								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan" placeholder="pilih satuan..."',
 									kelas: "search clearable satuan selection",
@@ -682,55 +682,6 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Lokasi",
 									atribut: 'name="lokasi" placeholder="lokasi..." non_data',
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Keterangan",
-									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
-								}) +
-								buatElemenHtml("fielToggleCheckbox", {
-									label: "",
-									atribut: 'name="disable" non_data',
-									txtLabel: "Non Aktif",
-								});
-							break;
-						case 'renstra':
-							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {
-									label: "Sub Kegiatan",
-									atribut: 'name="kode" placeholder="pilih sub kegiatan..."',
-									kelas: "kode_renstra selection",
-									dataArray: [
-										["tujuan", "Tujuan"],
-										["sasaran", "Sasaran"]
-									],
-								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Indikator",
-									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
-								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Satuan",
-									atribut: 'name="satuan" placeholder="pilih satuan..."',
-									kelas: "satuan selection",
-									dataArray: [
-										["paket", "Paket"],
-										["m", "m"]
-									],
-								}) +
-								buatElemenHtml("fieldText", {
-									typeText: 'number',
-									label: "Data Capaian Awal",
-									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data',
-								}) +
-								buatElemenHtml("fieldText", {
-									typeText: 'number',
-									label: "Target tahun 1",
-									atribut: 'name="target_thn_1" placeholder="target tahun I..." non_data',
-								}) +
-								buatElemenHtml("fieldText", {
-									typeText: 'number',
-									label: "Dana tahun 1",
-									atribut: 'name="dana_thn_1" placeholder="Dana tahunI..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
@@ -1352,10 +1303,8 @@ $(document).ready(function () {
 							let dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
 							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true)
 							break;
-						case 'prog_keg_renstra'://@audit renstra
-							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
+						case 'renstra'://@audit renstra
 							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.sasaran_renstra.selection');
-
 							dropdownTujuan.returnList("get_row_json", "sasaran_renstra");
 							let dropdownSubKeg = new DropdownConstructor('.ui.dropdown.kode.selection')
 							dropdownSubKeg.returnList("get_row_json", "sub_keg");//dropdownConstr.restore();
@@ -1442,9 +1391,6 @@ $(document).ready(function () {
 
 													}
 													break;
-												case 'tujuan_sasaran_renstra':
-
-													break;
 												default:
 													break;
 											}
@@ -1458,8 +1404,6 @@ $(document).ready(function () {
 															let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
 															if (elmTujuan.length > 0) {
 																for (const iterator of elmAttrName) {
-																	// console.log(elmAttrName);
-																	//@audit delay
 																	let attrElm = $(iterator).attr('name');
 																	if (attrElm === 'file') {
 																		formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
@@ -2346,7 +2290,7 @@ $(document).ready(function () {
 											break;
 									}
 									break;
-								case "prog_keg_renstra":
+								case "renstra":
 								case "tujuan_sasaran_renstra":
 									jalankanAjax = true;
 									break;

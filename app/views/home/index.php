@@ -243,11 +243,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <a class="active item inayah" data-tab="tab_renstra" tbl="tujuan_sasaran_renstra">
                                 Tujuan dan Sasaran
                             </a>
-                            <a class="item inayah" data-tab="tab_renstra" tbl="prog_keg_renstra">
-                                Program dan Kegiatan
-                            </a>
                             <a class="item inayah" data-tab="tab_renstra" tbl="renstra">
-                                Renstra
+                            Renstra
                             </a>
                         </div>
                     </div>

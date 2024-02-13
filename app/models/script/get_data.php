@@ -277,7 +277,6 @@ class get_data
                             }
                             break;
                         case 'renstra':
-                        case 'prog_keg_renstra':
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                             if ($rowOrganisasi) {
                                 $tahun_renstra = $rowOrganisasi->tahun_renstra;

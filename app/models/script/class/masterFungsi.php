@@ -44,6 +44,34 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'renstra':
+                $rowData['thead'] = '<tr class="center aligned">
+                <th rowspan="3">Tujuan</th>
+                <th rowspan="3">Sasaran</th>
+                <th rowspan="3">Kode</th>
+                <th rowspan="3">Program dan Kegiatan</th>
+                <th rowspan="3">Indikator Kinerja Tujuan, Sasaran,Program (Outcome)dan Kegiatan(Output)</th>
+                <th rowspan="3">Data Capaian Awal Perenc anaan</th>
+                <th colspan="11">Target Kinerja Program dan Kerangka Pendanaan</th>
+                <th rowspan="3">Kode</th>
+                <th rowspan="3">Unit Kerja Perangkat Daerah Penanggung Jawab</th>
+                <th rowspan="3">Lokasi</th>
+                <th rowspan="3">Keterangan</th>
+                <th class="collapsing" rowspan="3">AKSI</th>
+            </tr>
+            <tr class="center aligned">
+                <th>Target</th>
+                <th>Rp.</th>
+                <th>Target</th>
+                <th>Rp.</th>
+                <th>Target</th>
+                <th>Rp.</th>
+                <th>Target</th>
+                <th>Rp.</th>
+                <th>Target</th>
+                <th>Rp.</th>
+            </tr>';
+                break;
             case 'tujuan_sasaran_renstra':
                 $rowData['thead'] = trim('<tr>
                             <th>KELOMPOK</th>
