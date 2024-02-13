@@ -103,11 +103,11 @@ $(document).ready(function () {
 			"Standar Harga Satuan",
 			'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
 		];
-		let tab_rentra = ["clipboard list icon", "RENSTRA", "Rencana Startegi", ""];
+		let tab_renstra = ["clipboard list icon", "RENSTRA", "Rencana Startegi", ""];
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
-			tab_rentra: tab_rentra,
-			rentra: tab_rentra,
+			tab_renstra: tab_renstra,
+			renstra: tab_renstra,
 			tab_renja: [
 				"clipboard list icon",
 				"RENJA",
@@ -285,6 +285,8 @@ $(document).ready(function () {
 		dasboardheader.text(headerDashboard);
 		dasboard.find($("div.pDashboard")).html(pDashboard);
 		$(`div[data-tab=${tab}]`).attr("tbl", tbl);
+		console.log(`tab : ${tab}`);
+		console.log(`tbl : ${tbl}`);
 		switch (tab) {
 			case "tab_hargasat":
 				dasboardheader.text(tbl.toUpperCase());

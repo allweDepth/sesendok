@@ -96,6 +96,8 @@ class Impor_xlsx
                                 $kd_skpd = $rowUsername->kd_organisasi;
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
+                                    case 'tujuan_sasaran_renstra':
+                                        break;
                                     case 'akun_belanja':
                                     case 'sub_kegiatan':
                                     case 'asb':
@@ -132,7 +134,12 @@ class Impor_xlsx
                                 }
                                 if ($disableImport <= 0) {
                                     //menentukan data
+                                    $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     switch ($tbl) {
+                                        case 'tujuan_sasaran_renstra':
+                                            $RowHeaderValidate = ['TUJUAN', 'SASARAN', 'INDIKATOR SASARAN', 'KETERANGAN'];
+                                            $count_col_min = count($RowHeaderValidate);
+                                            break;
                                         case 'rekanan':
                                             $tabel_pakai = 'rekanan_neo';
                                             $RowHeaderValidate = ['Nama Perusahaan/Pribadi', 'Alamat', 'Email', 'NPWP', 'Nomor Rekening Bank', 'Nama Bank Rekening', 'Atas Nama Bank Rekening', 'Nama Penanggung Jawab', 'Jabatan', 'Nomor KTP', 'Alamat Penanggung Jawab', 'Nomor Akta Pendirian', 'Tanggal Akta Pendirian', 'Lokasi Notaris Pendirian', 'Nama Notaris Pendirian', 'Nomor Akta Perubahan', 'Tanggal Akta Perubahan', 'Lokasi Notaris Perubahan', 'Nama Notaris Perubahan', 'Nama Pelaksana', 'Jabatan Pelaksana', 'KETERANGAN'];
@@ -140,86 +147,60 @@ class Impor_xlsx
                                             break;
                                         case 'hspk':
                                             $id_aturan = $id_aturan_hspk;
-                                            $tabel_pakai = 'hspk_neo';
                                             $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'ssh':
                                             $id_aturan = $id_aturan_ssh;
-                                            $tabel_pakai = 'ssh_neo';
                                             $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'asb':
                                             $id_aturan = $id_aturan_asb;
-                                            $tabel_pakai = 'asb_neo';
                                             $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'sbu':
                                             $id_aturan = $id_aturan_sbu;
-                                            $tabel_pakai = 'sbu_neo';
                                             $RowHeaderValidate = ['KODE KELOMPOK BARANG', 'URAIAN KELOMPOK BARANG', 'URAIAN BARANG', 'SPESIFIKASI', 'SATUAN', 'HARGA SATUAN', 'TKDN', 'KODE REKENING', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'satuan':
-                                            $tabel_pakai = 'satuan_neo';
                                             $RowHeaderValidate = ['Value', 'Item', 'Keterangan', 'Sebutan Lain'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'wilayah':
-                                            $tabel_pakai = 'wilayah_neo';
                                             $RowHeaderValidate = ['KODE', 'NAMA KABUPATEN / KOTA', 'STATUS', 'KECAMATAN', 'KELURAHAN', 'DESA', 'LUAS WILAYAH (km2)', 'JUMLAH PENDUDUK (jiwa)', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'organisasi':
-                                            $tabel_pakai = 'organisasi_neo';
                                             $RowHeaderValidate = ['KODE', 'ORGANISASI', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'mapping':
-                                            $tabel_pakai = 'mapping_aset_akun';
                                             $RowHeaderValidate = ['Kode Neraca', 'Uraian Neraca', 'Kode Akun', 'Uraian Akun', 'Kelompok', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'peraturan':
-                                            $tabel_pakai = 'peraturan_neo';
                                             $RowHeaderValidate = ['Type Dok', 'Judul', 'Nomor', 'Bentuk', 'Bentuk singkat', 'Tempat Penetapan', 'Tanggal Penetapan', 'Tanggal Pengundangan', 'Keterangan', 'Status Data'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'sumber_dana':
                                             $count_col_min = 8;
-                                            $tabel_pakai = 'sumber_dana_neo';
                                             $RowHeaderValidate = ['Sumber Dana', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'akun_belanja':
-                                            $tabel_pakai = 'akun_neo';
                                             $RowHeaderValidate = ['Akun', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'aset':
-                                            $tabel_pakai = 'aset_neo';
                                             $RowHeaderValidate = ['Akun', 'Kelompok', 'Jenis', 'Objek', 'Rincian Objek', 'Sub Rincian Objek', 'Uraian Akun', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'sub_keg':
-                                            $tabel_pakai = 'sub_kegiatan_neo';
                                             $RowHeaderValidate = ['URUSAN/UNSUR', 'BIDANG URUSAN/BIDANG UNSUR', 'PROGRAM', 'KEGIATAN', 'SUB KEGIATAN', 'NOMENKLATUR URUSAN', 'KINERJA', 'INDIKATOR', 'SATUAN', 'Keterangan'];
                                             $count_col_min = count($RowHeaderValidate);
-                                            break;
-
-                                        case 'harga_satuan':
-                                            $count_col_min = 8;
-                                            $tabel_pakai = 'harga_sat_upah_bahan';
-                                            $arrayStruktur = ['kd_proyek', 'kode', 'jenis', 'uraian', 'satuan', 'harga_satuan', 'sumber_data', 'spesifikasi', 'keterangan', 'tahun', 'periode', 'status'];
-                                            $RowHeaderValidate = ['Jenis', 'Kode', 'Uraian', 'Satuan', 'Harga Satuan', 'Sumber Data', 'Spesifikasi', 'Keterangan'];
-                                            $count_col_min = count($RowHeaderValidate);
-                                            break;
-                                        case 'satuan':
-                                            $count_col_min = 4;
-                                            $tabel_pakai = 'daftar_satuan';
-                                            $RowHeaderValidate = ['value', 'item', 'Keterangan', 'Sebutan lain'];
                                             break;
                                         case 'x':
                                             break;
@@ -274,8 +255,43 @@ class Impor_xlsx
                                                         //============================
                                                         //PROSES VALIDASI CELL EXCELL
                                                         //============================
-
                                                         switch ($tbl) {
+                                                            case 'tujuan_sasaran_renstra':
+                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $arrayDataRows = [
+                                                                    'value' => preg_replace('/(\s\s+|\t|\n)/', ' ', $value),
+                                                                    'item' => preg_replace('/(\s\s+|\t|\n)/', ' ', $item),
+                                                                    'sebutan_lain' => preg_replace('/(\s\s+|\t|\n)/', ' ', $sebutan_lain),
+                                                                    'peraturan' => $id_aturan_anggaran,
+                                                                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                                                    'disable' => 0,
+                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"]
+                                                                ];
+                                                                //$string = preg_replace('/\s/', ' ', $string);
+                                                                $update_arrayData = [['value', '=', $value]];
+                                                                $getWhereArrayData = [['value', '=', $value]];
+                                                                $no_sort++;
+                                                                break;
                                                             case 'hspk':
                                                             case 'ssh':
                                                             case 'asb':
@@ -1202,6 +1218,7 @@ class Impor_xlsx
                                                                 case 'sumber_dana':
                                                                 case 'peraturan':
                                                                 case 'akun_belanja':
+                                                                    case 'tujuan_sasaran_renstra':
                                                                     //var_dump($tabel_pakai);
                                                                     $sumRows = $DB->getWhereCustom($tabel_pakai, $getWhereArrayData);
                                                                     $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
