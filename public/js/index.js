@@ -816,7 +816,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Harga Satuan",
 									atribut:
-										'name="harga_satuan" placeholder="harga satuan..."',
+										'name="harga_satuan" placeholder="harga satuan..." rms',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
@@ -1430,7 +1430,14 @@ $(document).ready(function () {
 														if (attrElm === 'file') {
 															formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 														} else {
-															formIni.form("set value", attrElm, result.data?.users[attrElm]);
+															let strText = null;
+															if (isNaN(result.data?.users[attrElm])) {
+																strText = result.data?.users[attrElm];//@audit angka
+															} else {
+																strText = parseFloat(result.data?.users[attrElm]);
+																strText = accounting.formatNumber(result.data?.users[attrElm], strText.countDecimals(), ".", ",");
+															}
+															formIni.form("set value", attrElm, strText);
 														}
 													}
 													break;
@@ -3249,4 +3256,17 @@ $(document).ready(function () {
 	setTimeout(function () {
 
 	}, 500);
+	//menghitung decimal dibelakang koma
+	//var x = 23.453453453;
+	//console.log(x.countDecimals()); // 9
+	Number.prototype.countDecimals = function () {
+		if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
+		var str = this.toString();
+		if (str.indexOf(".") !== -1 && str.indexOf("-") !== -1) {
+			return str.split("-")[1] || 0;
+		} else if (str.indexOf(".") !== -1) {
+			return str.split(".")[1].length || 0;
+		}
+		return str.split("-")[1] || 0;
+	};
 });
