@@ -239,7 +239,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <div class="ui tab basic segment" data-tab="tab_renstra" tbl="">
                 <div class="ui stackable grid">
                     <div class="two wide left column">
-                        <div class="ui red secondary vertical pointing menu">
+                        <div class="ui red secondary vertical pointing fluid menu">
                             <a class="active item inayah" data-tab="tab_renstra" tbl="tujuan_sasaran_renstra">
                                 Tujuan dan Sasaran
                             </a>
