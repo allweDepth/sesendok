@@ -110,6 +110,95 @@ class post_data
                                 break;
                         }
                         break;
+                    case 'prog_keg_renstra':
+                        switch ($jenis) {
+                            case 'edit':
+                                $id_row = $validate->setRules('id_row', 'id', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                            case 'add':
+                                $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                if ($rowOrganisasi) {
+                                    $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                }
+                                $kode = $validate->setRules('kode', 'sub kegiatan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kode']]]],
+                                    'min_char' => 4
+                                ]);
+                                $sasaran = $validate->setRules('sasaran', 'sasaran', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'inDB' => ['tujuan_sasaran_renstra_neo', 'id', [['id', '=', $_POST['sasaran']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']]],
+                                    'min_char' => 1
+                                ]);
+                                $indikator = $validate->setRules('indikator', 'indikator', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $satuan = $validate->setRules('satuan', 'satuan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $data_capaian_awal = $validate->setRules('data_capaian_awal', 'data capaian awal', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $target_thn_1 = $validate->setRules('target_thn_1', 'Target tahun pertama', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_1 = $validate->setRules('dana_thn_1', 'Dana tahun pertama', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_2 = $validate->setRules('target_thn_2', 'Target tahun kedua', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_2 = $validate->setRules('dana_thn_2', 'Dana tahun kedua', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_3 = $validate->setRules('target_thn_3', 'Target tahun ketiga', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_3 = $validate->setRules('dana_thn_3', 'Dana tahun ketiga', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_4 = $validate->setRules('target_thn_4', 'Target tahun keempat', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_4 = $validate->setRules('dana_thn_4', 'Dana tahun keempat', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_5 = $validate->setRules('target_thn_5', 'Target tahun kelima', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_5 = $validate->setRules('dana_thn_5', 'Dana tahun kelima', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        break;
                     case 'organisasi':
                         switch ($jenis) {
                             case 'edit':
@@ -655,7 +744,7 @@ class post_data
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'kd_opd' => $kd_opd,
-                                        'tahun' => $tahun,
+                                        'tahun' => $tahun_renstra,
                                         'id_tujuan' => $id_tujuan,
                                         'kelompok' => $kelompok,
                                         'text' => $text,
@@ -676,6 +765,66 @@ class post_data
                                 $code = 70;
                             }
 
+                            break;
+                        case 'renstra':
+                        case 'prog_keg_renstra':
+                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                            if ($rowOrganisasi) {
+                                $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                $unit_kerja = $rowOrganisasi->uraian;
+                                if ($tahun_renstra > 2000) {
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    // id tujuan
+                                    $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
+                                    $id_tujuan = $tujuan->id_tujuan;
+                                    //uraian_prog_keg
+                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
+                                    $uraian_prog_keg = $progkeg->nomenklatur_urusan;
+                                    //kondisi_akhir
+                                    $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kd_opd' => $kd_opd,
+                                        'tahun' => $tahun_renstra,
+                                        'tujuan' => $id_tujuan,
+                                        'sasaran' => $sasaran,
+                                        'kode' => $kode,
+                                        'uraian_prog_keg' => $uraian_prog_keg,
+                                        'indikator' => $indikator,
+                                        'satuan' => $satuan,
+                                        'data_capaian_awal' => (float)$data_capaian_awal,
+                                        'target_thn_1' => (float)$target_thn_1,
+                                        'dana_thn_1' => (float)$dana_thn_1,
+                                        'target_thn_2' => (float)$target_thn_2,
+                                        'dana_thn_2' => (float)$dana_thn_2,
+                                        'target_thn_3' => (float)$target_thn_3,
+                                        'dana_thn_3' => (float)$dana_thn_3,
+                                        'target_thn_4' => (float)$target_thn_4,
+                                        'dana_thn_4' => (float)$dana_thn_4,
+                                        'target_thn_5' => (float)$target_thn_5,
+                                        'dana_thn_5' => (float)$dana_thn_5,
+                                        'kondisi_akhir' => (float)$kondisi_akhir,
+                                        'lokasi' => $lokasi,
+                                        'unit_kerja' => $unit_kerja,
+                                        'keterangan' => $keterangan,
+                                        'disable' => $disable,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                } else {
+                                    $message_tambah = ' (atur tahun renstra OPD)';
+                                    $code = 70;
+                                    $kodePosting = '';
+                                }
+                            } else {
+                                $message_tambah = ' (atur organisasi OPD)';
+                                $kodePosting = '';
+                                $code = 70;
+                            }
                             break;
                         case 'organisasi':
                             if ($jenis == 'add') {

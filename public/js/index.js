@@ -635,9 +635,49 @@ $(document).ready(function () {
 									],
 								}) +
 								buatElemenHtml("fieldText", {
-									typeText: 'number',
+									// typeText: 'number',
 									label: "Data Capaian Awal",
-									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data',
+									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Target tahun 1",
+									atribut: 'name="target_thn_1" placeholder="target tahun I..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Dana tahun 1",
+									atribut: 'name="dana_thn_1" placeholder="Dana tahun I..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Target tahun 2",
+									atribut: 'name="target_thn_2" placeholder="target tahun II..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Dana tahun 2",
+									atribut: 'name="dana_thn_2" placeholder="Dana tahun II..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Target tahun 3",
+									atribut: 'name="target_thn_3" placeholder="target tahun III..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Dana tahun 3",
+									atribut: 'name="dana_thn_3" placeholder="Dana tahun III..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Target tahun 4",
+									atribut: 'name="target_thn_4" placeholder="target tahun IV..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Dana tahun 4",
+									atribut: 'name="dana_thn_4" placeholder="Dana tahun IV..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Target tahun 5",
+									atribut: 'name="target_thn_5" placeholder="target tahun V..." non_data rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Dana tahun 5",
+									atribut: 'name="dana_thn_5" placeholder="Dana tahun V..." non_data rms',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Lokasi",
@@ -685,12 +725,12 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									typeText: 'number',
 									label: "Target tahun 1",
-									atribut: 'name="target_thn_1" placeholder="target I..." non_data',
+									atribut: 'name="target_thn_1" placeholder="target tahun I..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									typeText: 'number',
 									label: "Dana tahun 1",
-									atribut: 'name="dana_thn_1" placeholder="Dana I..." non_data',
+									atribut: 'name="dana_thn_1" placeholder="Dana tahunI..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
@@ -2053,7 +2093,7 @@ $(document).ready(function () {
 	}
 
 	setTimeout(function () {
-					
+
 	}, 500);
 
 	//===================================
@@ -2228,6 +2268,15 @@ $(document).ready(function () {
 					let cryptos = false;
 					//loaderShow();
 					let formData = new FormData(this);
+					//ubah angka indonesia menjadi standar
+					let elmRms = MyForm.find('input[rms]');
+					Object.keys(elmRms).forEach((key) => {
+						let element = $(elmRms[key]);
+						let namaAttr = element.attr("name");
+						if (namaAttr !== undefined) {
+							formData.set(namaAttr, accounting.unformat(formData.get(namaAttr), ","));
+						}
+					});
 					formData.append("jenis", jenis);
 					formData.append("tbl", tbl);
 					let url = "script/post_data";
@@ -2297,6 +2346,7 @@ $(document).ready(function () {
 											break;
 									}
 									break;
+								case "prog_keg_renstra":
 								case "tujuan_sasaran_renstra":
 									jalankanAjax = true;
 									break;
@@ -2770,10 +2820,10 @@ $(document).ready(function () {
 				"set opacity": 0,
 			})
 			.dimmer("show");
-			//jika lebih dari 120 detik otomatis hilang sendiri
-			setTimeout(function () {
-				$(".demo.page.dimmer:first").dimmer("hide");	
-			}, 120000);
+		//jika lebih dari 120 detik otomatis hilang sendiri
+		setTimeout(function () {
+			$(".demo.page.dimmer:first").dimmer("hide");
+		}, 120000);
 	}
 	function loaderHide() {
 		$(".demo.page.dimmer:first").dimmer("hide");
@@ -3253,6 +3303,6 @@ $(document).ready(function () {
 		};
 	})();
 	setTimeout(function () {
-					
+
 	}, 500);
 });
