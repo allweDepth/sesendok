@@ -50,14 +50,22 @@ class MasterFungsi
                 <th rowspan="3">Sasaran</th>
                 <th rowspan="3">Kode</th>
                 <th rowspan="3">Program dan Kegiatan</th>
+                <th rowspan="3">Satuan</th>
                 <th rowspan="3">Indikator Kinerja Tujuan, Sasaran,Program (Outcome)dan Kegiatan(Output)</th>
                 <th rowspan="3">Data Capaian Awal Perenc anaan</th>
                 <th colspan="11">Target Kinerja Program dan Kerangka Pendanaan</th>
-                <th rowspan="3">Kode</th>
                 <th rowspan="3">Unit Kerja Perangkat Daerah Penanggung Jawab</th>
                 <th rowspan="3">Lokasi</th>
                 <th rowspan="3">Keterangan</th>
                 <th class="collapsing" rowspan="3">AKSI</th>
+            </tr>
+            <tr class="center aligned">
+                <th colspan="2">Tahun-1</th>
+                <th colspan="2">Tahun-2</th>
+                <th colspan="2">Tahun-3</th>
+                <th colspan="2">Tahun-4</th>
+                <th colspan="2">Tahun-5</th>
+                <th rowspan="2">Kondisi Kinerja Pada Akhir Periode Renstra Perangkat Daerah</th>
             </tr>
             <tr class="center aligned">
                 <th>Target</th>
@@ -210,6 +218,48 @@ class MasterFungsi
             foreach ($get_data as $row) {
                 $myrow++;
                 switch ($tbl) {
+                    case 'renstra':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        $divAwalAngka = '';
+
+
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        };
+                        // $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="tujuan">' .  $row->tujuan . '</td>
+                                    <td klm="sasaran">' .  $row->sasaran . '</td>
+                                    <td klm="kode">' .  $row->kode . '</td>
+                                    <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
+                                    
+                                    <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                                    <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
+                                    <td klm="data_capaian_awal">' . $divAwalAngka . number_format($row->data_capaian_awal , 2, ',', '.'). $divAkhir . '</td>
+                                    <td klm="target_thn_1">' . $divAwalAngka . number_format($row->target_thn_1, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_1">' . $divAwalAngka . number_format($row->dana_thn_1, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_2">' . $divAwalAngka . number_format($row->target_thn_2, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_2">' . $divAwalAngka . number_format($row->dana_thn_2, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_3">' . $divAwalAngka . number_format($row->target_thn_3, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_3">' . $divAwalAngka . number_format($row->dana_thn_3, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_4">' . $divAwalAngka . number_format($row->target_thn_4, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_4">' . $divAwalAngka . number_format($row->dana_thn_4, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_5">' . $divAwalAngka . number_format($row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_5">' . $divAwalAngka . number_format($row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="kondisi_akhir">' .  number_format($row->kondisi_akhir, 2, ',', '.') . '</td>
+                                    <td klm="unit_kerja">' .  $row->unit_kerja . '</td>
+                                    <td klm="lokasi">' .  $row->lokasi . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'tujuan_sasaran_renstra':
                         $buttons = '';
                         $divAwal = '';
@@ -695,8 +745,9 @@ class MasterFungsi
                 break;
             case 'renstra':
                 $tabel_pakai = 'renstra_skpd_neo';
-                $jumlah_kolom = 17;
+                $jumlah_kolom = 22;
                 break;
+            case 'tujuan_renstra':
             case 'sasaran_renstra':
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':

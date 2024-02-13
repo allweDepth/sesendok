@@ -244,11 +244,11 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 Tujuan dan Sasaran
                             </a>
                             <a class="item inayah" data-tab="tab_renstra" tbl="renstra">
-                            Renstra
+                                Renstra
                             </a>
                         </div>
                     </div>
-                    <div class="twelve wide stretched right column">
+                    <div class="fourteen wide stretched right column">
                         <h1 class="ui header">Rencana Strategis (Renstra) <div class="sub header">dokumen perencanaan berorientasi pada hasil yang ingin dicapai</div>
                         </h1>
                         <div class="ui hidden divider"></div>
@@ -309,25 +309,24 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                                 <div class="ui hidden divider"></div>
                                 <div class="ui hidden divider"></div>
-                                <table class="ui very basic table">
-                                    <thead>
-                                        <tr>
-                                            <th>KELOMPOK</th>
-                                            <th>URAIAN</th>
-                                            <th>KETERANGAN</th>
-                                            <th>AKSI</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                       
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
+                                <div class="ui long scrolling fluid container">
+                                    <table class="ui unstackable table">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+
                             </div>
                         </div>
 
-                       
+
                     </div>
 
                 </div>

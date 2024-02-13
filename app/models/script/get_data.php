@@ -283,7 +283,7 @@ class get_data
                                 if ($tahun_renstra > 2000) {
                                     $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kode LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
-                                    $order = "ORDER BY kode ASC";
+                                    $order = "ORDER BY sasaran,kode ASC";
                                     $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                     $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                     // $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
