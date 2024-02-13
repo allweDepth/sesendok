@@ -669,7 +669,7 @@ class MasterFungsi
                 $tabel_pakai = 'renstra_skpd_neo';
                 $jumlah_kolom = 17;
                 break;
-            case 'tujuan_renstra':
+            case 'sasaran_renstra':
             case 'tujuan_sasaran_renstra':
             case 'tujuan_sasaran':
                 $tabel_pakai = 'tujuan_sasaran_renstra_neo';

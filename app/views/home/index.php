@@ -150,7 +150,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         <div class="pusher">
             <div class="basic segment">
                 <div class="ui demo page dimmer light">
-                    <div class="ui massive text blue elastic loader">Loading...</div>
+                    <div class="ui massive text elastic loader">Loading...</div>
                 </div>
             </div>
             <!-- sticky-->

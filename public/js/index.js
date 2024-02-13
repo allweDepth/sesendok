@@ -635,6 +635,7 @@ $(document).ready(function () {
 									],
 								}) +
 								buatElemenHtml("fieldText", {
+									typeText: 'number',
 									label: "Data Capaian Awal",
 									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data',
 								}) +
@@ -1313,12 +1314,13 @@ $(document).ready(function () {
 							break;
 						case 'prog_keg_renstra'://@audit renstra
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
-							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.sasaran_renstra.selection')
-							dropdownTujuan.returnList("get_row_json","sasaran_renstra");
+							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.sasaran_renstra.selection');
+
+							dropdownTujuan.returnList("get_row_json", "sasaran_renstra");
 							let dropdownSubKeg = new DropdownConstructor('.ui.dropdown.kode.selection')
-							dropdownSubKeg.returnList("get_row_json", "sub_keg");
+							dropdownSubKeg.returnList("get_row_json", "sub_keg");//dropdownConstr.restore();
 							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.selection')
-							dropdownSatuan.returnList("get_row_json", "satuan");
+							dropdownSatuan.returnList("get_row_json", "satuan", 1);
 							break;
 						default:
 							break;
@@ -1902,30 +1904,37 @@ $(document).ready(function () {
 			this.element = $(element); //element;
 			this.methodConstructor = new MethodConstructor();
 		}
-		returnList(jenis = "list_dropdown", tbl = "satuan") {
+		returnList(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3) {
 			let get = this.element.dropdown("get query");
+			let elm = this.element;
 			this.element.dropdown({
+				minCharacters: minCharacters,
+				maxResults: countRows(),
+				searchDelay: 600,
+				throttle: 600,
+				cache: false,
 				apiSettings: {
 					// this url just returns a list of tags (with API response expected above)
+					cache: false,
 					method: "POST",
 					url: "script/get_data",
-					throttle: 500,
+					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
 					data: {
 						jenis: jenis,
 						tbl: tbl,
 						cari: function (value) {
-							return get;
-							//console.log($('.satuan.ui.dropdown').dropdown('get query'));
+							return elm.dropdown("get query");
 						},
-						rows: "all",
+						rows: countRows(), //"all",
 						halaman: 1,
 					}, fields: {
 						results: "results",
 					},
 					// filterRemoteData: true,
 				},
+
 				// filterRemoteData: true,
 				// saveRemoteData: false,
 			});
@@ -2042,6 +2051,11 @@ $(document).ready(function () {
 			});
 		}
 	}
+
+	setTimeout(function () {
+					
+	}, 500);
+
 	//===================================
 	//=========== class calendar ========
 	//===================================
@@ -2756,6 +2770,10 @@ $(document).ready(function () {
 				"set opacity": 0,
 			})
 			.dimmer("show");
+			//jika lebih dari 120 detik otomatis hilang sendiri
+			setTimeout(function () {
+				$(".demo.page.dimmer:first").dimmer("hide");	
+			}, 120000);
 	}
 	function loaderHide() {
 		$(".demo.page.dimmer:first").dimmer("hide");
@@ -3234,4 +3252,7 @@ $(document).ready(function () {
 			timer = setTimeout(callback, ms);
 		};
 	})();
+	setTimeout(function () {
+					
+	}, 500);
 });
