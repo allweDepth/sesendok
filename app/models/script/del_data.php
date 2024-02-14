@@ -76,68 +76,7 @@ class del_data
                 $kodePosting = '';
                 if ($validate->passed()) {
                     //tabel pakai
-                    switch ($tbl) {
-                        case 'peraturan':
-                            $tabel_pakai = 'peraturan_neo';
-                            break;
-                        case 'wilayah':
-                            $tabel_pakai = 'wilayah_neo';
-                            break;
-                        case 'mapping_aset':
-                        case "mapping":
-                            $tabel_pakai = 'mapping_aset_akun';
-                            break;
-                        case "aset":
-                            $tabel_pakai = 'aset_neo';
-                            break;
-                        case "akun":
-                        case "akun_belanja":
-                            $tabel_pakai = 'akun_neo';
-                            break;
-                        case 'bidang_urusan':
-                            $tabel_pakai = 'bidang_urusan_neo';
-                            break;
-                        case 'dpa':
-                            $tabel_pakai = 'dpa_neo';
-                            break;
-                        case 'hspk':
-                            $tabel_pakai = 'hspk_neo';
-                            break;
-                        case 'kegiatan':
-                            $tabel_pakai = 'kegiatan_neo';
-                            break;
-                        case 'organisasi':
-                            $tabel_pakai = 'organisasi_neo';
-                            break;
-                        case 'program':
-                            $tabel_pakai = 'program_neo';
-                            break;
-                        case 'satuan':
-                            $tabel_pakai = 'satuan_neo';
-                            break;
-                        case 'sbu':
-                            $tabel_pakai = 'sbu_neo';
-                            break;
-                        case 'ssh':
-                            $tabel_pakai = 'ssh_neo';
-                            break;
-                        case 'sub_keg':
-                        case 'sub_kegiatan':
-                            $tabel_pakai = 'sub_kegiatan_neo';
-                            break;
-                        case 'sumber_dana':
-                            $tabel_pakai = 'sumber_dana_neo';
-                            break;
-                        case 'user':
-                            $tabel_pakai = 'user_sesendok_biila';
-                            break;
-                        case 'inbox':
-                        case 'outbox':
-                        case 'wall':
-                            $tabel_pakai = 'ruang_chat';
-                            break;
-                        default:
-                    }
+                    $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                     $code = 10;
                     $sukses = true;
 

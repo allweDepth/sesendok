@@ -136,6 +136,13 @@ class Impor_xlsx
                                     //menentukan data
                                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     switch ($tbl) {
+                                        case 'renstra':
+                                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                            $tahun_renstra = ($rowOrganisasi) ? $rowOrganisasi->tahun_renstra : 0;
+                                            $unit_kerja = ($rowOrganisasi) ? $rowOrganisasi->uraian : 'unit kerja tidak ditemukan';
+                                            $RowHeaderValidate = ['SASARAN', 'KODE', 'PROGRAM DAN KEGIATAN', 'SATUAN', 'INDIKATOR', 'DATA CAPAIAN AWAL', 'TARGET TAHUN 1', 'DANA TAHUN 1', 'TARGET TAHUN 2', 'DANA TAHUN 2', 'TARGET TAHUN 3', 'DANA TAHUN 3', 'TARGET TAHUN 4', 'DANA TAHUN 4', 'TARGET TAHUN 5', 'DANA TAHUN 5', 'LOKASI', 'KETERANGAN'];
+                                            $count_col_min = count($RowHeaderValidate);
+                                            break;
                                         case 'tujuan_sasaran_renstra':
                                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                                             $tahun_renstra = $rowOrganisasi->tahun_renstra;
@@ -143,7 +150,6 @@ class Impor_xlsx
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'rekanan':
-                                            $tabel_pakai = 'rekanan_neo';
                                             $RowHeaderValidate = ['Nama Perusahaan/Pribadi', 'Alamat', 'Email', 'NPWP', 'Nomor Rekening Bank', 'Nama Bank Rekening', 'Atas Nama Bank Rekening', 'Nama Penanggung Jawab', 'Jabatan', 'Nomor KTP', 'Alamat Penanggung Jawab', 'Nomor Akta Pendirian', 'Tanggal Akta Pendirian', 'Lokasi Notaris Pendirian', 'Nama Notaris Pendirian', 'Nomor Akta Perubahan', 'Tanggal Akta Perubahan', 'Lokasi Notaris Perubahan', 'Nama Notaris Perubahan', 'Nama Pelaksana', 'Jabatan Pelaksana', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
@@ -259,6 +265,125 @@ class Impor_xlsx
                                                         //PROSES VALIDASI CELL EXCELL
                                                         //============================
                                                         switch ($tbl) {
+                                                            case 'renstra':
+                                                                /*
+                                                                $sasaran = $validateRow->setRules(0, 'sasaran', [
+                                                                    'numeric' => true,
+                                                                    'required' => true,
+                                                                    'inDB' => ['tujuan_sasaran_renstra_neo', 'id', [['id', '=', $_POST['sasaran']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']]],
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                */
+                                                                $sasaran = $validateRow->setRules(0, 'sasaran', [
+                                                                    'sanitize' => 'string',
+                                                                ]);
+                                                                $kode_temporer = strtolower($getData[1]);
+                                                                $kode = $validateRow->setRules(1, 'sub kegiatan', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $kode_temporer]]],
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $uraian_prog_keg = $validateRow->setRules(2, 'uraian program dan kegiatan', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $satuan = $validateRow->setRules(3, 'satuan', [
+                                                                    'sanitize' => 'string',
+                                                                    // 'required' => true,
+                                                                    // 'min_char' => 1
+                                                                ]);
+                                                                $indikator = $validateRow->setRules(4, 'indikator', [
+                                                                    'sanitize' => 'string',
+                                                                    // 'required' => true,
+                                                                    // 'min_char' => 4
+                                                                ]);
+
+                                                                $data_capaian_awal = $validateRow->setRules(5, 'data capaian awal', [
+                                                                    'numeric_zero' => true,
+                                                                    // 'numeric' => true,
+                                                                    // 'required' => true,
+                                                                    // 'min_char' => 1
+                                                                ]);
+                                                                $target_thn_1 = $validateRow->setRules(6, 'Target tahun pertama', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $dana_thn_1 = $validateRow->setRules(7, 'Dana tahun pertama', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $target_thn_2 = $validateRow->setRules(8, 'Target tahun kedua', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $dana_thn_2 = $validateRow->setRules(9, 'Dana tahun kedua', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $target_thn_3 = $validateRow->setRules(10, 'Target tahun ketiga', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $dana_thn_3 = $validateRow->setRules(11, 'Dana tahun ketiga', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $target_thn_4 = $validateRow->setRules(12, 'Target tahun keempat', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $dana_thn_4 = $validateRow->setRules(13, 'Dana tahun keempat', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $target_thn_5 = $validateRow->setRules(14, 'Target tahun kelima', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $dana_thn_5 = $validateRow->setRules(15, 'Dana tahun kelima', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $lokasi = $validateRow->setRules(16, 'lokasi', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $keterangan = $validateRow->setRules(17, 'keterangan', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
+                                                                $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
+                                                                //uraian_prog_keg
+                                                                $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
+                                                                $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
+                                                                //kondisi_akhir
+                                                                $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
+                                                                $arrayDataRows = [
+                                                                    'kd_wilayah' => $kd_wilayah,
+                                                                    'kd_opd' => $kd_opd,
+                                                                    'tahun' => $tahun_renstra,
+                                                                    'tujuan' => (int)$id_tujuan,
+                                                                    'sasaran' => (int)$sasaran,
+                                                                    'kode' => $kode,
+                                                                    'uraian_prog_keg' => $uraian_prog_keg,
+                                                                    'indikator' => $indikator,
+                                                                    'satuan' => $satuan,
+                                                                    'data_capaian_awal' => (float)$data_capaian_awal,
+                                                                    'target_thn_1' => (float)$target_thn_1,
+                                                                    'dana_thn_1' => (float)$dana_thn_1,
+                                                                    'target_thn_2' => (float)$target_thn_2,
+                                                                    'dana_thn_2' => (float)$dana_thn_2,
+                                                                    'target_thn_3' => (float)$target_thn_3,
+                                                                    'dana_thn_3' => (float)$dana_thn_3,
+                                                                    'target_thn_4' => (float)$target_thn_4,
+                                                                    'dana_thn_4' => (float)$dana_thn_4,
+                                                                    'target_thn_5' => (float)$target_thn_5,
+                                                                    'dana_thn_5' => (float)$dana_thn_5,
+                                                                    'kondisi_akhir' => (float)$kondisi_akhir,
+                                                                    'lokasi' => $lokasi,
+                                                                    'unit_kerja' => $unit_kerja,
+                                                                    'keterangan' => $keterangan,
+                                                                    'disable' => 0,
+                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"]
+                                                                ];
+                                                                //$string = preg_replace('/\s/', ' ', $string);
+                                                                $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
+                                                                $getWhereArrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
+                                                                $no_sort++;
+                                                                break;
                                                             case 'tujuan_sasaran_renstra':
                                                                 $kelompok = $validateRow->setRules(0, 'kelompok', [
                                                                     'sanitize' => 'string',
@@ -269,7 +394,7 @@ class Impor_xlsx
 
                                                                 if (strtolower($kelompok) == 'tujuan') {
                                                                     $id_tujuan = 0;
-                                                                }else {
+                                                                } else {
                                                                     $id_tujuan = $id_tujuan_sasaran;
                                                                 }
                                                                 $text = $validateRow->setRules(1, 'Uraian Tujuan/Sasaran', [
@@ -1229,6 +1354,7 @@ class Impor_xlsx
                                                                 case 'peraturan':
                                                                 case 'akun_belanja':
                                                                 case 'tujuan_sasaran_renstra':
+                                                                case 'renstra':
                                                                     //var_dump($tabel_pakai);
                                                                     $sumRows = $DB->getWhereCustom($tabel_pakai, $getWhereArrayData);
                                                                     $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
@@ -1262,7 +1388,7 @@ class Impor_xlsx
                                                                             if ($arrayDataRows['kelompok'] == 'tujuan') {
                                                                                 $id_tujuan_sasaran = $DB->lastInsertId();
                                                                             }
-                                                                            
+
                                                                             break;
                                                                         case 'value1':
                                                                             #code...

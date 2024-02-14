@@ -54,9 +54,6 @@ class MasterFungsi
                 <th rowspan="3">Indikator Kinerja Tujuan, Sasaran,Program (Outcome)dan Kegiatan(Output)</th>
                 <th rowspan="3">Data Capaian Awal Perenc anaan</th>
                 <th colspan="11">Target Kinerja Program dan Kerangka Pendanaan</th>
-                <th rowspan="3">Unit Kerja Perangkat Daerah Penanggung Jawab</th>
-                <th rowspan="3">Lokasi</th>
-                <th rowspan="3">Keterangan</th>
                 <th class="collapsing" rowspan="3">AKSI</th>
             </tr>
             <tr class="center aligned">
@@ -254,9 +251,7 @@ class MasterFungsi
                                     <td klm="target_thn_5">' . $divAwalAngka . number_format($row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="dana_thn_5">' . $divAwalAngka . number_format($row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="kondisi_akhir">' .  number_format($row->kondisi_akhir, 2, ',', '.') . '</td>
-                                    <td klm="unit_kerja">' .  $row->unit_kerja . '</td>
-                                    <td klm="lokasi">' .  $row->lokasi . '</td>
-                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;

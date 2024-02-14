@@ -778,10 +778,12 @@ class post_data
                                     }
                                     // id tujuan
                                     $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
-                                    $id_tujuan = $tujuan->id_tujuan;
+                                    
+                                    $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0 ;
                                     //uraian_prog_keg
                                     $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
-                                    $uraian_prog_keg = $progkeg->nomenklatur_urusan;
+                                    $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan' ;
+                                    // $uraian_prog_keg = $progkeg->nomenklatur_urusan;
                                     //kondisi_akhir
                                     $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
                                     $set = [
