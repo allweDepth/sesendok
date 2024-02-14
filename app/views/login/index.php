@@ -1,10 +1,10 @@
 <!-- Following Menu -->
 <div class="ui large top fixed hidden menu">
     <div class="ui container">
-        <a class="active item">Home</a>
-        <a class="item">Work</a>
-        <a class="item">Company</a>
-        <a class="item">Careers</a>
+        <a class="active item inayah">Home</a>
+        <a class="item inayah">Work</a>
+        <a class="item inayah">Company</a>
+        <a class="item inayah">Careers</a>
         <div class="right menu">
             <div class="item">
                 <a class="ui button" name="modal">Log in</a>
@@ -18,12 +18,12 @@
 
 <!-- Sidebar Menu -->
 <div class="ui vertical inverted sidebar menu">
-    <a class="active item">Home</a>
-    <a class="item">Work</a>
-    <a class="item">Company</a>
-    <a class="item">Careers</a>
-    <a class="item" name="modal">Login</a>
-    <a class="item" name="modal-register">Signup</a>
+    <a class="active item inayah">Home</a>
+    <a class="item inayah">Work</a>
+    <a class="item inayah">Company</a>
+    <a class="item inayah">Careers</a>
+    <a class="item inayah" name="modal">Login</a>
+    <a class="item inayah" name="modal-register">Signup</a>
 </div>
 
 
@@ -36,10 +36,10 @@
                 <a class="toc item">
                     <i class="sidebar icon"></i>
                 </a>
-                <a class="active item">Home</a>
-                <a class="item">Work</a>
-                <a class="item">Company</a>
-                <a class="item">Careers</a>
+                <a class="active item inayah">Home</a>
+                <a class="item inayah">Work</a>
+                <a class="item inayah">Company</a>
+                <a class="item inayah">Careers</a>
                 <div class="right item">
                     <a class="ui inverted button" name="modal">Log in</a>
                     <a class="ui inverted button" name="modal-register">Sign Up</a>

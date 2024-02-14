@@ -549,6 +549,10 @@ $(document).ready(function () {
 									label: `Uraian ${kelompok}`,
 									atribut: 'name="text" rows="4" placeholder="uraian..."',
 								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: `Indikator`,
+									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
@@ -574,6 +578,10 @@ $(document).ready(function () {
 									label: `Uraian ${kelompok}`,
 									atribut: 'name="text" rows="4" placeholder="uraian..."',
 								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: `Indikator`,
+									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
@@ -587,6 +595,7 @@ $(document).ready(function () {
 						case 'tujuan_sasaran_renstra':
 							dataHtmlku.konten =
 								buatElemenHtml("fieldDropdown", {
+									label: "Kelompok",
 									atribut: 'name="kelompok"',
 									kelas: "tujuan_sasaran selection",
 									dataArray: [
@@ -597,6 +606,10 @@ $(document).ready(function () {
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="text" rows="4" placeholder="uraian..." autofocus',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: `Indikator`,
+									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Keterangan",

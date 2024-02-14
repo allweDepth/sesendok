@@ -13,7 +13,20 @@ $(document).ready(function () {
             }
         })
         ;
-
+    let handler = {
+        activate: function () {
+            if (!$(this).hasClass('dropdown browse')) {
+                $(this)
+                    .addClass('active')
+                    .closest('.ui.menu')
+                    .find('.item')
+                    .not($(this))
+                    .removeClass('active')
+                    ;
+            }
+        }
+    }
+    $(".menu .item.inayah").on('click', handler.activate);
     // create sidebar and attach to menu open
     $('.ui.sidebar')
         .sidebar('attach events', '.toc.item')
