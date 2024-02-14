@@ -94,10 +94,10 @@ class Impor_xlsx
                                 $tahun = (int) $rowUsername->tahun;
                                 $kd_wilayah = $rowUsername->kd_wilayah;
                                 $kd_skpd = $rowUsername->kd_organisasi;
+                                $kd_opd = $rowUsername->kd_organisasi;
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
                                     case 'tujuan_sasaran_renstra':
-                                        break;
                                     case 'akun_belanja':
                                     case 'sub_kegiatan':
                                     case 'asb':
@@ -137,7 +137,9 @@ class Impor_xlsx
                                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     switch ($tbl) {
                                         case 'tujuan_sasaran_renstra':
-                                            $RowHeaderValidate = ['TUJUAN', 'SASARAN', 'INDIKATOR SASARAN', 'KETERANGAN'];
+                                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                            $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                            $RowHeaderValidate = ['KELOMPOK', 'TUJUAN/SASARAN', 'INDIKATOR SASARAN', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'rekanan':
@@ -214,6 +216,7 @@ class Impor_xlsx
                                     //var_dump();
                                     $item['row'] = "";
                                     $validateTabel = '';
+                                    $id_tujuan_sasaran = 0;
                                     foreach ($xlsx->rows() as $r => $getData) {
                                         $sum++; //kolom
                                         //bisa di
@@ -257,39 +260,46 @@ class Impor_xlsx
                                                         //============================
                                                         switch ($tbl) {
                                                             case 'tujuan_sasaran_renstra':
-                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                $kelompok = $validateRow->setRules(0, 'kelompok', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1,
+                                                                    'in_array' => ['tujuan', 'sasaran', 'TUJUAN', 'SASARAN', 'Tujuan', 'Sasaran']
+                                                                ]);
+
+                                                                if (strtolower($kelompok) == 'tujuan') {
+                                                                    $id_tujuan = 0;
+                                                                }else {
+                                                                    $id_tujuan = $id_tujuan_sasaran;
+                                                                }
+                                                                $text = $validateRow->setRules(1, 'Uraian Tujuan/Sasaran', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                $indikator = $validateRow->setRules(2, 'indikator sasaran', [
                                                                     'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'min_char' => 1
                                                                 ]);
-                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                $keterangan = $validateRow->setRules(3, 'keterangan', [
                                                                     'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'min_char' => 1
-                                                                ]);
-                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
-                                                                    'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'min_char' => 1
                                                                 ]);
                                                                 $arrayDataRows = [
-                                                                    'value' => preg_replace('/(\s\s+|\t|\n)/', ' ', $value),
-                                                                    'item' => preg_replace('/(\s\s+|\t|\n)/', ' ', $item),
-                                                                    'sebutan_lain' => preg_replace('/(\s\s+|\t|\n)/', ' ', $sebutan_lain),
-                                                                    'peraturan' => $id_aturan_anggaran,
+                                                                    'kd_wilayah' => $kd_wilayah,
+                                                                    'kd_opd' => $kd_opd,
+                                                                    'tahun' => $tahun_renstra,
+                                                                    'id_tujuan' => $id_tujuan,
+                                                                    'kelompok' => strtolower(preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok)),
+                                                                    'text' => preg_replace('/(\s\s+|\t|\n)/', ' ', $text),
+                                                                    'indikator' => preg_replace('/(\s\s+|\t|\n)/', ' ', $indikator),
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'username' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
-                                                                $update_arrayData = [['value', '=', $value]];
-                                                                $getWhereArrayData = [['value', '=', $value]];
+                                                                $update_arrayData = [['kelompok', '=', $kelompok], ['text', '=', $text, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
+                                                                $getWhereArrayData = [['kelompok', '=', $kelompok], ['text', '=', $text, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'hspk':
@@ -1218,14 +1228,14 @@ class Impor_xlsx
                                                                 case 'sumber_dana':
                                                                 case 'peraturan':
                                                                 case 'akun_belanja':
-                                                                    case 'tujuan_sasaran_renstra':
+                                                                case 'tujuan_sasaran_renstra':
                                                                     //var_dump($tabel_pakai);
                                                                     $sumRows = $DB->getWhereCustom($tabel_pakai, $getWhereArrayData);
                                                                     $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
                                                                     //var_dump($arrayDataRows);
                                                                     if ($jumlahArray <= 0) {
-
                                                                         $resul = $DB->insert($tabel_pakai, $arrayDataRows);
+
                                                                         if ($DB->count()) {
                                                                             $data['add_row'][] = $sum;
                                                                         } else {
@@ -1247,6 +1257,20 @@ class Impor_xlsx
                                                                             //$data['note']['gagal'][] = $sum;
                                                                         }
                                                                     }
+                                                                    switch ($tbl) {
+                                                                        case 'tujuan_sasaran_renstra':
+                                                                            if ($arrayDataRows['kelompok'] == 'tujuan') {
+                                                                                $id_tujuan_sasaran = $DB->lastInsertId();
+                                                                            }
+                                                                            
+                                                                            break;
+                                                                        case 'value1':
+                                                                            #code...
+                                                                            break;
+                                                                        default:
+                                                                            #code...
+                                                                            break;
+                                                                    };
 
                                                                     break;
                                                                 default:

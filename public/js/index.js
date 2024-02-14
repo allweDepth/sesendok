@@ -1436,7 +1436,8 @@ $(document).ready(function () {
 															formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 														} else {
 															let strText = null;
-															if (isNaN(result.data?.users[attrElm])) {
+															let cariAttrRms = formIni.find(`[${attrElm}][rms]`);
+															if (isNaN(result.data?.users[attrElm]) || cariAttrRms.length <= 0) {
 																strText = result.data?.users[attrElm];//@audit angka
 															} else {
 																strText = parseFloat(result.data?.users[attrElm]);

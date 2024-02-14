@@ -185,6 +185,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                         </h3>
                     </div>
+                    
                     <div class="ui action input multi">
                         <input type="text" placeholder="Search...">
                         <input type="text" placeholder="Search...">
@@ -192,6 +193,36 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         <button class="ui button">Search</button>
                     </div>
                     <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
+                    <div class="ui relaxed divided list">
+                        <div class="item">
+                            <i class="large list ol middle aligned icon"></i>
+                            <div class="content">
+                                <a class="header">Referensi >> Wilayah</a>
+                                <div class="description">input kode wilayah (admin)</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="large list ol middle aligned icon"></i>
+                            <div class="content">
+                                <a class="header">Referensi >> Peraturan</a>
+                                <div class="description">input peraturan (admin)</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="large list ol middle aligned icon"></i>
+                            <div class="content">
+                                <a class="header">Pengaturan >> Tahun Anggaran</a>
+                                <div class="description">tentukan Peraturan Tahun Anggaran (admin)</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="large list ol middle aligned icon"></i>
+                            <div class="content">
+                                <a class="header">Referensi >> Organisasi</a>
+                                <div class="description">input Organisasi dan tahun renstra OPD (admin)</div>
+                            </div>
+                        </div>
+                    </div>
                     <p>Tutorial cara menggunakan aplikasi seSendok untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
                     <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
                     <div class="ui items">
@@ -630,14 +661,11 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Tahun Anggaran</div>
                                         <div class="menu">
-                                            <div class="item" data-value="2020"><i class="podcast icon"></i>2020</div>
-                                            <div class="item" data-value="2021"><i class="podcast icon"></i>2021</div>
-                                            <div class="item" data-value="2022"><i class="podcast icon"></i>2022</div>
-                                            <div class="item" data-value="2023"><i class="podcast icon"></i>2023</div>
-                                            <div class="item" data-value="2024"><i class="podcast icon"></i>2024</div>
-                                            <div class="item" data-value="2025"><i class="podcast icon"></i>2025</div>
-                                            <div class="item" data-value="2026"><i class="podcast icon"></i>2026</div>
-                                            <div class="item" data-value="2027"><i class="podcast icon"></i>2027</div>
+                                            <?php
+                                            for ($i=2020; $i < 2031; $i++) { 
+                                                echo '<div class="item" data-value="'.$i.'"><i class="podcast icon"></i>'.$i.'</div>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
