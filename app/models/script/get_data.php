@@ -590,7 +590,7 @@ class get_data
                                         case 'get_row_json':
                                             switch ($tbl) {
                                                 case 'sasaran_renstra':
-                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id];
+                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id,'description' => $row->id_tujuan];
                                                     break;
                                                 case 'sub_keg':
                                                     $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode];
