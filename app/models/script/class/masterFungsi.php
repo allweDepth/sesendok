@@ -4,8 +4,6 @@
 
 use FormulaParser\FormulaParser;
 
-
-//$jenis = 'koef'(rumus koefisien dan hasil pencarian ke koef semua) $jenis = 'harga'(untuk rumus di tempatkan harga satuan dan pencarian juga di harga satuan) atau $jenis = 'koef_harga'(untuk rumus ke koefisien, dan harga pencarian di harga satuan)
 class MasterFungsi
 {
     //get tabel data
@@ -830,6 +828,23 @@ class MasterFungsi
             default:
         }
         return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
+    }
+    //uraikan kode rekening sub kegiatan 
+    public function kd_sub_keg($tbl='renstra', $kode=''){
+        $explodeAwal = explode('.', $kode);
+        $count = count($explodeAwal);
+        switch ($count) {
+            case 6:
+                
+                break;
+            case 5:
+                #code...
+                break;
+            default:
+                #code...
+                break;
+        };
+        
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
