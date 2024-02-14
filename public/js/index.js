@@ -1470,7 +1470,7 @@ $(document).ready(function () {
 				};
 				runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
 			}
-		}, 500);
+		}, 200);
 
 		if (attrName === "flyout" && jalankanAjax === false) {
 			// $(".ui.flyout").flyout("toggle");
@@ -2463,6 +2463,7 @@ $(document).ready(function () {
 									// =================
 									case "form_flyout":
 										switch (tbl) {
+											case "renstra":
 											case "tujuan_sasaran_renstra":
 											case "hspk":
 											case "ssh":

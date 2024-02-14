@@ -49,7 +49,7 @@ class writer_xlsx
         $nama_sheet = 'Inayah';
 
         if ($validate->passed()) {
-            $rowUsername = $DB->getWhereOnce('user_ahsp', ['username', '=', $username]);
+            $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
             $kd_skpd = $rowUsername->kd_organisasi;
@@ -71,11 +71,35 @@ class writer_xlsx
             }
             $sukses = true;
             //var_dump('Content');
-
+            $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
             $query = '';
             switch ($tbl) {
+                case 'sub_keg':
+                    $filename = 'sub kegiatan.xlsx';
+                    $nama_sheet = 'sub_keg';
+                    switch ($jenis) {
+                        case 'dok':
+                            $where1 = "disable = 0 AND id > 0";
+                            $order = "ORDER BY kode ASC";
+                            $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    $headerSet = array(
+                        'DAFTAR SUB KEGIATAN' => 'string', //
+                        '2' => 'string', //
+                        '3' => 'string', //
+                        '4' => 'string', //
+                        '5' => 'string', 
+                        '6' => 'string', 
+                        '7' => 'string'
+                    );
+                    $row_header = ['KODE', 'NOMENKLATUR URUSAN', 'KINERJA', 'INDIKATOR', 'SATUAN', 'PERATURAN', 'KETERANGAN'];
+                    $jmlKolom = 7;
+                    break;
                 case 'peraturan':
-                    $tabel_pakai = 'peraturan_neo';
                     $filename = 'peraturan.xlsx';
                     $nama_sheet = 'Peraturan';
                     switch ($jenis) {
@@ -204,6 +228,23 @@ class writer_xlsx
                     #==== HEADER KOP TABEL =======
                     #=============================
                     switch ($tbl) {
+                        case 'sub_keg':
+                            switch ($jenis) {
+                                case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [25, 60, 40, 40, 15, 20, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom-1);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
+
+                                    for ($x = 1; $x <= $jmlKolom; ++$x) {
+                                        $colHeader[] = '="(' . $x . ')"';
+                                    }
+                                    $writer->writeSheetRow($nama_sheet, $row_header, ['height' => 40, 'border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#d76e6e', 'wrap_text' => true, 'freeze_rows' => 1]);
+                                    $writer->writeSheetRow($nama_sheet, $colHeader, $LTRB_hc);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
                         case 'peraturan':
                             switch ($jenis) {
                                 case 'dok': //mengambil seluruh data harga satuan sesuai proyek
@@ -533,6 +574,25 @@ class writer_xlsx
                         $myrow++;
                         //var_dump($row);
                         switch ($tbl) {
+                            case 'sub_keg':
+                                switch ($jenis) {
+                                    case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                        $rowdata = array(
+                                            $row['kode'],
+                                            $row['nomenklatur_urusan'],
+                                            $row['kinerja'],
+                                            $row['indikator'],
+                                            $row['satuan'],
+                                            $row['peraturan'],
+                                            $row['keterangan']
+                                        );
+
+                                        $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
                             case 'peraturan':
                                 switch ($jenis) {
                                     case 'dok': //mengambil seluruh data harga satuan sesuai proyek
