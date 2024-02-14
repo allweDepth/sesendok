@@ -185,7 +185,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                         </h3>
                     </div>
-                    
+
                     <div class="ui action input multi">
                         <input type="text" placeholder="Search...">
                         <input type="text" placeholder="Search...">
@@ -387,10 +387,13 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- tab_renja -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_renja">
-            <div class="ui stackable grid">
+                <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
-                            <a class="active item inayah" data-tab="tab_renja" tbl="renja">
+                            <a class="active item inayah" data-tab="tab_renja" tbl="sub_keg_renja">
+                                Sub Kegiatan
+                            </a>
+                            <a class="item inayah" data-tab="tab_renja" tbl="renja">
                                 Renja
                             </a>
                             <a class="item inayah" data-tab="tab_renja" tbl="renja_p">
@@ -738,7 +741,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <a class="item inayah" data-tab="atur" tbl="organisasi">
                                 SKPD
                             </a>
-                            
+
                         </div>
                     </div>
                     <div class="twelve wide stretched right column">
@@ -761,8 +764,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <div class="default text">Tahun Anggaran</div>
                                         <div class="menu">
                                             <?php
-                                            for ($i=2020; $i < 2031; $i++) { 
-                                                echo '<div class="item" data-value="'.$i.'"><i class="podcast icon"></i>'.$i.'</div>';
+                                            for ($i = 2020; $i < 2031; $i++) {
+                                                echo '<div class="item" data-value="' . $i . '"><i class="podcast icon"></i>' . $i . '</div>';
                                             }
                                             ?>
                                         </div>
