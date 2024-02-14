@@ -728,16 +728,17 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <div class="ui tab basic segment" data-tab="atur_satu">
                 <div class="ui stackable grid">
                     <div class="two wide left column">
-                        <div class="ui red secondary vertical pointing menu">
+                        <div class="ui red secondary vertical fluid pointing menu">
                             <a class="item inayah" data-tab="pengaturan" tbl="pengaturan">
                                 Tahun Anggaran
-                            </a>
-                            <a class="item inayah" data-tab="atur" tbl="organisasi">
-                                SKPD
                             </a>
                             <a class="item inayah" data-tab="atur" tbl="users">
                                 Users
                             </a>
+                            <a class="item inayah" data-tab="atur" tbl="organisasi">
+                                SKPD
+                            </a>
+                            
                         </div>
                     </div>
                     <div class="twelve wide stretched right column">
