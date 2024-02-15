@@ -335,32 +335,21 @@ $(document).ready(function () {
 					case 'pengaturan'://@audit calendar pengaturan
 						let formPakai = $(`[name="form_pengaturan"]`);
 						let sumdatetimeStartcal = formPakai.find(`.ui.calendar.datetime.startcal`);
-						console.log(sumdatetimeStartcal);
-
 						let dynamic = [];
 						let jeniku = { awal_renstra: 'akhir_renstra', awal_renja: 'akhir_renja', awal_dpa: 'akhir_dpa', awal_renja_p: 'akhir_renja_p', awal_dppa: 'akhir_dppa' }
 						Object.keys(sumdatetimeStartcal).forEach((key) => {
 							let element = $(sumdatetimeStartcal[key]);
-							// console.log(element);
 							let namaAttr = element.attr("name");
-							// console.log(namaAttr);
 							if (namaAttr !== undefined) {
 								let bill = jeniku[namaAttr];
-								// console.log(bill);
 								dynamic[namaAttr] = new CalendarConstructor(`div[name="${namaAttr}"],div[name="${bill}"]`);
 								dynamic[namaAttr].startCalendar = $(`div[name="${namaAttr}"]`);
 								dynamic[namaAttr].endCalendar = $(`div[name="${bill}"]`);
 								dynamic[namaAttr].Type("datetime");
 								dynamic[namaAttr].runCalendar();
 							}
-							console.log(dynamic[namaAttr]);
 						});
-						// console.log(dynamic);
-						// let calendarDateTime = new CalendarConstructor(`[name="awal_renja"],[name="akhir_renja"]`);
-						// calendarDateTime.startCalendar = $(`[name="awal_renja"]`);
-						// calendarDateTime.endCalendar = $(`[name="akhir_renja"]`);
-						// calendarDateTime.Type("datetime");
-						// calendarDateTime.runCalendar();
+						
 						break;
 					default:
 						break;
@@ -2190,9 +2179,11 @@ $(document).ready(function () {
 					this.type = "datetime";
 					break;
 				case "time":
+					format = "Y h:mm A";
 					this.type = "time";
 					break;
 				case "year":
+					format = "MMMM";
 					this.type = "year";
 					break;
 				default:
@@ -2202,6 +2193,7 @@ $(document).ready(function () {
 		}
 		runCalendar() {
 			let typeOnChange = this.typeOnChange;
+			let typeCal = this.typeDate;
 			this.element.calendar({
 				minDate: this.minDate,
 				maxDate: this.maxDate,
@@ -2211,7 +2203,7 @@ $(document).ready(function () {
 				startCalendar: this.startCalendar,
 				endCalendar: this.endCalendar,
 				formatter: {
-					date: this.typeDate,
+					date: typeCal,
 					time: "H:mm",
 					cellTime: "H:mm",
 				},
