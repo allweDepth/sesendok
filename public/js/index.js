@@ -417,24 +417,9 @@ $(document).ready(function () {
 									const elmthead = elmTable.find(`thead`);
 									elmthead.html(result.data.thead);
 								}
-								switch (tbl) {
-									case "peraturan":
-										break;
-									case "xxx":
-										break;
-									default:
-										break;
-								}
 								break;
 							case "get_data":
-								switch (tbl) {
-									case "peraturan":
-										break;
-									case "xxx":
-										break;
-									default:
-										break;
-								}
+								
 								break;
 							case "get_pengaturan":
 								switch (tbl) {
