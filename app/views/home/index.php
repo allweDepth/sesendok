@@ -744,7 +744,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         </div>
                     </div>
                     <div class="twelve wide stretched right column">
-                        <div class="ui tab basic" data-tab="pengaturan">
+                        <div class="ui tab scrolling basic" data-tab="pengaturan">
                             <div class="ui teal inverted segment top attached">
                                 <h2 class="ui header left">
                                     <i class="settings icon"></i>
@@ -754,7 +754,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                     </div>
                                 </h2>
                             </div>
-                            <form class="ui form scrolling segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
+                            <form class="ui form segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
                                 <div class="field">
                                     <label>Tahun</label>
                                     <div class="ui fluid search selection dropdown" name="tahun">
@@ -870,6 +870,107 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <div class="default text">SBU</div>
                                         <div class="menu">
 
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="ui dividing header">Jadwal Penganggaran</h4>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Awal Renstra</label>
+                                        <div class="ui inverted calendar datetime startcal" name="awal_renstra">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Awal" name="awal_renstra" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Akhir Renstra</label>
+                                        <div class="ui inverted calendar datetime endcal" name="akhir_renstra">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Akhir" name="akhir_renstra" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Awal Renja</label>
+                                        <div class="ui inverted calendar datetime startcal" name="awal_renja">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Awal" name="awal_renja" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Akhir Renja</label>
+                                        <div class="ui inverted calendar datetime endcal" name="akhir_renja">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Akhir" name="akhir_renja" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Awal DPA</label>
+                                        <div class="ui inverted calendar datetime startcal" name="awal_dpa">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Awal" name="awal_dpa" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Akhir DPA</label>
+                                        <div class="ui inverted calendar datetime endcal" name="akhir_dpa">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Akhir" name="akhir_dpa" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Awal Renja Perubahan</label>
+                                        <div class="ui inverted calendar datetime startcal" name="awal_renja_p">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Awal" name="awal_renja_p" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Akhir Renja Perubahan</label>
+                                        <div class="ui inverted calendar datetime endcal" name="akhir_renja_p">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Akhir" name="akhir_renja_p" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Awal DPPA</label>
+                                        <div class="ui inverted calendar datetime startcal" name="awal_dppa">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Awal" name="awal_dppa" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Akhir DPPA</label>
+                                        <div class="ui inverted calendar datetime endcal" name="akhir_dppa">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Akhir" name="akhir_dppa" readonly>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

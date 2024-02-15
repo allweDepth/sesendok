@@ -285,8 +285,7 @@ $(document).ready(function () {
 		dasboardheader.text(headerDashboard);
 		dasboard.find($("div.pDashboard")).html(pDashboard);
 		$(`div[data-tab=${tab}]`).attr("tbl", tbl);
-		console.log(`tab : ${tab}`);
-		console.log(`tbl : ${tbl}`);
+
 		switch (tab) {
 			case "tab_hargasat":
 				dasboardheader.text(tbl.toUpperCase());
@@ -331,6 +330,41 @@ $(document).ready(function () {
 				jalankanAjax = true;
 				break;
 			case "pengaturan":
+			case 'get_pengaturan':
+				switch (tbl) {
+					case 'pengaturan'://@audit calendar pengaturan
+						let formPakai = $(`[name="form_pengaturan"]`);
+						let sumdatetimeStartcal = formPakai.find(`.ui.calendar.datetime.startcal`);
+						console.log(sumdatetimeStartcal);
+
+						let dynamic = [];
+						let jeniku = { awal_renstra: 'akhir_renstra', awal_renja: 'akhir_renja', awal_dpa: 'akhir_dpa', awal_renja_p: 'akhir_renja_p', awal_dppa: 'akhir_dppa' }
+						Object.keys(sumdatetimeStartcal).forEach((key) => {
+							let element = $(sumdatetimeStartcal[key]);
+							// console.log(element);
+							let namaAttr = element.attr("name");
+							// console.log(namaAttr);
+							if (namaAttr !== undefined) {
+								let bill = jeniku[namaAttr];
+								// console.log(bill);
+								dynamic[namaAttr] = new CalendarConstructor(`div[name="${namaAttr}"],div[name="${bill}"]`);
+								dynamic[namaAttr].startCalendar = $(`div[name="${namaAttr}"]`);
+								dynamic[namaAttr].endCalendar = $(`div[name="${bill}"]`);
+								dynamic[namaAttr].Type("datetime");
+								dynamic[namaAttr].runCalendar();
+							}
+							console.log(dynamic[namaAttr]);
+						});
+						// console.log(dynamic);
+						// let calendarDateTime = new CalendarConstructor(`[name="awal_renja"],[name="akhir_renja"]`);
+						// calendarDateTime.startCalendar = $(`[name="awal_renja"]`);
+						// calendarDateTime.endCalendar = $(`[name="akhir_renja"]`);
+						// calendarDateTime.Type("datetime");
+						// calendarDateTime.runCalendar();
+						break;
+					default:
+						break;
+				}
 				jenis = "get_pengaturan";
 				jalankanAjax = true;
 				break;
@@ -1277,14 +1311,14 @@ $(document).ready(function () {
 				case "import":
 					let templateXlsx = linkTemplate[tbl];//@audit + link
 					console.log();
-					
+
 					if (templateXlsx) {
-						
+
 						dataHtmlku.konten = buatElemenHtml("fieldLabel", {
 							label: "Download Template",
 							icon: "download green",
 							value: "Download Template",
-							href: BASEURL+templateXlsx,
+							href: BASEURL + templateXlsx,
 							atribut: 'target="_blank""'
 						});
 					} else {
@@ -1349,11 +1383,30 @@ $(document).ready(function () {
 							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.selection')
 							dropdownSatuan.returnList("get_row_json", "satuan", 1);
 							break;
+						case 'val':
+
+							break;
 						default:
 							break;
 					}
 					break;
-				case 'value1':
+				case 'get_pengaturan':
+					switch (tbl) {
+						case 'pengaturan':
+							let calendarDateTime = new CalendarConstructor(`[name="awal_renja"],[name="akhir_renja"]`);//(`.ui.calendar.datetime.startend[name="awal_renja"]`);
+
+							console.log($(`[name="awal_renja"]`));
+							console.log($(`[name="akhir_renja"]`));
+
+							calendarDateTime.startCalendar = $(`[name="awal_renja"]`);
+							calendarDateTime.endCalendar = $(`[name="akhir_renja"]`);
+							calendarDateTime.Type("datetime");
+							calendarDateTime.runCalendar();
+							console.log(calendarDateTime);
+							break;
+						default:
+							break;
+					}
 					break;
 				default:
 					break;
