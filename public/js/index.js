@@ -481,6 +481,11 @@ $(document).ready(function () {
 	$("body").on("click", '[name="get_data"],[name="flyout"]', function (e) {
 		e.preventDefault();
 		let ini = $(this);
+		let linkTemplate = {
+			renstra: 'template/18. Renstra Template.xlsx',
+			wilayah: 'template/1. wilayah.xlsx',
+			peraturan: 'template/1. template peraturan.xlsx',
+		};
 		let attrName = ini.attr("name");
 		let jenis = ini.attr("jns");
 		let tbl = ini.attr("tbl");
@@ -1270,10 +1275,26 @@ $(document).ready(function () {
 
 					break;
 				case "import":
+					let templateXlsx = linkTemplate[tbl];//@audit + link
+					if (templateXlsx) {
+						// case "fieldLabel":
+				// var elemen =
+				// `<div class="field" ${atributField}><label>${labelData}</label><a class="ui label ${kelasData}" ${atributData}>
+				// <i class="${icon} icon"></i>${elemen1Data}</a></div>`;
+						dataHtmlku.konten = buatElemenHtml("fieldLabel", {
+							label: "Download Template",
+							icon: "download green",
+							value: "Download Template",
+							href: templateXlsx,
+							atribut: 'target="_blank""'
+						});
+					} else {
+						dataHtmlku.konten = '';
+					}
 					dataHtmlku.icon = "file excel icon green";
 					dataHtmlku.header = "Import data dari file Excel";
 					//file
-					dataHtmlku.konten = buatElemenHtml("fieldFileInput2", {
+					dataHtmlku.konten += buatElemenHtml("fieldFileInput2", {
 						label: "Pilih File Dokumen",
 						placeholderData: "Pilih File (*.xlsx)...",
 						accept: ".xlsx",
@@ -2812,6 +2833,7 @@ $(document).ready(function () {
 			"atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let kelasData = "kelas" in dataElemen ? dataElemen.kelas : "";
 		let labelData = "label" in dataElemen ? dataElemen.label : "";
+		let href = "label" in dataElemen ? dataElemen.href : "";
 		let textDrpdown =
 			"textDrpdown" in dataElemen ? dataElemen.textDrpdown : "Pilih...";
 		let placeholderData =
@@ -2861,6 +2883,11 @@ $(document).ready(function () {
 				break;
 			case "dividerHidden":
 				elemen = `<div class="ui hidden divider"></div>`;
+				break;
+			case "fieldLabel":
+				var elemen =
+					`<div class="field" ${atributField}><label>${labelData}</label><a class="ui fluid label ${kelasData}" href="${href}" ${atributData}>
+					<i class="${icon} icon"></i>${valueData}</a></div>`;
 				break;
 			case "fieldSearch":
 				var elemen =
