@@ -1276,16 +1276,15 @@ $(document).ready(function () {
 					break;
 				case "import":
 					let templateXlsx = linkTemplate[tbl];//@audit + link
+					console.log();
+					
 					if (templateXlsx) {
-						// case "fieldLabel":
-				// var elemen =
-				// `<div class="field" ${atributField}><label>${labelData}</label><a class="ui label ${kelasData}" ${atributData}>
-				// <i class="${icon} icon"></i>${elemen1Data}</a></div>`;
+						
 						dataHtmlku.konten = buatElemenHtml("fieldLabel", {
 							label: "Download Template",
 							icon: "download green",
 							value: "Download Template",
-							href: templateXlsx,
+							href: BASEURL+templateXlsx,
 							atribut: 'target="_blank""'
 						});
 					} else {
@@ -1514,40 +1513,18 @@ $(document).ready(function () {
 	//====================================
 	//=========== flyout =================
 	//====================================
-	// $(".ui.flyout").flyout({
-	// 	//non aktifkan toggle jika tekan dimmer
-	// 	// selector: { pusher: '.flyout' },
-	// 	// className: { pushable: '.bottom.pushable' },
-	// 	closable: false,
-	// 	onShow: function () {
-	// 		// loaderHide();
-	// 		// console.log('onShow flyout');
-	// 	},
-	// 	onHide: function (choice) {
-	// 		//console.log(choice);
-	// 		// let form = $(".ui.flyout form");
-	// 		// form.form('clear');
-	// 		// removeRulesForm(form);
-	// 		// //inisialize kembali agar tidak error di console
-	// 		// var reinitForm = new FormGlobal(form);
-	// 		// reinitForm.run();
-	// 	},
-	// 	onApprove: function (elemen) {
-	// 		$(elemen).closest('div.flyout').find('form').form('submit');
-	// 		return false;
-	// 	},
-	// 	context: $('.bottom.segment'),
-	// }).flyout('attach events', '[name="flyout"]');
 	$(".ui.flyout")
 		.flyout({
 			closable: false,
 			context: $(".bottom.pushable"),
 			onShow: function () {
+				$('#biilainayah').addClass('disabled');
 				// loaderHide();
 				// console.log('onShow flyout');
 			},
 			onHide: function (choice) {
 				// 		//console.log(choice);
+				$('#biilainayah').removeClass('disabled');
 				let form = $(".ui.flyout form");
 				form.form("clear");
 				removeRulesForm(form);

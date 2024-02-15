@@ -26,8 +26,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
 
     <!-- MAIN TOOLBAR MENU -->
     <div class="ui teal top fixed inverted main menu">
-
-        <a class="item nabiila">
+        <a class="item nabiila" id="biilainayah">
             <i class="sidebar icon"></i>
         </a>
 
@@ -1030,6 +1029,9 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     <script src="<?= BASEURL; ?>js/Encryption.js"></script>
     <script type="text/javascript">
         const halamanDefault = '<?= $keyEnc; ?>';
+    </script>
+    <script>
+        const BASEURL = '<?= BASEURL; ?>';
     </script>
     <script src="<?= BASEURL; ?>js/index.js"></script>
 
