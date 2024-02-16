@@ -111,8 +111,8 @@ $(document).ready(function () {
 			tab_renja: [
 				"clipboard list icon",
 				"RENJA",
+				"Rencana Kerja dan Anggaran SKPD",
 				"Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
-				"",
 			],
 			tujuan_sasaran_renstra: [
 				"clipboard list icon",
@@ -386,7 +386,24 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 				jalankanAjax = true;
 				break;
-			case "xxxx":
+			case "tab_renja":
+				$(".message.goyang.keterangan").find('p').text(arrayDasboard[tab][3]);
+				if (tbl) {
+					jalankanAjax = true;
+					divTab.find('button[jns]').attr('tbl', tbl)
+				}
+				switch (tbl) {
+					case "sub_keg_renja":
+					case "renja":
+					case "renja_p":
+						jalankanAjax = true;
+						break;
+					default:
+						break;
+				}
+				break;
+			case "vvvv":
+				dasboard.find($("message goyang keterangan")).html(pDashboard);
 				break;
 			default:
 				break;
@@ -551,6 +568,52 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
+						case 'sub_keg_dpa':
+						case 'sub_keg_renja':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldDropdown", {
+									label: "Sub Kegiatan",
+									atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
+									kelas: "search clearable kd_sub_keg selection",
+									dataArray: [
+										["", ""]
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Tolak Ukur Hasil",
+									atribut: 'name="tolak_ukur_hasil" rows="4" placeholder="indikator..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Target Kinerja Hasil",
+									atribut: 'name="target_kinerja_hasil" placeholder="target tahun I..." non_data',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keluaran Sub Kegiatan",
+									atribut: 'name="keluaran_sub_keg" rows="4" placeholder="keluaran sub keg..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Jumlah Pagu",
+									atribut: 'name="jumlah" placeholder="jumlah (perencanaan)..." rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Jumlah Pagu Perubahan",
+									atribut: 'name="jumlah_p" placeholder="jumlah (perencanaan)..." rms',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Lokasi",
+									atribut: 'name="lokasi" placeholder="lokasi..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							break;
+
 						case 'tujuan_renstra':
 							let kelompok = (tbl = 'tujuan_renstra') ? 'tujuan' : 'sasaran';
 							dataHtmlku.konten =
@@ -1285,9 +1348,7 @@ $(document).ready(function () {
 				case "import":
 					let templateXlsx = linkTemplate[tbl];//@audit + link
 					console.log();
-
 					if (templateXlsx) {
-
 						dataHtmlku.konten = buatElemenHtml("fieldLabel", {
 							label: "Download Template",
 							icon: "download green",
@@ -1356,6 +1417,11 @@ $(document).ready(function () {
 							dropdownSubKeg.returnList("get_row_json", "sub_keg");//dropdownConstr.restore();
 							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.selection')
 							dropdownSatuan.returnList("get_row_json", "satuan", 1);
+							break;
+						case 'sub_keg_dpa':
+						case 'sub_keg_renja':
+							let SubKeg = new DropdownConstructor('.ui.dropdown.kd_sub_keg.selection')
+							SubKeg.returnList("get_row_json", "sub_keg");
 							break;
 						case 'val':
 
@@ -2385,6 +2451,12 @@ $(document).ready(function () {
 									break;
 								case "renstra":
 								case "tujuan_sasaran_renstra":
+								case "sub_keg_renja":
+								case "sub_keg_dpa":
+								case "renja":
+								case "dpa":
+								case "renja_p":
+								case "dppa":
 									jalankanAjax = true;
 									break;
 								default:
@@ -2443,10 +2515,8 @@ $(document).ready(function () {
 					}
 					switch (tbl) {
 						case 'value':
-
 							break;
 						case 'value1':
-
 							break;
 						default:
 							let propertyElm = ini.find(".ui.calendar.date");

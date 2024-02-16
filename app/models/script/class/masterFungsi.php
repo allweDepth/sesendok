@@ -42,6 +42,18 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'sub_keg_renja':
+                $rowData['thead'] = trim('<tr>
+                            <th>KODE KOMPONEN</th>
+                            <th>URAIAN</th>
+                            <th>PAGU</th>
+                            <th>URAIAN</th>
+                            <th>TOLAK UKUR HASIL</th>
+                            <th>KELUARAN SUB KEGIATAN</th>
+                            <th>KETERANGAN</th>
+                            <th class="collapsing">AKSI</th>
+                        </tr>');
+                break;
             case 'renstra':
                 $rowData['thead'] = '<tr class="center aligned">
                 <th rowspan="3">Tujuan</th>
@@ -237,7 +249,7 @@ class MasterFungsi
                                     
                                     <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
                                     <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
-                                    <td klm="data_capaian_awal">' . $divAwalAngka . number_format($row->data_capaian_awal , 2, ',', '.'). $divAkhir . '</td>
+                                    <td klm="data_capaian_awal">' . $divAwalAngka . number_format($row->data_capaian_awal, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="target_thn_1">' . $divAwalAngka . number_format($row->target_thn_1, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="dana_thn_1">' . $divAwalAngka . number_format($row->dana_thn_1, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="target_thn_2">' . $divAwalAngka . number_format($row->target_thn_2, 2, ',', '.') . $divAkhir . '</td>
@@ -732,6 +744,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'sub_keg_renja':
+                $tabel_pakai = 'sub_keg_renja_neo';
+                $jumlah_kolom = 8;
+                break;
             case 'prog_keg_renstra':
                 $tabel_pakai = 'renstra_skpd_neo';
                 $jumlah_kolom = 6;
@@ -830,21 +846,43 @@ class MasterFungsi
         return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
     }
     //uraikan kode rekening sub kegiatan 
-    public function kd_sub_keg($tbl='renstra', $kode=''){
+    public function kd_sub_keg($dinamic=[])
+    {
+        $tbl = $dinamic['tbl'];
+        $kode = $dinamic['kode'];
+        $user = new User();
+        $user->cekUserSession();
+        $type_user = $_SESSION["user"]["type_user"];
+        $id_user = $_SESSION["user"]["id"];
+        $DB = DB::getInstance();
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
+        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
+        $Fungsi = new MasterFungsi();
+        if ($jumlahArray > 0) {
+            foreach ($userAktif[0] as $key => $value) {
+                ${$key} = $value;
+            }
+        }
+        $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
         $explodeAwal = explode('.', $kode);
         $count = count($explodeAwal);
+        // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
         switch ($count) {
-            case 6:
+            case 6://sub keg
+                break;
+            case 5://keg
+            case 4://keg
                 
-                break;
-            case 5:
-                #code...
-                break;
+            case 3://prog
+                
+            case 2://bidang
+                
+            case 1://urusan
+                
             default:
-                #code...
                 break;
         };
-        
+
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel

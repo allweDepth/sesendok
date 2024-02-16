@@ -65,6 +65,57 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($tbl) {
+                    case 'sub_keg_dpa':
+                    case 'sub_keg_renja':
+                        switch ($jenis) {
+                            case 'edit':
+                                $id_row = $validate->setRules('id_row', 'id', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                            case 'add':
+                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
+                                    'min_char' => 4
+                                ]);
+                                $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target kinerja hasil', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran sub keg', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $jumlah = $validate->setRules('jumlah', 'jumlah renja', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $jumlah_p = $validate->setRules('jumlah_p', 'jumlah renja perubahan', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        break;
                     case 'tujuan_sasaran_renstra':
                     case 'sasaran_renstra':
                     case 'tujuan_renstra':
@@ -789,6 +840,34 @@ class post_data
                     }
                     //start buat property
                     switch ($tbl) {
+                        case 'sub_keg_dpa':
+                        case 'sub_keg_renja':
+                            $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                            $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                            
+                            
+                            $set = [
+                                'kd_wilayah' => $kd_wilayah,
+                                'kd_opd' => $kd_opd,
+                                'tahun' => $tahun,
+                                'kd_sub_keg' => $kd_sub_keg,
+                                'uraian' => $uraian,
+                                'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
+                                'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
+                                'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
+                                'jumlah' => $jumlah,
+                                'jumlah_p' => $jumlah_p,
+                                'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
+                                'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                'disable' => $disable,
+                                'tanggal' => date('Y-m-d H:i:s'),
+                                'tgl_update' => date('Y-m-d H:i:s'),
+                                'username' => $_SESSION["user"]["username"]
+                            ];
+                            $dinamic = ['tbl'=>$tbl,'kode'=>$kd_sub_keg,$set];
+                            $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
+                            $kodePosting = '';
+                            break;
                         case 'tujuan_renstra':
                         case 'tujuan_sasaran_renstra':
                         case 'sasaran_renstra':
@@ -840,11 +919,11 @@ class post_data
                                     }
                                     // id tujuan
                                     $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
-                                    
-                                    $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0 ;
+
+                                    $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
                                     //uraian_prog_keg
                                     $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
-                                    $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan' ;
+                                    $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
                                     // $uraian_prog_keg = $progkeg->nomenklatur_urusan;
                                     //kondisi_akhir
                                     $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;

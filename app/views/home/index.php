@@ -404,6 +404,11 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         <h1 class="ui header">Rencana Kerja SKPD (Renja) <div class="sub header">dokumen perencanaan berorientasi pada hasil yang ingin dicapai</div>
                         </h1>
                         <div class="ui hidden divider"></div>
+                        <div class="ui positif icon message goyang keterangan"><i class="book icon"></i>
+                            <div class="content">
+                                <p name="total-anggaran"></p>
+                            </div>
+                        </div>
                         <div class="ui stretched stackable five column grid">
                             <div class="column">
                                 <div class="ui orange icon message goyang"><i class="book icon"></i>
@@ -449,18 +454,20 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                             <div class="ui fluid container">
                                 <div class="ui hidden divider"></div>
-                                <div class="ui right floated basic icon buttons">
-                                    <?php
-                                    if ($type_user == 'admin') {
-                                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
-                            <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-                                    }
-                                    ?>
-                                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
+                                <div style="height: 1px">
+                                    <!-- <div class="ui left floated pagination menu">
+                                        <a class="active item" dasar="pokok">POKOK</a>
+                                        <a class="item" dasar="perubahan">PERUBAHAN</a>
+                                    </div> -->
+                                    <div class="ui right floated basic icon buttons">
+                                        <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
+                                        <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                                        <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
+                                    </div>
                                 </div>
-                                <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                                 <div class="ui hidden divider"></div>
-                                <div class="ui hidden divider"></div>
+                                <h3 class="ui dividing header"></h3>
+
                                 <div class="ui long scrolling fluid container">
                                     <table class="ui unstackable table">
                                         <thead>

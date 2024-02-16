@@ -140,7 +140,6 @@ class get_data
                     $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
                     $kolom = '*';
                     $sukses = true;
-                    $err = 0;
                     $dataJson = [];
                     $kodePosting = '';
                     switch ($jenis) {
@@ -301,6 +300,31 @@ class get_data
                                 $code = 70;
                             }
                             break;
+                        case 'sub_keg_renja':
+                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                            if ($rowOrganisasi) {
+                                $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                if ($tahun_renstra > 2000) {
+                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR tolak_ukur_capaian_keg LIKE CONCAT('%',?,'%') OR tolak_ukur_keluaran LIKE CONCAT('%',?,'%') OR keluaran_sub_keg LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kd_sub_keg ASC";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND']];
+                                    //pilih kolom yang diambil
+                                    // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                } else {
+                                    $message_tambah = ' (atur tahun renstra OPD)';
+                                    $code = 70;
+                                    $kodePosting = '';
+                                }
+                            } else {
+                                $message_tambah = ' (atur organisasi OPD)';
+                                $kodePosting = '';
+                                $code = 70;
+                            }
+                            break;
                         case 'rekanan':
                             $like = "kd_wilayah = ? AND nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR data_lain LIKE CONCAT('%',?,'%') OR file LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%')";
                             $data_like = [$kd_wilayah, $cari, $cari, $cari, $cari, $cari, $cari];
@@ -409,7 +433,7 @@ class get_data
                             $order = "ORDER BY kode ASC";
                             $posisi = " LIMIT ?, ?";
                             $where1 = "disable <= ? AND sub_keg > ?";
-                            $data_where1 =  [0,0];
+                            $data_where1 =  [0, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 11;
@@ -450,7 +474,7 @@ class get_data
                             break;
                         default:
                             $kodePosting = '';
-                            $code = 6;
+                            $code = 204;
                     }
                     // var_dump($kodePosting);
                     //================================================
@@ -589,7 +613,7 @@ class get_data
                                         case 'get_row_json':
                                             switch ($tbl) {
                                                 case 'sasaran_renstra':
-                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id,'description' => $row->id_tujuan];
+                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan];
                                                     break;
                                                 case 'sub_keg':
                                                     $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode];
