@@ -899,7 +899,7 @@ class MasterFungsi
             //var_dump($kd_sub_kegOk);
             $dinamic['set']['kd_sub_keg'] = $kd_sub_kegOk;
             // jumlahkan kembali
-            
+
             // cari uraian
             $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_kegOk]]);
             $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
@@ -908,7 +908,6 @@ class MasterFungsi
                 case 'sub_keg_dpa':
                 case 'sub_keg_renja':
                     $dinamic['kondisi'] = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
-
                     break;
                 case 'dpa':
                 case 'renja':
