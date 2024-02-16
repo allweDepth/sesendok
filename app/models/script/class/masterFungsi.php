@@ -872,6 +872,7 @@ class MasterFungsi
         //call methode in class 
         $rek_Proses = $this->kelolaRek($dinamic);
         // var_dump($rek_Proses);
+        $insert=[];
         for ($i = 1; $i <= $rek_Proses['sum_rek']; $i++) {
             if ($i == 4) {
                 continue;
