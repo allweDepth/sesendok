@@ -864,7 +864,7 @@ class post_data
                                 'tgl_update' => date('Y-m-d H:i:s'),
                                 'username' => $_SESSION["user"]["username"]
                             ];
-                            $dinamic = ['tbl'=>$tbl,'kode'=>$kd_sub_keg,$set];
+                            $dinamic = ['tbl'=>$tbl,'kode'=>$kd_sub_keg,'set'=>$set];
                             $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
                             $kodePosting = '';
                             break;

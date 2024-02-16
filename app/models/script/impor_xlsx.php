@@ -926,7 +926,6 @@ class Impor_xlsx
                                                                         ]);
                                                                         if ((int) $keg > 0) {
                                                                             $kode .= "." . $keg;
-
                                                                             $sub_keg = $validateRow->setRules(4, 'sub_keg', [
                                                                                 'numeric_zero' => true,
                                                                             ]);

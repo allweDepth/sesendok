@@ -697,8 +697,10 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             $data_card->ssh = ['header' => 'SSH', 'meta' => 'Standar Satuan Harga (SSH)', 'description' => 'mapping (pemetaan) neraca dengan akun belanja', 'icon' => 'violet users cog'];
                             $data_card->hspk = ['header' => 'HSPK', 'meta' => 'Harga Satuan Pokok Kegiatan (HSPK)', 'description' => 'mapping (pemetaan) neraca dengan akun belanja', 'icon' => 'violet users cog'];
                             $data_card->renstra = ['header' => 'RENSTRA', 'meta' => 'renstra', 'description' => 'renstra', 'icon' => 'violet users cog'];
+                            $data_card->sub_keg_renja = ['header' => 'SUB KEGIATAN RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];
                             $data_card->renja = ['header' => 'RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];
                             $data_card->renja_p = ['header' => 'RENJA PERUBAHAN', 'meta' => 'renja perubahan', 'description' => 'renja perubahan', 'icon' => 'violet users cog'];
+                            $data_card->sub_keg_dpa = ['header' => 'SUB KEGIATAN DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
                             $data_card->dpa = ['header' => 'DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
                             $data_card->dppa = ['header' => 'DPPA', 'meta' => 'dpa perubahan', 'description' => 'dpa perubahan', 'icon' => 'violet users cog'];
                             if ($type_user == 'admin') {

@@ -846,44 +846,182 @@ class MasterFungsi
         return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
     }
     //uraikan kode rekening sub kegiatan 
-    public function kd_sub_keg($dinamic=[])
+    public function kd_sub_keg($dinamic = [])
     {
+        $user = new User();
+        $DB = DB::getInstance();
+        $user->cekUserSession();
         $tbl = $dinamic['tbl'];
         $kode = $dinamic['kode'];
-        $user = new User();
-        $user->cekUserSession();
+
         $type_user = $_SESSION["user"]["type_user"];
         $id_user = $_SESSION["user"]["id"];
-        $DB = DB::getInstance();
+
         $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
-        $Fungsi = new MasterFungsi();
+
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;
             }
         }
-        $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+        $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
         $explodeAwal = explode('.', $kode);
         $count = count($explodeAwal);
         // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
+        //call methode in class 
+        $rek_Proses = $this->kelolaRek($dinamic);
+        // var_dump($rek_Proses);
+        for ($i = 1; $i <= $rek_Proses['sum_rek']; $i++) {
+            if ($i == 4) {
+                continue;
+            }
+            switch ($i) {
+                case 1:
+                    $kd_sub_kegOk = $rek_Proses['kd_urusan'];
+                    break;
+                case 2:
+                    $kd_sub_kegOk = $rek_Proses['kd_bidang'];
+                    break;
+                case 3:
+                    $kd_sub_kegOk = $rek_Proses['kd_prog'];
+                    break;
+                case 5:
+                    $kd_sub_kegOk = $rek_Proses['kd_keg'];
+                    break;
+                case 6:
+                    $kd_sub_kegOk = $rek_Proses['kd_sub_keg'];
+                    break;
+                default:
+                    #code...
+                    break;
+            };
+            //var_dump($kd_sub_kegOk);
+            $dinamic['set']['kd_sub_keg'] = $kd_sub_kegOk;
+            // jumlahkan kembali
+            
+            // cari uraian
+            $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_kegOk]]);
+            $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
+            $dinamic['set']['uraian'] = $uraian_prog_keg;
+            switch ($tbl) {
+                case 'sub_keg_dpa':
+                case 'sub_keg_renja':
+                    $dinamic['kondisi'] = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
+
+                    break;
+                case 'dpa':
+                case 'renja':
+                    break;
+                default:
+                    break;
+            };
+            $insert[$i] = $this->cekInsertUpdate($dinamic);
+        }
+        return $insert;
+    }
+    public function cekInsertUpdate($dinamic = [])
+    {
+        $user = new User();
+        $DB = DB::getInstance();
+        $tbl = $dinamic['tbl'];
+        $kondisi = $dinamic['kondisi'];
+        $set = $dinamic['set'];
+        $user->cekUserSession();
+        $id_user = $_SESSION["user"]["id"];
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
+        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
+        if ($jumlahArray > 0) {
+            foreach ($userAktif[0] as $key => $value) {
+                ${$key} = $value;
+            }
+        }
+        $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
+        $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);
+        $jumlahArray = is_array($resul) ? count($resul) : 0;
+        $data = [];
+        if ($jumlahArray) {
+            $DB->update_array($tabel_pakai, $set, $kondisi);
+            if ($DB->count()) {
+                $data['update'] = $DB->count();
+            }
+        } else {
+            $resul = $DB->insert($tabel_pakai, $set);
+            $data['add_row'] = $DB->lastInsertId();
+        }
+        return $data;
+    }
+    public function kelolaRek($dinamic = [])
+    {
+        $kode = $dinamic['kode'];
+        // var_dump($kode);
+        $explodeAwal = explode('.', $kode);
+        $count = count($explodeAwal);
+
+        // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
+        $kd_rek = '';
+        $dataRek = [];
         switch ($count) {
-            case 6://sub keg
+            case 6: //sub keg
+                if ((int)$explodeAwal[5]) {
+                    $dataRek['sub_keg'] = (int)$explodeAwal[5];
+                    $kd_rek = $this->zero_pad((int)$explodeAwal[5], 4);
+                }
+            case 5: //keg
+                if ((int)$explodeAwal[4]) {
+                    $bantuan = (strlen($kd_rek) > 0) ? "." : "";
+                    $kd_rek = $this->zero_pad((int)$explodeAwal[4], 2) . $bantuan . $kd_rek;
+                }
+            case 4: //keg
+                if ((int)$explodeAwal[3]) {
+                    $bantuan = (strlen($kd_rek) > 0) ? "." : "";
+                    $kd_rek = $this->zero_pad((int)$explodeAwal[3], 1) . $bantuan . $kd_rek;
+                    $dataRek['keg'] = $this->zero_pad((int)$explodeAwal[3], 1) . "." . $this->zero_pad((int)$explodeAwal[4], 2);
+                }
+            case 3: //prog
+                if ((int)$explodeAwal[2]) {
+                    $bantuan = (strlen($kd_rek) > 0) ? "." : "";
+                    $kd_rek = $this->zero_pad((int)$explodeAwal[2], 2) . $bantuan . $kd_rek;
+                    $dataRek['prog'] = (int)$explodeAwal[2];
+                }
+            case 2: //bidang
+                if ((int)$explodeAwal[1]) {
+                    $bantuan = (strlen($kd_rek) > 0) ? "." : "";
+                    $kd_rek = $this->zero_pad((int)$explodeAwal[1], 1) . $bantuan . $kd_rek;
+                    $dataRek['bidang'] = (int)$explodeAwal[1];
+                }
+            case 1: //urusan
+                if ((int)$explodeAwal[0]) {
+                    $bantuan = (strlen($kd_rek) > 0) ? "." : "";
+                    $kd_rek = $this->zero_pad((int)$explodeAwal[0], 1) . $bantuan . $kd_rek;
+                    $dataRek['urusan'] = (int)$explodeAwal[0];
+                }
+                $dataRek['kode'] = $kd_rek;
                 break;
-            case 5://keg
-            case 4://keg
-                
-            case 3://prog
-                
-            case 2://bidang
-                
-            case 1://urusan
-                
             default:
                 break;
         };
+        $explodeAwal = explode('.', $dataRek['kode']);
+        $dataRek['sum_rek'] = count($explodeAwal);
+        if ($explodeAwal[0]) {
+            $dataRek['kd_urusan'] = $explodeAwal[0];
+        }
+        if ($explodeAwal[1]) {
+            $dataRek['kd_bidang'] = $explodeAwal[0] . "." . $explodeAwal[1];
+        }
+        if ($explodeAwal[2]) {
+            $dataRek['kd_prog'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2];
+        }
+        if ($explodeAwal[4] && $explodeAwal[3]) {
+            $dataRek['kd_keg'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4];
+        }
+        if ($explodeAwal[5]) {
+            $dataRek['kd_sub_keg'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4] . "." . $explodeAwal[5];
+        }
 
+        return $dataRek;
     }
+
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
     *
