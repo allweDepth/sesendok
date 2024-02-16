@@ -355,6 +355,7 @@ class post_data
                                     'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
                                     'min_char' => 8
                                 ]);
+                                //date time  ^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$
                                 $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -452,6 +453,67 @@ class post_data
                                     'required' => true,
                                     'numeric' => true,
                                     'min_char' => 1
+                                ]);
+                                $awal_renstra = $validate->setRules('awal_renstra', 'tanggal awal renstra', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_renstra = $validate->setRules('akhir_renstra', 'tanggal akhir renstra', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_renja = $validate->setRules('awal_renja', 'tanggal awal renja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                //'/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',2024-2-16 10:10:0
+                                $akhir_renja = $validate->setRules('akhir_renja', 'tanggal akhir renja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_renja_p = $validate->setRules('awal_renja_p', 'tanggal awal renja perubahan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_renja_p = $validate->setRules('akhir_renja_p', 'tanggal akhir renja perubahan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_dpa = $validate->setRules('awal_dpa', 'tanggal awal dpa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_dpa = $validate->setRules('akhir_dpa', 'tanggal akhir dpa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_dppa = $validate->setRules('awal_dppa', 'tanggal awal dppa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_dppa = $validate->setRules('akhir_dppa', 'tanggal akhir dppa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
                                 ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'sanitize' => 'string',
@@ -888,6 +950,7 @@ class post_data
                                 $kodePosting = 'cek_insert';
                             }
                             $set = [
+                                'kd_wilayah' => $kd_wilayah,
                                 'tahun' => $tahun,
                                 'aturan_anggaran' => $aturan_anggaran,
                                 'aturan_pengadaan' => $aturan_pengadaan,
@@ -898,6 +961,16 @@ class post_data
                                 'aturan_hspk' => $aturan_hspk,
                                 'aturan_sumber_dana' => $aturan_sumber_dana,
                                 'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
+                                'awal_renstra' => $awal_renstra,
+                                'akhir_renstra' => $akhir_renstra,
+                                'awal_renja' => $awal_renja,
+                                'akhir_renja' => $akhir_renja,
+                                'awal_renja_p' => $awal_renja_p,
+                                'akhir_renja_p' => $akhir_renja_p,
+                                'awal_dpa' => $awal_dpa,
+                                'akhir_dpa' => $akhir_dpa,
+                                'awal_dppa' => $awal_dppa,
+                                'akhir_dppa' => $akhir_dppa,
                                 'disable' => $disable,
                                 'keterangan' => $keterangan,
                                 'tanggal' => date('Y-m-d H:i:s'),

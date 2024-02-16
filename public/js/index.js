@@ -349,7 +349,7 @@ $(document).ready(function () {
 								dynamic[namaAttr].runCalendar();
 							}
 						});
-						
+
 						break;
 					default:
 						break;
@@ -419,7 +419,7 @@ $(document).ready(function () {
 								}
 								break;
 							case "get_data":
-								
+
 								break;
 							case "get_pengaturan":
 								switch (tbl) {
@@ -2321,6 +2321,31 @@ $(document).ready(function () {
 									? formData.append("disable", 'off')
 									: formData.set("disable", 'on'); // Returns false
 							}
+							let property = ini.find(".ui.calendar.date");
+							if (property.length > 0) {
+								for (const key of property) {
+									let nameAttr = $(key).find("[name]").attr("name");
+									let tanggal = $(key).calendar("get date");
+									if (tanggal) {
+										tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
+											}-${tanggal.getDate()}`; //local time
+										formData.set(nameAttr, tanggal);
+									}
+								}
+							}
+							property = ini.find(".ui.calendar.datetime");
+							// console.log(property);
+
+							if (property.length > 0) {
+								for (const key of property) {
+									let nameAttr = $(key).find("[name]").attr("name");
+									let tanggal = $(key).calendar("get date");
+									if (tanggal) {
+										tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
+										formData.set(nameAttr, tanggal);
+									}
+								}
+							}
 							switch (tbl) {
 								case "peraturan":
 									switch (jenis) {
@@ -2329,15 +2354,29 @@ $(document).ready(function () {
 										//formData.append("id_row", tbl);
 										case "input":
 											let property = ini.find(".ui.calendar.date");
-											for (const key of property) {
-												let nameAttr = $(key).find("[name]").attr("name");
-												let tanggal = $(key).calendar("get date");
-												if (tanggal) {
-													tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
-														}-${tanggal.getDate()}`; //local time
-													formData.set(nameAttr, tanggal);
+											if (property.length > 0) {
+												for (const key of property) {
+													let nameAttr = $(key).find("[name]").attr("name");
+													let tanggal = $(key).calendar("get date");
+													if (tanggal) {
+														tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
+															}-${tanggal.getDate()}`; //local time
+														formData.set(nameAttr, tanggal);
+													}
 												}
 											}
+											property = ini.find(".ui.calendar.datetime");
+											if (property.length > 0) {
+												for (const key of property) {
+													let nameAttr = $(key).find("[name]").attr("name");
+													let tanggal = $(key).calendar("get date");
+													if (tanggal) {
+														tanggal = new Date().toISOString().slice(0, 19).replace('T', ' ');
+														formData.set(nameAttr, tanggal);
+													}
+												}
+											}
+
 											jalankanAjax = true;
 											break;
 										default:
@@ -2359,6 +2398,7 @@ $(document).ready(function () {
 							formData.has("disable") === false
 								? formData.append("disable", 'off')
 								: formData.set("disable", 'on'); // Returns false
+
 							jalankanAjax = true;
 							break;
 						// =================
@@ -2401,6 +2441,54 @@ $(document).ready(function () {
 						default:
 							break;
 					}
+					switch (tbl) {
+						case 'value':
+
+							break;
+						case 'value1':
+
+							break;
+						default:
+							let propertyElm = ini.find(".ui.calendar.date");
+							if (propertyElm.length > 0) {
+								for (const key of propertyElm) {
+									let nameAttr = $(key).find("[name]").attr("name");
+									let tanggal = $(key).calendar("get date");
+									if (tanggal) {
+										tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
+											}-${tanggal.getDate()}`; //local time
+										formData.set(nameAttr, tanggal);
+									}
+								}
+							}
+							propertyElm = ini.find(".ui.calendar.datetime");
+							console.log(propertyElm);
+							if (propertyElm.length > 0) {
+								for (const key of propertyElm) {
+									let nameAttr = $(key).find("[name]").attr("name");
+									let tanggal = $(key).calendar("get date");
+									if (tanggal) {
+										//cara satu
+										// tanggal = new Date(tanggal);
+										// tanggal= tanggal.getUTCFullYear() + '-' +
+										// 	('00' + (tanggal.getUTCMonth() + 1)).slice(-2) + '-' +
+										// 	('00' + tanggal.getUTCDate()).slice(-2) + ' ' +
+										// 	('00' + tanggal.getUTCHours()).slice(-2) + ':' +
+										// 	('00' + tanggal.getUTCMinutes()).slice(-2) + ':' +
+										// 	('00' + tanggal.getUTCSeconds()).slice(-2);
+
+										//cara singkat
+										// tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
+										//caraku
+										tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
+											}-${tanggal.getDate()} ${tanggal.getHours()}:${tanggal.getMinutes()}:${tanggal.getSeconds()}`;
+										formData.set(nameAttr, tanggal);
+									}
+								}
+							}
+							break;
+					};
+
 					if (jalankanAjax) {
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";

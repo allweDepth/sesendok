@@ -145,8 +145,7 @@ class get_data
                     $kodePosting = '';
                     switch ($jenis) {
                         case 'get_pengaturan':
-                            $rowTahunAktif = $DB->getWhereOnce($tabel_pakai, ['tahun', '=', $tahun]);
-
+                            $rowTahunAktif = $DB->getWhereOnceCustom($tabel_pakai, [['tahun', '=', $tahun], ['kd_wilayah', '=', $kd_wilayah, 'AND']]);
                             if ($rowTahunAktif) {
                                 $rowTahun = $rowTahunAktif;
                             } else {
