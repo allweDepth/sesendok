@@ -879,18 +879,23 @@ class MasterFungsi
             switch ($i) {
                 case 1:
                     $kd_sub_kegOk = $rek_Proses['kd_urusan'];
+                    $columnSUM = $rek_Proses['kd_bidang'];
                     break;
                 case 2:
                     $kd_sub_kegOk = $rek_Proses['kd_bidang'];
+                    $columnSUM = $rek_Proses['kd_prog'];
                     break;
                 case 3:
                     $kd_sub_kegOk = $rek_Proses['kd_prog'];
+                    $columnSUM = $rek_Proses['kd_keg'];
                     break;
                 case 5:
                     $kd_sub_kegOk = $rek_Proses['kd_keg'];
+                    $columnSUM = $rek_Proses['kd_sub_keg'];
                     break;
                 case 6:
                     $kd_sub_kegOk = $rek_Proses['kd_sub_keg'];
+                    $columnSUM = $rek_Proses['kd_sub_keg'];
                     break;
                 default:
                     #code...
@@ -907,6 +912,7 @@ class MasterFungsi
             switch ($tbl) {
                 case 'sub_keg_dpa':
                 case 'sub_keg_renja':
+
                     $dinamic['kondisi'] = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
                     break;
                 case 'dpa':
@@ -915,7 +921,13 @@ class MasterFungsi
                 default:
                     break;
             };
+            $DB->select('*');
             $insert[$i] = $this->cekInsertUpdate($dinamic);
+            // jumlahkan kembali
+            $DB->select('SUM(jumlah), SUM(jumlah_p)');
+            $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $columnSUM, 'AND']];
+            $Sumprogkeg = $DB->getWhereCustom($tabel_pakai, $kondisi);
+            var_dump($Sumprogkeg);
         }
         return $insert;
     }
@@ -984,16 +996,26 @@ class MasterFungsi
                     $dataRek['prog'] = (int)$explodeAwal[2];
                 }
             case 2: //bidang
-                if ((int)$explodeAwal[1]) {
+                if ($explodeAwal[1]) {
                     $bantuan = (strlen($kd_rek) > 0) ? "." : "";
-                    $kd_rek = $this->zero_pad((int)$explodeAwal[1], 1) . $bantuan . $kd_rek;
-                    $dataRek['bidang'] = (int)$explodeAwal[1];
+                    if (is_numeric($explodeAwal[1])) {
+                        $bidang = $this->zero_pad((int)$explodeAwal[1], 1);
+                    } elseif (is_string($explodeAwal[1])) {
+                        $bidang = $explodeAwal[1];
+                    }
+                    $kd_rek = $bidang . $bantuan . $kd_rek;
+                    $dataRek['bidang'] = $bidang;
                 }
             case 1: //urusan
-                if ((int)$explodeAwal[0]) {
+                if ($explodeAwal[0]) {
                     $bantuan = (strlen($kd_rek) > 0) ? "." : "";
-                    $kd_rek = $this->zero_pad((int)$explodeAwal[0], 1) . $bantuan . $kd_rek;
-                    $dataRek['urusan'] = (int)$explodeAwal[0];
+                    if (is_numeric($explodeAwal[0])) {
+                        $urusan = $this->zero_pad((int)$explodeAwal[0], 1);
+                    } elseif (is_string($explodeAwal[0])) {
+                        $urusan = $explodeAwal[0];
+                    }
+                    $kd_rek = $urusan . $bantuan . $kd_rek;
+                    $dataRek['urusan'] = $urusan;
                 }
                 $dataRek['kode'] = $kd_rek;
                 break;
