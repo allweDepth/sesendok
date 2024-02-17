@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 16 Feb 2024 pada 17.20
+-- Waktu pembuatan: 17 Feb 2024 pada 17.54
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -125,12 +125,15 @@ CREATE TABLE `bidang_urusan_neo` (
 
 CREATE TABLE `dpa_neo` (
   `id` int(11) NOT NULL,
-  `kd_wilayah` int(11) NOT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
   `kd_opd` varchar(22) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_sub_keg` varchar(22) NOT NULL,
+  `kel_kd_sub_keg` varchar(50) NOT NULL,
   `kd_akun` varchar(22) NOT NULL,
-  `uraian` varchar(400) NOT NULL,
+  `kel_kd_akun` varchar(50) NOT NULL DEFAULT '0',
+  `disable_komponen` tinyint(1) NOT NULL DEFAULT 0,
+  `uraian` text NOT NULL,
   `jenis_kelompok` varchar(255) NOT NULL,
   `kelompok` varchar(255) NOT NULL,
   `jenis_standar_harga` varchar(6) NOT NULL,
@@ -151,10 +154,59 @@ CREATE TABLE `dpa_neo` (
   `sat_5` varchar(50) NOT NULL,
   `jumlah` decimal(12,0) NOT NULL,
   `sumber_dana` varchar(255) DEFAULT NULL,
+  `keterangan` int(11) NOT NULL,
+  `aksi` int(11) NOT NULL,
   `disable` tinyint(1) NOT NULL,
   `tgl_input` date NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username_input` varchar(255) NOT NULL,
+  `username_update` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `dppa_neo`
+--
+
+CREATE TABLE `dppa_neo` (
+  `id` int(11) NOT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
+  `kd_opd` varchar(22) NOT NULL,
+  `tahun` year(4) NOT NULL,
+  `kd_sub_keg` varchar(22) NOT NULL,
+  `kel_kd_sub_keg` varchar(50) NOT NULL,
+  `kd_akun` varchar(22) NOT NULL,
+  `kel_kd_akun` varchar(50) NOT NULL DEFAULT '0',
+  `disable_komponen` tinyint(1) NOT NULL DEFAULT 0,
+  `uraian` text NOT NULL,
+  `jenis_kelompok` varchar(255) NOT NULL,
+  `kelompok` varchar(255) NOT NULL,
+  `jenis_standar_harga` varchar(6) NOT NULL,
+  `id_standar_harga` int(11) NOT NULL,
+  `komponen` varchar(400) NOT NULL,
+  `spesifikasi` varchar(400) NOT NULL,
+  `harga_satuan` decimal(12,0) NOT NULL,
+  `satuan` varchar(255) NOT NULL,
+  `vol_1` decimal(12,0) NOT NULL,
+  `vol_2` decimal(12,0) NOT NULL,
+  `vol_3` decimal(12,0) NOT NULL,
+  `vol_4` decimal(12,0) NOT NULL,
+  `vol_5` decimal(12,0) NOT NULL,
+  `sat_1` varchar(50) NOT NULL,
+  `sat_2` varchar(50) NOT NULL,
+  `sat_3` varchar(50) NOT NULL,
+  `sat_4` varchar(50) NOT NULL,
+  `sat_5` varchar(50) NOT NULL,
+  `jumlah` decimal(12,0) NOT NULL,
+  `sumber_dana` varchar(255) DEFAULT NULL,
+  `keterangan` int(11) NOT NULL,
   `aksi` int(11) NOT NULL,
-  `keterangan` int(11) NOT NULL
+  `disable` tinyint(1) NOT NULL,
+  `tgl_input` date NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username_input` varchar(255) NOT NULL,
+  `username_update` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -384,12 +436,15 @@ CREATE TABLE `rekanan_neo` (
 
 CREATE TABLE `renja_neo` (
   `id` int(11) NOT NULL,
-  `kd_wilayah` int(11) NOT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
   `kd_opd` varchar(22) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_sub_keg` varchar(22) NOT NULL,
+  `kel_kd_sub_keg` varchar(50) NOT NULL,
   `kd_akun` varchar(22) NOT NULL,
-  `uraian` varchar(400) NOT NULL,
+  `kel_kd_akun` varchar(50) NOT NULL DEFAULT '0',
+  `disable_komponen` tinyint(1) NOT NULL DEFAULT 0,
+  `uraian` text NOT NULL,
   `jenis_kelompok` varchar(255) NOT NULL,
   `kelompok` varchar(255) NOT NULL,
   `jenis_standar_harga` varchar(6) NOT NULL,
@@ -410,10 +465,59 @@ CREATE TABLE `renja_neo` (
   `sat_5` varchar(50) NOT NULL,
   `jumlah` decimal(12,0) NOT NULL,
   `sumber_dana` varchar(255) DEFAULT NULL,
+  `keterangan` int(11) NOT NULL,
+  `aksi` int(11) NOT NULL,
   `disable` tinyint(1) NOT NULL,
   `tgl_input` date NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username_input` varchar(255) NOT NULL,
+  `username_update` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `renja_p_neo`
+--
+
+CREATE TABLE `renja_p_neo` (
+  `id` int(11) NOT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
+  `kd_opd` varchar(22) NOT NULL,
+  `tahun` year(4) NOT NULL,
+  `kd_sub_keg` varchar(22) NOT NULL,
+  `kel_kd_sub_keg` varchar(50) NOT NULL,
+  `kd_akun` varchar(22) NOT NULL,
+  `kel_kd_akun` varchar(50) NOT NULL DEFAULT '0',
+  `disable_komponen` tinyint(1) NOT NULL DEFAULT 0,
+  `uraian` text NOT NULL,
+  `jenis_kelompok` varchar(255) NOT NULL,
+  `kelompok` varchar(255) NOT NULL,
+  `jenis_standar_harga` varchar(6) NOT NULL,
+  `id_standar_harga` int(11) NOT NULL,
+  `komponen` varchar(400) NOT NULL,
+  `spesifikasi` varchar(400) NOT NULL,
+  `harga_satuan` decimal(12,0) NOT NULL,
+  `satuan` varchar(255) NOT NULL,
+  `vol_1` decimal(12,0) NOT NULL,
+  `vol_2` decimal(12,0) NOT NULL,
+  `vol_3` decimal(12,0) NOT NULL,
+  `vol_4` decimal(12,0) NOT NULL,
+  `vol_5` decimal(12,0) NOT NULL,
+  `sat_1` varchar(50) NOT NULL,
+  `sat_2` varchar(50) NOT NULL,
+  `sat_3` varchar(50) NOT NULL,
+  `sat_4` varchar(50) NOT NULL,
+  `sat_5` varchar(50) NOT NULL,
+  `jumlah` decimal(12,0) NOT NULL,
+  `sumber_dana` varchar(255) DEFAULT NULL,
+  `keterangan` int(11) NOT NULL,
   `aksi` int(11) NOT NULL,
-  `keterangan` int(11) NOT NULL
+  `disable` tinyint(1) NOT NULL,
+  `tgl_input` date NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username_input` varchar(255) NOT NULL,
+  `username_update` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -560,15 +664,16 @@ CREATE TABLE `sub_kegiatan_neo` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sub_keg_renja_neo`
+-- Struktur dari tabel `sub_keg_dpa_neo`
 --
 
-CREATE TABLE `sub_keg_renja_neo` (
+CREATE TABLE `sub_keg_dpa_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
   `kd_opd` varchar(22) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_sub_keg` varchar(22) NOT NULL,
+  `kel_kd_sub_keg` varchar(50) NOT NULL,
   `uraian` text NOT NULL,
   `tolak_ukur_capaian_keg` varchar(255) DEFAULT NULL,
   `target_kinerja_capaian_keg` varchar(400) DEFAULT NULL,
@@ -587,8 +692,53 @@ CREATE TABLE `sub_keg_renja_neo` (
   `keluaran_sub_keg` varchar(255) DEFAULT NULL,
   `keluaran_sub_keg_p` varchar(255) DEFAULT NULL,
   `awal_pelaksanaan` date DEFAULT NULL,
-  `jumlah` decimal(12,0) DEFAULT NULL,
-  `jumlah_p` decimal(12,0) DEFAULT NULL,
+  `jumlah_pagu` decimal(40,12) DEFAULT NULL,
+  `jumlah_pagu_p` decimal(40,12) DEFAULT NULL,
+  `jumlah_rincian` decimal(40,12) DEFAULT NULL,
+  `jumlah_rincian_p` decimal(40,12) DEFAULT NULL,
+  `disable` tinyint(1) NOT NULL,
+  `aksi` int(11) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `tanggal` datetime NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `sub_keg_renja_neo`
+--
+
+CREATE TABLE `sub_keg_renja_neo` (
+  `id` int(11) NOT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
+  `kd_opd` varchar(22) NOT NULL,
+  `tahun` year(4) NOT NULL,
+  `kd_sub_keg` varchar(22) NOT NULL,
+  `kel_kd_sub_keg` varchar(50) NOT NULL,
+  `uraian` text NOT NULL,
+  `tolak_ukur_capaian_keg` varchar(255) DEFAULT NULL,
+  `target_kinerja_capaian_keg` varchar(400) DEFAULT NULL,
+  `tolak_ukur_keluaran` varchar(400) DEFAULT NULL,
+  `target_kinerja_keluaran` varchar(255) DEFAULT NULL,
+  `tolak_ukur_hasil` varchar(255) DEFAULT NULL,
+  `target_kinerja_hasil` varchar(255) DEFAULT NULL,
+  `tolak_ukur_capaian_keg_p` varchar(255) DEFAULT NULL,
+  `target_kinerja_capaian_keg_p` varchar(400) DEFAULT NULL,
+  `tolak_ukur_keluaran_p` varchar(400) DEFAULT NULL,
+  `target_kinerja_keluaran_p` varchar(255) DEFAULT NULL,
+  `tolak_ukur_hasil_p` varchar(255) DEFAULT NULL,
+  `target_kinerja_hasil_p` varchar(255) DEFAULT NULL,
+  `sumber_dana` varchar(255) DEFAULT NULL,
+  `lokasi` varchar(255) DEFAULT NULL,
+  `keluaran_sub_keg` varchar(255) DEFAULT NULL,
+  `keluaran_sub_keg_p` varchar(255) DEFAULT NULL,
+  `awal_pelaksanaan` date DEFAULT NULL,
+  `jumlah_pagu` decimal(40,12) DEFAULT NULL,
+  `jumlah_pagu_p` decimal(40,12) DEFAULT NULL,
+  `jumlah_rincian` decimal(40,12) DEFAULT NULL,
+  `jumlah_rincian_p` decimal(40,12) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL,
   `aksi` int(11) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
@@ -681,7 +831,7 @@ CREATE TABLE `user_sesendok_biila` (
 
 INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `password`, `kd_organisasi`, `nama_org`, `kd_wilayah`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `tahun`, `kontak_person`, `font_size`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`) VALUES
 (1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$phmt521EHu3PEkilYD/TJ.i1U.ZcMjAHAJt4y88r3O0tfbgs8HQl6', '1.03.0.00.0.00.01.0000', 'Alwi Mansyur', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-01-26 14:17:26', '2024', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
-(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-16 23:00:11', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
+(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-18 00:28:06', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
 (3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$J1RLk2kaKqYeuFs2q76vxuoPYTi3cA8dCjRISJlnwlsi3sdHoAKg.', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
 (4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$V.f/.ElwettBd3jyJfMR5epHT0s8NVqaU/mL8ZIqIJo.HBb.6x/Qi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
 (5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$cFR8KdFGXUFBZ5C5payBEOb3aPEXtvYwAKO6Gc6Zdqyjo7WRuDY8.', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');
@@ -744,6 +894,12 @@ ALTER TABLE `dpa_neo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `dppa_neo`
+--
+ALTER TABLE `dppa_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `hspk_neo`
 --
 ALTER TABLE `hspk_neo`
@@ -798,6 +954,12 @@ ALTER TABLE `renja_neo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `renja_p_neo`
+--
+ALTER TABLE `renja_p_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `renstra_skpd_neo`
 --
 ALTER TABLE `renstra_skpd_neo`
@@ -825,6 +987,12 @@ ALTER TABLE `ssh_neo`
 -- Indeks untuk tabel `sub_kegiatan_neo`
 --
 ALTER TABLE `sub_kegiatan_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `sub_keg_dpa_neo`
+--
+ALTER TABLE `sub_keg_dpa_neo`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -894,6 +1062,12 @@ ALTER TABLE `dpa_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `dppa_neo`
+--
+ALTER TABLE `dppa_neo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `hspk_neo`
 --
 ALTER TABLE `hspk_neo`
@@ -948,6 +1122,12 @@ ALTER TABLE `renja_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `renja_p_neo`
+--
+ALTER TABLE `renja_p_neo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `renstra_skpd_neo`
 --
 ALTER TABLE `renstra_skpd_neo`
@@ -976,6 +1156,12 @@ ALTER TABLE `ssh_neo`
 --
 ALTER TABLE `sub_kegiatan_neo`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `sub_keg_dpa_neo`
+--
+ALTER TABLE `sub_keg_dpa_neo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `sub_keg_renja_neo`

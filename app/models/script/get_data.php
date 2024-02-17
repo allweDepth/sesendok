@@ -360,11 +360,11 @@ class get_data
                                         $tabel_tbl = 'sub_keg_renja';
                                         break;
                                     case 'renja_p':
-                                        $tabel_sub_keg = 'sub_keg_renja_p_neo';
+                                        $tabel_sub_keg = 'sub_keg_renja_neo';
                                         $tabel_tbl = 'sub_keg_renja';
                                         break;
                                     case 'dpa':
-                                        $tabel_sub_keg = 'sub_keg_dppa_neo';
+                                        $tabel_sub_keg = 'sub_keg_dpa_neo';
                                         $tabel_tbl = 'sub_keg_dpa';
                                         break;
                                     case 'dppa':

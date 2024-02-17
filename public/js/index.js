@@ -288,13 +288,7 @@ $(document).ready(function () {
 		dasboardheader.text(headerDashboard);
 		dasboard.find($("div.pDashboard")).html(pDashboard);
 		$(`div[data-tab=${tab}]`).attr("tbl", tbl);
-		let data = {
-			cari: cari(tab),
-			rows: countRows(),
-			jenis: jenis,
-			tbl: tbl,
-			halaman: halaman,
-		};
+		let data = {};
 		switch (tab) {
 			case "tab_hargasat":
 				dasboardheader.text(tbl.toUpperCase());
@@ -435,7 +429,12 @@ $(document).ready(function () {
 			default:
 				break;
 		}
-
+		
+			data.cari= cari(tab);
+			data.rows= countRows();
+			data.jenis= jenis;
+			data.tbl=tbl;
+			data.halaman=halaman;
 		if (jalankanAjax) {
 			loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
@@ -484,7 +483,6 @@ $(document).ready(function () {
 										$('form[name="form_pengaturan"] .ui.dropdown[name!="tahun"]').dropdown({
 											values: result?.data?.peraturan,
 										})
-
 										let attrName = formPengaturan.find('input[name],textarea[name]');
 										for (const iterator of attrName) {
 											let attrElm = $(iterator).attr('name');
@@ -3630,9 +3628,10 @@ $(document).ready(function () {
 		}
 		return str.split("-")[1] || 0;
 	};
-	function rumus(evt) {
-		return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
-			String.fromCharCode(evt.which)
-		);
-	}
+	
 });
+function rumus(evt) {
+	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
+		String.fromCharCode(evt.which)
+	);
+}
