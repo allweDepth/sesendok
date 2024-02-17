@@ -240,9 +240,7 @@ class MasterFungsi
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                            
-                            <div class="ui icon top left pointing lainnya dropdown button">
+                            $buttonEdit = ($row->kel_kd_sub_keg == 'kd_sub_keg') ? '<div class="ui icon top left pointing lainnya dropdown button">
                             <i class="wrench icon"></i>
                                 <div class="menu">
                                     <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
@@ -251,8 +249,8 @@ class MasterFungsi
                                     <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><div class="ui red empty circular label"></div>Rincian Perubahan</a>
                                     <div class="item">Help</div>
                                 </div>
-                            </div>
-                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>' ;
+                            $buttons = '<div class="ui icon basic mini buttons">'.$buttonEdit.'<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_sub_keg">' . $row->kd_sub_keg . '</td>
@@ -992,6 +990,73 @@ class MasterFungsi
         }
         return $insert;
     }
+    // ambil data row bidang s/d sub kegiatan
+    public function get_bidang_sd_sub_keg($dinamic = [])
+    {
+        $user = new User();
+        $DB = DB::getInstance();
+        $user->cekUserSession();
+        $tbl = $dinamic['tbl'];
+        $kode = $dinamic['kode'];
+
+        
+        $id_user = $_SESSION["user"]["id"];
+
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
+        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
+
+        if ($jumlahArray > 0) {
+            foreach ($userAktif[0] as $key => $value) {
+                ${$key} = $value;
+            }
+        }
+        $column =  ($dinamic['column']) ? $dinamic['column'] : '*';
+        $DB->select($column);
+        $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
+        $explodeAwal = explode('.', $kode);
+        // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
+        //call methode in class 
+        $Sumprogkeg =[];
+        $rek_Proses = $this->kelolaRek($dinamic);
+        // var_dump($rek_Proses);
+        for ($i = 1; $i <= $rek_Proses['sum_rek']; $i++) {
+            if ($i == 4) {
+                continue;
+            }
+            switch ($i) {
+                case 1:
+                    $kd_sub_kegOk = $rek_Proses['kd_urusan'];
+                    $kel_kd_sub_keg = 'kd_urusan';
+                    break;
+                case 2:
+                    $kd_sub_kegOk = $rek_Proses['kd_bidang'];
+                    $kel_kd_sub_keg = 'kd_bidang';
+                    break;
+                case 3:
+                    $kd_sub_kegOk = $rek_Proses['kd_prog'];
+                    $kel_kd_sub_keg = 'kd_prog';
+                    break;
+                case 5:
+                    $kd_sub_kegOk = $rek_Proses['kd_keg'];
+                    $kel_kd_sub_keg = 'kd_keg';
+                    break;
+                case 6:
+                    $kd_sub_kegOk = $rek_Proses['kd_sub_keg'];
+                    $kel_kd_sub_keg = 'kd_sub_keg';
+                    break;
+                default:
+                    #code...
+                    break;
+            };
+            $DB->select($column);
+            $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
+            $Sumprogkeg[$kel_kd_sub_keg] = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+            // $Sumprogkeg[$kel_kd_sub_keg] = $DB->getWhereCustom($tabel_pakai, $kondisi);
+            // var_dump($Sumprogkeg);
+        }
+        return $Sumprogkeg;
+    }
+
     public function cekInsertUpdate($dinamic = [])
     {
         $user = new User();

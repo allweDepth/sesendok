@@ -97,7 +97,23 @@ class get_data
                         ]);
                         break;
                     case 'get_tbl':
-
+                        switch ($tbl) {
+                            case 'dpa':
+                            case 'dppa':
+                            case 'renja_p':
+                            case 'renja':
+                                $id_sub_keg = $validate->setRules('id_sub_keg', 'nomor sub kegiatan', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
                         break;
                     case 'get_rows':
 
@@ -328,6 +344,8 @@ class get_data
                         case 'dppa':
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                             if ($rowOrganisasi) {
+                                $unit_kerja = $rowOrganisasi->uraian;
+                                $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
                                 $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                 $data_like = [$kd_wilayah, $kd_opd, $tahun, $cari, $cari, $cari, $cari, $cari, $cari];
                                 $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian ASC";
@@ -335,8 +353,60 @@ class get_data
                                 $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
 
                                 $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND']];
-                                //pilih kolom yang diambil
-                                // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
+                                switch ($tbl) {
+                                    case 'renja':
+                                        $tabel_sub_keg = 'sub_keg_renja_neo';
+                                        $tabel_tbl = 'sub_keg_renja';
+                                        break;
+                                    case 'renja_p':
+                                        $tabel_sub_keg = 'sub_keg_renja_p_neo';
+                                        $tabel_tbl = 'sub_keg_renja';
+                                        break;
+                                    case 'dpa':
+                                        $tabel_sub_keg = 'sub_keg_dppa_neo';
+                                        $tabel_tbl = 'sub_keg_dpa';
+                                        break;
+                                    case 'dppa':
+                                        $tabel_sub_keg = 'sub_keg_dpa_neo';
+                                        $tabel_tbl = 'sub_keg_dpa';
+                                        break;
+                                    default:
+                                        #code...
+                                        break;
+                                };
+                                $rowSubKeg = $DB->getWhereOnceCustom($tabel_sub_keg, [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['id', '=', $id_sub_keg, 'AND']]);
+                                $kd_sub_keg = $rowSubKeg->kd_sub_keg;
+
+                                $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg,'column'=> 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
+
+                                $bidang_sub_keg =$Fungsi->get_bidang_sd_sub_keg($dinamic);
+                                // var_dump($bidang_sub_keg);
+                                $data['tr_sub_keg'] = '<tr>
+                                <td class="collapsing">Perangkat Daerah</td>
+                                <td>'.$data['unit_kerja'].'</td>
+                                <td class="right aligned collapsing">Rp. 0,00</td>
+                            </tr>
+                            <tr>
+                                <td>Bidang</td>
+                                <td>'.$bidang_sub_keg['kd_bidang']->uraian .'</td>
+                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') .'</td>
+                            </tr>
+                            <tr>
+                                <td>Program</td>
+                                <td>'.$bidang_sub_keg['kd_prog']->uraian .'</td>
+                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') .'</td>
+                            </tr>
+                            <tr>
+                                <td>Kegiatan</td>
+                                <td>'.$bidang_sub_keg['kd_keg']->uraian .'</td>
+                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') .'</td>
+                            </tr>
+                            <tr>
+                                <td>Sub Kegiatan</td>
+                                <td>'.$bidang_sub_keg['kd_sub_keg']->uraian .'</td>
+                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') .'</td>
+                            </tr>';
                             } else {
                                 $message_tambah = ' (atur organisasi OPD)';
                                 $kodePosting = '';

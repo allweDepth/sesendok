@@ -249,7 +249,7 @@ $(document).ready(function () {
 		let tab = ini.attr("data-tab");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
-		
+
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
@@ -288,7 +288,13 @@ $(document).ready(function () {
 		dasboardheader.text(headerDashboard);
 		dasboard.find($("div.pDashboard")).html(pDashboard);
 		$(`div[data-tab=${tab}]`).attr("tbl", tbl);
-
+		let data = {
+			cari: cari(tab),
+			rows: countRows(),
+			jenis: jenis,
+			tbl: tbl,
+			halaman: halaman,
+		};
 		switch (tab) {
 			case "tab_hargasat":
 				dasboardheader.text(tbl.toUpperCase());
@@ -365,6 +371,7 @@ $(document).ready(function () {
 				if (tbl) {
 					jalankanAjax = true;
 					divTab.find('button[jns]').attr('tbl', tbl)
+
 				}
 				break;
 			case "aset":
@@ -398,20 +405,23 @@ $(document).ready(function () {
 				}
 				switch (tbl) {
 					case "sub_keg_renja":
+					case "dpa":
+					case "dppa":
 					case "renja":
 					case "renja_p":
 						let elmk = divTab.find(`.secondary.menu [tb="${tbl}"]`);
 						console.log(elmk);
 						elmk.addClass('active')
-						.closest('.ui.menu')
-						.find('.item')
-						.not($(elmk))
-						.removeClass('active')
-						;
+							.closest('.ui.menu')
+							.find('.item')
+							.not($(elmk))
+							.removeClass('active')
+							;
 						if (tbl === 'sub_keg_renja') {
-							divTab.find('table.sub_keg').attr('hidden',"")
+							divTab.find('table.sub_keg').attr('hidden', "")
 						} else {
 							divTab.find('table.sub_keg').removeAttr('hidden')
+							data['id_sub_keg'] = ini.closest('tr').attr('id_row');
 						}
 						jalankanAjax = true;
 						break;
@@ -425,13 +435,7 @@ $(document).ready(function () {
 			default:
 				break;
 		}
-		let data = {
-			cari: cari(tab),
-			rows: countRows(),
-			jenis: jenis,
-			tbl: tbl,
-			halaman: halaman,
-		};
+
 		if (jalankanAjax) {
 			loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
@@ -452,6 +456,22 @@ $(document).ready(function () {
 									elmthead.html(result.data.thead);
 								}
 								divTab.find(`.ui.dropdown`).dropdown({});
+								switch (tbl) {
+									case 'renja':
+									case 'dpa':
+									case 'renja_p':
+									case 'dppa'://@audit proses now
+										if (tbl !== 'sub_keg_renja') {
+											const elmTableSubKeg = divTab.find("table.sub_keg");
+											elmTableSubKeg.html(result.data.tr_sub_keg);
+										}
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
+
 								break;
 							case "get_data":
 
@@ -609,7 +629,7 @@ $(document).ready(function () {
 										["blud", "Belanja Operasional (BLUD)"],
 										["lahan", "Pembebasan Tanah/ Lahan"]
 									],
-								})+
+								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Rekening / Akun",
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
@@ -617,7 +637,7 @@ $(document).ready(function () {
 									dataArray: [
 										["", ""]
 									],
-								})+
+								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Pengelompokan Belanja",
 									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
@@ -626,7 +646,7 @@ $(document).ready(function () {
 										["paket", "Pemaketan Kerja"],
 										["kelompok", "Pengelompokan Belanja"]
 									],
-								})+
+								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Uraian Pengelompokan Belanja",
 									atribut: 'name="kelompok" placeholder="pilih uraian kelompok..."',
@@ -634,7 +654,7 @@ $(document).ready(function () {
 									dataArray: [
 										["", ""]
 									],
-								})+
+								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Sumber Dana",
 									atribut: 'name="sumber_dana" placeholder="pilih sumber dana..."',
@@ -643,7 +663,7 @@ $(document).ready(function () {
 										["paket", "Paket"],
 										["m", "m"]
 									],
-								})+
+								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Jenis Standar Harga",
 									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
@@ -654,7 +674,7 @@ $(document).ready(function () {
 										["hspk", "HSPK"],
 										["asb", "ASB"]
 									],
-								})+
+								}) +
 								buatElemenHtml("fieldTextAction", {
 									label: "Komponen",
 									atribut: 'name="komponen" placeholder="Nama Perusahaan..."',
@@ -686,7 +706,7 @@ $(document).ready(function () {
 									kelas: "disabled",
 									atribut:
 										'name="spesifikasi" placeholder="spesifikasi..."',
-								})+
+								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Keterangan",
 									atribut: 'name="uraian" placeholder="pilih satuan..."',

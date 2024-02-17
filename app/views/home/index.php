@@ -394,28 +394,28 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <tbody>
                                 <tr>
                                     <td class="collapsing">Perangkat Daerah</td>
-                                    <td>Initial commit</td>
-                                    <td class="right aligned collapsing">10 hours ago</td>
+                                    <td>Not Found</td>
+                                    <td class="right aligned collapsing">Rp. 0,00</td>
                                 </tr>
                                 <tr>
                                     <td>Bidang</td>
-                                    <td>Initial commit</td>
-                                    <td class="right aligned">10 hours ago</td>
+                                    <td>Not Found</td>
+                                    <td class="right aligned collapsing">Rp. 0,00</td>
                                 </tr>
                                 <tr>
                                     <td>Program</td>
-                                    <td>Initial commit</td>
-                                    <td class="right aligned">10 hours ago</td>
+                                    <td>Not Found</td>
+                                    <td class="right aligned collapsing">Rp. 0,00</td>
                                 </tr>
                                 <tr>
                                     <td>Kegiatan</td>
-                                    <td>Initial commit</td>
-                                    <td class="right aligned">10 hours ago</td>
+                                    <td>Not Found</td>
+                                    <td class="right aligned collapsing">Rp. 0,00</td>
                                 </tr>
                                 <tr>
                                     <td>Sub Kegiatan</td>
-                                    <td>Initial commit</td>
-                                    <td class="right aligned">10 hours ago</td>
+                                    <td>Not Found</td>
+                                    <td class="right aligned collapsing">Rp. 0,00</td>
                                 </tr>
                             </tbody>
                         </table>
