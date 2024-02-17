@@ -471,7 +471,7 @@ $(document).ready(function () {
 									default:
 										break;
 								};
-
+								$("[rms]").mathbiila();
 								break;
 							case "get_data":
 
@@ -3630,4 +3630,9 @@ $(document).ready(function () {
 		}
 		return str.split("-")[1] || 0;
 	};
+	function rumus(evt) {
+		return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
+			String.fromCharCode(evt.which)
+		);
+	}
 });

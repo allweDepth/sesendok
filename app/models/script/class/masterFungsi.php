@@ -760,7 +760,8 @@ class MasterFungsi
             //var_dump( $pagination );
             $rowData['tfoot'] = '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"><div class="ui center pagination menu">' . $pagination1 . $pagination . $paginationnext . $pagination2 . '</div></th></tr>';
         } else {
-            $rowData['tfoot'] = str_replace("\r\n", "", '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"></th></tr>');
+            //preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
+            $rowData['tfoot'] = str_replace('/(\s\s+|\t|\n)/', "", '<tr' . $classRow . '><th class="right aligned" colspan="' . $jumlah_kolom . '"></th></tr>');
         }
         if (isset($rowData['tbody'])) {
             $rowData['tbody'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tbody']);

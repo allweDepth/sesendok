@@ -378,40 +378,41 @@ class get_data
                                 $rowSubKeg = $DB->getWhereOnceCustom($tabel_sub_keg, [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['id', '=', $id_sub_keg, 'AND']]);
                                 $kd_sub_keg = $rowSubKeg->kd_sub_keg;
 
-                                $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg,'column'=> 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
+                                $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
 
-                                $bidang_sub_keg =$Fungsi->get_bidang_sd_sub_keg($dinamic);
+                                $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
                                 // var_dump($bidang_sub_keg);
                                 $data['tr_sub_keg'] = '<tr>
                                 <td class="collapsing">Perangkat Daerah</td>
-                                <td>'.$data['unit_kerja'].'</td>
+                                <td>' . $data['unit_kerja'] . '</td>
                                 <td class="right aligned collapsing">Rp. 0,00</td>
                             </tr>
                             <tr>
                                 <td>Bidang</td>
-                                <td>'.$bidang_sub_keg['kd_bidang']->uraian .'</td>
-                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') .'</td>
+                                <td>' . $bidang_sub_keg['kd_bidang']->uraian . ' (' . $bidang_sub_keg['kd_bidang']->kd_sub_keg . ')</td>
+                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
                             </tr>
                             <tr>
                                 <td>Program</td>
-                                <td>'.$bidang_sub_keg['kd_prog']->uraian .'</td>
-                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') .'</td>
+                                <td>' . $bidang_sub_keg['kd_prog']->uraian . ' (' . $bidang_sub_keg['kd_prog']->kd_sub_keg . ')</td>
+                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
                             </tr>
                             <tr>
                                 <td>Kegiatan</td>
-                                <td>'.$bidang_sub_keg['kd_keg']->uraian .'</td>
-                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') .'</td>
+                                <td>' . $bidang_sub_keg['kd_keg']->uraian . ' (' . $bidang_sub_keg['kd_keg']->kd_sub_keg . ')</td>
+                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
                             </tr>
                             <tr>
                                 <td>Sub Kegiatan</td>
-                                <td>'.$bidang_sub_keg['kd_sub_keg']->uraian .'</td>
-                                <td class="right aligned collapsing">Rp. '.number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') .'</td>
+                                <td>' . $bidang_sub_keg['kd_sub_keg']->uraian . ' (' . $bidang_sub_keg['kd_sub_keg']->kd_sub_keg . ')</td>
+                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
                             </tr>';
                             } else {
                                 $message_tambah = ' (atur organisasi OPD)';
                                 $kodePosting = '';
                                 $code = 70;
                             }
+                            $data['tr_sub_keg'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
                             // var_dump($tahun);
                             break;
                         case 'rekanan':
