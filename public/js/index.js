@@ -568,6 +568,117 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
+						case 'dpa':
+						case 'renja':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldDropdown", {
+									label: "Objek Belanja",
+									atribut: 'name="objek_belanja" placeholder="pilih objek belanja..."',
+									kelas: "search lainnya clearable selection",
+									dataArray: [
+										["gaji", "Belanja Gaji dan Tunjangan ASN"],
+										["barang_jasa_modal", "Belanja Barang Jasa dan Modal"],
+										["bunga", "Belanja Bunga"],
+										["subsidi", "Belanja Subsidi"],
+										["hibah_barang_jasa", "Belanja Hibah (Barang/Jasa)"],
+										["hubah_uang", "Belanja Hibah (Uang)"],
+										["sosial_barang_jasa", "Belanja Bantuan Sosial (Barang/Jasa)"],
+										["sosial_uang", "Belanja Bantuan Sosial (Uang)"],
+										["keuangan_umum", "Belania Bantuan Keuangan Umum"],
+										["keuangan_khusus", "Belanja Bantuan Keuangan Khusus"],
+										["btt", "Belanja Tidak Terduga (BTT)"],
+										["bos_pusat", "Dana BOS (BOS Pusat)"],
+										["blud", "Belanja Operasional (BLUD)"],
+										["lahan", "Pembebasan Tanah/ Lahan"]
+									],
+								})+
+								buatElemenHtml("fieldDropdown", {
+									label: "Rekening / Akun",
+									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
+									kelas: "search clearable kd_akun selection",
+									dataArray: [
+										["", ""]
+									],
+								})+
+								buatElemenHtml("fieldDropdown", {
+									label: "Pengelompokan Belanja",
+									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
+									kelas: "search clearable lainnya selection",
+									dataArray: [
+										["paket", "Pemaketan Kerja"],
+										["kelompok", "Pengelompokan Belanja"]
+									],
+								})+
+								buatElemenHtml("fieldDropdown", {
+									label: "Uraian Pengelompokan Belanja",
+									atribut: 'name="kelompok" placeholder="pilih uraian kelompok..."',
+									kelas: "search clearable kelompok selection",
+									dataArray: [
+										["", ""]
+									],
+								})+
+								buatElemenHtml("fieldDropdown", {
+									label: "Sumber Dana",
+									atribut: 'name="sumber_dana" placeholder="pilih sumber dana..."',
+									kelas: "search clearable sumber_dana selection",
+									dataArray: [
+										["paket", "Paket"],
+										["m", "m"]
+									],
+								})+
+								buatElemenHtml("fieldDropdown", {
+									label: "Jenis Standar Harga",
+									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
+									kelas: "search clearable lainnya selection",
+									dataArray: [
+										["ssh", "SSH"],
+										["sbu", "SBU"],
+										["hspk", "HSPK"],
+										["asb", "ASB"]
+									],
+								})+
+								buatElemenHtml("fieldTextAction", {
+									label: "Komponen",
+									atribut: 'name="komponen" placeholder="Nama Perusahaan..."',
+									atributLabel: `name="modal" jns="${jenis}" tbl=""`,
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "TKDN",
+									kelas: "disabled",
+									atribut:
+										'name="tkdn" placeholder="tkdn..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Spesifikasi Komponen",
+									kelas: "disabled",
+									atribut:
+										'name="spesifikasi" placeholder="spesifikasi..."',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Satuan",
+									atribut: 'name="satuan" placeholder="pilih satuan..."',
+									kelas: "search clearable satuan selection",
+									dataArray: [
+										["paket", "Paket"],
+										["m", "m"]
+									],
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Harga Satuan",
+									kelas: "disabled",
+									atribut:
+										'name="spesifikasi" placeholder="spesifikasi..."',
+								})+
+								buatElemenHtml("fieldDropdown", {
+									label: "Keterangan",
+									atribut: 'name="uraian" placeholder="pilih satuan..."',
+									kelas: "search clearable uraian selection",
+									dataArray: [
+										["paket", "Paket"],
+										["m", "m"]
+									],
+								});
+							break;
 						case 'sub_keg_dpa':
 						case 'sub_keg_renja':
 							dataHtmlku.konten =
@@ -593,11 +704,11 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Jumlah Pagu",
-									atribut: 'name="jumlah" placeholder="jumlah (perencanaan)..." rms',
+									atribut: 'name="jumlah_pagu" placeholder="jumlah (perencanaan)..." rms',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Jumlah Pagu Perubahan",
-									atribut: 'name="jumlah_p" placeholder="jumlah (perencanaan)..." rms',
+									atribut: 'name="jumlah_pagu_p" placeholder="jumlah (perencanaan)..." rms',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Lokasi",
@@ -2978,9 +3089,9 @@ $(document).ready(function () {
 			})
 			.dimmer("show");
 		//jika lebih dari 120 detik otomatis hilang sendiri
-		setTimeout(function () {
-			$(".demo.page.dimmer:first").dimmer("hide");
-		}, 120000);
+		// setTimeout(function () {
+		// 	$(".demo.page.dimmer:first").dimmer("hide");
+		// }, 120000);
 	}
 	function loaderHide() {
 		$(".demo.page.dimmer:first").dimmer("hide");

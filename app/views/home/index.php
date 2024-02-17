@@ -22,7 +22,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
 
 </head>
 
-<body style="overflow: hidden;margin-top: 45px;" class="dimmable">
+<body style="overflow: hidden;" class="dimmable">
 
     <!-- MAIN TOOLBAR MENU -->
     <div class="ui teal top fixed inverted main menu">
@@ -221,6 +221,13 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <div class="description">input Organisasi dan tahun renstra OPD (admin)</div>
                             </div>
                         </div>
+                        <div class="item">
+                            <i class="large list ol middle aligned icon"></i>
+                            <div class="content">
+                                <a class="header">Referensi</a>
+                                <div class="description">import/input referensi lainnya sampai sub kegiatan (admin)</div>
+                            </div>
+                        </div>
                     </div>
                     <p>Tutorial cara menggunakan aplikasi seSendok untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
                     <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
@@ -270,7 +277,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
-                            <a class="active item inayah" data-tab="tab_renstra" tbl="tujuan_sasaran_renstra">
+                            <a class="item inayah" data-tab="tab_renstra" tbl="tujuan_sasaran_renstra">
                                 Tujuan dan Sasaran
                             </a>
                             <a class="item inayah" data-tab="tab_renstra" tbl="renstra">
@@ -362,34 +369,13 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 </div>
             </div>
             <!-- ============== -->
-            <!-- tab_kontrak -->
-            <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_kontrak">
-            </div>
-            <!-- ============== -->
-            <!-- tab_input_real -->
-            <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_input_real">
-            </div>
-            <!-- ============== -->
-            <!-- tab_spj -->
-            <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_spj">
-            </div>
-            <!-- ============== -->
-            <!-- tab_lap -->
-            <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_lap">
-            </div>
-
-            <!-- ============== -->
             <!-- tab_renja -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_renja">
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
-                            <a class="active item inayah" data-tab="tab_renja" tbl="sub_keg_renja">
+                            <a class="item inayah" data-tab="tab_renja" tbl="sub_keg_renja">
                                 Sub Kegiatan
                             </a>
                             <a class="item inayah" data-tab="tab_renja" tbl="renja">
@@ -467,7 +453,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="ui hidden divider"></div>
                                 <h3 class="ui dividing header"></h3>
-
                                 <div class="ui long scrolling fluid container">
                                     <table class="ui unstackable table">
                                         <thead>
@@ -480,12 +465,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         </tfoot>
                                     </table>
                                 </div>
-
-
                             </div>
                         </div>
-
-
                     </div>
 
                 </div>
@@ -495,6 +476,28 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_dpa">
             </div>
+            <!-- ============== -->
+            <!-- tab_kontrak -->
+            <!-- ============== -->
+            <div class="ui tab basic segment" data-tab="tab_kontrak">
+            </div>
+            <!-- ============== -->
+            <!-- tab_input_real -->
+            <!-- ============== -->
+            <div class="ui tab basic segment" data-tab="tab_input_real">
+            </div>
+            <!-- ============== -->
+            <!-- tab_spj -->
+            <!-- ============== -->
+            <div class="ui tab basic segment" data-tab="tab_spj">
+            </div>
+            <!-- ============== -->
+            <!-- tab_lap -->
+            <!-- ============== -->
+            <div class="ui tab basic segment" data-tab="tab_lap">
+            </div>
+
+
             <!-- ============== -->
             <!-- tab_referensi -->
             <!-- ============== -->

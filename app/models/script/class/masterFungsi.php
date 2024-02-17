@@ -42,15 +42,27 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'dpa':
+            case 'renja':
+                $rowData['thead'] = trim('<tr>
+                            <th>KODE KOMPONEN</th>
+                            <th>URAIAN</th>
+                            <th>KOEFISIEN</th>
+                            <th>HARGA SATUAN</th>
+                            <th>TOTAL</th>
+                            <th>KETERANGAN</th>
+                            <th class="collapsing">AKSI</th>
+                        </tr>');
+                break;
+            case 'sub_keg_dpa':
             case 'sub_keg_renja':
                 $rowData['thead'] = trim('<tr>
                             <th>KODE KOMPONEN</th>
                             <th>URAIAN</th>
-                            <th>PAGU</th>
-                            <th>URAIAN</th>
-                            <th>TOLAK UKUR HASIL</th>
-                            <th>KELUARAN SUB KEGIATAN</th>
-                            <th>KETERANGAN</th>
+                            <th>PAGU ANGGARAN</th>
+                            <th>JUMLAH RINCIAN</th>
+                            <th>PAGU ANGGARAN PERUBAHAN</th>
+                            <th>JUMLAH RINCIAN PERUBAHAN</th>
                             <th class="collapsing">AKSI</th>
                         </tr>');
                 break;
@@ -168,17 +180,6 @@ class MasterFungsi
                     </tr>');
                 break;
             case 'sumber_dana':
-                // trim('<tr>
-                //         <th>sumber dana</th>
-                //         <th>kel</th>
-                //         <th>jenis</th>
-                //         <th>objek</th>
-                //         <th>rincian objek</th>
-                //         <th>sub rincian objek</th>
-                //         <th>uraian</th>
-                //         <th>keterangan</th>
-                //         <th>AKSI</th>
-                //     </tr>')
                 $rowData['thead'] = trim('<tr><th class="collapsing">KODE KOMPONEN</th>
                 <th>KOMPONEN</th>
                 <th>KETERANGAN</th>
@@ -225,13 +226,37 @@ class MasterFungsi
             foreach ($get_data as $row) {
                 $myrow++;
                 switch ($tbl) {
+                    case 'sub_keg_dpa':
+                    case 'sub_keg_renja':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+
+                        if ($disable_anggaran <= 0) {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui button" name="flyout" name="flyout" jns="rincian" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="kd_sub_keg">'. $row->kd_sub_keg . '</td>
+                                    <td klm="uraian">' .  $row->uraian .  '</td>
+                                    <td klm="jumlah_pagu">' . $divAwalAngka  . $row->jumlah_pagu . $divAkhir .  '</td>
+                                    <td klm="jumlah_rincian">' . $divAwalAngka  . $row->jumlah_rincian . $divAkhir .  '</td>
+                                    <td klm="jumlah_pagu_p">' . $divAwalAngka  . $row->jumlah_pagu . $divAkhir .  '</td>
+                                    <td klm="jumlah_rincian_p">' . $divAwalAngka  . $row->jumlah_rincian . $divAkhir .  '</td>
+                                    
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'renstra':
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
                         $divAwalAngka = '';
-
-
                         if ($type_user == 'admin') {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
@@ -744,6 +769,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'renja':
+                $tabel_pakai = 'renja_neo';
+                $jumlah_kolom = 5;
+                break;
             case 'sub_keg_renja':
                 $tabel_pakai = 'sub_keg_renja_neo';
                 $jumlah_kolom = 8;
@@ -928,7 +957,7 @@ class MasterFungsi
             $DB->select('SUM(jumlah), SUM(jumlah_p)');
             $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $columnSUM, 'AND']];
             $Sumprogkeg = $DB->getWhereCustom($tabel_pakai, $kondisi);
-            var_dump($Sumprogkeg);
+            // var_dump($Sumprogkeg);
         }
         return $insert;
     }

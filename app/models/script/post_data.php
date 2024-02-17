@@ -90,11 +90,11 @@ class post_data
                                 $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran sub keg', [
                                     'sanitize' => 'string'
                                 ]);
-                                $jumlah = $validate->setRules('jumlah', 'jumlah renja', [
+                                $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
                                     'sanitize' => 'string',
                                     'numeric_zero' => true,
                                 ]);
-                                $jumlah_p = $validate->setRules('jumlah_p', 'jumlah renja perubahan', [
+                                $jumlah_pagu_p = $validate->setRules('jumlah_pagu_p', 'jumlah pagu perubahan', [
                                     'sanitize' => 'string',
                                     'numeric_zero' => true,
                                 ]);
@@ -855,8 +855,8 @@ class post_data
                                 'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
                                 'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
                                 'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
-                                'jumlah' => $jumlah,
-                                'jumlah_p' => $jumlah_p,
+                                'jumlah_pagu' => $jumlah_pagu,
+                                'jumlah_pagu_p' => $jumlah_pagu_p,
                                 'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
                                 'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                 'disable' => $disable,
