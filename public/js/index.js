@@ -416,6 +416,8 @@ $(document).ready(function () {
 						} else {
 							divTab.find('table.sub_keg').removeAttr('hidden')
 							data['id_sub_keg'] = ini.closest('tr').attr('id_row');
+							// tambhalan atribut id sub kegiatan di button jns
+							divTab.find('button[jns="add"]').attr('id_sub_keg', data['id_sub_keg'])
 						}
 						jalankanAjax = true;
 						break;
@@ -429,12 +431,12 @@ $(document).ready(function () {
 			default:
 				break;
 		}
-		
-			data.cari= cari(tab);
-			data.rows= countRows();
-			data.jenis= jenis;
-			data.tbl=tbl;
-			data.halaman=halaman;
+
+		data.cari = cari(tab);
+		data.rows = countRows();
+		data.jenis = jenis;
+		data.tbl = tbl;
+		data.halaman = halaman;
 		if (jalankanAjax) {
 			loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
@@ -463,6 +465,8 @@ $(document).ready(function () {
 										if (tbl !== 'sub_keg_renja') {
 											const elmTableSubKeg = divTab.find("table.sub_keg");
 											elmTableSubKeg.html(result.data.tr_sub_keg);
+											// data['id_sub_keg'] = ini.closest('tr').attr('id_row');
+
 										}
 										break;
 									case 'value1':
@@ -2600,10 +2604,14 @@ $(document).ready(function () {
 								case "tujuan_sasaran_renstra":
 								case "sub_keg_renja":
 								case "sub_keg_dpa":
+									jalankanAjax = true;
+									// 'id_sub_keg'
+									break;
 								case "renja":
 								case "dpa":
 								case "renja_p":
 								case "dppa":
+									formData.append("id_sub_keg", MyForm.attr('id_sub_keg'))
 									jalankanAjax = true;
 									break;
 								default:
@@ -3628,7 +3636,7 @@ $(document).ready(function () {
 		}
 		return str.split("-")[1] || 0;
 	};
-	
+
 });
 function rumus(evt) {
 	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(

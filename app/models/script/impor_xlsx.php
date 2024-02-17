@@ -97,6 +97,12 @@ class Impor_xlsx
                                 $kd_opd = $rowUsername->kd_organisasi;
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
+                                    case 'sub_keg_renja':
+                                    case 'sub_keg_dpa':
+                                    case 'renja':
+                                    case 'dpa':
+                                    case 'renja_p':
+                                    case 'dppa':
                                     case 'tujuan_sasaran_renstra':
                                     case 'akun_belanja':
                                     case 'sub_kegiatan':
@@ -136,6 +142,11 @@ class Impor_xlsx
                                     //menentukan data
                                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     switch ($tbl) {
+                                        case 'sub_keg_renja':
+                                        case 'sub_keg_dpa':
+                                            $RowHeaderValidate = ['KODE SUB KEGIATAN', 'PROGRAM DAN KEGIATAN', 'TOLAK UKUR CAPAIAN KEG.', 'TARGET KINERJA CAPAIAN KEG.', 'TOLAK UKUR KELUARAN', 'TARGET KINERJA KELUARAN', 'TOLAK UKUR HASIL', 'TARGET KINERJA HASIL', 'SUMBER DANA', 'LOKASI', 'KELUARAN SUB KEG.', 'AWAL PELAKSANAAN', 'JUMLAH PAGU', 'KETERANGAN'];
+                                            $count_col_min = count($RowHeaderValidate);
+                                            break;
                                         case 'renstra':
                                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                                             $tahun_renstra = ($rowOrganisasi) ? $rowOrganisasi->tahun_renstra : 0;
@@ -265,6 +276,10 @@ class Impor_xlsx
                                                         //PROSES VALIDASI CELL EXCELL
                                                         //============================
                                                         switch ($tbl) {
+                                                            case 'sub_keg_renja':
+                                                            case 'sub_keg_dpa':
+
+                                                                break;
                                                             case 'renstra':
                                                                 /*
                                                                 $sasaran = $validateRow->setRules(0, 'sasaran', [
