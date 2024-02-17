@@ -277,7 +277,7 @@ class Impor_xlsx
                                                         //============================
                                                         switch ($tbl) {
                                                             case 'sub_keg_renja':
-                                                            case 'sub_keg_dpa':
+                                                            case 'sub_keg_dpa'://@audit impor sub_keg_renja
 
                                                                 break;
                                                             case 'renstra':
