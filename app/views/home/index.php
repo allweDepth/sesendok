@@ -82,7 +82,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
                 <div class="content">
                     <a class="item nabiila" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
-                    <a class="item nabiila" href="#" data-tab="tab_renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
                     <a class="item nabiila" href="#" data-tab="tab_dpa"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
 
                 </div>
@@ -347,7 +347,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <div class="ui hidden divider"></div>
                                 <div class="ui hidden divider"></div>
                                 <div class="ui long scrolling fluid container">
-                                    <table class="ui head foot stuck unstackable celled table">
+                                    <table class="ui head foot stuck unstackable celled table insert">
                                         <thead>
                                         </thead>
                                         <tbody>
@@ -375,13 +375,13 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
-                            <a class="item inayah" data-tab="tab_renja" tbl="sub_keg_renja">
+                            <a class="item inayah" data-tab="tab_renja" tbl="sub_keg_renja" tb="sub_keg_renja">
                                 Sub Kegiatan
                             </a>
-                            <a class="item inayah" data-tab="tab_renja" tbl="renja">
+                            <a class="item" data-tab="tab_renja" tb="renja">
                                 Renja
                             </a>
-                            <a class="item inayah" data-tab="tab_renja" tbl="renja_p">
+                            <a class="item" data-tab="tab_renja" tb="renja_p">
                                 Renja Perubahan
                             </a>
                         </div>
@@ -390,6 +390,35 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         <h1 class="ui header">Rencana Kerja SKPD (Renja) <div class="sub header">dokumen perencanaan berorientasi pada hasil yang ingin dicapai</div>
                         </h1>
                         <div class="ui hidden divider"></div>
+                        <table class="ui celled very basic striped table sub_keg" hidden>
+                            <tbody>
+                                <tr>
+                                    <td class="collapsing">Perangkat Daerah</td>
+                                    <td>Initial commit</td>
+                                    <td class="right aligned collapsing">10 hours ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Bidang</td>
+                                    <td>Initial commit</td>
+                                    <td class="right aligned">10 hours ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Program</td>
+                                    <td>Initial commit</td>
+                                    <td class="right aligned">10 hours ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Kegiatan</td>
+                                    <td>Initial commit</td>
+                                    <td class="right aligned">10 hours ago</td>
+                                </tr>
+                                <tr>
+                                    <td>Sub Kegiatan</td>
+                                    <td>Initial commit</td>
+                                    <td class="right aligned">10 hours ago</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div class="ui positif icon message goyang keterangan"><i class="book icon"></i>
                             <div class="content">
                                 <p name="total-anggaran"></p>
@@ -408,8 +437,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <div class="ui icon yellow message goyang">
                                     <i class="chart icon" name="chart-realisasi-fisik-mini"></i>
                                     <div class="content">
-                                        <div class="header">Jumlah Program</div>
-                                        <p name="realisasi-fisik"></p>
+                                        <div class="header">Kegiatan</div>
+                                        <p name="realisasi-fisik">Administrasi Barang Milik Daerah pada Perangkat Daerah</p>
                                     </div>
                                 </div>
                             </div>
@@ -417,15 +446,15 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <div class="column">
                                 <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini"></i>
                                     <div class="content">
-                                        <div class="header">Jumlah Kegiatan</div>
-                                        <p name="realisasi-keu"></p>
+                                        <div class="header">Sub Kegiatan</div>
+                                        <p name="realisasi-keu">Pembinaan, Pengawasan, dan Pengendalian Barang Milik Daerah pada SKPD</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="column">
                                 <div class="ui icon red message goyang"><i class="spinner loading icon"></i>
                                     <div class="content">
-                                        <div class="header">Jumlah Sub Kegiatan</div>
+                                        <div class="header">Jumlah Pagu</div>
                                         <p name="sisa-fisik"></p>
                                     </div>
                                 </div>
@@ -433,18 +462,15 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <div class="column">
                                 <div class="ui positive icon message goyang"><i class="spinner loading icon"></i>
                                     <div class="content">
-                                        <div class="header">Sisa Keuangan</div>
+                                        <div class="header">Jumlah Rincian</div>
                                         <p name="sisa-keu"></p>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="ui fluid container">
                                 <div class="ui hidden divider"></div>
                                 <div style="height: 1px">
-                                    <!-- <div class="ui left floated pagination menu">
-                                        <a class="active item" dasar="pokok">POKOK</a>
-                                        <a class="item" dasar="perubahan">PERUBAHAN</a>
-                                    </div> -->
                                     <div class="ui right floated basic icon buttons">
                                         <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
                                         <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
@@ -453,18 +479,16 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="ui hidden divider"></div>
                                 <h3 class="ui dividing header"></h3>
-                                <div class="ui long scrolling fluid container">
-                                    <table class="ui unstackable table">
-                                        <thead>
-                                        </thead>
-                                        <tbody>
+                                <table class="ui head stuck unstackable celled table insert">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
 
-                                        </tbody>
-                                        <tfoot>
+                                    </tbody>
+                                    <tfoot>
 
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -516,7 +540,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                 <div class="ui hidden divider"></div>
                 <div class="ui hidden divider"></div>
-                <table class="ui very basic table">
+                <table class="ui very basic table insert">
                     <thead>
                         <tr>
                             <th>Kode Komponen</th>
@@ -560,7 +584,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                 <div class="ui hidden divider"></div>
                 <div class="ui hidden divider"></div>
-                <table class="ui very basic table">
+                <table class="ui very basic table insert">
                     <thead>
                         <tr>
                             <th>Nomor</th>
@@ -617,7 +641,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                 <div class="ui hidden divider"></div>
                 <div class="ui hidden divider"></div>
-                <table class="ui very basic table">
+                <table class="ui very basic table insert">
                     <thead>
                         <tr>
                             <th>Kode Komponen</th>
@@ -1004,7 +1028,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                         </div>
                         <div class="ui tab basic" data-tab="atur" tbl="">
-                            <table class="ui table">
+                            <table class="ui table insert">
                                 <thead>
                                     <tr>
                                         <th>Name</th>

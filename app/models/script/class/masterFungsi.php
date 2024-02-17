@@ -42,6 +42,8 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'dppa':
+            case 'renja_p':
             case 'dpa':
             case 'renja':
                 $rowData['thead'] = trim('<tr>
@@ -228,6 +230,8 @@ class MasterFungsi
                 switch ($tbl) {
                     case 'sub_keg_dpa':
                     case 'sub_keg_renja':
+                        $tbl_button = ($tbl == 'sub_keg_renja') ? 'renja' : 'dpa';
+                        $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
@@ -237,17 +241,26 @@ class MasterFungsi
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                             $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui button" name="flyout" name="flyout" jns="rincian" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            
+                            <div class="ui icon top left pointing lainnya dropdown button">
+                            <i class="wrench icon"></i>
+                                <div class="menu">
+                                    <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
+                                    <div class="divider"></div>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"><div class="ui red empty circular label"></div>Rincian</a>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><div class="ui red empty circular label"></div>Rincian Perubahan</a>
+                                    <div class="item">Help</div>
+                                </div>
+                            </div>
                             <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="kd_sub_keg">'. $row->kd_sub_keg . '</td>
+                                    <td klm="kd_sub_keg">' . $row->kd_sub_keg . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
-                                    <td klm="jumlah_pagu">' . $divAwalAngka  . $row->jumlah_pagu . $divAkhir .  '</td>
-                                    <td klm="jumlah_rincian">' . $divAwalAngka  . $row->jumlah_rincian . $divAkhir .  '</td>
-                                    <td klm="jumlah_pagu_p">' . $divAwalAngka  . $row->jumlah_pagu . $divAkhir .  '</td>
-                                    <td klm="jumlah_rincian_p">' . $divAwalAngka  . $row->jumlah_rincian . $divAkhir .  '</td>
+                                    <td klm="jumlah_pagu">' . $divAwalAngka  . number_format($row->jumlah_pagu , 2, ',', '.'). $divAkhir .  '</td>
+                                    <td klm="jumlah_rincian">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah_pagu_p">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah_rincian_p">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
                                     
                                     <td>' . $buttons . '</td>
                                 </tr>');
@@ -769,9 +782,21 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'dppa':
+                $tabel_pakai = 'dppa_neo';
+                $jumlah_kolom = 7;
+                break;
+            case 'dpa':
+                $tabel_pakai = 'dpa_neo';
+                $jumlah_kolom = 7;
+                break;
+            case 'renja_p':
+                $tabel_pakai = 'renja_p_neo';
+                $jumlah_kolom = 7;
+                break;
             case 'renja':
                 $tabel_pakai = 'renja_neo';
-                $jumlah_kolom = 5;
+                $jumlah_kolom = 7;
                 break;
             case 'sub_keg_renja':
                 $tabel_pakai = 'sub_keg_renja_neo';
@@ -901,7 +926,7 @@ class MasterFungsi
         //call methode in class 
         $rek_Proses = $this->kelolaRek($dinamic);
         // var_dump($rek_Proses);
-        $insert=[];
+        $insert = [];
         for ($i = 1; $i <= $rek_Proses['sum_rek']; $i++) {
             if ($i == 4) {
                 continue;
@@ -910,20 +935,25 @@ class MasterFungsi
                 case 1:
                     $kd_sub_kegOk = $rek_Proses['kd_urusan'];
                     $columnSUM = $rek_Proses['kd_bidang'];
+                    $kel_kd_sub_keg = 'kd_urusan';
                     break;
                 case 2:
+                    $kel_kd_sub_keg = 'kd_bidang';
                     $kd_sub_kegOk = $rek_Proses['kd_bidang'];
                     $columnSUM = $rek_Proses['kd_prog'];
                     break;
                 case 3:
+                    $kel_kd_sub_keg = 'kd_prog';
                     $kd_sub_kegOk = $rek_Proses['kd_prog'];
                     $columnSUM = $rek_Proses['kd_keg'];
                     break;
                 case 5:
+                    $kel_kd_sub_keg = 'kd_keg';
                     $kd_sub_kegOk = $rek_Proses['kd_keg'];
                     $columnSUM = $rek_Proses['kd_sub_keg'];
                     break;
                 case 6:
+                    $kel_kd_sub_keg = 'kd_sub_keg';
                     $kd_sub_kegOk = $rek_Proses['kd_sub_keg'];
                     $columnSUM = $rek_Proses['kd_sub_keg'];
                     break;
@@ -933,6 +963,7 @@ class MasterFungsi
             };
             //var_dump($kd_sub_kegOk);
             $dinamic['set']['kd_sub_keg'] = $kd_sub_kegOk;
+            $dinamic['set']['kel_kd_sub_keg'] = $kel_kd_sub_keg;
             // jumlahkan kembali
 
             // cari uraian
@@ -954,7 +985,7 @@ class MasterFungsi
             $DB->select('*');
             $insert[$i] = $this->cekInsertUpdate($dinamic);
             // jumlahkan kembali
-            $DB->select('SUM(jumlah), SUM(jumlah_p)');
+            $DB->select('SUM(jumlah_pagu), SUM(jumlah_pagu_p)');
             $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $columnSUM, 'AND']];
             $Sumprogkeg = $DB->getWhereCustom($tabel_pakai, $kondisi);
             // var_dump($Sumprogkeg);

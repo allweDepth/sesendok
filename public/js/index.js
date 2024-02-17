@@ -104,16 +104,18 @@ $(document).ready(function () {
 			'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
 		];
 		let tab_renstra = ["clipboard list icon", "RENSTRA", "Rencana Startegi", ""];
+		let tab_renja = [
+			"clipboard list icon",
+			"RENJA",
+			"Rencana Kerja dan Anggaran SKPD",
+			"Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
+		]
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			tab_renstra: tab_renstra,
 			renstra: tab_renstra,
-			tab_renja: [
-				"clipboard list icon",
-				"RENJA",
-				"Rencana Kerja dan Anggaran SKPD",
-				"Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
-			],
+			tab_renja: tab_renja,
+			sub_keg_renja: tab_renja,
 			tujuan_sasaran_renstra: [
 				"clipboard list icon",
 				"Tujuan Sasaran Renstra",
@@ -247,7 +249,7 @@ $(document).ready(function () {
 		let tab = ini.attr("data-tab");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
-		$(`#cari_data`).attr("tbl", tbl).attr("dt-tab", tab);
+		
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
@@ -269,6 +271,7 @@ $(document).ready(function () {
 			tab = tbl;
 			divTab = ini.closest('div[data-tab]');
 		}
+		$(`#cari_data`).attr("tbl", tbl).attr("dt-tab", tab);
 		if (tab in arrayDasboard) {
 			iconDashboard = arrayDasboard[tab][0];
 			headerDashboard = arrayDasboard[tab][1];
@@ -386,6 +389,7 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 				jalankanAjax = true;
 				break;
+			case "sub_keg_renja":
 			case "tab_renja":
 				$(".message.goyang.keterangan").find('p').text(arrayDasboard[tab][3]);
 				if (tbl) {
@@ -396,6 +400,19 @@ $(document).ready(function () {
 					case "sub_keg_renja":
 					case "renja":
 					case "renja_p":
+						let elmk = divTab.find(`.secondary.menu [tb="${tbl}"]`);
+						console.log(elmk);
+						elmk.addClass('active')
+						.closest('.ui.menu')
+						.find('.item')
+						.not($(elmk))
+						.removeClass('active')
+						;
+						if (tbl === 'sub_keg_renja') {
+							divTab.find('table.sub_keg').attr('hidden',"")
+						} else {
+							divTab.find('table.sub_keg').removeAttr('hidden')
+						}
 						jalankanAjax = true;
 						break;
 					default:
@@ -425,7 +442,7 @@ $(document).ready(function () {
 						switch (jenis) {
 							case "get_tbl":
 								console.log(divTab);
-								const elmTable = divTab.find("table");
+								const elmTable = divTab.find("table.insert");
 								const elmtbody = elmTable.find(`tbody`);
 								const elmtfoot = elmTable.find(`tfoot`);
 								elmtbody.html(result.data.tbody);
@@ -434,6 +451,7 @@ $(document).ready(function () {
 									const elmthead = elmTable.find(`thead`);
 									elmthead.html(result.data.thead);
 								}
+								divTab.find(`.ui.dropdown`).dropdown({});
 								break;
 							case "get_data":
 

@@ -324,11 +324,13 @@ class get_data
                             break;
                         case 'renja':
                         case 'dpa':
+                        case 'renja_p':
+                        case 'dppa':
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                             if ($rowOrganisasi) {
                                 $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                 $data_like = [$kd_wilayah, $kd_opd, $tahun, $cari, $cari, $cari, $cari, $cari, $cari];
-                                $order = "ORDER BY kd_sub_keg ASC";
+                                $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian ASC";
                                 $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? ";
                                 $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
 
