@@ -59,10 +59,11 @@ class DB
             $jumlahArray = count($bindValue);
             //var_dump( 'jumlah arary : ' . $jumlahArray );
             $nilai = 0;
+            // var_dump($query);
             for ($x = 0; $x < $jumlahArray; $x++) {
                 $nilai = $x + 1;
-                var_dump($nilai);
-                var_dump($bindValue[$x]);
+                // var_dump($nilai);
+                // var_dump($bindValue[$x]);
                 $stmt->bindValue($nilai, $bindValue[$x], PDO::PARAM_STR);
             }
             //bindvalue limit jika ada

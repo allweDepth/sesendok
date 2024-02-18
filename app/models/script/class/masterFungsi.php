@@ -984,9 +984,9 @@ class MasterFungsi
             $DB->select('*');
             $insert[$i] = $this->cekInsertUpdate($dinamic);
             // jumlahkan kembali
-            $DB->select('SUM(jumlah_pagu), SUM(jumlah_pagu_p)');
-            $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $columnSUM, 'AND']];
-            $Sumprogkeg = $DB->getWhereCustom($tabel_pakai, $kondisi);
+            // $DB->select('SUM(jumlah_pagu), SUM(jumlah_pagu_p)');
+            // $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $columnSUM, 'AND']];
+            // $Sumprogkeg = $DB->getWhereCustom($tabel_pakai, $kondisi);
             // var_dump($Sumprogkeg);
         }
         return $insert;
@@ -1012,6 +1012,7 @@ class MasterFungsi
             }
         }
         $column =  ($dinamic['column']) ? $dinamic['column'] : '*';
+        // var_dump($column);
         $DB->select($column);
         $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
         $explodeAwal = explode('.', $kode);
@@ -1055,9 +1056,10 @@ class MasterFungsi
             // $Sumprogkeg[$kel_kd_sub_keg] = $DB->getWhereCustom($tabel_pakai, $kondisi);
             // var_dump($Sumprogkeg);
         }
+        // $DB->select('*');
         return $Sumprogkeg;
     }
-
+    
     public function cekInsertUpdate($dinamic = [])
     {
         $user = new User();

@@ -268,7 +268,7 @@ class Impor_xlsx
                                             if ($validateTabel->passed()) {
                                                 // atur kembali rekening sub kegiatan $getData[0](kode sub kegiatan) antisipasi beda 00
                                                 switch ($tbl) {
-                                                    // atur kembali rekening sub kegiatan $getData[0](kode sub kegiatan) antisipasi beda 00
+                                                        // atur kembali rekening sub kegiatan $getData[0](kode sub kegiatan) antisipasi beda 00
                                                     case 'sub_keg_renja':
                                                     case 'sub_keg_dpa':
                                                         $kodeRek = $getData[0];
@@ -381,7 +381,7 @@ class Impor_xlsx
                                                                     'target_kinerja_keluaran ' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
                                                                     'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
                                                                     'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                                                    'sumber_dana' =>  json_encode(array("01"=>$sumber_dana)) ,
+                                                                    'sumber_dana' =>  json_encode(array("01" => $sumber_dana)),
                                                                     'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
                                                                     'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
                                                                     'awal_pelaksanaan' => $awal_pelaksanaan,
@@ -1498,8 +1498,6 @@ class Impor_xlsx
                                                                 case 'akun_belanja':
                                                                 case 'tujuan_sasaran_renstra':
                                                                 case 'renstra':
-                                                                case 'sub_keg_renja':
-                                                                case 'sub_keg_dpa':
                                                                     //var_dump($tabel_pakai);
                                                                     $sumRows = $DB->getWhereCustom($tabel_pakai, $getWhereArrayData);
                                                                     $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
@@ -1510,19 +1508,6 @@ class Impor_xlsx
                                                                         // var_dump($DB->count());
                                                                         if ($DB->count()) {
                                                                             $data['add_row'][] = $sum;
-                                                                            switch ($tbl) {
-                                                                                case 'sub_keg_renja':
-                                                                                case 'sub_keg_dpa':
-                                                                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $getWhereArrayData, 'set_non' => $arrayDataRows_nonSubKeg];
-                                                                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
-                                                                                    break;
-                                                                                case 'value1':
-                                                                                    #code...
-                                                                                    break;
-                                                                                default:
-                                                                                    #code...
-                                                                                    break;
-                                                                            };
                                                                         } else {
                                                                             $data['gagal'][] = $sum;
                                                                             $data['gagal'][$sum] = $arrayDataRows;
@@ -1556,7 +1541,15 @@ class Impor_xlsx
                                                                             #code...
                                                                             break;
                                                                     };
+                                                                    break;
+                                                                case 'sub_keg_renja':
+                                                                case 'sub_keg_dpa':
+                                                                    // $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $set];
+                                                                    // $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
 
+
+                                                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $getWhereArrayData, 'set_non' => $arrayDataRows_nonSubKeg];
+                                                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
                                                                     break;
                                                                 default:
                                                                     # code...
