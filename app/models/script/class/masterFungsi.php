@@ -1149,24 +1149,30 @@ class MasterFungsi
             default:
                 break;
         };
+        // var_dump($dataRek['kode']);
         $explodeAwal = explode('.', $dataRek['kode']);
         $dataRek['sum_rek'] = count($explodeAwal);
         if ($explodeAwal[0]) {
             $dataRek['kd_urusan'] = $explodeAwal[0];
+            $kel_kd_sub_keg = 'kd_urusan';
         }
         if ($explodeAwal[1]) {
             $dataRek['kd_bidang'] = $explodeAwal[0] . "." . $explodeAwal[1];
+            $kel_kd_sub_keg = 'kd_bidang';
         }
         if ($explodeAwal[2]) {
             $dataRek['kd_prog'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2];
+            $kel_kd_sub_keg = 'kd_prog';
         }
         if ($explodeAwal[4] && $explodeAwal[3]) {
             $dataRek['kd_keg'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4];
+            $kel_kd_sub_keg = 'kd_keg';
         }
         if ($explodeAwal[5]) {
             $dataRek['kd_sub_keg'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4] . "." . $explodeAwal[5];
+            $kel_kd_sub_keg = 'kd_sub_keg';
         }
-
+        $dataRek['kel_kd_sub_keg']=$kel_kd_sub_keg;
         return $dataRek;
     }
 
