@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <!-- Site Properties -->
-    <title>Homepage - Semantic</title>
+    <title>Homepage - DPUPR</title>
     <link rel="stylesheet" href="<?= BASEURL; ?>/vendor/node_modules/fomantic-ui/dist/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="<?= BASEURL; ?>/vendor/node_modules/fomantic-ui/dist/components/reset.css">
     <link rel="stylesheet" type="text/css" href="<?= BASEURL; ?>/vendor/node_modules/fomantic-ui/dist/components/site.css">
