@@ -378,7 +378,7 @@ class get_data
 
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
                                     //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
-                                    
+
                                     $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
 
                                     $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
@@ -437,6 +437,8 @@ class get_data
                             $posisi = " LIMIT ?, ?";
                             $where1 = "disable <= ?";
                             $data_where1 =  [0];
+                            $whereGet_row_json = "disable <= ?";
+                            $data_hereGet_row_json = [0];
                             break;
                         case 'wilayah':
                             $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR status LIKE CONCAT('%',?,'%'))";
@@ -445,6 +447,8 @@ class get_data
                             $posisi = " LIMIT ?, ?";
                             $where1 = "disable <= ?";
                             $data_where1 =  [0];
+                            $whereGet_row_json = "disable <= ?";
+                            $data_hereGet_row_json = [0];
                             break;
                         case 'organisasi':
                             $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
@@ -452,7 +456,9 @@ class get_data
                             $order = "ORDER BY kode ASC";
                             $posisi = " LIMIT ?, ?";
                             $where1 = "kd_wilayah = ? AND disable <= ?";
-                            $data_where1 =  [$kd_wilayah, 0];
+                            $data_where1 = [$kd_wilayah, 0];
+                            $whereGet_row_json = "kd_wilayah = ? AND disable <= ?";
+                            $data_hereGet_row_json = [$kd_wilayah, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 7;
@@ -475,21 +481,24 @@ class get_data
                             $posisi = " LIMIT ?, ?";
                             $where1 = "disable <= ?";
                             $data_where1 =  [0];
+                            $whereGet_row_json = "disable <= ?";
+                            $data_hereGet_row_json =  [0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 9;
                             break;
                         case "aset":
                         case 'akun_belanja':
-                            $like = "disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                            $data_like = [0, $cari, $cari, $cari];
+                            $like = "disable <= ? AND sub_rincian_objek > ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                            $data_like = [0, 0, $cari, $cari, $cari];
                             $order = "ORDER BY kode ASC";
                             $posisi = " LIMIT ?, ?";
                             $where1 = "disable <= ?";
                             $data_where1 =  [0];
+                            $whereGet_row_json = "disable <= ? AND sub_rincian_objek > ?";
+                            $data_hereGet_row_json =  [0, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
-                            $jumlah_kolom = 9;
                             break;
                         case 'bidang_urusan':
                             $like = "disable <= ? AND(bidang LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%')) AND prog < ?";
@@ -532,9 +541,10 @@ class get_data
                             $posisi = " LIMIT ?, ?";
                             $where1 = "disable <= ? AND sub_keg > ?";
                             $data_where1 =  [0, 0];
+                            $whereGet_row_json = "disable <= ? AND sub_keg > ?";
+                            $data_hereGet_row_json =  [0, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
-                            $jumlah_kolom = 11;
                             break;
                         case 'mapping':
                             $like = "disable <= ? AND(kode_aset LIKE CONCAT('%',?,'%') OR uraian_aset LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kode_akun LIKE CONCAT('%',?,'%') OR uraian_akun LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
@@ -672,7 +682,7 @@ class get_data
                                     $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like)", $data_like);
                                 } else {
                                     //var_dump("SELECT * FROM $tabel_pakai WHERE $where1");
-                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1", $data_where1);
+                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $whereGet_row_json", $data_hereGet_row_json);
                                 }
                                 $jmldata = sizeof($get_data); //$get_data->fetchColumn();
                                 $jmlhalaman = ceil($jmldata / $limit);
@@ -694,15 +704,16 @@ class get_data
                                     $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like) $order ", $data_like, [$posisi, $limit]);
                                 } else {
                                     //var_dump("SELECT * FROM $tabel_pakai WHERE $where1 $order ");
-                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1, [$posisi, $limit]);
+                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $whereGet_row_json $order ", $data_hereGet_row_json, [$posisi, $limit]);
                                 }
                             } else {
                                 if ($cari != '') {
                                     $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like) $order", $data_like);
                                 } else {
-                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1);
+                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $whereGet_row_json $order ", $data_hereGet_row_json);
                                 }
                             }
+                            // var_dump($get_data);
                             $dataJson['results'] = [];
                             $jumlahArray = is_array($get_data) ? count($get_data) : 0;
                             if ($jumlahArray > 0) {
@@ -710,11 +721,17 @@ class get_data
                                     switch ($jenis) {
                                         case 'get_row_json':
                                             switch ($tbl) {
+                                                case 'akun_belanja':
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode];
+                                                    break;
                                                 case 'sasaran_renstra':
                                                     $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan];
                                                     break;
                                                 case 'sub_keg':
                                                     $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode];
+                                                    break;
+                                                case 'sumber_dana':
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode];
                                                     break;
                                                 case 'satuan':
                                                     $dataJson['results'][] = ['name' => $row->item, 'value' => $row->value];
@@ -827,10 +844,12 @@ class get_data
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+                    case 'sumber_dana':
                     case 'sasaran_renstra':
                     case 'tujuan_renstra':
                     case 'sub_keg':
                     case 'satuan':
+                    case 'akun_belanja':
                         $item = array('code' => $code, 'message' => hasilServer[$code] . $message_tambah);
                         $json = array('success' => $sukses,  'results' => $dataJson['results'],  'data' => $data, 'error' => $item);
                         break;

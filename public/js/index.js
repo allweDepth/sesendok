@@ -635,7 +635,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Rekening / Akun",
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
-									kelas: "search clearable kd_akun selection",
+									kelas: "search clearable kd_akun ajx selection",
 									dataArray: [
 										["", ""]
 									],
@@ -652,7 +652,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Uraian Pengelompokan Belanja",
 									atribut: 'name="kelompok" placeholder="pilih uraian kelompok..."',
-									kelas: "search clearable kelompok selection",
+									kelas: "search clearable kelompok ajx selection",
 									dataArray: [
 										["", ""]
 									],
@@ -660,7 +660,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Sumber Dana",
 									atribut: 'name="sumber_dana" placeholder="pilih sumber dana..."',
-									kelas: "search clearable sumber_dana selection",
+									kelas: "search clearable sumber_dana ajx selection",
 									dataArray: [
 										["paket", "Paket"],
 										["m", "m"]
@@ -679,7 +679,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextAction", {
 									label: "Komponen",
-									atribut: 'name="komponen" placeholder="Nama Perusahaan..."',
+									atribut: 'name="komponen" placeholder="Komponen..."',
 									atributLabel: `name="modal" jns="${jenis}" tbl=""`,
 								}) +
 								buatElemenHtml("fieldText", {
@@ -697,7 +697,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan" placeholder="pilih satuan..."',
-									kelas: "search clearable satuan selection",
+									kelas: "search clearable satuan ajx selection",
 									dataArray: [
 										["paket", "Paket"],
 										["m", "m"]
@@ -725,7 +725,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Sub Kegiatan",
 									atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
-									kelas: "search clearable kd_sub_keg selection",
+									kelas: "search clearable kd_sub_keg ajx selection",
 									dataArray: [
 										["", ""]
 									],
@@ -853,7 +853,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Sasaran",
 									atribut: 'name="sasaran"',
-									kelas: "search clearable sasaran_renstra selection",
+									kelas: "search clearable sasaran_renstra ajx selection",
 									dataArray: [
 										["", ""]
 									],
@@ -861,7 +861,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Sub Kegiatan",
 									atribut: 'name="kode" placeholder="pilih sub kegiatan..."',
-									kelas: "search clearable kode selection",
+									kelas: "search clearable kode ajx selection",
 									dataArray: [
 										["", ""]
 									],
@@ -873,7 +873,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan" placeholder="pilih satuan..."',
-									kelas: "search clearable satuan selection",
+									kelas: "search clearable satuan ajx selection",
 									dataArray: [
 										["paket", "Paket"],
 										["m", "m"]
@@ -1562,17 +1562,26 @@ $(document).ready(function () {
 							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true)
 							break;
 						case 'renstra'://@audit renstra
-							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.sasaran_renstra.selection');
+							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.ajx.sasaran_renstra.selection');
 							dropdownTujuan.returnList("get_row_json", "sasaran_renstra");
-							let dropdownSubKeg = new DropdownConstructor('.ui.dropdown.kode.selection')
+							let dropdownSubKeg = new DropdownConstructor('.ui.dropdown.kode.ajx.selection')
 							dropdownSubKeg.returnList("get_row_json", "sub_keg");//dropdownConstr.restore();
-							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.selection')
+							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
 							dropdownSatuan.returnList("get_row_json", "satuan", 1);
 							break;
 						case 'sub_keg_dpa':
 						case 'sub_keg_renja':
-							let SubKeg = new DropdownConstructor('.ui.dropdown.kd_sub_keg.selection')
+							let SubKeg = new DropdownConstructor('.ui.dropdown.kd_sub_keg.ajx.selection')
 							SubKeg.returnList("get_row_json", "sub_keg");
+							break;
+						case 'dpa':
+						case 'renja':
+							let renja_dpa = new DropdownConstructor('.ui.dropdown.kd_akun.ajx.selection')
+							renja_dpa.returnList("get_row_json", "akun_belanja");
+							let dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
+							dropdownSumberDana.returnList("get_row_json", "sumber_dana");
+							let dropdownSatuanRenja = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
+							dropdownSatuanRenja.returnList("get_row_json", "satuan", 1);
 							break;
 						case 'val':
 
@@ -1714,7 +1723,7 @@ $(document).ready(function () {
 														} else {
 															let strText = null;
 															let cariAttrRms = formIni.find(`[${attrElm}][rms]`);
-															if (isNaN(result.data?.users[attrElm]) || cariAttrRms.length <= 0) {
+															if (isNaN(result.data?.users[attrElm]) && cariAttrRms.length <= 0) {
 																strText = result.data?.users[attrElm];//@audit angka
 															} else {
 																strText = parseFloat(result.data?.users[attrElm]);
