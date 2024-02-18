@@ -366,9 +366,19 @@ class Impor_xlsx
                                                                     'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
                                                                     'awal_pelaksanaan' => $awal_pelaksanaan,
                                                                     'akhir_pelaksanaan' => $akhir_pelaksanaan,
-                                                                    'satuan' =>  strtolower($satuan),
-                                                                    'dana_thn_5' => (float)$dana_thn_5,
                                                                     'jumlah_pagu' => (float)$jumlah_pagu,
+                                                                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                                                    'disable' => 0,
+                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"]
+                                                                ];
+                                                                $arrayDataRows_nonSubKeg = [
+                                                                    'kd_wilayah' => $kd_wilayah,
+                                                                    'kd_opd' => $kd_opd,
+                                                                    'tahun' => $tahun,
+                                                                    'kd_sub_keg' => $kd_sub_keg,
+                                                                    'uraian' => $uraian_prog_keg,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
@@ -1445,8 +1455,6 @@ class Impor_xlsx
                                                                 break;
                                                             default:
                                                         }
-
-
                                                         //FINISH PROSES VALIDASI
                                                         //=====================================
                                                         //PROSES SEARCH DATA LAMA/INSERT/UPDATE
@@ -1482,6 +1490,7 @@ class Impor_xlsx
                                                                             $data['gagal'][] = $sum;
                                                                             $data['gagal'][$sum] = $arrayDataRows;
                                                                         }
+                                                                        
                                                                     } else {
                                                                         //update row
                                                                         $resul = $DB->update_array($tabel_pakai, $arrayDataRows, $update_arrayData);
