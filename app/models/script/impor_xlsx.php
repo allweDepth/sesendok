@@ -304,7 +304,7 @@ class Impor_xlsx
                                                                 // }
                                                                 $keyArray = array_keys($arrayValidateRow);
                                                                 $kd_sub_keg_temp = $arrayValidateRow[$keyArray[1]][0];
-                                                                var_dump($kd_sub_keg_temp);
+                                                                // var_dump($kd_sub_keg_temp);
                                                                 $kd_sub_keg = $validateRow->setRules(0, "sub kegiatan($kd_sub_keg_temp)", [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
@@ -381,7 +381,7 @@ class Impor_xlsx
                                                                     'target_kinerja_keluaran ' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
                                                                     'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
                                                                     'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                                                    'sumber_dana' => $sumber_dana,
+                                                                    'sumber_dana' =>  json_encode(array("01"=>$sumber_dana)) ,
                                                                     'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
                                                                     'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
                                                                     'awal_pelaksanaan' => $awal_pelaksanaan,
@@ -398,6 +398,7 @@ class Impor_xlsx
                                                                     'kd_opd' => $kd_opd,
                                                                     'tahun' => $tahun,
                                                                     'kd_sub_keg' => $kd_sub_keg,
+                                                                    'kel_kd_sub_keg' => $kel_kd_sub_keg,
                                                                     'uraian' => $uraian_prog_keg,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
@@ -1505,7 +1506,8 @@ class Impor_xlsx
                                                                     //var_dump($arrayDataRows);
                                                                     if ($jumlahArray <= 0) {
                                                                         $resul = $DB->insert($tabel_pakai, $arrayDataRows);
-
+                                                                        // var_dump($resul);
+                                                                        // var_dump($DB->count());
                                                                         if ($DB->count()) {
                                                                             $data['add_row'][] = $sum;
                                                                             switch ($tbl) {

@@ -61,6 +61,8 @@ class DB
             $nilai = 0;
             for ($x = 0; $x < $jumlahArray; $x++) {
                 $nilai = $x + 1;
+                var_dump($nilai);
+                var_dump($bindValue[$x]);
                 $stmt->bindValue($nilai, $bindValue[$x], PDO::PARAM_STR);
             }
             //bindvalue limit jika ada
@@ -595,4 +597,37 @@ class DB
         recoverDB("some_buck_up_file.sql");
     */
     } /*end function*/
+    //==================
+    //====   JSON ======
+    //==================
+    // Method untuk menyimpan data ke tabel dengan format JSON
+    public function insertJSON($tableName, $data)
+    {
+        $jsonData = json_encode($data); // Konversi array ke JSON
+        return $this->insert($tableName, ['json_data' => $jsonData]); // Simpan JSON ke dalam tabel
+    }
+
+    // Method untuk mengambil data dari tabel dengan format JSON
+    public function getJSON($tableName, $condition = "", $bindValue = [])
+    {
+        $result = $this->get($tableName, $condition, $bindValue); // Ambil data dari tabel
+        $jsonData = [];
+        foreach ($result as $row) {
+            $jsonData[] = json_decode($row->json_data, true); // Konversi JSON ke array asosiatif
+        }
+        return $jsonData; // Kembalikan data dalam format JSON
+    }
+
+    // Method untuk mengupdate data dalam tabel dengan format JSON
+    public function updateJSON($tableName, $data, $condition)
+    {
+        $jsonData = json_encode($data); // Konversi array ke JSON
+        return $this->update($tableName, ['json_data' => $jsonData], $condition); // Update JSON dalam tabel
+    }
+
+    // Method untuk menghapus data dalam tabel dengan format JSON
+    public function deleteJSON($tableName, $condition)
+    {
+        return $this->delete($tableName, $condition); // Hapus data dari tabel
+    }
 }
