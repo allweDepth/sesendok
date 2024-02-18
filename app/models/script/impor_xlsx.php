@@ -275,7 +275,13 @@ class Impor_xlsx
                                                         $dinamic = ['kode' => $kodeRek];
                                                         $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
                                                         $getData[0] = $kodeRekUbah['kode'];
-                                                        $kel_kd_sub_keg = $kodeRekUbah['kel_kd_sub_keg'];
+                                                        //cek key eksis
+                                                        //$dataRek['kd_sub_keg_x_xx']
+                                                        if (array_key_exists('kel_kd_sub_keg', $kodeRekUbah)) {
+                                                            $kel_kd_sub_keg = $kodeRekUbah['kel_kd_sub_keg'];
+                                                            $kd_sub_keg_x_xx = $kodeRekUbah['kd_sub_keg_x_xx'];
+                                                        }
+                                                        
                                                         break;
                                                     case 'value':
                                                         # code...
@@ -304,13 +310,20 @@ class Impor_xlsx
                                                                 // }
                                                                 $keyArray = array_keys($arrayValidateRow);
                                                                 $kd_sub_keg_temp = $arrayValidateRow[$keyArray[1]][0];
-                                                                // var_dump($kd_sub_keg_temp);
-                                                                $kd_sub_keg = $validateRow->setRules(0, "sub kegiatan($kd_sub_keg_temp)", [
-                                                                    'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $kd_sub_keg_temp]]],
-                                                                    'min_char' => 1
-                                                                ]);
+                                                                // cari di kode x.xx ganti dulu
+                                                                //$kd_sub_keg_x_xx
+                                                                // checkArray( $tableName, $columnName, $condition )
+                                                                $cek_x_xx=$DB->checkArray('sub_kegiatan_neo', 'kode', [['kode', '=', $kd_sub_keg_x_xx]],$kd_sub_keg_x_xx);
+                                                                if ($cek_x_xx) {
+                                                                    $kd_sub_keg = $kd_sub_keg_x_xx;
+                                                                }else{
+                                                                    $kd_sub_keg = $validateRow->setRules(0, "sub kegiatan($kd_sub_keg_temp)", [
+                                                                        'sanitize' => 'string',
+                                                                        'required' => true,
+                                                                        'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $kd_sub_keg_temp]]],
+                                                                        'min_char' => 1
+                                                                    ]);
+                                                                }
                                                                 $uraian = $validateRow->setRules(1, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
@@ -1544,43 +1557,20 @@ class Impor_xlsx
                                                                     break;
                                                                 case 'sub_keg_renja':
                                                                 case 'sub_keg_dpa':
-                                                                    // $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $set];
-                                                                    // $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
-
-
-                                                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $getWhereArrayData, 'set_non' => $arrayDataRows_nonSubKeg];
-                                                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
+                                                                    $dinamicData = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $arrayDataRows, 'set_non' => $arrayDataRows_nonSubKeg];
+                                                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamicData);
                                                                     break;
                                                                 default:
                                                                     # code...
                                                                     break;
                                                             }
                                                         } else {
-                                                            //jika data pengenal dobel update data
-                                                            //$validateRow->getError()[0]='';
-                                                            //$data['note'][$sum] .= $validateRow->getError()[1];
-                                                            //str_contains('How are you', 'are') untuk php 8
                                                             switch ($tbl) {
                                                                 case 'harga_satuan':
                                                                 case 'analisa_alat':
-                                                                    //var_dump($validateRow->getError());
-                                                                    //var_dump(array_keys($validateRow->getError())[0]);
-                                                                    $array_key0 = array_keys($validateRow->getError())[0];
-                                                                    $haystack = $validateRow->getError()[$array_key0];
-                                                                    $needle = 'silahkan pilih nama lain';
-                                                                    if (strpos($haystack, $needle) !== false) {
-                                                                        //update row
-                                                                        $resul = $DB->update_array($tabel_pakai, $arrayDataRows, [['kd_proyek', "=", $kd_proyek], ['kode', "=", $kode, 'AND']]);
-                                                                        //var_dump($resul);
-                                                                        if ($DB->count()) {
-                                                                            $data['row_update'][] = $sum;
-                                                                            $code = 3;
-                                                                        }
-                                                                    }
+
                                                                     break;
                                                                 default:
-                                                                    //var_dump($validateRow->getError()[0]);
-                                                                    //var_dump('error:'.$sum);
                                                                     $array_key0 = array_keys($validateRow->getError())[0];
                                                                     $haystack = $validateRow->getError()[$array_key0];
                                                                     $data['pesan_validasi'][$r] = $haystack;

@@ -249,13 +249,13 @@ class MasterFungsi
                                     <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><div class="ui red empty circular label"></div>Rincian Perubahan</a>
                                     <div class="item">Help</div>
                                 </div>
-                            </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>' ;
-                            $buttons = '<div class="ui icon basic mini buttons">'.$buttonEdit.'<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>';
+                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_sub_keg">' . $row->kd_sub_keg . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
-                                    <td klm="jumlah_pagu">' . $divAwalAngka  . number_format($row->jumlah_pagu , 2, ',', '.'). $divAkhir .  '</td>
+                                    <td klm="jumlah_pagu">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="jumlah_rincian">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="jumlah_pagu_p">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="jumlah_rincian_p">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
@@ -797,6 +797,10 @@ class MasterFungsi
                 $tabel_pakai = 'renja_neo';
                 $jumlah_kolom = 7;
                 break;
+            case 'sub_keg_dpa':
+                $tabel_pakai = 'sub_keg_dpa_neo';
+                $jumlah_kolom = 8;
+                break;
             case 'sub_keg_renja':
                 $tabel_pakai = 'sub_keg_renja_neo';
                 $jumlah_kolom = 8;
@@ -1000,7 +1004,7 @@ class MasterFungsi
         $tbl = $dinamic['tbl'];
         $kode = $dinamic['kode'];
 
-        
+
         $id_user = $_SESSION["user"]["id"];
 
         $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
@@ -1018,7 +1022,7 @@ class MasterFungsi
         $explodeAwal = explode('.', $kode);
         // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
         //call methode in class 
-        $Sumprogkeg =[];
+        $Sumprogkeg = [];
         $rek_Proses = $this->kelolaRek($dinamic);
         // var_dump($rek_Proses);
         for ($i = 1; $i <= $rek_Proses['sum_rek']; $i++) {
@@ -1059,7 +1063,7 @@ class MasterFungsi
         // $DB->select('*');
         return $Sumprogkeg;
     }
-    
+
     public function cekInsertUpdate($dinamic = [])
     {
         $user = new User();
@@ -1077,6 +1081,8 @@ class MasterFungsi
             }
         }
         $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
+        // var_dump('kondisi :');
+        // var_dump($kondisi);
         $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);
         $jumlahArray = is_array($resul) ? count($resul) : 0;
         $data = [];
@@ -1156,25 +1162,30 @@ class MasterFungsi
         $dataRek['sum_rek'] = count($explodeAwal);
         if ($explodeAwal[0]) {
             $dataRek['kd_urusan'] = $explodeAwal[0];
+            $dataRek['kd_sub_keg_x_xx'] = "x";
             $kel_kd_sub_keg = 'kd_urusan';
         }
         if ($explodeAwal[1]) {
             $dataRek['kd_bidang'] = $explodeAwal[0] . "." . $explodeAwal[1];
+            $dataRek['kd_sub_keg_x_xx'] = "x.xx.";
             $kel_kd_sub_keg = 'kd_bidang';
         }
         if ($explodeAwal[2]) {
             $dataRek['kd_prog'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2];
+            $dataRek['kd_sub_keg_x_xx'] = "x.xx." . $explodeAwal[2];
             $kel_kd_sub_keg = 'kd_prog';
         }
         if ($explodeAwal[4] && $explodeAwal[3]) {
             $dataRek['kd_keg'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4];
+            $dataRek['kd_sub_keg_x_xx'] = "x.xx." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4];
             $kel_kd_sub_keg = 'kd_keg';
         }
         if ($explodeAwal[5]) {
             $dataRek['kd_sub_keg'] = $explodeAwal[0] . "." . $explodeAwal[1] . "." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4] . "." . $explodeAwal[5];
+            $dataRek['kd_sub_keg_x_xx'] = "x.xx." . $explodeAwal[2] . "." . $explodeAwal[3] . "." . $explodeAwal[4] . "." . $explodeAwal[5];
             $kel_kd_sub_keg = 'kd_sub_keg';
         }
-        $dataRek['kel_kd_sub_keg']=$kel_kd_sub_keg;
+        $dataRek['kel_kd_sub_keg'] = $kel_kd_sub_keg;
         return $dataRek;
     }
 
@@ -1313,7 +1324,7 @@ class MasterFungsi
             $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
             if ($value != '.' && $value != '..' && !is_dir($path)) {
                 $this->getDirContents($path, $results);
-                var_dump($value);
+                // var_dump($value);
                 if ($value == $pola) {
                     $results[] = $path;
                 }

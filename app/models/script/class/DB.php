@@ -57,9 +57,9 @@ class DB
             }
             $stmt = $this->_pdo->prepare($query);
             $jumlahArray = count($bindValue);
-            //var_dump( 'jumlah arary : ' . $jumlahArray );
+            // var_dump( 'jumlah arary : ' . $jumlahArray );
             $nilai = 0;
-            // var_dump($query);
+            //  var_dump($query);
             for ($x = 0; $x < $jumlahArray; $x++) {
                 $nilai = $x + 1;
                 // var_dump($nilai);
