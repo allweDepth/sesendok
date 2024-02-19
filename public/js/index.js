@@ -619,7 +619,7 @@ $(document).ready(function () {
 							dataHtmlku.konten =
 								buatElemenHtml("fieldDropdown", {
 									label: "Objek Belanja",
-									classField:`required`,
+									classField: `required`,
 									atribut: 'name="objek_belanja" placeholder="pilih objek belanja..."',
 									kelas: "search lainnya clearable selection",
 									dataArray: [
@@ -641,7 +641,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Rekening / Akun",
-									classField:`required`,
+									classField: `required`,
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
 									kelas: "search clearable kd_akun ajx selection",
 									dataArray: [
@@ -650,7 +650,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Pengelompokan Belanja",
-									classField:`required`,
+									classField: `required`,
 									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
 									kelas: "search clearable lainnya selection",
 									dataArray: [
@@ -661,7 +661,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdownLabel", {
 									label: "Uraian Pengelompokan Belanja",
 									txtLabel: '<i class="plus icon"></i>',
-									classField:`required`,
+									classField: `required`,
 									atributLabel: `name="add" jns="add_data_json" tbl"sub_keg_${tbl}"`,
 									atribut: 'name="kelompok" placeholder="pilih uraian kelompok..."',
 									kelas: "search clearable kelompok ajx selection",
@@ -672,7 +672,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Sumber Dana",
-									classField:`required`,
+									classField: `required`,
 									atribut: 'name="sumber_dana" placeholder="pilih sumber dana..."',
 									kelas: "search clearable sumber_dana ajx selection",
 									dataArray: [
@@ -682,7 +682,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Jenis Standar Harga",
-									classField:`required`,
+									classField: `required`,
 									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
 									kelas: "search clearable lainnya selection",
 									dataArray: [
@@ -694,7 +694,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextAction", {
 									label: "Komponen",
-									classField:`required`,
+									classField: `required`,
 									txtLabel: '<i class="plus icon"></i>',
 									atribut: 'name="komponen" placeholder="Komponen..."',
 									atributLabel: `name="modal" jns="${jenis}" tbl=""`,
@@ -702,17 +702,17 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
 									kelas: "disabled",
-									atribut:'name="tkdn" placeholder="tkdn..." non_data',
+									atribut: 'name="tkdn" placeholder="tkdn..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Spesifikasi Komponen",
 									kelas: "disabled",
-									atribut:'name="spesifikasi" placeholder="spesifikasi..." non_data',
+									atribut: 'name="spesifikasi" placeholder="spesifikasi..." non_data',
 								}) +
-								
+
 								buatElemenHtml("fieldText", {
 									label: "Harga Satuan",
-									classField:`required`,
+									classField: `required`,
 									kelas: "disabled",
 									atribut:
 										'name="spesifikasi" placeholder="spesifikasi..."',
@@ -720,7 +720,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdownLabel", {
 									label: "Keterangan",
 									txtLabel: '<i class="plus icon"></i>',
-									classField:`required`,
+									classField: `required`,
 									atributLabel: `name="add" jns="add_data_json" tbl"sub_keg_${tbl}"`,
 									atribut: 'name="uraian" placeholder="pilih keterangan..."',
 									kelas: "search clearable uraian selection",
@@ -732,18 +732,18 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Tambahkan Pajak",
 									kelas: "disabled",
-									atribut:'name="pajak" placeholder="pajak..." non_data',
+									atribut: 'name="pajak" placeholder="pajak..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Koefisien Perkalian",
 									kelas: "disabled",
-									classField:`required`,
+									classField: `required`,
 									atribut:
 										'name="tkdn" placeholder="tkdn..."',
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
-									classField:`required`,
+									classField: `required`,
 									atribut: 'name="satuan" placeholder="pilih satuan..."',
 									kelas: "search clearable satuan ajx selection",
 									dataArray: [
@@ -753,7 +753,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Volume",
-									classField:`required`,
+									classField: `required`,
 									kelas: "disabled",
 									atribut:
 										'name="tkdn" placeholder="tkdn..."',
@@ -1773,7 +1773,7 @@ $(document).ready(function () {
 														// cari dulu .dropdown.ajx
 														let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
 														console.log(dropDownElmAjx);
-														
+
 														if (attrElm === 'file') {
 															formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 														} else {
@@ -2370,6 +2370,40 @@ $(document).ready(function () {
 				saveRemoteData: true,
 				filterRemoteData: true
 			});
+		}
+		/*
+		values: [
+			{
+				name     : 'Filter by tag',
+				type     : 'header'
+				// Will be displayed as header
+			},
+			{
+				name     : 'Important',
+				value    : 'important',
+				type     : 'item'
+				// Will be displayed as item
+			},
+			{
+				name     : 'Announcement',
+				value    : 'announcement'
+				// Will be displayed as item
+			}
+			{
+				name: 'Male',
+				value: 'male'
+			},
+			{
+				name: 'Female',
+				value: 'female',
+				selected: true
+			}
+		]
+		*/
+		values(values) {
+			this.element.dropdown({
+				values: values
+			})
 		}
 	}
 
@@ -3236,7 +3270,7 @@ $(document).ready(function () {
 		let dataArray = "dataArray" in dataElemen ? dataElemen.dataArray : []; //contoh untuk dropdown
 		let typeText = "typeText" in dataElemen ? dataElemen.typeText : `type="text"`;
 		let dataArray2 = "dataArray2" in dataElemen ? dataElemen.dataArray2 : [[]]; //contoh buat dropdown yang ada deskripsi
-		let jenisListDropdown ="jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : "@"; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]
+		let jenisListDropdown = "jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : "@"; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		switch (namaElemen) {

@@ -736,13 +736,13 @@ class get_data
                                         case 'get_row_json':
                                             switch ($tbl) {
                                                 case 'akun_belanja':
-                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode];
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode,"descriptionVertical"=> true];
                                                     break;
                                                 case 'sasaran_renstra':
                                                     $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan];
                                                     break;
                                                 case 'sub_keg':
-                                                    $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode];
+                                                    $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode,"descriptionVertical"=> true];
                                                     break;
                                                 case 'sumber_dana':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode];
@@ -753,7 +753,7 @@ class get_data
                                                 case 'value1':
                                                     break;
                                                 default:
-                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->nomor];
+                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->nomor,"descriptionVertical"=> true];
                                                     break;
                                             };
 
