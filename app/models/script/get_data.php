@@ -219,18 +219,18 @@ class get_data
                             if ($rowOrganisasi) {
                                 $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                 if ($tahun_renstra > 2000) {
-                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, 'tujuan', $cari, $cari, $cari];
                                     $order = "ORDER BY id, id_tujuan ASC";
-                                    $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kelompok = ?";
+                                    $data_where1 = [$kd_wilayah, $kd_opd, $tahun_renstra, 0, 'tujuan'];
                                     // $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                     // $data_where_row =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND']];
                                     //pilih kolom yang diambil
                                     $DB->select('id, kelompok, id_tujuan, text, keterangan');
-                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kelompok = ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, $tahun_renstra, 0, 'tujuan'];
                                 } else {
                                     $message_tambah = ' (atur tahun renstra OPD)';
                                     $code = 70;
@@ -257,8 +257,8 @@ class get_data
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'sasaran', 'AND']];
                                     //pilih kolom yang diambil
                                     $DB->select('id, kelompok, id_tujuan, text, keterangan');
-                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kelompok = ?";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0, 'sasaran'];
                                 } else {
                                     $message_tambah = ' (atur tahun renstra OPD)';
                                     $code = 70;
@@ -306,7 +306,7 @@ class get_data
                                 if ($tahun_renstra > 2000) {
                                     $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kode LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
-                                    $order = "ORDER BY sasaran,kode ASC";
+                                    $order = "ORDER BY kode, tujuan, sasaran ASC";
                                     $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                     $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                     // $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
@@ -667,22 +667,46 @@ class get_data
                                                 if ($sasaran_drop) {
                                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'sasaran', 'AND'], ['id', '=', $sasaran_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
-                                                    $data['values']['sasaran'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true,'selected'=>true]];
+                                                    $data['values']['sasaran'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true, 'selected' => true]];
                                                 }
                                                 //cari sub_keg dengan kode
                                                 if ($kode_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
-                                                    $data['values']['kode'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true,'selected'=>true]];
+                                                    $data['values']['kode'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
                                                 }
                                                 //cari satuan dengan satuan
                                                 if ($satuan_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['value', '=', $satuan_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
-                                                    $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value,'selected'=>true]];
+                                                    $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
                                                 }
                                                 break;
-                                            case 'value1':
+                                            case 'sub_keg_renja':
+                                                $data['values'] = [];
+                                                $kd_sub_keg_drop = $data['users']->kd_sub_keg;
+                                                //cari sub_keg dengan kode
+                                                if ($kd_sub_keg_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kd_sub_keg_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
+                                                    $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
+                                                }
+                                                break;
+                                            case 'tujuan_sasaran_renstra':
+                                                $data['values'] = [];
+                                                $value_a = $data['users']->kelompok;
+                                                $value_b = $data['users']->id_tujuan;
+                                                //cari sasaran dengan id
+                                                if ($value_a == 'sasaran' && $value_b > 0) {
+                                                    $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND'], ['id', '=', $value_b, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
+                                                    $data['values']['id_tujuan'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->kelompok, "descriptionVertical" => true, 'selected' => true]];
+                                                }
+
+                                                break;
+                                            case 'xx':
+                                                break;
+                                            case 'yy':
                                                 break;
                                             default:
                                                 break;
@@ -761,6 +785,9 @@ class get_data
                                             switch ($tbl) {
                                                 case 'akun_belanja':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
+                                                    break;
+                                                case 'tujuan_renstra':
+                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
                                                     break;
                                                 case 'sasaran_renstra':
                                                     $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];

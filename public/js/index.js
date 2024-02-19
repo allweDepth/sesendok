@@ -882,6 +882,16 @@ $(document).ready(function () {
 										["sasaran", "Sasaran"]
 									],
 								}) +
+								buatElemenHtml("fieldDropdown", {//@audit wait now
+									label: "Tujuan",
+									atributField: 'hidden',
+									atribut: 'name="id_tujuan" non_data',
+									kelas: "search clearable tujuan_renstra ajx selection",
+									dataArray: [
+										["", ""],
+										["", ""]
+									],
+								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="text" rows="4" placeholder="uraian..." autofocus',
@@ -1610,8 +1620,11 @@ $(document).ready(function () {
 					switch (tbl) {
 						case 'tujuan_sasaran_renstra':
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
-							let dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
-							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true)
+							var dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
+							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true);
+							var dropdown_ajx_tujuan = new DropdownConstructor('.ui.dropdown.ajx.tujuan_renstra.selection');
+							dropdown_ajx_tujuan.returnList("get_row_json", "tujuan_renstra", 1);
+							// dropdownTujuanSasaran.returnList("get_row_json", "tujuan_renstra", true)
 							break;
 						case 'renstra'://@audit renstra
 							var dropdown_ajx_tujuan = new DropdownConstructor('.ui.dropdown.ajx.sasaran_renstra.selection');
@@ -1623,8 +1636,8 @@ $(document).ready(function () {
 							break;
 						case 'sub_keg_dpa':
 						case 'sub_keg_renja':
-							let SubKeg = new DropdownConstructor('.ui.dropdown.kd_sub_keg.ajx.selection')
-							SubKeg.returnList("get_row_json", "sub_keg");
+							var dropdown_ajx_sub_keg = new DropdownConstructor('.ui.dropdown.kd_sub_keg.ajx.selection')
+							dropdown_ajx_sub_keg.returnList("get_row_json", "sub_keg");
 							break;
 						case 'dpa':
 						case 'renja':
@@ -1736,33 +1749,8 @@ $(document).ready(function () {
 											// set nilai form 
 											let elmAttrName = formIni.find('input[name],textarea[name]');
 											switch (tbl) {
-												case 'tujuan_sasaran_renstra':
-													if (result.data?.users['kelompok'] === 'sasaran') {
-														formIni.form("set value", 'kelompok', result.data?.users['kelompok']);
-														delay(function () {
-															let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
-															if (elmTujuan.length > 0) {
-																for (const iterator of elmAttrName) {
-																	let attrElm = $(iterator).attr('name');
-																	if (attrElm === 'file') {
-																		formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
-																	} else {
-																		if (attrElm !== 'kelompok') {
-																			formIni.form("set value", attrElm, result.data?.users[attrElm]);
-																		}
-																		if (attrElm !== 'id_tujuan') {
-																			formIni.form("set value", 'id_tujuan', result.data?.users['id_tujuan']);
-																		}
-																	}
-																}
-															} else {
+												case 'xxxxxx':
 
-															}
-														}, 500);
-														break;
-													} else {
-
-													}
 												default://isi form dengan data
 													for (const iterator of elmAttrName) {
 														let attrElm = $(iterator).attr('name');
@@ -1770,7 +1758,7 @@ $(document).ready(function () {
 														// cari dulu .dropdown.ajx
 														let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
 														console.log(dropDownElmAjx);
-														
+
 														if (attrElm === 'file') {
 															formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 														} else {
@@ -1795,7 +1783,6 @@ $(document).ready(function () {
 																					postDataField = false;
 																					break;
 																				case 'kode':
-																					console.log(result.data?.values?.kode);
 																					dropdown_ajx_kode.valuesDropdown(result.data?.values?.kode);
 																					dropdown_ajx_kode.returnList("get_row_json", "sub_keg");
 																					postDataField = false;
@@ -1803,6 +1790,29 @@ $(document).ready(function () {
 																				case 'satuan':
 																					dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
 																					dropdown_ajx_satuan.returnList("get_row_json", "satuan", 1);
+																					postDataField = false;
+																					break;
+																				default:
+																					break;
+																			}
+																			break;
+																		case 'sub_keg_dpa':
+																		case 'sub_keg_renja':
+																			switch (attrElm) {
+																				case 'kd_sub_keg':
+																					dropdown_ajx_sub_keg.valuesDropdown(result.data?.values?.kd_sub_keg);
+																					dropdown_ajx_sub_keg.returnList("get_row_json", "sub_keg");
+																					postDataField = false;
+																					break;
+																				default:
+																					break;
+																			}
+																			break;
+																		case 'tujuan_sasaran_renstra':
+																			switch (attrElm) {
+																				case 'id_tujuan':
+																					dropdown_ajx_tujuan.valuesDropdown(result.data?.values?.id_tujuan);
+																					dropdown_ajx_tujuan.returnList("getJsonRows", "tujuan_renstra", true)
 																					postDataField = false;
 																					break;
 																				default:
@@ -1817,7 +1827,7 @@ $(document).ready(function () {
 															if (postDataField) {
 																formIni.form("set value", attrElm, strText);//@audit edit renstra
 															}
-															
+
 														}
 													}
 													break;
@@ -2342,30 +2352,25 @@ $(document).ready(function () {
 						case 'getJsonRows':
 							switch (tbl) {
 								case 'tujuan_renstra'://tujuan sasaran renstra
+									let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
+									let fieldElmTujuan = elmTujuan.closest('.field');
 									if (value === 'tujuan') {
 										ajaxSend = false;
-										let elmTujuan = $(`form[name="form_flyout"]`).find('[name="tujuan"]');
-										if (elmTujuan.length) {
-											elmTujuan.closest('.field').remove();
-										}
+										fieldElmTujuan.attr('hidden');
 									} else {
-										ajaxSend = true;
-										//tambahkan dropdown
+										//tambahkan dropdown@audit perbaiki
+										fieldElmTujuan.removeAttr('hidden');
 									}
 									break;
-
 								default:
 									break;
 							}
 							break;
 						case 'value1':
-
 							break;
 						default:
-
 							break;
 					};
-
 					if (ajaxSend == true) {
 						let data = {
 							cari: cari(jenis),
@@ -2374,15 +2379,27 @@ $(document).ready(function () {
 							tbl: tbl,
 							halaman: halaman,
 						};
-						console.log(jenis);
 						let url = 'script/get_data';
 						let cryptos = false;
 
 						suksesAjax["ajaxku"] = function (result) {
-							MethodConstructor.tujuanRenstra(result);
 							var kelasToast = "success";
 							if (result.success === true) {
-
+								switch (jenis) {
+									case 'getJsonRows':
+										switch (tbl) {
+											case 'tujuan_renstra'://tujuan sasaran renstra
+												MethodConstructor.tujuanRenstra(result);
+												break;
+											default:
+												break;
+										}
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
 							} else {
 								kelasToast = "warning"; //'success'
 							}
@@ -2449,32 +2466,17 @@ $(document).ready(function () {
 			this.element = $(element);
 		}
 		static tujuanRenstra(result = {}) {
-			if (result.success === true) {
-
-			} else {
-
-			}
-			let elm = $(`form[name="form_flyout"] .field:first-child`);
-			let dropdownInsert = buatElemenHtml("fieldDropdown", {
-				label: "Tujuan",
-				atributField: "",
-				atribut: 'name="id_tujuan"',
-				kelas: "search clearable selection",
-				dataArray: [
-					["tujuan", "Tujuan"],
-					["sasaran", "Sasaran"]
-				],
-			})
 			let formIni = $(`form[name="form_flyout"]`);
 			let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
-
+			let fieldElmTujuan = elmTujuan.closest('.field');
+			fieldElmTujuan.removeClass('hidden');
 			if (elmTujuan.length <= 0) {
-				elm.after(dropdownInsert);
-				addRulesForm(formIni);
-				elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
-				elmTujuan.dropdown({
-					values: result?.results,
-				})
+				// elm.after(dropdownInsert);
+				// addRulesForm(formIni);
+				// elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
+				// elmTujuan.dropdown({
+				// 	values: result?.results,
+				// })
 			}
 
 		}
