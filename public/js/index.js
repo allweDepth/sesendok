@@ -1615,7 +1615,7 @@ $(document).ready(function () {
 							break;
 						case 'renstra'://@audit renstra
 							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.ajx.sasaran_renstra.selection');
-							dropdownTujuan.returnList("get_row_json", "sasaran_renstra");
+							dropdownTujuan.returnList("get_row_json", "sasaran_renstra", 1);
 							let dropdownSubKeg = new DropdownConstructor('.ui.dropdown.kode.ajx.selection')
 							dropdownSubKeg.returnList("get_row_json", "sub_keg");//dropdownConstr.restore();
 							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
@@ -1787,7 +1787,7 @@ $(document).ready(function () {
 																strText = accounting.formatNumber(result.data?.users[attrElm], strText.countDecimals(), ".", ",");
 															}
 															if (dropDownElmAjx) {
-																dropDownElmAjx.find(`input.search`).val(strText);
+																dropDownElmAjx.find(`input.search`).focus().val(strText);
 															}
 															formIni.form("set value", attrElm, strText);
 														}

@@ -501,8 +501,9 @@ class Impor_xlsx
                                                                 $keterangan = $validateRow->setRules(17, 'keterangan', [
                                                                     'sanitize' => 'string'
                                                                 ]);
-                                                                $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
+                                                                $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['text', '=', $sasaran, 'AND']]);
                                                                 $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
+                                                                $sasaran_txt = ($tujuan) ? $tujuan->text : '';
                                                                 //uraian_prog_keg
                                                                 $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
                                                                 $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
@@ -514,6 +515,7 @@ class Impor_xlsx
                                                                     'tahun' => $tahun_renstra,
                                                                     'tujuan' => (int)$id_tujuan,
                                                                     'sasaran' => (int)$sasaran,
+                                                                    'sasaran_txt' => $sasaran_txt,
                                                                     'kode' => $kode,
                                                                     'uraian_prog_keg' => $uraian_prog_keg,
                                                                     'indikator' => preg_replace('/(\s\s+|\t|\n)/', ' ', $indikator),
