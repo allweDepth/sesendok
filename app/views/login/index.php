@@ -166,7 +166,7 @@
         <div class="column">
             <form class="ui large form login content">
                 <div class="ui stacked segment">
-                <h2 class="ui teal image header"><i class="home icon"></i>
+                    <h2 class="ui teal image header"><i class="home icon"></i>
                         <div class="content"> Login seSendok
                             <div class="sub header"> Manajeemen Anggaran</div>
                         </div>
@@ -241,8 +241,23 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="ui left icon input"> <i class="home icon"></i>
-                            <input type="text" name="organisasi" placeholder="Organisasi">
+                        <div class="ui fluid search selection wilayah dropdown ajx">
+                            <input type="hidden" name="kd_wilayah">
+                            <i class="dropdown icon"></i>
+                            <div class="default text"><i class="fax icon"></i>Wilayah</div>
+                            <div class="menu">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui fluid search selection dropdown ajx">
+                            <input type="hidden" name="organisasi">
+                            <i class="dropdown icon"></i>
+                            <div class="default text"><i class="fax icon"></i>Organisasi</div>
+                            <div class="menu">
+                                
+                            </div>
                         </div>
                     </div>
 

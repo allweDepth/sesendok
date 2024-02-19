@@ -2311,6 +2311,104 @@ $(document).ready(function () {
 				// saveRemoteData: false,
 			});
 		}
+		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3) {
+			let get = this.element.dropdown("get query");
+			let elm = this.element;
+			this.element.dropdown({
+				minCharacters: minCharacters,
+				maxResults: countRows(),
+				searchDelay: 600,
+				throttle: 600,
+				cache: false,
+				apiSettings: {
+					// this url just returns a list of tags (with API response expected above)
+					cache: false,
+					method: "POST",
+					url: "script/get_data",
+					throttle: 600,
+					//throttle: 1000,//delay perintah
+					// passed via POST
+					data: {
+						jenis: jenis,
+						tbl: tbl,
+						cari: function (value) {
+							return elm.dropdown("get query");
+						},
+						rows: countRows(), //"all",
+						halaman: 1,
+					}, fields: {
+						results: "results",
+					},
+					// filterRemoteData: true,
+				},
+				onChange: function (value, text, $choice) {
+					let dataChoice = $($choice).find('span.description').text();
+					switch (jenis) {
+						case 'getJsonRows':
+							switch (tbl) {
+								case 'tujuan_renstra'://tujuan sasaran renstra
+									let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
+									let fieldElmTujuan = elmTujuan.closest('.field');
+									ajaxSend = false;
+									if (value === 'tujuan') {
+										fieldElmTujuan.attr('hidden');
+									} else {
+										//tambahkan dropdown@audit perbaiki
+										fieldElmTujuan.removeAttr('hidden');
+									}
+									break;
+								default:
+									break;
+							}
+							break;
+						case 'value1':
+							break;
+						default:
+							break;
+					};
+					if (ajaxSend == true) {
+						let data = {
+							cari: cari(jenis),
+							rows: countRows(),
+							jenis: jenis,
+							tbl: tbl,
+							halaman: halaman,
+						};
+						let url = 'script/get_data';
+						let cryptos = false;
+
+						suksesAjax["ajaxku"] = function (result) {
+							var kelasToast = "success";
+							if (result.success === true) {
+								switch (jenis) {
+									case 'getJsonRows':
+										switch (tbl) {
+											case 'tujuan_renstra'://tujuan sasaran renstra
+												MethodConstructor.tujuanRenstra(result);
+												break;
+											default:
+												break;
+										}
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
+							} else {
+								kelasToast = "warning"; //'success'
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: "check circle icon",
+							});
+							loaderHide();
+						};
+						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
+					}
+				},
+			});
+		}
 		setSelected(val) {
 			this.element.dropdown("set selected", val);
 		}

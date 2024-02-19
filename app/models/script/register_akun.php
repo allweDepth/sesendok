@@ -8,67 +8,6 @@ class Register
 		$keyEncrypt = $_SESSION["key_encrypt"];
 		$user = new User();
 		$validate = new Validate($_POST);
-
-		$hasilServer = [
-			1 => 'berhasil run',
-			2 => 'berhasil tambah data',
-			3 => 'berhasil update',
-			4 => 'berhasil delete',
-			5 => 'berhasil select',
-			6 => 'berhasil insert/data ganda(berhasil update)',
-			7 => 'berhasil impor file',
-			8 => 'berhasil import file dengan catatan',
-			9 => 'data sudah ada',
-			10 => 'berhasil validasi',
-			11 => 'berhasil data posting',
-			12 => 'berhasil data jenis tabel',
-			15 => 'berhasil reset',
-			29 => 'gagal validasi',
-			30 => 'gagal tambah data/data ganda',
-			31 => 'gagal tambah data/berhasil update',
-			32 => 'gagal tambah data',
-			33 => 'gagal update',
-			34 => 'gagal update/berhasil tambah data',
-			35 => 'gagal delete',
-			36 => 'gagal select/tidak ditemukan',
-			37 => 'gagal tambah data/data ganda',
-			38 => 'gagal import file',
-			39 => 'gagal menentukan jenis data',
-			40 => 'proses anda tidak dikenali',
-			41 => 'data tidak ditemukan',
-			45 => 'tabel yang digunakan tidak ditemukan',
-			46 => 'gagal run',
-			47 => 'data telah ada',
-			48 => 'data telah ada dan telah diupdate',
-			49 => 'data telah diproses kembali',
-			50 => 'kode bisa digunakan',
-			51 => 'data telah di salin',
-			56 => 'belum ada dokumen pekerjaan yang aktif',
-			100 => 'Continue', #server belum menolak header permintaan dan meminta klien untuk mengirim body (isi/konten) pesan
-			200 => 'data telah diproses kembali',
-			405 => 'data telah diproses kembali tapi tidak menghasilkan result',
-			//File
-			701 => 'File Tidak Lengkap',
-			702 => 'file yang ada terlalu besar',
-			703 => 'type file tidak sesuai',
-			704 => 'Gagal Upload',
-			705 => 'File Telah dibuat',
-			707 => 'File Gagal dibuat',
-			401  => 'Unauthorized', #pengunjung website tidak memiliki hak akses untuk file / folder yang diproteksi oleh password (kata kunci).
-			403  => 'Forbidden', #pengunjung sama sekali tidak dapat mengakses ke folder tujuan. Angka 403 muncul disebabkan oleh kesalahan pengaturan hak akses pada folder.
-			202  => 'Accepted',
-			404  => 'Not Found', #bahwa file / folder yang diminta, tidak ditemukan didalam database pada suatu website.
-			406  => 'Not Acceptable', #pernyataan bahwa permintaan dari browser tidak dapat dipenuhi oleh server.
-			500  => ' Internal Server Error', #menyatakan bahwa ada kesalahan konfigurasi pada akun hosting.
-			509  => 'Bandwidth Limit Exceeded', #penggunaan bandwidth pada account hosting sudah melebihi quota yang ditetapkan untuk akun hosting Anda
-			//Bahasa Gaul
-			530  => 'I Miss You', #I Miss You dalam bahasa Mandarin adalah Wo Xiang Ni
-			831  => 'I Love You', #Memiliki jumlah 8 huruf dalam kalimat "I Love You",Kemudian ada 3 jumlah total kata dalam frasa "I Love You",Dan 1 memiliki satu makna, yaitu "Aku Cinta Kamu"
-			24434   => 'Sudahkah anda sholat', #diambil dari jumlah rakaat di setiap Sholat lima waktu atau shalat fardhu
-			1432  => 'I Love You Too', #1 artinya I, 4 artinya Love, 3 artinya You, 2 artinya Too. bisa diberikan untuk pasangan kekasih.
-			224  => 'I Love You Too' #Artinya adalah Today, Tomorrow dan Forever.Angka 2 artinya two yang artinya twoday,today,
-		];
-
 		$sukses = false;
 		$code = 40;
 		// $crypto = new CryptoUtils();
@@ -91,7 +30,16 @@ class Register
 				'required' => true,
 				'min_char' => 8
 			]);
-			$nama_org = $validate->setRules('organisasi', 'Organisasi', [
+			$kd_wilayah_temp =$_POST['kd_wilayah'];
+			$kd_wilayah = $validate->setRules('kd_wilayah', 'kode wilayah', [
+				'sanitize' => 'string',
+				'required' => true,
+				'inDB' => ['organisasi_neo', 'kode', [['kode', '=', $kd_wilayah_temp]]],
+				'min_char' => 2
+			]);
+			
+
+			$kd_organisasi = $validate->setRules('kd_organisasi', 'Organisasi', [
 				'sanitize' => 'string',
 				'required' => true,
 				'min_char' => 3
@@ -120,11 +68,9 @@ class Register
 				$type_user = "user";
 				$photo = "images/avatar/default.jpeg";
 				// menyiapkan query
-				// jika tidak ada error, input ke database
-				$tgl = date('Y-m-d H:i:s'); //date('Y-m-d H:i:s')
-				$thn = date("Y");
 				$password = password_hash($password, PASSWORD_DEFAULT);
 				$set = [
+					'kd_wilayah' => $kd_wilayah,
 					'username' => $username,
 					'email' => $email,
 					'nama' => $nama,
@@ -134,16 +80,17 @@ class Register
 					'photo' => $photo,
 					'tgl_daftar' => date('Y-m-d H:i:s'),
 					'tgl_login' => date('Y-m-d H:i:s'),
-					'thn_aktif_anggaran' => date('Y'),
-					'kd_proyek_aktif' => '',
-					'ket' => $bilnay,
-					'aktif' => 0,
-					'aktif_edit' => 0,
+					'tahun' => date('Y'),
 					'kontak_person' => $kontak,
 					'font_size' => 80,
-					'aktif_chat' => 0,
 					'warna_tbl' => 'non',
-					'scrolling_table' => 'short'
+					'scrolling_table' => 'short',
+					'disable_login' => 1,
+					'disable_anggaran' => 1,
+					'disable_kontrak' => 1,
+					'disable_realisasi' => 1,
+					'disable_realisasi' => 1,
+					'ket' => $bilnay
 				];
 				$resul = $DB->insert('user_sesendok_biila', $set);
 				// jika query simpan berhasil, maka user sudah terdaftar
@@ -200,10 +147,7 @@ class Register
 				$data = '<i class="user times icon"></i><div class="content"><div class="header">username/email telah digunakan </div><p>ganti username dan email dengan karakter unik</p></div>';
 			}
 		}
-		//$item = array('code' => $code, 'message' => $hasilServer[$code]);
-		//echo $pesan;
-		//echo json_encode($pesan);
-		$item = array('code' => $code, 'message' => $hasilServer[$code]);
+		$item = array('code' => $code, 'message' => hasilServer[$code]);
 		$json = array('success' => $sukses, 'data' => $data, 'error' => $item);
 		return json_encode($json);
 	}

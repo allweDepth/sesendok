@@ -141,4 +141,254 @@ $(document).ready(function () {
             })();
         }
     });
+    
+    //===================================
+	//=========== class dropdown ========
+	//===================================
+	class DropdownConstructor {//@audit-ok DropdownConstructor
+		jenis = '';
+		tbl = '';
+		ajax = false;
+		result_ajax = {};
+		constructor(element) {
+			this.element = $(element); //element;
+			// this.methodConstructor = new MethodConstructor();
+		}
+		returnList(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3) {
+			let get = this.element.dropdown("get query");
+			let elm = this.element;
+			this.element.dropdown({
+				minCharacters: minCharacters,
+				maxResults: countRows(),
+				searchDelay: 600,
+				throttle: 600,
+				cache: false,
+				apiSettings: {
+					// this url just returns a list of tags (with API response expected above)
+					cache: false,
+					method: "POST",
+					url: "script/get_data",
+					throttle: 600,
+					//throttle: 1000,//delay perintah
+					// passed via POST
+					data: {
+						jenis: jenis,
+						tbl: tbl,
+						cari: function (value) {
+							return elm.dropdown("get query");
+						},
+						rows: countRows(), //"all",
+						halaman: 1,
+					}, fields: {
+						results: "results",
+					},
+					// filterRemoteData: true,
+				},
+
+				// filterRemoteData: true,
+				// saveRemoteData: false,
+			});
+		}
+		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3) {
+			let get = this.element.dropdown("get query");
+			let elm = this.element;
+			this.element.dropdown({
+				minCharacters: minCharacters,
+				maxResults: 10,
+				searchDelay: 600,
+				throttle: 600,
+				cache: false,
+				apiSettings: {
+					// this url just returns a list of tags (with API response expected above)
+					cache: false,
+					method: "POST",
+					url: "script/register_akun",
+					throttle: 600,
+					//throttle: 1000,//delay perintah
+					// passed via POST
+					data: {
+						jenis: jenis,
+						tbl: tbl,
+						cari: function (value) {
+							return elm.dropdown("get query");
+						},
+						rows: '10', //"all",
+						halaman: 1,
+					}, fields: {
+						results: "results",
+					},
+					// filterRemoteData: true,
+				},
+				onChange: function (value, text, $choice) {
+					let dataChoice = $($choice).find('span.description').text();
+					switch (jenis) {
+						case 'getJsonRows':
+							switch (tbl) {
+								case 'tujuan_renstra'://tujuan sasaran renstra
+									
+									break;
+								default:
+									break;
+							}
+							break;
+						case 'value1':
+							break;
+						default:
+							break;
+					};
+					if (ajaxSend == true) {
+						let data = {
+							cari: '',
+							rows: 10,
+							jenis: jenis,
+							tbl: tbl,
+							halaman: halaman,
+						};
+						let url = 'script/get_data';
+						let cryptos = false;
+
+						suksesAjax["ajaxku"] = function (result) {
+							var kelasToast = "success";
+							if (result.success === true) {
+								switch (jenis) {
+									case 'getJsonRows':
+										switch (tbl) {
+											case 'tujuan_renstra'://tujuan sasaran renstra
+												
+												break;
+											default:
+												break;
+										}
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
+							} else {
+								kelasToast = "warning"; //'success'
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: "check circle icon",
+							});
+							loaderHide();
+						};
+						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
+					}
+				},
+			});
+		}
+		setSelected(val) {
+			this.element.dropdown("set selected", val);
+		}
+		setValue(val) {
+			this.element.dropdown("set value", val);
+		}
+		restore() {
+			this.element.dropdown("restore defaults");
+		}
+		users(get) {
+			get = this.element.dropdown("get query");
+			this.element.dropdown({
+				//$(".satuan.ui.dropdown").dropdown({
+				apiSettings: {
+					cache: false,
+					// this url just returns a list of tags (with API response expected above)
+					method: "POST",
+					url: "script/get_data",
+					//throttle: 1000,//delay perintah
+					// passed via POST
+					data: {
+						jenis: "user",
+						tbl: "get_users_list",
+						cari: function (value) {
+							return get;
+							//console.log($('.satuan.ui.dropdown').dropdown('get query'));
+						},
+						rows: "all",
+						halaman: 1,
+					},
+					fields: {
+						results: "results",
+					},
+					filterRemoteData: true,
+				},
+				className: {
+					//item: "item vertical",
+				},
+				saveRemoteData: false,
+			});
+		}
+		setVal(val) {
+			//this.element.dropdown('preventChangeTrigger', true);
+			this.element.dropdown("set selected", val);
+		}
+		onChange(jenis = "list_dropdown", tbl = "satuan", ajax = false) {
+			let ajaxSend = ajax;
+			this.element.dropdown({
+				onChange: function (value, text, $choice) {
+					let dataChoice = $($choice).find('span.description').text();
+					switch (jenis) {
+						case 'getJsonRows':
+							switch (tbl) {
+								case 'tujuan_renstra'://tujuan sasaran renstra
+									
+									break;
+								default:
+									break;
+							}
+							break;
+						case 'value1':
+							break;
+						default:
+							break;
+					};
+					if (ajaxSend == true) {
+						let data = {
+							cari: cari(jenis),
+							rows: countRows(),
+							jenis: jenis,
+							tbl: tbl,
+							halaman: halaman,
+						};
+						let url = 'script/get_data';
+						let cryptos = false;
+
+						suksesAjax["ajaxku"] = function (result) {
+							var kelasToast = "success";
+							if (result.success === true) {
+								switch (jenis) {
+									case 'getJsonRows':
+										
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
+							} else {
+								kelasToast = "warning"; //'success'
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: "check circle icon",
+							});
+							loaderHide();
+						};
+						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
+					}
+				},
+				saveRemoteData: true,
+				filterRemoteData: true
+			});
+		}
+		valuesDropdown(values) {
+			this.element.dropdown({
+				values: values
+			})
+		}
+	}
+    let dropdownWilayah = new DropdownConstructor('.ui.wilayah.dropdown.ajx');
+    dropdownWilayah.returnListOnChange("list_dropdown", "wilayah", 3);
 });
