@@ -656,7 +656,8 @@ class get_data
                                                 $satuan = $resul[0]->satuan;
                                                 $data['satuan'] = $DB->getQuery("SELECT value, item FROM satuan_neo WHERE value LIKE CONCAT('%',?,'%')", [$satuan]);
                                                 break;
-                                            case 'value1':
+                                            case 'renstra':
+                                                // ambil data untuk values dropdown
                                                 break;
                                             case 'value1':
                                                 break;
