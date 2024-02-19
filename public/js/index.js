@@ -1614,12 +1614,12 @@ $(document).ready(function () {
 							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true)
 							break;
 						case 'renstra'://@audit renstra
-							let dropdownTujuan = new DropdownConstructor('.ui.dropdown.ajx.sasaran_renstra.selection');
-							dropdownTujuan.returnList("get_row_json", "sasaran_renstra", 1);
-							let dropdownSubKeg = new DropdownConstructor('.ui.dropdown.kode.ajx.selection')
-							dropdownSubKeg.returnList("get_row_json", "sub_keg");//dropdownConstr.restore();
-							let dropdownSatuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
-							dropdownSatuan.returnList("get_row_json", "satuan", 1);
+							var dropdown_ajx_tujuan = new DropdownConstructor('.ui.dropdown.ajx.sasaran_renstra.selection');
+							dropdown_ajx_tujuan.returnList("get_row_json", "sasaran_renstra", 1);
+							var dropdown_ajx_kode = new DropdownConstructor('.ui.dropdown.kode.ajx.selection')
+							dropdown_ajx_kode.returnList("get_row_json", "sub_keg");//dropdownConstr.restore();
+							var dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
+							dropdown_ajx_satuan.returnList("get_row_json", "satuan", 1);
 							break;
 						case 'sub_keg_dpa':
 						case 'sub_keg_renja':
@@ -1645,11 +1645,7 @@ $(document).ready(function () {
 				case 'get_pengaturan':
 					switch (tbl) {
 						case 'pengaturan':
-							let calendarDateTime = new CalendarConstructor(`[name="awal_renja"],[name="akhir_renja"]`);//(`.ui.calendar.datetime.startend[name="awal_renja"]`);
-
-							console.log($(`[name="awal_renja"]`));
-							console.log($(`[name="akhir_renja"]`));
-
+							let calendarDateTime = new CalendarConstructor(`[name="awal_renja"],[name="akhir_renja"]`);//(`.ui.calendar.datetime.startend
 							calendarDateTime.startCalendar = $(`[name="awal_renja"]`);
 							calendarDateTime.endCalendar = $(`[name="akhir_renja"]`);
 							calendarDateTime.Type("datetime");
@@ -1770,26 +1766,58 @@ $(document).ready(function () {
 												default://isi form dengan data
 													for (const iterator of elmAttrName) {
 														let attrElm = $(iterator).attr('name');
+														let postDataField = true;
 														// cari dulu .dropdown.ajx
 														let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
 														console.log(dropDownElmAjx);
-
+														
 														if (attrElm === 'file') {
 															formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 														} else {
 															let strText = null;
 															let cariAttrRms = formIni.find(`[${attrElm}][rms]`);
 															if (isNaN(result.data?.users[attrElm]) && cariAttrRms.length <= 0) {
-																strText = result.data?.users[attrElm];//@audit angka
+																strText = result.data?.users[attrElm];
 
 															} else {
 																strText = parseFloat(result.data?.users[attrElm]);
 																strText = accounting.formatNumber(result.data?.users[attrElm], strText.countDecimals(), ".", ",");
 															}
-															if (dropDownElmAjx) {
-																dropDownElmAjx.find(`input.search`).focus().val(strText);
+															// jika ada ajx class drpdown
+															if (dropDownElmAjx.length > 0 && result.data.hasOwnProperty("values")) {
+																if (result.data?.values[attrElm]) {
+																	switch (tbl) {
+																		case 'renstra':
+																			switch (attrElm) {
+																				case 'sasaran':
+																					dropdown_ajx_tujuan.valuesDropdown(result.data?.values?.sasaran);
+																					dropdown_ajx_tujuan.returnList("get_row_json", "sasaran_renstra", 1);
+																					postDataField = false;
+																					break;
+																				case 'kode':
+																					console.log(result.data?.values?.kode);
+																					dropdown_ajx_kode.valuesDropdown(result.data?.values?.kode);
+																					dropdown_ajx_kode.returnList("get_row_json", "sub_keg");
+																					postDataField = false;
+																					break;
+																				case 'satuan':
+																					dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
+																					dropdown_ajx_satuan.returnList("get_row_json", "satuan", 1);
+																					postDataField = false;
+																					break;
+																				default:
+																					break;
+																			}
+																			break;
+																		default:
+																			break;
+																	}
+																}
 															}
-															formIni.form("set value", attrElm, strText);
+															if (postDataField) {
+																formIni.form("set value", attrElm, strText);//@audit edit renstra
+															}
+															
 														}
 													}
 													break;
@@ -2400,7 +2428,7 @@ $(document).ready(function () {
 			}
 		]
 		*/
-		values(values) {
+		valuesDropdown(values) {
 			this.element.dropdown({
 				values: values
 			})
@@ -3412,7 +3440,7 @@ $(document).ready(function () {
 					txtLabelData +
 					"</label></div></div>";
 				break;
-			case "fieldDropdownLabel"://@audit kaji dropdown
+			case "fieldDropdownLabel":
 				let elemen11 =
 					`<div class="${classField}field" ${atributField}><label>` +
 					labelData +

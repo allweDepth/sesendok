@@ -658,6 +658,29 @@ class get_data
                                                 break;
                                             case 'renstra':
                                                 // ambil data untuk values dropdown
+                                                //sasaran
+                                                $data['values'] = [];
+                                                $sasaran_drop = $data['users']->sasaran;
+                                                $kode_drop = $data['users']->kode;
+                                                $satuan_drop = $data['users']->satuan;
+                                                //cari sasaran dengan id
+                                                if ($sasaran_drop) {
+                                                    $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'sasaran', 'AND'], ['id', '=', $sasaran_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
+                                                    $data['values']['sasaran'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true,'selected'=>true]];
+                                                }
+                                                //cari sub_keg dengan kode
+                                                if ($kode_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
+                                                    $data['values']['kode'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true,'selected'=>true]];
+                                                }
+                                                //cari satuan dengan satuan
+                                                if ($satuan_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['value', '=', $satuan_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
+                                                    $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value,'selected'=>true]];
+                                                }
                                                 break;
                                             case 'value1':
                                                 break;
@@ -737,13 +760,13 @@ class get_data
                                         case 'get_row_json':
                                             switch ($tbl) {
                                                 case 'akun_belanja':
-                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode,"descriptionVertical"=> true];
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'sasaran_renstra':
-                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan];
+                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
                                                     break;
                                                 case 'sub_keg':
-                                                    $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode,"descriptionVertical"=> true];
+                                                    $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'sumber_dana':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode];
@@ -754,7 +777,7 @@ class get_data
                                                 case 'value1':
                                                     break;
                                                 default:
-                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->nomor,"descriptionVertical"=> true];
+                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->nomor, "descriptionVertical" => true];
                                                     break;
                                             };
 
