@@ -553,9 +553,23 @@ $(document).ready(function () {
 		e.preventDefault();
 		let ini = $(this);
 		let linkTemplate = {
-			renstra: 'template/18. Renstra Template.xlsx',
 			wilayah: 'template/1. wilayah.xlsx',
-			peraturan: 'template/1. template peraturan.xlsx',
+			peraturan: 'template/2. template peraturan.xlsx',
+			organisasi: 'template/4. Organisasi Perangkat Daerah.xlsx',
+			sumber_dana: 'template/5. sumber dana.xlsx',
+			akun_belanja: 'template/6. akun.xlsx',
+			aset: 'template/7. neraca 1 header.xlsx',
+			mapping: 'template/8. Mapping 1 header.xlsx',
+			satuan: 'template/9. Satuan 1 Header.xlsx',
+			rekanan: 'template/10. rekanan.xlsx',
+			sub_keg: 'template/11. Sub keg 900.xlsx',
+			ssh: 'template/12. ssh 2024.xlsx',
+			asb: 'template/13. asb 2024.xlsx',
+			sbu: 'template/17. sbu 2024.xlsx',
+			tujuan_sasaran_renstra: 'template/18. tujuan sasaran renstra.xlsx',
+			renstra: 'template/19. Renstra Template.xlsx',
+			sub_keg_renja: 'template/20. Format Sub Kegiatan Renja:DPA:DPPA.xlsx',
+			sub_keg_dpa: 'template/20. Format Sub Kegiatan Renja:DPA:DPPA.xlsx',
 		};
 		let attrName = ini.attr("name");
 		let jenis = ini.attr("jns");
@@ -882,7 +896,7 @@ $(document).ready(function () {
 										["sasaran", "Sasaran"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {//@audit wait now
+								buatElemenHtml("fieldDropdown", {
 									label: "Tujuan",
 									atributField: 'hidden',
 									atribut: 'name="id_tujuan" non_data',
@@ -1092,10 +1106,10 @@ $(document).ready(function () {
 						case "sbu":
 						case "asb":
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {//@audit
+								buatElemenHtml("fieldDropdown", {//@audit now
 									label: "Kode Kelompok Barang/Jasa",
 									atribut: 'name="kd_aset"',
-									kelas: "search clearable lainnya selection",
+									kelas: "search clearable aset ajx selection",
 									dataArray: [
 										["1.1.12.01.01.0010", "Isi Tabung Gas"]
 									],
@@ -1115,9 +1129,9 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan"',
-									kelas: "search clearable ajx lainnya selection",
+									kelas: "search clearable ajx selection",
 									dataArray: [
-										["m", "m"]
+										["", ""]
 									],
 								}) +
 								buatElemenHtml("fieldText", {
@@ -1560,7 +1574,6 @@ $(document).ready(function () {
 					break;
 				case "import":
 					let templateXlsx = linkTemplate[tbl];//@audit + link
-					console.log();
 					if (templateXlsx) {
 						dataHtmlku.konten = buatElemenHtml("fieldLabel", {
 							label: "Download Template",
@@ -2354,8 +2367,8 @@ $(document).ready(function () {
 								case 'tujuan_renstra'://tujuan sasaran renstra
 									let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
 									let fieldElmTujuan = elmTujuan.closest('.field');
+									ajaxSend = false;
 									if (value === 'tujuan') {
-										ajaxSend = false;
 										fieldElmTujuan.attr('hidden');
 									} else {
 										//tambahkan dropdown@audit perbaiki

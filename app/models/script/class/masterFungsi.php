@@ -227,6 +227,7 @@ class MasterFungsi
             $myrow = 0;
             foreach ($get_data as $row) {
                 $myrow++;
+                $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
                     case 'sub_keg_dpa':
                     case 'sub_keg_renja':
@@ -314,7 +315,7 @@ class MasterFungsi
                             <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
+                                    <td klm="kelompok">' . $row->kelompok . '</td>
                                     <td klm="text">' . $divAwal . $row->text . $divAkhir . '</td>
                                     <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                     <td>' . $buttons . '</td>
@@ -366,12 +367,13 @@ class MasterFungsi
                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
 
+                        $desimal = ($this->countDecimals($row->harga_satuan) < 2) ? 2 : $this->countDecimals($row->harga_satuan);
                         $rowData['tbody'] .= preg_replace('/(\s\s+|\t|\n)/', ' ', '<tr id_row="' . $row->id . '">
-                        <td klm="kd_aset">' . $divAwal . $row->kd_aset . $divAkhir . '</td>
+                        <td klm="kd_aset">' . $row->kd_aset . '</td>
                         <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
                         <td klm="spesifikasi">' . $divAwal . $row->spesifikasi . $divAkhir . '</td>
                         <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
-                        <td klm="harga_satuan">' . $divAwal . $row->harga_satuan . $divAkhir . '</td>
+                        <td klm="harga_satuan">' . $divAwalAngka . number_format($row->harga_satuan, $desimal, ',', '.') . $divAkhir . '</td>
                         <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
                         <td>' . $buttons . '</td>
                     </tr>');
@@ -514,14 +516,14 @@ class MasterFungsi
                                         <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                                <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
-                                                <td klm="nomenklatur_urusan">' . $divAwal . $row->nomenklatur_urusan . $divAkhir . '</td>
-                                                <td klm="kinerja">' . $divAwal . $row->kinerja . $divAkhir . '</td>
-                                                <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
-                                                <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
-                                                <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
-                                                <td>' . $buttons . '</td>
-                                            </tr>');
+                            <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
+                            <td klm="nomenklatur_urusan">' . $divAwal . $row->nomenklatur_urusan . $divAkhir . '</td>
+                            <td klm="kinerja">' . $divAwal . $row->kinerja . $divAkhir . '</td>
+                            <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
+                            <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                            <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                            <td>' . $buttons . '</td>
+                            </tr>');
                         break;
                     case 'mapping':
                         $buttons = '';
@@ -535,7 +537,7 @@ class MasterFungsi
                                             <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                                    <td klm="kode_aset">' . $divAwal . $row->kode_aset . $divAkhir . '</td>
+                                                    <td klm="kode_aset">'  . $row->kode_aset . '</td>
                                                     <td klm="uraian_aset">' . $divAwal . $row->uraian_aset . $divAkhir . '</td>
                                                     <td klm="kode_akun">' . $divAwal . $row->kode_akun . $divAkhir . '</td>
                                                     <td klm="uraian_akun">' . $divAwal . $row->uraian_akun . $divAkhir . '</td>
