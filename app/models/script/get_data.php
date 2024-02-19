@@ -796,7 +796,7 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'sumber_dana':
-                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode];
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'satuan':
                                                     $dataJson['results'][] = ['name' => $row->item, 'value' => $row->value];

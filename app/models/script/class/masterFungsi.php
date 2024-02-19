@@ -240,14 +240,14 @@ class MasterFungsi
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttonEdit = ($row->kel_kd_sub_keg == 'kd_sub_keg') ? '<div class="ui icon top left pointing lainnya dropdown button">
+                            $buttonEdit = ($row->kel_kd_sub_keg == 'kd_sub_keg') ? '<div class="ui floating dropdown icon button lainnya">
                             <i class="wrench icon"></i>
                                 <div class="menu">
                                     <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
                                     <div class="divider"></div>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"><div class="ui red empty circular label"></div>Rincian</a>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><div class="ui red empty circular label"></div>Rincian Perubahan</a>
-                                    <div class="item">Help</div>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"><i class="pen square blue icon"></i>Rincian</a>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><i class="pen square red icon"></i>Rincian Perubahan</a>
+                                    <div class="item"><div class="ui red empty circular label"></div>Help</div>
                                 </div>
                             </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>';
                             $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
