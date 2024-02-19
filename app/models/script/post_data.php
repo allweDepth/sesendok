@@ -197,8 +197,7 @@ class post_data
                                     'min_char' => 1
                                 ]);
                                 $data_capaian_awal = $validate->setRules('data_capaian_awal', 'data capaian awal', [
-                                    'numeric' => true,
-                                    'required' => true,
+                                    'numeric_zero' => true,
                                     'min_char' => 1
                                 ]);
                                 $target_thn_1 = $validate->setRules('target_thn_1', 'Target tahun pertama', [

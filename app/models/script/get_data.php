@@ -229,6 +229,8 @@ class get_data
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND']];
                                     //pilih kolom yang diambil
                                     $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                 } else {
                                     $message_tambah = ' (atur tahun renstra OPD)';
                                     $code = 70;
@@ -255,6 +257,8 @@ class get_data
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'sasaran', 'AND']];
                                     //pilih kolom yang diambil
                                     $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                 } else {
                                     $message_tambah = ' (atur tahun renstra OPD)';
                                     $code = 70;
@@ -282,6 +286,8 @@ class get_data
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND']];
                                     //pilih kolom yang diambil
                                     // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                 } else {
                                     $message_tambah = ' (atur tahun renstra OPD)';
                                     $code = 70;
@@ -308,6 +314,8 @@ class get_data
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND']];
                                     //pilih kolom yang diambil
                                     // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                 } else {
                                     $message_tambah = ' (atur tahun renstra OPD)';
                                     $code = 70;
@@ -332,6 +340,8 @@ class get_data
                                 $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND']];
                                 //pilih kolom yang diambil
                                 // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0];
                             } else {
                                 $message_tambah = ' (atur organisasi OPD)';
                                 $kodePosting = '';
@@ -378,12 +388,14 @@ class get_data
 
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
                                     //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
-
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
                                     $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
 
                                     $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
                                     // var_dump($bidang_sub_keg);
                                     $data['tr_sub_keg'] = '<tr>
+                                    
                                 <td class="collapsing">Perangkat Daerah</td>
                                 <td>' . $data['unit_kerja'] . '</td>
                                 <td class="right aligned collapsing">Rp. 0,00</td>
@@ -429,6 +441,8 @@ class get_data
                             $order = "ORDER BY nama_perusahaan, id ASC";
                             $where1 = "kd_wilayah = ? AND disable <= ?";
                             $data_where1 =  [$kd_wilayah, 0];
+                            $whereGet_row_json = "kd_wilayah = ? AND disable <= ?";
+                            $data_hereGet_row_json =  [$kd_wilayah, 0];
                             break;
                         case 'satuan':
                             $like = "disable <= ? AND(value LIKE CONCAT('%',?,'%') OR item LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR sebutan_lain LIKE CONCAT('%',?,'%'))";
