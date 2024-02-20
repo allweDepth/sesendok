@@ -695,12 +695,17 @@ $(document).ready(function () {
 										["asb", "ASB"]
 									],
 								}) +
-								buatElemenHtml("fieldTextAction", {
+								buatElemenHtml("fieldDropdownLabel", {
 									label: "Komponen",
-									classField: `required`,
 									txtLabel: '<i class="plus icon"></i>',
-									atribut: 'name="komponen" placeholder="Komponen..."',
-									atributLabel: `name="modal_show" jns="search_field_json" tbl="sub_keg_${tbl}"`,
+									classField: `required`,
+									atributLabel: `name="modal_show" jns="search_field_json" tbl=""`,
+									atribut: 'name="komponen" placeholder="pilih komponen..."',
+									kelas: "search clearable komponen ajx selection",
+									dataArray: [
+										["paket", "Paket"],
+										["m", "m"]
+									],
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
@@ -1084,7 +1089,7 @@ $(document).ready(function () {
 						case "sbu":
 						case "asb":
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {//@audit now
+								buatElemenHtml("fieldDropdown", {
 									label: "Kode Kelompok Barang/Jasa",
 									atribut: 'name="kd_aset"',
 									kelas: "search clearable aset ajx selection",
@@ -1618,18 +1623,24 @@ $(document).ready(function () {
 							dropdown_ajx_sub_keg.returnList("get_row_json", "sub_keg");
 							break;
 						case 'dpa':
-						case 'renja':
+						case 'renja'://@audit drop renja
 							let renja_dpa = new DropdownConstructor('.ui.dropdown.kd_akun.ajx.selection')
 							renja_dpa.returnList("get_row_json", "akun_belanja");
-							let dropdownKelompok = new DropdownConstructor('.ui.dropdown[name="kelompok"]')
-							
-							let allField = {klm:'kelompok_json', id_sub_keg:formIni.attr('id_sub_keg')}
-							dropdownKelompok.returnList("get_field_json", `sub_keg_${tbl}`,allField);//@audit wait now
+
+							//jenis_kelompok 
+							let dropdownJenisKelompok = new DropdownConstructor('.ui.dropdown[name="jenis_kelompok"]');
+							let allObjek = { jenis: 'gantiJenisKelompok' };
+							dropdownJenisKelompok.onChange(allObjek);
+							//jenis_kelompok 
+							let dropdownJenisKomponen = new DropdownConstructor('.ui.dropdown[name="jenis_komponen"]');
+							allObjek = { jenis: 'gantiJenisKomponen' };
+							dropdownJenisKomponen.onChange(allObjek);
+
 
 							let dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
 							dropdownSumberDana.returnList("get_row_json", "sumber_dana");
 							let dropdownSatuanRenja1 = new DropdownConstructor('.ui.dropdown.sat_1')
-							allField = {minCharacters:1}
+							var allField = { minCharacters: 1 }
 							dropdownSatuanRenja1.returnList("get_row_json", "satuan", allField);
 							let dropdownSatuanRenja2 = new DropdownConstructor('.ui.dropdown.sat_2')
 							dropdownSatuanRenja2.returnList("get_row_json", "satuan", allField);
@@ -2275,7 +2286,7 @@ $(document).ready(function () {
 					case 'sub_keg_renja':
 						data.id_sub_keg = ini.closest('.ui.form').attr('id_sub_keg');
 						data.klm = klmAttr;
-						
+
 						let jenis_kelompok = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');
 						data.jenis_kelompok = jenis_kelompok;
 						console.log(`jenis_kelompok : ${jenis_kelompok}`);
@@ -2353,9 +2364,16 @@ $(document).ready(function () {
 			this.element = $(element); //element;
 			this.methodConstructor = new MethodConstructor();
 		}
-		returnList(jenis = "list_dropdown", tbl = "satuan", allField={minCharacters: 3}) {
+		returnList(jenis = "list_dropdown", tbl = "satuan", allField = { minCharacters: 3 }) {
 			let get = this.element.dropdown("get query");
 			let elm = this.element;
+			switch (jenis) {
+				case 'get_field_json':
+					allField.jenis_kelompok_json = $(`form[name="form_flyout"]`).find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');;
+					break;
+				default:
+					break;
+			}
 			this.element.dropdown({
 				minCharacters: allField.minCharacters,
 				maxResults: countRows(),
@@ -2387,7 +2405,7 @@ $(document).ready(function () {
 				// saveRemoteData: false,
 			});
 		}
-		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", allField={minCharacters: 3}) {
+		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", allField = { minCharacters: 3 }) {
 			let get = this.element.dropdown("get query");
 			let elm = this.element;
 			this.element.dropdown({
@@ -2529,14 +2547,15 @@ $(document).ready(function () {
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown("set selected", val);
 		}
-		onChange(jenis = "list_dropdown", tbl = "satuan", ajax = false) {
-			let ajaxSend = ajax;
+		onChange(allObjek = { jenis: "list_dropdown", tbl: "satuan", ajax: false }) {
+			let ajaxSend = allObjek.ajax;
 			this.element.dropdown({
 				onChange: function (value, text, $choice) {
+					console.log('masukmi disini');
 					let dataChoice = $($choice).find('span.description').text();
-					switch (jenis) {
+					switch (allObjek.jenis) {
 						case 'getJsonRows':
-							switch (tbl) {
+							switch (allObjek.tbl) {
 								case 'tujuan_renstra'://tujuan sasaran renstra
 									let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
 									let fieldElmTujuan = elmTujuan.closest('.field');
@@ -2552,17 +2571,27 @@ $(document).ready(function () {
 									break;
 							}
 							break;
-						case 'value1':
+						case 'gantiJenisKelompok':
+							var allData = { jenis: 'gantiJenisKelompok', tbl: allObjek.tbl }
+							MethodConstructor.refreshDropdown(allData);
+							break;
+						case 'gantiJenisKomponen':
+							allData = { jenis: 'gantiJenisKomponen', tbl: allObjek.tbl }
+							MethodConstructor.refreshDropdown(allData);
+							break;
+						case 'xxx':
 							break;
 						default:
+
+
 							break;
 					};
 					if (ajaxSend == true) {
 						let data = {
-							cari: cari(jenis),
+							cari: cari(allObjek.jenis),
 							rows: countRows(),
-							jenis: jenis,
-							tbl: tbl,
+							jenis: allObjek.jenis,
+							tbl: allObjek.tbl,
 							halaman: halaman,
 						};
 						let url = 'script/get_data';
@@ -2659,6 +2688,26 @@ $(document).ready(function () {
 				// elmTujuan.dropdown({
 				// 	values: result?.results,
 				// })
+			}
+		}
+		static refreshDropdown(allData = { jenis: 'gantiJenisKelompok', tbl: 'renja' }) {
+			switch (allData.jenis) {
+				case 'gantiJenisKelompok':
+					let dropdownKelompok = new DropdownConstructor('.ui.dropdown[name="kelompok"]')
+					let allField = { klm: 'kelompok_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg') }
+					dropdownKelompok.returnList("get_field_json", `sub_keg_${allData.tbl}`, allField);//@audit wait now
+					break;
+				case 'gantiJenisKomponen':
+					let dropdownKomponen = new DropdownConstructor('.ui.dropdown[name="komponen"]')
+					let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg') }
+					let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_komponen"]').dropdown('get value');
+					dropdownKomponen.returnList("get_row_json", jenisKomponen, allFieldKomponen);//@audit wait now
+					break;
+				case 'xxxx':
+
+					break;
+				default:
+					break;
 			}
 		}
 	}

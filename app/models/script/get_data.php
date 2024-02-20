@@ -570,6 +570,8 @@ class get_data
                             $posisi = " LIMIT ?, ?";
                             $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
                             $data_where1 =  [$kd_wilayah, $tahun, 0];
+                            $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
+                            $data_hereGet_row_json = [$kd_wilayah, $tahun, 0];
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 7;
@@ -787,6 +789,12 @@ class get_data
                                                 case 'satuan':
                                                     $dataJson['results'][] = ['name' => $row->item, 'value' => $row->value];
                                                     break;
+                                                case 'hspk':
+                                                case 'asb':
+                                                case 'ssh':
+                                                case 'sbu':
+                                                    $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $row->kd_aset, "descriptionVertical" => true,'satuan' => $row->satuan,'harga_satuan' => $row->harga_satuan,'spesifikasi' => $row->spesifikasi,'tkdn' => $row->tkdn];
+                                                    break;
                                                 case 'value1':
                                                     break;
                                                 default:
@@ -898,6 +906,10 @@ class get_data
                     case 'sub_keg':
                     case 'satuan':
                     case 'akun_belanja':
+                    case 'hspk':
+                    case 'asb':
+                    case 'ssh':
+                    case 'sbu':
                         $item = array('code' => $code, 'message' => hasilServer[$code] . $message_tambah);
                         $json = array('success' => $sukses,  'results' => $dataJson['results'],  'data' => $data, 'error' => $item);
                         break;
