@@ -1048,10 +1048,10 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <div class="ui modal mdl_general" name="mdl_general">
                 <h5 class="ui header dash_header">
                     <i class="big icons">
-                        <i class="puzzle icon"></i>
-                        <i class="bottom right teal corner add icon"></i>
+                        <i class="teal utensils icon"></i>
+                        <i class="bottom right white corner add icon"></i>
                     </i></i>
-                    <div class="content">AHSP <div class="sub header">Data</div>
+                    <div class="content">siSendok<div class="sub header" id="header_mdl">Tambah Data</div>
                     </div>
                 </h5>
                 <form class="ui form scrolling content" name="form_modal">form umum ji

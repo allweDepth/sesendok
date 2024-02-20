@@ -618,6 +618,7 @@ $(document).ready(function () {
 					switch (tbl) {
 						case 'dpa':
 						case 'renja':
+							formIni.attr("id_sub_keg", ini.attr("id_sub_keg"));
 							dataHtmlku.konten =
 								buatElemenHtml("fieldDropdown", {
 									label: "Objek Belanja",
@@ -664,9 +665,9 @@ $(document).ready(function () {
 									label: "Uraian Pengelompokan Belanja",
 									txtLabel: '<i class="plus icon"></i>',
 									classField: `required`,
-									atributLabel: `name="add" jns="add_data_json" tbl"sub_keg_${tbl}"`,
+									atributLabel: `name="modal_show" jns="add_field_json" tbl="sub_keg_${tbl}" klm="kelompok_json"`,
 									atribut: 'name="kelompok" placeholder="pilih uraian kelompok..."',
-									kelas: "search clearable kelompok ajx selection",
+									kelas: "search kelompok ajx selection",
 									dataArray: [
 										["paket", "Paket"],
 										["m", "m"]
@@ -685,7 +686,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Jenis Standar Harga",
 									classField: `required`,
-									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
+									atribut: 'name="jenis_komponen" placeholder="pilih pengelompokan..."',
 									kelas: "search clearable lainnya selection",
 									dataArray: [
 										["ssh", "SSH"],
@@ -699,7 +700,7 @@ $(document).ready(function () {
 									classField: `required`,
 									txtLabel: '<i class="plus icon"></i>',
 									atribut: 'name="komponen" placeholder="Komponen..."',
-									atributLabel: `name="modal" jns="${jenis}" tbl=""`,
+									atributLabel: `name="modal_show" jns="search_field_json" tbl="sub_keg_${tbl}"`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
@@ -722,7 +723,7 @@ $(document).ready(function () {
 									label: "Keterangan",
 									txtLabel: '<i class="plus icon"></i>',
 									classField: `required`,
-									atributLabel: `name="add" jns="add_data_json" tbl"sub_keg_${tbl}"`,
+									atributLabel: `name="modal_show" jns="add_field_json" tbl="sub_keg_${tbl}" klm="keterangan_json"`,
 									atribut: 'name="uraian" placeholder="pilih keterangan..."',
 									kelas: "search clearable uraian selection",
 									dataArray: [
@@ -738,7 +739,7 @@ $(document).ready(function () {
 								buatElemenHtml("fields", {//@audit elm perkalian
 									label: "Koefisien Perkalian",
 									kelas: "disabled",
-									kelas2: ["search sat_1 ajx selection","search sat_2 ajx selection","search sat_3 ajx selection","search sat_4 ajx selection"],
+									kelas2: ["search sat_1 ajx selection", "search sat_2 ajx selection", "search sat_3 ajx selection", "search sat_4 ajx selection"],
 									classField: `required`,
 									atribut: ['name="sat_1" placeholder="satuan..."', 'name="sat_2" placeholder="satuan..." non_data', 'name="sat_3" placeholder="satuan..." non_data', 'name="sat_4" placeholder="satuan..." non_data'],
 									atribut2: ['name="vol_1" placeholder="Koefisien..."', 'name="vol_2" placeholder="Koefisien..." non_data', 'name="vol_3" placeholder="Koefisien..." non_data', 'name="vol_4" placeholder="Koefisien..." non_data']
@@ -2219,6 +2220,120 @@ $(document).ready(function () {
 		var himp = $(this).closest(".action");
 		himp.find("input").val("");
 	});
+	//=========================================
+	//===========jalankan modal================@audit-ok modal name
+	//=========================================
+	$("body").on("click", '[name="modal_show"]', function (e) {
+		e.preventDefault();
+		const ini = $(this);
+		const [node] = $(this);
+		const attrs = {}
+		$.each(node.attributes, (index, attribute) => {
+			attrs[attribute.name] = attribute.value;
+			let attrName = attribute.name;
+			//membuat variabel
+			let myVariable = attrName + 'Attr';
+			window[myVariable] = attribute.value;
+		});
+		console.log(attrs);
+		let url = 'script/get_data'
+		let jalankanAjax = false;
+		let mdl = $('.ui.modal[name="mdl_general"]');
+		// mdl.addClass("large");
+		//ubah kop header modal
+		let elmIkonModal = $(mdl.find(".big.icons i")[0]); //ganti class icon
+		let elmIkonModal2 = $(mdl.find(".big.icons i")[1]); //ganti class icon
+		let elmKontenModal = mdl.find("h5 .content");
+		let formIni = $('form[name="form_modal"]');
+		let headerModal = 'Catatan';
+		let data = {
+			cari: cari(jnsAttr),
+			rows: countRows(),
+			jenis: jnsAttr,
+			tbl: tblAttr,
+			halaman: halaman
+		};
+		let elementForm = buatElemenHtml("fieldTextIcon", {
+			label: "Uraian Pengelompokan Belanja",
+			classField: `required`,
+			atribut: 'name="uraian" placeholder="pengelompokan belanja..."',
+			icon: "edit blue"
+		});
+		let kelasToast = "warning";
+		let pesanToast = 'Koreksi Data';
+		mdl.addClass("tiny");
+		switch (jnsAttr) {
+			case 'add_field_json':
+				switch (tblAttr) {
+					case 'sub_keg_dpa':
+					case 'sub_keg_renja':
+						data.id_sub_keg = ini.closest('.ui.form').attr('id_sub_keg');
+						data.klm = klmAttr;
+						
+						let jenis_kelompok = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');
+						data.jenis_kelompok = jenis_kelompok;
+						console.log(`jenis_kelompok : ${jenis_kelompok}`);
+						switch (jenis_kelompok) {
+							case 'paket':
+								headerModal = 'Tambah Uraian Pemaketan Belanja';
+								break;
+							case 'kelompok':
+								headerModal = 'Tambah Uraian Pengelompokan Belanja';
+								break;
+							default:
+								nameAttr = '';
+								pesanToast = 'Pilih Pengelompokan Belanja';
+								break;
+						}
+						break;
+					default:
+						break;
+				}
+				break;
+			case 'search_field_json':
+				let kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_komponen"').dropdown('get value')
+				elementForm = buatElemenHtml("fieldSearchGrid", {
+					label: "Uraian Pengelompokan Belanja",
+					kelas: `${kelasSearch}`,
+					atribut: 'name="uraian" placeholder="pengelompokan belanja..."',
+				});
+				break;
+			case 'xxx':
+				break;
+			default:
+				break;
+		}
+		elementForm += buatElemenHtml("errorForm");
+		formIni.html(elementForm);
+		document.getElementById("header_mdl").textContent = headerModal;
+		addRulesForm(formIni);
+		$("[rms]").mathbiila();
+		let modalGeneral = new ModalConstructor(mdl);
+		modalGeneral.globalForm();
+
+		if (jalankanAjax) {
+			suksesAjax["ajaxku"] = function (result) {
+				if (result.success === true) {
+
+					if (nameAttr === "modal_show") {
+						mdl.modal("show");
+					}
+				}
+			};
+			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
+		} else {
+			if (nameAttr === "modal_show") {
+				mdl.modal("show");
+				kelasToast = "success";
+			} else {
+				showToast(pesanToast, {
+					class: kelasToast,
+					icon: "check circle icon",
+				});
+			}
+		}
+
+	});
 	//===================================
 	//=========== class dropdown ========
 	//===================================
@@ -2665,7 +2780,6 @@ $(document).ready(function () {
 				onSuccess: function (e) {
 					e.preventDefault();
 					loaderShow();
-					console.log("masuk form global");
 					let jalankanAjax = false;
 					let ini = $(this);
 					let tbl = ini.attr("tbl");
@@ -3164,6 +3278,34 @@ $(document).ready(function () {
 	}
 	let InitializeForm = new FormGlobal(".ui.form");
 	InitializeForm.run();
+	//=======================================
+	//===============MODAL GLOBAL=============
+	//=======================================
+	class ModalConstructor {//@audit-ok ModalConstructor
+		constructor(modal) {
+			this.modal = $(modal); //element;
+		}
+		globalForm() {
+			let MyModal = this.modal;
+			MyModal.modal({
+				allowMultiple: true,
+				//observeChanges: true,
+				closable: false,
+				transition: "vertical flip", //slide down,'slide up','browse right','browse','swing up','vertical flip','fly down','drop','zoom','scale'
+				onDeny: function () {
+					//return false;//console.log('saya menekan tombol cancel');
+				},
+				onApprove: function () {
+					// jika di tekan yes//console.log('saya menekan tombol YES');
+					$(this).find("form").trigger("submit");
+					return false;
+				},
+				onShow: function () {
+
+				},
+			});
+		}
+	}
 	function tok(elm) {
 		$(".ui.sidebar").sidebar("hide");
 		// elm.closest('.ui.accordion').find('.active').removeClass('active');
@@ -3356,6 +3498,9 @@ $(document).ready(function () {
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		switch (namaElemen) {
+			case "errorForm":
+				elemen = `<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
+				break;
 			case "text":
 				elemen = `<div class="${classField}field" ${atributField}><input type="text" ${atributData}></div>`;
 				break;
@@ -3387,12 +3532,22 @@ $(document).ready(function () {
 				elemen = `<div class="ui hidden divider"></div>`;
 				break;
 			case "fieldLabel":
-				var elemen =
+				elemen =
 					`<div class="${classField}field" ${atributField}><label>${labelData}</label><a class="ui fluid label ${kelasData}" href="${href}" ${atributData}>
 					<i class="${icon} icon"></i>${valueData}</a></div>`;
 				break;
+			case "fieldSearchGrid"://untuk modal
+				elemen = `<div class="ui aligned grid">
+					<div class="right floated right aligned column">
+						<div class="ui scrolling search ${kelasData} fluid category">
+							<div class="ui icon input"><input class="prompt" type="text" placeholder="Cari..." autocomplete="off" ${atributData}><i class="search icon"></i></div>
+							<div class="results"></div>
+						</div>
+					</div>
+				</div>`;
+				break;
 			case "fieldSearch":
-				var elemen =
+				elemen =
 					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid category scrolling search ${kelasData}"><div class="ui icon fluid input"><input class="prompt" type="text" ${atributData} placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>`;
 				break;
 			case "calendar":
@@ -3770,7 +3925,7 @@ $(document).ready(function () {
 						},
 					],
 				});
-			}else{
+			} else {
 				formku.form("remove field", atribut);
 			}
 		}
