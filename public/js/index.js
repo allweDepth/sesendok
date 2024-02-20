@@ -2699,8 +2699,10 @@ $(document).ready(function () {
 					break;
 				case 'gantiJenisKomponen':
 					let dropdownKomponen = new DropdownConstructor('.ui.dropdown[name="komponen"]')
-					let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg') }
+					
 					let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_komponen"]').dropdown('get value');
+					let rekeningAkun = $('form[name="form_flyout"]').find('.ui.dropdown[name="kd_akun"]').dropdown('get value');
+					let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg') ,kd_akun:rekeningAkun};
 					dropdownKomponen.returnList("get_row_json", jenisKomponen, allFieldKomponen);//@audit wait now
 					break;
 				case 'xxxx':

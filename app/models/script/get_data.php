@@ -116,7 +116,19 @@ class get_data
                         break;
                     case 'get_rows':
                         break;
-                    case 'get_search':
+                    case 'get_row_json':
+                        // isset($_POST['jenis'])
+                        if (isset($_POST['kd_akun'])) {//@audit masih butuh lanjutan untuk search sbu dkk
+                            $kd_sub_keg = $validate->setRules('kd_akun', "kode akun", [
+                                'sanitize' => 'string',
+                                'required' => true,
+                                'inDB' => ['akun_neo', 'kd_aset', [['kd_aset', '=', $_POST['kd_akun']],['kd_wilayah', '=', $kd_wilayah],['tahun', '=', $tahun]]],
+                                'min_char' => 1
+                            ]);
+                        }
+                        break;
+                    case 'yyyyyy':
+                        // isset($_POST['jenis'])
                         break;
                     case 'xxxx':
                         $posisi = $validate->setRules('posisi', 'posisi', [
@@ -793,7 +805,7 @@ class get_data
                                                 case 'asb':
                                                 case 'ssh':
                                                 case 'sbu':
-                                                    $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $row->kd_aset, "descriptionVertical" => true,'satuan' => $row->satuan,'harga_satuan' => $row->harga_satuan,'spesifikasi' => $row->spesifikasi,'tkdn' => $row->tkdn];
+                                                    $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $row->kd_aset, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
                                                     break;
                                                 case 'value1':
                                                     break;
