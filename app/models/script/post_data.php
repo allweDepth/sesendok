@@ -7,15 +7,12 @@ class post_data
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-
         $id_user = $_SESSION["user"]["id"];
         $tahun_anggaran = $_SESSION["user"]["tahun"];
         $keyEncrypt = $_SESSION["user"]["key_encrypt"];
         $btn_edit = '';
-
         $DB = DB::getInstance();
         $Fungsi = new MasterFungsi();
-
         $type_user = $_SESSION["user"]["type_user"];
         $username = $_SESSION["user"]["username"];
         $status = 'user';
@@ -154,7 +151,6 @@ class post_data
                                     'in_array' => ['off', 'on']
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
-
                                 break;
                             default:
                                 # code...
@@ -242,7 +238,6 @@ class post_data
                                     'in_array' => ['off', 'on']
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
-
                                 break;
                             default:
                                 # code...
@@ -298,7 +293,6 @@ class post_data
                                     'in_array' => ['off', 'on']
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
-
                                 break;
                             default:
                                 # code...
@@ -428,7 +422,6 @@ class post_data
                                     'required' => true,
                                     'in_array' => ['rahasia', 'umum', 'proyek']
                                 ]);
-
                                 break;
                             default:
                                 # code...
@@ -597,13 +590,11 @@ class post_data
                                     'min_char' => 1
                                 ]);
                                 //var_dump($_POST['alamat']);
-
                                 $alamat = $validate->setRules('alamat', 'alamat', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 1
                                 ]);
-
                                 $npwp = $validate->setRules('npwp', 'npwp', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -753,7 +744,6 @@ class post_data
                                     'required' => true,
                                     'min_char' => 6
                                 ]);
-
                                 $ket = $validate->setRules('ket', 'Keterangan', [
                                     'sanitize' => 'string'
                                 ]);
@@ -786,10 +776,8 @@ class post_data
                     default:
                         $err = 6;
                 }
-
                 //FINISH PROSES VALIDASI
                 $kodePosting = '';
-
                 if ($validate->passed()) {
                     $code = 55;
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
@@ -832,7 +820,6 @@ class post_data
                                     }
                                 }
                             }
-
                             break;
                         default:
                             break;
@@ -843,8 +830,6 @@ class post_data
                         case 'sub_keg_renja':
                             $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                             $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
-                            
-                            
                             $set = [
                                 'kd_wilayah' => $kd_wilayah,
                                 'kd_opd' => $kd_opd,
@@ -904,7 +889,6 @@ class post_data
                                 $kodePosting = '';
                                 $code = 70;
                             }
-
                             break;
                         case 'renstra':
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
@@ -918,7 +902,6 @@ class post_data
                                     }
                                     // id tujuan
                                     $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
-
                                     $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
                                     $sasaran_txt = ($tujuan) ? $tujuan->text : '';
                                     //uraian_prog_keg
@@ -1091,18 +1074,15 @@ class post_data
                                             $set['file'] = $file['file'];
                                         }
                                     }
-
                                     break;
                                 default:
                                     break;
                             }
                             break;
-
                         case 'sortir':
                             $condition = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
                             $DB->orderBy('no_sortir');
                             $result = $DB->getWhereCustom($tabel_pakai, $condition);
-
                             $jumlahArray = is_array($result) ? count($result) : 0;
                             //var_dump($result);
                             if ($jumlahArray) {
@@ -1149,7 +1129,6 @@ class post_data
                                     case 'lokasi_proyek':
                                         # code...
                                         break;
-
                                     default:
                                         # code...
                                         break;
@@ -1191,7 +1170,6 @@ class post_data
                                             $set['photo'] = $file['file'];
                                         }
                                     }
-
                                     $kodePosting = 'cek_insert';
                                     //var_dump($file);
                                     break;
@@ -1199,7 +1177,6 @@ class post_data
                                     # code...
                                     break;
                             }
-
                             break;
                         case 'x':
                             switch ($tbl) {

@@ -30,14 +30,14 @@ class Register
 				'required' => true,
 				'min_char' => 8
 			]);
-			$kd_wilayah_temp =$_POST['kd_wilayah'];
+			$kd_wilayah_temp = $_POST['kd_wilayah'];
 			$kd_wilayah = $validate->setRules('kd_wilayah', 'kode wilayah', [
 				'sanitize' => 'string',
 				'required' => true,
 				'inDB' => ['organisasi_neo', 'kode', [['kode', '=', $kd_wilayah_temp]]],
 				'min_char' => 2
 			]);
-			
+
 
 			$kd_organisasi = $validate->setRules('kd_organisasi', 'Organisasi', [
 				'sanitize' => 'string',
@@ -75,6 +75,7 @@ class Register
 					'email' => $email,
 					'nama' => $nama,
 					'password' => $password,
+					'kd_organisasi' => $kd_organisasi,
 					'nama_org' => $nama_org,
 					'type_user' => $type_user,
 					'photo' => $photo,
@@ -146,7 +147,10 @@ class Register
 			} else {
 				$data = '<i class="user times icon"></i><div class="content"><div class="header">username/email telah digunakan </div><p>ganti username dan email dengan karakter unik</p></div>';
 			}
+		} else if ($_POST['jenis'] == 'list_dropdown') {
+			var_dump('ok');
 		}
+
 		$item = array('code' => $code, 'message' => hasilServer[$code]);
 		$json = array('success' => $sukses, 'data' => $data, 'error' => $item);
 		return json_encode($json);

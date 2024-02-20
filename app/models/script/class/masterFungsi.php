@@ -1,9 +1,7 @@
 <?php
 // require_once("class/FormulaParser.php");
 // require 'init.php';
-
 use FormulaParser\FormulaParser;
-
 class MasterFungsi
 {
     //get tabel data
@@ -34,7 +32,6 @@ class MasterFungsi
         $paginationnext = '';
         $pagination2 = '';
         $rowData = ['tbody' => '', 'tfoot' => ''];
-
         //var_dump($nama_tabel,$get_data, $jmlhalaman , $halaman,$jumlah_kolom);
         //var_dump($jumlah_kolom);
         //$rowData['sumData'] =sizeof($get_data);
@@ -211,7 +208,6 @@ class MasterFungsi
                 <th class="collapsing">AKSI</th>
             </tr>');
                 break;
-
             case 'user':
                 break;
             default:
@@ -223,7 +219,6 @@ class MasterFungsi
         }
         $jumlahArray = is_array($get_data) ? count($get_data) : 0;
         if ($jumlahArray > 0) {
-
             $myrow = 0;
             foreach ($get_data as $row) {
                 $myrow++;
@@ -236,7 +231,6 @@ class MasterFungsi
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
-
                         if ($disable_anggaran <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
@@ -260,7 +254,6 @@ class MasterFungsi
                                     <td klm="jumlah_rincian">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="jumlah_pagu_p">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="jumlah_rincian_p">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
-                                    
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
@@ -283,7 +276,6 @@ class MasterFungsi
                                     <td klm="sasaran">' .  $row->sasaran . '</td>
                                     <td klm="kode">' .  $row->kode . '</td>
                                     <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
-                                    
                                     <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
                                     <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
                                     <td klm="data_capaian_awal">' . $divAwalAngka . number_format($row->data_capaian_awal, 2, ',', '.') . $divAkhir . '</td>
@@ -298,7 +290,6 @@ class MasterFungsi
                                     <td klm="target_thn_5">' . $divAwalAngka . number_format($row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="dana_thn_5">' . $divAwalAngka . number_format($row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="kondisi_akhir">' .  number_format($row->kondisi_akhir, 2, ',', '.') . '</td>
-                                    
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
@@ -306,7 +297,6 @@ class MasterFungsi
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
-
                         if ($type_user == 'admin') {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
@@ -325,7 +315,6 @@ class MasterFungsi
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
-
                         $file = $row->file;
                         $fileTag = '';
                         if (strlen($file)) {
@@ -366,7 +355,6 @@ class MasterFungsi
                                 <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                                 <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
-
                         $desimal = ($this->countDecimals($row->harga_satuan) < 2) ? 2 : $this->countDecimals($row->harga_satuan);
                         $rowData['tbody'] .= preg_replace('/(\s\s+|\t|\n)/', ' ', '<tr id_row="' . $row->id . '">
                         <td klm="kd_aset">' . $row->kd_aset . '</td>
@@ -431,7 +419,6 @@ class MasterFungsi
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
-
                         $file = $row->file;
                         $fileTag = '';
                         if (strlen($file)) {
@@ -493,7 +480,6 @@ class MasterFungsi
                         // $s = ((int)$row->objek > 0) ? $Fungsi->zero_pad($row->objek, 2) : '';
                         // $se = ((int)$row->rincian_objek > 0) ? $Fungsi->zero_pad($row->rincian_objek, 2) : '';
                         // $sr = ((int)$row->sub_rincian_objek > 0) ? $Fungsi->zero_pad($row->sub_rincian_objek, 2) : '';
-
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                             <td klm="sub_rincian_objek">' . $divAwal . $row->kode . $divAkhir . '</td>
                                             <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
@@ -568,7 +554,6 @@ class MasterFungsi
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
-
                         $file = $row->file;
                         $fileTag = '';
                         if (strlen($file)) {
@@ -595,7 +580,6 @@ class MasterFungsi
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
-
                     case 'divisiSDA':
                         $nama_tabel = $tbl;
                         if ($type_user == 'admin') {
@@ -773,13 +757,11 @@ class MasterFungsi
         if (isset($rowData['tfoot'])) {
             $rowData['tfoot'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['tfoot']);
         }
-
         //$rowData['tbody'] = str_replace("\r\n", "", $rowData['tbody']); //trim(preg_replace('/^\p{Z}+|\p{Z}+$/u', '', ($rowData['tbody'])), "\r\n");
         return $rowData;
     }
     public function tabel_pakai($tbl)
     {
-
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
@@ -912,13 +894,10 @@ class MasterFungsi
         $user->cekUserSession();
         $tbl = $dinamic['tbl'];
         $kode = $dinamic['kode'];
-
         $type_user = $_SESSION["user"]["type_user"];
         $id_user = $_SESSION["user"]["id"];
-
         $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
-
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;
@@ -970,7 +949,6 @@ class MasterFungsi
             $dinamic['set']['kd_sub_keg'] = $kd_sub_kegOk;
             $dinamic['set']['kel_kd_sub_keg'] = $kel_kd_sub_keg;
             // jumlahkan kembali
-
             // cari uraian
             $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_kegOk]]);
             $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
@@ -978,7 +956,6 @@ class MasterFungsi
             switch ($tbl) {
                 case 'sub_keg_dpa':
                 case 'sub_keg_renja':
-
                     $dinamic['kondisi'] = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
                     break;
                 case 'dpa':
@@ -1005,13 +982,9 @@ class MasterFungsi
         $user->cekUserSession();
         $tbl = $dinamic['tbl'];
         $kode = $dinamic['kode'];
-
-
         $id_user = $_SESSION["user"]["id"];
-
         $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
-
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;
@@ -1065,7 +1038,6 @@ class MasterFungsi
         // $DB->select('*');
         return $Sumprogkeg;
     }
-
     public function cekInsertUpdate($dinamic = [])
     {
         $user = new User();
@@ -1105,7 +1077,6 @@ class MasterFungsi
         // var_dump($kode);
         $explodeAwal = explode('.', $kode);
         $count = count($explodeAwal);
-
         // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
         $kd_rek = '';
         $dataRek = [];
@@ -1190,7 +1161,6 @@ class MasterFungsi
         $dataRek['kel_kd_sub_keg'] = $kel_kd_sub_keg;
         return $dataRek;
     }
-
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
     *
@@ -1212,7 +1182,6 @@ class MasterFungsi
     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     * THE SOFTWARE.
     */
-
     /**
      * Get the user's operating system.
      *
@@ -1246,7 +1215,6 @@ class MasterFungsi
             'OS/2' => 'OS/2',
             'Search Bot' => '(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp/cat)|(msnbot)|(ia_archiver)',
         );
-
         // Loop through $oses array
         foreach ($oses as $os => $preg_pattern) {
             // Use regular expressions to check operating system type
@@ -1257,13 +1225,10 @@ class MasterFungsi
         }
         return 'n/a';
     }
-
     public function getBrowser()
     {
         global $user_agent;
-
         $browser = 'Unknown Browser';
-
         $browser_array = array(
             '/msie/i' => 'Internet Explorer',
             '/firefox/i' => 'Firefox',
@@ -1275,17 +1240,14 @@ class MasterFungsi
             '/konqueror/i' => 'Konqueror',
             '/mobile/i' => 'Handheld Browser',
         );
-
         foreach ($browser_array as $regex => $value) {
             if (preg_match($regex, $user_agent)) {
                 $browser = $value;
             }
         }
-
         return $browser;
     }
     // mencari file di folder dan sub folder
-
     public function cariFile($f, $p = null, $l = 1000)
     { // Recursively find a file $f in directory $p (compare up to $l files)
         // Returns the full path of the first occurrence (relative to current directory)
@@ -1301,24 +1263,20 @@ class MasterFungsi
             while ($fn = readdir($dh)) { // traverse directories and compare files:
                 if (is_file($cd . $fn) && $fn == $f) {
                     closedir($dh);
-
                     return $cd . $fn;
                 }
                 if ($fn != '.' && $fn != '..' && is_dir($cd . $fn)) {
                     $m = $this->cariFile($f, $cd . $fn, $l);
                     if ($m) {
                         closedir($dh);
-
                         return $m;
                     }
                 }
             }
             closedir($dh);
         }
-
         return false;
     }
-
     public function getFileAll($dir, $pola, $results = array())
     {
         $files = scandir($dir);
@@ -1335,10 +1293,8 @@ class MasterFungsi
                 }
             }
         }
-
         return $results;
     }
-
     public function getDirContents($dir, &$results = array())
     {
         $files = scandir($dir);
@@ -1351,7 +1307,6 @@ class MasterFungsi
                 $results[] = $path;
             }
         }
-
         return $results;
     }
     // fungsi zero padding
@@ -1365,7 +1320,6 @@ class MasterFungsi
     public function zero_pad($angka, $jumlahChar)
     {
         $fzeropadded = sprintf('%0' . $jumlahChar . 'd', $angka);
-
         return  $fzeropadded;
     }
     public function safe_json_encode($value, $options = 0, $depth = 512, $utfErrorFlag = false)
@@ -1390,10 +1344,8 @@ class MasterFungsi
                 return $this->safe_json_encode($clean, $options, $depth, true);
             default:
                 return 'Unknown error'; // or trigger_error() or throw new Exception()
-
         }
     }
-
     public function utf8ize($mixed)
     {
         if (is_array($mixed)) {
@@ -1411,7 +1363,6 @@ class MasterFungsi
         $iv_length = openssl_cipher_iv_length($ciphering);
         $options = OPENSSL_RAW_DATA;
         //$tag_length: It holds the length of the authentication tag. The length of authentication tag lies between 4 to 16 for GCM mode.
-
         $encryption = openssl_encrypt(
             $simple_string,
             $ciphering,
@@ -1426,7 +1377,6 @@ class MasterFungsi
         $ciphering = "AES-128-CTR"; //"aes-256-cbc" ."AES-128-CTR"//AES-256-GCM
         $iv_length = openssl_cipher_iv_length($ciphering);
         $options = OPENSSL_RAW_DATA; //OPENSSL_RAW_DATA,0
-
         $decryption = openssl_decrypt(
             $encryption,
             $ciphering,
@@ -1442,7 +1392,6 @@ class MasterFungsi
         $awal  = date_create($awal);
         $akhir = date_create($akhir); // waktu sekarang
         $diff  = date_diff($awal, $akhir);
-
         return ['tahun' => $diff->y, 'bulan' => $diff->m, 'hari' => $diff->d, 'jam' => $diff->h, 'menit' => $diff->i, 'detik' => $diff->s];
     }
     public function recursiveChat($id_row, $type = '')
@@ -1472,7 +1421,6 @@ class MasterFungsi
         };
         //$sql = "SELECT * FROM ruang_chat WHERE id_reply = $id_chat AND id_tujuan = $id_user_session ORDER by waktu ASC";
         //$sql = "SELECT * FROM ruang_chat WHERE id_reply = $id_chat AND id_tujuan <= 0 ORDER by waktu ASC";
-
         $rowWall = $DB->getWhereCustom('ruang_chat', $condition);
         //var_dump($rowWall);
         $jumlahArray = is_array($rowWall) ? count($rowWall) : 0;
@@ -1512,10 +1460,8 @@ class MasterFungsi
                     $namaPengirimTampak = 'admin';
                     $photo = './img/avatar/default.jpeg';
                 }
-
                 $namaPengirim = $userWithIdPengirim->nama;
                 $uraian = $this->deskripsiText($uraian, $namaPengirim);
-
                 $dibaca = $value->dibaca;
                 $id_reply = $value->id_reply;
                 $like = $value->like;
@@ -1530,12 +1476,10 @@ class MasterFungsi
                 } else if ($selisihWaktu['menit'] > 0) {
                     $dateSelisih = $selisihWaktu['menit'] . " minutes ago";
                 }
-
                 $btnDel = '';
                 if ($id_user == $id_pengirim) {
                     $btnDel = '<a class="edit" name="chat" jns="wall" tbl="edit"><i class="edit icon"></i>Edit</a><a class="trash" name="del_row" jns="chat" tbl="del_row"><i class="trash icon"></i>Delete</a>';
                 }
-
                 $dataWall .= '<div class="comment" id_row="' . $id . '"><a class="avatar"><img src="' . $photo . '"></a><div class="content"><a class="author">' . $namaPengirimTampak . '</a><div class="metadata"><div class="date">' . $dateSelisih . '</div><div class="rating"><i class="star icon"></i>5 Faves </div></div><div class="text">' . $uraian . '</div><div class="actions"><a class="reply" name="chat" jns="wall" tbl="reply">Reply</a><a class="hide" name="chat" jns="wall" tbl="hide">Hide</a>' . $btnDel . '</div></div>';
                 $dataWall .= $this->recursiveChat($id);
                 $dataWall .= '</div>';
@@ -1572,7 +1516,6 @@ class MasterFungsi
                     break;
             };
             $result = $DB->getWhereCustom($tabel_pakai, $condition);
-
             $jumlahArray = is_array($result) ? count($result) : 0;
             if ($jumlahArray) {
                 $waktu_inputId = $result[0]->waktu_input;
@@ -1605,7 +1548,6 @@ class MasterFungsi
                     };
                 }
             } else {
-
                 switch ($jenis) {
                     case 'inbox':
                         $condition = [['id', '>', 0], ['id_pengirim', '>', 0, 'AND'], ['id_tujuan', '=', $id_user, 'AND'], ['id_reply', '<=', 0, 'AND']];
@@ -1635,11 +1577,9 @@ class MasterFungsi
                     break;
             };
         }
-
         $rowWall = $DB->getWhereCustom($tabel_pakai, $condition);
         $posisiLimit = $DB->posisilimit($limit, $rowWall, $halaman = 1);
         $DB->limit([$posisiLimit, $limit]);
-
         // if ($posisi == 'top') {
         //     $DB->orderBy('waktu_input', 'DESC');
         // } else {
@@ -1648,7 +1588,6 @@ class MasterFungsi
         $DB->orderBy('waktu_input', 'DESC');
         $rowWall = $DB->getWhereCustom($tabel_pakai, $condition);
         $jumlahArray = is_array($rowWall) ? count($rowWall) : 0;
-
         if ($jumlahArray) {
             //jika ada data sebelum post
             //tidak ada data sebelum post
@@ -1659,7 +1598,6 @@ class MasterFungsi
                 $uraian = $value->uraian;
                 $id_pengirim = $value->id_pengirim;
                 $id_tujuan = $value->id_tujuan;
-
                 $userWithIdPengirim = $DB->getWhereOnce('user_sesendok_biila', ['id', '=', $id_pengirim]);
                 switch ($jenis) {
                     case 'outbox':
@@ -1682,13 +1620,11 @@ class MasterFungsi
                     $namaPengirimTampak = 'untuk semua user';
                     $photo = './img/avatar/default.jpeg';
                 }
-
                 $namaPengirim = $userWithIdPengirim->nama;
                 $uraian = $this->deskripsiText($uraian, $namaPengirim);
                 $dibaca = $value->dibaca;
                 $id_reply = $value->id_reply;
                 $like = $value->like;
-
                 $btnDel = '';
                 $selisihWaktu = $Fungsi->selisihWaktu($waktu_input, date('Y-m-d H:i:s'));
                 $dateSelisih = $waktu_input;
@@ -1703,12 +1639,10 @@ class MasterFungsi
                 } else if ($selisihWaktu['detik'] > 0) {
                     $dateSelisih = "just now";
                 }
-
                 if ($id_user == $id_pengirim) {
                     $btnDel = '<a class="edit" name="chat" jns="wall" tbl="edit"><i class="edit icon"></i>Edit</a><a class="trash" name="del_row" jns="chat" tbl="del_row"><i class="trash icon"></i>Delete</a>';
                 }
                 $dataWall .= '<div class="comment" id_row="' . $id . '"><a class="avatar"><img src="' . $photo . '"></a><div class="content"><a class="author">' . $namaPengirimTampak . '</a><div class="metadata"><div class="date">' . $dateSelisih . '</div><div class="rating"><i class="star icon"></i>5 Faves </div></div><div class="text">' . $uraian . '</div><div class="actions">' . $replyBtn . '<a class="hide" name="chat" jns="wall" tbl="hide">Hide</a>' . $btnDel . '</div></div>';
-
                 switch ($jenis) {
                     case 'inbox':
                         $dataWall .= $this->recursiveChat($id, 'inbox');
@@ -1720,14 +1654,11 @@ class MasterFungsi
                         $dataWall .= $this->recursiveChat($id);
                         break;
                 };
-
                 $dataWall .= '</div>';
             }
-
             //$data['dataWall'] = $dataWall;
             //var_dump($dataWall);
         }
-
         //svar_dump($dataWall);
         return $dataWall;
     }
@@ -1736,11 +1667,9 @@ class MasterFungsi
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
-
         $id_user = $_SESSION["user"]["id"];
         $maxsize = 1024 * 15000; //15 MB
         $fileName = 'avatar.jpg';
-
         //jenis os
         /*
         unlink($fileee . $fileee1 . $nama_files_hapus);
@@ -1759,7 +1688,6 @@ class MasterFungsi
         );
         $path1 = 'upload';
         switch ($tbl) {
-
             case 'profil':
                 $path1 = 'img';
                 $path2 = 'avatar';
@@ -1777,7 +1705,6 @@ class MasterFungsi
                 $path2 = 'peraturan';
                 break;
             case 'monev':
-
                 $path2 = 'realisasi';
                 break;
             case 'rekanan':
@@ -1801,7 +1728,6 @@ class MasterFungsi
             $folder = "\\$path1\\$path2\\";
         }
         try {
-
             // Undefined | Multiple Files | $_FILES Corruption Attack
             // If this request falls under any of them, treat it invalid.
             if (
@@ -1810,7 +1736,6 @@ class MasterFungsi
             ) {
                 throw new RuntimeException('Invalid parameters.');
             }
-
             // Check $_FILES['upfile']['error'] value.
             switch ($_FILES['file']['error']) {
                 case UPLOAD_ERR_OK:
@@ -1823,12 +1748,10 @@ class MasterFungsi
                 default:
                     throw new RuntimeException('Unknown errors.');
             }
-
             // You should also check filesize here. 
             if ($_FILES['file']['size'] > $maxsize) {
                 throw new RuntimeException('Exceeded filesize limit.');
             }
-
             // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
             // Check MIME Type by yourself.
             $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -1951,7 +1874,6 @@ class MasterFungsi
         $hasil .= '</div></div>';
         return str_replace("\r\n", "", $hasil);
     }
-
     //============================
     //===========BUAT LIST========
     //============================
@@ -2014,7 +1936,6 @@ class MasterFungsi
                                         <i class="trash alternate outline red icon"></i>
                                     </button>
                                 </div>
-    
                             </div>
                             <i class="large teal money check middle aligned icon"></i>
                             <div class="content">
@@ -2023,7 +1944,6 @@ class MasterFungsi
                             </div>
                         </div>';
                         break;
-
                     case 'harga_satuan':
                         break;
                     case 'daftar_satuan':
@@ -2148,7 +2068,6 @@ class MasterFungsi
         });
         */
     }
-
     public function backup_tables($tables = '*')
     {
         $DB = DB::getInstance();
@@ -2164,7 +2083,6 @@ class MasterFungsi
         } else {
             $tables = is_array($tables) ? $tables : explode(',', $tables);
         }
-
         foreach ($tables as $table) {
             $data .= "\n/*---------------------------------------------------------------" .
                 "\n  TABLE: `{$table}`" .
@@ -2173,10 +2091,8 @@ class MasterFungsi
             $res = $DB->runQuery2("SHOW CREATE TABLE `{$table}`");
             $row = $res[0];
             $data .= $row[1] . ";\n";
-
             $result = $DB->runQuery2("SELECT * FROM `{$table}`");
             $num_rows = count($result[0]);
-
             if ($num_rows > 0) {
                 $vals = array();
                 $z = 0;
@@ -2200,7 +2116,6 @@ class MasterFungsi
                 $data .= "  " . implode(";\nINSERT INTO `{$table}` VALUES ", $vals) . ";\n";
             }
         }
-
         return $data;
     }
     public function tanggal($tanggal, $add = 0)
@@ -2209,7 +2124,6 @@ class MasterFungsi
         $nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $phpdate = strtotime($tanggal);
         $date = date_create($tanggal);
-
         $mysqldate = date('Y-m-d', $phpdate);
         $jam = date("h:i:s A", $phpdate);
         $hari = date("w", $phpdate);
@@ -2217,7 +2131,6 @@ class MasterFungsi
         $bulan = date("n", $phpdate);
         $tahun = date("Y", $phpdate);
         $add = (int) $add - 1;
-
         //$phpdate = strtotime(date_format($date_add, "Y-m-d"));
         // $date_add = date_create($tanggal);
         // $phpdate = strtotime(date_format($date_add, "Y-m-d"));
@@ -2235,13 +2148,10 @@ class MasterFungsi
     {
         $ts1 = strtotime($tanggal1);
         $ts2 = strtotime($tanggal2);
-
         $year1 = date('Y', $ts1);
         $year2 = date('Y', $ts2);
-
         $month1 = date('m', $ts1);
         $month2 = date('m', $ts2);
-
         $diff_moon = (int) (($year2 - $year1) * 12) + ($month2 - $month1);
         $diff_moon = ($diff_moon <= 0) ? 1 : $diff_moon;
         //cari bulan

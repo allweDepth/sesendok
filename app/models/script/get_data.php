@@ -14,7 +14,6 @@ class get_data
         //var_dump($keyEncrypt);
         //var_dump(sys_get_temp_dir());lokasi tempoerer
         $DB = DB::getInstance();
-
         $message_tambah = '';
         $sukses = false;
         $code = 39;
@@ -116,10 +115,8 @@ class get_data
                         }
                         break;
                     case 'get_rows':
-
                         break;
                     case 'get_search':
-
                         break;
                     case 'xxxx':
                         $posisi = $validate->setRules('posisi', 'posisi', [
@@ -132,7 +129,6 @@ class get_data
                         # code...
                         break;
                 }
-
                 $jumlah_kolom = 0;
                 //FINISH PROSES VALIDASI
                 $Fungsi = new MasterFungsi();
@@ -207,7 +203,6 @@ class get_data
                         case 'get_rows':
                             $kodePosting = 'get_data';
                             break;
-
                             break;
                         default:
                             #code...
@@ -269,7 +264,6 @@ class get_data
                                 $kodePosting = '';
                                 $code = 70;
                             }
-
                             break;
                         case 'tujuan_sasaran_renstra':
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
@@ -336,7 +330,6 @@ class get_data
                                 $order = "ORDER BY kd_sub_keg ASC";
                                 $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                 $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
-
                                 $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND']];
                                 //pilih kolom yang diambil
                                 // $DB->select('id, kelompok, id_tujuan, text, keterangan');
@@ -385,17 +378,14 @@ class get_data
                                     $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian ASC";
                                     $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
                                     $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
-
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
                                     //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
                                     $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
                                     $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
                                     $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
-
                                     $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
                                     // var_dump($bidang_sub_keg);
                                     $data['tr_sub_keg'] = '<tr>
-                                    
                                 <td class="collapsing">Perangkat Daerah</td>
                                 <td>' . $data['unit_kerja'] . '</td>
                                 <td class="right aligned collapsing">Rp. 0,00</td>
@@ -432,7 +422,6 @@ class get_data
                                 $kodePosting = '';
                                 $code = 70;
                             }
-
                             // var_dump($tahun);
                             break;
                         case 'rekanan':
@@ -623,7 +612,6 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->nomor];
                                                     break;
                                             };
-
                                             break;
                                         case 'value1':
                                             #code...
@@ -702,7 +690,6 @@ class get_data
                                                     $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
                                                     $data['values']['id_tujuan'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->kelompok, "descriptionVertical" => true, 'selected' => true]];
                                                 }
-
                                                 break;
                                             case 'xx':
                                                 break;
@@ -726,7 +713,6 @@ class get_data
                                                 #code...
                                                 break;
                                         };
-
                                         break;
                                     default:
                                         #code...
@@ -807,7 +793,6 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->nomor, "descriptionVertical" => true];
                                                     break;
                                             };
-
                                             break;
                                         case 'value1':
                                             #code...
@@ -818,7 +803,6 @@ class get_data
                                     };
                                 }
                             }
-
                             break;
                         case 'get_tbl':
                             //get data
@@ -883,7 +867,6 @@ class get_data
                             $data['dropdown'] = $dataTabel;
                             break;
                         default:
-
                             break;
                     }
                 } else {

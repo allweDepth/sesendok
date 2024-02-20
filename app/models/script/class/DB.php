@@ -184,7 +184,6 @@ class DB
     function orderByCustom($columnNames)
     {
         $sortType = 'ASC';
-
         $columSort = '';
         $rowCount = 1;
         $jumlahCount = count($columnNames);
@@ -207,7 +206,6 @@ class DB
         $this->_orderBy = "ORDER BY {$columSort}";
         return $this;
     }
-
     // Method utama untuk mengambil isi tabel
     public
     function get($tableName, $condition = "", $bindValue = [])
@@ -426,7 +424,6 @@ class DB
         } else {
             $posisi = 0;
         }
-
         return $posisi;
     }
     // Method untuk menginput data tabel (query INSERT)
@@ -523,7 +520,6 @@ class DB
         $this->_count = $this->runQuery($query, $dataValues)->rowCount();
         return true;
     }
-
     public function backup_tables($tables = '*')
     {  /* backup the db OR just a table */
         $data = "";
@@ -601,34 +597,44 @@ class DB
     //==================
     //====   JSON ======
     //==================
-    // Method untuk menyimpan data ke tabel dengan format JSON
-    public function insertJSON($tableName, $data)
+    // Method untuk menghapus field dari data JSON di kolom
+    public function deleteJSONField($tableName, $columnName, $condition)
     {
-        $jsonData = json_encode($data); // Konversi array ke JSON
-        return $this->insert($tableName, ['json_data' => $jsonData]); // Simpan JSON ke dalam tabel
-    }
-
-    // Method untuk mengambil data dari tabel dengan format JSON
-    public function getJSON($tableName, $condition = "", $bindValue = [])
-    {
-        $result = $this->get($tableName, $condition, $bindValue); // Ambil data dari tabel
-        $jsonData = [];
-        foreach ($result as $row) {
-            $jsonData[] = json_decode($row->json_data, true); // Konversi JSON ke array asosiatif
+        // Buat kondisi WHERE berdasarkan kondisi yang diberikan
+        $whereCondition = '';
+        if (!empty($condition)) {
+            $whereCondition = " WHERE {$condition}";
         }
-        return $jsonData; // Kembalikan data dalam format JSON
+        // Buat query untuk menghapus field dari data JSON
+        $query = "UPDATE {$tableName} SET {$columnName} = JSON_REMOVE({$columnName}, '$.{$condition}'){$whereCondition}";
+        // Jalankan query dan kembalikan jumlah baris yang terpengaruh
+        return $this->runQuery($query)->rowCount();
+    }
+    // Menghapus field 'email' dari data JSON di kolom 'user_info' untuk semua baris
+    // $db->deleteJSONField('users', 'user_info', 'email');
+    // Menghapus field 'email' dari data JSON di kolom 'user_info' hanya untuk baris dengan 'user_id' = 123
+    // $db->deleteJSONField('users', 'user_info', "user_id = 123");
+    // Method untuk mengupdate field di dalam data JSON di kolom
+    public function updateJSONField($tableName, $columnName, $jsonData, $condition)
+    {
+        $query = "UPDATE {$tableName} SET {$columnName} = JSON_SET({$columnName}, '$.{$jsonData['key']}', ?) WHERE {$condition}";
+        return $this->runQuery($query, [$jsonData['value']])->rowCount();
     }
 
-    // Method untuk mengupdate data dalam tabel dengan format JSON
-    public function updateJSON($tableName, $data, $condition)
+    // Method untuk menyisipkan data ke dalam data JSON di kolom
+    public function insertJSONField($tableName, $columnName, $jsonData, $condition)
     {
-        $jsonData = json_encode($data); // Konversi array ke JSON
-        return $this->update($tableName, ['json_data' => $jsonData], $condition); // Update JSON dalam tabel
+        $query = "UPDATE {$tableName} SET {$columnName} = JSON_INSERT({$columnName}, '$.{$jsonData['key']}', ?) WHERE {$condition}";
+        return $this->runQuery($query, [$jsonData['value']])->rowCount();
     }
-
-    // Method untuk menghapus data dalam tabel dengan format JSON
-    public function deleteJSON($tableName, $condition)
-    {
-        return $this->delete($tableName, $condition); // Hapus data dari tabel
-    }
+    /*
+    // Menghapus field 'age' dari data JSON di kolom 'data' dari tabel 'users'
+    $db->deleteJSONField('users', 'data', 'age');
+    // Menyisipkan data baru ke dalam data JSON di kolom 'data' dari tabel 'users'
+    $jsonData = ['key' => 'age', 'value' => 30];
+    $db->insertJSONField('users', 'data', $jsonData, 'id = 1');
+    // Mengupdate data JSON di kolom 'data' dari tabel 'users'
+    $jsonData = ['key' => 'age', 'value' => 31];
+    $db->updateJSONField('users', 'data', $jsonData, 'id = 1');
+    */
 }

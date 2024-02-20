@@ -167,7 +167,7 @@ $(document).ready(function () {
 					// this url just returns a list of tags (with API response expected above)
 					cache: false,
 					method: "POST",
-					url: "script/get_data",
+					url: "script/register_akun",
 					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
@@ -244,7 +244,7 @@ $(document).ready(function () {
 							tbl: tbl,
 							halaman: halaman,
 						};
-						let url = 'script/get_data';
+						let url = 'script/register_akun';
 						let cryptos = false;
 
 						suksesAjax["ajaxku"] = function (result) {
@@ -296,7 +296,7 @@ $(document).ready(function () {
 					cache: false,
 					// this url just returns a list of tags (with API response expected above)
 					method: "POST",
-					url: "script/get_data",
+					url: "script/register_akun",
 					//throttle: 1000,//delay perintah
 					// passed via POST
 					data: {
@@ -352,7 +352,7 @@ $(document).ready(function () {
 							tbl: tbl,
 							halaman: halaman,
 						};
-						let url = 'script/get_data';
+						let url = 'script/register_akun';
 						let cryptos = false;
 
 						suksesAjax["ajaxku"] = function (result) {
@@ -391,4 +391,121 @@ $(document).ready(function () {
 	}
     let dropdownWilayah = new DropdownConstructor('.ui.wilayah.dropdown.ajx');
     dropdownWilayah.returnListOnChange("list_dropdown", "wilayah", 3);
+
+
+	//=============================
+	// ini general Ajax parameter.
+	//=============================
+	function ajaxParams(
+		url,
+		type,
+		data,
+		dataType,
+		contentType,
+		processData,
+		callback
+	) {
+		this.url = url;
+		this.type = type;
+		this.formData = data;
+		this.dataType = dataType;
+		this.contentType = contentType;
+		this.processData = processData;
+		this.callback = callback;
+	}
+	//The global suksesAjax object, to be used for all scripts.
+	var suksesAjax = [];
+	// The general Ajax function.
+	function generalAjax(params) {
+		$.ajax({
+			url: params.url,
+			type: params.type,
+			data: params.formData,
+			dataType: params.dataType,
+			contentType: params.contentType,
+			processData: params.processData,
+		})
+			.done(function (data) {
+				//console.log(suksesAjax);
+				//console.log('sukses ajax : '+params.callback);
+				var callback = suksesAjax[params.callback](data);
+			})
+			.fail(function (jqXHR, textStatus, err) {
+				loaderHide();
+				//console.log(textStatus);
+				//console.log(jqXHR.responseText.split(','));
+				//console.log(JSON.parse(jqXHR.responseText));
+				try {
+					var resultObject = JSON.parse(jqXHR.responseText, reviver);
+					//console.log(jqXHR.responseText);
+					//console.log(jqXHR.responseText.split('"'));
+					//var resultObject = JSON.parse(jqXHR.responseText);
+					modal_notif(
+						'<i class="huge info circle icon"></i>' + textStatus,
+						jqXHR.responseText.split('"')[1]
+					);
+				} catch (e) {
+					modal_notif('<i class="info icon"></i>' + textStatus, err);
+				}
+			});
+	}
+	function runAjax(
+		url,
+		type,
+		formData,
+		dataType,
+		contentType,
+		processData,
+		callback,
+		cryptos = false
+	) {
+		/*
+			runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
+			runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
+			*/
+		if (type === undefined) {
+			type = "POST";
+		}
+		if (dataType === undefined) {
+			dataType = "Json";
+		}
+		if (contentType === undefined) {
+			contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+		}
+		if (processData === undefined) {
+			processData = true;
+		}
+		if (dataType === "Json" || dataType === "json") {
+			//console.log(formData);
+			const start = new Date().getTime();
+			if (cryptos) {
+				Object.keys(formData).forEach((key) => {
+					// console.log(key)
+					// console.log(formData[key])
+					const value = formData[key].toString();
+					// console.log(value.toString().length)
+					if (value.toString().length > 0) {
+						formData[key] = enc.encrypt(value, halAwal);
+					}
+					formData.cry = cryptos;
+					//formData.set(key, enc.encrypt(value, halAwal));
+				});
+			}
+			const end = new Date().getTime();
+			const diff = end - start;
+			const seconds = diff / 1000; //Math.floor(diff / 1000 % 60);
+			// console.log(`selisih ecrypt (s) : ${seconds}`);
+		}
+
+		var params = new ajaxParams(
+			url,
+			type,
+			formData,
+			dataType,
+			contentType,
+			processData,
+			callback
+		);
+		generalAjax(params);
+	}
 });

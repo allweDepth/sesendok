@@ -1,8 +1,6 @@
 <?php
-
 use Shuchkin\SimpleXLSX;
 use FormulaParser\FormulaParser;
-
 class Impor_xlsx
 {
     public function import_xlsx()
@@ -78,7 +76,6 @@ class Impor_xlsx
                             'min_char' => 1,
                             'max_char' => 100
                         ]);
-
                         $kodePosting = '';
                         if ($validate->passed()) {
                             // mulai proses impor
@@ -89,7 +86,6 @@ class Impor_xlsx
                                 $code = 1;
                                 $sukses = true;
                                 $RowHeaderValidate = [];
-
                                 $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
                                 $tahun = (int) $rowUsername->tahun;
                                 $kd_wilayah = $rowUsername->kd_wilayah;
@@ -244,7 +240,6 @@ class Impor_xlsx
                                         //var_dump(((int)$jml_header - 1));
                                         if ($r == ($jml_header - 1) && count($RowHeaderValidate) > 0) {
                                             $getData = array_map('strtolower', $getData); //menjadikan huruf kecil semua value
-
                                             //var_dump($getData);
                                             $validateTabel = new Validate($getData);
                                             //var_dump($validateTabel);
@@ -281,7 +276,6 @@ class Impor_xlsx
                                                             $kel_kd_sub_keg = $kodeRekUbah['kel_kd_sub_keg'];
                                                             $kd_sub_keg_x_xx = $kodeRekUbah['kd_sub_keg_x_xx'];
                                                         }
-                                                        
                                                         break;
                                                     case 'value':
                                                         # code...
@@ -458,7 +452,6 @@ class Impor_xlsx
                                                                     // 'required' => true,
                                                                     // 'min_char' => 4
                                                                 ]);
-
                                                                 $data_capaian_awal = $validateRow->setRules(5, 'data capaian awal', [
                                                                     'numeric_zero' => true,
                                                                     // 'numeric' => true,
@@ -552,7 +545,6 @@ class Impor_xlsx
                                                                     'min_char' => 1,
                                                                     'in_array' => ['tujuan', 'sasaran', 'TUJUAN', 'SASARAN', 'Tujuan', 'Sasaran']
                                                                 ]);
-
                                                                 if (strtolower($kelompok) == 'tujuan') {
                                                                     $id_tujuan = 0;
                                                                 } else {
@@ -740,7 +732,6 @@ class Impor_xlsx
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['kode', '=', $kode]];
                                                                 $getWhereArrayData = [['kode', '=', $kode]];
-
                                                                 $no_sort++;
                                                                 break;
                                                             case 'organisasi':
@@ -875,7 +866,6 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'in_array' => ['rahasia', 'umum', 'proyek']
                                                                 ]);
-
                                                                 $arrayDataRows = [
                                                                     'kd_wilayah' => $kd_wilayah,
                                                                     'kode' => $kode,
@@ -946,7 +936,6 @@ class Impor_xlsx
                                                                         }
                                                                     }
                                                                 }
-
                                                                 $uraian = $validateRow->setRules(6, 'uraian', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
@@ -955,8 +944,6 @@ class Impor_xlsx
                                                                 $keterangan = $validateRow->setRules(7, 'keterangan', [
                                                                     'sanitize' => 'string',
                                                                 ]);
-
-
                                                                 $arrayDataRows = [
                                                                     'sumber_dana' => (int)$sumber_dana,
                                                                     'kelompok' => (int)$kelompok,
@@ -1222,7 +1209,6 @@ class Impor_xlsx
                                                                 // var_dump($getData[12]);
                                                                 // var_dump(preg_match('/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', $getData[12]));
                                                                 if (strlen($no_akta_pendirian) > 0 && preg_match('/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', $getData[12])) {
-
                                                                     $tgl_akta_pendirian = $validateRow->setRules(12, $RowHeaderValidate[12], [
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 255
@@ -1276,7 +1262,6 @@ class Impor_xlsx
                                                                 $getWhereArrayData = [['npwp', "=", $npwp]];
                                                                 $no_sort++;
                                                                 break;
-                                                            
                                                             case 'x':
                                                                 break;
                                                             default:
@@ -1337,7 +1322,6 @@ class Impor_xlsx
                                                                             if ($arrayDataRows['kelompok'] == 'tujuan') {
                                                                                 $id_tujuan_sasaran = $DB->lastInsertId();
                                                                             }
-
                                                                             break;
                                                                         case 'value1':
                                                                             #code...
@@ -1360,7 +1344,6 @@ class Impor_xlsx
                                                             switch ($tbl) {
                                                                 case 'harga_satuan':
                                                                 case 'analisa_alat':
-
                                                                     break;
                                                                 default:
                                                                     $array_key0 = array_keys($validateRow->getError())[0];

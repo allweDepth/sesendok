@@ -13,29 +13,33 @@ class App
         $url = $this->parseURL();
 
         //controller
+        // var_dump($url);
         if ($url && file_exists('../app/controllers/' . $url[0] . '.php')) {
-            session_start();
-            //var_dump($_SESSION["user"]);
-            if (isset($_SESSION["user"]) ) {
-                if ($_SESSION["user"]['disable_login'] <=0) {
-                    if ($url[0] == 'login' || $url[0] == 'register'){
-                        $url[0] = 'home';
+            if ($url[0] == 'register') {
+                $this->controller = $url[0];
+                // var_dump('ok');
+            } else {
+                session_start();
+                //var_dump($_SESSION["user"]);
+                if (isset($_SESSION["user"])) {
+                    if ($_SESSION["user"]['disable_login'] <= 0) {
+                        if ($url[0] == 'login' || $url[0] == 'register') {
+                            $url[0] = 'home';
+                        }
+                        $this->controller = $url[0];
                     }
+                } else {
+                    $url[0] == 'login';
                     $this->controller = $url[0];
                 }
-                
-            } else {
-                $url[0] == 'login';
-                $this->controller = $url[0];
             }
-
 
             unset($url[0]);
         }
         require_once '../app/controllers/' . $this->controller . '.php';
         $this->controller = new $this->controller;
         //method
-        
+
         if (isset($url[1])) {
             if (method_exists($this->controller, $url[1])) {
                 $this->method = $url[1];
@@ -43,7 +47,6 @@ class App
             }
         }
         //params
-        // var_dump(array_values($url));
         if (!empty($url)) {
             $this->params = array_values($url);
         }

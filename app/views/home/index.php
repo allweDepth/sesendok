@@ -19,7 +19,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     <link rel="stylesheet" href="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.min.css">
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/admin.css">
     <link rel="shortcut icon" href="<?= BASEURL; ?>img/logo.png">
-
 </head>
 
 <body style="overflow: hidden;" class="dimmable">
@@ -29,7 +28,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         <a class="item nabiila" id="biilainayah">
             <i class="sidebar icon"></i>
         </a>
-
         <div class="right menu">
             <div class="ui inline inverted dropdown item lain" id="countRow"><span><i class="list icon"></i></span><input type="hidden" name="countRow" value="5">
                 <div class="text">5</div>
@@ -58,7 +56,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             </div>
         </div>
     </div>
-
     <div class="ui bottom attached stackable pushable" style="height: calc(100vh - 45px) !important;margin-top: 45px;">
         <!-- sidebar-->
         <div class="ui inverted left vertical sidebar menu">
@@ -70,7 +67,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     </div>
                 </h2>
             </div>
-
             <div class="item">
                 <div class="ui inverted transparent icon input">
                     <input type="text" placeholder="Menu...">
@@ -84,7 +80,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item nabiila" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
                     <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
                     <a class="item nabiila" href="#" data-tab="tab_dpa"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
-
                 </div>
             </div>
             <a class="item" href="#" data-tab="tab_kontrak"><i class="money icon"></i>Kontrak</a>
@@ -94,7 +89,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
                     <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>SPJ</a>
                     <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
-
                 </div>
             </div>
             <div class="ui accordion inverted item">
@@ -113,8 +107,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Organisasi</a>
                     <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="gavel icon"></i>Peraturan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Wilayah</a>
-
-
                 </div>
             </div>
             <div class="ui accordion inverted item">
@@ -128,10 +120,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             </div>
             <!-- ut admin-->
             <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="atur_satu"><i class="comments outline icon"></i>Pengaturan</a>' : ''; ?>
-
             <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
             <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
-
         </div>
         <!-- flyout-->
         <div class="ui right flyout">
@@ -184,7 +174,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                         </h3>
                     </div>
-
+                    
                     <div class="ui action input multi">
                         <input type="text" placeholder="Search...">
                         <input type="text" placeholder="Search...">
@@ -307,7 +297,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                     </div>
                                 </div>
                             </div>
-
                             <div class="column">
                                 <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini"></i>
                                     <div class="content">
@@ -351,21 +340,14 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <thead>
                                         </thead>
                                         <tbody>
-
                                         </tbody>
                                         <tfoot>
-
                                         </tfoot>
                                     </table>
                                 </div>
-
-
                             </div>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
             <!-- ============== -->
@@ -442,7 +424,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                     </div>
                                 </div>
                             </div>
-
                             <div class="column">
                                 <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini"></i>
                                     <div class="content">
@@ -467,7 +448,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                     </div>
                                 </div>
                             </div>
-
                             <div class="ui fluid container">
                                 <div class="ui hidden divider"></div>
                                 <div style="height: 1px">
@@ -479,7 +459,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="ui hidden divider"></div>
                                 <h3 class="ui dividing header"></h3>
-
                             </div>
                             <div class="ui hidden divider"></div>
                             <div class="ui fluid container">
@@ -487,16 +466,13 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                     <thead>
                                     </thead>
                                     <tbody>
-
                                     </tbody>
                                     <tfoot>
-
                                     </tfoot>
                                 </table>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <!-- ============== -->
@@ -524,8 +500,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_lap">
             </div>
-
-
             <!-- ============== -->
             <!-- tab_referensi -->
             <!-- ============== -->
@@ -740,8 +714,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 $data_card->chat = ['header' => 'Ruang Chating', 'meta' => 'Chat, message', 'description' => 'ruang di peruntukkan chat', 'icon' => 'comments outline'];
                                 $data_card->rekanan = ['header' => 'Rekanan', 'meta' => 'Rekanan', 'description' => 'data rekanan yang terdaftar', 'icon' => 'users'];
                             }
-
-
                             foreach ($data_card as $key => $value) {
                                 if ($type_user == 'user') {
                                     $button = '<button class="ui fluid orange button" name="del_row" jns="del_proyek" tbl="' . $key . '">Hapus Dokumen</button>';
@@ -780,7 +752,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <a class="item inayah" data-tab="atur" tbl="organisasi">
                                 SKPD
                             </a>
-
                         </div>
                     </div>
                     <div class="twelve wide stretched right column">
@@ -821,7 +792,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Anggaran</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -832,7 +802,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">aturan pengadaan</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -843,7 +812,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Akun Belanja</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -854,7 +822,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Sumber Dana</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -865,7 +832,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Sub Kegiatan</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -876,7 +842,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">SSH</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -887,7 +852,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">HSPK</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -898,7 +862,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">ASB</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -909,7 +872,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <i class="dropdown icon"></i>
                                         <div class="default text">SBU</div>
                                         <div class="menu">
-
                                         </div>
                                     </div>
                                 </div>
@@ -1050,17 +1012,13 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <td data-label="Name">James</td>
                                         <td data-label="Name">James</td>
                                     </tr>
-
                                 </tbody>
                                 <tfoot>
-
                                 </tfoot>
                             </table>
                         </div>
                     </div>
-
                 </div>
-
             </div>
             <!-- ============== -->
             <!-- wallchat -->
@@ -1086,7 +1044,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <div class="ui green ok inverted button center aligned"><i class="checkmark icon"></i>OK </div>
                 </div>
             </div>
-
             <!-- modal general -->
             <div class="ui modal mdl_general" name="mdl_general">
                 <h5 class="ui header dash_header">
@@ -1153,11 +1110,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <div class="ui red basic ok button"><i class="checkmark icon"></i>Yes </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
     <!-- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>-->
     <script src="<?= BASEURL; ?>vendor/jquery-3.7.1.min.js"></script>
     <script src="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.js">
@@ -1175,7 +1129,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         const BASEURL = '<?= BASEURL; ?>';
     </script>
     <script src="<?= BASEURL; ?>js/index.js"></script>
-
 </body>
 
 </html>
