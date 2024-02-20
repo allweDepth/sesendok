@@ -597,44 +597,31 @@ class DB
     //==================
     //====   JSON ======
     //==================
-    // Method untuk menghapus field dari data JSON di kolom
-    public function deleteJSONField($tableName, $columnName, $condition)
+    // Method untuk menambahkan data JSON ke dalam kolom
+    public function insertJSONField($tableName, $columnName, $jsonData, $jsonKey)
     {
-        // Buat kondisi WHERE berdasarkan kondisi yang diberikan
-        $whereCondition = '';
-        if (!empty($condition)) {
-            $whereCondition = " WHERE {$condition}";
-        }
-        // Buat query untuk menghapus field dari data JSON
-        $query = "UPDATE {$tableName} SET {$columnName} = JSON_REMOVE({$columnName}, '$.{$condition}'){$whereCondition}";
-        // Jalankan query dan kembalikan jumlah baris yang terpengaruh
-        return $this->runQuery($query)->rowCount();
-    }
-    // Menghapus field 'email' dari data JSON di kolom 'user_info' untuk semua baris
-    // $db->deleteJSONField('users', 'user_info', 'email');
-    // Menghapus field 'email' dari data JSON di kolom 'user_info' hanya untuk baris dengan 'user_id' = 123
-    // $db->deleteJSONField('users', 'user_info', "user_id = 123");
-    // Method untuk mengupdate field di dalam data JSON di kolom
-    public function updateJSONField($tableName, $columnName, $jsonData, $condition)
-    {
-        $query = "UPDATE {$tableName} SET {$columnName} = JSON_SET({$columnName}, '$.{$jsonData['key']}', ?) WHERE {$condition}";
-        return $this->runQuery($query, [$jsonData['value']])->rowCount();
+        $query = "UPDATE {$tableName} SET {$columnName} = JSON_INSERT({$columnName}, '$.{$jsonKey}', ?)";
+        return $this->runQuery($query, [$jsonData])->rowCount();
     }
 
-    // Method untuk menyisipkan data ke dalam data JSON di kolom
-    public function insertJSONField($tableName, $columnName, $jsonData, $condition)
+    // Method untuk membaca data JSON dari kolom
+    public function readJSONField($tableName, $columnName, $jsonKey)
     {
-        $query = "UPDATE {$tableName} SET {$columnName} = JSON_INSERT({$columnName}, '$.{$jsonData['key']}', ?) WHERE {$condition}";
-        return $this->runQuery($query, [$jsonData['value']])->rowCount();
+        $query = "SELECT JSON_EXTRACT({$columnName}, '$.{$jsonKey}') AS {$jsonKey} FROM {$tableName}";
+        return $this->runQuery($query)->fetch(PDO::FETCH_ASSOC)[$jsonKey];
     }
-    /*
-    // Menghapus field 'age' dari data JSON di kolom 'data' dari tabel 'users'
-    $db->deleteJSONField('users', 'data', 'age');
-    // Menyisipkan data baru ke dalam data JSON di kolom 'data' dari tabel 'users'
-    $jsonData = ['key' => 'age', 'value' => 30];
-    $db->insertJSONField('users', 'data', $jsonData, 'id = 1');
-    // Mengupdate data JSON di kolom 'data' dari tabel 'users'
-    $jsonData = ['key' => 'age', 'value' => 31];
-    $db->updateJSONField('users', 'data', $jsonData, 'id = 1');
-    */
+
+    // Method untuk memperbarui data JSON di dalam kolom
+    public function updateJSONField($tableName, $columnName, $jsonData, $jsonKey)
+    {
+        $query = "UPDATE {$tableName} SET {$columnName} = JSON_SET({$columnName}, '$.{$jsonKey}', ?)";
+        return $this->runQuery($query, [$jsonData])->rowCount();
+    }
+
+    // Method untuk menghapus field dari data JSON di kolom
+    public function deleteJSONField($tableName, $columnName, $jsonKey)
+    {
+        $query = "UPDATE {$tableName} SET {$columnName} = JSON_REMOVE({$columnName}, '$.{$jsonKey}')";
+        return $this->runQuery($query)->rowCount();
+    }
 }
