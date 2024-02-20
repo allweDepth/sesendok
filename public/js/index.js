@@ -1621,16 +1621,22 @@ $(document).ready(function () {
 						case 'renja':
 							let renja_dpa = new DropdownConstructor('.ui.dropdown.kd_akun.ajx.selection')
 							renja_dpa.returnList("get_row_json", "akun_belanja");
+							let dropdownKelompok = new DropdownConstructor('.ui.dropdown[name="kelompok"]')
+							
+							let allField = {klm:'kelompok_json', id_sub_keg:formIni.attr('id_sub_keg')}
+							dropdownKelompok.returnList("get_field_json", `sub_keg_${tbl}`,allField);//@audit wait now
+
 							let dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
 							dropdownSumberDana.returnList("get_row_json", "sumber_dana");
 							let dropdownSatuanRenja1 = new DropdownConstructor('.ui.dropdown.sat_1')
-							dropdownSatuanRenja1.returnList("get_row_json", "satuan", 1);
+							allField = {minCharacters:1}
+							dropdownSatuanRenja1.returnList("get_row_json", "satuan", allField);
 							let dropdownSatuanRenja2 = new DropdownConstructor('.ui.dropdown.sat_2')
-							dropdownSatuanRenja2.returnList("get_row_json", "satuan", 1);
+							dropdownSatuanRenja2.returnList("get_row_json", "satuan", allField);
 							let dropdownSatuanRenja3 = new DropdownConstructor('.ui.dropdown.sat_3')
-							dropdownSatuanRenja3.returnList("get_row_json", "satuan", 1);
+							dropdownSatuanRenja3.returnList("get_row_json", "satuan", allField);
 							let dropdownSatuanRenja4 = new DropdownConstructor('.ui.dropdown.sat_4')
-							dropdownSatuanRenja4.returnList("get_row_json", "satuan", 1);
+							dropdownSatuanRenja4.returnList("get_row_json", "satuan", allField);
 							break;
 						case 'val':
 							break;
@@ -1755,7 +1761,7 @@ $(document).ready(function () {
 																			switch (attrElm) {
 																				case 'sasaran':
 																					dropdown_ajx_tujuan.valuesDropdown(result.data?.values?.sasaran);
-																					dropdown_ajx_tujuan.returnList("get_row_json", "sasaran_renstra", 1);
+																					dropdown_ajx_tujuan.returnList("get_row_json", "sasaran_renstra", allField);
 																					postDataField = false;
 																					break;
 																				case 'kode':
@@ -1765,7 +1771,7 @@ $(document).ready(function () {
 																					break;
 																				case 'satuan':
 																					dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
-																					dropdown_ajx_satuan.returnList("get_row_json", "satuan", 1);
+																					dropdown_ajx_satuan.returnList("get_row_json", "satuan", allField);
 																					postDataField = false;
 																					break;
 																				default:
@@ -2347,11 +2353,11 @@ $(document).ready(function () {
 			this.element = $(element); //element;
 			this.methodConstructor = new MethodConstructor();
 		}
-		returnList(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3) {
+		returnList(jenis = "list_dropdown", tbl = "satuan", allField={minCharacters: 3}) {
 			let get = this.element.dropdown("get query");
 			let elm = this.element;
 			this.element.dropdown({
-				minCharacters: minCharacters,
+				minCharacters: allField.minCharacters,
 				maxResults: countRows(),
 				searchDelay: 600,
 				throttle: 600,
@@ -2364,7 +2370,7 @@ $(document).ready(function () {
 					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
-					data: {
+					data: Object.assign({
 						jenis: jenis,
 						tbl: tbl,
 						cari: function (value) {
@@ -2372,7 +2378,7 @@ $(document).ready(function () {
 						},
 						rows: countRows(), //"all",
 						halaman: 1,
-					}, fields: {
+					}, allField), fields: {
 						results: "results",
 					},
 					// filterRemoteData: true,
@@ -2381,11 +2387,11 @@ $(document).ready(function () {
 				// saveRemoteData: false,
 			});
 		}
-		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3) {
+		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", allField={minCharacters: 3}) {
 			let get = this.element.dropdown("get query");
 			let elm = this.element;
 			this.element.dropdown({
-				minCharacters: minCharacters,
+				minCharacters: allField.minCharacters,
 				maxResults: countRows(),
 				searchDelay: 600,
 				throttle: 600,
@@ -2398,7 +2404,7 @@ $(document).ready(function () {
 					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
-					data: {
+					data: Object.assign({
 						jenis: jenis,
 						tbl: tbl,
 						cari: function (value) {
@@ -2406,7 +2412,7 @@ $(document).ready(function () {
 						},
 						rows: countRows(), //"all",
 						halaman: 1,
-					}, fields: {
+					}, allField), fields: {
 						results: "results",
 					},
 					// filterRemoteData: true,

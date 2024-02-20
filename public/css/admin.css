@@ -84,6 +84,10 @@ body.inverted {
     min-height: calc(100% - 45px) !important;
     max-height: calc(100% - 45px) !important;
 } */
+
+.ui.search .prompt {
+    border-radius: 500rem !important;
+}
 .ui.accordion.item {
     padding: 0px;
 }
@@ -180,11 +184,6 @@ body.inverted {
 
 [contenteditable] {
     padding: 6px !important;
-}
-
-.ui.search.sbu .prompt,
-.ui.search.analisa .prompt {
-    border-radius: 500rem !important;
 }
 
 .leaflet-popup-content-wrapper,
