@@ -621,7 +621,7 @@ class DB
     // Method untuk membaca data JSON dari kolom
     public function readJSONField($tableName, $columnName, $jsonKey,$condition)
     {
-        $query = "SELECT JSON_EXTRACT({$columnName}, '$.{$jsonKey}') AS {$jsonKey} FROM {$tableName}";
+        $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT({$columnName}, '$.{$jsonKey}')) AS {$jsonKey} FROM {$tableName}";
         $query .= " WHERE";
         $dataValues = [];
         foreach ($condition as $key => $val) {
@@ -660,7 +660,7 @@ class DB
         
         return $this->runQuery($query, $dataValues)->rowCount();
     }
-
+    // $condition = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
     // Method untuk menghapus field dari data JSON di kolom
     public function deleteJSONField($tableName, $columnName, $jsonKey,$condition)
     {

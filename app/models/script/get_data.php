@@ -75,6 +75,7 @@ class get_data
                         // var_dump($limit);
                     };
                 }
+                $Fungsi = new MasterFungsi();
                 //================
                 //PROSES VALIDASI
                 //================
@@ -127,6 +128,31 @@ class get_data
                             ]);
                         }
                         break;
+                    case 'get_field_json':
+                        $nama_kolom = $validate->setRules('klm', 'nama kolom', [
+                            'sanitize' => 'string',
+                            'required' => true,
+                            'min_char' => 3
+                        ]);
+                        $tabel_pakai_temporer = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+                        $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
+                            'sanitize' => 'string',
+                            'numeric' => true,
+                            'required' => true,
+                            'inDB' => [$tabel_pakai_temporer, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                        ]);
+                        $nama_kolom = $validate->setRules('klm', 'kolom', [
+                            'sanitize' => 'string',
+                            'required' => true,
+                            'min_char' => 3
+                        ]);
+                        $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                            'sanitize' => 'string',
+                            'required' => true,
+                            'in_array' => ['kelompok', 'paket'],
+                            'min_char' => 3
+                        ]);
+                        break;
                     case 'yyyyyy':
                         // isset($_POST['jenis'])
                         break;
@@ -143,7 +169,7 @@ class get_data
                 }
                 $jumlah_kolom = 0;
                 //FINISH PROSES VALIDASI
-                $Fungsi = new MasterFungsi();
+                
                 if ($validate->passed()) {
                     $code = 55;
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
@@ -335,23 +361,32 @@ class get_data
                             break;
                         case 'sub_keg_renja':
                         case 'sub_keg_dpa':
-                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                            if ($rowOrganisasi) {
-                                $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR tolak_ukur_capaian_keg LIKE CONCAT('%',?,'%') OR tolak_ukur_keluaran LIKE CONCAT('%',?,'%') OR keluaran_sub_keg LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                $data_like = [$kd_wilayah, $kd_opd, $tahun, $cari, $cari, $cari, $cari, $cari, $cari];
-                                $order = "ORDER BY kd_sub_keg ASC";
-                                $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                                $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
-                                $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND']];
-                                //pilih kolom yang diambil
-                                // $DB->select('id, kelompok, id_tujuan, text, keterangan');
-                                $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                                $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0];
-                            } else {
-                                $message_tambah = ' (atur organisasi OPD)';
-                                $kodePosting = '';
-                                $code = 70;
+                            switch ($jenis) {
+                                case 'get_field_json':
+                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    $kodePosting = $jenis;
+                                    break;
+                                default:
+                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                    if ($rowOrganisasi) {
+                                        $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR tolak_ukur_capaian_keg LIKE CONCAT('%',?,'%') OR tolak_ukur_keluaran LIKE CONCAT('%',?,'%') OR keluaran_sub_keg LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                        $data_like = [$kd_wilayah, $kd_opd, $tahun, $cari, $cari, $cari, $cari, $cari, $cari];
+                                        $order = "ORDER BY kd_sub_keg ASC";
+                                        $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                        $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND']];
+                                        //pilih kolom yang diambil
+                                        // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                        $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                        $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    } else {
+                                        $message_tambah = ' (atur organisasi OPD)';
+                                        $kodePosting = '';
+                                        $code = 70;
+                                    }
+                                    break;
                             }
+
                             break;
                         case 'renja':
                         case 'dpa':
@@ -615,6 +650,25 @@ class get_data
                     //==========JENIS POST DATA/INSERT DATA===========
                     //================================================
                     switch ($kodePosting) {
+                        case 'get_field_json':
+                            $dataJson['results'] = [];
+                            //ambil data
+                            $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
+                            // Menghapus tanda kutip tunggal yang tidak valid
+                            // var_dump($data_klm);
+                            $data_klm = json_decode($data_klm, true);
+                            switch ($tbl) {
+                                case 'sub_keg_dpa':
+                                case 'sub_keg_renja':
+                                    foreach ($data_klm as $row) {
+                                        $dataJson['results'][] = ['name' => $row, 'value' =>$row];
+                                    }
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+                            break;
                         case 'getAllValJson':
                             $results = $DB->getWhereArray($tabel_pakai, $kondisi);
                             // var_dump($results);
@@ -814,7 +868,7 @@ class get_data
                                                 case 'asb':
                                                 case 'ssh':
                                                 case 'sbu':
-                                                    $deskripsi = $row->kd_aset .' ('.number_format($row->harga_satuan, 2, ',', '.').')';
+                                                    $deskripsi = $row->kd_aset . ' (' . number_format($row->harga_satuan, 2, ',', '.') . ')';
                                                     $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
                                                     break;
                                                 case 'value1':
@@ -918,10 +972,13 @@ class get_data
         }
         // cara menampilkan json
         switch ($jenis) {
+            case 'get_field_json':
             case 'get_row_json':
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+                    case 'sub_keg_dpa':
+                    case 'sub_keg_renja':
                     case 'sumber_dana':
                     case 'sasaran_renstra':
                     case 'tujuan_renstra':

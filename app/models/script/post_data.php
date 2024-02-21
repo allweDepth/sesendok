@@ -856,13 +856,6 @@ class post_data
                             break;
                         case 'add_field_json':
                             
-                            
-                            $dataKondisi = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                            $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisi);//sdh ok
-                            $uraian_field = json_encode(["makan"=>"hhdhdhhd"]);
-                            $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field, $jenis_kelompok, $dataKondisi);//sdh ok
-                            var_dump($data_klm);
-                            var_dump($tambah);
                             break;
                         default:
                             break;
@@ -873,7 +866,8 @@ class post_data
                         case 'sub_keg_renja':
                             switch ($jenis) {
                                 case 'add_field_json':
-                                    #code...
+                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    $kodePosting = $jenis;
                                     break;
                                 case 'value1':
                                     #code...
@@ -1247,6 +1241,26 @@ class post_data
                     }
                     //JENIS POST DATA/INSERT DATA
                     switch ($kodePosting) {
+                        case 'add_field_json':
+                            //ambil data
+                            $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
+                            // Menghapus tanda kutip tunggal yang tidak valid
+                            $data_klm = json_decode($data_klm, true);
+                            //cari index di array
+                            $key = array_search($uraian_field, $data_klm);
+                            if ($key <= 0) {
+                                $data_klm[] = $uraian_field;
+                                $uraian_field_insert = json_encode($data_klm);
+                                $tambah = $DB->updateJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+                                if ($tambah) {
+                                    $code = 3;
+                                }else {
+                                    $code = 33;
+                                }
+                                
+                            } else {
+                            }
+                            break;
                         case 'update_rows': // untuk banyak row
                             foreach ($dataArray as $key => $val) {
                                 $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id, 'AND']];
@@ -1263,7 +1277,7 @@ class post_data
                                     $code = 3;
                                     $data['update'] = $DB->count();
                                 } else {
-                                    $code = 33;
+                                    $code = 47;
                                 }
                             }
                             break;

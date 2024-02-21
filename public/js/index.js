@@ -329,7 +329,7 @@ $(document).ready(function () {
 			case "pengaturan":
 			case 'get_pengaturan':
 				switch (tbl) {
-					case 'pengaturan'://@audit calendar pengaturan
+					case 'pengaturan':
 						let formPakai = $(`[name="form_pengaturan"]`);
 						let sumdatetimeStartcal = formPakai.find(`.ui.calendar.datetime.startcal`);
 						let dynamic = [];
@@ -452,11 +452,10 @@ $(document).ready(function () {
 									case 'renja':
 									case 'dpa':
 									case 'renja_p':
-									case 'dppa'://@audit proses now
+									case 'dppa':
 										if (tbl !== 'sub_keg_renja') {
 											const elmTableSubKeg = divTab.find("table.sub_keg");
 											elmTableSubKeg.html(result.data.tr_sub_keg);
-											// data['id_sub_keg'] = ini.closest('tr').attr('id_row');
 										}
 										break;
 									case 'value1':
@@ -703,8 +702,7 @@ $(document).ready(function () {
 									atribut: 'name="komponen" placeholder="pilih komponen..."',
 									kelas: "search clearable komponen ajx selection",
 									dataArray: [
-										["paket", "Paket"],
-										["m", "m"]
+										["paket", "Paket"]
 									],
 								}) +
 								buatElemenHtml("fieldText", {
@@ -732,8 +730,7 @@ $(document).ready(function () {
 									atribut: 'name="uraian" placeholder="pilih keterangan..."',
 									kelas: "search clearable uraian selection",
 									dataArray: [
-										["paket", "Paket"],
-										["m", "m"]
+										["paket", "Paket"]
 									],
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
@@ -741,7 +738,7 @@ $(document).ready(function () {
 									atribut: 'name="pajak" non_data',
 
 								}) +
-								buatElemenHtml("fields", {//@audit elm perkalian
+								buatElemenHtml("fields", {
 									label: "Koefisien Perkalian",
 									kelas: "disabled",
 									kelas2: ["search sat_1 ajx selection", "search sat_2 ajx selection", "search sat_3 ajx selection", "search sat_4 ajx selection"],
@@ -1545,7 +1542,7 @@ $(document).ready(function () {
 					}
 					break;
 				case "import":
-					let templateXlsx = linkTemplate[tbl];//@audit + link
+					let templateXlsx = linkTemplate[tbl];
 					if (templateXlsx) {
 						dataHtmlku.konten = buatElemenHtml("fieldLabel", {
 							label: "Download Template",
@@ -1603,8 +1600,12 @@ $(document).ready(function () {
 					switch (tbl) {
 						case 'tujuan_sasaran_renstra':
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
+							// case 'getJsonRows':
+							// switch (allObjek.tbl) {
+							// 	case 'tujuan_renstra'
+							var allObjek = { jenis: 'getJsonRows',tbl:'tujuan_renstra' };
 							var dropdownTujuanSasaran = new DropdownConstructor('.ui.dropdown.tujuan_sasaran.selection')
-							dropdownTujuanSasaran.onChange("getJsonRows", "tujuan_renstra", true);
+							dropdownTujuanSasaran.onChange(allObjek);//@audit error tidak berfungsi
 							var dropdown_ajx_tujuan = new DropdownConstructor('.ui.dropdown.ajx.tujuan_renstra.selection');
 							dropdown_ajx_tujuan.returnList("get_row_json", "tujuan_renstra", 1);
 							// dropdownTujuanSasaran.returnList("get_row_json", "tujuan_renstra", true)
@@ -1629,7 +1630,7 @@ $(document).ready(function () {
 
 							//jenis_kelompok 
 							let dropdownJenisKelompok = new DropdownConstructor('.ui.dropdown[name="jenis_kelompok"]');
-							let allObjek = { jenis: 'gantiJenisKelompok' };
+							allObjek = { jenis: 'gantiJenisKelompok',tbl:tbl };
 							dropdownJenisKelompok.onChange(allObjek);
 							//jenis_kelompok 
 							let dropdownJenisKomponen = new DropdownConstructor('.ui.dropdown[name="jenis_komponen"]');
@@ -1818,7 +1819,7 @@ $(document).ready(function () {
 																}
 															}
 															if (postDataField) {
-																formIni.form("set value", attrElm, strText);//@audit edit form
+																formIni.form("set value", attrElm, strText);
 															}
 														}
 													}
@@ -2280,8 +2281,8 @@ $(document).ready(function () {
 		let pesanToast = 'Koreksi Data';
 		mdl.addClass("tiny");
 		switch (jnsAttr) {
+			case 'get_field_json':
 			case 'add_field_json':
-
 				switch (tblAttr) {
 					case 'sub_keg_dpa':
 					case 'sub_keg_renja':
@@ -2331,7 +2332,7 @@ $(document).ready(function () {
 		$("[rms]").mathbiila();
 		let modalGeneral = new ModalConstructor(mdl);
 		modalGeneral.globalForm();
-		
+
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
@@ -2373,7 +2374,7 @@ $(document).ready(function () {
 			let elm = this.element;
 			switch (jenis) {
 				case 'get_field_json':
-					allField.jenis_kelompok_json = $(`form[name="form_flyout"]`).find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');;
+					allField.jns_kel = $(`form[name="form_flyout"]`).find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');;
 					break;
 				default:
 					break;
@@ -2603,9 +2604,9 @@ $(document).ready(function () {
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";
 							if (result.success === true) {
-								switch (jenis) {
+								switch (allObjek.jenis) {
 									case 'getJsonRows':
-										switch (tbl) {
+										switch (allObjek.tbl) {
 											case 'tujuan_renstra'://tujuan sasaran renstra
 												MethodConstructor.tujuanRenstra(result);
 												break;
@@ -2697,9 +2698,9 @@ $(document).ready(function () {
 		static refreshDropdown(allData = { jenis: 'gantiJenisKelompok', tbl: 'renja' }) {
 			switch (allData.jenis) {
 				case 'gantiJenisKelompok':
-					let dropdownKelompok = new DropdownConstructor('.ui.dropdown[name="kelompok"]')
+					let dropdownKelompok = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kelompok"]')
 					let allField = { klm: 'kelompok_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg') }
-					dropdownKelompok.returnList("get_field_json", `sub_keg_${allData.tbl}`, allField);//@audit wait now
+					dropdownKelompok.returnList("get_field_json", `sub_keg_${allData.tbl}`, allField);
 					break;
 				case 'gantiJenisKomponen':
 					let dropdownKomponen = new DropdownConstructor('.ui.dropdown[name="komponen"]')
@@ -2707,7 +2708,7 @@ $(document).ready(function () {
 					let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_komponen"]').dropdown('get value');
 					let rekeningAkun = $('form[name="form_flyout"]').find('.ui.dropdown[name="kd_akun"]').dropdown('get value');
 					let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), kd_akun: rekeningAkun };
-					dropdownKomponen.returnList("get_row_json", jenisKomponen, allFieldKomponen);//@audit wait now
+					dropdownKomponen.returnList("get_row_json", jenisKomponen, allFieldKomponen);
 					break;
 				case 'xxxx':
 
@@ -2825,8 +2826,6 @@ $(document).ready(function () {
 			});
 		}
 	}
-	// let dropdown = new DropdownConstructor(".satuan.ui.dropdown");
-	// dropdown.satuan();
 	//=======================================
 	//===============FORM GLOBAL=============
 	//=======================================
@@ -3363,6 +3362,44 @@ $(document).ready(function () {
 	}
 	let InitializeForm = new FormGlobal(".ui.form");
 	InitializeForm.run();
+	//=======================================
+	//===============SEACH GLOBAL============@audit-ok SearchConstructor
+	//=======================================
+	class SearchConstructor {
+		constructor(elmSearch) {
+			this.elmSearch = $(elmSearch); //element;
+		}
+		searchGlobal(allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'sbu', data_send: {} }) {
+			let MyElmSearch = this.elmSearch;
+			MyElmSearch.search({
+				minCharacters: allField.minCharacters,
+				maxResults: countRows(),
+				searchDelay: allField.searchDelay,
+				apiSettings: {
+					method: "POST",
+					url: "script/get_data",
+					// passed via POST
+					data: Object.assign({
+						jenis: allField.jenis,
+						tbl: allField.tbl,
+						cari: function (value) {
+							return MyElmSearch.search('get value');
+						},
+						rows: countRows(), //"all",
+						halaman: 1,
+					}, allField.data_send),
+				},
+				fields: {
+					results: [0].uraian,
+					title: "title",
+					description: "description",
+					kode: "kode",
+				},
+				onSelect(result, response) {
+				},
+			});
+		}
+	}
 	//=======================================
 	//===============MODAL GLOBAL=============
 	//=======================================
