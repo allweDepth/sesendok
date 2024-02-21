@@ -1071,6 +1071,7 @@ class MasterFungsi
         }
         return $data;
     }
+    // kelola rekening sub kegiatan
     public function kelolaRek($dinamic = [])
     {
         $kode = $dinamic['kode'];

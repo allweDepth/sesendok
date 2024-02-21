@@ -620,7 +620,7 @@ class get_data
                             $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
                             $data_hereGet_row_json = [$kd_wilayah, $tahun, 0];
                             //untuk input dan edit renja dpa dkk
-                            if ($kd_sub_keg) {
+                            if (isset($kd_sub_keg)) {
                                 $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%') AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
                                 $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                 $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%')";
