@@ -118,11 +118,11 @@ class get_data
                         break;
                     case 'get_row_json':
                         // isset($_POST['jenis'])
-                        if (isset($_POST['kd_akun'])) {//@audit masih butuh lanjutan untuk search sbu dkk
+                        if (isset($_POST['kd_akun'])) { //@audit masih butuh lanjutan untuk search sbu dkk
                             $kd_sub_keg = $validate->setRules('kd_akun', "kode akun", [
                                 'sanitize' => 'string',
                                 'required' => true,
-                                'inDB' => ['akun_neo', 'kd_aset', [['kd_aset', '=', $_POST['kd_akun']],['kd_wilayah', '=', $kd_wilayah],['tahun', '=', $tahun]]],
+                                'inDB' => ['akun_neo', 'kode', [['kode', '=', $_POST['kd_akun']]]],
                                 'min_char' => 1
                             ]);
                         }
@@ -577,13 +577,22 @@ class get_data
                         case 'ssh':
                         case 'asb':
                             $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
-                            $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY kd_aset ASC";
                             $posisi = " LIMIT ?, ?";
                             $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
                             $data_where1 =  [$kd_wilayah, $tahun, 0];
                             $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
                             $data_hereGet_row_json = [$kd_wilayah, $tahun, 0];
+                            //untuk input dan edit renja dpa dkk
+                            if ($kd_sub_keg) {
+                                $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%') AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
+                                $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%')";
+                                $data_hereGet_row_json = [$kd_wilayah, $tahun, 0, $kd_sub_keg];
+                                $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%')";
+                                $data_where1 =  [$kd_wilayah, $tahun, 0, $kd_sub_keg];
+                            }
                             // $where = "nomor = ?";
                             // $data_where =  [$text];
                             $jumlah_kolom = 7;
