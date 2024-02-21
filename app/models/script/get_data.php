@@ -169,7 +169,7 @@ class get_data
                 }
                 $jumlah_kolom = 0;
                 //FINISH PROSES VALIDASI
-                
+
                 if ($validate->passed()) {
                     $code = 55;
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
@@ -654,20 +654,30 @@ class get_data
                             $dataJson['results'] = [];
                             //ambil data
                             $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
+
                             // Menghapus tanda kutip tunggal yang tidak valid
                             // var_dump($data_klm);
-                            $data_klm = json_decode($data_klm, true);
-                            switch ($tbl) {
-                                case 'sub_keg_dpa':
-                                case 'sub_keg_renja':
-                                    foreach ($data_klm as $row) {
-                                        $dataJson['results'][] = ['name' => $row, 'value' =>$row];
-                                    }
-                                    break;
-                                default:
-                                    # code...
-                                    break;
+                            if ($data_klm) {
+                                $data_klm = json_decode($data_klm, true);
+                                switch ($tbl) {
+                                    case 'sub_keg_dpa':
+                                    case 'sub_keg_renja':
+                                        if (count($data_klm)) {
+                                            foreach ($data_klm as $row) {
+                                                $dataJson['results'][] = ['name' => $row, 'value' => $row];
+                                            }
+                                        }
+
+                                        break;
+                                    default:
+                                        # code...
+                                        break;
+                                }
+                            } else {
+                                $jenis = '';
+                                $code = 404;
                             }
+
                             break;
                         case 'getAllValJson':
                             $results = $DB->getWhereArray($tabel_pakai, $kondisi);
