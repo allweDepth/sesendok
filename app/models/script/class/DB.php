@@ -598,30 +598,87 @@ class DB
     //====   JSON ======
     //==================
     // Method untuk menambahkan data JSON ke dalam kolom
-    public function insertJSONField($tableName, $columnName, $jsonData, $jsonKey)
+    public function insertJSONField($tableName, $columnName, $jsonData, $jsonKey,$condition)
     {
         $query = "UPDATE {$tableName} SET {$columnName} = JSON_INSERT({$columnName}, '$.{$jsonKey}', ?)";
-        return $this->runQuery($query, [$jsonData])->rowCount();
+        $query .= " WHERE";
+        $dataValues = [$jsonData];
+        foreach ($condition as $key => $val) {
+            if (strpos($val[1], "LIKE") !== false) {
+                $query .= " {$val[3]} {$val[0]} {$val[1]}";
+            } else {
+                if (count($val) === 3 && $key === 0) {
+                    $query .= " {$val[0]} {$val[1]} ? ";
+                } else if (count($val) === 4 && $key > 0) {
+                    $query .= " {$val[3]} {$val[0]} {$val[1]} ?";
+                }
+            }
+            array_push($dataValues, $val[2]);
+        }
+        return $this->runQuery($query, $dataValues)->rowCount();
     }
 
     // Method untuk membaca data JSON dari kolom
-    public function readJSONField($tableName, $columnName, $jsonKey)
+    public function readJSONField($tableName, $columnName, $jsonKey,$condition)
     {
         $query = "SELECT JSON_EXTRACT({$columnName}, '$.{$jsonKey}') AS {$jsonKey} FROM {$tableName}";
-        return $this->runQuery($query)->fetch(PDO::FETCH_ASSOC)[$jsonKey];
+        $query .= " WHERE";
+        $dataValues = [];
+        foreach ($condition as $key => $val) {
+            if (strpos($val[1], "LIKE") !== false) {
+                $query .= " {$val[3]} {$val[0]} {$val[1]}";
+            } else {
+                if (count($val) === 3 && $key === 0) {
+                    $query .= " {$val[0]} {$val[1]} ? ";
+                } else if (count($val) === 4 && $key > 0) {
+                    $query .= " {$val[3]} {$val[0]} {$val[1]} ?";
+                }
+            }
+            array_push($dataValues, $val[2]);
+        }
+        return $this->runQuery($query, $dataValues)->fetch(PDO::FETCH_ASSOC)[$jsonKey];
     }
 
     // Method untuk memperbarui data JSON di dalam kolom
-    public function updateJSONField($tableName, $columnName, $jsonData, $jsonKey)
+    public function updateJSONField($tableName, $columnName, $jsonData, $jsonKey,$condition)
     {
         $query = "UPDATE {$tableName} SET {$columnName} = JSON_SET({$columnName}, '$.{$jsonKey}', ?)";
-        return $this->runQuery($query, [$jsonData])->rowCount();
+        $query .= " WHERE";
+        $dataValues = [$jsonData];
+        foreach ($condition as $key => $val) {
+            if (strpos($val[1], "LIKE") !== false) {
+                $query .= " {$val[3]} {$val[0]} {$val[1]}";
+            } else {
+                if (count($val) === 3 && $key === 0) {
+                    $query .= " {$val[0]} {$val[1]} ? ";
+                } else if (count($val) === 4 && $key > 0) {
+                    $query .= " {$val[3]} {$val[0]} {$val[1]} ?";
+                }
+            }
+            array_push($dataValues, $val[2]);
+        }
+        
+        return $this->runQuery($query, $dataValues)->rowCount();
     }
 
     // Method untuk menghapus field dari data JSON di kolom
-    public function deleteJSONField($tableName, $columnName, $jsonKey)
+    public function deleteJSONField($tableName, $columnName, $jsonKey,$condition)
     {
         $query = "UPDATE {$tableName} SET {$columnName} = JSON_REMOVE({$columnName}, '$.{$jsonKey}')";
-        return $this->runQuery($query)->rowCount();
+        $query .= " WHERE";
+        $dataValues = [];
+        foreach ($condition as $key => $val) {
+            if (strpos($val[1], "LIKE") !== false) {
+                $query .= " {$val[3]} {$val[0]} {$val[1]}";
+            } else {
+                if (count($val) === 3 && $key === 0) {
+                    $query .= " {$val[0]} {$val[1]} ? ";
+                } else if (count($val) === 4 && $key > 0) {
+                    $query .= " {$val[3]} {$val[0]} {$val[1]} ?";
+                }
+            }
+            array_push($dataValues, $val[2]);
+        }
+        return $this->runQuery($query, $dataValues)->rowCount();
     }
 }

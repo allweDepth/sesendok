@@ -108,8 +108,41 @@ class post_data
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
+                            case 'add_field_json':
+                                $uraian_field = $validate->setRules('uraian', 'sub kegiatan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $nama_kolom = $validate->setRules('klm', 'nama kolom', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $tabel_pakai_temporer = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+                                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'inDB' => [$tabel_pakai_temporer, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                ]);
+                                $nama_kolom = $validate->setRules('klm', 'kolom', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['kelompok', 'paket'],
+                                    'min_char' => 3
+                                ]);
+                                break;
                             default:
-                                # code...
+                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
+                                    'required' => true,
+                                    'min_char' => 200
+                                ]);
                                 break;
                         }
                         break;
@@ -821,6 +854,16 @@ class post_data
                                 }
                             }
                             break;
+                        case 'add_field_json':
+                            
+                            
+                            $dataKondisi = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                            $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisi);//sdh ok
+                            $uraian_field = json_encode(["makan"=>"hhdhdhhd"]);
+                            $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field, $jenis_kelompok, $dataKondisi);//sdh ok
+                            var_dump($data_klm);
+                            var_dump($tambah);
+                            break;
                         default:
                             break;
                     }
@@ -828,29 +871,41 @@ class post_data
                     switch ($tbl) {
                         case 'sub_keg_dpa':
                         case 'sub_keg_renja':
-                            $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                            $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
-                            $set = [
-                                'kd_wilayah' => $kd_wilayah,
-                                'kd_opd' => $kd_opd,
-                                'tahun' => $tahun,
-                                'kd_sub_keg' => $kd_sub_keg,
-                                'uraian' => $uraian,
-                                'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
-                                'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
-                                'jumlah_pagu' => $jumlah_pagu,
-                                'jumlah_pagu_p' => $jumlah_pagu_p,
-                                'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
-                                'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                'disable' => $disable,
-                                'tanggal' => date('Y-m-d H:i:s'),
-                                'tgl_update' => date('Y-m-d H:i:s'),
-                                'username' => $_SESSION["user"]["username"]
-                            ];
-                            $dinamic = ['tbl'=>$tbl,'kode'=>$kd_sub_keg,'set'=>$set];
-                            $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
-                            $kodePosting = '';
+                            switch ($jenis) {
+                                case 'add_field_json':
+                                    #code...
+                                    break;
+                                case 'value1':
+                                    #code...
+                                    break;
+                                default:
+                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                                    $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kd_opd' => $kd_opd,
+                                        'tahun' => $tahun,
+                                        'kd_sub_keg' => $kd_sub_keg,
+                                        'uraian' => $uraian,
+                                        'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
+                                        'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
+                                        'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
+                                        'jumlah_pagu' => $jumlah_pagu,
+                                        'jumlah_pagu_p' => $jumlah_pagu_p,
+                                        'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
+                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                        'disable' => $disable,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $set];
+                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
+                                    $kodePosting = '';
+                                    break;
+                            };
+
+
                             break;
                         case 'tujuan_renstra':
                         case 'tujuan_sasaran_renstra':

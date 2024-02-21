@@ -627,7 +627,7 @@ $(document).ready(function () {
 									kelas: "search lainnya selection",
 									dataArray: [
 										["gaji", "Belanja Gaji dan Tunjangan ASN"],
-										["barang_jasa_modal", "Belanja Barang Jasa dan Modal"],
+										["barang_jasa_modal", "Belanja Barang Jasa dan Modal", "active"],
 										["bunga", "Belanja Bunga"],
 										["subsidi", "Belanja Subsidi"],
 										["hibah_barang_jasa", "Belanja Hibah (Barang/Jasa)"],
@@ -2238,7 +2238,7 @@ $(document).ready(function () {
 		himp.find("input").val("");
 	});
 	//=========================================
-	//===========jalankan modal================@audit-ok modal name
+	//===========jalankan modal================@audit-ok modal click
 	//=========================================
 	$("body").on("click", '[name="modal_show"]', function (e) {
 		e.preventDefault();
@@ -2281,15 +2281,17 @@ $(document).ready(function () {
 		mdl.addClass("tiny");
 		switch (jnsAttr) {
 			case 'add_field_json':
+
 				switch (tblAttr) {
 					case 'sub_keg_dpa':
 					case 'sub_keg_renja':
-						data.id_sub_keg = ini.closest('.ui.form').attr('id_sub_keg');
+						let id_sub_keg = ini.closest('.ui.form').attr('id_sub_keg');
+						data.id_sub_keg = id_sub_keg;
 						data.klm = klmAttr;
 
 						let jenis_kelompok = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');
 						data.jenis_kelompok = jenis_kelompok;
-						console.log(`jenis_kelompok : ${jenis_kelompok}`);
+						formIni.attr('jns', jnsAttr).attr('tbl', tblAttr).attr('klm', klmAttr).attr('id_sub_keg', id_sub_keg).attr('jns_kel', jenis_kelompok)
 						switch (jenis_kelompok) {
 							case 'paket':
 								headerModal = 'Tambah Uraian Pemaketan Belanja';
@@ -2320,6 +2322,8 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+		let InitializeForm = new FormGlobal(formIni);
+		InitializeForm.run();
 		elementForm += buatElemenHtml("errorForm");
 		formIni.html(elementForm);
 		document.getElementById("header_mdl").textContent = headerModal;
@@ -2327,7 +2331,7 @@ $(document).ready(function () {
 		$("[rms]").mathbiila();
 		let modalGeneral = new ModalConstructor(mdl);
 		modalGeneral.globalForm();
-
+		
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
@@ -2699,10 +2703,10 @@ $(document).ready(function () {
 					break;
 				case 'gantiJenisKomponen':
 					let dropdownKomponen = new DropdownConstructor('.ui.dropdown[name="komponen"]')
-					
+
 					let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_komponen"]').dropdown('get value');
 					let rekeningAkun = $('form[name="form_flyout"]').find('.ui.dropdown[name="kd_akun"]').dropdown('get value');
-					let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg') ,kd_akun:rekeningAkun};
+					let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), kd_akun: rekeningAkun };
 					dropdownKomponen.returnList("get_row_json", jenisKomponen, allFieldKomponen);//@audit wait now
 					break;
 				case 'xxxx':
@@ -2837,6 +2841,16 @@ $(document).ready(function () {
 				onSuccess: function (e) {
 					e.preventDefault();
 					loaderShow();
+					const [node] = $(MyForm);
+					const attrs = {}
+					$.each(node.attributes, (index, attribute) => {
+						attrs[attribute.name] = attribute.value;
+						let attrName = attribute.name;
+						//membuat variabel
+						let myVariable = attrName + 'Attr';
+						window[myVariable] = attribute.value;
+					});
+					console.log(attrs);
 					let jalankanAjax = false;
 					let ini = $(this);
 					let tbl = ini.attr("tbl");
@@ -2886,45 +2900,59 @@ $(document).ready(function () {
 						default:
 							break;
 					}
+					// global mencari element date
+					if (MyForm.find('[name="disable"]')) {
+						formData.has("disable") === false
+							? formData.append("disable", 'off')
+							: formData.set("disable", 'on'); // Returns false
+					}
+					let property = ini.find(".ui.calendar.date");
+					if (property.length > 0) {
+						for (const key of property) {
+							let nameAttr = $(key).find("[name]").attr("name");
+							let tanggal = $(key).calendar("get date");
+							if (tanggal) {
+								tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
+									}-${tanggal.getDate()}`; //local time
+								formData.set(nameAttr, tanggal);
+							}
+						}
+					}
+					property = ini.find(".ui.calendar.datetime");
+					// console.log(property);
+					if (property.length > 0) {
+						for (const key of property) {
+							let nameAttr = $(key).find("[name]").attr("name");
+							let tanggal = $(key).calendar("get date");
+							if (tanggal) {
+								tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
+								formData.set(nameAttr, tanggal);
+							}
+						}
+					}
 					switch (nama_form) {
 						// =================
 						// UNTUK FORM MODAL
 						// =================
-						case "form_modal":
+						case "form_modal"://@audit sekarang
+							switch (jenis) {
+								case 'add_field_json':
+									jalankanAjax = true;
+									formData.set('klm', klmAttr);
+									formData.set('id_sub_keg', id_sub_kegAttr);
+									formData.set('jns_kel', jns_kelAttr);
+									break;
+								case 'value':
+									break;
+								default:
+									break;
+							}
 							break;
 						// =================
 						// UNTUK FORM FLYOUT
 						// =================
 						case "form_flyout":
-							if (MyForm.find('[name="disable"]')) {
-								formData.has("disable") === false
-									? formData.append("disable", 'off')
-									: formData.set("disable", 'on'); // Returns false
-							}
-							let property = ini.find(".ui.calendar.date");
-							if (property.length > 0) {
-								for (const key of property) {
-									let nameAttr = $(key).find("[name]").attr("name");
-									let tanggal = $(key).calendar("get date");
-									if (tanggal) {
-										tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
-											}-${tanggal.getDate()}`; //local time
-										formData.set(nameAttr, tanggal);
-									}
-								}
-							}
-							property = ini.find(".ui.calendar.datetime");
-							// console.log(property);
-							if (property.length > 0) {
-								for (const key of property) {
-									let nameAttr = $(key).find("[name]").attr("name");
-									let tanggal = $(key).calendar("get date");
-									if (tanggal) {
-										tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
-										formData.set(nameAttr, tanggal);
-									}
-								}
-							}
+
 							switch (tbl) {
 								case "peraturan":
 									switch (jenis) {
@@ -3354,6 +3382,7 @@ $(document).ready(function () {
 				},
 				onApprove: function () {
 					// jika di tekan yes//console.log('saya menekan tombol YES');
+					console.log('saya menekan tombol YES');
 					$(this).find("form").trigger("submit");
 					return false;
 				},
@@ -3738,51 +3767,144 @@ $(document).ready(function () {
 				</div>`;
 				break;
 			case "fieldDropdownLabel":
-				let elemen11 =
+				var elemen11 =
 					`<div class="${classField}field" ${atributField}><label> ${labelData}
 					</label><div class="ui right labeled input"><div class="ui dropdown fluid 
 					${kelasData}" ${atributData}><input type="hidden" ${atributData}><i class="dropdown icon"></i><div class="default text">${textDrpdown}</div><div class="menu">`;
 				///Memisahkan array
-				let elemen22 = "";
+				var elemen22 = "";
 				for (let x in dataArray) {
 					let rowsData = dataArray[x];
 					let dataValue = rowsData[0];
+					// active selected
+					let classItem = 'item';
 					if (rowsData.length === 1) {
 						let txt = dataValue;
+						if (rowsData[2]) {
+							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+								classItem = 'item active selected';
+							}
+						}
 						elemen22 +=
-							'<div class="item" data-value="' +
+							`<div class="${classItem}" data-value="` +
 							dataValue +
 							'">' +
 							txt +
 							"</div>";
 					} else if (rowsData.length === 2) {
 						let txt = rowsData[1];
+						if (rowsData[2]) {
+							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+								classItem = 'item active selected';
+							}
+						}
 						elemen22 +=
-							'<div class="item" data-value="' +
+							`<div class="${classItem}" data-value="` +
 							dataValue +
 							'">' +
 							txt +
 							"</div>";
-					} else if (rowsData.length === 3) {
+					} else if (rowsData.length >= 3) {
 						//mempunyai deskripsi
 						let txt = rowsData[1];
-						deskripsi = rowsData[2];
-						elemen22 +=
-							'<div class="item" data-value="' +
-							dataValue +
-							'"><span class="description">' +
-							deskripsi +
-							'</span><span class="text">' +
-							txt +
-							"</span></div>";
+						var deskripsi = rowsData[2];
+						if (deskripsi !== 'active') {
+							elemen22 +=
+								`<div class="${classItem}" data-value="` +
+								dataValue +
+								'"><span class="description">' +
+								deskripsi +
+								'</span><span class="text">' +
+								txt +
+								"</span></div>";
+						} else {
+							elemen22 +=
+								`<div class="${classItem}" data-value="` +
+								dataValue +
+								'">' +
+								txt +
+								"</div>";
+						}
+
 					}
 				}
-				let elemen33 = `</div></div><button class="ui teal label icon button" ${atributLabel}>${txtLabelData}</button>
+				var elemen33 = `</div></div><button class="ui teal label icon button" ${atributLabel}>${txtLabelData}</button>
 				</div></div>`;
 				elemen = elemen11 + elemen22 + elemen33;
 				break;
 			case "fieldDropdown":
-				var elemen1 =
+
+				///Memisahkan array
+				elemen22 = "";
+				var disableAtributDataActive = false
+				var txtSelectedActive = '';
+				for (let x in dataArray) {
+					let rowsData = dataArray[x];
+					let dataValue = rowsData[0];
+					// active selected
+					let classItem = 'item';
+					if (rowsData.length === 1) {
+						let txt = dataValue;
+						if (rowsData[2]) {
+							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+								classItem = 'item active selected';
+								disableAtributDataActive = true;
+								txtSelectedActive = ` value="${dataValue}"`;
+							}
+						}
+						elemen22 +=
+							`<div class="${classItem}" data-value="` +
+							dataValue +
+							'">' +
+							txt +
+							"</div>";
+					} else if (rowsData.length === 2) {
+						let txt = rowsData[1];
+						if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+							classItem = 'item active selected';
+							disableAtributDataActive = true;
+							txtSelectedActive = ` value="${dataValue}"`;
+						}
+						elemen22 +=
+							`<div class="${classItem}" data-value="` +
+							dataValue +
+							'">' +
+							txt +
+							"</div>";
+					} else if (rowsData.length >= 3) {
+						//mempunyai deskripsi
+						let txt = rowsData[1];
+						deskripsi = rowsData[2];
+						if (deskripsi !== 'active') {
+							elemen22 +=
+								`<div class="${classItem}" data-value="` +
+								dataValue +
+								'"><span class="description">' +
+								deskripsi +
+								'</span><span class="text">' +
+								txt +
+								"</span></div>";
+						} else {
+							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+								classItem = 'item active selected';
+								disableAtributDataActive = true;
+								txtSelectedActive = ` value="${dataValue}"`;
+							}
+							elemen22 +=
+								`<div class="${classItem}" data-value="` +
+								dataValue +
+								'">' +
+								txt +
+								"</div>";
+						}
+
+					}
+				}
+				var atributDataActive = atributData;
+				if (disableAtributDataActive) {
+					atributDataActive += txtSelectedActive;
+				}
+				elemen11 =
 					`<div class="${classField}field" ${atributField}><label>` +
 					labelData +
 					'</label><div class="ui dropdown ' +
@@ -3790,57 +3912,12 @@ $(document).ready(function () {
 					'" ' +
 					atributData +
 					'><input type="hidden" ' +
-					atributData +
+					atributDataActive +
 					'><i class="dropdown icon"></i><div class="default text">' +
 					textDrpdown +
 					'</div><div class="menu">';
-				///Memisahkan array
-				let elemen2 = "";
-				for (let x in dataArray) {
-					let rowsData = dataArray[x];
-					let dataValue = rowsData[0];
-					if (rowsData.length === 1) {
-						let txt = dataValue;
-						elemen2 +=
-							'<div class="item" data-value="' +
-							dataValue +
-							'">' +
-							txt +
-							"</div>";
-					} else if (rowsData.length === 2) {
-						let txt = rowsData[1];
-						elemen2 +=
-							'<div class="item" data-value="' +
-							dataValue +
-							'">' +
-							txt +
-							"</div>";
-					} else if (rowsData.length === 3) {
-						//mempunyai deskripsi
-						let txt = rowsData[1];
-						deskripsi = rowsData[2];
-						elemen2 +=
-							'<div class="item" data-value="' +
-							dataValue +
-							'"><span class="description">' +
-							deskripsi +
-							'</span><span class="text">' +
-							txt +
-							"</span></div>";
-					}
-				}
-				/*
-						for (let x in dataArray) {
-							rowsData = dataArray[x]
-							dataValue = rowsData.dataValue;
-							txt = rowsData.text;
-						  //console.log(rowsData.dataValue);
-						  //console.log(rowsData.text);
-							elemen2 += '<div class="item" data-value="' + dataValue + '">' + txt + '</div>';
-						}
-						*/
-				var elemen3 = "</div></div></div>";
-				elemen = elemen1 + elemen2 + elemen3;
+				elemen33 = "</div></div></div>";
+				elemen = elemen11 + elemen22 + elemen33;
 				break;
 			default:
 				break;

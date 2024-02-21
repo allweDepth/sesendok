@@ -587,7 +587,7 @@ class get_data
                             //untuk input dan edit renja dpa dkk
                             if ($kd_sub_keg) {
                                 $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%') AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
-                                $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                 $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%')";
                                 $data_hereGet_row_json = [$kd_wilayah, $tahun, 0, $kd_sub_keg];
                                 $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%')";
@@ -814,7 +814,8 @@ class get_data
                                                 case 'asb':
                                                 case 'ssh':
                                                 case 'sbu':
-                                                    $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $row->kd_aset, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
+                                                    $deskripsi = $row->kd_aset .' ('.number_format($row->harga_satuan, 2, ',', '.').')';
+                                                    $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
                                                     break;
                                                 case 'value1':
                                                     break;
