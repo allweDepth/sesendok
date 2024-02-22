@@ -367,9 +367,27 @@ class DB
             $dataValuesCheck[] = $condition[$x][2];
         }
         $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
-        //var_dump($query);
-        //var_dump($dataValuesCheck);
-        //return $this->runQuery( $query, $dataValues )->count();
+        return $this->runQuery($query, $dataValuesCheck)->rowCount();
+    }
+    // Method untuk check nilai unik dengan beberapa ketentuan, untuk beberapa colum name[ 'id', '=', $id_user , 'AND']
+    public
+    function checkArrayLike($tableName, $columnName, $condition, $dataValues)
+    {
+        $queryArray = "WHERE ";
+        $jumlahArray = count($condition);
+        $dataValuesCheck = [];
+        
+        for ($x = 0; $x < $jumlahArray; $x++) {
+            if (count($condition[$x]) === 3 && $x <= 0) {
+                $queryArray .= " {$condition[$x][0]} {$condition[$x][1]}";
+            } else if (count($condition[$x]) === 4 && $x > 0) {
+                $queryArray .= " {$condition[$x][3]} {$condition[$x][0]} {$condition[$x][1]} ";
+            }
+            $dataValuesCheck[] = $condition[$x][2];
+        }
+        $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
+        // var_dump($query);
+        // var_dump($dataValuesCheck);
         return $this->runQuery($query, $dataValuesCheck)->rowCount();
     }
     // Ambil nilai kolom, hasil dari rowCount()

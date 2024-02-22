@@ -253,7 +253,7 @@ class Validate
             $DB = DB::getInstance();
             //checkArray( $tableName, $columnName, $condition )
             //['user','username',[[ 'id', '=', $id_user][ 'id', '=', $id_user , 'AND']]]
-            if (!$DB->checkArray($ruleValue[0], $ruleValue[1], $ruleValue[2], $formValue)) {
+            if (!$DB->checkArrayLike($ruleValue[0], $ruleValue[1], $ruleValue[2], $formValue)) {
               $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
             }
             break;

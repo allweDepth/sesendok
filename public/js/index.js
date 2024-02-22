@@ -683,8 +683,8 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Jenis Standar Harga",
 									classField: `required`,
-									atribut: 'name="jenis_komponen" placeholder="pilih pengelompokan..."',
-									kelas: "search clearable lainnya selection",
+									atribut: 'name="jenis_komponen" placeholder="jenis standar harga..."',
+									kelas: "clearable lainnya selection",
 									dataArray: [
 										["ssh", "SSH"],
 										["sbu", "SBU"],
@@ -761,6 +761,10 @@ $(document).ready(function () {
 									label: "Total Belanja",
 									kelas: "disabled",
 									atribut: 'name="jumlah" placeholder="jumlah..." non_data',
+								})+
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="4" non_data',
 								});
 							break;
 						case 'sub_keg_dpa':
