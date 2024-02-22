@@ -1244,7 +1244,7 @@ class post_data
                         case 'add_field_json':
                             //ambil data
                             $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
-                            
+                            // var_dump($data_klm);
                             // Menghapus tanda kutip tunggal yang tidak valid
                             
                             
@@ -1256,11 +1256,13 @@ class post_data
                             }else{
                                 $data_klm = array();
                             }
-                            var_dump($data_klm);
+                            // var_dump($data_klm);
                             if ($key <= 0) {
                                 $data_klm[] = $uraian_field;
                                 
                                 $uraian_field_insert = json_encode($data_klm);
+                                // var_dump($uraian_field_insert);
+                                
                                 $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
                                 if ($tambah) {
                                     $code = 3;

@@ -597,6 +597,26 @@ class DB
     //==================
     //====   JSON ======
     //==================
+    // Method untuk menambahkan data array JSON ke dalam kolom mysql> UPDATE $tableName SET $columnName=JSON_ARRAY_APPEND($columnName,"$[$jsonKey]","*");
+    public function appendArrayJSONField($tableName, $columnName, $jsonData, $jsonKey,$condition)
+    {
+        $query = "UPDATE {$tableName} SET {$columnName} = JSON_ARRAY_APPEND({$columnName}, '$.[$jsonKey]', ?)";
+        $query .= " WHERE";
+        $dataValues = [$jsonData];
+        foreach ($condition as $key => $val) {
+            if (strpos($val[1], "LIKE") !== false) {
+                $query .= " {$val[3]} {$val[0]} {$val[1]}";
+            } else {
+                if (count($val) === 3 && $key === 0) {
+                    $query .= " {$val[0]} {$val[1]} ? ";
+                } else if (count($val) === 4 && $key > 0) {
+                    $query .= " {$val[3]} {$val[0]} {$val[1]} ?";
+                }
+            }
+            array_push($dataValues, $val[2]);
+        }
+        return $this->runQuery($query, $dataValues)->rowCount();
+    }
     // Method untuk menambahkan data JSON ke dalam kolom
     public function insertJSONField($tableName, $columnName, $jsonData, $jsonKey,$condition)
     {
