@@ -141,7 +141,7 @@ class post_data
                                 $uraian = $validate->setRules('uraian', 'uraian belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inDB' => [$tabel_pakai_temporer, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                    'inLikeConcatDB' => [$tabel_pakai_temporer, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
                                 ]);
                                 $vol_1 = $validate->setRules('vol_1', 'koefisien perkalian 1', [
                                     'required' => true,
@@ -473,7 +473,7 @@ class post_data
                                     'min_char' => 3
                                 ]);
                                 $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
-                                    'sanitize' => 'string',
+                                    'numeric' => true,
                                     'required' => true,
                                     'min_char' => 18
                                 ]);

@@ -742,7 +742,7 @@ $(document).ready(function () {
 									kelas2: ["search sat_1 ajx selection", "search sat_2 ajx selection", "search sat_3 ajx selection", "search sat_4 ajx selection"],
 									classField: `required`,
 									atribut: ['name="sat_1" placeholder="satuan..."', 'name="sat_2" placeholder="satuan..." non_data', 'name="sat_3" placeholder="satuan..." non_data', 'name="sat_4" placeholder="satuan..." non_data'],
-									atribut2: ['name="vol_1" placeholder="Koefisien..." rms onkeypress="return ketikUbah(event);"', 'name="vol_2" placeholder="Koefisien..." non_data rms onkeypress="return ketikUbah(event);"', 'name="vol_3" placeholder="Koefisien..." non_data rms onkeypress="return ketikUbah(event);"', 'name="vol_4" placeholder="Koefisien..." non_data rms onkeypress="return ketikUbah(event);"']
+									atribut2: ['name="vol_1" placeholder="Koefisien..." rms onkeypress="ketikUbah(event);"', 'name="vol_2" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"', 'name="vol_3" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"', 'name="vol_4" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"']
 								}) +
 
 								buatElemenHtml("fieldText", {
@@ -761,7 +761,7 @@ $(document).ready(function () {
 									label: "Total Belanja",
 									kelas: "disabled",
 									atribut: 'name="jumlah" placeholder="jumlah..." non_data',
-								})+
+								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4" non_data',
@@ -2291,8 +2291,7 @@ $(document).ready(function () {
 						data.klm = klmAttr;
 						let jenis_kelompok = klmAttr;
 						switch (klmAttr) {
-							case 'kelompok':
-							case 'paket':
+							case 'kelompok_json':
 								jenis_kelompok = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');
 								break;
 							default:
@@ -2960,15 +2959,14 @@ $(document).ready(function () {
 							break;
 					}
 					// global mencari element date dan checkbox
-					let property = ini.find(`.ui.toggle.checkbox [name]`);
+					let property = ini.find(`.ui.toggle.checkbox input[name]`);
 					if (property.length > 0) {
 						for (const key of property) {
-							let nameAttr = $(key).find("[name]").attr("name");
-							formData.has(nameAttr) === false
-								? formData.append(nameAttr, 'off')
-								: formData.set(nameAttr, 'on'); // Returns false
+							let namaAttr = $(key).attr("name");
+							(formData.has(namaAttr) === false)
+								? formData.set(namaAttr, 'off')
+								: formData.set(namaAttr, 'on'); // Returns false
 						}
-
 					}
 					property = ini.find(".ui.calendar.date");
 					if (property.length > 0) {
@@ -3395,7 +3393,7 @@ $(document).ready(function () {
 					}
 					switch (nama_form) {
 						case "form_modal":
-							$(".ui.modal.mdl_general").modal("hide");
+							// $(".ui.modal.mdl_general").modal("hide");
 							break;
 						case "form_flyout":
 							//$('.ui.flyout').flyout('hide');
