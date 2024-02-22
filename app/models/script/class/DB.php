@@ -319,6 +319,26 @@ class DB
         }
         return $this->get($tableName, $queryLike, $dataValues, $limit);
     }
+    // [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'],['tahun', '= ?', $tahun, 'AND']]
+    function getArrayLike($tableName, $columnName, $condition, $limit = []) 
+    {
+        $queryArray = "WHERE ";
+        $jumlahArray = count($condition);
+        $dataValuesCheck = [];
+        for ($x = 0; $x < $jumlahArray; $x++) {
+            if (count($condition[$x]) === 3 && $x <= 0) {
+                $queryArray .= " {$condition[$x][0]} {$condition[$x][1]}";
+            } else if (count($condition[$x]) === 4 && $x > 0) {
+                $queryArray .= " {$condition[$x][3]} {$condition[$x][0]} {$condition[$x][1]} ";
+            }
+            $dataValuesCheck[] = $condition[$x][2];
+        }
+        $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
+        // var_dump($query);
+        // var_dump($dataValuesCheck);
+        // return $this->runQuery($query, $dataValuesCheck);
+        return $this->get($tableName, $query, $dataValuesCheck, $limit);
+    }
     //Perintah DISTINCT digunakan untuk select data yang sama dari hasil tampilan query SELECT.
     public
     function getDistinct($tableName, $columnName, $condition)
@@ -376,7 +396,7 @@ class DB
         $queryArray = "WHERE ";
         $jumlahArray = count($condition);
         $dataValuesCheck = [];
-        
+
         for ($x = 0; $x < $jumlahArray; $x++) {
             if (count($condition[$x]) === 3 && $x <= 0) {
                 $queryArray .= " {$condition[$x][0]} {$condition[$x][1]}";
@@ -616,7 +636,7 @@ class DB
     //====   JSON ======
     //==================
     // Method untuk menambahkan data array JSON ke dalam kolom mysql> UPDATE $tableName SET $columnName=JSON_ARRAY_APPEND($columnName,"$[$jsonKey]","*");
-    public function appendArrayJSONField($tableName, $columnName, $jsonData, $jsonKey,$condition)
+    public function appendArrayJSONField($tableName, $columnName, $jsonData, $jsonKey, $condition)
     {
         $query = "UPDATE {$tableName} SET {$columnName} = JSON_ARRAY_APPEND({$columnName}, '$.[$jsonKey]', ?)";
         $query .= " WHERE";
@@ -636,7 +656,7 @@ class DB
         return $this->runQuery($query, $dataValues)->rowCount();
     }
     // Method untuk menambahkan data JSON ke dalam kolom
-    public function insertJSONField($tableName, $columnName, $jsonData, $jsonKey,$condition)
+    public function insertJSONField($tableName, $columnName, $jsonData, $jsonKey, $condition)
     {
         $query = "UPDATE {$tableName} SET {$columnName} = JSON_INSERT({$columnName}, '$.{$jsonKey}', ?)";
         $query .= " WHERE";
@@ -657,7 +677,7 @@ class DB
     }
 
     // Method untuk membaca data JSON dari kolom
-    public function readJSONField($tableName, $columnName, $jsonKey,$condition)
+    public function readJSONField($tableName, $columnName, $jsonKey, $condition)
     {
         $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT({$columnName}, '$.{$jsonKey}')) AS {$jsonKey} FROM {$tableName}";
         $query .= " WHERE";
@@ -678,7 +698,7 @@ class DB
     }
 
     // Method untuk memperbarui data JSON di dalam kolom
-    public function updateJSONField($tableName, $columnName, $jsonData, $jsonKey,$condition)
+    public function updateJSONField($tableName, $columnName, $jsonData, $jsonKey, $condition)
     {
         $query = "UPDATE {$tableName} SET {$columnName} = JSON_SET({$columnName}, '$.{$jsonKey}', ?)";
         $query .= " WHERE";
@@ -695,12 +715,12 @@ class DB
             }
             array_push($dataValues, $val[2]);
         }
-        
+
         return $this->runQuery($query, $dataValues)->rowCount();
     }
     // $condition = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
     // Method untuk menghapus field dari data JSON di kolom
-    public function deleteJSONField($tableName, $columnName, $jsonKey,$condition)
+    public function deleteJSONField($tableName, $columnName, $jsonKey, $condition)
     {
         $query = "UPDATE {$tableName} SET {$columnName} = JSON_REMOVE({$columnName}, '$.{$jsonKey}')";
         $query .= " WHERE";

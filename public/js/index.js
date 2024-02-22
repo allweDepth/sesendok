@@ -92,9 +92,16 @@ $(document).ready(function () {
 	//=====================
 	$("body").on("click", 'a[data-tab], a[name="page"]', function (e) {
 		e.preventDefault();
+		tok($(this));
+		let url = "script/get_data";
+		const dasboard = $(".message.dashboard");
+		let ini = $(this);
+		let tab = ini.attr("data-tab");
+		let jenis = "get_tbl"; //get data
+		let tbl = ini.attr("tbl");
 		let harga_ssh_asb = [
 			"clipboard list icon",
-			"SSH",
+			`${tbl.toUpperCase()}`,
 			"Standar Harga Satuan",
 			'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
 		];
@@ -237,13 +244,7 @@ $(document).ready(function () {
 			"monev[laporan]": ["chart pie icon", "Informasi-Monev", "Laporan"],
 			tab_outbox: ["comment dots outline icon", "AHSP chat", "outbox"],
 		};
-		tok($(this));
-		let url = "script/get_data";
-		const dasboard = $(".message.dashboard");
-		let ini = $(this);
-		let tab = ini.attr("data-tab");
-		let jenis = "get_tbl"; //get data
-		let tbl = ini.attr("tbl");
+		
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
@@ -713,14 +714,12 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Satuan",
-									classField: `required`,
 									kelas: "disabled",
 									atribut:
-										'name="harga_satuan" placeholder="hsatuan komponen..." non_data',
+										'name="satuan" placeholder="hsatuan komponen..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Harga Satuan",
-									classField: `required`,
 									kelas: "disabled",
 									atribut:
 										'name="harga_satuan" placeholder="harga satuan..." non_data',
@@ -769,7 +768,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4" non_data',
+									atribut: 'name="keterangan" rows="2" non_data',
 								});
 							break;
 						case 'sub_keg_dpa':
@@ -4119,20 +4118,19 @@ $(document).ready(function () {
 		let i = 0;
 		$(formku).form("set auto check");
 		for (i = 0; i < attrName.length; i++) {
-			let atribut = $(attrName[i]).attr("name");
-			let lbl = $(attrName[i]).attr("placeholder");
+			let atribut = formku.find(attrName[i]).attr("name");
+			let lbl = formku.find(attrName[i]).attr("placeholder");
 			if (lbl === undefined) {
-				lbl = $(attrName[i]).closest(".field").find("label").text();
+				lbl = formku.find(attrName[i]).closest(".field").find("label").text();
 				if (lbl === undefined || lbl === "") {
-					lbl = $(attrName[i]).closest(".field").find("div.sub.header").text();
+					lbl = formku.find(attrName[i]).closest(".field").find("div.sub.header").text();
 				}
 				if (lbl === undefined || lbl === "") {
 					lbl = atribut.replaceAll(/_/g, " ");
 				}
 			}
-			let non_data = $(attrName[i]).attr("non_data");
-
-			if (typeof non_data === "undefined" || non_data === false && atribut) {
+			let non_data = formku.find(attrName[i]).attr("non_data");
+			if (typeof non_data === "undefined" || non_data === false) {
 				formku.form("add rule", atribut, {
 					rules: [
 						{
@@ -4152,18 +4150,18 @@ $(document).ready(function () {
 		var i = 0;
 		//console.log(formku)
 		for (i = 0; i < attrName.length; i++) {
-			var atribut = $(attrName[i]).attr("name");
-			var lbl = $(attrName[i]).attr("placeholder");
+			var atribut = formku.find(attrName[i]).attr("name");
+			var lbl = formku.find(attrName[i]).attr("placeholder");
 			if (lbl === undefined) {
-				lbl = $(attrName[i]).closest(".field").find("label").text();
+				lbl = formku.find(attrName[i]).closest(".field").find("label").text();
 				if (lbl === undefined || lbl === "") {
-					lbl = $(attrName[i]).closest(".field").find("div.sub.header").text();
+					lbl = formku.find(attrName[i]).closest(".field").find("div.sub.header").text();
 				}
 				if (lbl === undefined || lbl === "") {
 					lbl = atribut.replaceAll(/_/g, " ");
 				}
 			}
-			var non_data = $(attrName[i]).attr("non_data");
+			var non_data = formku.find(attrName[i]).attr("non_data");
 			if (typeof non_data === "undefined") {
 				if (atribut) {
 					//formku.form("remove rule", atribut);
@@ -4180,29 +4178,10 @@ $(document).ready(function () {
 	}
 	//
 	function showToast(message, settings) {
-		//settings = {}
-		/*{
-			position: 'top center',
-			icon:'info circle',
-			showProgress: 'bottom'
-			classActions: 'left vertical attached',//Vertical actions can also be displayed as button groups using vertical attached
-			actions:	[{
-			text: 'Yes, really',
-			class: 'green',
-			click: function() {
-				$.toast({message:'You clicked "yes", toast closes by default'});
-				}
-			},{
-				text: 'Maybe later',
-				class: 'red',
-				click: function() {
-				$.toast({message:'You clicked "maybe", toast closes by default'});
-				}
-			}]
-		}*/
+
 		settings.title = settings.title === undefined ? "info !" : settings.title;
 		settings.position =
-			settings.position === undefined ? "top right" : settings.position;
+			settings.position === undefined ? "top center" : settings.position;
 		settings.class = settings.class === undefined ? "info" : settings.class; //warna
 		settings.icon = settings.icon === undefined ? false : settings.icon;
 		settings.showProgress =
