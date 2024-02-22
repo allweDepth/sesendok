@@ -62,6 +62,104 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($tbl) {
+                    case 'dpa':
+                    case 'renja':
+                    case 'dppa':
+                    case 'renja_p':
+                        switch ($jenis) {
+                            case 'edit':
+                                $id_row = $validate->setRules('id_row', 'id', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                            case 'add':
+                                $objek_belanja = $validate->setRules('objek_belanja', 'objek belanja', [
+                                    'sanitize' => 'string',
+                                    'in_array' => ['gaji', 'barang_jasa_modal', 'bunga', 'subsidi', 'hibah_barang_jasa', 'hibah_uang', 'sosial_barang_jasa', 'sosial_uang', 'keuangan_umum', 'keuangan_khusus', 'btt', 'bos_pusat', 'blud', 'lahan'],
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $kd_akun = $validate->setRules('kd_akun', 'kd_akun', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $_POST['kd_akun']]]],
+                                    'min_char' => 4
+                                ]);
+                                switch ($tbl) {
+                                    case 'dpa':
+                                    case 'dppa':
+                                        $tabel_pakai_temporer = 'sub_keg_dpa_neo';
+                                        break;
+                                    case 'renja':
+                                    case 'renja_p':
+                                        $tabel_pakai_temporer = 'sub_keg_renja_neo';
+                                        break;
+                                    default:
+                                        break;
+                                };
+                                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'inDB' => [$tabel_pakai_temporer, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                ]);
+
+                                $jenis_kelompok = $validate->setRules('jenis_kelompok', 'jenis kelompok belanja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['kelompok', 'paket'],
+                                    'min_char' => 3
+                                ]);
+
+
+
+
+
+
+
+
+
+
+
+                                $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target kinerja hasil', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran sub keg', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $jumlah_pagu_p = $validate->setRules('jumlah_pagu_p', 'jumlah pagu perubahan', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            default:
+                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
+                                    'required' => true,
+                                    'min_char' => 200
+                                ]);
+                                break;
+                        }
+                        break;
                     case 'sub_keg_dpa':
                     case 'sub_keg_renja':
                         switch ($jenis) {
@@ -867,7 +965,7 @@ class post_data
                             }
                             break;
                         case 'add_field_json':
-                            
+
                             break;
                         default:
                             break;
@@ -1258,15 +1356,15 @@ class post_data
                             $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
                             // var_dump($data_klm);
                             // Menghapus tanda kutip tunggal yang tidak valid
-                            
-                            
+
+
                             //cari index di array
                             $key = 0;
                             if ($data_klm) {
                                 $data_klm = json_decode($data_klm, true);
                                 $key = array_search($uraian_field, $data_klm);
                                 $kode_Field = 'updateJSONField';
-                            }else{
+                            } else {
                                 $data_klm = array();
                                 $kode_Field  = 'insertJSONField';
                             }
@@ -1275,17 +1373,16 @@ class post_data
                                 $data_klm[] = $uraian_field;
                                 $uraian_field_insert = json_encode($data_klm);
                                 // var_dump($uraian_field_insert);
-                                if($kode_Field  == 'insertJSONField'){
+                                if ($kode_Field  == 'insertJSONField') {
                                     $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
-                                }else{
+                                } else {
                                     $tambah = $DB->updateJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
                                 }
                                 if ($tambah) {
                                     $code = 3;
-                                }else {
+                                } else {
                                     $code = 33;
                                 }
-                                
                             } else {
                             }
                             break;

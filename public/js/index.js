@@ -630,7 +630,7 @@ $(document).ready(function () {
 										["bunga", "Belanja Bunga"],
 										["subsidi", "Belanja Subsidi"],
 										["hibah_barang_jasa", "Belanja Hibah (Barang/Jasa)"],
-										["hubah_uang", "Belanja Hibah (Uang)"],
+										["hibah_uang", "Belanja Hibah (Uang)"],
 										["sosial_barang_jasa", "Belanja Bantuan Sosial (Barang/Jasa)"],
 										["sosial_uang", "Belanja Bantuan Sosial (Uang)"],
 										["keuangan_umum", "Belania Bantuan Keuangan Umum"],
@@ -2924,8 +2924,8 @@ $(document).ready(function () {
 							formData.set(namaAttr, accounting.unformat(formData.get(namaAttr), ","));
 						}
 					});
-					formData.append("jenis", jenis);
-					formData.append("tbl", tbl);
+					formData.set("jenis", jenis);
+					formData.set("tbl", tbl);
 					let url = "script/post_data";
 					formData.set("cari", cari(jenis));
 					formData.set("rows", countRows());
@@ -2940,9 +2940,9 @@ $(document).ready(function () {
 						formData.set("id_row", id_row);
 					}
 					//tampilkan form data
-					// formData.forEach((value, key) => {
-					// 	console.log(key + " " + value)
-					// });
+					formData.forEach((value, key) => {
+						console.log(key + " " + value)
+					});
 					switch (jenis) {
 						case "import":
 							url = "script/impor_xlsx";
@@ -2985,6 +2985,17 @@ $(document).ready(function () {
 							let nameAttr = $(key).find("[name]").attr("name");
 							let tanggal = $(key).calendar("get date");
 							if (tanggal) {
+								//cara satu
+								// tanggal = new Date(tanggal);
+								// tanggal= tanggal.getUTCFullYear() + '-' +
+								// 	('00' + (tanggal.getUTCMonth() + 1)).slice(-2) + '-' +
+								// 	('00' + tanggal.getUTCDate()).slice(-2) + ' ' +
+								// 	('00' + tanggal.getUTCHours()).slice(-2) + ':' +
+								// 	('00' + tanggal.getUTCMinutes()).slice(-2) + ':' +
+								// 	('00' + tanggal.getUTCSeconds()).slice(-2);
+								//cara singkat
+								// tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
+								//caraku
 								tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
 								formData.set(nameAttr, tanggal);
 							}
@@ -2998,9 +3009,20 @@ $(document).ready(function () {
 							switch (jenis) {
 								case 'add_field_json':
 									jalankanAjax = true;
-									formData.set('klm', klmAttr);
-									formData.set('id_sub_keg', id_sub_kegAttr);
-									formData.set('jns_kel', jns_kelAttr);
+									switch (tbl) {
+										case 'sub_keg_renja':
+										case 'sub_keg_dpa':
+											formData.set('klm', klmAttr);
+											formData.set('id_sub_keg', id_sub_kegAttr);
+											formData.set('jns_kel', jns_kelAttr);
+											break;
+										case 'value1':
+											break;
+										default:
+											break;
+									};
+
+
 									break;
 								case 'value':
 									break;
@@ -3012,7 +3034,6 @@ $(document).ready(function () {
 						// UNTUK FORM FLYOUT
 						// =================
 						case "form_flyout":
-
 							switch (tbl) {
 								case "peraturan":
 									switch (jenis) {
@@ -3121,42 +3142,7 @@ $(document).ready(function () {
 						case 'value1':
 							break;
 						default:
-							let propertyElm = ini.find(".ui.calendar.date");
-							if (propertyElm.length > 0) {
-								for (const key of propertyElm) {
-									let nameAttr = $(key).find("[name]").attr("name");
-									let tanggal = $(key).calendar("get date");
-									if (tanggal) {
-										tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
-											}-${tanggal.getDate()}`; //local time
-										formData.set(nameAttr, tanggal);
-									}
-								}
-							}
-							propertyElm = ini.find(".ui.calendar.datetime");
-							console.log(propertyElm);
-							if (propertyElm.length > 0) {
-								for (const key of propertyElm) {
-									let nameAttr = $(key).find("[name]").attr("name");
-									let tanggal = $(key).calendar("get date");
-									if (tanggal) {
-										//cara satu
-										// tanggal = new Date(tanggal);
-										// tanggal= tanggal.getUTCFullYear() + '-' +
-										// 	('00' + (tanggal.getUTCMonth() + 1)).slice(-2) + '-' +
-										// 	('00' + tanggal.getUTCDate()).slice(-2) + ' ' +
-										// 	('00' + tanggal.getUTCHours()).slice(-2) + ':' +
-										// 	('00' + tanggal.getUTCMinutes()).slice(-2) + ':' +
-										// 	('00' + tanggal.getUTCSeconds()).slice(-2);
-										//cara singkat
-										// tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
-										//caraku
-										tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
-											}-${tanggal.getDate()} ${tanggal.getHours()}:${tanggal.getMinutes()}:${tanggal.getSeconds()}`;
-										formData.set(nameAttr, tanggal);
-									}
-								}
-							}
+
 							break;
 					};
 					if (jalankanAjax) {
