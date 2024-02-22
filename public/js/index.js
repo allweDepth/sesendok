@@ -99,9 +99,10 @@ $(document).ready(function () {
 		let tab = ini.attr("data-tab");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
+		let Text_ssh_sbu = (tbl) ? tbl.toUpperCase(): '';
 		let harga_ssh_asb = [
 			"clipboard list icon",
-			`${tbl.toUpperCase()}`,
+			`${Text_ssh_sbu}`,
 			"Standar Harga Satuan",
 			'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
 		];
@@ -244,7 +245,7 @@ $(document).ready(function () {
 			"monev[laporan]": ["chart pie icon", "Informasi-Monev", "Laporan"],
 			tab_outbox: ["comment dots outline icon", "AHSP chat", "outbox"],
 		};
-		
+
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();

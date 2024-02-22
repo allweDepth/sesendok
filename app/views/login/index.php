@@ -161,7 +161,7 @@
 </div>
 
 <!-- modal login-->
-<div class="ui basic modal login">
+<div class="ui basic tiny modal login">
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <form class="ui large form login content">
@@ -204,7 +204,7 @@
     </div>
 </div>
 <!-- modal register-->
-<div class="ui basic modal register">
+<div class="ui basic modal tiny register">
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <form class="ui form register" method="POST">
