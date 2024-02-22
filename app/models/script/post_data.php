@@ -95,8 +95,6 @@ class post_data
                                     case 'renja_p':
                                         $tabel_pakai_temporer = 'sub_keg_renja_neo';
                                         break;
-                                    default:
-                                        break;
                                 };
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
                                     'sanitize' => 'string',
@@ -112,11 +110,84 @@ class post_data
                                     'min_char' => 3
                                 ]);
 
+                                $kelompok = $validate->setRules('kelompok', 'kelompok belanja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => [$tabel_pakai_temporer, 'kelompok', [['kelompok', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                ]);
 
-
-
-
-
+                                $sumber_dana = $validate->setRules('sumber_dana', 'kelompok belanja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => [$tabel_pakai_temporer, 'sumber_dana', [['sumber_dana', "LIKE CONCAT('%',?,'%')", $_POST['sumber_dana']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                ]);
+                                $jenis_komponen = $validate->setRules('jenis_komponen', 'jenis_komponen', [
+                                    'sanitize' => 'string',
+                                    'in_array' => ['ssh', 'sbu', 'hspk', 'asb'],
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $tabel_pakai_temporer = $Fungsi->tabel_pakai($jenis_komponen)['tabel_pakai'];
+                                $id_standar_harga = $validate->setRules('komponen', 'komponen', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1,
+                                    'inDB' => [$tabel_pakai_temporer, 'id', [['id', "LIKE CONCAT('%',?,'%')", $_POST['id_standar_harga']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                ]);
+                                $uraian = $validate->setRules('uraian', 'uraian belanja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => [$tabel_pakai_temporer, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                ]);
+                                $vol_1 = $validate->setRules('vol_1', 'koefisien perkalian 1', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $sat_1 = $validate->setRules('sat_1', 'satuan koefisien perkalian 1', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_1']]]]
+                                ]);
+                                $vol_2 = 0;
+                                $vol_2 = $validate->setRules('vol_2', 'koefisien perkalian 2', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $sat_2 = '';
+                                if ($vol_2 > 0){
+                                    $sat_2 = $validate->setRules('sat_2', 'satuan koefisien perkalian 2', [
+                                        'sanitize' => 'string',
+                                        'required' => true,
+                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_2']]]]
+                                    ]);
+                                }
+                                $vol_3 = 0;
+                                $vol_3 = $validate->setRules('vol_3', 'koefisien perkalian 3', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $sat_3 = '';
+                                if ($vol_3 > 0){
+                                    $sat_3 = $validate->setRules('sat_3', 'satuan koefisien perkalian 3', [
+                                        'sanitize' => 'string',
+                                        'required' => true,
+                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_3']]]]
+                                    ]);
+                                }
+                                $vol_4 = 0;
+                                $vol_4 = $validate->setRules('vol_3', 'koefisien perkalian 3', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $sat_4 = '';
+                                if ($vol_4 > 0){
+                                    $sat_4 = $validate->setRules('sat_4', 'satuan koefisien perkalian 4', [
+                                        'sanitize' => 'string',
+                                        'required' => true,
+                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_4']]]]
+                                    ]);
+                                }
 
 
 
