@@ -742,7 +742,7 @@ $(document).ready(function () {
 									kelas2: ["search sat_1 ajx selection", "search sat_2 ajx selection", "search sat_3 ajx selection", "search sat_4 ajx selection"],
 									classField: `required`,
 									atribut: ['name="sat_1" placeholder="satuan..."', 'name="sat_2" placeholder="satuan..." non_data', 'name="sat_3" placeholder="satuan..." non_data', 'name="sat_4" placeholder="satuan..." non_data'],
-									atribut2: ['name="vol_1" placeholder="Koefisien..."', 'name="vol_2" placeholder="Koefisien..." non_data', 'name="vol_3" placeholder="Koefisien..." non_data', 'name="vol_4" placeholder="Koefisien..." non_data']
+									atribut2: ['name="vol_1" placeholder="Koefisien..." rms onkeypress="return ketikUbah(event);"', 'name="vol_2" placeholder="Koefisien..." non_data rms onkeypress="return ketikUbah(event);"', 'name="vol_3" placeholder="Koefisien..." non_data rms onkeypress="return ketikUbah(event);"', 'name="vol_4" placeholder="Koefisien..." non_data rms onkeypress="return ketikUbah(event);"']
 								}) +
 
 								buatElemenHtml("fieldText", {
@@ -755,7 +755,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Koefisien (Keterangan Jumlah)",
 									kelas: "disabled",
-									atribut:'name="koef_ket" placeholder="keterangan jumlah..." non_data',
+									atribut: 'name="koef_ket" placeholder="keterangan jumlah..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Total Belanja",
@@ -2453,10 +2453,10 @@ $(document).ready(function () {
 										return el.value == value;
 									});
 									let MyForm = $(`form[name="form_flyout"]`);
-									MyForm.form('set values',{
-										tkdn:objekArray.tkdn,
-										spesifikasi:objekArray.spesifikasi,
-										harga_satuan:accounting.formatNumber(
+									MyForm.form('set values', {
+										tkdn: objekArray.tkdn,
+										spesifikasi: objekArray.spesifikasi,
+										harga_satuan: accounting.formatNumber(
 											objekArray.harga_satuan,
 											parseFloat(objekArray.harga_satuan).countDecimals(),
 											".",
@@ -4278,8 +4278,27 @@ $(document).ready(function () {
 		return str.split("-")[1] || 0;
 	};
 });
+// onkeypress="return rumus(event);"
 function rumus(evt) {
 	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
 		String.fromCharCode(evt.which)
 	);
+}
+// onkeypress="return ketikUbah(event);"
+function ketikUbah(evt) {
+	let MyForm = $(`form[name="form_flyout"]`);
+	let hargaSat = accounting.unformat(MyForm.form('get value', 'harga_satuan'), ",");
+	let vol_1 = accounting.unformat(MyForm.form('get value', 'vol_1'), ",");
+	let vol_2 = accounting.unformat(MyForm.form('get value', 'vol_2'), ",");
+	let vol_3 = accounting.unformat(MyForm.form('get value', 'vol_3'), ",");
+	let vol_4 = accounting.unformat(MyForm.form('get value', 'vol_4'), ",");
+	let vol_1_kali = (vol_1 <= 0) ? 1 : vol_1;
+	let vol_2_kali = (vol_2 <= 0) ? 1 : vol_2;
+	let vol_3_kali = (vol_3 <= 0) ? 1 : vol_3;
+	let vol_4_kali = (vol_4 <= 0) ? 1 : vol_4;
+	let perkal = (vol_1_kali * vol_2_kali * vol_3_kali * vol_4_kali) * hargaSat;
+	strText = parseFloat(perkal);
+	strText = accounting.formatNumber(perkal, perkal.countDecimals(), ".", ",");
+	MyForm.form('set value', 'jumlah', strText);
+	MyForm.form('set value', 'volume', vol_1_kali * vol_2_kali * vol_3_kali * vol_4_kali);
 }
