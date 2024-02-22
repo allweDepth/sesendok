@@ -2429,8 +2429,9 @@ $(document).ready(function () {
 						results: "results",
 					}, onSuccess: function (response, element, xhr) {
 						// valid response and response.success = true
-						this.result_ajax = "results"
-						console.log(this.result_ajax);
+						this.result_ajax = response;
+						console.log(response);
+						console.log(element);
 					},
 					// filterRemoteData: true,
 				},
