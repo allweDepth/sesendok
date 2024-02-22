@@ -2427,6 +2427,10 @@ $(document).ready(function () {
 						halaman: 1,
 					}, allField), fields: {
 						results: "results",
+					}, onSuccess: function (response, element, xhr) {
+						// valid response and response.success = true
+						this.result_ajax = "results"
+						console.log(this.result_ajax);
 					},
 					// filterRemoteData: true,
 				},
@@ -2565,38 +2569,7 @@ $(document).ready(function () {
 		restore() {
 			this.element.dropdown("restore defaults");
 		}
-		users(get) {
-			get = this.element.dropdown("get query");
-			this.element.dropdown({
-				//$(".satuan.ui.dropdown").dropdown({
-				apiSettings: {
-					cache: false,
-					// this url just returns a list of tags (with API response expected above)
-					method: "POST",
-					url: "script/get_data",
-					//throttle: 1000,//delay perintah
-					// passed via POST
-					data: {
-						jenis: "user",
-						tbl: "get_users_list",
-						cari: function (value) {
-							return get;
-							//console.log($('.satuan.ui.dropdown').dropdown('get query'));
-						},
-						rows: "all",
-						halaman: 1,
-					},
-					fields: {
-						results: "results",
-					},
-					filterRemoteData: true,
-				},
-				className: {
-					//item: "item vertical",
-				},
-				saveRemoteData: false,
-			});
-		}
+
 		setVal(val) {
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown("set selected", val);
@@ -2605,7 +2578,6 @@ $(document).ready(function () {
 			let ajaxSend = allObjek.ajax;
 			this.element.dropdown({
 				onChange: function (value, text, $choice) {
-					console.log('masukmi disini');
 					let dataChoice = $($choice).find('span.description').text();
 					switch (allObjek.jenis) {
 						case 'getJsonRows':
