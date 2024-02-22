@@ -131,12 +131,24 @@ class post_data
                                     'required' => true,
                                     'min_char' => 3
                                 ]);
-                                $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['kelompok', 'paket'],
-                                    'min_char' => 3
-                                ]);
+                                switch ($nama_kolom) {
+                                    case 'kelompok_json':
+                                        $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                                            'sanitize' => 'string',
+                                            'required' => true,
+                                            'in_array' => ['kelompok', 'paket'],
+                                            'min_char' => 3
+                                        ]);
+                                        break;
+                                    default:
+                                        // $jenis_kelompok nama key json
+                                        $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                                            'sanitize' => 'string',
+                                            'required' => true,
+                                            'min_char' => 1
+                                        ]);
+                                        break;
+                                }
                                 break;
                             default:
                                 $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
@@ -1253,17 +1265,21 @@ class post_data
                             if ($data_klm) {
                                 $data_klm = json_decode($data_klm, true);
                                 $key = array_search($uraian_field, $data_klm);
+                                $kode_Field = 'updateJSONField';
                             }else{
                                 $data_klm = array();
+                                $kode_Field  = 'insertJSONField';
                             }
                             // var_dump($data_klm);
                             if ($key <= 0) {
                                 $data_klm[] = $uraian_field;
-                                
                                 $uraian_field_insert = json_encode($data_klm);
                                 // var_dump($uraian_field_insert);
-                                
-                                $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+                                if($kode_Field  == 'insertJSONField'){
+                                    $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+                                }else{
+                                    $tambah = $DB->updateJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+                                }
                                 if ($tambah) {
                                     $code = 3;
                                 }else {

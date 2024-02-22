@@ -42,7 +42,12 @@ body.inverted {
     background-color: #1a1a1a;
     /* Ganti dengan warna latar belakang elemen segment pada dark mode */
 }
-
+/* untuk merapikan text dropdown yg ada deskripsi */
+.ui.dropdown div.text {
+    display: flex;
+    flex-direction: column-reverse;
+    text-align: justify;
+    }
 .pusher .ui.tab.basic.segment {
     margin-top: 0px !important;
     height: calc(100vh - 45px - 90px) !important;

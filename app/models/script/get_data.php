@@ -146,12 +146,26 @@ class get_data
                             'required' => true,
                             'min_char' => 3
                         ]);
-                        $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
-                            'sanitize' => 'string',
-                            'required' => true,
-                            'in_array' => ['kelompok', 'paket'],
-                            'min_char' => 3
-                        ]);
+                        switch ($nama_kolom) {
+                            case 'kelompok_json':
+                                $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['kelompok', 'paket'],
+                                    'min_char' => 3
+                                ]);
+                                break;
+                            default:
+                                // $jenis_kelompok nama key json
+                                $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                break;
+                        }
+
+
                         break;
                     case 'yyyyyy':
                         // isset($_POST['jenis'])
@@ -654,7 +668,6 @@ class get_data
                             $dataJson['results'] = [];
                             //ambil data
                             $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
-
                             // Menghapus tanda kutip tunggal yang tidak valid
                             // var_dump($data_klm);
                             if ($data_klm) {
@@ -664,10 +677,26 @@ class get_data
                                     case 'sub_keg_renja':
                                         if (count($data_klm)) {
                                             foreach ($data_klm as $row) {
-                                                $dataJson['results'][] = ['name' => $row, 'value' => $row];
+                                                switch ($nama_kolom) {
+                                                    case 'sumber_dana':
+                                                        // cari di data sumber dana
+                                                        $kondisi_result_sub = [['kode', '=', $row]];
+                                                        $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
+                                                        if ($row_sub) {
+                                                            $uraian = $row_sub->uraian;
+                                                            $dataJson['results'][] = ['name' => $uraian, 'value' => $row];
+                                                        } else {
+                                                            $jenis = '';
+                                                            $code = 404;
+                                                        }
+
+                                                        break;
+                                                    default:
+                                                        $dataJson['results'][] = ['name' => $row, 'value' => $row];
+                                                        break;
+                                                }
                                             }
                                         }
-
                                         break;
                                     default:
                                         # code...
@@ -987,6 +1016,7 @@ class get_data
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+
                     case 'sub_keg_dpa':
                     case 'sub_keg_renja':
                     case 'sumber_dana':

@@ -417,18 +417,18 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                             <div class="column">
                                 <div class="ui icon yellow message goyang">
-                                    <i class="chart icon" name="chart-realisasi-fisik-mini"></i>
+                                    <i class="chart icon" name="chart-realisasi-fisik-mini">00</i>
                                     <div class="content">
                                         <div class="header">Kegiatan</div>
-                                        <p name="realisasi-fisik">Administrasi Barang Milik Daerah pada Perangkat Daerah</p>
+                                        <p name="realisasi-fisik">Jumlah Kegiatan pada SKPD</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="column">
-                                <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini"></i>
+                                <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini">00</i>
                                     <div class="content">
                                         <div class="header">Sub Kegiatan</div>
-                                        <p name="realisasi-keu">Pembinaan, Pengawasan, dan Pengendalian Barang Milik Daerah pada SKPD</p>
+                                        <p name="realisasi-keu">Jumlah Sub Kegiatan pada SKPD</p>
                                     </div>
                                 </div>
                             </div>
