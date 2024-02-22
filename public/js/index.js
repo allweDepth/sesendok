@@ -396,7 +396,6 @@ $(document).ready(function () {
 					case "renja":
 					case "renja_p":
 						let elmk = divTab.find(`.secondary.menu [tb="${tbl}"]`);
-						console.log(elmk);
 						elmk.addClass('active')
 							.closest('.ui.menu')
 							.find('.item')
@@ -437,7 +436,6 @@ $(document).ready(function () {
 						loaderHide();
 						switch (jenis) {
 							case "get_tbl":
-								console.log(divTab);
 								const elmTable = divTab.find("table.insert");
 								const elmtbody = elmTable.find(`tbody`);
 								const elmtfoot = elmTable.find(`tfoot`);
@@ -712,6 +710,13 @@ $(document).ready(function () {
 									label: "Spesifikasi Komponen",
 									kelas: "disabled",
 									atribut: 'name="spesifikasi" placeholder="spesifikasi..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Satuan",
+									classField: `required`,
+									kelas: "disabled",
+									atribut:
+										'name="harga_satuan" placeholder="hsatuan komponen..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Harga Satuan",
@@ -1684,7 +1689,6 @@ $(document).ready(function () {
 					if (typeof data.text === "undefined") {
 						data.text = ini.closest(".input").find("input[name]").val();
 					}
-					console.log(data);
 					if (data.text.length > 1) {
 						jalankanAjax = true;
 					} else {
@@ -1754,7 +1758,6 @@ $(document).ready(function () {
 													let postDataField = true;
 													// cari dulu .dropdown.ajx
 													let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
-													console.log(dropDownElmAjx);
 													if (attrElm === 'file') {
 														formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 													} else {
@@ -2123,12 +2126,7 @@ $(document).ready(function () {
 				jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[first_sheet_name], {
 					header: 1,
 				});
-				//console.log(jsonData);
-				//console.log(jsonData[0]);
-				//console.log(JSON.stringify(jsonData));
 				jsonData.forEach((value, key) => {
-					//console.log(key + " " + value)
-					//console.log(value.length)
 					let jumlahData = value.length;
 					let jumlahKolom = 8;
 					switch (jenis) {
@@ -2458,6 +2456,7 @@ $(document).ready(function () {
 									let MyForm = $(`form[name="form_flyout"]`);
 									MyForm.form('set values', {
 										tkdn: objekArray.tkdn,
+										satuan: objekArray.satuan,
 										spesifikasi: objekArray.spesifikasi,
 										harga_satuan: accounting.formatNumber(
 											objekArray.harga_satuan,
@@ -2944,7 +2943,7 @@ $(document).ready(function () {
 					}
 					//tampilkan form data
 					formData.forEach((value, key) => {
-						console.log(key + " " + value)
+						// console.log(key + " " + value)
 					});
 					switch (jenis) {
 						case "import":
@@ -3110,10 +3109,7 @@ $(document).ready(function () {
 							var tbodyFormAwal = formTujuan.find("table tbody");
 							var indexTr = ini.attr("indextr");
 							var trTable = tbodyFormAwal.children();
-							console.log(mdlTujuan);
 							var tdEdit = trTable.eq(indexTr).find("td");
-							//console.log(dataForm);
-							//console.log(dataForm['kode']);
 							Object.keys(tdEdit).forEach((key) => {
 								var element = $(tdEdit[key]);
 								var nama_kolom = element.attr("klm");
@@ -3298,7 +3294,6 @@ $(document).ready(function () {
 													case "bm":
 													case "sda":
 														var hasKey = result.data.hasOwnProperty("tbody");
-														console.log(hasKey);
 														if (hasKey) {
 															var rows = result.data.tbody;
 															if (tabel.find("tbody tr:last").length > 0) {
@@ -3350,7 +3345,6 @@ $(document).ready(function () {
 										let warna_tbl = formData.get("warna_tbl");
 										//ambil seluruh row thead dan row tfoot
 										const elmRow = $("table tr"); //$('table tfoot tr, table thead tr');
-										console.log(elmRow);
 										warna.forEach((value, key) => {
 											elmRow.removeClass(value);
 											$("table").removeClass("inverted");
@@ -3363,7 +3357,6 @@ $(document).ready(function () {
 									default:
 										break;
 								}
-								console.log(jenisTrigger);
 								if (jenisTrigger.length > 0) {
 									$(`a[data-tab][tbl="${jenisTrigger}"]`).trigger("click");
 								}
@@ -3473,8 +3466,7 @@ $(document).ready(function () {
 					//return false;//console.log('saya menekan tombol cancel');
 				},
 				onApprove: function () {
-					// jika di tekan yes//console.log('saya menekan tombol YES');
-					console.log('saya menekan tombol YES');
+					// jika di tekan yes
 					$(this).find("form").trigger("submit");
 					return false;
 				},
@@ -4035,7 +4027,6 @@ $(document).ready(function () {
 		// simple toggle icon change
 		$(`a[name="change_themes"] > i`).removeClass("moon");
 		$(`a[name="change_themes"] > i`).addClass("sun");
-		console.log($(`a[name="change_themes"] > i`));
 		return;
 	}
 	function toggleLightMode() {
@@ -4046,7 +4037,6 @@ $(document).ready(function () {
 		// change button icon
 		$(`a[name="change_themes"] > i`).removeClass("sun");
 		$(`a[name="change_themes"] > i`).addClass("moon");
-		console.log($(`a[name="change_themes"] > i`));
 		return;
 	}
 	/**
