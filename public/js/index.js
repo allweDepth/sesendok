@@ -694,7 +694,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldDropdownLabel", {
 									label: "Komponen",
-									txtLabel: '<i class="plus icon"></i>',
+									txtLabel: '<i class="search icon"></i>',
 									classField: `required`,
 									atributLabel: `name="modal_show" jns="search_field_json" tbl=""`,
 									atribut: 'name="komponen" placeholder="pilih komponen..."',
@@ -718,7 +718,7 @@ $(document).ready(function () {
 									classField: `required`,
 									kelas: "disabled",
 									atribut:
-										'name="spesifikasi" placeholder="harga satuan..." non_data',
+										'name="harga_satuan" placeholder="harga satuan..." non_data',
 								}) +
 								buatElemenHtml("fieldDropdownLabel", {
 									label: "Keterangan",
@@ -755,13 +755,12 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Koefisien (Keterangan Jumlah)",
 									kelas: "disabled",
-									atribut:
-										'name="tkdn" placeholder="tkdn..."',
+									atribut:'name="koef_ket" placeholder="keterangan jumlah..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Total Belanja",
 									kelas: "disabled",
-									atribut: 'name="jumlah" placeholder="jumlah..."',
+									atribut: 'name="jumlah" placeholder="jumlah..." non_data',
 								});
 							break;
 						case 'sub_keg_dpa':
@@ -2448,7 +2447,7 @@ $(document).ready(function () {
 								case 'asb':
 								case 'ssh':
 								case 'hspk':
-									Results_ajax.some(function (el) {
+									Results_ajax.some(function (el) {//@audit now
 										// console.log(el);
 										objekArray = el;
 										return el.value == value;
@@ -2457,7 +2456,12 @@ $(document).ready(function () {
 									MyForm.form('set values',{
 										tkdn:objekArray.tkdn,
 										spesifikasi:objekArray.spesifikasi,
-										harga_satuan:objekArray.harga_satuan
+										harga_satuan:accounting.formatNumber(
+											objekArray.harga_satuan,
+											parseFloat(objekArray.harga_satuan).countDecimals(),
+											".",
+											","
+										)
 									})
 									break;
 								case 'value1':
@@ -3747,7 +3751,7 @@ $(document).ready(function () {
 				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label> ${elemen1Data}</div>`;
 				break;
 			case "fieldText":
-				elemen = `<div class="${classField}field" ${atributField}><label> ${labelData} </label><div class="ui ${kelasData} input"><input ${placeholderData}  type="${typeText}" ${atributData} ></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label> ${labelData} </label><div class="ui ${kelasData} input"><input type="${typeText}" ${atributData} ></div></div>`;
 				break;
 			case "multiFieldTextAction":
 				let inputElm = '';
