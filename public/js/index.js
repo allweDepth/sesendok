@@ -2384,6 +2384,7 @@ $(document).ready(function () {
 		tbl = '';
 		ajax = false;
 		result_ajax = {};
+		url = "script/get_data";
 		constructor(element) {
 			this.element = $(element); //element;
 			this.methodConstructor = new MethodConstructor();
@@ -2391,6 +2392,7 @@ $(document).ready(function () {
 		returnList(jenis = "list_dropdown", tbl = "satuan", allField = { minCharacters: 3 }) {
 			let get = this.element.dropdown("get query");
 			let elm = this.element;
+			let url = this.url;
 			switch (jenis) {
 				case 'get_field_json':
 					if (allField.jns_kel) {
@@ -2413,7 +2415,7 @@ $(document).ready(function () {
 					// this url just returns a list of tags (with API response expected above)
 					cache: false,
 					method: "POST",
-					url: "script/get_data",
+					url: url,
 					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
@@ -2429,9 +2431,7 @@ $(document).ready(function () {
 						results: "results",
 					}, onSuccess: function (response, element, xhr) {
 						// valid response and response.success = true
-						this.result_ajax = response;
-						console.log(response);
-						console.log(element);
+						this.result_ajax = response.results;
 					},
 					// filterRemoteData: true,
 				},
@@ -2439,6 +2439,37 @@ $(document).ready(function () {
 				// saveRemoteData: false,
 				onChange: function (value, text, $choice) {
 					let dataChoice = $($choice).find('span.description').text();
+					let Results_ajax = this.result_ajax;
+					let objekArray;
+					switch (jenis) {
+						case 'get_row_json':
+							switch (tbl) {
+								case 'sbu':
+								case 'asb':
+								case 'ssh':
+								case 'hspk':
+									Results_ajax.some(function (el) {
+										// console.log(el);
+										objekArray = el;
+										return el.value == value;
+									});
+									let MyForm = $(`form[name="form_flyout"]`);
+									MyForm.form('set values',{
+										tkdn:objekArray.tkdn,
+										spesifikasi:objekArray.spesifikasi,
+										harga_satuan:objekArray.harga_satuan
+									})
+									break;
+								case 'value1':
+									break;
+								default:
+									break;
+							};
+							break;
+						default:
+							break;
+					}
+
 					let ajaxSend = false
 					if (ajaxSend == true) {
 						let data = {
