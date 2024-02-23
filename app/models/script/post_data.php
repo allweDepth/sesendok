@@ -89,20 +89,21 @@ class post_data
                                 switch ($tbl) {
                                     case 'dpa':
                                     case 'dppa':
-                                        $tabel_pakai_temporer = 'sub_keg_dpa_neo';
+                                        $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
                                         break;
                                     case 'renja':
                                     case 'renja_p':
-                                        $tabel_pakai_temporer = 'sub_keg_renja_neo';
+                                        $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
                                         break;
                                 };
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
                                     'sanitize' => 'string',
                                     'numeric' => true,
                                     'required' => true,
-                                    'inDB' => [$tabel_pakai_temporer, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                    'inDB' => [$tabel_pakai_temporerSubkeg, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
                                 ]);
-
+                                $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temporerSubkeg, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
+                                $kd_sub_keg = ($row_kd_sub_keg) ? $row_kd_sub_keg->uraian : 'data sub kegiatan tidak ditemukan';
                                 $jenis_kelompok = $validate->setRules('jenis_kelompok', 'jenis kelompok belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -113,13 +114,13 @@ class post_data
                                 $kelompok = $validate->setRules('kelompok', 'kelompok belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporer,'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg,'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
 
                                 $sumber_dana = $validate->setRules('sumber_dana', 'kelompok belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporer, 'sumber_dana', [['sumber_dana', "LIKE CONCAT('%',?,'%')", $_POST['sumber_dana']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'sumber_dana', [['sumber_dana', "LIKE CONCAT('%',?,'%')", $_POST['sumber_dana']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
                                 $jenis_komponen = $validate->setRules('jenis_komponen', 'jenis_komponen', [
                                     'sanitize' => 'string',
@@ -138,10 +139,11 @@ class post_data
                                     $harga_row = $DB->getWhereOnceCustom($tabel_pakai_temporer, [['id', '=', $id_standar_harga], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND']]);
                                     $harga_satuan = ($harga_row) ? $harga_row->harga_satuan : 0;
                                 }
+                                $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                 $uraian = $validate->setRules('uraian', 'uraian belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporer, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
                                 $vol_1 = $validate->setRules('vol_1', 'koefisien perkalian 1', [
                                     'required' => true,
@@ -1469,22 +1471,21 @@ class post_data
                         case 'add_field_json':
                             //ambil data
                             $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
-                            // var_dump($data_klm);
+                            
                             // Menghapus tanda kutip tunggal yang tidak valid
 
 
                             //cari index di array
-                            $key = 0;
+                            $key = false;
                             if ($data_klm) {
                                 $data_klm = json_decode($data_klm, true);
-                                $key = array_search($uraian_field, $data_klm);
+                                $key = array_search($uraian_field, $data_klm,true);
                                 $kode_Field = 'updateJSONField';
                             } else {
                                 $data_klm = array();
                                 $kode_Field  = 'insertJSONField';
                             }
-                            // var_dump($data_klm);
-                            if ($key <= 0) {
+                            if ($key === false) {
                                 $data_klm[] = $uraian_field;
                                 $uraian_field_insert = json_encode($data_klm);
                                 // var_dump($uraian_field_insert);
@@ -1499,6 +1500,7 @@ class post_data
                                     $code = 33;
                                 }
                             } else {
+                                $code = 37;
                             }
                             break;
                         case 'update_rows': // untuk banyak row

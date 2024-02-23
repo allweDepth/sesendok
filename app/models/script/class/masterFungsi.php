@@ -2,6 +2,7 @@
 // require_once("class/FormulaParser.php");
 // require 'init.php';
 use FormulaParser\FormulaParser;
+
 class MasterFungsi
 {
     //get tabel data
@@ -1161,6 +1162,82 @@ class MasterFungsi
         }
         $dataRek['kel_kd_sub_keg'] = $kel_kd_sub_keg;
         return $dataRek;
+    }
+    public function kelolaRekSubKegDanAkun($dinamic = [
+        'kd_sub_keg' => [], 'kd_akun' => [], 'tbl' => '', 'kd_wilayah' => '', 'kd_opd' => '', 'tahun' => 0
+    ])
+    {
+        $kd_sub_keg = $dinamic['kd_sub_keg'];
+        $kd_akun = $dinamic['kd_akun'];
+
+        $explode_kd_sub_keg = explode('.', $kd_sub_keg);
+        $explode_kd_akun = explode('.', $kd_akun);
+
+        $tbl = $dinamic['tbl'];
+        $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
+        $sizeOfKd_akun = sizeof($explode_kd_akun);
+
+        $user = new User();
+        $DB = DB::getInstance();
+        $user->cekUserSession();
+        $id_user = $_SESSION["user"]["id"];
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
+        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
+        if ($jumlahArray > 0) {
+            foreach ($userAktif[0] as $key => $value) {
+                ${$key} = $value;
+            }
+        }
+        //
+        if ($sizeOfKd_sub_keg) {
+            $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
+            if ($sizeOfKd_sub_keg < 6) { //urusan, bidang, prog, keg(x.xx), sub_keg
+                $kd_akun = [];
+                $sizeOfKd_akun = 0;
+            }
+            $kolomVol_1 = '';
+            $kolomVol_2 = '';
+            $kolomVol_3 = '';
+            $kolomVol_4 = '';
+            $kolomVol_5 = '';
+            switch ($tabel_pakai) {
+                case 'sub_keg_dpa_neo':
+                case 'sub_keg_renja_neo':
+                    $kolomJumlah = 'jumlah';
+                    break;
+                case 'dpa_neo':
+                case 'renja_neo':
+                    $kolomJumlah = 'jumlah';
+                    $kolomVol_1 = 'Vol_1';
+                    $kolomVol_2 = 'Vol_2';
+                    $kolomVol_3 = 'Vol_3';
+                    $kolomVol_4 = 'Vol_4';
+                    $kolomVol_5 = 'Vol_5';
+                case 'dppa_neo':
+                case 'renja_p_neo':
+                    $kolomJumlah = 'jumlah_p';
+                    $kolomVol_1 = 'Vol_1_p';
+                    $kolomVol_2 = 'Vol_2_p';
+                    $kolomVol_3 = 'Vol_3_p';
+                    $kolomVol_4 = 'Vol_4_p';
+                    $kolomVol_5 = 'Vol_5_p';
+                case 'value1':
+                    break;
+                default:
+                    break;
+            };
+            
+            $kd_subKeg_olah =$explode_kd_sub_keg;
+            for ($i=0; $i < $sizeOfKd_sub_keg; $i++) { 
+                if ($i == 0) {
+                    # code...
+                }else{
+                    array_pop($kd_subKeg_olah);
+                }
+                //satukan rekening
+                $rekening_gabung = implode('.',$kd_subKeg_olah);
+            }
+        }
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel

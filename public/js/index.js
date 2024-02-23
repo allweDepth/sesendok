@@ -99,7 +99,7 @@ $(document).ready(function () {
 		let tab = ini.attr("data-tab");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
-		let Text_ssh_sbu = (tbl) ? tbl.toUpperCase(): '';
+		let Text_ssh_sbu = (tbl) ? tbl.toUpperCase() : '';
 		let harga_ssh_asb = [
 			"clipboard list icon",
 			`${Text_ssh_sbu}`,
@@ -1756,14 +1756,13 @@ $(document).ready(function () {
 												for (const iterator of elmAttrName) {
 													let attrElm = $(iterator).attr('name');
 													let postDataField = true;
-													// cari dulu .dropdown.ajx
 													let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
 													if (attrElm === 'file') {
 														formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 													} else {
 														let strText = null;
-														let cariAttrRms = formIni.find(`[${attrElm}][rms]`);
-														if (isNaN(result.data?.users[attrElm]) && cariAttrRms.length <= 0) {
+														let cariAttrRms = $(iterator).attr('rms');
+														if (typeof cariAttrRms === 'undefined' && cariAttrRms === false) {
 															strText = result.data?.users[attrElm];
 														} else {
 															strText = parseFloat(result.data?.users[attrElm]);
@@ -3386,6 +3385,7 @@ $(document).ready(function () {
 					}
 					switch (nama_form) {
 						case "form_modal":
+							// MyForm.form('reset')
 							// $(".ui.modal.mdl_general").modal("hide");
 							break;
 						case "form_flyout":
@@ -4115,9 +4115,35 @@ $(document).ready(function () {
 	// . FUNGSI ADD RULE UNTUK SEMUA INPUT DAN TEXT AREA
 	//============================================================
 	function addRulesForm(formku) {
-		let attrName = formku.find($("input[name],textarea[name]"));
-		let i = 0;
 		$(formku).form("set auto check");
+		let elmtInputTextarea = formku.find($("input[name],textarea[name]"));
+		for (const iterator of elmtInputTextarea) {
+			let atribut = $(iterator).attr("name");
+			let lbl = $(iterator).attr("placeholder");
+			if (lbl === undefined) {
+				lbl = $(iterator).closest(".field").find("label").text();
+				if (lbl === undefined || lbl === "") {
+					lbl = $(iterator).closest(".field").find("div.sub.header").text();
+				}
+				if (lbl === undefined || lbl === "") {
+					lbl = atribut.replaceAll(/_/g, " ");
+				}
+			}
+			let non_data = $(iterator).attr("non_data");
+			if (typeof non_data === 'undefined' && non_data === false) {
+				formku.form("add rule", atribut, {
+					rules: [
+						{
+							type: "empty",
+							prompt: "Lengkapi Data " + lbl,
+						},
+					],
+				});
+			} else {
+				formku.form("remove field", atribut);
+			}
+		}
+		/*
 		for (i = 0; i < attrName.length; i++) {
 			let atribut = formku.find(attrName[i]).attr("name");
 			let lbl = formku.find(attrName[i]).attr("placeholder");
@@ -4143,7 +4169,7 @@ $(document).ready(function () {
 			} else {
 				formku.form("remove field", atribut);
 			}
-		}
+		}*/
 	}
 	//
 	function removeRulesForm(formku) {
@@ -4163,7 +4189,7 @@ $(document).ready(function () {
 				}
 			}
 			var non_data = formku.find(attrName[i]).attr("non_data");
-			if (typeof non_data === "undefined") {
+			if (typeof non_data === "undefined" && non_data === false) {
 				if (atribut) {
 					//formku.form("remove rule", atribut);
 					formku.form("remove field", atribut);
