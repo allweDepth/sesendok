@@ -1167,16 +1167,20 @@ class MasterFungsi
         'kd_sub_keg' => [], 'kd_akun' => [], 'tbl' => '', 'kd_wilayah' => '', 'kd_opd' => '', 'tahun' => 0
     ])
     {
-        $kd_sub_keg = $dinamic['kd_sub_keg'];
-        $kd_akun = $dinamic['kd_akun'];
+        $kd_sub_keg_data = $dinamic['kd_sub_keg'];
+        $kd_akun_data = $dinamic['kd_akun'];
 
-        $explode_kd_sub_keg = explode('.', $kd_sub_keg);
-        $explode_kd_akun = explode('.', $kd_akun);
-
+        $explode_kd_sub_keg = explode('.', $kd_sub_keg_data);
+        $explode_kd_akun = explode('.', $kd_akun_data);
         $tbl = $dinamic['tbl'];
         $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
         $sizeOfKd_akun = sizeof($explode_kd_akun);
-
+        //jika ada kegiatan satukan array 4 dan 5
+        if ($sizeOfKd_sub_keg > 3) {
+            $kode_keg_gabung = [$explode_kd_sub_keg[3] . '.' . $explode_kd_sub_keg[4]];
+            //hapus larik 3 sebanyak 2 artinya larik 3 dan 4 di hapus dan masukkan larik baru $kode_keg_gabung
+            array_splice($explode_kd_sub_keg, 3, 2,$kode_keg_gabung);
+        }
         $user = new User();
         $DB = DB::getInstance();
         $user->cekUserSession();
@@ -1242,12 +1246,12 @@ class MasterFungsi
                 $sizeOfRekening = sizeof($kd_subKeg_olah);
                 $rekening_gabung = implode('.', $kd_subKeg_olah);
                 // uraikan kd_sub_keg
-                $kelolaRekSubKeg = $this->kelolaRek(['kode' => $rekening_gabung]);
-                $kd_urusan = $kelolaRekSubKeg['kd_urusan'];
-                $kd_bidang = isset($kelolaRekSubKeg['kd_bidang']) ? $kelolaRekSubKeg['kd_bidang'] : null;
-                $kd_prog = isset($kelolaRekSubKeg['kd_prog']) ? $kelolaRekSubKeg['kd_prog'] : null;
-                $kd_keg = isset($kelolaRekSubKeg['kd_keg']) ? $kelolaRekSubKeg['kd_keg'] : null;
-                $kd_sub_keg = isset($kelolaRekSubKeg['kd_sub_keg']) ? $kelolaRekSubKeg['kd_sub_keg'] : null;
+                
+                $kd_urusan = $kd_subKeg_olah[0];
+                $kd_bidang = isset($kd_subKeg_olah[1]) ? $kd_subKeg_olah[1] : null;
+                $kd_prog = isset($kd_subKeg_olah[2]) ? $kd_subKeg_olah[2] : null;
+                $kd_keg = isset($kd_subKeg_olah[3]) ? $kd_subKeg_olah[3] : null;
+                $kd_sub_keg = isset($kd_subKeg_olah[4]) ? $kd_subKeg_olah[4] : null;
                 switch ($tabel_pakai) {
                     case 'sub_keg_dpa_neo':
                     case 'sub_keg_renja_neo':
@@ -1256,14 +1260,9 @@ class MasterFungsi
                     case 'renja_neo':
                     case 'dppa_neo':
                     case 'renja_p_neo':
-                        if ($sizeOfRekening == 6) {
-                            # code...
-                        }
                         switch ($sizeOfRekening) {
-                            case 6:
-                                #code...
-                                break;
                             case 5:
+                                break;
                             case 4:
                                 #code...
                                 break;
