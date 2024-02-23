@@ -268,6 +268,7 @@ class post_data
                                     'required' => true,
                                     'min_char' => 3
                                 ]);
+                                $uraian_field =  preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_field);
                                 $nama_kolom = $validate->setRules('klm', 'nama kolom', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1039,27 +1040,46 @@ class post_data
                                     #code...
                                     break;
                                 default:
-                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                    $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                                    $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                                    $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'kd_opd' => $kd_opd,
                                         'tahun' => $tahun,
                                         'kd_sub_keg' => $kd_sub_keg,
+                                        'kd_akun' => $kd_akun,
+                                        'kel_kd_sub_keg_kd_akun' => $kel_kd_sub_keg_kd_akun,//kd
+                                        'objek_belanja' => $objek_belanja,
+                                        'disable_komponen' => $disable_komponen,
                                         'uraian' => $uraian,
-                                        'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
-                                        'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                        'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
-                                        'jumlah_pagu' => $jumlah_pagu,
-                                        'jumlah_pagu_p' => $jumlah_pagu_p,
-                                        'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
+                                        'jenis_kelompok' => $jenis_kelompok,
+                                        'kelompok' => $kelompok,
+                                        'jenis_standar_harga' => $jenis_standar_harga,
+                                        'id_standar_harga' => $id_standar_harga,
+                                        'komponen' => $komponen,
+                                        'spesifikasi' => $spesifikasi,
+                                        'tkdn' => $tkdn,
+                                        'pajak' => $pajak,
+                                        'harga_satuan' => $harga_satuan,
+                                        'satuan' => $satuan,
+                                        'vol_1' => $vol_1,
+                                        'vol_2' => $vol_2,
+                                        'vol_3' => $vol_3,
+                                        'vol_4' => $vol_4,
+                                        'sat_1' => $sat_1,
+                                        'sat_2' => $sat_2,
+                                        'sat_3' => $sat_3,
+                                        'sat_4' => $sat_4,
+                                        'jumlah' => $jumlah,
+                                        'sumber_dana' => $sumber_dana,
                                         'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => $disable,
+                                        'disable' => 0,
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
+                                        'username_input' => $_SESSION["user"]["username"],
+                                        'username_update' => $_SESSION["user"]["username"]
                                     ];
-                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $set];
+                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $set,'kd_akun' => $kd_akun];
                                     $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
                                     $kodePosting = '';
                                     break;

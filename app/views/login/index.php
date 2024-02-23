@@ -168,7 +168,7 @@
                 <div class="ui stacked segment">
                     <h2 class="ui teal image header"><i class="home icon"></i>
                         <div class="content"> Login seSendok
-                            <div class="sub header"> Manajeemen Anggaran</div>
+                            <div class="sub header"> Manajemen Anggaran</div>
                         </div>
                     </h2>
                     <div class="field">
