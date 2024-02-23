@@ -1237,7 +1237,42 @@ class MasterFungsi
                 default:
                     break;
             };
-
+            //insert update kd_akun
+            $kd_akun_olah = $explode_kd_akun;
+            $i = 0;
+            foreach ($explode_kd_akun as $key => $value) {
+                if($i != 0){
+                    array_pop($kd_akun_olah); //hapus elemen terakhir
+                }
+                $akun= $kd_akun_olah[0];
+                $kelompok = isset($kd_akun_olah[1]) ? $kd_akun_olah[1] : null;
+                $jenis = isset($kd_akun_olah[2]) ? $kd_akun_olah[2] : null;
+                $objek = isset($kd_akun_olah[3]) ? $kd_akun_olah[3] : null;
+                $rincian_objek = isset($kd_akun_olah[4]) ? $kd_akun_olah[4] : null;
+                $sub_rincian = isset($kd_akun_olah[5]) ? $kd_akun_olah[5] : null;
+                switch ($sizeOfRekening) {
+                    case 6:
+                        $kel_rekening = 'akun'; //kel_rek
+                        break;
+                    case 5:
+                        $kel_rekening = 'kelompok';
+                        break;
+                    case 4:
+                        $kel_rekening = 'jenis';
+                        break;
+                    case 3:
+                        $kel_rekening = 'objek';
+                        break;
+                    case 2:
+                        $kel_rekening = 'rincian_objek';
+                        break;
+                    case 1:
+                        $kel_rekening = 'sub_rincian';
+                        break;
+                };
+                $i++;
+            }
+            //insert bidang s/d sub kegiatan
             $kd_subKeg_olah = $explode_kd_sub_keg;
             for ($i = 0; $i < $sizeOfKd_sub_keg; $i++) {
                 if ($i != 0) {
@@ -1255,10 +1290,10 @@ class MasterFungsi
                 $kd_sub_keg = isset($kd_subKeg_olah[4]) ? $kd_subKeg_olah[4] : null;
                 switch ($sizeOfRekening) {
                     case 5:
-                        $kel_rekening = 'sub_keg';//kelompok rekening
+                        $kel_rekening = 'sub_keg'; //kelompok rekening/kel_rek
                         break;
                     case 4:
-                        $kel_rekening = 'keg';//kelompok rekening
+                        $kel_rekening = 'keg'; //kelompok rekening
                         break;
                     case 3:
                         $kel_rekening = 'prog';
@@ -1292,10 +1327,11 @@ class MasterFungsi
                 };
                 if ($sizeOfRekening == 5) {
                     # sum jumlah kd akun yang 
+
                 } else {
                     # code...
                 }
-                
+
                 $row_uraian = $DB->getWhereOnceCustom($tabel_pakai_temporerSubkeg, $kondisi);
                 if ($row_uraian == false) {
                     # insert baru

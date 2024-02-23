@@ -1050,7 +1050,7 @@ class post_data
                                         'tahun' => $tahun,
                                         'kd_sub_keg' => $kd_sub_keg,
                                         'kd_akun' => $kd_akun,
-                                        'kel_kd_sub_keg_kd_akun' => $kel_kd_sub_keg_kd_akun,//kd
+                                        'kel_rek' => 'uraian',//kd
                                         'objek_belanja' => $objek_belanja,
                                         'disable_komponen' => $disable_komponen,
                                         'uraian' => $uraian,
