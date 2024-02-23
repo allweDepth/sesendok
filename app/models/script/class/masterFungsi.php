@@ -1073,7 +1073,7 @@ class MasterFungsi
         return $data;
     }
     // kelola rekening sub kegiatan
-    public function kelolaRek($dinamic = [])
+    public function kelolaRek($dinamic = ['kode' => ''])
     {
         $kode = $dinamic['kode'];
         // var_dump($kode);
@@ -1188,6 +1188,9 @@ class MasterFungsi
                 ${$key} = $value;
             }
         }
+        $kd_wilayah = $dinamic['kd_wilayah'];
+        $kd_opd = $dinamic['kd_opd'];
+        $tahun = $dinamic['tahun'];
         //
         if ($sizeOfKd_sub_keg) {
             $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
@@ -1213,6 +1216,7 @@ class MasterFungsi
                     $kolomVol_3 = 'Vol_3';
                     $kolomVol_4 = 'Vol_4';
                     $kolomVol_5 = 'Vol_5';
+                    break;
                 case 'dppa_neo':
                 case 'renja_p_neo':
                     $kolomJumlah = 'jumlah_p';
@@ -1221,21 +1225,68 @@ class MasterFungsi
                     $kolomVol_3 = 'Vol_3_p';
                     $kolomVol_4 = 'Vol_4_p';
                     $kolomVol_5 = 'Vol_5_p';
-                case 'value1':
+                    break;
+                case 'renstra_neo':
+                    $kolomJumlah = 'jumlah';
                     break;
                 default:
                     break;
             };
-            
-            $kd_subKeg_olah =$explode_kd_sub_keg;
-            for ($i=0; $i < $sizeOfKd_sub_keg; $i++) { 
-                if ($i == 0) {
-                    # code...
-                }else{
-                    array_pop($kd_subKeg_olah);
+
+            $kd_subKeg_olah = $explode_kd_sub_keg;
+            for ($i = 0; $i < $sizeOfKd_sub_keg; $i++) {
+                if ($i != 0) {
+                    array_pop($kd_subKeg_olah); //hapus elemen terakhir
                 }
                 //satukan rekening
-                $rekening_gabung = implode('.',$kd_subKeg_olah);
+                $sizeOfRekening = sizeof($kd_subKeg_olah);
+                $rekening_gabung = implode('.', $kd_subKeg_olah);
+                // uraikan kd_sub_keg
+                $kelolaRekSubKeg = $this->kelolaRek(['kode' => $rekening_gabung]);
+                $kd_urusan = $kelolaRekSubKeg['kd_urusan'];
+                $kd_bidang = isset($kelolaRekSubKeg['kd_bidang']) ? $kelolaRekSubKeg['kd_bidang'] : null;
+                $kd_prog = isset($kelolaRekSubKeg['kd_prog']) ? $kelolaRekSubKeg['kd_prog'] : null;
+                $kd_keg = isset($kelolaRekSubKeg['kd_keg']) ? $kelolaRekSubKeg['kd_keg'] : null;
+                $kd_sub_keg = isset($kelolaRekSubKeg['kd_sub_keg']) ? $kelolaRekSubKeg['kd_sub_keg'] : null;
+                switch ($tabel_pakai) {
+                    case 'sub_keg_dpa_neo':
+                    case 'sub_keg_renja_neo':
+                        break;
+                    case 'dpa_neo':
+                    case 'renja_neo':
+                    case 'dppa_neo':
+                    case 'renja_p_neo':
+                        if ($sizeOfRekening == 6) {
+                            # code...
+                        }
+                        switch ($sizeOfRekening) {
+                            case 6:
+                                #code...
+                                break;
+                            case 5:
+                            case 4:
+                                #code...
+                                break;
+                            case 3:
+                                #code...
+                                break;
+                            case 2:
+                                #code...
+                                break;
+                            case 1:
+                                #code...
+                                break;
+                            default:
+                                #code...
+                                break;
+                        };
+
+                        break;
+                    case 'renstra_neo':
+                        break;
+                    default:
+                        break;
+                };
             }
         }
     }
