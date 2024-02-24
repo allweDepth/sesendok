@@ -245,7 +245,6 @@ $(document).ready(function () {
 			"monev[laporan]": ["chart pie icon", "Informasi-Monev", "Laporan"],
 			tab_outbox: ["comment dots outline icon", "AHSP chat", "outbox"],
 		};
-
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
@@ -735,7 +734,7 @@ $(document).ready(function () {
 									label: "Harga Satuan",
 									kelas: "disabled",
 									atribut:
-										'name="harga_satuan" placeholder="harga satuan..." non_data',
+										'name="harga_satuan" placeholder="harga satuan..." rms non_data',
 								}) +
 								buatElemenHtml("fieldDropdownLabel", {
 									label: "Keterangan",
@@ -743,7 +742,7 @@ $(document).ready(function () {
 									classField: `required`,
 									atributLabel: `name="modal_show" jns="add_field_json" tbl="sub_keg_${tbl}" klm="keterangan_json"`,
 									atribut: 'name="uraian" placeholder="pilih keterangan..."',
-									kelas: "search clearable uraian selection",
+									kelas: "search clearable uraian ajx selection",
 									dataArray: [
 										["", ""]
 									],
@@ -751,7 +750,6 @@ $(document).ready(function () {
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "Tambahkan Pajak",
 									atribut: 'name="pajak" non_data',
-
 								}) +
 								buatElemenHtml("fields", {
 									label: "Koefisien Perkalian",
@@ -761,13 +759,12 @@ $(document).ready(function () {
 									atribut: ['name="sat_1" placeholder="satuan..."', 'name="sat_2" placeholder="satuan..." non_data', 'name="sat_3" placeholder="satuan..." non_data', 'name="sat_4" placeholder="satuan..." non_data'],
 									atribut2: ['name="vol_1" placeholder="Koefisien..." rms onkeypress="ketikUbah(event);"', 'name="vol_2" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"', 'name="vol_3" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"', 'name="vol_4" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"']
 								}) +
-
 								buatElemenHtml("fieldText", {
 									label: "Volume",
 									classField: `required`,
 									kelas: "disabled",
 									atribut:
-										'name="volume" placeholder="volume..."',
+										'name="volume" placeholder="volume..." rms',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Koefisien (Keterangan Jumlah)",
@@ -777,7 +774,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Total Belanja",
 									kelas: "disabled",
-									atribut: 'name="jumlah" placeholder="jumlah..." non_data',
+									atribut: 'name="jumlah" placeholder="jumlah..." rms non_data',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -1648,7 +1645,6 @@ $(document).ready(function () {
 								case 'dppa':
 									tabel_pakai_temporerSubkeg = 'sub_keg_dpa';
 									break;
-
 							};
 							var renja_dpa = new DropdownConstructor('.ui.dropdown.kd_akun.ajx.selection')
 							renja_dpa.returnList({ jenis: "get_row_json", tbl: "akun_belanja" });
@@ -1660,15 +1656,12 @@ $(document).ready(function () {
 							let dropdownJenisKomponen = new DropdownConstructor('.ui.dropdown[name="jenis_standar_harga"]');
 							allObjek = { jenis: 'gantiJenisKomponen' };
 							dropdownJenisKomponen.onChange(allObjek);
-
 							var dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
 							var allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
 							dropdownSumberDana.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
-
 							var dropdownKeterangan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="uraian"]')
 							allField = { klm: 'keterangan_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'keterangan_json' };
 							dropdownKeterangan.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
-
 							var dropdownSatuanRenja1 = new DropdownConstructor('form[name="form_flyout"].ui.dropdown.sat_1');
 							allField = { minCharacters: 1 };
 							dropdownSatuanRenja1.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
@@ -1795,7 +1788,6 @@ $(document).ready(function () {
 														if (dropDownElmAjx.length > 0 && result.data.hasOwnProperty("values")) {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
-
 																switch (tbl) {
 																	case 'dpa':
 																	case 'renja':
@@ -1829,16 +1821,16 @@ $(document).ready(function () {
 																				dropdownSumberDana.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
 																			case 'komponen':
-																				let dropdownKomponen = new DropdownConstructor('form[name="form_flyout"].ui.dropdown[name="komponen"]')
+																				let dropdownKomponen = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="komponen"]');
 																				dropdownKomponen.valuesDropdown(result.data?.values?.komponen);
 																				let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_standar_harga"]').dropdown('get value');
 																				let rekeningAkun = $('form[name="form_flyout"]').find('.ui.dropdown[name="kd_akun"]').dropdown('get value');
 																				let allFieldKomponen = { id_sub_keg: id_sub_keg, kd_akun: rekeningAkun };
 																				dropdownKomponen.returnList({ jenis: "get_row_json", tbl: jenisKomponen, set: allFieldKomponen });
-
-
 																				break;
 																			case 'uraian':
+																				console.log(dropdownKeterangan);
+																				console.log(result.data?.values?.uraian);
 																				dropdownKeterangan.valuesDropdown(result.data?.values?.uraian);
 																				allField = { klm: 'keterangan_json', id_sub_keg: id_sub_keg, jns_kel: 'keterangan_json' }
 																				dropdownKeterangan.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
@@ -2371,7 +2363,6 @@ $(document).ready(function () {
 								break;
 						}
 						if (klmAttr == 'kelompok' || klmAttr == 'paket') {
-
 						}
 						switch (klmAttr) {
 							case 'kelompok':
@@ -2395,7 +2386,6 @@ $(document).ready(function () {
 							default:
 								break;
 						};
-
 						data.jenis_kelompok = jenis_kelompok;
 						formIni.attr('jns', jnsAttr).attr('tbl', tblAttr).attr('klm', klmAttr).attr('id_sub_keg', id_sub_keg).attr('jns_kel', jenis_kelompok)
 						break;
@@ -2404,7 +2394,7 @@ $(document).ready(function () {
 				}
 				break;
 			case 'search_field_json':
-				let kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_komponen"').dropdown('get value')
+				let kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_standar_harga"').dropdown('get value')
 				elementForm = buatElemenHtml("fieldSearchGrid", {
 					label: "Uraian Pengelompokan Belanja",
 					kelas: `${kelasSearch}`,
@@ -2425,11 +2415,9 @@ $(document).ready(function () {
 		$("[rms]").mathbiila();
 		let modalGeneral = new ModalConstructor(mdl);
 		modalGeneral.globalForm();
-
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
-
 					if (nameAttr === "modal_show") {
 						mdl.modal("show");
 					}
@@ -2447,7 +2435,6 @@ $(document).ready(function () {
 				});
 			}
 		}
-
 	});
 	//===================================
 	//=========== class dropdown ========
@@ -2472,11 +2459,9 @@ $(document).ready(function () {
 			switch (jenis) {
 				case 'get_field_json':
 					if (allField?.set?.jns_kel) {
-
 					} else {
-						allField.set.jns_kel = $(`form[name="form_flyout"]`).find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');
+						allField.set['jns_kel'] = $(`form[name="form_flyout"]`).find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');
 					}
-
 					break;
 				default:
 					break;
@@ -2551,7 +2536,6 @@ $(document).ready(function () {
 						default:
 							break;
 					}
-
 					let ajaxSend = false
 					if (ajaxSend == true) {
 						let data = {
@@ -2565,7 +2549,6 @@ $(document).ready(function () {
 						let cryptos = false;
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";
-
 							showToast(result.error.message, {
 								class: kelasToast,
 								icon: "check circle icon",
@@ -2683,7 +2666,6 @@ $(document).ready(function () {
 		restore() {
 			this.element.dropdown("restore defaults");
 		}
-
 		setVal(val) {
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown("set selected", val);
@@ -2722,8 +2704,6 @@ $(document).ready(function () {
 						case 'xxx':
 							break;
 						default:
-
-
 							break;
 					};
 					if (ajaxSend == true) {
@@ -2838,14 +2818,13 @@ $(document).ready(function () {
 					dropdownKelompok.returnList({ jenis: "get_field_json", tbl: `sub_keg_${allData.tbl}`, set: allField });
 					break;
 				case 'gantiJenisKomponen':
-					let dropdownKomponen = new DropdownConstructor('.ui.dropdown[name="komponen"]')
-					let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_komponen"]').dropdown('get value');
+					var dropdownKomponen = new DropdownConstructor('.ui.dropdown[name="komponen"]')
+					let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_standar_harga"]').dropdown('get value');
 					let rekeningAkun = $('form[name="form_flyout"]').find('.ui.dropdown[name="kd_akun"]').dropdown('get value');
 					let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), kd_akun: rekeningAkun };
 					dropdownKomponen.returnList({ jenis: "get_row_json", tbl: jenisKomponen, set: allFieldKomponen });
 					break;
 				case 'xxxx':
-
 					break;
 				default:
 					break;
@@ -3098,8 +3077,6 @@ $(document).ready(function () {
 										default:
 											break;
 									};
-
-
 									break;
 								case 'value':
 									break;
@@ -3216,7 +3193,6 @@ $(document).ready(function () {
 						case 'value1':
 							break;
 						default:
-
 							break;
 					};
 					if (jalankanAjax) {
@@ -3548,7 +3524,6 @@ $(document).ready(function () {
 					return false;
 				},
 				onShow: function () {
-
 				},
 				onHidden: function () {
 					$(this).find("form").form("reset");
@@ -3989,7 +3964,6 @@ $(document).ready(function () {
 								txt +
 								"</div>";
 						}
-
 					}
 				}
 				var elemen33 = `</div></div><button class="ui teal label icon button" ${atributLabel}>${txtLabelData}</button>
@@ -3997,7 +3971,6 @@ $(document).ready(function () {
 				elemen = elemen11 + elemen22 + elemen33;
 				break;
 			case "fieldDropdown":
-
 				///Memisahkan array
 				elemen22 = "";
 				var disableAtributDataActive = false
@@ -4061,7 +4034,6 @@ $(document).ready(function () {
 								txt +
 								"</div>";
 						}
-
 					}
 				}
 				var atributDataActive = atributData;
@@ -4285,7 +4257,6 @@ $(document).ready(function () {
 	}
 	//
 	function showToast(message, settings) {
-
 		settings.title = settings.title === undefined ? "info !" : settings.title;
 		settings.position =
 			settings.position === undefined ? "top center" : settings.position;

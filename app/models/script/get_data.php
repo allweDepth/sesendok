@@ -819,10 +819,12 @@ class get_data
                                                 if ($cari_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $cari_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
-                                                    $data['values']['kd_akun'] = [['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                                    if (count((array)$row)) {
+                                                        $data['values']['kd_akun'] = [['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                                    }
                                                 }
                                                 // kelompok
-                                                $cari_drop = $data['users']->jenis_kelompok;
+
                                                 switch ($tbl) {
                                                     case 'dpa':
                                                     case 'dppa':
@@ -833,13 +835,28 @@ class get_data
                                                         $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
                                                         break;
                                                 };
-                                                // komponen
+                                                $cari_drop = $data['users']->jenis_kelompok;
+                                                // kelompok
                                                 if ($cari_drop) {
                                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                     $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'kelompok_json', $cari_drop, $dataKondisiField);
                                                     $data_klm = json_decode($data_klm, true);
                                                     $key = array_search($cari_drop, $data_klm, true);
                                                     $data['values']['kelompok'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
+                                                }
+                                                $cari_drop = $data['users']->komponen;
+                                                $jenis_standar_harga = $data['users']->jenis_standar_harga;
+                                                $id_standar_harga = $data['users']->id_standar_harga;
+                                                // komponen
+                                                if ($cari_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['id', '=', $id_standar_harga, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom("{$jenis_standar_harga}_neo", $kondisi_result);
+                                                    // var_dump($kondisi_result);
+                                                    // var_dump($row);
+                                                    if (count((array)$row)) {
+                                                        $deskripsi = $row->kd_aset . ' (' . number_format($row->harga_satuan, 2, ',', '.') . ')';
+                                                        $data['values']['komponen'] = [['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'selected' => true]];
+                                                    }
                                                 }
                                                 // sumber_dana
                                                 $cari_drop = $data['users']->sumber_dana;
@@ -852,12 +869,14 @@ class get_data
                                                     $key = array_search($cari_drop, $data_klm, true);
                                                     $kondisi_result_sub = [['kode', '=', $data_klm[$key]]];
                                                     $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
-                                                    if ($row_sub) {
-                                                        $uraian_sumberDana = $row_sub->uraian;
-                                                    }else {
-                                                        $uraian_sumberDana = 'data tidak ditemukan';
+                                                    if (count((array)$row)) {
+                                                        if ($row_sub) {
+                                                            $uraian_sumberDana = $row_sub->uraian;
+                                                        } else {
+                                                            $uraian_sumberDana = 'data tidak ditemukan';
+                                                        }
+                                                        $data['values']['sumber_dana'] = [['name' => $uraian_sumberDana, 'value' => $data_klm[$key], 'selected' => true]];
                                                     }
-                                                    $data['values']['sumber_dana'] = [['name' => $uraian_sumberDana, 'value' => $data_klm[$key], 'selected' => true]];
                                                 }
                                                 $cari_drop = $data['users']->uraian;
                                                 // keterangan/uraian
@@ -876,7 +895,9 @@ class get_data
                                                 if ($kd_sub_keg_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kd_sub_keg_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
-                                                    $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
+                                                    if (count((array)$row)) {
+                                                        $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
+                                                    }
                                                 }
                                                 break;
                                             case 'tujuan_sasaran_renstra':
@@ -887,7 +908,9 @@ class get_data
                                                 if ($value_a == 'sasaran' && $value_b > 0) {
                                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND'], ['id', '=', $value_b, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
-                                                    $data['values']['id_tujuan'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->kelompok, "descriptionVertical" => true, 'selected' => true]];
+                                                    if (count((array)$row)) {
+                                                        $data['values']['id_tujuan'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->kelompok, "descriptionVertical" => true, 'selected' => true]];
+                                                    }
                                                 }
                                                 break;
                                             case 'xx':
