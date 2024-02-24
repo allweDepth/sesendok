@@ -824,7 +824,6 @@ class get_data
                                                     }
                                                 }
                                                 // kelompok
-
                                                 switch ($tbl) {
                                                     case 'dpa':
                                                     case 'dppa':
@@ -887,6 +886,22 @@ class get_data
                                                     $key = array_search($cari_drop, $data_klm, true);
                                                     $data['values']['uraian'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
                                                 }
+                                                //satuan
+                                                $array_sat = [];
+                                                for ($i = 1; $i <= 4; $i++) {
+                                                    $def = "vol_{$i}";
+                                                    $def2 = "sat_{$i}";
+                                                    $cari_vol = $data['users']->{$def};
+                                                    $cari_sat = $data['users']->{$def2};
+                                                    if ($cari_vol > 0) {
+                                                        $kondisi_result = [['disable', '<=', 0], ['value', '=', $cari_sat, 'AND']];
+                                                        $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
+                                                        if (count((array)$row)) {
+                                                            $data['values']["sat_{$i}"] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
+                                                        }
+                                                    }
+                                                }
+                                                
                                                 break;
                                             case 'sub_keg_renja':
                                                 $data['values'] = [];
