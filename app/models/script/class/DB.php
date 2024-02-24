@@ -78,8 +78,8 @@ class DB
                     $stmt->bindValue($nilai, 0, PDO::PARAM_INT); //offset
                 }
             }
-            var_dump( $query );
-            var_dump( $bindValue);
+            // var_dump( $query );
+            // var_dump( $bindValue);
             // var_dump( $limit );
             
             $stmt->execute();

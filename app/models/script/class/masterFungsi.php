@@ -1246,7 +1246,7 @@ class MasterFungsi
                     # input kel_rek=uraian
                     $DB->insert($tabel_pakai, $set);
                     $data['note']['add row'][] = $DB->lastInsertId();
-                    var_dump('masuk ji');
+                    // var_dump('masuk ji');
                 }
                 $i = 0;
                 //=========================
@@ -1300,7 +1300,7 @@ class MasterFungsi
                     $DB->select("SUM({$kolomJumlah}) AS jumlah");
                     $row_sum = $DB->getWhereArray($tabel_pakai, $kondisi_sum);
                     $jumlah = $row_sum[0]->jumlah;
-                    var_dump($row_sum);
+                    // var_dump($row_sum);
                     //selesai ambil jumlah
                     $DB->select("*");
                     switch ($tabel_pakai) {
@@ -1329,7 +1329,7 @@ class MasterFungsi
                                 'vol_3' => 0,
                                 'vol_4' => 0,
                                 'sat_1' => '',
-                                'jumlah' => (float)$jumlah,
+                                $kolomJumlah => (float)$jumlah,
                                 'disable' => 0,
                                 'tanggal' => date('Y-m-d H:i:s'),
                                 'tgl_update' => date('Y-m-d H:i:s'),
@@ -1363,14 +1363,18 @@ class MasterFungsi
                     }
                     $i++;
                 }
+                
             }
             //==============================
             //insert bidang s/d sub kegiatan
             //==============================
+            $i = 0;
             $kd_subKeg_olah = $explode_kd_sub_keg;
-            $rekening_gabung = implode('.', $kd_akun_olah);
-            for ($i = 0; $i < $sizeOfKd_sub_keg; $i++) {
-                $kd_subKeg_olah_sebelum = $kd_subKeg_olah;
+            $rekening_gabung = implode('.', $kd_subKeg_olah);
+            // var_dump($kd_subKeg_olah);
+            foreach ($explode_kd_sub_keg as $key => $value) {
+                $kd_subKeg_olah_sebelum = $rekening_gabung;
+                // var_dump($kd_subKeg_olah_sebelum);
                 if ($i != 0) {
                     array_pop($kd_subKeg_olah); //hapus elemen terakhir
                 }
@@ -1411,7 +1415,7 @@ class MasterFungsi
                     case 'renja_neo':
                     case 'dppa_neo':
                     case 'renja_p_neo':
-                        $kondisi = [['kd_sub_keg', '=', $rekening_gabung], ['kd_akun', '<=', 0, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $kondisi = [['kd_sub_keg', '=', $rekening_gabung], ['kd_akun', '=', '', 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                         $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $rekening_gabung]]);
                         $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
                         $set_insert = [
@@ -1433,7 +1437,7 @@ class MasterFungsi
                             'vol_3' => 0,
                             'vol_4' => 0,
                             'sat_1' => '',
-                            'jumlah' => (float)$jumlah,
+                            $kolomJumlah => (float)$jumlah,
                             'disable' => 0,
                             'tanggal' => date('Y-m-d H:i:s'),
                             'tgl_update' => date('Y-m-d H:i:s'),
@@ -1454,15 +1458,9 @@ class MasterFungsi
                     default:
                         break;
                 };
-
-                if ($sizeOfRekening == 5) {
-                    # sum jumlah kd akun yang 
-
-                } else {
-                    # code...
-                }
-                $kondisi_sum = [['kd_sub_keg', '=', $kd_subKeg_olah_sebelum], ['kd_akun', '=',  '', 'AND'], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                $kondisi_sum = [['kd_sub_keg', '=', $kd_subKeg_olah_sebelum], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                 //ambil jumlah 
+                // var_dump($set_insert);
                 $DB->select("SUM({$kolomJumlah}) AS jumlah");
                 $row_sum = $DB->getWhereArray($tabel_pakai, $kondisi_sum);
                 $jumlah = $row_sum[0]->jumlah;
@@ -1499,8 +1497,11 @@ class MasterFungsi
                     default:
                         break;
                 };
+                $i++;
             }
+            
         }
+        return $data;
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel

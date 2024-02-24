@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 24 Feb 2024 pada 07.16
+-- Waktu pembuatan: 24 Feb 2024 pada 10.11
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -128,82 +128,35 @@ CREATE TABLE `dpa_neo` (
   `kd_wilayah` varchar(50) NOT NULL,
   `kd_opd` varchar(22) NOT NULL,
   `tahun` year(4) NOT NULL,
-  `kd_sub_keg` varchar(22) NOT NULL,
-  `kel_kd_sub_keg` varchar(50) NOT NULL,
-  `kd_akun` varchar(22) NOT NULL,
-  `kel_kd_akun` varchar(50) NOT NULL DEFAULT '0',
-  `disable_komponen` tinyint(1) NOT NULL DEFAULT 0,
+  `kd_sub_keg` varchar(50) NOT NULL,
+  `kd_akun` varchar(50) NOT NULL,
+  `kel_rek` varchar(50) NOT NULL,
+  `objek_belanja` varchar(255) NOT NULL,
   `uraian` text NOT NULL,
   `jenis_kelompok` varchar(255) NOT NULL,
   `kelompok` varchar(255) NOT NULL,
   `jenis_standar_harga` varchar(6) NOT NULL,
-  `id_standar_harga` int(11) NOT NULL,
-  `komponen` varchar(400) NOT NULL,
-  `spesifikasi` varchar(400) NOT NULL,
-  `harga_satuan` decimal(12,0) NOT NULL,
-  `satuan` varchar(255) NOT NULL,
-  `vol_1` decimal(12,0) NOT NULL,
-  `vol_2` decimal(12,0) NOT NULL,
-  `vol_3` decimal(12,0) NOT NULL,
-  `vol_4` decimal(12,0) NOT NULL,
-  `vol_5` decimal(12,0) NOT NULL,
+  `id_standar_harga` int(11) DEFAULT NULL,
+  `komponen` varchar(400) DEFAULT NULL,
+  `spesifikasi` varchar(400) DEFAULT NULL,
+  `tkdn` decimal(36,12) DEFAULT NULL,
+  `pajak` tinyint(1) DEFAULT NULL,
+  `harga_satuan` decimal(36,12) NOT NULL,
+  `vol_1` decimal(36,12) NOT NULL,
+  `vol_2` decimal(36,12) DEFAULT NULL,
+  `vol_3` decimal(36,12) DEFAULT NULL,
+  `vol_4` decimal(36,12) DEFAULT NULL,
+  `vol_5` decimal(36,12) DEFAULT NULL,
   `sat_1` varchar(50) NOT NULL,
-  `sat_2` varchar(50) NOT NULL,
-  `sat_3` varchar(50) NOT NULL,
-  `sat_4` varchar(50) NOT NULL,
-  `sat_5` varchar(50) NOT NULL,
-  `jumlah` decimal(12,0) NOT NULL,
+  `sat_2` varchar(50) DEFAULT NULL,
+  `sat_3` varchar(50) DEFAULT NULL,
+  `sat_4` varchar(50) DEFAULT NULL,
+  `sat_5` varchar(50) DEFAULT NULL,
+  `jumlah` decimal(36,12) NOT NULL,
   `sumber_dana` varchar(255) DEFAULT NULL,
-  `keterangan` int(11) NOT NULL,
-  `aksi` int(11) NOT NULL,
+  `keterangan` varchar(400) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL,
-  `tgl_input` date NOT NULL,
-  `tgl_update` datetime NOT NULL,
-  `username_input` varchar(255) NOT NULL,
-  `username_update` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `dppa_neo`
---
-
-CREATE TABLE `dppa_neo` (
-  `id` int(11) NOT NULL,
-  `kd_wilayah` varchar(50) NOT NULL,
-  `kd_opd` varchar(22) NOT NULL,
-  `tahun` year(4) NOT NULL,
-  `kd_sub_keg` varchar(22) NOT NULL,
-  `kel_kd_sub_keg` varchar(50) NOT NULL,
-  `kd_akun` varchar(22) NOT NULL,
-  `kel_kd_akun` varchar(50) NOT NULL DEFAULT '0',
-  `disable_komponen` tinyint(1) NOT NULL DEFAULT 0,
-  `uraian` text NOT NULL,
-  `jenis_kelompok` varchar(255) NOT NULL,
-  `kelompok` varchar(255) NOT NULL,
-  `jenis_standar_harga` varchar(6) NOT NULL,
-  `id_standar_harga` int(11) NOT NULL,
-  `komponen` varchar(400) NOT NULL,
-  `spesifikasi` varchar(400) NOT NULL,
-  `harga_satuan` decimal(12,0) NOT NULL,
-  `satuan` varchar(255) NOT NULL,
-  `vol_1` decimal(12,0) NOT NULL,
-  `vol_2` decimal(12,0) NOT NULL,
-  `vol_3` decimal(12,0) NOT NULL,
-  `vol_4` decimal(12,0) NOT NULL,
-  `vol_5` decimal(12,0) NOT NULL,
-  `sat_1` varchar(50) NOT NULL,
-  `sat_2` varchar(50) NOT NULL,
-  `sat_3` varchar(50) NOT NULL,
-  `sat_4` varchar(50) NOT NULL,
-  `sat_5` varchar(50) NOT NULL,
-  `jumlah` decimal(12,0) NOT NULL,
-  `sumber_dana` varchar(255) DEFAULT NULL,
-  `keterangan` int(11) NOT NULL,
-  `aksi` int(11) NOT NULL,
-  `disable` tinyint(1) NOT NULL,
-  `tgl_input` date NOT NULL,
+  `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_input` varchar(255) NOT NULL,
   `username_update` varchar(255) NOT NULL
@@ -452,20 +405,20 @@ CREATE TABLE `renja_neo` (
   `spesifikasi` varchar(400) DEFAULT NULL,
   `tkdn` decimal(36,12) DEFAULT NULL,
   `pajak` tinyint(1) DEFAULT NULL,
-  `harga_satuan` decimal(12,0) NOT NULL,
-  `vol_1` decimal(12,0) NOT NULL,
-  `vol_2` decimal(12,0) DEFAULT NULL,
-  `vol_3` decimal(12,0) DEFAULT NULL,
-  `vol_4` decimal(12,0) DEFAULT NULL,
-  `vol_5` decimal(12,0) DEFAULT NULL,
+  `harga_satuan` decimal(36,12) NOT NULL,
+  `vol_1` decimal(36,12) NOT NULL,
+  `vol_2` decimal(36,12) DEFAULT NULL,
+  `vol_3` decimal(36,12) DEFAULT NULL,
+  `vol_4` decimal(36,12) DEFAULT NULL,
+  `vol_5` decimal(36,12) DEFAULT NULL,
   `sat_1` varchar(50) NOT NULL,
   `sat_2` varchar(50) DEFAULT NULL,
   `sat_3` varchar(50) DEFAULT NULL,
   `sat_4` varchar(50) DEFAULT NULL,
   `sat_5` varchar(50) DEFAULT NULL,
-  `jumlah` decimal(12,0) NOT NULL,
+  `jumlah` decimal(36,12) NOT NULL,
   `sumber_dana` varchar(255) DEFAULT NULL,
-  `keterangan` varchar(400) NOT NULL,
+  `keterangan` varchar(400) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
@@ -484,36 +437,47 @@ CREATE TABLE `renja_p_neo` (
   `kd_wilayah` varchar(50) NOT NULL,
   `kd_opd` varchar(22) NOT NULL,
   `tahun` year(4) NOT NULL,
-  `kd_sub_keg` varchar(22) NOT NULL,
-  `kel_kd_sub_keg` varchar(50) NOT NULL,
-  `kd_akun` varchar(22) NOT NULL,
-  `kel_kd_akun` varchar(50) NOT NULL DEFAULT '0',
-  `disable_komponen` tinyint(1) NOT NULL DEFAULT 0,
+  `kd_sub_keg` varchar(50) NOT NULL,
+  `kd_akun` varchar(50) NOT NULL,
+  `kel_rek` varchar(50) NOT NULL,
+  `objek_belanja` varchar(255) NOT NULL,
   `uraian` text NOT NULL,
   `jenis_kelompok` varchar(255) NOT NULL,
   `kelompok` varchar(255) NOT NULL,
   `jenis_standar_harga` varchar(6) NOT NULL,
-  `id_standar_harga` int(11) NOT NULL,
-  `komponen` varchar(400) NOT NULL,
-  `spesifikasi` varchar(400) NOT NULL,
-  `harga_satuan` decimal(12,0) NOT NULL,
-  `satuan` varchar(255) NOT NULL,
-  `vol_1` decimal(12,0) NOT NULL,
-  `vol_2` decimal(12,0) NOT NULL,
-  `vol_3` decimal(12,0) NOT NULL,
-  `vol_4` decimal(12,0) NOT NULL,
-  `vol_5` decimal(12,0) NOT NULL,
+  `id_standar_harga` int(11) DEFAULT NULL,
+  `komponen` varchar(400) DEFAULT NULL,
+  `spesifikasi` varchar(400) DEFAULT NULL,
+  `tkdn` decimal(36,12) DEFAULT NULL,
+  `pajak` tinyint(1) DEFAULT NULL,
+  `harga_satuan` decimal(36,12) NOT NULL,
+  `vol_1` decimal(36,12) NOT NULL,
+  `vol_2` decimal(36,12) DEFAULT NULL,
+  `vol_3` decimal(36,12) DEFAULT NULL,
+  `vol_4` decimal(36,12) DEFAULT NULL,
+  `vol_5` decimal(36,12) DEFAULT NULL,
   `sat_1` varchar(50) NOT NULL,
-  `sat_2` varchar(50) NOT NULL,
-  `sat_3` varchar(50) NOT NULL,
-  `sat_4` varchar(50) NOT NULL,
-  `sat_5` varchar(50) NOT NULL,
-  `jumlah` decimal(12,0) NOT NULL,
+  `sat_2` varchar(50) DEFAULT NULL,
+  `sat_3` varchar(50) DEFAULT NULL,
+  `sat_4` varchar(50) DEFAULT NULL,
+  `sat_5` varchar(50) DEFAULT NULL,
+  `jumlah` decimal(36,12) NOT NULL,
+  `harga_satuan_p` decimal(36,12) NOT NULL,
+  `vol_1_p` decimal(36,12) NOT NULL,
+  `vol_2_p` decimal(36,12) NOT NULL,
+  `vol_3_p` decimal(36,12) NOT NULL,
+  `vol_4_p` decimal(36,12) NOT NULL,
+  `vol_5_p` decimal(36,12) NOT NULL,
+  `sat_1_p` varchar(50) NOT NULL,
+  `sat_2_p` varchar(50) NOT NULL,
+  `sat_3_p` varchar(50) NOT NULL,
+  `sat_4_p` varchar(50) NOT NULL,
+  `sat_5_p` varchar(50) NOT NULL,
+  `jumlah_p` decimal(36,12) NOT NULL,
   `sumber_dana` varchar(255) DEFAULT NULL,
-  `keterangan` int(11) NOT NULL,
-  `aksi` int(11) NOT NULL,
+  `keterangan` varchar(400) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL,
-  `tgl_input` date NOT NULL,
+  `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_input` varchar(255) NOT NULL,
   `username_update` varchar(255) NOT NULL
@@ -899,12 +863,6 @@ ALTER TABLE `dpa_neo`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `dppa_neo`
---
-ALTER TABLE `dppa_neo`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `hspk_neo`
 --
 ALTER TABLE `hspk_neo`
@@ -1064,12 +1022,6 @@ ALTER TABLE `bidang_urusan_neo`
 -- AUTO_INCREMENT untuk tabel `dpa_neo`
 --
 ALTER TABLE `dpa_neo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT untuk tabel `dppa_neo`
---
-ALTER TABLE `dppa_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

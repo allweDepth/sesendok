@@ -1047,6 +1047,49 @@ class post_data
                                 default:
                                     $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                     // $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                                    switch ($tabel_pakai) {
+                                        case 'sub_keg_dpa_neo':
+                                        case 'sub_keg_renja_neo':
+                                            $kolomJumlah = 'jumlah';
+                                            break;
+                                        case 'dpa_neo':
+                                        case 'renja_neo':
+                                            $kolomJumlah = 'jumlah';
+                                            $kolomVol_1 = 'Vol_1';
+                                            $kolomVol_2 = 'Vol_2';
+                                            $kolomVol_3 = 'Vol_3';
+                                            $kolomVol_4 = 'Vol_4';
+                                            $kolomVol_5 = 'Vol_5';
+                                            $kolomHarga_satuan = 'harga_satuan';
+                                            
+                                            $kolomSat_1 = 'sat_1';
+                                            $kolomSat_2 = 'sat_2';
+                                            $kolomSat_3 = 'sat_3';
+                                            $kolomSat_4 = 'sat_4';
+                                            $kolomSat_5 = 'sat_5';
+                                            break;
+                                        case 'dppa_neo':
+                                        case 'renja_p_neo':
+                                            $kolomJumlah = 'jumlah_p';
+                                            $kolomVol_1 = 'Vol_1_p';
+                                            $kolomVol_2 = 'Vol_2_p';
+                                            $kolomVol_3 = 'Vol_3_p';
+                                            $kolomVol_4 = 'Vol_4_p';
+                                            $kolomVol_5 = 'Vol_5_p';
+                                            $kolomHarga_satuan = 'harga_satuan_p';
+
+                                            $kolomSat_1 = 'sat_1_p';
+                                            $kolomSat_2 = 'sat_2_p';
+                                            $kolomSat_3 = 'sat_3_p';
+                                            $kolomSat_4 = 'sat_4_p';
+                                            $kolomSat_5 = 'sat_5_p';
+                                            break;
+                                        case 'renstra_neo':
+                                            $kolomJumlah = 'jumlah';
+                                            break;
+                                        default:
+                                            break;
+                                    };
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'kd_opd' => $kd_opd,
@@ -1064,16 +1107,16 @@ class post_data
                                         'spesifikasi' => $spesifikasi,
                                         'tkdn' => (float)$tkdn,
                                         'pajak' => $pajak,
-                                        'harga_satuan' => $harga_satuan,
-                                        'vol_1' => $vol_1,
-                                        'vol_2' => $vol_2,
-                                        'vol_3' => $vol_3,
-                                        'vol_4' => $vol_4,
-                                        'sat_1' => $sat_1,
-                                        'sat_2' => $sat_2,
-                                        'sat_3' => $sat_3,
-                                        'sat_4' => $sat_4,
-                                        'jumlah' => $jumlah,
+                                        $kolomHarga_satuan => $harga_satuan,
+                                        $kolomVol_1 => $vol_1,
+                                        $kolomVol_2 => $vol_2,
+                                        $kolomVol_3 => $vol_3,
+                                        $kolomVol_4 => $vol_4,
+                                        $kolomSat_1 => $sat_1,
+                                        $kolomSat_2 => $sat_2,
+                                        $kolomSat_3 => $sat_3,
+                                        $kolomSat_4 => $sat_4,
+                                        $kolomJumlah => $jumlah,
                                         'sumber_dana' => $sumber_dana,
                                         'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                         'disable' => 0,
@@ -1084,7 +1127,7 @@ class post_data
                                     ];
                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set,'kd_akun' => $kd_akun,'kd_wilayah'=> $kd_wilayah,'kd_opd'=> $kd_opd,'tahun'=> $tahun];
                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
-                                    var_dump($insertKodeRek);
+                                    $data = $insertKodeRek;
                                     $kodePosting = '';
                                     break;
                             };
