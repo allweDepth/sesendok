@@ -188,6 +188,7 @@ class get_data
                     $code = 55;
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                     //var_dump($rowTahunAktif);
+                    $group_by = "";
                     if ($rowTahunAktif) {
                         $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
                         $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
@@ -433,13 +434,14 @@ class get_data
                                 $rowSubKeg = $DB->getWhereOnceCustom($tabel_sub_keg, [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['id', '=', $id_sub_keg, 'AND']]);
                                 if ($rowSubKeg) {
                                     $kd_sub_keg = $rowSubKeg->kd_sub_keg;
+                                    $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok";
                                     $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
-                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kd_sub_keg = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, $kd_sub_keg, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kd_sub_keg = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, $kd_sub_keg, 'uraian', $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian ASC";
-                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
-                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? AND kel_rek = ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg, 'uraian'];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
                                     //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
                                     $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
                                     $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
@@ -447,31 +449,32 @@ class get_data
                                     $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
                                     // var_dump($bidang_sub_keg);
                                     $data['tr_sub_keg'] = '<tr>
-                                <td class="collapsing">Perangkat Daerah</td>
-                                <td>' . $data['unit_kerja'] . '</td>
-                                <td class="right aligned collapsing">Rp. 0,00</td>
-                            </tr>
-                            <tr>
-                                <td>Bidang</td>
-                                <td>' . $bidang_sub_keg['kd_bidang']->uraian . ' (' . $bidang_sub_keg['kd_bidang']->kd_sub_keg . ')</td>
-                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
-                            </tr>
-                            <tr>
-                                <td>Program</td>
-                                <td>' . $bidang_sub_keg['kd_prog']->uraian . ' (' . $bidang_sub_keg['kd_prog']->kd_sub_keg . ')</td>
-                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
-                            </tr>
-                            <tr>
-                                <td>Kegiatan</td>
-                                <td>' . $bidang_sub_keg['kd_keg']->uraian . ' (' . $bidang_sub_keg['kd_keg']->kd_sub_keg . ')</td>
-                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
-                            </tr>
-                            <tr>
-                                <td>Sub Kegiatan</td>
-                                <td>' . $bidang_sub_keg['kd_sub_keg']->uraian . ' (' . $bidang_sub_keg['kd_sub_keg']->kd_sub_keg . ')</td>
-                                <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
-                            </tr>';
+                                            <td class="collapsing">Perangkat Daerah</td>
+                                            <td>' . $data['unit_kerja'] . '</td>
+                                            <td class="right aligned collapsing">Rp. 0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bidang</td>
+                                            <td>' . $bidang_sub_keg['kd_bidang']->uraian . ' (' . $bidang_sub_keg['kd_bidang']->kd_sub_keg . ')</td>
+                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Program</td>
+                                            <td>' . $bidang_sub_keg['kd_prog']->uraian . ' (' . $bidang_sub_keg['kd_prog']->kd_sub_keg . ')</td>
+                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kegiatan</td>
+                                            <td>' . $bidang_sub_keg['kd_keg']->uraian . ' (' . $bidang_sub_keg['kd_keg']->kd_sub_keg . ')</td>
+                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sub Kegiatan</td>
+                                            <td>' . $bidang_sub_keg['kd_sub_keg']->uraian . ' (' . $bidang_sub_keg['kd_sub_keg']->kd_sub_keg . ')</td>
+                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                        </tr>';
                                     $data['tr_sub_keg'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
+
                                 } else {
                                     $message_tambah = ' (kode sub kegiatan tidak ditemukan)';
                                     $kodePosting = '';
@@ -483,6 +486,7 @@ class get_data
                                 $kodePosting = '';
                                 $code = 70;
                             }
+
                             // var_dump($tahun);
                             break;
                         case 'rekanan':
@@ -932,12 +936,12 @@ class get_data
                             // var_dump($limit);
                             if ($limit !== "all") {
                                 if ($cari != '') {
-                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like)", $data_like);
+                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like) $group_by", $data_like);
                                 } else {
                                     if (strlen($where1) > 3) {
-                                        $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1", $data_where1);
+                                        $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $group_by", $data_where1);
                                     } else {
-                                        $get_data = $DB->runQuery2("SELECT * FROM $tabel_pakai");
+                                        $get_data = $DB->runQuery2("SELECT * FROM $tabel_pakai $group_by");
                                     }
                                 }
                                 $jmldata = sizeof($get_data); //$get_data->fetchColumn();
@@ -956,22 +960,22 @@ class get_data
                             }
                             if ($limit != "all") {
                                 if ($cari != '') {
-                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like) $order ", $data_like, [$posisi, $limit]);
+                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like)  $group_by $order ", $data_like, [$posisi, $limit]);
                                 } else {
                                     if (strlen($where1) > 3) {
-                                        $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1, [$posisi, $limit]);
+                                        $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $group_by $order ", $data_where1, [$posisi, $limit]);
                                     } else {
-                                        $get_data = $DB->runQuery2("SELECT * FROM $tabel_pakai $order LIMIT $posisi, $limit");
+                                        $get_data = $DB->runQuery2("SELECT * FROM $tabel_pakai $group_by $order LIMIT $posisi, $limit");
                                     }
                                 }
                             } else {
                                 if ($cari != '') {
-                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like) $order", $data_like);
+                                    $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE ($like) $group_by $order", $data_like);
                                 } else {
                                     if (strlen($where1) > 3) {
-                                        $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1);
+                                        $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $group_by $order ", $data_where1);
                                     } else {
-                                        $get_data = $DB->runQuery2("SELECT * FROM $tabel_pakai $order ");
+                                        $get_data = $DB->runQuery2("SELECT * FROM $tabel_pakai $group_by $order ");
                                     }
                                 }
                             }
