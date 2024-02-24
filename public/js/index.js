@@ -540,6 +540,16 @@ $(document).ready(function () {
 	$("body").on("click", '[name="get_data"],[name="flyout"]', function (e) {
 		e.preventDefault();
 		let ini = $(this);
+		const [node] = $(this);
+		const attrs = {}
+		$.each(node.attributes, (index, attribute) => {
+			attrs[attribute.name] = attribute.value;
+			let attrName = attribute.name;
+			//membuat variabel
+			let myVariable = attrName + 'Attr';
+			window[myVariable] = attribute.value;
+		});
+		console.log(attrs);
 		let linkTemplate = {
 			wilayah: 'template/1. wilayah.xlsx',
 			peraturan: 'template/2. template peraturan.xlsx',
@@ -617,9 +627,11 @@ $(document).ready(function () {
 					switch (tbl) {
 						case 'dpa':
 						case 'renja':
+							if (jenis === 'edit') {
+								data.id_sub_keg = id_sub_kegAttr;
+							}
 							formIni.attr("id_sub_keg", ini.attr("id_sub_keg"));
-							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {
+							dataHtmlku.konten = buatElemenHtml("fieldDropdown", {
 									label: "Objek Belanja",
 									classField: `required`,
 									atribut: 'name="objek_belanja" placeholder="pilih objek belanja..."',

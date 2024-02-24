@@ -1055,11 +1055,11 @@ class post_data
                                         case 'dpa_neo':
                                         case 'renja_neo':
                                             $kolomJumlah = 'jumlah';
-                                            $kolomVol_1 = 'Vol_1';
-                                            $kolomVol_2 = 'Vol_2';
-                                            $kolomVol_3 = 'Vol_3';
-                                            $kolomVol_4 = 'Vol_4';
-                                            $kolomVol_5 = 'Vol_5';
+                                            $kolomVol_1 = 'vol_1';
+                                            $kolomVol_2 = 'vol_2';
+                                            $kolomVol_3 = 'vol_3';
+                                            $kolomVol_4 = 'vol_4';
+                                            $kolomVol_5 = 'vol_5';
                                             $kolomHarga_satuan = 'harga_satuan';
                                             
                                             $kolomSat_1 = 'sat_1';
@@ -1071,11 +1071,11 @@ class post_data
                                         case 'dppa_neo':
                                         case 'renja_p_neo':
                                             $kolomJumlah = 'jumlah_p';
-                                            $kolomVol_1 = 'Vol_1_p';
-                                            $kolomVol_2 = 'Vol_2_p';
-                                            $kolomVol_3 = 'Vol_3_p';
-                                            $kolomVol_4 = 'Vol_4_p';
-                                            $kolomVol_5 = 'Vol_5_p';
+                                            $kolomVol_1 = 'vol_1_p';
+                                            $kolomVol_2 = 'vol_2_p';
+                                            $kolomVol_3 = 'vol_3_p';
+                                            $kolomVol_4 = 'vol_4_p';
+                                            $kolomVol_5 = 'vol_5_p';
                                             $kolomHarga_satuan = 'harga_satuan_p';
 
                                             $kolomSat_1 = 'sat_1_p';

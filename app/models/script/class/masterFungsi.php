@@ -6,7 +6,7 @@ use FormulaParser\FormulaParser;
 class MasterFungsi
 {
     //get tabel data
-    public function getTabel($tbl = '', $nama_tabel = '', $get_data = [], $jmlhalaman = 0, $halaman = 1, $jumlah_kolom = 1, $type_user = 'user')
+    public function getTabel($tbl = '', $nama_tabel = '', $get_data = [], $jmlhalaman = 0, $halaman = 1, $jumlah_kolom = 1, $type_user = 'user', $value_dinamic=[])
     {
         //var_dump("dmn($get_data)");
         //ambil data user untuk warna
@@ -229,6 +229,42 @@ class MasterFungsi
                     case 'renja_p':
                     case 'dpa':
                     case 'renja':
+                        switch ($tbl) {
+                            case 'dpa':
+                            case 'renja':
+                                $kolomJumlah = 'jumlah';
+                                $kolomVol_1 = 'vol_1';
+                                $kolomVol_2 = 'vol_2';
+                                $kolomVol_3 = 'vol_3';
+                                $kolomVol_4 = 'vol_4';
+                                $kolomVol_5 = 'vol_5';
+                                $kolomHarga_satuan = 'harga_satuan';
+
+                                $kolomSat_1 = 'sat_1';
+                                $kolomSat_2 = 'sat_2';
+                                $kolomSat_3 = 'sat_3';
+                                $kolomSat_4 = 'sat_4';
+                                $kolomSat_5 = 'sat_5';
+                                break;
+                            case 'dppa':
+                            case 'renja_p':
+                                $kolomJumlah = 'jumlah_p';
+                                $kolomVol_1 = 'vol_1_p';
+                                $kolomVol_2 = 'vol_2_p';
+                                $kolomVol_3 = 'vol_3_p';
+                                $kolomVol_4 = 'vol_4_p';
+                                $kolomVol_5 = 'vol_5_p';
+                                $kolomHarga_satuan = 'harga_satuan_p';
+
+                                $kolomSat_1 = 'sat_1_p';
+                                $kolomSat_2 = 'sat_2_p';
+                                $kolomSat_3 = 'sat_3_p';
+                                $kolomSat_4 = 'sat_4_p';
+                                $kolomSat_5 = 'sat_5_p';
+                                break;
+                            default:
+                                break;
+                        };
                         $tbl_button = ($tbl == 'sub_keg_renja') ? 'renja' : 'dpa';
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
@@ -238,7 +274,7 @@ class MasterFungsi
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttonEdit = ($row->kel_kd_sub_keg == 'kd_sub_keg') ? '<div class="ui floating dropdown icon button lainnya">
+                            $buttonEdit = ($row->kel_rek != 'uraian') ? '<div class="ui floating dropdown icon button lainnya" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '">
                             <i class="wrench icon"></i>
                                 <div class="menu">
                                     <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
@@ -247,16 +283,22 @@ class MasterFungsi
                                     <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><i class="pen square red icon"></i>Rincian Perubahan</a>
                                     <div class="item"><div class="ui red empty circular label"></div>Help</div>
                                 </div>
-                            </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>';
-                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="edit outline blue icon"></i></button>';
+                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
+                        // var_dump($row->{$kolomVol_1});
+                        $koefisien = number_format($row->{$kolomVol_1}, 2, ',', '.');
+                        $koefisien .= ($row->{$kolomVol_2} > 0) ? ' x ' . number_format($row->{$kolomVol_2}, 2, ',', '.') : '';
+                        $koefisien .= ($row->{$kolomVol_3} > 0) ? ' x ' . number_format($row->{$kolomVol_3}, 2, ',', '.') : '';
+                        $koefisien .= ($row->{$kolomVol_4} > 0) ? ' x ' . number_format($row->{$kolomVol_4}, 2, ',', '.') : '';
+
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="kd_sub_keg">' . $row->kd_sub_keg . '</td>
+                                    <td klm="kd_akun">' . $row->kd_akun . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
-                                    <td klm="jumlah_pagu">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="jumlah_rincian">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="jumlah_pagu_p">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="jumlah_rincian_p">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td >' . $koefisien .  '</td>
+                                    <td klm="' . $kolomHarga_satuan . '">' . $divAwalAngka  . number_format($row->{$kolomHarga_satuan}, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="' . $kolomJumlah . '">' . $divAwalAngka  . number_format($row->{$kolomJumlah}, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;

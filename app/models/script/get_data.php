@@ -87,6 +87,7 @@ class get_data
                             'min_char' => 1,
                             'max_char' => 255
                         ]);
+
                         break;
                     case 'edit':
                         $id_row = $validate->setRules('id_row', 'id_row', [
@@ -95,6 +96,20 @@ class get_data
                             'min_char' => 1,
                             'max_char' => 100
                         ]);
+                        switch ($tbl) {
+                            case 'dppa':
+                            case 'renja_p':
+                            case 'dpa':
+                            case 'renja':
+                                $id_sub_keg = $validate->setRules('id_sub_keg', 'nomor sub kegiatan', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                break;
+                        }
                         break;
                     case 'get_tbl':
                         switch ($tbl) {
@@ -261,6 +276,7 @@ class get_data
                             #code...
                             break;
                     };
+                    $value_dinamic = [];
                     switch ($tbl) {
                         case 'tujuan_renstra':
                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
@@ -433,6 +449,7 @@ class get_data
                                 };
                                 $rowSubKeg = $DB->getWhereOnceCustom($tabel_sub_keg, [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['id', '=', $id_sub_keg, 'AND']]);
                                 if ($rowSubKeg) {
+                                    $value_dinamic = ['id_sub_keg' => $id_sub_keg];
                                     $kd_sub_keg = $rowSubKeg->kd_sub_keg;
                                     $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok";
                                     $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
@@ -474,7 +491,6 @@ class get_data
                                             <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
                                         </tr>';
                                     $data['tr_sub_keg'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
-
                                 } else {
                                     $message_tambah = ' (kode sub kegiatan tidak ditemukan)';
                                     $kodePosting = '';
@@ -650,15 +666,7 @@ class get_data
                             // $data_where =  [$text];
                             $jumlah_kolom = 7;
                             break;
-                        case 'dpa':
-                            $like = "kd_proyek = ? AND kd_analisa = nomor AND(uraian LIKE CONCAT('%',?,'%') OR kd_analisa LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                            $data_like = [$kd_proyek, $cari, $cari, $cari];
-                            $order = "ORDER BY id ASC";
-                            $posisi = " LIMIT ?, ?";
-                            $where1 = "username != ?";
-                            $data_where1 =  ['gila'];
-                            $jumlah_kolom = 4;
-                            break;
+
                         default:
                             $kodePosting = '';
                             $code = 204;
@@ -985,7 +993,9 @@ class get_data
                             } else {
                                 $code = 202; //202
                             }
-                            $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user);
+                            // var_dump($get_data);
+
+                            $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user, $value_dinamic);
                             $data = array_merge($dataTabel, $data);
                             break;
                         case 'get_Dropdown':
