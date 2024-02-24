@@ -680,7 +680,9 @@ class DB
     // Method untuk membaca data JSON dari kolom
     public function readJSONField($tableName, $columnName, $jsonKey, $condition)
     {
-        $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT({$columnName}, '$.{$jsonKey}')) AS {$jsonKey} FROM {$tableName}";
+        // $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT({$columnName}, '$.{$jsonKey}')) AS {$jsonKey} FROM {$tableName}";
+        // antisipasi ada titik di $jsonKey
+        $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT(`{$columnName}`, CONCAT('$.', JSON_QUOTE('{$jsonKey}')))) AS `{$jsonKey}` FROM `{$tableName}`";
         $query .= " WHERE";
         $dataValues = [];
         foreach ($condition as $key => $val) {

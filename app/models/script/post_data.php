@@ -1516,10 +1516,7 @@ class post_data
                         case 'add_field_json':
                             //ambil data
                             $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
-                            
                             // Menghapus tanda kutip tunggal yang tidak valid
-
-
                             //cari index di array
                             $key = false;
                             if ($data_klm) {

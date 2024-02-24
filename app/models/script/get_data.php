@@ -822,10 +822,21 @@ class get_data
                                                     $data['values']['kd_akun'] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true];
                                                 }
                                                 // kelompok
-                                                $cari_drop = $data['users']->kelompok;
+                                                $cari_drop = $data['users']->jenis_kelompok;
+                                                switch ($tbl) {
+                                                    case 'dpa':
+                                                    case 'dppa':
+                                                        $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
+                                                        break;
+                                                    case 'renja':
+                                                    case 'renja_p':
+                                                        $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
+                                                        break;
+                                                };
+                                                // komponen
                                                 if ($cari_drop) {
                                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                    $data_klm = $DB->readJSONField("sub_keg_{$tbl}_neo", 'kelompok_json', $cari_drop, $dataKondisiField);
+                                                    $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'kelompok_json', $cari_drop, $dataKondisiField);
                                                     $data_klm = json_decode($data_klm, true);
                                                     $key = array_search($cari_drop, $data_klm, true);
                                                     $data['values']['kelompok'] = ['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true];
@@ -834,8 +845,10 @@ class get_data
                                                 $cari_drop = $data['users']->sumber_dana;
                                                 if ($cari_drop) {
                                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                    $data_klm = $DB->readJSONField("sub_keg_{$tbl}_neo", 'sumber_dana', $cari_drop, $dataKondisiField);
+                                                    $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'sumber_dana', $cari_drop, $dataKondisiField);
+                                                    var_dump($data_klm);
                                                     $data_klm = json_decode($data_klm, true);
+                                                    var_dump($data_klm);
                                                     $key = array_search($cari_drop, $data_klm, true);
                                                     $kondisi_result_sub = [['kode', '=', $row]];
                                                     $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
