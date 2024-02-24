@@ -197,10 +197,10 @@ class post_data
                                         'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_4']]]]
                                     ]);
                                 }
-                                $vol_1_kali = ($vol_1 <= 0) ? $vol_1 : 1;
-                                $vol_2_kali = ($vol_2 <= 0) ? $vol_2 : 1;
-                                $vol_3_kali = ($vol_3 <= 0) ? $vol_3 : 1;
-                                $vol_4_kali = ($vol_4 <= 0) ? $vol_4 : 1;
+                                $vol_1_kali = ($vol_1) ? $vol_1 : 1;
+                                $vol_2_kali = ($vol_2) ? $vol_2 : 1;
+                                $vol_3_kali = ($vol_3) ? $vol_3 : 1;
+                                $vol_4_kali = ($vol_4) ? $vol_4 : 1;
                                 $volume = $vol_1_kali * $vol_2_kali * $vol_3_kali * $vol_4_kali;
                                 $jumlah = $volume * $harga_satuan;
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
