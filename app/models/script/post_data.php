@@ -103,7 +103,7 @@ class post_data
                                     'inDB' => [$tabel_pakai_temporerSubkeg, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
                                 ]);
                                 $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temporerSubkeg, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
-                                $kd_sub_keg = ($row_kd_sub_keg) ? $row_kd_sub_keg->uraian : 'data sub kegiatan tidak ditemukan';
+                                $kd_sub_keg = ($row_kd_sub_keg) ? $row_kd_sub_keg->kd_sub_keg : 'data sub kegiatan tidak ditemukan';
                                 $jenis_kelompok = $validate->setRules('jenis_kelompok', 'jenis kelompok belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -138,6 +138,9 @@ class post_data
                                 if ($id_standar_harga) {
                                     $harga_row = $DB->getWhereOnceCustom($tabel_pakai_temporer, [['id', '=', $id_standar_harga], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND']]);
                                     $harga_satuan = ($harga_row) ? $harga_row->harga_satuan : 0;
+                                    $komponen = ($harga_row) ? $harga_row->uraian_barang : 'komponen tidak ada di database';
+                                    $spesifikasi = ($harga_row) ? $harga_row->spesifikasi : 'komponen tidak ada di database';
+                                    $tkdn = ($harga_row) ? $harga_row->tkdn : 'komponen tidak ada di database';
                                 }
                                 $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                 $uraian = $validate->setRules('uraian', 'uraian belanja', [
@@ -1043,7 +1046,7 @@ class post_data
                                     break;
                                 default:
                                     $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                    $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                                    // $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'kd_opd' => $kd_opd,
@@ -1052,18 +1055,16 @@ class post_data
                                         'kd_akun' => $kd_akun,
                                         'kel_rek' => 'uraian',//kd
                                         'objek_belanja' => $objek_belanja,
-                                        'disable_komponen' => $disable_komponen,
                                         'uraian' => $uraian,
                                         'jenis_kelompok' => $jenis_kelompok,
                                         'kelompok' => $kelompok,
-                                        'jenis_standar_harga' => $jenis_standar_harga,
+                                        'jenis_standar_harga' => $jenis_komponen,
                                         'id_standar_harga' => $id_standar_harga,
                                         'komponen' => $komponen,
                                         'spesifikasi' => $spesifikasi,
-                                        'tkdn' => $tkdn,
+                                        'tkdn' => (float)$tkdn,
                                         'pajak' => $pajak,
                                         'harga_satuan' => $harga_satuan,
-                                        'satuan' => $satuan,
                                         'vol_1' => $vol_1,
                                         'vol_2' => $vol_2,
                                         'vol_3' => $vol_3,
@@ -1081,8 +1082,9 @@ class post_data
                                         'username_input' => $_SESSION["user"]["username"],
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
-                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $set,'kd_akun' => $kd_akun];
-                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
+                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set,'kd_akun' => $kd_akun,'kd_wilayah'=> $kd_wilayah,'kd_opd'=> $kd_opd,'tahun'=> $tahun];
+                                    $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                                    var_dump($insertKodeRek);
                                     $kodePosting = '';
                                     break;
                             };

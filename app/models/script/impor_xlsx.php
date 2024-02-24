@@ -510,7 +510,8 @@ class Impor_xlsx
                                                                 $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
                                                                 $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
                                                                 //kondisi_akhir
-                                                                $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
+                                                                $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_4 + (float)$target_thn_5;
+                                                                $jumlah = (float)$dana_thn_1 + (float)$dana_thn_2 + (float)$dana_thn_3 + (float)$dana_thn_4 + (float)$dana_thn_5;
                                                                 $arrayDataRows = [
                                                                     'kd_wilayah' => $kd_wilayah,
                                                                     'kd_opd' => $kd_opd,
@@ -534,6 +535,7 @@ class Impor_xlsx
                                                                     'target_thn_5' => (float)$target_thn_5,
                                                                     'dana_thn_5' => (float)$dana_thn_5,
                                                                     'kondisi_akhir' => (float)$kondisi_akhir,
+                                                                    'jumlah' => (float)$jumlah,
                                                                     'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
                                                                     'unit_kerja' => $unit_kerja,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),

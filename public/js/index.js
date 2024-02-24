@@ -1757,17 +1757,20 @@ $(document).ready(function () {
 													let attrElm = $(iterator).attr('name');
 													let postDataField = true;
 													let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
+													// console.log(`attrElm : ${attrElm}`);
 													if (attrElm === 'file') {
 														formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 													} else {
 														let strText = null;
 														let cariAttrRms = $(iterator).attr('rms');
-														if (typeof cariAttrRms === 'undefined' && cariAttrRms === false) {
+														// console.log(`cariAttrRms : ${cariAttrRms}`);
+														if (typeof cariAttrRms === 'undefined' || cariAttrRms === false) {
 															strText = result.data?.users[attrElm];
 														} else {
 															strText = parseFloat(result.data?.users[attrElm]);
 															strText = accounting.formatNumber(result.data?.users[attrElm], strText.countDecimals(), ".", ",");
 														}
+														// console.log(`strText : ${strText}`);
 														// jika ada ajx class drpdown
 														if (dropDownElmAjx.length > 0 && result.data.hasOwnProperty("values")) {
 															if (result.data?.values[attrElm]) {
@@ -3473,6 +3476,9 @@ $(document).ready(function () {
 				onShow: function () {
 
 				},
+				onHidden: function () {
+					$(this).find("form").form("reset");
+				}
 			});
 		}
 	}
