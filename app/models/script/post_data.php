@@ -122,7 +122,7 @@ class post_data
                                     'required' => true,
                                     'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'sumber_dana', [['sumber_dana', "LIKE CONCAT('%',?,'%')", $_POST['sumber_dana']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
-                                $jenis_komponen = $validate->setRules('jenis_komponen', 'jenis_komponen', [
+                                $jenis_standar_harga = $validate->setRules('jenis_standar_harga', 'jenis komponen', [
                                     'sanitize' => 'string',
                                     'in_array' => ['ssh', 'sbu', 'hspk', 'asb'],
                                     'required' => true,
@@ -1101,7 +1101,7 @@ class post_data
                                         'uraian' => $uraian,
                                         'jenis_kelompok' => $jenis_kelompok,
                                         'kelompok' => $kelompok,
-                                        'jenis_standar_harga' => $jenis_komponen,
+                                        'jenis_standar_harga' => $jenis_standar_harga,
                                         'id_standar_harga' => $id_standar_harga,
                                         'komponen' => $komponen,
                                         'spesifikasi' => $spesifikasi,

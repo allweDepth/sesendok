@@ -447,55 +447,65 @@ class get_data
                                         #code...
                                         break;
                                 };
+                                $value_dinamic = ['id_sub_keg' => $id_sub_keg];
                                 $rowSubKeg = $DB->getWhereOnceCustom($tabel_sub_keg, [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['id', '=', $id_sub_keg, 'AND']]);
-                                if ($rowSubKeg) {
-                                    $value_dinamic = ['id_sub_keg' => $id_sub_keg];
-                                    $kd_sub_keg = $rowSubKeg->kd_sub_keg;
-                                    $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok";
-                                    $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
-                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kd_sub_keg = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, $kd_sub_keg, 'uraian', $cari, $cari, $cari, $cari, $cari, $cari, $cari];
-                                    $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian ASC";
-                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? AND kel_rek = ?";
-                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg, 'uraian'];
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                    //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
-                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
-                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
-                                    $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
-                                    $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
-                                    // var_dump($bidang_sub_keg);
-                                    $data['tr_sub_keg'] = '<tr>
-                                            <td class="collapsing">Perangkat Daerah</td>
-                                            <td>' . $data['unit_kerja'] . '</td>
-                                            <td class="right aligned collapsing">Rp. 0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bidang</td>
-                                            <td>' . $bidang_sub_keg['kd_bidang']->uraian . ' (' . $bidang_sub_keg['kd_bidang']->kd_sub_keg . ')</td>
-                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Program</td>
-                                            <td>' . $bidang_sub_keg['kd_prog']->uraian . ' (' . $bidang_sub_keg['kd_prog']->kd_sub_keg . ')</td>
-                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kegiatan</td>
-                                            <td>' . $bidang_sub_keg['kd_keg']->uraian . ' (' . $bidang_sub_keg['kd_keg']->kd_sub_keg . ')</td>
-                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sub Kegiatan</td>
-                                            <td>' . $bidang_sub_keg['kd_sub_keg']->uraian . ' (' . $bidang_sub_keg['kd_sub_keg']->kd_sub_keg . ')</td>
-                                            <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
-                                        </tr>';
-                                    $data['tr_sub_keg'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
-                                } else {
-                                    $message_tambah = ' (kode sub kegiatan tidak ditemukan)';
-                                    $kodePosting = '';
-                                    $code = 70;
-                                }
+                                switch ($jenis) {
+                                    case 'get_tbl':
+                                        if ($rowSubKeg) {
+                                            $kd_sub_keg = $rowSubKeg->kd_sub_keg;
+                                            $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok";
+                                            $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
+                                            $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kd_sub_keg = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                            $data_like = [$kd_wilayah, $kd_opd, $tahun, $kd_sub_keg, 'uraian', $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                            $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian ASC";
+                                            $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? AND kel_rek = ?";
+                                            $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg, 'uraian'];
+                                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                            //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
+                                            $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
+                                            $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
+                                            $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
+                                            $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
+                                            // var_dump($bidang_sub_keg);
+                                            $data['tr_sub_keg'] = '<tr>
+                                                    <td class="collapsing">Perangkat Daerah</td>
+                                                    <td>' . $data['unit_kerja'] . '</td>
+                                                    <td class="right aligned collapsing">Rp. 0,00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Bidang</td>
+                                                    <td>' . $bidang_sub_keg['kd_bidang']->uraian . ' (' . $bidang_sub_keg['kd_bidang']->kd_sub_keg . ')</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Program</td>
+                                                    <td>' . $bidang_sub_keg['kd_prog']->uraian . ' (' . $bidang_sub_keg['kd_prog']->kd_sub_keg . ')</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kegiatan</td>
+                                                    <td>' . $bidang_sub_keg['kd_keg']->uraian . ' (' . $bidang_sub_keg['kd_keg']->kd_sub_keg . ')</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sub Kegiatan</td>
+                                                    <td>' . $bidang_sub_keg['kd_sub_keg']->uraian . ' (' . $bidang_sub_keg['kd_sub_keg']->kd_sub_keg . ')</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                </tr>';
+                                            $data['tr_sub_keg'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
+                                        } else {
+                                            $message_tambah = ' (kode sub kegiatan tidak ditemukan)';
+                                            $kodePosting = '';
+                                            $code = 70;
+                                        }
+                                        break;
+                                    case 'edit':
+
+                                        break;
+                                    default:
+                                        #code...
+                                        break;
+                                };
                             } else {
                                 $data['tr_sub_keg'] = '';
                                 $message_tambah = ' (atur organisasi OPD)';
@@ -796,6 +806,45 @@ class get_data
                                                     $kondisi_result = [['disable', '<=', 0], ['value', '=', $satuan_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
                                                     $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
+                                                }
+                                                break;
+                                            case 'renja':
+                                            case 'dpa':
+                                            case 'renja_p':
+                                            case 'dppa':
+                                                // ambil data untuk values dropdown
+                                                $data['values'] = [];
+                                                //kd_akun
+                                                $cari_drop = $data['users']->kd_akun;
+                                                if ($cari_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['kode', '=', $cari_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
+                                                    $data['values']['kd_akun'] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true];
+                                                }
+                                                // kelompok
+                                                $cari_drop = $data['users']->kelompok;
+                                                if ($cari_drop) {
+                                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                    $data_klm = $DB->readJSONField("sub_keg_{$tbl}_neo", 'kelompok_json', $cari_drop, $dataKondisiField);
+                                                    $data_klm = json_decode($data_klm, true);
+                                                    $key = array_search($cari_drop, $data_klm, true);
+                                                    $data['values']['kelompok'] = ['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true];
+                                                }
+                                                // sumber_dana
+                                                $cari_drop = $data['users']->sumber_dana;
+                                                if ($cari_drop) {
+                                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                    $data_klm = $DB->readJSONField("sub_keg_{$tbl}_neo", 'sumber_dana', $cari_drop, $dataKondisiField);
+                                                    $data_klm = json_decode($data_klm, true);
+                                                    $key = array_search($cari_drop, $data_klm, true);
+                                                    $kondisi_result_sub = [['kode', '=', $row]];
+                                                    $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
+                                                    if ($row_sub) {
+                                                        $uraian_sumberDana = $row_sub->uraian;
+                                                    }else {
+                                                        $uraian_sumberDana = 'data tidak ditemukan';
+                                                    }
+                                                    $data['values']['sumber_dana'] = ['name' => $uraian_sumberDana, 'value' => $data_klm[$key], 'selected' => true];
                                                 }
                                                 break;
                                             case 'sub_keg_renja':

@@ -695,7 +695,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Jenis Standar Harga",
 									classField: `required`,
-									atribut: 'name="jenis_komponen" placeholder="jenis standar harga..."',
+									atribut: 'name="jenis_standar_harga" placeholder="jenis standar harga..."',
 									kelas: "clearable lainnya selection",
 									dataArray: [
 										["ssh", "SSH"],
