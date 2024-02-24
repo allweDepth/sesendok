@@ -717,7 +717,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
 									kelas: "disabled",
-									atribut: 'name="tkdn" placeholder="tkdn..." non_data',
+									atribut: 'name="tkdn" placeholder="tkdn..." rms non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Spesifikasi Komponen",
@@ -728,7 +728,7 @@ $(document).ready(function () {
 									label: "Satuan",
 									kelas: "disabled",
 									atribut:
-										'name="satuan" placeholder="hsatuan komponen..." non_data',
+										'name="satuan" placeholder="satuan komponen..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Harga Satuan",
@@ -763,8 +763,7 @@ $(document).ready(function () {
 									label: "Volume",
 									classField: `required`,
 									kelas: "disabled",
-									atribut:
-										'name="volume" placeholder="volume..." rms',
+									atribut: 'name="volume" placeholder="volume..." rms',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Koefisien (Keterangan Jumlah)",

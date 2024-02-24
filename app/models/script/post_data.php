@@ -1061,7 +1061,7 @@ class post_data
                                             $kolomVol_4 = 'vol_4';
                                             $kolomVol_5 = 'vol_5';
                                             $kolomHarga_satuan = 'harga_satuan';
-                                            
+                                            $kolomVolume = 'volume';
                                             $kolomSat_1 = 'sat_1';
                                             $kolomSat_2 = 'sat_2';
                                             $kolomSat_3 = 'sat_3';
@@ -1077,7 +1077,7 @@ class post_data
                                             $kolomVol_4 = 'vol_4_p';
                                             $kolomVol_5 = 'vol_5_p';
                                             $kolomHarga_satuan = 'harga_satuan_p';
-
+                                            $kolomVolume = 'volume_p';
                                             $kolomSat_1 = 'sat_1_p';
                                             $kolomSat_2 = 'sat_2_p';
                                             $kolomSat_3 = 'sat_3_p';
@@ -1116,6 +1116,7 @@ class post_data
                                         $kolomSat_2 => $sat_2,
                                         $kolomSat_3 => $sat_3,
                                         $kolomSat_4 => $sat_4,
+                                        $kolomVolume => $volume,
                                         $kolomJumlah => $jumlah,
                                         'sumber_dana' => $sumber_dana,
                                         'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
