@@ -632,27 +632,27 @@ $(document).ready(function () {
 							}
 							formIni.attr("id_sub_keg", ini.attr("id_sub_keg"));
 							dataHtmlku.konten = buatElemenHtml("fieldDropdown", {
-									label: "Objek Belanja",
-									classField: `required`,
-									atribut: 'name="objek_belanja" placeholder="pilih objek belanja..."',
-									kelas: "search lainnya selection",
-									dataArray: [
-										["gaji", "Belanja Gaji dan Tunjangan ASN"],
-										["barang_jasa_modal", "Belanja Barang Jasa dan Modal", "active"],
-										["bunga", "Belanja Bunga"],
-										["subsidi", "Belanja Subsidi"],
-										["hibah_barang_jasa", "Belanja Hibah (Barang/Jasa)"],
-										["hibah_uang", "Belanja Hibah (Uang)"],
-										["sosial_barang_jasa", "Belanja Bantuan Sosial (Barang/Jasa)"],
-										["sosial_uang", "Belanja Bantuan Sosial (Uang)"],
-										["keuangan_umum", "Belania Bantuan Keuangan Umum"],
-										["keuangan_khusus", "Belanja Bantuan Keuangan Khusus"],
-										["btt", "Belanja Tidak Terduga (BTT)"],
-										["bos_pusat", "Dana BOS (BOS Pusat)"],
-										["blud", "Belanja Operasional (BLUD)"],
-										["lahan", "Pembebasan Tanah/ Lahan"]
-									],
-								}) +
+								label: "Objek Belanja",
+								classField: `required`,
+								atribut: 'name="objek_belanja" placeholder="pilih objek belanja..."',
+								kelas: "search lainnya selection",
+								dataArray: [
+									["gaji", "Belanja Gaji dan Tunjangan ASN"],
+									["barang_jasa_modal", "Belanja Barang Jasa dan Modal", "active"],
+									["bunga", "Belanja Bunga"],
+									["subsidi", "Belanja Subsidi"],
+									["hibah_barang_jasa", "Belanja Hibah (Barang/Jasa)"],
+									["hibah_uang", "Belanja Hibah (Uang)"],
+									["sosial_barang_jasa", "Belanja Bantuan Sosial (Barang/Jasa)"],
+									["sosial_uang", "Belanja Bantuan Sosial (Uang)"],
+									["keuangan_umum", "Belania Bantuan Keuangan Umum"],
+									["keuangan_khusus", "Belanja Bantuan Keuangan Khusus"],
+									["btt", "Belanja Tidak Terduga (BTT)"],
+									["bos_pusat", "Dana BOS (BOS Pusat)"],
+									["blud", "Belanja Operasional (BLUD)"],
+									["lahan", "Pembebasan Tanah/ Lahan"]
+								],
+							}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Rekening / Akun",
 									classField: `required`,
@@ -1642,7 +1642,15 @@ $(document).ready(function () {
 							break;
 						case 'dpa':
 						case 'renja'://@audit drop renja
-							let renja_dpa = new DropdownConstructor('.ui.dropdown.kd_akun.ajx.selection')
+							var tabel_pakai_temporerSubkeg = 'sub_keg_renja';
+							switch (tbl) {
+								case 'dpa':
+								case 'dppa':
+									tabel_pakai_temporerSubkeg = 'sub_keg_dpa';
+									break;
+
+							};
+							var renja_dpa = new DropdownConstructor('.ui.dropdown.kd_akun.ajx.selection')
 							renja_dpa.returnList("get_row_json", "akun_belanja");
 							//jenis_kelompok 
 							let dropdownJenisKelompok = new DropdownConstructor('.ui.dropdown[name="jenis_kelompok"]');
@@ -1653,22 +1661,22 @@ $(document).ready(function () {
 							allObjek = { jenis: 'gantiJenisKomponen' };
 							dropdownJenisKomponen.onChange(allObjek);
 
-							let dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
+							var dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
 							var allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
-							dropdownSumberDana.returnList("get_field_json", `sub_keg_${tbl}`, allField);
+							dropdownSumberDana.returnList("get_field_json", tabel_pakai_temporerSubkeg, allField);
 
-							let dropdownKeterangan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="uraian"]')
-							var allField = { klm: 'keterangan_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'keterangan_json' }
-							dropdownKeterangan.returnList("get_field_json", `sub_keg_${tbl}`, allField);
+							var dropdownKeterangan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="uraian"]')
+							allField = { klm: 'keterangan_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'keterangan_json' }
+							dropdownKeterangan.returnList("get_field_json", tabel_pakai_temporerSubkeg, allField);
 
-							let dropdownSatuanRenja1 = new DropdownConstructor('.ui.dropdown.sat_1')
+							var dropdownSatuanRenja1 = new DropdownConstructor('.ui.dropdown.sat_1')
 							allField = { minCharacters: 1 }
 							dropdownSatuanRenja1.returnList("get_row_json", "satuan", allField);
-							let dropdownSatuanRenja2 = new DropdownConstructor('.ui.dropdown.sat_2')
+							var dropdownSatuanRenja2 = new DropdownConstructor('.ui.dropdown.sat_2')
 							dropdownSatuanRenja2.returnList("get_row_json", "satuan", allField);
-							let dropdownSatuanRenja3 = new DropdownConstructor('.ui.dropdown.sat_3')
+							var dropdownSatuanRenja3 = new DropdownConstructor('.ui.dropdown.sat_3')
 							dropdownSatuanRenja3.returnList("get_row_json", "satuan", allField);
-							let dropdownSatuanRenja4 = new DropdownConstructor('.ui.dropdown.sat_4')
+							var dropdownSatuanRenja4 = new DropdownConstructor('.ui.dropdown.sat_4')
 							dropdownSatuanRenja4.returnList("get_row_json", "satuan", allField);
 							break;
 						case 'val':
@@ -1786,7 +1794,50 @@ $(document).ready(function () {
 														// jika ada ajx class drpdown
 														if (dropDownElmAjx.length > 0 && result.data.hasOwnProperty("values")) {
 															if (result.data?.values[attrElm]) {
+																postDataField = false;
+																tabel_pakai_temporerSubkeg = 'sub_keg_renja';
 																switch (tbl) {
+																	case 'dpa':
+																	case 'renja':
+																		switch (tbl) {//@audit now
+																			case 'dpa':
+																			case 'dppa':
+																				tabel_pakai_temporerSubkeg = 'sub_keg_dpa';
+																				break;
+																		}
+																		switch (attrElm) {
+																			case 'kd_akun':
+																				renja_dpa.valuesDropdown(result.data?.values?.kd_akun);
+																				renja_dpa.returnList("get_row_json", "akun_belanja");
+																				break;
+																			case 'kelompok':
+																				let dropdownKelompok = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kelompok"]')
+																				dropdownKelompok.valuesDropdown(result.data?.values?.kelompok);
+																				allField = { klm: 'kelompok_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg') }
+																				dropdownKelompok.returnList("get_field_json", tabel_pakai_temporerSubkeg, allField);
+																				break;
+																			case 'sumber_dana':
+																				dropdownSumberDana.valuesDropdown(result.data?.values?.sumber_dana);
+																				allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
+																				dropdownSumberDana.returnList("get_field_json", tabel_pakai_temporerSubkeg, allField);
+																				break;
+																			case 'komponen':
+																				let dropdownKomponen = new DropdownConstructor('.ui.dropdown[name="komponen"]')
+																				dropdownKomponen.valuesDropdown(result.data?.values?.komponen);
+																				let jenisKomponen = $('form[name="form_flyout"]').find('.ui.dropdown[name="jenis_komponen"]').dropdown('get value');
+																				let rekeningAkun = $('form[name="form_flyout"]').find('.ui.dropdown[name="kd_akun"]').dropdown('get value');
+																				let allFieldKomponen = { id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), kd_akun: rekeningAkun };
+																				dropdownKomponen.returnList("get_row_json", jenisKomponen, allFieldKomponen);
+																				break;
+																			case 'uraian':
+																				dropdownKeterangan.valuesDropdown(result.data?.values?.uraian);
+																				allField = { klm: 'keterangan_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'keterangan_json' }
+																				dropdownKeterangan.returnList("get_field_json", tabel_pakai_temporerSubkeg, allField);
+																				break;
+																			default:
+																				break;
+																		}
+																		break;
 																	case 'renstra':
 																		switch (attrElm) {
 																			case 'sasaran':
@@ -2749,7 +2800,7 @@ $(document).ready(function () {
 	//=========== class calendar ========
 	//===================================
 	class MethodConstructor {
-		//@audit-ok MethodConstructor
+		//hjn9ioj MethodConstructor
 		constructor(element) {
 			//constructor(element,tglAwal=new Date(),tglAkhir=new Date()) {
 			this.element = $(element);

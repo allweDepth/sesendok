@@ -18,9 +18,11 @@ body.inverted {
     height: 500px;
     /*height: 80vh;*/
 }
+
 .ui.input.multi input[type="text"]:not(:first-child) {
     border-radius: 0 !important;
 }
+
 /* Dark Mode */
 .dark-mode {
     background-color: #121212;
@@ -42,25 +44,34 @@ body.inverted {
     background-color: #1a1a1a;
     /* Ganti dengan warna latar belakang elemen segment pada dark mode */
 }
+
 /* untuk merapikan text dropdown yg ada deskripsi */
 .ui.dropdown div.text {
     display: flex;
     flex-direction: column-reverse;
     text-align: justify;
-    }
+}
+
 .pusher .ui.tab.basic.segment {
     margin-top: 0px !important;
     height: calc(100vh - 45px - 90px) !important;
     overflow-y: auto;
 }
+
 .ui.visible.overlay.flyout {
     height: calc(100vh - 45px) !important;
     overflow-y: auto;
 }
+
 .ui.visible.overlay.flyout .form.scrolling {
     height: calc(100vh - 45px - 175px - 14px) !important;
     overflow-y: auto;
 }
+
+div.menu.transition.visible {
+    z-index: 999 !important;
+}
+
 /* .ui.bottom.attached.pushable {
     margin-top: 44px !important;
 
@@ -93,6 +104,7 @@ body.inverted {
 .ui.search .prompt {
     border-radius: 500rem !important;
 }
+
 .ui.accordion.item {
     padding: 0px;
 }
