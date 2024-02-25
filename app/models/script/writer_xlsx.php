@@ -695,10 +695,15 @@ class writer_xlsx
                             case 'renja':
                                 switch ($jenis) {
                                     case 'dok': //mengambil seluruh data harga satuan sesuai proyek
-                                        // var_dump($row['kd_sub_keg']);
+                                        $kd_sub_keg = $row['kd_sub_keg'];
+                                        $kd_akun = $row['kd_akun'];
+                                        if ($row['kel_rek'] == 'uraian') {
+                                            $kd_sub_keg = '';
+                                            $kd_akun = '';
+                                        }
                                         $rowdata = array(
-                                            $row['kd_sub_keg'],
-                                            $row['kd_akun'],
+                                            $kd_sub_keg,
+                                            $kd_akun,
                                             $row['uraian'],
                                             $row['volume'],
                                             $row['sat_1'],
@@ -780,7 +785,7 @@ class writer_xlsx
                                     case 'dok': //mengambil seluruh data harga satuan sesuai proyek
                                         switch ($tbl) {
                                             case 'sumber_dana':
-                                                
+
                                                 $rowdata = array(
                                                     $myrow,
                                                     $row['sumber_dana'],
