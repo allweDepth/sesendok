@@ -283,9 +283,9 @@ class writer_xlsx
                         case 'sub_keg_renja':
                             switch ($jenis) {
                                 case 'dok': //mengambil seluruh data harga satuan sesuai proyek
-                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [25, 60, 40, 40, 15, 20, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [25, 60, 40, 40, 25, 25, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
-                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', ': ' . "($kd_opd) $nama_org"), ['font-style' => 'bold', 'font-size' => 12]);
 
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';

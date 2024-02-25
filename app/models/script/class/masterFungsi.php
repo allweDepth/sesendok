@@ -313,7 +313,7 @@ class MasterFungsi
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttonEdit = ($row->kel_rek == 'kd_sub_keg') ? '<div class="ui floating dropdown icon button lainnya">
+                            $buttonEdit = ($row->kel_rek == 'sub_keg') ? '<div class="ui floating dropdown icon button lainnya">
                             <i class="wrench icon"></i>
                                 <div class="menu">
                                     <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
@@ -1383,7 +1383,7 @@ class MasterFungsi
                             $kel_rek_sum = 'kelompok';
                             break;
                     };
-                    $kondisi_sum = [['kd_sub_keg', '=', $rekening_gabung_sub_keg], ['kd_akun', '=',  $kd_akun_olah_sebelum, 'AND'], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                    $kondisi_sum = [['kd_sub_keg', '=', $rekening_gabung_sub_keg], ['kd_akun', 'LIKE',  "$kd_akun_olah%", 'AND'], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                     //ambil jumlah 
                     $DB->select("SUM({$kolomJumlah}) AS jumlah");
                     $row_sum = $DB->getWhereArray($tabel_pakai, $kondisi_sum);
@@ -1394,8 +1394,15 @@ class MasterFungsi
                     switch ($tabel_pakai) {
                         case 'dpa_neo':
                         case 'renja_neo':
+                            $arraySum = [
+                                $kolomJumlah => (float)$jumlah,
+                            ];
                         case 'dppa_neo':
                         case 'renja_p_neo':
+
+
+
+
                             $row_progkeg = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $rekening_gabung]]);
                             $uraian = ($row_progkeg) ? $row_progkeg->uraian : 'data akun tidak ditemukan';
                             $set_insert = [
@@ -1538,7 +1545,7 @@ class MasterFungsi
                         if ($sizeOfRekening == 5) {
                             # sum jumlah kd akun yang 
                         }
-                        $kondisi_sum = [['kd_sub_keg', '=', $kd_subKeg_olah_sebelum], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $kondisi_sum = [['kd_sub_keg', "LIKE", "$rekening_gabung%"], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                         break;
                     case 'sub_keg_dpa_neo':
                     case 'sub_keg_renja_neo':
@@ -1578,6 +1585,7 @@ class MasterFungsi
                     $DB->select("SUM({$kolomJumlah}) AS jumlah");
                     $row_sum = $DB->getWhereArray($tabel_pakai, $kondisi_sum);
                     $jumlah = $row_sum[0]->jumlah;
+                    var_dump($jumlah);
                 } else {
                     $jumlah = $set[$kolomJumlah];
                     // var_dump($jumlah);
