@@ -548,7 +548,6 @@ $(document).ready(function () {
 			let myVariable = attrName + 'Attr';
 			window[myVariable] = attribute.value;
 		});
-		console.log(attrs);
 		let linkTemplate = {
 			wilayah: 'template/1. wilayah.xlsx',
 			peraturan: 'template/2. template peraturan.xlsx',

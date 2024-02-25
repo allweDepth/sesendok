@@ -1399,10 +1399,6 @@ class MasterFungsi
                             ];
                         case 'dppa_neo':
                         case 'renja_p_neo':
-
-
-
-
                             $row_progkeg = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $rekening_gabung]]);
                             $uraian = ($row_progkeg) ? $row_progkeg->uraian : 'data akun tidak ditemukan';
                             $set_insert = [
@@ -1479,7 +1475,6 @@ class MasterFungsi
                 $sizeOfRekening = sizeof($kd_subKeg_olah);
                 $rekening_gabung = implode('.', $kd_subKeg_olah);
                 // uraikan kd_sub_keg
-
                 $kd_urusan = $kd_subKeg_olah[0];
                 $kd_bidang = isset($kd_subKeg_olah[1]) ? $kd_subKeg_olah[1] : null;
                 $kd_prog = isset($kd_subKeg_olah[2]) ? $kd_subKeg_olah[2] : null;
