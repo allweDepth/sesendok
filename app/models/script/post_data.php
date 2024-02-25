@@ -128,7 +128,7 @@ class post_data
                                     'required' => true,
                                     'min_char' => 3
                                 ]);
-                                $tabel_pakai_temporer = $Fungsi->tabel_pakai($jenis_komponen)['tabel_pakai'];
+                                $tabel_pakai_temporer = $Fungsi->tabel_pakai($jenis_standar_harga)['tabel_pakai'];
                                 $id_standar_harga = $validate->setRules('komponen', 'komponen', [
                                     'required' => true,
                                     'numeric' => true,

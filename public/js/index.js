@@ -930,7 +930,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Sub Kegiatan",
-									atribut: 'name="kode" placeholder="pilih sub kegiatan..."',
+									atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
 									kelas: "search clearable kode ajx selection",
 									dataArray: [
 										["", ""]
@@ -1860,8 +1860,8 @@ $(document).ready(function () {
 																				dropdown_ajx_tujuan.returnList({ jenis: "get_row_json", tbl: "sasaran_renstra", set: allField });
 																				postDataField = false;
 																				break;
-																			case 'kode':
-																				dropdown_ajx_kode.valuesDropdown(result.data?.values?.kode);
+																			case 'kd_sub_keg':
+																				dropdown_ajx_kode.valuesDropdown(result.data?.values?.kd_sub_keg);
 																				dropdown_ajx_kode.returnList({ jenis: "get_row_json", tbl: "sub_keg" });
 																				postDataField = false;
 																				break;

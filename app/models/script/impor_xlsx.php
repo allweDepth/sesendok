@@ -1,6 +1,8 @@
 <?php
+
 use Shuchkin\SimpleXLSX;
 use FormulaParser\FormulaParser;
+
 class Impor_xlsx
 {
     public function import_xlsx()
@@ -39,13 +41,16 @@ class Impor_xlsx
         //$data['note'][] = 'row update';
         //$data['note'][] = 'add row';
         //$data['note'][] = 'gagal';
-        $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
-        if ($rowUsername != false) {
-            $tahun = (int) $rowUsername->tahun;
-            $kd_wilayah = $rowUsername->kd_wilayah;
-            $kd_opd = $rowUsername->kd_organisasi;
-            $id_user = $rowUsername->id;
-        } else {
+        $id_user = $_SESSION["user"]["id"];
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user],['username', '=', $username,'AND']]);
+        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
+        if ($jumlahArray > 0) {
+            foreach ($userAktif[0] as $key => $value) {
+                ${$key} = $value;
+            }
+            $id_user = $id;
+            $kd_opd = $kd_organisasi;
+        }else {
             $id_user = 0;
             $code = 407;
         }
@@ -267,13 +272,22 @@ class Impor_xlsx
                                                     case 'sub_keg_renja':
                                                     case 'sub_keg_dpa':
                                                         $kodeRek = $getData[0];
+                                                    case 'renstra':
+                                                        if ($tbl == 'renstra') {
+                                                            $kodeRek = $getData[1];
+                                                        }
                                                         $dinamic = ['kode' => $kodeRek];
                                                         $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
-                                                        $getData[0] = $kodeRekUbah['kode'];
+                                                        
+                                                        if ($tbl == 'renstra') {
+                                                            $getData[1] = $kodeRekUbah['kode'];
+                                                        }else{
+                                                            $getData[0] = $kodeRekUbah['kode'];
+                                                        }
                                                         //cek key eksis
                                                         //$dataRek['kd_sub_keg_x_xx']
-                                                        if (array_key_exists('kel_kd_sub_keg', $kodeRekUbah)) {
-                                                            $kel_kd_sub_keg = $kodeRekUbah['kel_kd_sub_keg'];
+                                                        if (array_key_exists('kel_rek', $kodeRekUbah)) {
+                                                            $kel_rek = $kodeRekUbah['kel_rek'];
                                                             $kd_sub_keg_x_xx = $kodeRekUbah['kd_sub_keg_x_xx'];
                                                         }
                                                         break;
@@ -307,10 +321,10 @@ class Impor_xlsx
                                                                 // cari di kode x.xx ganti dulu
                                                                 //$kd_sub_keg_x_xx
                                                                 // checkArray( $tableName, $columnName, $condition )
-                                                                $cek_x_xx=$DB->checkArray('sub_kegiatan_neo', 'kode', [['kode', '=', $kd_sub_keg_x_xx]],$kd_sub_keg_x_xx);
+                                                                $cek_x_xx = $DB->checkArray('sub_kegiatan_neo', 'kode', [['kode', '=', $kd_sub_keg_x_xx]], $kd_sub_keg_x_xx);
                                                                 if ($cek_x_xx) {
                                                                     $kd_sub_keg = $kd_sub_keg_x_xx;
-                                                                }else{
+                                                                } else {
                                                                     $kd_sub_keg = $validateRow->setRules(0, "sub kegiatan($kd_sub_keg_temp)", [
                                                                         'sanitize' => 'string',
                                                                         'required' => true,
@@ -344,13 +358,13 @@ class Impor_xlsx
                                                                 $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
                                                                 //jadikan Array
                                                                 $explodeAwal = explode(';', $sumber_dana_temp);
-                                                                foreach($explodeAwal as $key => $row){
+                                                                foreach ($explodeAwal as $key => $row) {
                                                                     $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', $row]]);
                                                                     if ($dataRslt <= 0) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
-                                                                $sumber_dana =$explodeAwal;
+                                                                $sumber_dana = $explodeAwal;
                                                                 // $sumber_dana = $validateRow->setRules(8, 'sumber dana', [
                                                                 //     'sanitize' => 'string',
                                                                 //     'required' => true,
@@ -389,7 +403,7 @@ class Impor_xlsx
                                                                     'kd_opd' => $kd_opd,
                                                                     'tahun' => $tahun,
                                                                     'kd_sub_keg' => $kd_sub_keg,
-                                                                    'kel_kd_sub_keg' => $kel_kd_sub_keg,
+                                                                    'kel_rek' => $kel_rek,
                                                                     'uraian' => $uraian_prog_keg,
                                                                     'tolak_ukur_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg),
                                                                     'target_kinerja_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg),
@@ -414,7 +428,7 @@ class Impor_xlsx
                                                                     'kd_opd' => $kd_opd,
                                                                     'tahun' => $tahun,
                                                                     'kd_sub_keg' => $kd_sub_keg,
-                                                                    'kel_kd_sub_keg' => $kel_kd_sub_keg,
+                                                                    'kel_rek' => $kel_rek,
                                                                     'uraian' => $uraian_prog_keg,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
@@ -428,6 +442,27 @@ class Impor_xlsx
                                                                 $no_sort++;
                                                                 break;
                                                             case 'renstra':
+                                                                $arrayValidateRow = (array)$validateRow;
+                                                                // $arrayDg = [];
+                                                                // foreach ($arrayValidateRow as $key => $Id) {
+                                                                //     $arrayDg[$key] = $arrayValidateRow[$key];
+                                                                // }
+                                                                $keyArray = array_keys($arrayValidateRow);
+                                                                $kd_sub_keg_temp = $arrayValidateRow[$keyArray[1]][1];
+                                                                // cari di kode x.xx ganti dulu
+                                                                //$kd_sub_keg_x_xx
+                                                                // checkArray( $tableName, $columnName, $condition )
+                                                                $cek_x_xx = $DB->checkArray('sub_kegiatan_neo', 'kode', [['kode', '=', $kd_sub_keg_x_xx]], $kd_sub_keg_x_xx);
+                                                                if ($cek_x_xx) {
+                                                                    $kd_sub_keg = $kd_sub_keg_x_xx;
+                                                                } else {
+                                                                    $kd_sub_keg = $validateRow->setRules(1, "sub kegiatan($kd_sub_keg_temp)", [
+                                                                        'sanitize' => 'string',
+                                                                        'required' => true,
+                                                                        'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $kd_sub_keg_temp]]],
+                                                                        'min_char' => 1
+                                                                    ]);
+                                                                }
                                                                 /*
                                                                 $sasaran = $validateRow->setRules(0, 'sasaran', [
                                                                     'numeric' => true,
@@ -439,13 +474,13 @@ class Impor_xlsx
                                                                 $sasaran = $validateRow->setRules(0, 'sasaran', [
                                                                     'sanitize' => 'string',
                                                                 ]);
-                                                                $kode_temporer = strtolower($getData[1]);
-                                                                $kode = $validateRow->setRules(1, 'sub kegiatan', [
-                                                                    'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $kode_temporer]]],
-                                                                    'min_char' => 1
-                                                                ]);
+                                                                // $kode_temporer = strtolower($getData[1]);
+                                                                // $kode = $validateRow->setRules(1, 'sub kegiatan', [
+                                                                //     'sanitize' => 'string',
+                                                                //     'required' => true,
+                                                                //     'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $kode_temporer]]],
+                                                                //     'min_char' => 1
+                                                                // ]);
                                                                 $uraian_prog_keg = $validateRow->setRules(2, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
@@ -507,7 +542,7 @@ class Impor_xlsx
                                                                 $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
                                                                 $sasaran_txt = ($tujuan) ? $tujuan->text : '';
                                                                 //uraian_prog_keg
-                                                                $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
+                                                                $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                                                 $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
                                                                 //kondisi_akhir
                                                                 $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_4 + (float)$target_thn_5;
@@ -519,7 +554,8 @@ class Impor_xlsx
                                                                     'tujuan' => (int)$id_tujuan,
                                                                     'sasaran' => (int)$sasaran,
                                                                     'sasaran_txt' => $sasaran_txt,
-                                                                    'kode' => $kode,
+                                                                    'kd_sub_keg' => $kd_sub_keg,
+                                                                    'kel_rek' => $kel_rek,
                                                                     'uraian_prog_keg' => $uraian_prog_keg,
                                                                     'indikator' => preg_replace('/(\s\s+|\t|\n)/', ' ', $indikator),
                                                                     'satuan' =>  strtolower($satuan),
@@ -537,7 +573,6 @@ class Impor_xlsx
                                                                     'kondisi_akhir' => (float)$kondisi_akhir,
                                                                     'jumlah' => (float)$jumlah,
                                                                     'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
-                                                                    'unit_kerja' => $unit_kerja,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
@@ -545,8 +580,8 @@ class Impor_xlsx
                                                                     'username' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
-                                                                $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
-                                                                $getWhereArrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
+                                                                $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
+                                                                $getWhereArrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'tujuan_sasaran_renstra':
@@ -637,13 +672,13 @@ class Impor_xlsx
                                                                 $kd_rek_temp = $arrayValidateRow[$keyArray[1]][7];
                                                                 //jadikan Array
                                                                 $explodeAwal = explode(',', $kd_rek_temp);
-                                                                foreach($explodeAwal as $key => $row){
+                                                                foreach ($explodeAwal as $key => $row) {
                                                                     $dataRslt = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $row]]);
                                                                     if ($dataRslt <= 0) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
-                                                                $kd_rek_akun =$explodeAwal;
+                                                                $kd_rek_akun = $explodeAwal;
 
 
                                                                 $keterangan = $validateRow->setRules(8, 'keterangan', [
@@ -660,7 +695,7 @@ class Impor_xlsx
                                                                     'harga_satuan' => $harga_satuan,
                                                                     'tkdn' => $tkdn,
                                                                     'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
-                                                                    'kd_rek_akun' => json_encode(array("kd_rek_akun"=>$kd_rek_akun)),
+                                                                    'kd_rek_akun' => json_encode(array("kd_rek_akun" => $kd_rek_akun)),
                                                                     'kd_rek_akun_asli' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_rek_standar),
                                                                     'peraturan' => $id_aturan,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
@@ -1311,7 +1346,6 @@ class Impor_xlsx
                                                                 case 'peraturan':
                                                                 case 'akun_belanja':
                                                                 case 'tujuan_sasaran_renstra':
-                                                                case 'renstra':
                                                                     //var_dump($tabel_pakai);
                                                                     $sumRows = $DB->getWhereCustom($tabel_pakai, $getWhereArrayData);
                                                                     $jumlahArray = is_array($sumRows) ? count($sumRows) : 0;
@@ -1357,8 +1391,15 @@ class Impor_xlsx
                                                                     break;
                                                                 case 'sub_keg_renja':
                                                                 case 'sub_keg_dpa':
-                                                                    $dinamicData = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $arrayDataRows, 'set_non' => $arrayDataRows_nonSubKeg];
-                                                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamicData);
+                                                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                                                                    $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                                                                    break;
+                                                                case 'renstra':
+                                                                    // $dinamicData = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $arrayDataRows, 'set_non' => $arrayDataRows_nonSubKeg];
+                                                                    // $cekKodeRek = $Fungsi->kd_sub_keg($dinamicData);
+
+                                                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                                                                    $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                                                     break;
                                                                 default:
                                                                     # code...

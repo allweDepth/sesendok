@@ -701,6 +701,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             $data_card->asb = ['header' => 'ASB', 'meta' => 'Analisis Standar Belanja (ASB)', 'description' => 'mapping (pemetaan) neraca dengan akun belanja', 'icon' => 'violet users cog'];
                             $data_card->ssh = ['header' => 'SSH', 'meta' => 'Standar Satuan Harga (SSH)', 'description' => 'mapping (pemetaan) neraca dengan akun belanja', 'icon' => 'violet users cog'];
                             $data_card->hspk = ['header' => 'HSPK', 'meta' => 'Harga Satuan Pokok Kegiatan (HSPK)', 'description' => 'mapping (pemetaan) neraca dengan akun belanja', 'icon' => 'violet users cog'];
+                            $data_card->tujuan_sasaran_renstra = ['header' => 'TUJUAN DAN SASARAN RENSTRA', 'meta' => 'renstra', 'description' => 'tujuan dan sasaran renstra', 'icon' => 'violet users cog'];
                             $data_card->renstra = ['header' => 'RENSTRA', 'meta' => 'renstra', 'description' => 'renstra', 'icon' => 'violet users cog'];
                             $data_card->sub_keg_renja = ['header' => 'SUB KEGIATAN RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];
                             $data_card->renja = ['header' => 'RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];

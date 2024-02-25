@@ -11,7 +11,6 @@ class writer_xlsx
 
         $type_user = $_SESSION["user"]["type_user"];
         $username = $_SESSION["user"]["username"];
-        $id_user = $_SESSION["user"]["id"];
         $DB = DB::getInstance();
         $validate = new Validate($_POST);
         $Fungsi = new MasterFungsi();
@@ -27,7 +26,25 @@ class writer_xlsx
             'min_char' => 1,
             'max_char' => 100
         ]);
+
+        $id_user = $_SESSION["user"]["id"];
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user], ['username', '=', $username, 'AND']]);
+        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
+        if ($jumlahArray > 0) {
+            foreach ($userAktif[0] as $key => $value) {
+                ${$key} = $value;
+            }
+            $id_user = $id;
+            $kd_opd = $kd_organisasi;
+        } else {
+            $id_user = 0;
+            $code = 407;
+        }
+
+
         $filename = 'nabiilaInayah.xlsx';
+
+
 
         $writer = new XLSXWriter();
 
@@ -74,13 +91,41 @@ class writer_xlsx
             $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
             $query = '';
             switch ($tbl) {
+                case 'sub_keg_dpa':
+                case 'sub_keg_renja':
+                    $filename = 'sub keg renja.xlsx';
+                    $nama_sheet = 'sub keg';
+                    switch ($jenis) {
+                        case 'dok':
+                            $order = "ORDER BY kd_sub_keg ASC";
+                            $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                            $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                            $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    $headerSet = array(
+                        'SUB KEGIATAN' => 'string', //
+                        '2' => 'string', //
+                        '3' => 'string', //
+                        '4' => 'string', //
+                        '5' => '#,##0.####0',
+                        '6' => '#,##0.####0',//'D/MM/YYYY',
+                        '7' => 'string'
+                    );
+                    $row_header = ['KODE', 'URAIAN', 'TOLAK UKUR CAPAIAN KEG', 'INDIKATOR', 'JUMLAH', 'JUMLAH PERUBAHAN', 'KETERANGAN'];
+                    $jmlKolom = 7;
+                    break;
                 case 'sub_keg':
                     $filename = 'sub kegiatan.xlsx';
                     $nama_sheet = 'sub_keg';
                     switch ($jenis) {
                         case 'dok':
-                            $where1 = "disable = 0 AND id > 0";
+                            $where1 = "disable = ? AND id > ?";
                             $order = "ORDER BY kode ASC";
+                            $data_where1 =  [0, 0];
                             $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
                             break;
                         default:
@@ -92,8 +137,8 @@ class writer_xlsx
                         '2' => 'string', //
                         '3' => 'string', //
                         '4' => 'string', //
-                        '5' => 'string', 
-                        '6' => 'string', 
+                        '5' => 'string',
+                        '6' => 'string',
                         '7' => 'string'
                     );
                     $row_header = ['KODE', 'NOMENKLATUR URUSAN', 'KINERJA', 'INDIKATOR', 'SATUAN', 'PERATURAN', 'KETERANGAN'];
@@ -104,9 +149,10 @@ class writer_xlsx
                     $nama_sheet = 'Peraturan';
                     switch ($jenis) {
                         case 'dok':
-                            $where1 = "kd_wilayah = $kd_wilayah AND id > 0";
+                            $where1 = "kd_wilayah = ? AND id > ?";
                             $order = "ORDER BY kode ASC";
                             $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
+                            $data_where1 =  [$kd_wilayah, 0];
                             break;
                         default:
                             # code...
@@ -119,8 +165,9 @@ class writer_xlsx
                     $nama_sheet = 'sumberdana';
                     switch ($jenis) {
                         case 'dok':
-                            $where1 = "id > 0";
+                            $where1 = "id > ?";
                             $order = "ORDER BY kode ASC";
+                            $data_where1 =  [0];
                             $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
                             break;
                         default:
@@ -149,7 +196,8 @@ class writer_xlsx
                     $nama_sheet = 'akun';
                     switch ($jenis) {
                         case 'dok':
-                            $where1 = "id > 0";
+                            $where1 = "id > ?";
+                            $data_where1 =  [0];
                             $order = "ORDER BY akun ASC, kelompok ASC, jenis ASC, objek ASC, rincian_objek ASC, sub_rincian_objek ASC";
                             $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
                             break;
@@ -179,7 +227,8 @@ class writer_xlsx
                     $nama_sheet = 'kd aset';
                     switch ($jenis) {
                         case 'dok':
-                            $where1 = "id > 0";
+                            $where1 = "id > ?";
+                            $data_where1 = [0];
                             $order = "ORDER BY akun ASC, kelompok ASC, jenis ASC, objek ASC, rincian_objek ASC, sub_rincian_objek ASC";
                             $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
                             break;
@@ -207,7 +256,8 @@ class writer_xlsx
                     $tabel_pakai =  'rekanan';
                     $filename = 'rekanan.xlsx';
                     $nama_sheet = 'rekanan';
-                    $where1 = "id > 0";
+                    $where1 = "id > ? AND kd_wilayah = ?";
+                    $data_where1 = [0, $kd_wilayah];
                     $order = "ORDER BY nama_perusahaan ASC";
                     $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
                     break;
@@ -217,10 +267,11 @@ class writer_xlsx
             }
             //ambil quary
             if (strlen($where1) > 0) {
-                $get_data = $DB->runQuery2($query);
-
+                $get_data = $DB->runQuery($query, $data_where1)->fetchAll(PDO::FETCH_ASSOC);
+                // var_dump($get_data);
+                // var_dump($get_data[0]);
                 //$code = 100;
-                //$hasilServer['100'] = $get_data[0][3];
+                //$hasilServer['100'] = $get_data;
                 $jumlahArray = is_array($get_data) ? count($get_data) : 0;
                 if ($jumlahArray > 0) {
 
@@ -228,11 +279,29 @@ class writer_xlsx
                     #==== HEADER KOP TABEL =======
                     #=============================
                     switch ($tbl) {
+                        case 'sub_keg_dpa':
+                        case 'sub_keg_renja':
+                            switch ($jenis) {
+                                case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [25, 60, 40, 40, 15, 20, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
+
+                                    for ($x = 1; $x <= $jmlKolom; ++$x) {
+                                        $colHeader[] = '="(' . $x . ')"';
+                                    }
+                                    $writer->writeSheetRow($nama_sheet, $row_header, ['height' => 40, 'border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#d76e6e', 'wrap_text' => true, 'freeze_rows' => 1]);
+                                    $writer->writeSheetRow($nama_sheet, $colHeader, $LTRB_hc);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
                         case 'sub_keg':
                             switch ($jenis) {
                                 case 'dok': //mengambil seluruh data harga satuan sesuai proyek
                                     $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [25, 60, 40, 40, 15, 20, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
-                                    $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom-1);
+                                    $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
                                     $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
 
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
@@ -574,6 +643,26 @@ class writer_xlsx
                         $myrow++;
                         //var_dump($row);
                         switch ($tbl) {
+                            case 'sub_keg_dpa':
+                            case 'sub_keg_renja':
+                                switch ($jenis) {
+                                    case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                        $rowdata = array(
+                                            $row['kd_sub_keg'],
+                                            $row['uraian'],
+                                            $row['tolak_ukur_keluaran'],
+                                            $row['target_kinerja_keluaran'],
+                                            $row['jumlah_pagu'],
+                                            $row['jumlah_pagu_p'],
+                                            $row['keterangan']
+                                        );
+
+                                        $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
                             case 'sub_keg':
                                 switch ($jenis) {
                                     case 'dok': //mengambil seluruh data harga satuan sesuai proyek

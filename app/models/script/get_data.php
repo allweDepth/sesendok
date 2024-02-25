@@ -367,9 +367,9 @@ class get_data
                             if ($rowOrganisasi) {
                                 $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                 if ($tahun_renstra > 2000) {
-                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kode LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
-                                    $order = "ORDER BY kode, tujuan, sasaran ASC";
+                                    $order = "ORDER BY kd_sub_keg, tujuan, sasaran ASC";
                                     $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                     $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                     // $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
@@ -787,7 +787,7 @@ class get_data
                                                 //sasaran
                                                 $data['values'] = [];
                                                 $sasaran_drop = $data['users']->sasaran;
-                                                $kode_drop = $data['users']->kode;
+                                                $kode_drop = $data['users']->kd_sub_keg;
                                                 $satuan_drop = $data['users']->satuan;
                                                 //cari sasaran dengan id
                                                 if ($sasaran_drop) {
@@ -799,7 +799,7 @@ class get_data
                                                 if ($kode_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
-                                                    $data['values']['kode'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
+                                                    $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
                                                 }
                                                 //cari satuan dengan satuan
                                                 if ($satuan_drop) {
