@@ -91,6 +91,36 @@ class writer_xlsx
             $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
             $query = '';
             switch ($tbl) {
+                case 'dpa':
+                case 'renja':
+                    $filename = "$tbl.xlsx";
+                    $nama_sheet = "$tbl";
+                    switch ($jenis) {
+                        case 'dok':
+                            $order = "ORDER BY kd_sub_keg, kd_akun, kel_rek, sumber_dana, jenis_kelompok, kelompok, jenis_standar_harga ASC";
+                            $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                            $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                            $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    $nama_kop_array = ['renja' => "RENCANA KERJA SKPD (RENJA)", 'dpa' => "DOKUMEN PELAKSANAAN ANGGARAN (DPA)", 'renja_p' => "RENCANA PERUBAHAN KERJA SKPD (RENJA PERUBAHAN)", 'dppa' => "DOKUMEN PERUBAHAN PELAKSANAAN ANGGARAN (DPPA)"];
+                    $nama_kop = $nama_kop_array[$tbl];
+                    $headerSet = array(
+                        "$nama_kop" => 'string', //
+                        '2' => 'string', //
+                        '3' => 'string', //
+                        '4' => 'string', //
+                        '5' => 'string', //
+                        '6' => '#,##0.####0',
+                        '7' => '#,##0.####0', //'D/MM/YYYY',
+                        '8' => 'string'
+                    );
+                    $row_header = ['KODE SUB KEG', 'KODE AKUN', 'URAIAN', 'VOLUME', 'SATUAN', 'HARGA SATUAN', 'JUMLAH', 'KETERANGAN'];
+                    $jmlKolom = 8;
+                    break;
                 case 'sub_keg_dpa':
                 case 'sub_keg_renja':
                     $filename = 'sub keg renja.xlsx';
@@ -112,7 +142,7 @@ class writer_xlsx
                         '3' => 'string', //
                         '4' => 'string', //
                         '5' => '#,##0.####0',
-                        '6' => '#,##0.####0',//'D/MM/YYYY',
+                        '6' => '#,##0.####0', //'D/MM/YYYY',
                         '7' => 'string'
                     );
                     $row_header = ['KODE', 'URAIAN', 'TOLAK UKUR CAPAIAN KEG', 'INDIKATOR', 'JUMLAH', 'JUMLAH PERUBAHAN', 'KETERANGAN'];
@@ -279,6 +309,24 @@ class writer_xlsx
                     #==== HEADER KOP TABEL =======
                     #=============================
                     switch ($tbl) {
+                        case 'dpa':
+                        case 'renja':
+                            switch ($jenis) {
+                                case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [20, 20, 60, 15, 15, 25, 25, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('SKPD', ': ' . "($kd_opd) $nama_org"), ['font-style' => 'bold', 'font-size' => 12]);
+
+                                    for ($x = 1; $x <= $jmlKolom; ++$x) {
+                                        $colHeader[] = '="(' . $x . ')"';
+                                    }
+                                    $writer->writeSheetRow($nama_sheet, $row_header, ['height' => 40, 'border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#d76e6e', 'wrap_text' => true, 'freeze_rows' => 1]);
+                                    $writer->writeSheetRow($nama_sheet, $colHeader, $LTRB_hc);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
                         case 'sub_keg_dpa':
                         case 'sub_keg_renja':
                             switch ($jenis) {
@@ -643,6 +691,27 @@ class writer_xlsx
                         $myrow++;
                         //var_dump($row);
                         switch ($tbl) {
+                            case 'dpa':
+                            case 'renja':
+                                switch ($jenis) {
+                                    case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                        // var_dump($row['kd_sub_keg']);
+                                        $rowdata = array(
+                                            $row['kd_sub_keg'],
+                                            $row['kd_akun'],
+                                            $row['uraian'],
+                                            $row['volume'],
+                                            $row['sat_1'],
+                                            $row['harga_satuan'],
+                                            $row['jumlah'],
+                                            $row['keterangan']
+                                        );
+                                        $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
                             case 'sub_keg_dpa':
                             case 'sub_keg_renja':
                                 switch ($jenis) {
@@ -711,6 +780,7 @@ class writer_xlsx
                                     case 'dok': //mengambil seluruh data harga satuan sesuai proyek
                                         switch ($tbl) {
                                             case 'sumber_dana':
+                                                
                                                 $rowdata = array(
                                                     $myrow,
                                                     $row['sumber_dana'],

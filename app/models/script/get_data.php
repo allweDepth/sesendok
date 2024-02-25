@@ -840,8 +840,10 @@ class get_data
                                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                     $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'kelompok_json', $cari_drop, $dataKondisiField);
                                                     $data_klm = json_decode($data_klm, true);
-                                                    $key = array_search($cari_drop, $data_klm, true);
-                                                    $data['values']['kelompok'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
+                                                    if ($data_klm) {
+                                                        $key = array_search($cari_drop, $data_klm, true);
+                                                        $data['values']['kelompok'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
+                                                    }
                                                 }
                                                 $cari_drop = $data['users']->komponen;
                                                 $jenis_standar_harga = $data['users']->jenis_standar_harga;
@@ -883,8 +885,10 @@ class get_data
                                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                     $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'keterangan_json', 'keterangan_json', $dataKondisiField);
                                                     $data_klm = json_decode($data_klm, true);
+                                                    if ($data_klm) {
                                                     $key = array_search($cari_drop, $data_klm, true);
                                                     $data['values']['uraian'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
+                                                    }
                                                 }
                                                 //satuan
                                                 $array_sat = [];
@@ -901,7 +905,7 @@ class get_data
                                                         }
                                                     }
                                                 }
-                                                
+
                                                 break;
                                             case 'sub_keg_renja':
                                                 $data['values'] = [];

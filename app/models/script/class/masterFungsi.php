@@ -1383,7 +1383,7 @@ class MasterFungsi
                             $kel_rek_sum = 'kelompok';
                             break;
                     };
-                    $kondisi_sum = [['kd_sub_keg', '=', $rekening_gabung_sub_keg], ['kd_akun', 'LIKE',  "$kd_akun_olah%", 'AND'], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                    $kondisi_sum = [['kd_sub_keg', '=', $rekening_gabung_sub_keg], ['kd_akun', 'LIKE',  "$rekening_gabung%", 'AND'], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                     //ambil jumlah 
                     $DB->select("SUM({$kolomJumlah}) AS jumlah");
                     $row_sum = $DB->getWhereArray($tabel_pakai, $kondisi_sum);
@@ -1585,7 +1585,7 @@ class MasterFungsi
                     $DB->select("SUM({$kolomJumlah}) AS jumlah");
                     $row_sum = $DB->getWhereArray($tabel_pakai, $kondisi_sum);
                     $jumlah = $row_sum[0]->jumlah;
-                    var_dump($jumlah);
+                    // var_dump($jumlah);
                 } else {
                     $jumlah = $set[$kolomJumlah];
                     // var_dump($jumlah);
