@@ -1593,6 +1593,7 @@ $(document).ready(function () {
 					break;
 			}
 			//atur form
+			removeRulesForm(formIni);
 			htmlForm = `${dataHtmlku.konten}<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
 			iconFlyout.attr("class", "").addClass(dataHtmlku.icon);
 			headerFlyout.text(dataHtmlku.header);
