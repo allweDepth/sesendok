@@ -78,8 +78,8 @@ class DB
                     $stmt->bindValue($nilai, 0, PDO::PARAM_INT); //offset
                 }
             }
-            // var_dump( $query );
-            // var_dump( $bindValue);
+            var_dump( $query );
+            var_dump( $bindValue);
             // var_dump( $limit );
             
             $stmt->execute();
@@ -160,7 +160,7 @@ class DB
             array_push($dataValues, $val[2]);
         }
         // var_dump($query);
-        //var_dump($dataValues);
+        // var_dump($dataValues);
         //array $condition[[ 'id', '=', $id_user ],[ 'id', '=', $id_user , 'AND'],...]array pertama 3larik, array selanjutnya 4 larik
         return $this->runQuery($query, $dataValues, $limit)->fetchAll(PDO::FETCH_OBJ);
         // true;

@@ -1159,7 +1159,10 @@ class MasterFungsi
         $count = count($explodeAwal);
         // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
         $kd_rek = '';
+        $kel_rek = '';
         $dataRek = [];
+        $dataRek['kd_sub_keg_x_xx'] = '';
+        
         switch ($count) {
             case 6: //sub keg
                 if ((int)$explodeAwal[5]) {
@@ -1210,7 +1213,7 @@ class MasterFungsi
             default:
                 break;
         };
-
+        
         $explodeAwal = explode('.', $dataRek['kode']);
         // var_dump($explodeAwal);
         $dataRek['sum_rek'] = count($explodeAwal);
@@ -1328,9 +1331,9 @@ class MasterFungsi
                 $kd_akun = [];
                 $sizeOfKd_akun = 0;
             } else {
-                //insert update kd_akun
+                //insert update kd_akun uraian
                 $kd_akun_olah = $explode_kd_akun;
-                if ($sizeOfKd_akun == 6) {
+                if ($sizeOfKd_akun == 6 && isset($set['kel_rek'])  && $set['kel_rek'] == 'uraian') {
                     # input kel_rek=uraian
                     $DB->insert($tabel_pakai, $set);
                     $data['note']['add row'][] = $DB->lastInsertId();
