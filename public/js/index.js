@@ -1722,17 +1722,6 @@ $(document).ready(function () {
 							case 'flyout':
 								switch (jenis) {
 									case 'edit':
-										switch (tbl) {
-
-											case "hspk":
-											case "ssh":
-											case "sbu":
-											case "asb":
-												
-												break;
-											default:
-												break;
-										}
 										// set nilai form 
 										let elmAttrName = formIni.find('input[name],textarea[name]');
 										switch (tbl) {
