@@ -42,7 +42,7 @@ class Impor_xlsx
         //$data['note'][] = 'add row';
         //$data['note'][] = 'gagal';
         $id_user = $_SESSION["user"]["id"];
-        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user],['username', '=', $username,'AND']]);
+        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user], ['username', '=', $username, 'AND']]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
@@ -50,7 +50,7 @@ class Impor_xlsx
             }
             $id_user = $id;
             $kd_opd = $kd_organisasi;
-        }else {
+        } else {
             $id_user = 0;
             $code = 407;
         }
@@ -278,10 +278,10 @@ class Impor_xlsx
                                                         }
                                                         $dinamic = ['kode' => $kodeRek];
                                                         $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
-                                                        
+
                                                         if ($tbl == 'renstra') {
                                                             $getData[1] = $kodeRekUbah['kode'];
-                                                        }else{
+                                                        } else {
                                                             $getData[0] = $kodeRekUbah['kode'];
                                                         }
                                                         //cek key eksis
@@ -1393,12 +1393,13 @@ class Impor_xlsx
                                                                 case 'sub_keg_dpa':
                                                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
                                                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                                                                    
                                                                     break;
                                                                 case 'renstra':
                                                                     // $dinamicData = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $arrayDataRows, 'set_non' => $arrayDataRows_nonSubKeg];
                                                                     // $cekKodeRek = $Fungsi->kd_sub_keg($dinamicData);
 
-                                                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                                                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
                                                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                                                     break;
                                                                 default:

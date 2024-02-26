@@ -114,7 +114,7 @@ class post_data
                                 $kelompok = $validate->setRules('kelompok', 'kelompok belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg,'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
 
                                 $sumber_dana = $validate->setRules('sumber_dana', 'kelompok belanja', [
@@ -133,7 +133,7 @@ class post_data
                                     'required' => true,
                                     'numeric' => true,
                                     'min_char' => 1,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporer, 'id', [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'],['tahun', '= ?', $tahun, 'AND']]]
+                                    'inLikeConcatDB' => [$tabel_pakai_temporer, 'id', [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
                                 if ($id_standar_harga) {
                                     $harga_row = $DB->getWhereOnceCustom($tabel_pakai_temporer, [['id', '=', $id_standar_harga], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND']]);
@@ -237,9 +237,11 @@ class post_data
                                     'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
                                     'min_char' => 4
                                 ]);
+                                //$kel_rek
                                 $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
                                     'sanitize' => 'string'
                                 ]);
+
                                 $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target kinerja hasil', [
                                     'sanitize' => 'string'
                                 ]);
@@ -375,10 +377,10 @@ class post_data
                                 if ($rowOrganisasi) {
                                     $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                 }
-                                $kode = $validate->setRules('kode', 'sub kegiatan', [
+                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kode']]]],
+                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
                                     'min_char' => 4
                                 ]);
                                 $sasaran = $validate->setRules('sasaran', 'sasaran', [
@@ -1096,7 +1098,7 @@ class post_data
                                         'tahun' => $tahun,
                                         'kd_sub_keg' => $kd_sub_keg,
                                         'kd_akun' => $kd_akun,
-                                        'kel_rek' => 'uraian',//kd
+                                        'kel_rek' => 'uraian', //kd
                                         'objek_belanja' => $objek_belanja,
                                         'uraian' => $uraian,
                                         'jenis_kelompok' => $jenis_kelompok,
@@ -1126,7 +1128,7 @@ class post_data
                                         'username_input' => $_SESSION["user"]["username"],
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
-                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set,'kd_akun' => $kd_akun,'kd_wilayah'=> $kd_wilayah,'kd_opd'=> $kd_opd,'tahun'=> $tahun];
+                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_akun' => $kd_akun, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                     $data = $insertKodeRek;
                                     $kodePosting = '';
@@ -1146,6 +1148,11 @@ class post_data
                                     #code...
                                     break;
                                 default:
+                                    $dinamic = ['kode' => $kd_sub_keg];
+                                    $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
+                                    if (array_key_exists('kel_rek', $kodeRekUbah)) {
+                                        $kel_rek = $kodeRekUbah['kel_rek'];
+                                    }
                                     $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                     $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
                                     $set = [
@@ -1154,6 +1161,7 @@ class post_data
                                         'tahun' => $tahun,
                                         'kd_sub_keg' => $kd_sub_keg,
                                         'uraian' => $uraian,
+                                        'kel_rek' => $kel_rek,
                                         'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
                                         'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
                                         'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
@@ -1166,8 +1174,10 @@ class post_data
                                         'tgl_update' => date('Y-m-d H:i:s'),
                                         'username' => $_SESSION["user"]["username"]
                                     ];
-                                    $dinamic = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $set];
-                                    $cekKodeRek = $Fungsi->kd_sub_keg($dinamic);
+
+                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                                    $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                                    $data = $cekKodeRek;
                                     $kodePosting = '';
                                     break;
                             };
@@ -1227,19 +1237,26 @@ class post_data
                                     $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
                                     $sasaran_txt = ($tujuan) ? $tujuan->text : '';
                                     //uraian_prog_keg
-                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kode]]);
+                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                     $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
                                     // $uraian_prog_keg = $progkeg->nomenklatur_urusan;
                                     //kondisi_akhir
                                     $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
+                                    $jumlah = (float)$dana_thn_1 + (float)$dana_thn_2 + (float)$dana_thn_3 + (float)$dana_thn_4 + (float)$dana_thn_5;
+                                    $dinamic = ['kode' => $kd_sub_keg];
+                                    $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
+                                    if (array_key_exists('kel_rek', $kodeRekUbah)) {
+                                        $kel_rek = $kodeRekUbah['kel_rek'];
+                                    }
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'kd_opd' => $kd_opd,
                                         'tahun' => $tahun_renstra,
+                                        'kd_sub_keg' => $kd_sub_keg,
+                                        'kel_rek' => $kel_rek,
                                         'tujuan' => $id_tujuan,
                                         'sasaran' => $sasaran,
                                         'sasaran_txt' => $sasaran_txt,
-                                        'kode' => $kode,
                                         'uraian_prog_keg' => $uraian_prog_keg,
                                         'indikator' => $indikator,
                                         'satuan' => $satuan,
@@ -1255,14 +1272,17 @@ class post_data
                                         'target_thn_5' => (float)$target_thn_5,
                                         'dana_thn_5' => (float)$dana_thn_5,
                                         'kondisi_akhir' => (float)$kondisi_akhir,
+                                        'jumlah' => (float)$jumlah,
                                         'lokasi' => $lokasi,
-                                        'unit_kerja' => $unit_kerja,
                                         'keterangan' => $keterangan,
                                         'disable' => $disable,
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'tgl_update' => date('Y-m-d H:i:s'),
                                         'username' => $_SESSION["user"]["username"]
                                     ];
+                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
+                                    $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                                    $kodePosting = '';
                                 } else {
                                     $message_tambah = ' (atur tahun renstra OPD)';
                                     $code = 70;
@@ -1522,7 +1542,7 @@ class post_data
                             $key = false;
                             if ($data_klm) {
                                 $data_klm = json_decode($data_klm, true);
-                                $key = array_search($uraian_field, $data_klm,true);
+                                $key = array_search($uraian_field, $data_klm, true);
                                 $kode_Field = 'updateJSONField';
                             } else {
                                 $data_klm = array();

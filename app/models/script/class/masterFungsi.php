@@ -964,94 +964,7 @@ class MasterFungsi
         }
         return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
     }
-    //uraikan kode rekening sub kegiatan 
-    public function kd_sub_keg($dinamic = [])
-    {
-        $user = new User();
-        $DB = DB::getInstance();
-        $user->cekUserSession();
-        $tbl = $dinamic['tbl'];
-        $kode = $dinamic['kode'];
-        $type_user = $_SESSION["user"]["type_user"];
-        $id_user = $_SESSION["user"]["id"];
-        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
-        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
-        if ($jumlahArray > 0) {
-            foreach ($userAktif[0] as $key => $value) {
-                ${$key} = $value;
-            }
-        }
-        $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
-        $explodeAwal = explode('.', $kode);
-        $count = count($explodeAwal);
-        // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
-        //call methode in class 
-        $rek_Proses = $this->kelolaRek($dinamic);
-        // var_dump($rek_Proses);
-        $insert = [];
-        for ($i = 1; $i <= $rek_Proses['sum_rek']; $i++) {
-            if ($i == 4) {
-                continue;
-            }
-            switch ($i) {
-                case 1:
-                    $kd_sub_kegOk = $rek_Proses['kd_urusan'];
-                    $columnSUM = $rek_Proses['kd_bidang'];
-                    $kel_rek = 'kd_urusan';
-                    break;
-                case 2:
-                    $kel_rek = 'kd_bidang';
-                    $kd_sub_kegOk = $rek_Proses['kd_bidang'];
-                    $columnSUM = $rek_Proses['kd_prog'];
-                    break;
-                case 3:
-                    $kel_rek = 'kd_prog';
-                    $kd_sub_kegOk = $rek_Proses['kd_prog'];
-                    $columnSUM = $rek_Proses['kd_keg'];
-                    break;
-                case 5:
-                    $kel_rek = 'kd_keg';
-                    $kd_sub_kegOk = $rek_Proses['kd_keg'];
-                    $columnSUM = $rek_Proses['kd_sub_keg'];
-                    break;
-                case 6:
-                    $kel_rek = 'kd_sub_keg';
-                    $kd_sub_kegOk = $rek_Proses['kd_sub_keg'];
-                    $columnSUM = $rek_Proses['kd_sub_keg'];
-                    break;
-                default:
-                    #code...
-                    break;
-            };
-            //var_dump($kd_sub_kegOk);
-            $dinamic['set']['kd_sub_keg'] = $kd_sub_kegOk;
-            $dinamic['set']['kel_rek'] = $kel_rek;
-            // jumlahkan kembali
-            // cari uraian
-            $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_kegOk]]);
-            $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
-            $dinamic['set']['uraian'] = $uraian_prog_keg;
-            switch ($tbl) {
-                case 'sub_keg_dpa':
-                case 'sub_keg_renja':
-                    $dinamic['kondisi'] = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
-                    break;
-                case 'dpa':
-                case 'renja':
-                    break;
-                default:
-                    break;
-            };
-            $DB->select('*');
-            $insert[$i] = $this->cekInsertUpdate($dinamic);
-            // jumlahkan kembali
-            // $DB->select('SUM(jumlah_pagu), SUM(jumlah_pagu_p)');
-            // $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $columnSUM, 'AND']];
-            // $Sumprogkeg = $DB->getWhereCustom($tabel_pakai, $kondisi);
-            // var_dump($Sumprogkeg);
-        }
-        return $insert;
-    }
+
     // ambil data row bidang s/d sub kegiatan
     public function get_bidang_sd_sub_keg($dinamic = [])
     {
@@ -1116,39 +1029,7 @@ class MasterFungsi
         // $DB->select('*');
         return $Sumprogkeg;
     }
-    public function cekInsertUpdate($dinamic = [])
-    {
-        $user = new User();
-        $DB = DB::getInstance();
-        $tbl = $dinamic['tbl'];
-        $kondisi = $dinamic['kondisi'];
-        $set = $dinamic['set'];
-        $user->cekUserSession();
-        $id_user = $_SESSION["user"]["id"];
-        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
-        $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
-        if ($jumlahArray > 0) {
-            foreach ($userAktif[0] as $key => $value) {
-                ${$key} = $value;
-            }
-        }
-        $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
-        // var_dump('kondisi :');
-        // var_dump($kondisi);
-        $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);
-        $jumlahArray = is_array($resul) ? count($resul) : 0;
-        $data = [];
-        if ($jumlahArray) {
-            $DB->update_array($tabel_pakai, $set, $kondisi);
-            if ($DB->count()) {
-                $data['update'] = $DB->count();
-            }
-        } else {
-            $resul = $DB->insert($tabel_pakai, $set);
-            $data['add_row'] = $DB->lastInsertId();
-        }
-        return $data;
-    }
+
     // kelola rekening sub kegiatan
     public function kelolaRek($dinamic = ['kode' => ''])
     {
@@ -1250,13 +1131,19 @@ class MasterFungsi
     ])
     {
         $kd_sub_keg_data = $dinamic['kd_sub_keg'];
-        $kd_akun_data = $dinamic['kd_akun'];
+        $kd_akun_data = [];
+        $sizeOfKd_akun = 0;
+        if (isset($dinamic['kd_akun'])) {
+            $kd_akun_data = $dinamic['kd_akun'];
+            $explode_kd_akun = explode('.', $kd_akun_data);
+            $sizeOfKd_akun = sizeof($explode_kd_akun);
+        }
 
         $explode_kd_sub_keg = explode('.', $kd_sub_keg_data);
-        $explode_kd_akun = explode('.', $kd_akun_data);
+        
         $tbl = $dinamic['tbl'];
         $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
-        $sizeOfKd_akun = sizeof($explode_kd_akun);
+        
         //jika ada kegiatan satukan array 4 dan 5
         if ($sizeOfKd_sub_keg > 3) {
             $kode_keg_gabung = [$explode_kd_sub_keg[3] . '.' . $explode_kd_sub_keg[4]];
@@ -1592,6 +1479,7 @@ class MasterFungsi
                 //selesai ambil jumlah
                 $DB->select("*");
                 $row_uraian = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                // var_dump($row_uraian);
                 if ($row_uraian == false) {
                     # insert baru
                     $DB->insert($tabel_pakai, $set_insert);
