@@ -623,8 +623,38 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
+						case 'dppa':
+						case 'renja_p':
+							let vol_1 = 'vol_1_p';
+							let vol_2 = 'vol_2_p';
+							let vol_3 = 'vol_3_p';
+							let vol_4 = 'vol_4_p';
+							let vol_5 = 'vol_5_p';
+							let sat_1 = 'sat_1_p';
+							let sat_2 = 'sat_2_p';
+							let sat_3 = 'sat_3_p';
+							let sat_4 = 'sat_4_p';
+							let sat_5 = 'sat_5_p';
+							var volumeku = 'volume';
+							let jumlahku = 'jumlah_p';
+							let sumber_danaku = 'sumber_dana_p';
 						case 'dpa':
 						case 'renja':
+							if (tbl === 'dpa' || tbl === 'renja') {
+								vol_1 = 'vol_1';
+								vol_2 = 'vol_2';
+								vol_3 = 'vol_3';
+								vol_4 = 'vol_4';
+								vol_5 = 'vol_5';
+								sat_1 = 'sat_1';
+								sat_2 = 'sat_2';
+								sat_3 = 'sat_3';
+								sat_4 = 'sat_4';
+								sat_5 = 'sat_5';
+								volumeku = 'volume_p';
+								jumlahku = 'jumlah';
+								sumber_danaku = 'sumber_dana';
+							}
 							if (jenis === 'edit') {
 								data.id_sub_keg = id_sub_kegAttr;
 							}
@@ -684,7 +714,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Sumber Dana",
 									classField: `required`,
-									atribut: 'name="sumber_dana" placeholder="pilih sumber dana..."',
+									atribut: `name="${sumber_danaku}" placeholder="pilih sumber dana..."`,
 									kelas: "search clearable sumber_dana ajx selection",
 									dataArray: [
 										["", ""]
@@ -755,14 +785,14 @@ $(document).ready(function () {
 									kelas: "disabled",
 									kelas2: ["search sat_1 ajx selection", "search sat_2 ajx selection", "search sat_3 ajx selection", "search sat_4 ajx selection"],
 									classField: `required`,
-									atribut: ['name="sat_1" placeholder="satuan..."', 'name="sat_2" placeholder="satuan..." non_data', 'name="sat_3" placeholder="satuan..." non_data', 'name="sat_4" placeholder="satuan..." non_data'],
-									atribut2: ['name="vol_1" placeholder="Koefisien..." rms onkeypress="ketikUbah(event);"', 'name="vol_2" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"', 'name="vol_3" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"', 'name="vol_4" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"']
+									atribut: [`name="${sat_1}" placeholder="satuan..."`, `name="${sat_2}" placeholder="satuan..." non_data`, `name="${sat_3}" placeholder="satuan..." non_data`, `name="${sat_4}" placeholder="satuan..." non_data`],
+									atribut2: [`name="${vol_1}" placeholder="Koefisien..." rms onkeypress="ketikUbah(event);"`, `name="${vol_2}" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"`, `name="${vol_3}" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"`, `name="${vol_4}" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"`]
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Volume",
 									classField: `required`,
 									kelas: "disabled",
-									atribut: 'name="volume" placeholder="volume..." rms',
+									atribut: `name="${volumeku}" placeholder="volume..." rms`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Koefisien (Keterangan Jumlah)",
@@ -772,7 +802,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Total Belanja",
 									kelas: "disabled",
-									atribut: 'name="jumlah" placeholder="jumlah..." rms non_data',
+									atribut: `name="${jumlahku}" placeholder="jumlah..." rms non_data`,
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
