@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 26 Feb 2024 pada 20.40
+-- Waktu pembuatan: 26 Feb 2024 pada 21.21
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -155,6 +155,65 @@ CREATE TABLE `dpa_neo` (
   `volume` decimal(36,12) DEFAULT NULL,
   `jumlah` decimal(36,12) NOT NULL,
   `sumber_dana` varchar(255) DEFAULT NULL,
+  `keterangan` varchar(400) DEFAULT NULL,
+  `disable` tinyint(1) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username_input` varchar(255) NOT NULL,
+  `username_update` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `dppa_neo`
+--
+
+CREATE TABLE `dppa_neo` (
+  `id` int(11) NOT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
+  `kd_opd` varchar(22) NOT NULL,
+  `tahun` year(4) NOT NULL,
+  `kd_sub_keg` varchar(50) NOT NULL,
+  `kd_akun` varchar(50) NOT NULL,
+  `kel_rek` varchar(50) NOT NULL,
+  `objek_belanja` varchar(255) NOT NULL,
+  `uraian` text NOT NULL,
+  `jenis_kelompok` varchar(255) NOT NULL,
+  `kelompok` varchar(255) NOT NULL,
+  `jenis_standar_harga` varchar(6) NOT NULL,
+  `id_standar_harga` int(11) DEFAULT NULL,
+  `komponen` varchar(400) DEFAULT NULL,
+  `spesifikasi` varchar(400) DEFAULT NULL,
+  `tkdn` decimal(36,12) DEFAULT NULL,
+  `pajak` tinyint(1) DEFAULT NULL,
+  `harga_satuan` decimal(36,12) NOT NULL,
+  `vol_1` decimal(36,12) NOT NULL,
+  `vol_2` decimal(36,12) DEFAULT NULL,
+  `vol_3` decimal(36,12) DEFAULT NULL,
+  `vol_4` decimal(36,12) DEFAULT NULL,
+  `vol_5` decimal(36,12) DEFAULT NULL,
+  `sat_1` varchar(50) NOT NULL,
+  `sat_2` varchar(50) DEFAULT NULL,
+  `sat_3` varchar(50) DEFAULT NULL,
+  `sat_4` varchar(50) DEFAULT NULL,
+  `sat_5` varchar(50) DEFAULT NULL,
+  `volume` decimal(36,12) DEFAULT NULL,
+  `jumlah` decimal(36,12) NOT NULL,
+  `sumber_dana` varchar(255) DEFAULT NULL,
+  `vol_1_p` decimal(36,12) NOT NULL,
+  `vol_2_p` decimal(36,12) NOT NULL,
+  `vol_3_p` decimal(36,12) NOT NULL,
+  `vol_4_p` decimal(36,12) NOT NULL,
+  `vol_5_p` decimal(36,12) NOT NULL,
+  `sat_1_p` varchar(50) NOT NULL,
+  `sat_2_p` varchar(50) NOT NULL,
+  `sat_3_p` varchar(50) NOT NULL,
+  `sat_4_p` varchar(50) NOT NULL,
+  `sat_5_p` varchar(50) NOT NULL,
+  `volume_p` decimal(36,12) NOT NULL,
+  `jumlah_p` decimal(36,12) NOT NULL,
+  `sumber_dana_p` varchar(255) NOT NULL,
   `keterangan` varchar(400) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
@@ -465,7 +524,7 @@ CREATE TABLE `renja_p_neo` (
   `sat_5` varchar(50) DEFAULT NULL,
   `volume` decimal(36,12) DEFAULT NULL,
   `jumlah` decimal(36,12) NOT NULL,
-  `harga_satuan_p` decimal(36,12) NOT NULL,
+  `sumber_dana` varchar(255) DEFAULT NULL,
   `vol_1_p` decimal(36,12) NOT NULL,
   `vol_2_p` decimal(36,12) NOT NULL,
   `vol_3_p` decimal(36,12) NOT NULL,
@@ -476,9 +535,9 @@ CREATE TABLE `renja_p_neo` (
   `sat_3_p` varchar(50) NOT NULL,
   `sat_4_p` varchar(50) NOT NULL,
   `sat_5_p` varchar(50) NOT NULL,
-  `volume_p` decimal(36,12) DEFAULT NULL,
+  `volume_p` decimal(36,12) NOT NULL,
   `jumlah_p` decimal(36,12) NOT NULL,
-  `sumber_dana` varchar(255) DEFAULT NULL,
+  `sumber_dana_p` varchar(255) NOT NULL,
   `keterangan` varchar(400) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
@@ -642,7 +701,7 @@ CREATE TABLE `sub_keg_dpa_neo` (
   `kd_opd` varchar(22) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_sub_keg` varchar(22) NOT NULL,
-  `kel_kd_sub_keg` varchar(50) NOT NULL,
+  `kel_rek` varchar(50) NOT NULL,
   `uraian` text NOT NULL,
   `tolak_ukur_capaian_keg` varchar(255) DEFAULT NULL,
   `target_kinerja_capaian_keg` varchar(400) DEFAULT NULL,
@@ -669,6 +728,8 @@ CREATE TABLE `sub_keg_dpa_neo` (
   `disable` tinyint(1) NOT NULL,
   `aksi` int(11) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
+  `kelompok_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '{}',
+  `keterangan_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '{}' CHECK (json_valid(`keterangan_json`)),
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username` varchar(255) NOT NULL
@@ -867,6 +928,12 @@ ALTER TABLE `dpa_neo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `dppa_neo`
+--
+ALTER TABLE `dppa_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `hspk_neo`
 --
 ALTER TABLE `hspk_neo`
@@ -1026,6 +1093,12 @@ ALTER TABLE `bidang_urusan_neo`
 -- AUTO_INCREMENT untuk tabel `dpa_neo`
 --
 ALTER TABLE `dpa_neo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `dppa_neo`
+--
+ALTER TABLE `dppa_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
