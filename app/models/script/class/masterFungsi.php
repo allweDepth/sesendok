@@ -2,6 +2,7 @@
 // require_once("class/FormulaParser.php");
 // require 'init.php';
 use FormulaParser\FormulaParser;
+
 class MasterFungsi
 {
     //get tabel data
@@ -1131,9 +1132,9 @@ class MasterFungsi
         $xpldeKdOPD = explode('.', $kd_opd);
         $imploderek1_2 = (int)$xpldeKdOPD[0] . '.' . (int)$xpldeKdOPD[1];
         $row_result = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $xpldeKdOPD[0]]]);
-        $uraian_sub_keg_x = ($row_result) ? 'PENUNJANG ' .$row_result->nomenklatur_urusan : 'penunjang data sub kegiatan tidak ditemukan';
+        $uraian_sub_keg_x = ($row_result) ? 'PENUNJANG ' . $row_result->nomenklatur_urusan : 'penunjang data sub kegiatan tidak ditemukan';
         $row_result = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $imploderek1_2]]);
-        $uraian_sub_keg_x_xx = ($row_result) ? 'PENUNJANG ' .$row_result->nomenklatur_urusan : 'penunjang data sub kegiatan tidak ditemukan';
+        $uraian_sub_keg_x_xx = ($row_result) ? 'PENUNJANG ' . $row_result->nomenklatur_urusan : 'penunjang data sub kegiatan tidak ditemukan';
         //
         if ($sizeOfKd_sub_keg) {
             $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
@@ -1523,10 +1524,27 @@ class MasterFungsi
                     case 'sub_keg_dpa_neo':
                     case 'sub_keg_renja_neo':
                         break;
-                    case 'dpa_neo':
-                    case 'renja_neo':
-                    case 'dppa_neo':
                     case 'renja_p_neo':
+                    case 'renja_neo':
+                        $tabel_update = 'sub_keg_renja_neo';
+                    case 'dpa_neo':
+                    case 'dppa_neo':
+                        if ($tabel_pakai == 'dpa_neo' || $tabel_pakai == 'dppa_neo' ) {
+                            $tabel_update = 'sub_keg_dpa_neo';
+                        }
+                        $kolom_jumlah_update = 'jumlah_rincian';
+                        if ($tabel_pakai == 'renja_p_neo' || $tabel_pakai == 'dppa_neo' ) {
+                            $kolom_jumlah_update = 'jumlah_rincian_p';
+                        }
+                        // update jumlah tabel sub_keg_dpa_neo atau sub_keg_renja_neo
+                        $set_update = [
+                            $kolom_jumlah_update => (float)$jumlah,
+                            'tgl_update' => date('Y-m-d H:i:s'),
+                            'username' => $_SESSION["user"]["username"]
+                        ];
+
+                        $kondisi_update = [['kd_sub_keg', '=', $rekening_gabung], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $DB->update_array($tabel_update, $set_update, $kondisi_update);
                         break;
                     case 'renstra_neo':
                         break;
