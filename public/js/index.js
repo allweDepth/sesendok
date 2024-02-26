@@ -1329,79 +1329,37 @@ $(document).ready(function () {
 						case "mapping":
 							dataHtmlku.konten +=
 								buatElemenHtml("fieldDropdown", {
-									label: "Type Dok",
-									atribut: 'name="type_dok"',
-									kelas: "lainnya selection",
+									label: "Kode Kelompok Barang/Jasa",
+									atribut: 'name="kd_aset"',
+									kelas: "search clearable aset ajx selection",
 									dataArray: [
-										[
-											"peraturan_undang_undang_pusat",
-											"Peraturan Perundang-undangan Pusat",
-										],
-										[
-											"peraturan_menteri_lembaga",
-											"Peraturan Kementerian / Lembaga",
-										],
-										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
-										["pengumuman", "Pengumuman"],
-										["artikel", "Artikel"],
-										["lain", "Data Lainnya"],
-										["kegiatan", "File Kegiatan"],
+										["1.1.12.01.01.0010", "Isi Tabung Gas"]
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Judul",
-									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
+								buatElemenHtml("fieldDropdown", {
+									label: "Rekening / Akun",
+									classField: `required`,
+									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
+									kelas: "search clearable kd_akun ajx selection",
+									dataArray: [
+										["", ""]
+									],
 								}) +
-								buatElemenHtml("fieldTextAction", {
-									label: "Nomor",
-									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
-									txtLabel: "cek",
-									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Bentuk",
-									atribut:
-										'name="bentuk" placeholder="Bentuk(Peraturan Menteri Dalam Negeri...)"',
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Bentuk Singkat",
-									atribut:
-										'name="bentuk_singkat" placeholder="bentuk singkat(permendagri)..."',
-								}) +
-								buatElemenHtml("fieldText", {
-									label: "Tempat Penetapan",
-									atribut: 'name="t4_penetapan" placeholder="tempat penetapan..."',
-								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Tanggal Penetapan",
-									atribut:
-										'placeholder="Input tanggal penetapan.." name="tgl_penetapan" readonly',
-									kelas: "date",
-								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Tanggal Pengundangan",
-									atribut:
-										'placeholder="Input Tanggal pengundangan.." name="tgl_pengundangan" readonly',
-									kelas: "date",
+								buatElemenHtml("fieldDropdown", {
+									label: "Jenis Standar Harga",
+									classField: `required`,
+									atribut: 'name="kelompok" placeholder="jenis standar harga..."',
+									kelas: "clearable lainnya selection",
+									dataArray: [
+										["ssh", "SSH"],
+										["sbu", "SBU"],
+										["hspk", "HSPK"],
+										["asb", "ASB"]
+									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
-								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Status Data",
-									atribut: 'name="status"',
-									kelas: "lainnya selection",
-									dataArray: [
-										["umum", "Umum"],
-										["rahasia", "Rahasia/Pribadi"],
-										["kegiatan", "Dokumen kegiatan"],
-									],
-								}) +
-								buatElemenHtml("fieldFileInput2", {
-									label: "Pilih File Dokumen",
-									placeholderData: "Pilih File...",
-									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
@@ -1611,6 +1569,12 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
+						case 'mapping':
+							var dropKdAset = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.ajx[name="kd_aset"]')
+							dropKdAset.returnList({ jenis: "get_row_json", tbl: "aset" });
+							var dropKdAkun = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.ajx[name="kd_akun"]')
+							dropKdAkun.returnList({ jenis: "get_row_json", tbl: "akun_belanja" });
+							break;
 						case "sbu":
 						case "asb":
 						case "ssh":
@@ -1759,14 +1723,12 @@ $(document).ready(function () {
 								switch (jenis) {
 									case 'edit':
 										switch (tbl) {
+
 											case "hspk":
 											case "ssh":
 											case "sbu":
 											case "asb":
-												let dropdownAset = result?.data?.aset;
-												let dropdownSatuan = result?.data?.satuan;
-												if (dropdownAset.length) {
-												}
+												
 												break;
 											default:
 												break;
@@ -1799,6 +1761,23 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
+																	case 'mapping':
+																		switch (attrElm) {
+																			case 'kd_aset':
+																				dropKdAset.valuesDropdown(result.data?.values?.kd_aset);
+																				dropKdAset.returnList({ jenis: "get_row_json", tbl: "aset" });
+																				postDataField = false;
+																				break;
+																			case 'kd_akun':
+																				dropKdAkun.valuesDropdown(result.data?.values?.kd_akun);
+																				dropKdAkun.returnList({ jenis: "get_row_json", tbl: 'akun_belanja' });
+																				postDataField = false;
+																				break;
+
+																			default:
+																				break;
+																		}
+																		break;
 																	case "sbu":
 																	case "asb":
 																	case "ssh":
@@ -1815,7 +1794,7 @@ $(document).ready(function () {
 																				dropdownKdAset.returnList({ jenis: "get_row_json", tbl: 'aset' });
 																				postDataField = false;
 																				break;
-																				
+
 																			default:
 																				break;
 																		}

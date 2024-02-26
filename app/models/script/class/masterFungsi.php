@@ -595,9 +595,9 @@ class MasterFungsi
                                             <button class="ui red button" name="del_row" jns="del_row" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                                    <td klm="kode_aset">'  . $row->kode_aset . '</td>
+                                                    <td klm="kd_aset">'  . $row->kd_aset . '</td>
                                                     <td klm="uraian_aset">' . $divAwal . $row->uraian_aset . $divAkhir . '</td>
-                                                    <td klm="kode_akun">' . $divAwal . $row->kode_akun . $divAkhir . '</td>
+                                                    <td klm="kode_akun">' . $divAwal . $row->kd_akun . $divAkhir . '</td>
                                                     <td klm="uraian_akun">' . $divAwal . $row->uraian_akun . $divAkhir . '</td>
                                                     <td klm="kelompok">' . $divAwal . $row->kelompok . $divAkhir . '</td>
                                                     <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>

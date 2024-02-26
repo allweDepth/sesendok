@@ -1,6 +1,8 @@
 <?php
+
 use Shuchkin\SimpleXLSX;
 use FormulaParser\FormulaParser;
+
 class Impor_xlsx
 {
     public function import_xlsx()
@@ -818,39 +820,52 @@ class Impor_xlsx
                                                                 $no_sort++;
                                                                 break;
                                                             case 'mapping':
-                                                                $kode_aset = $validateRow->setRules(0, 'kode neraca', [
+                                                                $arrayValidateRow = (array)$validateRow;
+                                                                $keyArray = array_keys($arrayValidateRow);
+                                                                $kd_aset_temp = $arrayValidateRow[$keyArray[1]][0];
+                                                                $kd_aset = $validateRow->setRules(0, 'kode aset/neraca', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
+                                                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $kd_aset_temp]]],
                                                                     'min_char' => 4
                                                                 ]);
-                                                                $uraian_aset = $validateRow->setRules(1, 'uraian neraca', [
+                                                                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_aset, 'AND']];
+                                                                $row_resul_cari = $DB->getWhereOnceCustom('aset_neo', $kondisi_row);
+                                                                $uraian_aset = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
+
+                                                                // $uraian_aset = $validateRow->setRules(1, 'uraian neraca', [
+                                                                //     'sanitize' => 'string',
+                                                                //     'required' => true,
+                                                                //     'min_char' => 4
+                                                                // ]);
+                                                                $kd_akun_temp = $arrayValidateRow[$keyArray[1]][2];
+                                                                $kd_akun = $validateRow->setRules(2, 'kode akun', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
+                                                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp]]],
                                                                     'min_char' => 4
                                                                 ]);
-                                                                $kode_akun = $validateRow->setRules(2, 'kode akun', [
-                                                                    'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'min_char' => 4
-                                                                ]);
-                                                                $uraian_akun = $validateRow->setRules(3, 'uraian akun', [
-                                                                    'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'min_char' => 4
-                                                                ]);
+                                                                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_akun, 'AND']];
+                                                                $row_resul_cari = $DB->getWhereOnceCustom('akun_neo', $kondisi_row);
+                                                                $uraian_akun = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
+                                                                // $uraian_akun = $validateRow->setRules(3, 'uraian akun', [
+                                                                //     'sanitize' => 'string',
+                                                                //     'required' => true,
+                                                                //     'min_char' => 4
+                                                                // ]);
                                                                 $kelompok = $validateRow->setRules(4, 'kelompok', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
-                                                                    'in_array' => ['ssh', 'hspk', 'peraturan_daerah', 'asb', 'sbu', 'lain'],
+                                                                    'in_array' => ['ssh', 'hspk', 'asb', 'sbu'],
                                                                     'min_char' => 3
                                                                 ]);
                                                                 $keterangan = $validateRow->setRules(5, 'keterangan', [
                                                                     'sanitize' => 'string',
                                                                 ]);
                                                                 $arrayDataRows = [
-                                                                    'kode_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kode_aset),
+                                                                    'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
                                                                     'uraian_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_aset),
-                                                                    'kode_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kode_akun),
+                                                                    'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
                                                                     'uraian_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_akun),
                                                                     'kelompok' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok),
                                                                     'disable' => 0,
@@ -860,8 +875,8 @@ class Impor_xlsx
                                                                     'username' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
-                                                                $update_arrayData = [['kode_aset', '=', $kode_aset]];
-                                                                $getWhereArrayData = [['kode_aset', '=', $kode_aset]];
+                                                                $update_arrayData = [['kd_aset', '=', $kd_aset]];
+                                                                $getWhereArrayData = [['kd_aset', '=', $kd_aset]];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'peraturan':
