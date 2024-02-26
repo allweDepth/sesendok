@@ -1460,8 +1460,8 @@ $(document).ready(function () {
 						case "wilayah":
 							dataHtmlku.konten +=
 								buatElemenHtml("fieldTextAction", {
-									label: "Kode",
-									atribut: 'name="kode" placeholder="Nomor Peraturan..."',
+									label: "Kode Wilayah",
+									atribut: 'name="kode" placeholder="Kode Wilayah..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
@@ -1470,7 +1470,7 @@ $(document).ready(function () {
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								buatElemenHtml("fieldDropdown", {
-									label: "Type Dok",
+									label: "Status Wilayah",
 									atribut: 'name="status"',
 									kelas: "lainnya selection",
 									dataArray: [
@@ -1531,7 +1531,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian HTML",
-									atribut: 'name="item" rows="4"',
+									atribut: 'name="item" rows="2"',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Sebutan Lain",
@@ -1611,6 +1611,17 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
+						case "sbu":
+						case "asb":
+						case "ssh":
+						case "hspk":
+							// name="kd_aset"
+							var dropdownKdAset = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_aset"]');
+							dropdownKdAset.returnList({ jenis: "get_row_json", tbl: 'aset' });
+							//satuan
+							var dropdown_ajx_satuan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.ajx[name="satuan"]')
+							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+							break;
 						case 'tujuan_sasaran_renstra':
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
 							// case 'getJsonRows':
@@ -1628,7 +1639,7 @@ $(document).ready(function () {
 							dropdown_ajx_tujuan.returnList({ jenis: "get_row_json", tbl: "sasaran_renstra", minCharacters: 1 });
 							var dropdown_ajx_kode = new DropdownConstructor('.ui.dropdown.kode.ajx.selection')
 							dropdown_ajx_kode.returnList({ jenis: "get_row_json", tbl: "sub_keg" });//dropdownConstr.restore();
-							var dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
+							dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 							break;
 						case 'sub_keg_dpa':
@@ -1788,6 +1799,27 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
+																	case "sbu":
+																	case "asb":
+																	case "ssh":
+																	case "hspk":
+																		// name="kd_aset"
+																		switch (attrElm) {
+																			case 'satuan':
+																				dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
+																				dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", set: allField });
+																				postDataField = false;
+																				break;
+																			case 'kd_aset':
+																				dropdownKdAset.valuesDropdown(result.data?.values?.kd_aset);
+																				dropdownKdAset.returnList({ jenis: "get_row_json", tbl: 'aset' });
+																				postDataField = false;
+																				break;
+																				
+																			default:
+																				break;
+																		}
+																		break;
 																	case 'dpa':
 																	case 'renja':
 																		tabel_pakai_temporerSubkeg = 'sub_keg_renja';

@@ -574,7 +574,7 @@ class get_data
                             // $data_where =  [$text];
                             $jumlah_kolom = 9;
                             break;
-                        case "aset":
+                        case 'aset':
                         case 'akun_belanja':
                             $like = "disable <= ? AND sub_rincian_objek > ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, 0, $cari, $cari, $cari];
@@ -768,11 +768,29 @@ class get_data
                                             case 'sbu':
                                             case 'hspk':
                                             case 'ssh':
+                                                $data['values'] = [];
                                                 // ambil data kd_aset dari tabel aset dan satuan list ut dropdown
                                                 $kd_aset = $resul[0]->kd_aset;
                                                 $data['aset'] = $DB->getQuery("SELECT kode, uraian FROM aset_neo WHERE kode LIKE CONCAT('%',?,'%')", [$kd_aset]);
                                                 $satuan = $resul[0]->satuan;
                                                 $data['satuan'] = $DB->getQuery("SELECT value, item FROM satuan_neo WHERE value LIKE CONCAT('%',?,'%')", [$satuan]);
+
+                                                $kode_drop = $data['users']->kd_aset;
+                                                if ($kode_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('aset_neo', $kondisi_result);
+                                                    if (count((array)$row)) {
+                                                        $data['values']['kd_aset'] = [['name' => $row->uraian, 'value' => $row->kode, 'selected' => true]];
+                                                    }
+                                                }
+                                                $satuan_drop = $data['users']->satuan;
+                                                if ($satuan_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['value', '=', $satuan_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
+                                                    if (count((array)$row)) {
+                                                        $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
+                                                    }
+                                                }
                                                 break;
                                             case 'renstra':
                                                 // ambil data untuk values dropdown
@@ -1001,6 +1019,7 @@ class get_data
                                     switch ($jenis) {
                                         case 'get_row_json':
                                             switch ($tbl) {
+                                                case 'aset':
                                                 case 'akun_belanja':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
@@ -1140,6 +1159,7 @@ class get_data
                     case 'tujuan_renstra':
                     case 'sub_keg':
                     case 'satuan':
+                    case 'aset':
                     case 'akun_belanja':
                     case 'hspk':
                     case 'asb':
