@@ -67,15 +67,15 @@ class MasterFungsi
                         </tr>');
                 break;
             case 'renstra':
+                // <th rowspan="3">Indikator Kinerja Tujuan, Sasaran,Program (Outcome)dan Kegiatan(Output)</th>
                 $rowData['thead'] = '<tr class="center aligned">
-                <th rowspan="3">Tujuan</th>
-                <th rowspan="3">Sasaran</th>
                 <th rowspan="3">Kode</th>
-                <th rowspan="3">Program dan Kegiatan</th>
+                <th rowspan="3" class="collapsing">Program dan Kegiatan</th>
                 <th rowspan="3">Satuan</th>
-                <th rowspan="3">Indikator Kinerja Tujuan, Sasaran,Program (Outcome)dan Kegiatan(Output)</th>
-                <th rowspan="3">Data Capaian Awal Perenc anaan</th>
+                <th rowspan="3">Indikator Kinerja</th>
+                <th rowspan="3">Data Capaian Awal</th>
                 <th colspan="11">Target Kinerja Program dan Kerangka Pendanaan</th>
+                <th class="collapsing" rowspan="3">Jumlah</th>
                 <th class="collapsing" rowspan="3">AKSI</th>
             </tr>
             <tr class="center aligned">
@@ -84,7 +84,7 @@ class MasterFungsi
                 <th colspan="2">Tahun-3</th>
                 <th colspan="2">Tahun-4</th>
                 <th colspan="2">Tahun-5</th>
-                <th rowspan="2">Kondisi Kinerja Pada Akhir Periode Renstra Perangkat Daerah</th>
+                <th rowspan="2">Kondisi Kinerja Akhir Renstra</th>
             </tr>
             <tr class="center aligned">
                 <th>Target</th>
@@ -336,6 +336,7 @@ class MasterFungsi
                                 </tr>');
                         break;
                     case 'renstra':
+                        $desimal = ($this->countDecimals($row->jumlah) <= 2) ? 2 : $this->countDecimals($row->harga_satuan); //memanggil fungsi kelas sendiri
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
@@ -348,10 +349,7 @@ class MasterFungsi
                             <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                             <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         };
-                        // $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="tujuan">' .  $row->tujuan . '</td>
-                                    <td klm="sasaran">' .  $row->sasaran . '</td>
                                     <td klm="kd_sub_keg">' .  $row->kd_sub_keg . '</td>
                                     <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
                                     <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
@@ -368,6 +366,7 @@ class MasterFungsi
                                     <td klm="target_thn_5">' . $divAwalAngka . number_format($row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="dana_thn_5">' . $divAwalAngka . number_format($row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="kondisi_akhir">' .  number_format($row->kondisi_akhir, 2, ',', '.') . '</td>
+                                    <td klm="jumlah">' .  number_format($row->jumlah, $desimal, ',', '.') . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
@@ -441,8 +440,7 @@ class MasterFungsi
                         <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
                         <td klm="harga_satuan">' . $divAwalAngka . number_format($row->harga_satuan, $desimal, ',', '.') . $divAkhir . '</td>
                         <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
-                        <td>' . $buttons . '</td>
-                    </tr>');
+                        <td>' . $buttons . '</td></tr>');
                         break;
                     case 'satuan':
                         $buttons = '';
@@ -658,31 +656,7 @@ class MasterFungsi
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
-                    case 'divisiSDA':
-                        $nama_tabel = $tbl;
-                        if ($type_user == 'admin') {
-                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
-                                    <td klm="kode"><div contenteditable>' . $row->kode . '</div></td>
-                                    <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
-                                    <td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td>
-                                    <td klm="keterangan"><div contenteditable>' . $row->keterangan . '</div></td>
-                                    <td>
-                                        <div class="ui icon basic mini buttons">
-                                            <button class="ui button" name="flyout" name="flyout" jns="' . $jenis . '" tbl="edit" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                                            <button class="ui red button" name="del_row" jns="' . $jenis . '" tbl="del_row" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>');
-                        } else {
-                            $rowData['tbody'] .= '<tr>
-                            <td>' . $row->kode . '</td>
-                            <td>' . $row->uraian . '</td>
-                            <td>' . $row->satuan . '</td>
-                            <td>' . $row->keterangan . '</td>
-                            <td></td>
-                        </tr>';
-                        }
-                        break;
+
                     case 'user':
                         $phpdate = strtotime($row->tgl_daftar);
                         $mysqldate = date('d-m-Y H:i:s', $phpdate);
@@ -1043,7 +1017,7 @@ class MasterFungsi
         $kel_rek = '';
         $dataRek = [];
         $dataRek['kd_sub_keg_x_xx'] = '';
-        
+
         switch ($count) {
             case 6: //sub keg
                 if ((int)$explodeAwal[5]) {
@@ -1094,7 +1068,7 @@ class MasterFungsi
             default:
                 break;
         };
-        
+
         $explodeAwal = explode('.', $dataRek['kode']);
         // var_dump($explodeAwal);
         $dataRek['sum_rek'] = count($explodeAwal);
@@ -1140,10 +1114,10 @@ class MasterFungsi
         }
 
         $explode_kd_sub_keg = explode('.', $kd_sub_keg_data);
-        
+
         $tbl = $dinamic['tbl'];
         $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
-        
+
         //jika ada kegiatan satukan array 4 dan 5
         if ($sizeOfKd_sub_keg > 3) {
             $kode_keg_gabung = [$explode_kd_sub_keg[3] . '.' . $explode_kd_sub_keg[4]];
@@ -1167,6 +1141,14 @@ class MasterFungsi
         $kd_opd = $dinamic['kd_opd'];
         $tahun = $dinamic['tahun'];
         $set = $dinamic['set'];
+        // cari nama opd, nama urusan dan bidang untuk 2 rekening pertama opd
+        $xpldeKdOPD = explode('.', $kd_opd);
+        $imploderek1_2 = (int)$xpldeKdOPD[0] . '.' . (int)$xpldeKdOPD[1];
+
+        $row_result = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $xpldeKdOPD[0]]]);
+        $uraian_sub_keg_x = ($row_result) ? $row_result->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+        $row_result = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $imploderek1_2]]);
+        $uraian_sub_keg_x_xx = ($row_result) ? $row_result->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
         //
         if ($sizeOfKd_sub_keg) {
             $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
@@ -1392,14 +1374,23 @@ class MasterFungsi
                         $kel_rek_sum = 'bidang';
                         break;
                 };
+                $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $rekening_gabung]]);
+                $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                switch ($rekening_gabung) {
+                    case 'x':
+                        $uraian = $uraian_sub_keg_x;
+                        break;
+                    case 'x.xx':
+                        $uraian = $uraian_sub_keg_x_xx;
+                        break;
+                };
                 switch ($tabel_pakai) {
                     case 'dpa_neo':
                     case 'renja_neo':
                     case 'dppa_neo':
                     case 'renja_p_neo':
                         $kondisi = [['kd_sub_keg', '=', $rekening_gabung], ['kd_akun', '=', '', 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                        $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $rekening_gabung]]);
-                        $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+
                         $set_insert = [
                             'kd_wilayah' => $kd_wilayah,
                             'kd_opd' => $kd_opd,
@@ -1440,8 +1431,16 @@ class MasterFungsi
                             $set_insert = $set;
                         } else {
                             $kondisi_sum = [['kd_sub_keg', "LIKE", "$rekening_gabung%"], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                            $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $rekening_gabung]]);
-                            $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                           
+                            // jika nomor rek adalah x atau x.xx maka urusan dan bidang disesuaian
+                            switch ($rekening_gabung) {
+                                case 'x':
+                                    $uraian = $uraian_sub_keg_x;
+                                    break;
+                                case 'x.xx':
+                                    $uraian = $uraian_sub_keg_x_xx;
+                                    break;
+                            };
                             $set_insert = [
                                 'kd_wilayah' => $kd_wilayah,
                                 'kd_opd' => $kd_opd,
