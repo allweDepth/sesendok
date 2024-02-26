@@ -83,7 +83,7 @@ class DB
             // var_dump( $limit );
             
             $stmt->execute();
-            //var_dump( $stmt );
+            // var_dump( $stmt );
         } catch (PDOException $e) {
             //die( "Koneksi / Query bermasalah: " . $e->getMessage() . " (" . $e->getCode() . ")" );
             $pesan['koneksi'] = "Koneksi / Query bermasalah: " . $e->getMessage() . " (" . $e->getCode() . ")(" . $query . ")(" . json_encode($bindValue) . ")";

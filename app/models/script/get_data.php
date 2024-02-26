@@ -453,7 +453,7 @@ class get_data
                                     case 'get_tbl':
                                         if ($rowSubKeg) {
                                             $kd_sub_keg = $rowSubKeg->kd_sub_keg;
-                                            $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok";
+                                            $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok, uraian";
                                             $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kd_sub_keg = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun, $kd_sub_keg, 'uraian', $cari, $cari, $cari, $cari, $cari, $cari, $cari];
