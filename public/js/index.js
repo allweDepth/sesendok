@@ -1847,8 +1847,6 @@ $(document).ready(function () {
 																			case 'sat_4':
 																				dropdownSatuanRenja4.valuesDropdown(result.data?.values?.sat_4);
 																				dropdownSatuanRenja4.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
-
-
 																			default:
 																				break;
 																		}

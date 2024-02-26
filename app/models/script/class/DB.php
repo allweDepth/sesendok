@@ -81,7 +81,6 @@ class DB
             // var_dump( $query );
             // var_dump( $bindValue);
             // var_dump( $limit );
-            
             $stmt->execute();
             // var_dump( $stmt );
         } catch (PDOException $e) {
@@ -397,7 +396,6 @@ class DB
         $queryArray = "WHERE ";
         $jumlahArray = count($condition);
         $dataValuesCheck = [];
-
         for ($x = 0; $x < $jumlahArray; $x++) {
             if (count($condition[$x]) === 3 && $x <= 0) {
                 $queryArray .= " {$condition[$x][0]} {$condition[$x][1]}";
@@ -676,7 +674,6 @@ class DB
         }
         return $this->runQuery($query, $dataValues)->rowCount();
     }
-
     // Method untuk membaca data JSON dari kolom
     public function readJSONField($tableName, $columnName, $jsonKey, $condition)
     {
@@ -699,7 +696,6 @@ class DB
         }
         return $this->runQuery($query, $dataValues)->fetch(PDO::FETCH_ASSOC)[$jsonKey];
     }
-
     // Method untuk memperbarui data JSON di dalam kolom
     public function updateJSONField($tableName, $columnName, $jsonData, $jsonKey, $condition)
     {
@@ -718,7 +714,6 @@ class DB
             }
             array_push($dataValues, $val[2]);
         }
-
         return $this->runQuery($query, $dataValues)->rowCount();
     }
     // $condition = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];

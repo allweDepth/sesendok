@@ -8,7 +8,6 @@ class writer_xlsx
         require 'init.php';
         $user = new User();
         $user->cekUserSession();
-
         $type_user = $_SESSION["user"]["type_user"];
         $username = $_SESSION["user"]["username"];
         $DB = DB::getInstance();
@@ -26,7 +25,6 @@ class writer_xlsx
             'min_char' => 1,
             'max_char' => 100
         ]);
-
         $id_user = $_SESSION["user"]["id"];
         $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user], ['username', '=', $username, 'AND']]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
@@ -40,14 +38,8 @@ class writer_xlsx
             $id_user = 0;
             $code = 407;
         }
-
-
         $filename = 'nabiilaInayah.xlsx';
-
-
-
         $writer = new XLSXWriter();
-
         // hanya text bold tengah
         $LTRB = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'wrap_text' => 'true');
         $LTRB_20 = array('border' => 'left,right,top,bottom', 'border-style' => 'thin', 'wrap_text' => 'true', 'height' => 20);
@@ -64,7 +56,6 @@ class writer_xlsx
         $where1 = "";
         $kolom = '*';
         $nama_sheet = 'Inayah';
-
         if ($validate->passed()) {
             $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
             $tahun = (int) $rowUsername->tahun;
@@ -218,7 +209,6 @@ class writer_xlsx
                     );
                     $row_header = ['NO.', 'SUMBER DANA', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
                     $jmlKolom = 9;
-
                     break;
                 case 'akun_belanja':
                     $tabel_pakai = 'akun_neo';
@@ -249,7 +239,6 @@ class writer_xlsx
                     );
                     $row_header = ['NO.', 'AKUN', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
                     $jmlKolom = 9;
-
                     break;
                 case 'aset':
                     $tabel_pakai = 'aset_neo';
@@ -280,7 +269,6 @@ class writer_xlsx
                     );
                     $row_header = ['NO.', 'AKUN', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
                     $jmlKolom = 9;
-
                     break;
                 case 'rekanan':
                     $tabel_pakai =  'rekanan';
@@ -304,7 +292,6 @@ class writer_xlsx
                 //$hasilServer['100'] = $get_data;
                 $jumlahArray = is_array($get_data) ? count($get_data) : 0;
                 if ($jumlahArray > 0) {
-
                     #=============================
                     #==== HEADER KOP TABEL =======
                     #=============================
@@ -316,7 +303,6 @@ class writer_xlsx
                                     $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [20, 20, 60, 15, 15, 25, 25, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
                                     $writer->writeSheetRow($nama_sheet, $rowdata = array('SKPD', ': ' . "($kd_opd) $nama_org"), ['font-style' => 'bold', 'font-size' => 12]);
-
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';
                                     }
@@ -334,7 +320,6 @@ class writer_xlsx
                                     $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [25, 60, 40, 40, 25, 25, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
                                     $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', ': ' . "($kd_opd) $nama_org"), ['font-style' => 'bold', 'font-size' => 12]);
-
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';
                                     }
@@ -351,7 +336,6 @@ class writer_xlsx
                                     $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [25, 60, 40, 40, 15, 20, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
                                     $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
-
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';
                                     }
@@ -381,7 +365,6 @@ class writer_xlsx
                                     ), $col_options = array('widths' => [10, 30, 50, 40, 40, 40, 30, 20, 20, 20, 20, 40], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 2, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = 11);
                                     $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
-
                                     $row_tabel = ['NO.', 'TYPE DOK', 'JUDUL', 'NOMOR', 'BENTUK', 'BENTUK SINGKAT', 'LOKASI PENETAPAN', '="TANGGAL PENETAPAN"', '="TANGGAL PENGUNDANGAN"', 'STATUS', 'DISABLE', 'KETERANGAN'];
                                     for ($x = 1; $x <= 12; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';
@@ -401,7 +384,6 @@ class writer_xlsx
                                     $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [10, 10, 10, 10, 10, 10, 10, 80, 70], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = 11);
                                     $writer->writeSheetRow($nama_sheet, $rowdata = array('OPD', '', ': ' . 'SKPD'), ['font-style' => 'bold', 'font-size' => 12]);
-
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';
                                     }
@@ -412,7 +394,6 @@ class writer_xlsx
                                     break;
                             }
                             break;
-
                         case 'rab':
                             //SHEET BOQ
                             $writer->writeSheetHeader($nama_sheet, $rowdata = array(
@@ -522,7 +503,6 @@ class writer_xlsx
                             );
                             $writer->writeSheetRow($nama_sheet3, $rowdata, $LTRB_hcvcwrap_b_fill);
                             break;
-
                         case 'analisa_alat':
                             switch ($tbl) {
                                 case 'one_by_one': //semua alat tapi dengan detail
@@ -686,7 +666,6 @@ class writer_xlsx
                     $sumSheet2 = 0;
                     $myrow = 0;
                     $jumlahGet_data = count($get_data);
-
                     foreach ($get_data as $row) {
                         $myrow++;
                         //var_dump($row);
@@ -730,7 +709,6 @@ class writer_xlsx
                                             $row['jumlah_pagu_p'],
                                             $row['keterangan']
                                         );
-
                                         $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
                                         break;
                                     default:
@@ -749,7 +727,6 @@ class writer_xlsx
                                             $row['peraturan'],
                                             $row['keterangan']
                                         );
-
                                         $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
                                         break;
                                     default:
@@ -785,7 +762,6 @@ class writer_xlsx
                                     case 'dok': //mengambil seluruh data harga satuan sesuai proyek
                                         switch ($tbl) {
                                             case 'sumber_dana':
-
                                                 $rowdata = array(
                                                     $myrow,
                                                     $row['sumber_dana'],
@@ -816,7 +792,6 @@ class writer_xlsx
                                                 #code...
                                                 break;
                                         };
-
                                         $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
                                         break;
                                     default:
@@ -850,7 +825,6 @@ class writer_xlsx
                     #=====================
                     #==== TAMBAHAN =======
                     #=====================
-
                 } else {
                     $writer->writeSheetRow($nama_sheet, $rowdata = array('DATA TIDAK DITEMUKAN', '', '', '', '', '', '', ''), $style_Non_Data);
                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = 7);
@@ -875,7 +849,6 @@ class writer_xlsx
         $writer->setCompany('Hamba Allah');
         $writer->writeToStdOut();
         exit(0);
-
         /* jika menggunakan json ajax
         if (!$writer->writeToFile($folder . $filename)) { //if (!$writer->writeToFile($folder . $filename)) {
             $code = 705;

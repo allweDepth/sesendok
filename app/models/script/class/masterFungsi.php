@@ -2,7 +2,6 @@
 // require_once("class/FormulaParser.php");
 // require 'init.php';
 use FormulaParser\FormulaParser;
-
 class MasterFungsi
 {
     //get tabel data
@@ -239,7 +238,6 @@ class MasterFungsi
                                 $kolomVol_4 = 'vol_4';
                                 $kolomVol_5 = 'vol_5';
                                 $kolomHarga_satuan = 'harga_satuan';
-
                                 $kolomSat_1 = 'sat_1';
                                 $kolomSat_2 = 'sat_2';
                                 $kolomSat_3 = 'sat_3';
@@ -255,7 +253,6 @@ class MasterFungsi
                                 $kolomVol_4 = 'vol_4_p';
                                 $kolomVol_5 = 'vol_5_p';
                                 $kolomHarga_satuan = 'harga_satuan_p';
-
                                 $kolomSat_1 = 'sat_1_p';
                                 $kolomSat_2 = 'sat_2_p';
                                 $kolomSat_3 = 'sat_3_p';
@@ -291,7 +288,6 @@ class MasterFungsi
                         $koefisien .= ($row->{$kolomVol_2} > 0) ? ' x ' . number_format($row->{$kolomVol_2}, 2, ',', '.') : '';
                         $koefisien .= ($row->{$kolomVol_3} > 0) ? ' x ' . number_format($row->{$kolomVol_3}, 2, ',', '.') : '';
                         $koefisien .= ($row->{$kolomVol_4} > 0) ? ' x ' . number_format($row->{$kolomVol_4}, 2, ',', '.') : '';
-
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_akun">' . $row->kd_akun . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
@@ -656,7 +652,6 @@ class MasterFungsi
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
-
                     case 'user':
                         $phpdate = strtotime($row->tgl_daftar);
                         $mysqldate = date('d-m-Y H:i:s', $phpdate);
@@ -938,7 +933,6 @@ class MasterFungsi
         }
         return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
     }
-
     // ambil data row bidang s/d sub kegiatan
     public function get_bidang_sd_sub_keg($dinamic = [])
     {
@@ -1003,21 +997,17 @@ class MasterFungsi
         // $DB->select('*');
         return $Sumprogkeg;
     }
-
     // kelola rekening sub kegiatan
     public function kelolaRek($dinamic = ['kode' => ''])
     {
         $kode = $dinamic['kode'];
-
         $explodeAwal = explode('.', $kode);
-
         $count = count($explodeAwal);
         // cari di tabel jika tidak ditemukan tambahkan, jika ada update tabel
         $kd_rek = '';
         $kel_rek = '';
         $dataRek = [];
         $dataRek['kd_sub_keg_x_xx'] = '';
-
         switch ($count) {
             case 6: //sub keg
                 if ((int)$explodeAwal[5]) {
@@ -1068,7 +1058,6 @@ class MasterFungsi
             default:
                 break;
         };
-
         $explodeAwal = explode('.', $dataRek['kode']);
         // var_dump($explodeAwal);
         $dataRek['sum_rek'] = count($explodeAwal);
@@ -1112,12 +1101,9 @@ class MasterFungsi
             $explode_kd_akun = explode('.', $kd_akun_data);
             $sizeOfKd_akun = sizeof($explode_kd_akun);
         }
-
         $explode_kd_sub_keg = explode('.', $kd_sub_keg_data);
-
         $tbl = $dinamic['tbl'];
         $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
-
         //jika ada kegiatan satukan array 4 dan 5
         if ($sizeOfKd_sub_keg > 3) {
             $kode_keg_gabung = [$explode_kd_sub_keg[3] . '.' . $explode_kd_sub_keg[4]];
@@ -1144,11 +1130,10 @@ class MasterFungsi
         // cari nama opd, nama urusan dan bidang untuk 2 rekening pertama opd
         $xpldeKdOPD = explode('.', $kd_opd);
         $imploderek1_2 = (int)$xpldeKdOPD[0] . '.' . (int)$xpldeKdOPD[1];
-
         $row_result = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $xpldeKdOPD[0]]]);
-        $uraian_sub_keg_x = ($row_result) ? $row_result->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+        $uraian_sub_keg_x = ($row_result) ? 'PENUNJANG ' .$row_result->nomenklatur_urusan : 'penunjang data sub kegiatan tidak ditemukan';
         $row_result = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $imploderek1_2]]);
-        $uraian_sub_keg_x_xx = ($row_result) ? $row_result->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+        $uraian_sub_keg_x_xx = ($row_result) ? 'PENUNJANG ' .$row_result->nomenklatur_urusan : 'penunjang data sub kegiatan tidak ditemukan';
         //
         if ($sizeOfKd_sub_keg) {
             $tabel_pakai = $this->tabel_pakai($tbl)['tabel_pakai'];
@@ -1209,7 +1194,7 @@ class MasterFungsi
                         case 'renja_neo':
                         case 'dppa_neo':
                         case 'renja_p_neo':
-                            $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $kel_rekening, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['sumber_dana', '=', $set['sumber_dana'], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND']];
+                            $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['sumber_dana', '=', $set['sumber_dana'], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND']];
                             break;
                         case 'value':
                             break;
@@ -1217,7 +1202,8 @@ class MasterFungsi
                             break;
                     };
                     $row_result = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
-                    if ($row_result == false) {
+                    // var_dump($row_result);
+                    if ($row_result === false) {
                         # insert baru
                         $DB->insert($tabel_pakai, $set);
                         $data['note']['add row'][] = $DB->lastInsertId();
@@ -1270,7 +1256,6 @@ class MasterFungsi
                             $kel_rek_sum = 'objek';
                             break;
                         case 2:
-
                             $kel_rekening = 'kelompok';
                             $kel_rek_sum = 'jenis';
                             break;
@@ -1284,7 +1269,6 @@ class MasterFungsi
                     $DB->select("SUM({$kolomJumlah}) AS jumlah");
                     $row_sum = $DB->getWhereArray($tabel_pakai, $kondisi_sum);
                     $jumlah = $row_sum[0]->jumlah;
-
                     //selesai ambil jumlah
                     $DB->select("*");
                     switch ($tabel_pakai) {
@@ -1332,9 +1316,8 @@ class MasterFungsi
                         default:
                             break;
                     };
-
                     $row_uraian = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
-                    if ($row_uraian == false) {
+                    if ($row_uraian === false) {
                         # insert baru
                         $DB->insert($tabel_pakai, $set_insert);
                         $data['note']['add row'][] = $DB->lastInsertId();
@@ -1348,7 +1331,6 @@ class MasterFungsi
                             $code = 33;
                         }
                     }
-
                     // var_dump($row_sum);
                     $i++;
                 }
@@ -1363,7 +1345,6 @@ class MasterFungsi
             $kondisi_sum = '';
             $jumlah = $set[$kolomJumlah];
             foreach ($explode_kd_sub_keg as $key => $value) {
-
                 $kd_subKeg_olah_sebelum = $rekening_gabung;
                 // var_dump($kd_subKeg_olah_sebelum);
                 if ($i != 0) {
@@ -1426,7 +1407,6 @@ class MasterFungsi
                         } else {
                             $kondisi_sum = [['kd_sub_keg', "LIKE", "$rekening_gabung%"], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                         }
-
                         $kondisi = [['kd_sub_keg', '=', $rekening_gabung], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                         // select sum
                         break;
@@ -1445,8 +1425,6 @@ class MasterFungsi
                     $jumlah = $set[$kolomJumlah];
                     // var_dump($jumlah);
                 }
-
-
                 // var_dump($sizeOfRekening);
                 switch ($tabel_pakai) {
                     case 'dpa_neo':
@@ -1454,7 +1432,6 @@ class MasterFungsi
                     case 'dppa_neo':
                     case 'renja_p_neo':
                         $kondisi = [['kd_sub_keg', '=', $rekening_gabung], ['kd_akun', '=', '', 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-
                         $set_insert = [
                             'kd_wilayah' => $kd_wilayah,
                             'kd_opd' => $kd_opd,
@@ -1495,7 +1472,6 @@ class MasterFungsi
                             $set_insert = $set;
                         } else {
                             $kondisi_sum = [['kd_sub_keg', "LIKE", "$rekening_gabung%"], ['kel_rek', '=',  $kel_rek_sum, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-
                             // jika nomor rek adalah x atau x.xx maka urusan dan bidang disesuaian
                             switch ($rekening_gabung) {
                                 case 'x':
@@ -1519,7 +1495,6 @@ class MasterFungsi
                                 'username' => $_SESSION["user"]["username"]
                             ];
                         }
-
                         $kondisi = [['kd_sub_keg', '=', $rekening_gabung], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                         // select sum
                         break;
@@ -1530,7 +1505,7 @@ class MasterFungsi
                 $DB->select("*");
                 $row_uraian = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
                 // var_dump($row_uraian);
-                if ($row_uraian == false) {
+                if ($row_uraian === false) {
                     # insert baru
                     $DB->insert($tabel_pakai, $set_insert);
                     $data['note']['add row'][] = $DB->lastInsertId();
@@ -1544,7 +1519,6 @@ class MasterFungsi
                         $code = 33;
                     }
                 }
-
                 switch ($tabel_pakai) {
                     case 'sub_keg_dpa_neo':
                     case 'sub_keg_renja_neo':
@@ -1553,8 +1527,6 @@ class MasterFungsi
                     case 'renja_neo':
                     case 'dppa_neo':
                     case 'renja_p_neo':
-
-
                         break;
                     case 'renstra_neo':
                         break;

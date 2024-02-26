@@ -10,7 +10,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
 ?>
 <!doctype html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,9 +19,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/admin.css">
     <link rel="shortcut icon" href="<?= BASEURL; ?>img/logo.png">
 </head>
-
 <body style="overflow: hidden;" class="dimmable">
-
     <!-- MAIN TOOLBAR MENU -->
     <div class="ui teal top fixed inverted main menu">
         <a class="item nabiila" id="biilainayah">
@@ -174,7 +171,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                         </h3>
                     </div>
-                    
                     <div class="ui action input multi">
                         <input type="text" placeholder="Search...">
                         <input type="text" placeholder="Search...">
@@ -1131,5 +1127,4 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     </script>
     <script src="<?= BASEURL; ?>js/index.js"></script>
 </body>
-
 </html>

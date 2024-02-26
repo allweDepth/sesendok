@@ -87,7 +87,6 @@ class get_data
                             'min_char' => 1,
                             'max_char' => 255
                         ]);
-
                         break;
                     case 'edit':
                         $id_row = $validate->setRules('id_row', 'id_row', [
@@ -179,8 +178,6 @@ class get_data
                                 ]);
                                 break;
                         }
-
-
                         break;
                     case 'yyyyyy':
                         // isset($_POST['jenis'])
@@ -198,7 +195,6 @@ class get_data
                 }
                 $jumlah_kolom = 0;
                 //FINISH PROSES VALIDASI
-
                 if ($validate->passed()) {
                     $code = 55;
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
@@ -417,7 +413,6 @@ class get_data
                                     }
                                     break;
                             }
-
                             break;
                         case 'renja':
                         case 'dpa':
@@ -466,7 +461,7 @@ class get_data
                                             $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
                                             $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
                                             $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
-                                            // var_dump($bidang_sub_keg);
+                                            // keterangan di atas
                                             $data['tr_sub_keg'] = '<tr>
                                                     <td class="collapsing">Perangkat Daerah</td>
                                                     <td>' . $data['unit_kerja'] . '</td>
@@ -500,7 +495,6 @@ class get_data
                                         }
                                         break;
                                     case 'edit':
-
                                         break;
                                     default:
                                         #code...
@@ -512,7 +506,6 @@ class get_data
                                 $kodePosting = '';
                                 $code = 70;
                             }
-
                             // var_dump($tahun);
                             break;
                         case 'rekanan':
@@ -676,7 +669,6 @@ class get_data
                             // $data_where =  [$text];
                             $jumlah_kolom = 7;
                             break;
-
                         default:
                             $kodePosting = '';
                             $code = 204;
@@ -697,6 +689,8 @@ class get_data
                                 switch ($tbl) {
                                     case 'sub_keg_dpa':
                                     case 'sub_keg_renja':
+                                        // balikkan nilai agar yang terakhir di input muncul duluan
+                                        $data_klm = array_reverse($data_klm);
                                         if (count($data_klm)) {
                                             foreach ($data_klm as $row) {
                                                 switch ($nama_kolom) {
@@ -711,7 +705,6 @@ class get_data
                                                             $jenis = '';
                                                             $code = 404;
                                                         }
-
                                                         break;
                                                     default:
                                                         $dataJson['results'][] = ['name' => $row, 'value' => $row];
@@ -728,7 +721,6 @@ class get_data
                                 $jenis = '';
                                 $code = 404;
                             }
-
                             break;
                         case 'getAllValJson':
                             $results = $DB->getWhereArray($tabel_pakai, $kondisi);
@@ -886,8 +878,8 @@ class get_data
                                                     $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'keterangan_json', 'keterangan_json', $dataKondisiField);
                                                     $data_klm = json_decode($data_klm, true);
                                                     if ($data_klm) {
-                                                    $key = array_search($cari_drop, $data_klm, true);
-                                                    $data['values']['uraian'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
+                                                        $key = array_search($cari_drop, $data_klm, true);
+                                                        $data['values']['uraian'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
                                                     }
                                                 }
                                                 //satuan
@@ -905,7 +897,6 @@ class get_data
                                                         }
                                                     }
                                                 }
-
                                                 break;
                                             case 'sub_keg_renja':
                                                 $data['values'] = [];
@@ -1107,7 +1098,6 @@ class get_data
                                 $code = 202; //202
                             }
                             // var_dump($get_data);
-
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user, $value_dinamic);
                             $data = array_merge($dataTabel, $data);
                             break;
@@ -1143,7 +1133,6 @@ class get_data
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
-
                     case 'sub_keg_dpa':
                     case 'sub_keg_renja':
                     case 'sumber_dana':

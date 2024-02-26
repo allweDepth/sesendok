@@ -1,8 +1,6 @@
 <?php
-
 use Shuchkin\SimpleXLSX;
 use FormulaParser\FormulaParser;
-
 class Impor_xlsx
 {
     public function import_xlsx()
@@ -278,7 +276,6 @@ class Impor_xlsx
                                                         }
                                                         $dinamic = ['kode' => $kodeRek];
                                                         $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
-
                                                         if ($tbl == 'renstra') {
                                                             $getData[1] = $kodeRekUbah['kode'];
                                                         } else {
@@ -679,8 +676,6 @@ class Impor_xlsx
                                                                     }
                                                                 }
                                                                 $kd_rek_akun = $explodeAwal;
-
-
                                                                 $keterangan = $validateRow->setRules(8, 'keterangan', [
                                                                     'sanitize' => 'string',
                                                                 ]);
@@ -1393,12 +1388,10 @@ class Impor_xlsx
                                                                 case 'sub_keg_dpa':
                                                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
                                                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
-                                                                    
                                                                     break;
                                                                 case 'renstra':
                                                                     // $dinamicData = ['tbl' => $tbl, 'kode' => $kd_sub_keg, 'set' => $arrayDataRows, 'set_non' => $arrayDataRows_nonSubKeg];
                                                                     // $cekKodeRek = $Fungsi->kd_sub_keg($dinamicData);
-
                                                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
                                                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                                                     break;
