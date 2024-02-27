@@ -81,6 +81,33 @@ class Impor_xlsx
                             'min_char' => 1,
                             'max_char' => 100
                         ]);
+                        switch ($tbl) {
+                            case 'renja':
+                            case 'renja_p':
+                                $tabel_pakai_temp = 'sub_keg_renja_neo';
+                            case 'dpa':
+                            case 'dppa':
+                                if ($tbl == 'dpa' || $tbl == 'dppa') {
+                                    $tabel_pakai_temp = 'sub_keg_dpa_neo';
+                                }
+                                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'inDB' => [$tabel_pakai_temp, 'id', [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                ]);
+                                $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temp, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
+                                $kd_sub_keg = ($row_kd_sub_keg !== false) ? $row_kd_sub_keg->kd_sub_keg : '';
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
                         $kodePosting = '';
                         if ($validate->passed()) {
                             // mulai proses impor
@@ -91,11 +118,7 @@ class Impor_xlsx
                                 $code = 1;
                                 $sukses = true;
                                 $RowHeaderValidate = [];
-                                $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
-                                $tahun = (int) $rowUsername->tahun;
-                                $kd_wilayah = $rowUsername->kd_wilayah;
-                                $kd_skpd = $rowUsername->kd_organisasi;
-                                $kd_opd = $rowUsername->kd_organisasi;
+
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
                                     case 'sub_keg_renja':
@@ -143,6 +166,13 @@ class Impor_xlsx
                                     //menentukan data
                                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     switch ($tbl) {
+                                        case 'renja':
+                                        case 'dpa':
+                                        case 'renja_p':
+                                        case 'dppa':
+                                            $RowHeaderValidate = ['KODE AKUN', 'URAIAN', 'JENIS KELOMPOK', 'KELOMPOK', 'JENIS KOMPONEN', 'NAMA KOMPONEN', 'HARGA SAT. KOMPONEN', 'SATUAN KOMPONEN', 'VOL', 'JUMLAH', 'KODE SUMBER DANA', 'KETERANGAN'];
+                                            $count_col_min = count($RowHeaderValidate);
+                                            break;
                                         case 'sub_keg_renja':
                                         case 'sub_keg_dpa':
                                             $RowHeaderValidate = ['KODE SUB KEGIATAN', 'PROGRAM DAN KEGIATAN', 'TOLAK UKUR CAPAIAN KEG.', 'TARGET KINERJA CAPAIAN KEG.', 'TOLAK UKUR KELUARAN', 'TARGET KINERJA KELUARAN', 'TOLAK UKUR HASIL', 'TARGET KINERJA HASIL', 'SUMBER DANA', 'LOKASI', 'KELUARAN SUB KEG.', 'AWAL PELAKSANAAN', 'AKHIR PELAKSANAAN', 'JUMLAH PAGU', 'KETERANGAN'];
@@ -308,8 +338,112 @@ class Impor_xlsx
                                                         //PROSES VALIDASI CELL EXCELL
                                                         //============================
                                                         switch ($tbl) {
+                                                            case 'renja':
+                                                            case 'dpa':
+                                                            case 'renja_p':
+                                                            case 'dppa':
+                                                                $arrayValidateRow = (array)$validateRow;
+                                                                $keyArray = array_keys($arrayValidateRow);
+                                                                $kd_akun_temp = $arrayValidateRow[$keyArray[1]][0];
+                                                                
+                                                                $uraian = $validateRow->setRules(1, 'uraian program dan kegiatan', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                //cari dan insert di kolom keterangan_json $tabel_pakai_temp
+                                                                $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                                $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'keterangan_json', 'jenis_kelompok' => 'keterangan_json', 'uraian_field' => $uraian, 'dataKondisiField' => $dataKondisiField];
+                                                                $Fungsi->add_update_field_json($dinamic);
+                                                                
+                                                                $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
+                                                                //jadikan Array
+                                                                $explodeAwal = explode(';', $sumber_dana_temp);
+                                                                foreach ($explodeAwal as $key => $row) {
+                                                                    $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', $row]]);
+                                                                    if ($dataRslt <= 0) {
+                                                                        unset($explodeAwal[$key]);
+                                                                    }
+                                                                }
+                                                                $sumber_dana = $explodeAwal;
+                                                                // $sumber_dana = $validateRow->setRules(8, 'sumber dana', [
+                                                                //     'sanitize' => 'string',
+                                                                //     'required' => true,
+                                                                //     'inDB' => ['sumber_dana_neo', 'kode', [['kode', '=', $sumber_dana_temp]]],
+                                                                //     'min_char' => 1
+                                                                // ]);
+                                                                $lokasi = $validateRow->setRules(9, 'lokasi', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $keluaran_sub_keg = $validateRow->setRules(10, 'keluaran sub keg', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $awal_pelaksanaan = $validateRow->setRules(11, 'tanggal awal pelaksanaan', [
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'required' => true,
+                                                                    'max_char' => 100,
+                                                                    'min_char' => 8
+                                                                ]);
+                                                                $akhir_pelaksanaan = $validateRow->setRules(12, 'tanggal akhir pelaksanaan', [
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'required' => true,
+                                                                    'max_char' => 100,
+                                                                    'min_char' => 8
+                                                                ]);
+                                                                $jumlah_pagu = $validateRow->setRules(13, 'jumlah_pagu', [
+                                                                    'numeric_zero' => true,
+                                                                ]);
+                                                                $keterangan = $validateRow->setRules(14, 'keterangan', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                //uraian_prog_keg
+                                                                $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                                                                $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
+                                                                $arrayDataRows = [
+                                                                    'kd_wilayah' => $kd_wilayah,
+                                                                    'kd_opd' => $kd_opd,
+                                                                    'tahun' => $tahun,
+                                                                    'kd_sub_keg' => $kd_sub_keg,
+                                                                    'kel_rek' => $kel_rek,
+                                                                    'uraian' => $uraian_prog_keg,
+                                                                    'tolak_ukur_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg),
+                                                                    'target_kinerja_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg),
+                                                                    'tolak_ukur_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran),
+                                                                    'target_kinerja_keluaran ' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
+                                                                    'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
+                                                                    'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
+                                                                    'sumber_dana' =>  json_encode(array("sumber_dana" => $sumber_dana)),
+                                                                    'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
+                                                                    'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
+                                                                    'awal_pelaksanaan' => $awal_pelaksanaan,
+                                                                    'akhir_pelaksanaan' => $akhir_pelaksanaan,
+                                                                    'jumlah_pagu' => (float)$jumlah_pagu,
+                                                                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                                                    'disable' => 0,
+                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"]
+                                                                ];
+                                                                $arrayDataRows_nonSubKeg = [
+                                                                    'kd_wilayah' => $kd_wilayah,
+                                                                    'kd_opd' => $kd_opd,
+                                                                    'tahun' => $tahun,
+                                                                    'kd_sub_keg' => $kd_sub_keg,
+                                                                    'kel_rek' => $kel_rek,
+                                                                    'uraian' => $uraian_prog_keg,
+                                                                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                                                    'disable' => 0,
+                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"]
+                                                                ];
+                                                                //$string = preg_replace('/\s/', ' ', $string);
+                                                                $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
+                                                                $getWhereArrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
+                                                                $no_sort++;
+                                                                break;
                                                             case 'sub_keg_renja':
-                                                            case 'sub_keg_dpa': //@audit impor sub_keg_renja
+                                                            case 'sub_keg_dpa':
                                                                 $arrayValidateRow = (array)$validateRow;
                                                                 // $arrayDg = [];
                                                                 // foreach ($arrayValidateRow as $key => $Id) {

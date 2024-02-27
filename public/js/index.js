@@ -625,19 +625,19 @@ $(document).ready(function () {
 					switch (tbl) {
 						case 'dppa':
 						case 'renja_p':
-							let vol_1 = 'vol_1_p';
-							let vol_2 = 'vol_2_p';
-							let vol_3 = 'vol_3_p';
-							let vol_4 = 'vol_4_p';
-							let vol_5 = 'vol_5_p';
-							let sat_1 = 'sat_1_p';
-							let sat_2 = 'sat_2_p';
-							let sat_3 = 'sat_3_p';
-							let sat_4 = 'sat_4_p';
-							let sat_5 = 'sat_5_p';
+							var vol_1 = 'vol_1_p';
+							var vol_2 = 'vol_2_p';
+							var vol_3 = 'vol_3_p';
+							var vol_4 = 'vol_4_p';
+							var vol_5 = 'vol_5_p';
+							var sat_1 = 'sat_1_p';
+							var sat_2 = 'sat_2_p';
+							var sat_3 = 'sat_3_p';
+							var sat_4 = 'sat_4_p';
+							var sat_5 = 'sat_5_p';
 							var volumeku = 'volume';
-							let jumlahku = 'jumlah_p';
-							let sumber_danaku = 'sumber_dana_p';
+							var jumlahku = 'jumlah_p';
+							var sumber_danaku = 'sumber_dana_p';
 						case 'dpa':
 						case 'renja':
 							if (tbl === 'dpa' || tbl === 'renja') {
@@ -1576,6 +1576,17 @@ $(document).ready(function () {
 							[5, "5 Baris Header"],
 						],
 					});
+					switch (tbl) {
+						case 'dpa':
+						case 'renja':
+						case 'dppa':
+						case 'renja_p':
+							formIni.attr("id_sub_keg", ini.attr("id_sub_keg"));
+							break;
+						case 'value1':
+							break;
+					};
+					
 					break;
 				default:
 					break;
@@ -2407,8 +2418,7 @@ $(document).ready(function () {
 						if (klmAttr == 'kelompok' || klmAttr == 'paket') {
 						}
 						switch (klmAttr) {
-							case 'kelompok':
-							case 'paket':
+							case 'kelompok_json':
 								switch (jenis_kelompok) {
 									case 'paket':
 										headerModal = 'Tambah Uraian Pemaketan Belanja';
@@ -2448,6 +2458,8 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+		let modalGeneral = new ModalConstructor(mdl);
+		modalGeneral.globalModal();
 		let InitializeForm = new FormGlobal(formIni);
 		InitializeForm.run();
 		elementForm += buatElemenHtml("errorForm");
@@ -2455,8 +2467,7 @@ $(document).ready(function () {
 		document.getElementById("header_mdl").textContent = headerModal;
 		addRulesForm(formIni);
 		$("[rms]").mathbiila();
-		let modalGeneral = new ModalConstructor(mdl);
-		modalGeneral.globalForm();
+		
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
@@ -3550,7 +3561,7 @@ $(document).ready(function () {
 		constructor(modal) {
 			this.modal = $(modal); //element;
 		}
-		globalForm() {
+		globalModal() {
 			let MyModal = this.modal;
 			MyModal.modal({
 				allowMultiple: true,

@@ -67,7 +67,6 @@ class MasterFungsi
                         </tr>');
                 break;
             case 'renstra':
-                // <th rowspan="3">Indikator Kinerja Tujuan, Sasaran,Program (Outcome)dan Kegiatan(Output)</th>
                 $rowData['thead'] = '<tr class="center aligned">
                 <th rowspan="3">Kode</th>
                 <th rowspan="3" class="collapsing">Program dan Kegiatan</th>
@@ -96,8 +95,7 @@ class MasterFungsi
                 <th>Target</th>
                 <th>Rp.</th>
                 <th>Target</th>
-                <th>Rp.</th>
-            </tr>';
+                <th>Rp.</th> </tr>';
                 break;
             case 'tujuan_sasaran_renstra':
                 $rowData['thead'] = trim('<tr>
@@ -164,6 +162,7 @@ class MasterFungsi
                 $rowData['thead'] = trim('<tr>
                             <th class="collapsing">Kode</th>
                             <th>Uraian</th>
+                            <th>Renstra</th>
                             <th>keterangan</th>
                             <th class="collapsing">AKSI</th>
                         </tr>');
@@ -619,6 +618,7 @@ class MasterFungsi
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                                         <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
                                                         <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
+                                                        <td klm="tahun_renstra">' . $row->tahun_renstra  . '</td>
                                                         <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                                         <td>' . $buttons . '</td>
                                                     </tr>');
@@ -1090,6 +1090,70 @@ class MasterFungsi
         $dataRek['kel_rek'] = $kel_rek;
         return $dataRek;
     }
+    // kelola rekening akun
+    public function kelolaRekAkun($dinamic = ['kd_akun' => ''])
+    {
+        if (isset($dinamic['kd_akun'])) {
+            $kd_akun_data = $dinamic['kd_akun'];
+            $explode_kd_akun = explode('.', $kd_akun_data);
+            $i = 1;
+            $kd_akun_olah_explode = [];
+            foreach ($explode_kd_akun as $key => $value) {
+                switch ($i) {
+                    case 6:
+                        $rek= $this->zero_pad((int)$value, 4);
+                        break;
+                    case 5:
+                        $rek= $this->zero_pad((int)$value, 2);
+                        break;
+                    case 4:
+                        $rek= $this->zero_pad((int)$value, 2);
+                        break;
+                    case 3:
+                        $rek= $this->zero_pad((int)$value, 2);
+                        break;
+                    case 2:
+                        $rek = (int)$value;
+                        break;
+                    case 1:
+                        $rek = (int)$value;
+                        break;
+                        
+                }
+                $kd_akun_olah_explode[]=$rek;
+                $i++;
+            }
+            //satukan rekening
+            $sizeOfRekening = sizeof($kd_akun_olah_explode);
+            $rekening_gabung = implode('.', $kd_akun_olah_explode);
+            $DB = DB::getInstance();
+            $row_progkeg = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $rekening_gabung]]);
+            $uraian = ($row_progkeg !== false) ? $row_progkeg->uraian : 'uraian NA';
+            switch ($sizeOfRekening) {
+                case 6:
+                    $kel_rek = 'sub_rincian';
+                    break;
+                case 5:
+                    $kel_rek = 'rincian_objek';
+                    break;
+                case 4:
+                    $kel_rek = 'objek';
+                    break;
+                case 3:
+                    $kel_rek = 'jenis';
+                    break;
+                case 2:
+                    $kel_rek = 'kelompok';
+                    break;
+                case 1:
+                    $kel_rek = 'akun';
+                    break;
+            };
+            return ['$kel_rek'=>$kel_rek,'kd_akun'=>$rekening_gabung,'uraian'=>$uraian];
+        }else {
+            return ['kd_akun'=>'NA'];
+        }
+    }
     public function kelolaRekSubKegDanAkun($dinamic = [
         'kd_sub_keg' => [], 'kd_akun' => [], 'tbl' => '', 'kd_wilayah' => '', 'kd_opd' => '', 'tahun' => 0, 'set' => []
     ])
@@ -1529,11 +1593,11 @@ class MasterFungsi
                         $tabel_update = 'sub_keg_renja_neo';
                     case 'dpa_neo':
                     case 'dppa_neo':
-                        if ($tabel_pakai == 'dpa_neo' || $tabel_pakai == 'dppa_neo' ) {
+                        if ($tabel_pakai == 'dpa_neo' || $tabel_pakai == 'dppa_neo') {
                             $tabel_update = 'sub_keg_dpa_neo';
                         }
                         $kolom_jumlah_update = 'jumlah_rincian';
-                        if ($tabel_pakai == 'renja_p_neo' || $tabel_pakai == 'dppa_neo' ) {
+                        if ($tabel_pakai == 'renja_p_neo' || $tabel_pakai == 'dppa_neo') {
                             $kolom_jumlah_update = 'jumlah_rincian_p';
                         }
                         // update jumlah tabel sub_keg_dpa_neo atau sub_keg_renja_neo
@@ -1555,6 +1619,49 @@ class MasterFungsi
             }
         }
         return $data;
+    }
+    //CRUD kolom type json
+    public function add_update_field_json($dinamic = [
+        'tabel_pakai' => '', 'nama_kolom' => 'keterangan_json', 'jenis_kelompok' => 'keterangan', 'uraian_field' => '', 'dataKondisiField' => []
+    ])
+    {
+        $DB = DB::getInstance();
+        //buat variable
+        $tabel_pakai = $dinamic['tabel_pakai'];
+        $nama_kolom = $dinamic['nama_kolom'];
+        $jenis_kelompok = $dinamic['jenis_kelompok'];
+        $dataKondisiField = $dinamic['dataKondisiField'];
+        $uraian_field = $dinamic['uraian_field'];
+        //ambil data
+        $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
+        // Menghapus tanda kutip tunggal yang tidak valid
+        //cari index di array
+        $key = false;
+        if ($data_klm) {
+            $data_klm = json_decode($data_klm, true);
+            $key = array_search($uraian_field, $data_klm, true);
+            $kode_Field = 'updateJSONField';
+        } else {
+            $data_klm = array();
+            $kode_Field  = 'insertJSONField';
+        }
+        if ($key === false) {
+            $data_klm[] = $uraian_field;
+            $uraian_field_insert = json_encode($data_klm);
+            // var_dump($uraian_field_insert);
+            if ($kode_Field  == 'insertJSONField') {
+                $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+            } else {
+                $tambah = $DB->updateJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+            }
+            if ($tambah) {
+                $code = 3;
+            } else {
+                $code = 33;
+            }
+        } else {
+            $code = 37;
+        }
     }
     /*
     * Copyright (c) 2011-2013 Philipp Tempel
