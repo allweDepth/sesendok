@@ -345,6 +345,12 @@ class Impor_xlsx
                                                                 $arrayValidateRow = (array)$validateRow;
                                                                 $keyArray = array_keys($arrayValidateRow);
                                                                 $kd_akun_temp = $arrayValidateRow[$keyArray[1]][0];
+                                                                $kd_akun = $validateRow->setRules(0, 'kode akun', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp]]],
+                                                                    'min_char' => 1
+                                                                ]);
                                                                 
                                                                 $uraian = $validateRow->setRules(1, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
@@ -355,7 +361,10 @@ class Impor_xlsx
                                                                 $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'keterangan_json', 'jenis_kelompok' => 'keterangan_json', 'uraian_field' => $uraian, 'dataKondisiField' => $dataKondisiField];
                                                                 $Fungsi->add_update_field_json($dinamic);
-                                                                
+
+
+
+
                                                                 $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
                                                                 //jadikan Array
                                                                 $explodeAwal = explode(';', $sumber_dana_temp);

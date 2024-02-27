@@ -1101,16 +1101,16 @@ class MasterFungsi
             foreach ($explode_kd_akun as $key => $value) {
                 switch ($i) {
                     case 6:
-                        $rek= $this->zero_pad((int)$value, 4);
+                        $rek = $this->zero_pad((int)$value, 4);
                         break;
                     case 5:
-                        $rek= $this->zero_pad((int)$value, 2);
+                        $rek = $this->zero_pad((int)$value, 2);
                         break;
                     case 4:
-                        $rek= $this->zero_pad((int)$value, 2);
+                        $rek = $this->zero_pad((int)$value, 2);
                         break;
                     case 3:
-                        $rek= $this->zero_pad((int)$value, 2);
+                        $rek = $this->zero_pad((int)$value, 2);
                         break;
                     case 2:
                         $rek = (int)$value;
@@ -1118,9 +1118,8 @@ class MasterFungsi
                     case 1:
                         $rek = (int)$value;
                         break;
-                        
                 }
-                $kd_akun_olah_explode[]=$rek;
+                $kd_akun_olah_explode[] = $rek;
                 $i++;
             }
             //satukan rekening
@@ -1149,9 +1148,76 @@ class MasterFungsi
                     $kel_rek = 'akun';
                     break;
             };
-            return ['$kel_rek'=>$kel_rek,'kd_akun'=>$rekening_gabung,'uraian'=>$uraian];
-        }else {
-            return ['kd_akun'=>'NA'];
+            return ['$kel_rek' => $kel_rek, 'kd_akun' => $rekening_gabung, 'uraian' => $uraian];
+        } else {
+            return ['kd_akun' => 'NA'];
+        }
+    }
+    // kelola rekening akun
+    public function kelolaRekSubKeg($dinamic = ['kd_sub_keg' => ''])
+    {
+        if (isset($dinamic['kd_sub_keg'])) {
+            $kd_sub_keg_data = $dinamic['kd_sub_keg'];
+            $explode_kd_sub_keg = explode('.', $kd_sub_keg_data);
+            $i = 1;
+            $kd_sub_keg_olah_explode = [];
+            foreach ($explode_kd_sub_keg as $key => $value) {
+                switch ($i) {
+                    case 6:
+                        $rek = $this->zero_pad((int)$value, 4);
+                        break;
+                    case 5:
+                        $rek = $this->zero_pad((int)$value, 2);
+                        break;
+                    case 4:
+                        $rek = (int)$value;
+                        break;
+                    case 3:
+                        $rek = $this->zero_pad((int)$value, 2);
+                        break;
+                    case 2:
+                        $rek = (int)$value;
+                        break;
+                    case 1:
+                        $rek = (int)$value;
+                        break;
+                }
+                $kd_sub_keg_olah_explode[] = $rek;
+                $i++;
+            }
+            $sizeOfRekening = sizeof($kd_sub_keg_olah_explode);
+            //jika ada kegiatan satukan array 4 dan 5
+            if ($sizeOfRekening > 3) {
+                $kode_keg_gabung = [$kd_sub_keg_olah_explode[3] . '.' . $kd_sub_keg_olah_explode[4]];
+                //hapus larik 3 sebanyak 2 artinya larik 3 dan 4 di hapus dan masukkan larik baru $kode_keg_gabung
+                array_splice($kd_sub_keg_olah_explode, 3, 2, $kode_keg_gabung);
+            }
+            //satukan rekening
+            $sizeOfRekening = sizeof($kd_sub_keg_olah_explode);
+            $rekening_gabung = implode('.', $kd_sub_keg_olah_explode);
+            $DB = DB::getInstance();
+            $row_progkeg = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $rekening_gabung]]);
+            $uraian = ($row_progkeg !== false) ? $row_progkeg->uraian : 'uraian NA';
+            switch ($sizeOfRekening) {
+                case 5:
+                    $kel_rek = 'sub_keg';
+                    break;
+                case 4:
+                    $kel_rek = 'keg';
+                    break;
+                case 3:
+                    $kel_rek = 'prog';
+                    break;
+                case 2:
+                    $kel_rek = 'bidang';
+                    break;
+                case 1:
+                    $kel_rek = 'urusan';
+                    break;
+            };
+            return ['$kel_rek' => $kel_rek, 'kd_sub_keg' => $rekening_gabung, 'uraian' => $uraian];
+        } else {
+            return ['kd_sub_keg' => 'NA'];
         }
     }
     public function kelolaRekSubKegDanAkun($dinamic = [
