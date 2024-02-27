@@ -345,6 +345,8 @@ class Impor_xlsx
                                                                 $arrayValidateRow = (array)$validateRow;
                                                                 $keyArray = array_keys($arrayValidateRow);
                                                                 $kd_akun_temp = $arrayValidateRow[$keyArray[1]][0];
+                                                                $kelolaRekAkun = $Fungsi->kelolaRekAkun($dinamic = ['kd_akun' => $kd_akun_temp]);
+                                                                $kd_akun_temp = $kelolaRekAkun['kd_akun'];
                                                                 $kd_akun = $validateRow->setRules(0, 'kode akun', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,

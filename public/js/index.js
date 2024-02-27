@@ -113,6 +113,17 @@ $(document).ready(function () {
 			"Rencana Kerja dan Anggaran SKPD",
 			"Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
 		]
+		if (tab === 'tab_renja') {
+			if (ini.attr('anggaran') === 'dpa') {
+				tab_renja = [
+					"clipboard list icon",
+					"DPA",
+					"Daftar Pelaksanaan Anggaran (DPA)",
+					"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
+				]
+			}
+		}
+		
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			tab_renstra: tab_renstra,
@@ -383,8 +394,28 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 				jalankanAjax = true;
 				break;
-			case "sub_keg_renja":
 			case "tab_renja":
+				let anggaranAttr = ini.attr('anggaran');
+				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
+				switch (anggaranAttr) {
+					case 'renja':
+						itemDivDataTab.eq(0).attr('tbl','sub_keg_renja');
+						itemDivDataTab.eq(0).text('Sub Kegiatan');
+						itemDivDataTab.eq(1).attr('tb','renja');
+						itemDivDataTab.eq(1).text('Renja');
+						itemDivDataTab.eq(2).attr('tb','renja_p');
+						itemDivDataTab.eq(2).text('Renja Perubahan');
+						break;
+					case 'dpa':
+						itemDivDataTab.eq(0).attr('tbl','sub_keg_dpa');
+						itemDivDataTab.eq(0).text('Sub Kegiatan');
+						itemDivDataTab.eq(1).attr('tb','dpa');
+						itemDivDataTab.eq(1).text('D P A');
+						itemDivDataTab.eq(2).attr('tb','dppa');
+						itemDivDataTab.eq(2).text('DPPA');
+						break;
+				};
+				
 				$(".message.goyang.keterangan").find('p').text(arrayDasboard[tab][3]);
 				if (tbl) {
 					jalankanAjax = true;

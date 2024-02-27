@@ -145,7 +145,7 @@ $(document).ready(function () {
     //===================================
 	//=========== class dropdown ========
 	//===================================
-	class DropdownConstructor {//@audit-ok DropdownConstructor
+	class DropdownConstructor {
 		jenis = '';
 		tbl = '';
 		ajax = false;
