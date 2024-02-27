@@ -635,7 +635,7 @@ $(document).ready(function () {
 							var sat_3 = 'sat_3_p';
 							var sat_4 = 'sat_4_p';
 							var sat_5 = 'sat_5_p';
-							var volumeku = 'volume';
+							var volumeku = 'volume_p';
 							var jumlahku = 'jumlah_p';
 							var sumber_danaku = 'sumber_dana_p';
 						case 'dpa':
@@ -651,7 +651,7 @@ $(document).ready(function () {
 								sat_3 = 'sat_3';
 								sat_4 = 'sat_4';
 								sat_5 = 'sat_5';
-								volumeku = 'volume_p';
+								volumeku = 'volume';
 								jumlahku = 'jumlah';
 								sumber_danaku = 'sumber_dana';
 							}
