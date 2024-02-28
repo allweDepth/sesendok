@@ -674,7 +674,7 @@ class DB
         }
         return $this->runQuery($query, $dataValues)->rowCount();
     }
-    // Method untuk membaca data JSON dari kolom
+    // Method untuk membaca data JSON dari kolom untuk level satu
     public function readJSONField($tableName, $columnName, $jsonKey, $condition)
     {
         // $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT({$columnName}, '$.{$jsonKey}')) AS {$jsonKey} FROM {$tableName}";
@@ -694,6 +694,29 @@ class DB
             }
             array_push($dataValues, $val[2]);
         }
+        return $this->runQuery($query, $dataValues)->fetch(PDO::FETCH_ASSOC)[$jsonKey];
+    }
+    // Method untuk membaca data JSON dari kolom untuk level satu
+    public function readJSONFieldMultiLevel($tableName, $columnName, $jsonKey, $condition)
+    {
+        $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT({$columnName}, '$.{$jsonKey}')) AS {$jsonKey} FROM {$tableName}";
+        
+        $query .= " WHERE";
+        $dataValues = [];
+        foreach ($condition as $key => $val) {
+            if (strpos($val[1], "LIKE") !== false) {
+                $query .= " {$val[3]} {$val[0]} {$val[1]}";
+            } else {
+                if (count($val) === 3 && $key === 0) {
+                    $query .= " {$val[0]} {$val[1]} ? ";
+                } else if (count($val) === 4 && $key > 0) {
+                    $query .= " {$val[3]} {$val[0]} {$val[1]} ?";
+                }
+            }
+            array_push($dataValues, $val[2]);
+        }
+        // var_dump($query);
+        // var_dump($dataValues);
         return $this->runQuery($query, $dataValues)->fetch(PDO::FETCH_ASSOC)[$jsonKey];
     }
     // Method untuk memperbarui data JSON di dalam kolom

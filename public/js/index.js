@@ -776,8 +776,8 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Sumber Dana",
 									classField: `required`,
-									atribut: `name="${sumber_danaku}" placeholder="pilih sumber dana..."`,
-									kelas: "search clearable sumber_dana ajx selection",
+									atribut: `name="${sumber_danaku}" placeholder="pilih sumber dana..." multiple=""`,
+									kelas: "search clearable multiple sumber_dana ajx selection",
 									dataArray: [
 										["", ""]
 									],

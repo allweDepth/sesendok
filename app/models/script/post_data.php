@@ -117,10 +117,10 @@ class post_data
                                     'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
 
-                                $sumber_dana = $validate->setRules('sumber_dana', 'kelompok belanja', [
+                                $sumber_dana = $validate->setRules('sumber_dana', 'sumber dana', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'sumber_dana', [['sumber_dana', "LIKE CONCAT('%',?,'%')", $_POST['sumber_dana']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                                    'inDBJsonMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana', "sumber_dana", [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
                                 ]);
                                 $jenis_standar_harga = $validate->setRules('jenis_standar_harga', 'jenis komponen', [
                                     'sanitize' => 'string',

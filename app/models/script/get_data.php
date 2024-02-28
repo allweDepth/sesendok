@@ -788,7 +788,7 @@ class get_data
                                             case 'hspk':
                                             case 'ssh':
                                                 $data['values'] = [];
-                                                
+
 
                                                 $kode_drop = $data['users']->kd_aset;
                                                 if ($kode_drop) {
@@ -892,17 +892,35 @@ class get_data
                                                     // var_dump($data_klm);
                                                     $data_klm = json_decode($data_klm, true);
                                                     // var_dump($data_klm);
-                                                    $key = array_search($cari_drop, $data_klm, true);
-                                                    $kondisi_result_sub = [['kode', '=', $data_klm[$key]]];
-                                                    $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
-                                                    if (count((array)$row)) {
-                                                        if ($row_sub) {
-                                                            $uraian_sumberDana = $row_sub->uraian;
-                                                        } else {
-                                                            $uraian_sumberDana = 'data tidak ditemukan';
+                                                    $data['values']['sumber_dana'] =[];
+                                                    $formValueExplode = explode(',', $cari_drop);
+                                                    foreach ($formValueExplode as $key_row => $row) {
+                                                        $key = array_search($row, $data_klm, true);
+                                                        $kondisi_result_sub = [['kode', '=', $row]];
+                                                        $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
+                                                        if (count((array)$row)) {
+                                                            if ($row_sub) {
+                                                                $uraian_sumberDana = $row_sub->uraian;
+                                                            } else {
+                                                                $uraian_sumberDana = 'data tidak ditemukan';
+                                                            }
+                                                            $data['values']['sumber_dana'][] = ['name' => $uraian_sumberDana, 'value' => $data_klm[$key], 'selected' => true];
                                                         }
-                                                        $data['values']['sumber_dana'] = [['name' => $uraian_sumberDana, 'value' => $data_klm[$key], 'selected' => true]];
                                                     }
+
+
+                                                    // $key = array_search($cari_drop, $data_klm, true);
+
+                                                    // $kondisi_result_sub = [['kode', '=', $data_klm[$key]]];
+                                                    // $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
+                                                    // if (count((array)$row)) {
+                                                    //     if ($row_sub) {
+                                                    //         $uraian_sumberDana = $row_sub->uraian;
+                                                    //     } else {
+                                                    //         $uraian_sumberDana = 'data tidak ditemukan';
+                                                    //     }
+                                                    //     $data['values']['sumber_dana'] = [['name' => $uraian_sumberDana, 'value' => $data_klm[$key], 'selected' => true]];
+                                                    // }
                                                 }
                                                 $cari_drop = $data['users']->uraian;
                                                 // keterangan/uraian
