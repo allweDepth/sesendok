@@ -404,16 +404,16 @@ $(document).ready(function () {
 			case "tab_renja":
 				switch (jenis_this) {
 					case 'rincian_pokok':
-						
+
 						break;
 					case 'rincian_perubahan':
-						
+
 						break;
 					default:
-						
+
 						break;
 				};
-				
+
 				let anggaranAttr = ini.attr('anggaran');
 				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
 				switch (anggaranAttr) {
@@ -770,16 +770,16 @@ $(document).ready(function () {
 									atribut: 'name="kelompok" placeholder="pilih uraian kelompok..."',
 									kelas: "search kelompok ajx selection",
 									dataArray: [
-										["", ""]
+
 									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Sumber Dana",
 									classField: `required`,
-									atribut: `name="${sumber_danaku}" placeholder="pilih sumber dana..." multiple=""`,
+									atribut: `name="${sumber_danaku}" placeholder="pilih sumber dana..."`,
 									kelas: "search clearable multiple sumber_dana ajx selection",
 									dataArray: [
-										["", ""]
+
 									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
@@ -1215,7 +1215,7 @@ $(document).ready(function () {
 									atribut: 'name="satuan"',
 									kelas: "search clearable ajx selection",
 									dataArray: [
-										["", ""]
+
 									],
 								}) +
 								buatElemenHtml("fieldText", {
@@ -1228,9 +1228,14 @@ $(document).ready(function () {
 									atribut:
 										'name="tkdn" placeholder="tkdn..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Kode Rekening",
-									atribut: 'name="kd_rek_akun_asli" rows="4" placeholder="Kode Rekening..."',
+								buatElemenHtml("fieldDropdown", {
+									label: "Rekening / Akun",
+									classField: `required`,
+									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
+									kelas: "search clearable multiple kd_akun ajx selection",
+									dataArray: [
+
+									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -1688,6 +1693,8 @@ $(document).ready(function () {
 							//satuan
 							var dropdown_ajx_satuan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.ajx[name="satuan"]')
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+							var dropdownKdAkun = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.kd_akun.ajx.selection')
+							dropdownKdAkun.returnList({ jenis: "get_row_json", tbl: "akun_belanja_val" });
 							break;
 						case 'tujuan_sasaran_renstra':
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
@@ -1886,7 +1893,12 @@ $(document).ready(function () {
 																				dropdownKdAset.returnList({ jenis: "get_row_json", tbl: 'aset' });
 																				postDataField = false;
 																				break;
-
+																			case 'kd_akun':
+																				dropdownKdAkun.valuesDropdown(result.data?.values?.kd_akun);
+																				dropdownKdAkun.returnList({ jenis: "get_row_json", tbl: "akun_belanja_val" });
+																				break;
+																				postDataField = false;
+																				break;
 																			default:
 																				break;
 																		}

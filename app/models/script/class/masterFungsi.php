@@ -862,6 +862,7 @@ class MasterFungsi
                 break;
             case "akun":
             case "akun_belanja":
+            case 'akun_belanja_val':
                 $tabel_pakai = 'akun_neo';
                 $jumlah_kolom = 4;
                 break;

@@ -838,7 +838,7 @@ class Impor_xlsx
                                                                     'tkdn' => $tkdn,
                                                                     'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
                                                                     'kd_rek_akun' => json_encode(array("kd_rek_akun" => $kd_rek_akun)),
-                                                                    'kd_rek_akun_asli' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_rek_standar),
+                                                                    'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_rek_standar),
                                                                     'peraturan' => $id_aturan,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,

@@ -576,6 +576,7 @@ class get_data
                             break;
                         case 'aset':
                         case 'akun_belanja':
+                        case 'akun_belanja_val':
                             $like = "disable <= ? AND sub_rincian_objek > ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                             $data_like = [0, 0, $cari, $cari, $cari];
                             $order = "ORDER BY kode ASC";
@@ -648,8 +649,8 @@ class get_data
                         case 'sbu':
                         case 'ssh':
                         case 'asb':
-                            $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
-                            $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                            $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
+                            $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                             $order = "ORDER BY kd_aset ASC";
                             $posisi = " LIMIT ?, ?";
                             $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
@@ -658,11 +659,11 @@ class get_data
                             $data_hereGet_row_json = [$kd_wilayah, $tahun, 0];
                             //untuk input dan edit renja dpa dkk
                             if (isset($kd_sub_keg)) {
-                                $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%') AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_rek_akun_asli LIKE CONCAT('%',?,'%'))";
+                                $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_akun  LIKE CONCAT('%',?,'%') AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_kel LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
                                 $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
-                                $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%')";
+                                $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_akun  LIKE CONCAT('%',?,'%')";
                                 $data_hereGet_row_json = [$kd_wilayah, $tahun, 0, $kd_sub_keg];
-                                $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_rek_akun_asli  LIKE CONCAT('%',?,'%')";
+                                $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_akun  LIKE CONCAT('%',?,'%')";
                                 $data_where1 =  [$kd_wilayah, $tahun, 0, $kd_sub_keg];
                             }
                             // $where = "nomor = ?";
@@ -789,20 +790,40 @@ class get_data
                                             case 'ssh':
                                                 $data['values'] = [];
 
-
                                                 $kode_drop = $data['users']->kd_aset;
                                                 if ($kode_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('aset_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $data['values']['kd_aset'] = [['name' => $row->uraian, 'value' => $row->kode, 'selected' => true]];
+                                                    }
+                                                }
+                                                // kd akun
+                                                $kode_drop = $data['users']->kd_akun;
+                                                if ($kode_drop) {
+                                                    $data['values']['kd_akun'] = [];
+                                                    $formValueExplode = explode(',', $kode_drop);
+                                                    
+                                                    foreach ($formValueExplode as $key_row => $row) {
+                                                        $kondisi_result = [['kode', '=', trim($row)]];
+                                                        $row_sub = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
+                                                        // var_dump( $kondisi_result);
+                                                        if ($row_sub !== false) {
+                                                            if ($row_sub) {
+                                                                $uraian = $row_sub->uraian;
+                                                            } else {
+                                                                $uraian = 'data tidak ditemukan';
+                                                            }
+                                                            $data['values']['kd_akun'][] = ['name' => $uraian, 'text' => trim($row_sub->kode), 'value' => $row_sub->kode, 'selected' => true];
+                                                        }
                                                     }
                                                 }
                                                 $satuan_drop = $data['users']->satuan;
                                                 if ($satuan_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['value', '=', $satuan_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    // var_dump($row);
+                                                    if ($row !== false) {
                                                         $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
                                                     }
                                                 }
@@ -892,7 +913,7 @@ class get_data
                                                     // var_dump($data_klm);
                                                     $data_klm = json_decode($data_klm, true);
                                                     // var_dump($data_klm);
-                                                    $data['values']['sumber_dana'] =[];
+                                                    $data['values']['sumber_dana'] = [];
                                                     $formValueExplode = explode(',', $cari_drop);
                                                     foreach ($formValueExplode as $key_row => $row) {
                                                         $key = array_search($row, $data_klm, true);
@@ -1054,7 +1075,10 @@ class get_data
                                             switch ($tbl) {
                                                 case 'aset':
                                                 case 'akun_belanja':
-                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
+                                                    break;
+                                                case 'akun_belanja_val':
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->kode, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'tujuan_renstra':
                                                     $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
@@ -1193,6 +1217,7 @@ class get_data
                     case 'sub_keg':
                     case 'satuan':
                     case 'aset':
+                    case 'akun_belanja_val':
                     case 'akun_belanja':
                     case 'hspk':
                     case 'asb':
