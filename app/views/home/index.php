@@ -10,6 +10,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
 ?>
 <!doctype html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +20,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/admin.css">
     <link rel="shortcut icon" href="<?= BASEURL; ?>img/logo.png">
 </head>
+
 <body style="overflow: hidden;" class="dimmable">
     <!-- MAIN TOOLBAR MENU -->
     <div class="ui teal top fixed inverted main menu">
@@ -458,7 +460,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                             <div class="ui hidden divider"></div>
                             <div class="ui long scrolling fluid container">
-                                    <table class="ui head foot stuck unstackable celled striped table insert">
+                                <table class="ui head foot stuck unstackable celled striped table insert">
                                     <thead>
                                     </thead>
                                     <tbody>
@@ -474,7 +476,34 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ============== -->
             <!-- tab_kontrak -->
             <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_kontrak">
+            <div class="ui tab basic segment container" data-tab="tab_kontrak" tbl="daftar_paket">
+                <div class="ui info message" name="ketref">Nabiilainayah</div>
+                <div class="ui hidden divider"></div>
+                <div class="ui right floated basic icon buttons">
+                    <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl="daftar_paket"><i class="plus icon"></i></button>
+                    <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="daftar_paket" type="submit"><i class="alternate download icon"></i></button>
+                </div>
+                <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                <div class="ui hidden divider"></div>
+                <div class="ui hidden divider"></div>
+                <table class="ui very basic table insert">
+                    <thead>
+                        <tr>
+                            <th>Uraian Komponen</th>
+                            <th>Pagu</th>
+                            <th>Nilai Kontrak</th>
+                            <th>Nama PPK</th>
+                            <th>Keterangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
             </div>
             <!-- ============== -->
             <!-- tab_input_real -->
@@ -1122,4 +1151,5 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     </script>
     <script src="<?= BASEURL; ?>js/index.js"></script>
 </body>
+
 </html>

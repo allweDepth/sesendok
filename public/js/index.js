@@ -685,6 +685,59 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
+						case "daftar_paket":
+							dataHtmlku.konten =
+								buatElemenHtml("fieldTextarea", {
+									label: "Nama Paket",
+									atribut: 'name="uraian" rows="2" placeholder="Uraian Barang/Jasa..."',
+								}) +
+								buatElemenHtml("fieldTextAction", {
+									label: "Jumlah Uraian Belanja",
+									atribut: 'name="count_uraian_belanja" placeholder="Uraian Paket..." readonly',
+									txtLabel: `<i class="search icon"></i>`,
+									atributLabel: `name="modal_show" jns="get_data" tbl="${tbl}"`,
+								}) +
+								
+								buatElemenHtml("fieldTextarea", {
+									label: "Spesifikasi",
+									atribut: 'name="spesifikasi" rows="2" placeholder="Spesifikasi..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Harga Satuan",
+									atribut:
+										'name="harga_satuan" placeholder="harga satuan..." rms',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Satuan",
+									atribut: 'name="satuan"',
+									kelas: "search clearable ajx selection",
+									dataArray: [
+									],
+								}) +
+								
+								buatElemenHtml("fieldText", {
+									label: "TKDN",
+									atribut:
+										'name="tkdn" placeholder="tkdn..." rms',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Mapping Kode Akun dan Belanja",
+									classField: `required`,
+									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
+									kelas: "search clearable multiple kd_akun ajx selection",
+									dataArray: [
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="3"',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							break;
 						case 'dppa':
 						case 'renja_p':
 							var vol_1 = 'vol_1_p';
