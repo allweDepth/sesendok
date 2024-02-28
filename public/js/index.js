@@ -1234,7 +1234,6 @@ $(document).ready(function () {
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
 									kelas: "search clearable multiple kd_akun ajx selection",
 									dataArray: [
-
 									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
