@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 28 Feb 2024 pada 09.20
+-- Waktu pembuatan: 28 Feb 2024 pada 16.33
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -58,7 +58,6 @@ CREATE TABLE `asb_neo` (
   `kd_wilayah` varchar(25) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_aset` varchar(25) NOT NULL,
-  `uraian_kel` varchar(400) NOT NULL,
   `uraian_barang` varchar(400) NOT NULL,
   `spesifikasi` text DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
@@ -115,6 +114,69 @@ CREATE TABLE `bidang_urusan_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `disable` int(11) NOT NULL DEFAULT 0,
   `aksi` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `daftar_paket_neo`
+--
+
+CREATE TABLE `daftar_paket_neo` (
+  `id` int(11) NOT NULL,
+  `kd_rup` int(11) DEFAULT NULL,
+  `kd_paket` int(11) DEFAULT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
+  `kd_opd` varchar(50) NOT NULL,
+  `tahun` year(4) NOT NULL,
+  `uraian` text NOT NULL,
+  `id_dppa` varchar(400) NOT NULL,
+  `kd_sub_keg` text NOT NULL,
+  `volume` int(11) DEFAULT NULL,
+  `satuan` int(11) DEFAULT NULL,
+  `harga_satuan` decimal(36,12) DEFAULT NULL,
+  `jumlah` decimal(36,12) DEFAULT NULL,
+  `pagu` decimal(36,12) NOT NULL,
+  `metode_pengadaan` varchar(255) DEFAULT NULL,
+  `metode_pemilihan` varchar(255) DEFAULT NULL,
+  `pengadaan_penyedia` varchar(255) DEFAULT NULL,
+  `jns_kontrak` varchar(255) DEFAULT NULL,
+  `renc_output` varchar(255) DEFAULT NULL,
+  `output` varchar(255) DEFAULT NULL,
+  `id_rekanan` int(11) NOT NULL,
+  `nama_ppk` varchar(255) DEFAULT NULL,
+  `nip_ppk` int(18) DEFAULT NULL,
+  `nama_pptk` varchar(255) DEFAULT NULL,
+  `waktu_pelaksanaan` int(11) DEFAULT NULL,
+  `waktu_pemeliharaan` int(11) DEFAULT NULL,
+  `nip_pptk` int(18) DEFAULT NULL,
+  `tgl_kontrak` datetime NOT NULL,
+  `no_kontrak` varchar(255) NOT NULL,
+  `tgl_persiapan_kont` datetime DEFAULT NULL,
+  `no_persiapan_kont` varchar(255) DEFAULT NULL,
+  `tgl_spmk` datetime DEFAULT NULL,
+  `no_spmk` varchar(255) DEFAULT NULL,
+  `addendum` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`addendum`)),
+  `tgl_undangan` datetime DEFAULT NULL,
+  `no_undangan` varchar(255) DEFAULT NULL,
+  `tgl_penawaran` datetime DEFAULT NULL,
+  `no_penawaran` varchar(255) DEFAULT NULL,
+  `tgl_nego` datetime DEFAULT NULL,
+  `no_nego` varchar(255) DEFAULT NULL,
+  `tgl_sppbj` datetime DEFAULT NULL,
+  `no_sppbj` varchar(255) DEFAULT NULL,
+  `tgl_pho` datetime DEFAULT NULL,
+  `no_pho` varchar(255) DEFAULT NULL,
+  `tgl_fho` datetime DEFAULT NULL,
+  `no_fho` varchar(255) DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `keterangan` varchar(400) DEFAULT NULL,
+  `file_kontrak` varchar(255) DEFAULT NULL,
+  `file_addendum` varchar(255) DEFAULT NULL,
+  `file_pho` varchar(255) DEFAULT NULL,
+  `file_fho` varchar(255) DEFAULT NULL,
+  `file` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -233,7 +295,6 @@ CREATE TABLE `hspk_neo` (
   `kd_wilayah` varchar(25) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_aset` varchar(25) NOT NULL,
-  `uraian_kel` varchar(400) NOT NULL,
   `uraian_barang` text NOT NULL,
   `spesifikasi` text DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
@@ -618,8 +679,7 @@ CREATE TABLE `sbu_neo` (
   `kd_wilayah` varchar(25) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_aset` varchar(25) NOT NULL,
-  `uraian_kel` varchar(400) NOT NULL,
-  `uraian_barang` varchar(400) NOT NULL,
+  `uraian_barang` text NOT NULL,
   `spesifikasi` text DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
   `harga_satuan` decimal(18,6) NOT NULL,
@@ -646,7 +706,6 @@ CREATE TABLE `ssh_neo` (
   `kd_wilayah` varchar(25) NOT NULL,
   `tahun` year(4) NOT NULL,
   `kd_aset` varchar(25) NOT NULL,
-  `uraian_kel` varchar(400) NOT NULL,
   `uraian_barang` text NOT NULL,
   `spesifikasi` text DEFAULT NULL,
   `satuan` varchar(400) NOT NULL,
@@ -865,7 +924,7 @@ CREATE TABLE `user_sesendok_biila` (
 
 INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `password`, `kd_organisasi`, `nama_org`, `kd_wilayah`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `tahun`, `kontak_person`, `font_size`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`) VALUES
 (1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$phmt521EHu3PEkilYD/TJ.i1U.ZcMjAHAJt4y88r3O0tfbgs8HQl6', '1.03.0.00.0.00.01.0000', 'Alwi Mansyur', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-01-26 14:17:26', '2024', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
-(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-28 16:12:14', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
+(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-28 22:39:48', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
 (3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$J1RLk2kaKqYeuFs2q76vxuoPYTi3cA8dCjRISJlnwlsi3sdHoAKg.', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
 (4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$V.f/.ElwettBd3jyJfMR5epHT0s8NVqaU/mL8ZIqIJo.HBb.6x/Qi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
 (5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$cFR8KdFGXUFBZ5C5payBEOb3aPEXtvYwAKO6Gc6Zdqyjo7WRuDY8.', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');
@@ -919,6 +978,12 @@ ALTER TABLE `aset_neo`
 -- Indeks untuk tabel `bidang_urusan_neo`
 --
 ALTER TABLE `bidang_urusan_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `daftar_paket_neo`
+--
+ALTER TABLE `daftar_paket_neo`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1087,6 +1152,12 @@ ALTER TABLE `aset_neo`
 -- AUTO_INCREMENT untuk tabel `bidang_urusan_neo`
 --
 ALTER TABLE `bidang_urusan_neo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `daftar_paket_neo`
+--
+ALTER TABLE `daftar_paket_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

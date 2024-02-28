@@ -695,22 +695,12 @@ $(document).ready(function () {
 									label: "Jumlah Uraian Belanja",
 									atribut: 'name="count_uraian_belanja" placeholder="Uraian Paket..." readonly',
 									txtLabel: `<i class="search icon"></i>`,
-									atributLabel: `name="modal_show" jns="get_data" tbl="${tbl}"`,
+									atributLabel: `name="modal_show" jns="uraian_belanja" tbl="${tbl}"`,
 								}) +
-								buatElemenHtml("fieldTextAction", {
-									label: "Jadwal dan nomor",
-									atribut: 'name="jadwal" placeholder="Uraian Paket..." readonly',
-									txtLabel: `<i class="search icon"></i>`,
-									atributLabel: `name="modal_show" jns="get_data" tbl="${tbl}"`,
-								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Spesifikasi",
-									atribut: 'name="spesifikasi" rows="2" placeholder="Spesifikasi..."',
-								}) +
+
 								buatElemenHtml("fieldText", {
-									label: "Harga Satuan",
-									atribut:
-										'name="harga_satuan" placeholder="harga satuan..." rms',
+									label: "Volume",
+									atribut: 'name="volume" placeholder="volume output..." rms',
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
@@ -728,6 +718,101 @@ $(document).ready(function () {
 									label: "Nilai Kontrak",
 									atribut:
 										'name="jumlah" placeholder="Nilai Kontrak..." rms',
+								}) +
+								buatElemenHtml("fieldDropdown", {//@audit now
+									label: "Metode Pengadaan",
+									atribut: 'name="metode_pengadaan"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["swakelola", "Swakelola"],
+										["penyedia", "Penyedia", 'active']
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Metode Pemilihan",
+									atribut: 'name="metode_pemilihan"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["e_purchasing", "e-purchasing"],
+										["pengadaan_langsung", "pengadaan langsung"],
+										["penunjukan", "penunjukan langsung"],
+										["tender_cepat", "tender cepat"],
+										["tender", "tender"]
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Pengadaan Barang Jasa",
+									atribut: 'name="pengadaan_penyedia"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["barang", "Barang"],
+										["konstruksi", "Pekerjaan Konstruksi"],
+										["konsultansi", "Jasa Konsultansi"],
+										["jasa_lainnya", "Jasa Lainnya"]
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Jenis Kontrak",
+									atribut: 'name="jns_kontrak"',
+									kelas: "lainnya selection",
+									dataArray: [
+									],
+								}) +
+								buatElemenHtml("accordionField", {
+									label: "Jadwal Pengadaan",
+									content: buatElemenHtml("calendar", {
+										atribut: `name="tgl_kontrak" placeholder="Tanggal Kontrak" non_data`, kelas: "date"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_kontrak" placeholder="Nomor Kontrak" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tgl_persiapan_kont" placeholder="Tanggal Persiapan Kontrak" non_data`, kelas: "datetime"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_persiapan_kont" placeholder="Nomor Persiapan Kontrak" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tgl_spmk" placeholder="Tanggal SPMK" non_data`, kelas: "date"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_spmk" placeholder="Nomor Persiapan Kontrak" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tgl_undangan" placeholder="Tanggal Undangan/Pengumuman" non_data`, kelas: "date"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_undangan" placeholder="Nomor Undangan/Pengumuman" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tgl_penawaran" placeholder="Tanggal Penawaran" non_data`, kelas: "date"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_penawaran" placeholder="Nomor Penawaran" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tgl_nego" placeholder="Tanggal Negoisasi" non_data`, kelas: "date"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_nego" placeholder="Nomor Negoisasi" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tgl_sppbj" placeholder="Tanggal SPPBJ" non_data`, kelas: "date"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_sppbj" placeholder="Nomor SPPBJ" non_data`,
+									})
+								}) +
+								buatElemenHtml("accordionField", {
+									label: "Serah Terima Pengadaan",
+									content: buatElemenHtml("calendar", {
+										atribut: `name="tgl_pho" placeholder="Tanggal PHO" non_data`, kelas: "datetime"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_pho" placeholder="Nomor PHO" non_data`,
+									}) + buatElemenHtml("calendar", {
+										atribut: `name="tgl_fho" placeholder="Tanggal FHO" non_data`, kelas: "datetime"
+									}) + buatElemenHtml("text", {
+										atribut: `name="no_fho" placeholder="Nomor FHO" non_data`,
+									}) +
+									buatElemenHtml("fieldFileInput2", {
+										label: "Pilih File Dokumen PHO",
+										file: "file_pho",
+										placeholderData: "Pilih File PHO...",
+										accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+									}) +
+									buatElemenHtml("fieldFileInput2", {
+										label: "Pilih File Dokumen FHO",
+										file: "file_fho",
+										placeholderData: "Pilih File FHO...",
+										accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+									})
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -1949,7 +2034,7 @@ $(document).ready(function () {
 																	case 'dpa':
 																	case 'renja':
 																		tabel_pakai_temporerSubkeg = 'sub_keg_renja';
-																		switch (tbl) {//@audit now
+																		switch (tbl) {
 																			case 'dpa':
 																			case 'dppa':
 																				tabel_pakai_temporerSubkeg = 'sub_keg_dpa';
@@ -2679,7 +2764,7 @@ $(document).ready(function () {
 								case 'asb':
 								case 'ssh':
 								case 'hspk':
-									Results_ajax.some(function (el) {//@audit now
+									Results_ajax.some(function (el) {
 										// console.log(el);
 										objekArray = el;
 										return el.value == value;
@@ -3231,7 +3316,7 @@ $(document).ready(function () {
 						// =================
 						// UNTUK FORM MODAL
 						// =================
-						case "form_modal"://@audit sekarang
+						case "form_modal":
 							switch (jenis) {
 								case 'add_field_json':
 									jalankanAjax = true;
@@ -3867,20 +3952,25 @@ $(document).ready(function () {
 	function buatElemenHtml(namaElemen = "", dataElemen = {}) {//@audit-ok create elm
 		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
 		let content = "content" in dataElemen ? dataElemen.content : "";
-		let atributData = "atribut" in dataElemen ? dataElemen.atribut : "";
-		let atributData2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
+		let atribut = "atribut" in dataElemen ? dataElemen.atribut : "";
+		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
+		let aligned = "aligned" in dataElemen ? dataElemen.align : "";
+		let header = "header" in dataElemen ? dataElemen.align : "h4";
 		let atributField = "atributField" in dataElemen ? dataElemen.atributField : "";
 		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let classField = "classField" in dataElemen ? `${dataElemen.classField} ` : "";
 		let kelasData = "kelas" in dataElemen ? dataElemen.kelas : "";
 		let kelas2 = "kelas2" in dataElemen ? dataElemen.kelas2 : "";
 		let labelData = "label" in dataElemen ? dataElemen.label : "";
-		let href = "label" in dataElemen ? dataElemen.href : "";
+		let label = "label" in dataElemen ? dataElemen.label : "";
+		let href = "href" in dataElemen ? dataElemen.href : "";//file
+		let file = "file" in dataElemen ? dataElemen.file : "file";//file
 		let textDrpdown = "textDrpdown" in dataElemen ? dataElemen.textDrpdown : "";
 		let placeholderData = "placeholderData" in dataElemen ? dataElemen.placeholderData : "";
 		let elemen1Data = "elemen1" in dataElemen ? dataElemen.elemen1 : "";
 		let iconData = "icon" in dataElemen ? dataElemen.icon : "download icon";
 		let icon = "icon" in dataElemen ? dataElemen.icon : "calendar";
+		let icon2 = "icon2" in dataElemen ? dataElemen.icon : "";
 		let posisi = "posisi" in dataElemen ? dataElemen.posisi : "left";
 		let colorData = "color" in dataElemen ? dataElemen.color : "positive";
 		let valueData = "value" in dataElemen ? dataElemen.value : "";
@@ -3897,19 +3987,22 @@ $(document).ready(function () {
 				elemen = `<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
 				break;
 			case "text":
-				elemen = `<div class="${classField}field" ${atributField}><input type="text" ${atributData}></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><input type="text" ${atribut}></div>`;
 				break;
 			case "accordionField":
-				elemen = `<div class="ui accordion${classField} field" ${atributData} ${atributField}><div class="title"><i class="icon dropdown"></i>${labelData} </div><div class="content field">${content} </div></div>`;
+				elemen = `<div class="ui accordion${classField} field" ${atribut} ${atributField}><div class="title"><i class="icon dropdown"></i>${labelData} </div><div class="content field">${content} </div></div>`;
 				break;
 			case "fieldTextAccordion":
-				elemen = `<div><label class="visible" style="display: block !important;">${labelData}</label><input ${atributData} type="text" class="visible" style="display: inline-block !important;"></div>`;
+				elemen = `<div><label class="visible" style="display: block !important;">${labelData}</label><input ${atribut} type="text" class="visible" style="display: inline-block !important;"></div>`;
 				break;
 			case "segment":
 				elemen = `<div class="ui segments"><div class="ui segment"></div><div class="ui segment"></div></div>`;
 				break;
 			case "messageLink":
-				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${labelData} </div><a ${atributData}  target="_blank">${valueData}</a></div></div>`;
+				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${labelData} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
+				break;
+			case "divider":
+				elemen = `<${header} class="ui horizontal ${aligned} divider header">${icon2}${label}</${header}>`;
 				break;
 			case "dividerHeader":
 				elemen = `<h3 class="ui dividing header">${labelData}</h3>`;
@@ -3928,14 +4021,14 @@ $(document).ready(function () {
 				break;
 			case "fieldLabel":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><a class="ui fluid label ${kelasData}" href="${href}" ${atributData}>
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><a class="ui fluid label ${kelasData}" href="${href}" ${atribut}>
 					<i class="${icon} icon"></i>${valueData}</a></div>`;
 				break;
 			case "fieldSearchGrid"://untuk modal
 				elemen = `<div class="ui aligned grid">
 					<div class="right floated right aligned column">
 						<div class="ui scrolling search ${kelasData} fluid category">
-							<div class="ui icon input"><input class="prompt" type="text" placeholder="Cari..." autocomplete="off" ${atributData}><i class="search icon"></i></div>
+							<div class="ui icon input"><input class="prompt" type="text" placeholder="Cari..." autocomplete="off" ${atribut}><i class="search icon"></i></div>
 							<div class="results"></div>
 						</div>
 					</div>
@@ -3943,20 +4036,20 @@ $(document).ready(function () {
 				break;
 			case "fieldSearch":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid category scrolling search ${kelasData}"><div class="ui icon fluid input"><input class="prompt" type="text" ${atributData} placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid category scrolling search ${kelasData}"><div class="ui icon fluid input"><input class="prompt" type="text" ${atribut} placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>`;
 				break;
 			case "calendar":
-				elemen = `<div class="${classField}field" ${atributField}><div class="ui calendar ${kelasData}"><div class="ui fluid input left icon"><i class="calendar icon"></i><input type="text" ${atributData}></div></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><div class="ui calendar ${kelasData}"><div class="ui fluid input left icon"><i class="calendar icon"></i><input type="text" ${atribut}></div></div></div>`;
 				break;
 			case "fieldCalendar":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui calendar ${kelasData}"  ${atributData2}><div class="ui input left icon"><i class="calendar icon"></i><input type="text"  ${atributData}"></div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui calendar ${kelasData}"  ${atribut2}><div class="ui input left icon"><i class="calendar icon"></i><input type="text"  ${atribut}"></div></div></div>`;
 				break;
 			case "fieldAndLabel":
 				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label> ${elemen1Data}</div>`;
 				break;
 			case "fieldText":
-				elemen = `<div class="${classField}field" ${atributField}><label> ${labelData} </label><div class="ui ${kelasData} input"><input type="${typeText}" ${atributData} ></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label> ${labelData} </label><div class="ui ${kelasData} input"><input type="${typeText}" ${atribut} ></div></div>`;
 				break;
 			case "multiFieldTextAction":
 				let inputElm = '';
@@ -3973,21 +4066,21 @@ $(document).ready(function () {
 				break;
 			case "fieldTextAction":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui action input"><input type="${typeText}" ${atributData}><button class="ui teal button icon"  ${atributLabel}>${txtLabelData}</button></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui action input"><input type="${typeText}" ${atribut}><button class="ui teal button icon"  ${atributLabel}>${txtLabelData}</button></div></div>`;
 				break;
 			case "fieldTextLabelKanan":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right labeled input"><input type="${typeText}" ${placeholderData} ${atributData}><div class="ui basic label" ${atributLabel}>" ${txtLabelData}</div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right labeled input"><input type="${typeText}" ${placeholderData} ${atribut}><div class="ui basic label" ${atributLabel}>" ${txtLabelData}</div></div></div>`;
 				break;
 			case "fieldTextIcon":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid ${posisi} icon input"><input type="${typeText}" ${atributData}><i class="${icon} icon"></i></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid ${posisi} icon input"><input type="${typeText}" ${atribut}><i class="${icon} icon"></i></div></div>`;
 				break;
 			case "textIcon":
 				elemen =
 					`<div class="ui icon fluid input"><input type="${typeText}" ` +
 					placeholderData +
 					" " +
-					atributData +
+					atribut +
 					'><i class="' +
 					iconDataSeach +
 					'"></i></div>';
@@ -3999,7 +4092,7 @@ $(document).ready(function () {
 					"</label><input " +
 					placeholderData +
 					' name="username" type="text" ' +
-					atributData +
+					atribut +
 					"></div>";
 				break;
 			case "fieldFileInput":
@@ -4007,39 +4100,31 @@ $(document).ready(function () {
 					`<div class="${classField}field" ${atributField}><label>` +
 					labelData +
 					'</label><div class="ui file input"><input type="file" ' +
-					atributData +
+					atribut +
 					"></div></div>";
 				break;
 			case "fieldFileInput2":
-				//atributData file hanya placeholder
+				//atribut file hanya placeholder
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +
-					'</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="' +
-					placeholderData +
-					'" readonly="" name="dum_file" ' +
-					atributData +
-					'><input hidden type="file" nama="file" name="file" accept="' +
-					accept +
-					'" non_data><button class="ui red icon button" name="del_file"><i class="erase icon"></i></button></div></div>';
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly="" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" non_data><button class="ui red icon button" name="del_file"><i class="erase icon"></i></button></div></div>`;
 				break;
 			case "fieldTextarea":
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>` +
 					labelData +
 					"</label><textarea " +
-					atributData +
+					atribut +
 					"></textarea></div>";
 				break;
 			case "fieldCheckbox":
-				elemen = `<div class="inline${classField} field" ${atributField}><div class="ui checkbox"><input type="checkbox" tabindex="0" class="hidden" ${atributData}><label>${labelData}</label></div></div>`;
+				elemen = `<div class="inline${classField} field" ${atributField}><div class="ui checkbox"><input type="checkbox" tabindex="0" class="hidden" ${atribut}><label>${labelData}</label></div></div>`;
 				break;
 			case "fielToggleCheckbox":
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>` +
 					labelData +
 					'</label><div class="ui toggle checkbox"><input type="checkbox" ' +
-					atributData +
+					atribut +
 					"><label>" +
 					txtLabelData +
 					"</label></div></div>";
@@ -4047,9 +4132,9 @@ $(document).ready(function () {
 			case "fieldTxtDropdownLabel":
 				elemen = `<div class="${classField}field" ${atributField}>
 					<div class="ui right labeled input fluid">
-						<input type="text" placeholder="Koefisien" ${atributData2}>
+						<input type="text" placeholder="Koefisien" ${atribut2}>
 						<div class="ui basic  dropdown label ${kelasData}" placeholder="satuan">
-							<input type="hidden" ${atributData}><i class="dropdown icon"></i>
+							<input type="hidden" ${atribut}><i class="dropdown icon"></i>
 							<div class="default text">${textDrpdown}</div>
 							<div class="menu">
 							</div>
@@ -4059,15 +4144,15 @@ $(document).ready(function () {
 				break;
 			case "fields":
 				let elm = '';
-				if ((typeof atributData) === "object") {
-					atributData.forEach(myFunction);
+				if ((typeof atribut) === "object") {
+					atribut.forEach(myFunction);
 					function myFunction(item, index, arr) {
 						elm += buatElemenHtml("fieldTxtDropdownLabel", {
 							label: "Koefisien Perkalian",
 							kelas: kelas2[index],
 							textDrpdown: 'sat.',
 							atribut: item,
-							atribut2: atributData2[index],
+							atribut2: atribut2[index],
 						});
 					}
 				}
@@ -4079,7 +4164,7 @@ $(document).ready(function () {
 				var elemen11 =
 					`<div class="${classField}field" ${atributField}><label> ${labelData}
 					</label><div class="ui right labeled input"><div class="ui dropdown fluid 
-					${kelasData}" ${atributData}><input type="hidden" ${atributData}><i class="dropdown icon"></i><div class="default text">${textDrpdown}</div><div class="menu">`;
+					${kelasData}" ${atribut}><input type="hidden" ${atribut}><i class="dropdown icon"></i><div class="default text">${textDrpdown}</div><div class="menu">`;
 				///Memisahkan array
 				var elemen22 = "";
 				for (let x in dataArray) {
@@ -4143,7 +4228,7 @@ $(document).ready(function () {
 			case "fieldDropdown":
 				///Memisahkan array
 				elemen22 = "";
-				var disableAtributDataActive = false
+				var disableatributActive = false
 				var txtSelectedActive = '';
 				for (let x in dataArray) {
 					let rowsData = dataArray[x];
@@ -4155,7 +4240,7 @@ $(document).ready(function () {
 						if (rowsData[2]) {
 							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
 								classItem = 'item active selected';
-								disableAtributDataActive = true;
+								disableatributActive = true;
 								txtSelectedActive = ` value="${dataValue}"`;
 							}
 						}
@@ -4169,7 +4254,7 @@ $(document).ready(function () {
 						let txt = rowsData[1];
 						if (rowsData[2] === 'active' || rowsData[3] === 'active') {
 							classItem = 'item active selected';
-							disableAtributDataActive = true;
+							disableatributActive = true;
 							txtSelectedActive = ` value="${dataValue}"`;
 						}
 						elemen22 +=
@@ -4194,7 +4279,7 @@ $(document).ready(function () {
 						} else {
 							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
 								classItem = 'item active selected';
-								disableAtributDataActive = true;
+								disableatributActive = true;
 								txtSelectedActive = ` value="${dataValue}"`;
 							}
 							elemen22 +=
@@ -4206,9 +4291,9 @@ $(document).ready(function () {
 						}
 					}
 				}
-				var atributDataActive = atributData;
-				if (disableAtributDataActive) {
-					atributDataActive += txtSelectedActive;
+				var atributActive = atribut;
+				if (disableatributActive) {
+					atributActive += txtSelectedActive;
 				}
 				elemen11 =
 					`<div class="${classField}field" ${atributField}><label>` +
@@ -4216,9 +4301,9 @@ $(document).ready(function () {
 					'</label><div class="ui dropdown ' +
 					kelasData +
 					'" ' +
-					atributData +
+					atribut +
 					'><input type="hidden" ' +
-					atributDataActive +
+					atributActive +
 					'><i class="dropdown icon"></i><div class="default text">' +
 					textDrpdown +
 					'</div><div class="menu">';
