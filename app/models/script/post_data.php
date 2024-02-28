@@ -983,98 +983,341 @@ class post_data
                     $sukses = true;
                     $err = 0;
                     $columnName = "*";
+                    //=======================
+                    //========JENIS==========
+                    //=======================
                     switch ($jenis) {
-                        case 'unkunci':
-                        case 'unsetujui':
-                        case 'kunci':
-                        case 'setujui':
-                            $kodePosting = 'update_row';
-                            break;
                         case 'edit':
                             $kondisi = [['id', '=', $id_row]];
                             $kodePosting = 'update_row';
-                            break;
-                        case 'add':
-                            if ($_FILES) {
-                                if ($_FILES['file']) {
-                                    $file = $Fungsi->importFile($tbl, '');
-                                    //var_dump($file);
-                                    if ($file['result'] == 'ok') {
-                                        $set['file'] = $file['file'];
-                                    } else {
-                                        $tambahan_pesan = "(" . $file['file'] . ")";
-                                    }
-                                }
-                            }
-                            break;
-                        case 'add_field_json':
-                            break;
-                        default:
-                            break;
-                    }
-                    //start buat property
-                    switch ($tbl) {
-                        case 'asb':
-                        case 'sbu':
-                        case 'hspk':
-                        case 'ssh':
-                            switch ($jenis) {
-                                case 'add_field_json':
+                            switch ($tbl) {
+                                case 'value':
                                     break;
-                                case 'add':
-                                case 'edit':
+                                case 'value':
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if ($tbl == 2) {
+                                break;
+                            }
+                        case 'add':
+                            switch ($tbl) {
+                                case 'profil':
+                                    switch ($jenis) {
+                                        case 'edit':
+                                            $kondisi = [['id', '=', $id_user]];
+                                            $set = [
+                                                'username' => $username,
+                                                'email' => $email,
+                                                'nama' => $nama,
+                                                'kontak_person' => $kontak_person,
+                                                'nama_org' => $nama_org,
+                                                'type_user' => $type_user,
+                                                'ket' => $ket
+                                            ];
+                                            $kodePosting = 'cek_insert';
+                                            break;
+                                        case 'profil':
+                                            $kondisi = [['id', '=', $id_user], ['type_user', '=', $type_user, 'AND']];
+                                            $set = [
+                                                'nama' => $nama,
+                                                'nama_org' => $nama_org,
+                                                //'photo'=>$nama,
+                                                'ket' => $ket,
+                                                'kontak_person' => $kontak_person,
+                                                'font_size' => $font,
+                                                'warna_tbl' => $warna_tbl,
+                                            ];
+                                            if ($_FILES['file']) {
+                                                $file = $Fungsi->importFile($jenis, $kd_proyek = '');
+                                                if ($file['result'] == 'ok') {
+                                                    $set['photo'] = $file['file'];
+                                                }
+                                            }
+                                            $kodePosting = 'cek_insert';
+                                            //var_dump($file);
+                                            break;
+                                        default:
+                                            # code...
+                                            break;
+                                    }
+                                    break;
+                                case 'organisasi':
                                     if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kode' => $kode,
+                                        'uraian' => $uraian,
+                                        'alamat' => $alamat,
+                                        'nama_kepala' => $nama_kepala,
+                                        'nip_kepala' => $nip_kepala,
+                                        'peraturan' => $id_aturan_anggaran,
+                                        'tahun_renstra' => $tahun_renstra,
+                                        'disable' => $disable,
+                                        'keterangan' => $keterangan,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                    break;
+                                case 'peraturan':
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    $kode = "$nomor:$tgl_pengundangan";
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kode' => $kode,
+                                        'type_dok' => $type_dok,
+                                        'judul' => $judul,
+                                        'nomor' => $nomor,
+                                        'bentuk' => $bentuk,
+                                        'bentuk_singkat' => $bentuk_singkat,
+                                        't4_penetapan' => $t4_penetapan,
+                                        'tgl_penetapan' => $tgl_penetapan,
+                                        'tgl_pengundangan' => $tgl_pengundangan,
+                                        'disable' => $disable,
+                                        'keterangan' => $keterangan,
+                                        'status' => $status,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                    //var_dump($set);
+                                    //pengolahan file
+                                    if ($_FILES['file']) {
+                                        $file = $Fungsi->importFile($tbl, '');
+                                        //var_dump($file);
+                                        if ($file['result'] == 'ok') {
+                                            $set['file'] = $file['file'];
+                                        } else {
+                                            $tambahan_pesan = "(" . $file['file'] . ")";
+                                        }
+                                    }
+                                    break;
+                                case 'pengaturan':
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['tahun', '=', $tahun]];
                                         $kodePosting = 'cek_insert';
                                     }
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'tahun' => $tahun,
-                                        'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
-                                        'uraian_barang' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_barang),
-                                        'spesifikasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $spesifikasi),
-                                        'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
-                                        'harga_satuan' => $harga_satuan,
-                                        'tkdn' => $tkdn,
-                                        'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
-                                        'peraturan' => $id_aturan_[$tbl],
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => 0,
+                                        'aturan_anggaran' => $aturan_anggaran,
+                                        'aturan_pengadaan' => $aturan_pengadaan,
+                                        'aturan_akun' => $aturan_akun,
+                                        'aturan_asb' => $aturan_asb,
+                                        'aturan_sbu' => $aturan_sbu,
+                                        'aturan_ssh' => $aturan_ssh,
+                                        'aturan_hspk' => $aturan_hspk,
+                                        'aturan_sumber_dana' => $aturan_sumber_dana,
+                                        'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
+                                        'awal_renstra' => $awal_renstra,
+                                        'akhir_renstra' => $akhir_renstra,
+                                        'awal_renja' => $awal_renja,
+                                        'akhir_renja' => $akhir_renja,
+                                        'awal_renja_p' => $awal_renja_p,
+                                        'akhir_renja_p' => $akhir_renja_p,
+                                        'awal_dpa' => $awal_dpa,
+                                        'akhir_dpa' => $akhir_dpa,
+                                        'awal_dppa' => $awal_dppa,
+                                        'akhir_dppa' => $akhir_dppa,
+                                        'disable' => $disable,
+                                        'keterangan' => $keterangan,
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'username' => $_SESSION["user"]["username"]
                                     ];
+                                    break;
+                                case 'rekanan':
+                                    switch ($jns) {
+                                        case 'edit':
+                                            $kondisi = [['id', '=', $id_row]];
+                                            $kodePosting = 'update_row';
+                                        case 'input':
+                                            if ($tbl == 'input') {
+                                                $kondisi = [['nama_perusahaan', '=', $nama_perusahaan]];
+                                                $kodePosting = 'cek_insert';
+                                            }
+                                            //var_dump($notaris_perubahan);
+                                            $set = [
+                                                'nama_perusahaan' => $nama_perusahaan,
+                                                'alamat' => $alamat,
+                                                'npwp' => $npwp,
+                                                'direktur' => $direktur,
+                                                'no_ktp' => $no_ktp,
+                                                'alamat_dir' => $alamat_dir,
+                                                'no_akta_pendirian' => $no_akta_pendirian,
+                                                'tgl_akta_pendirian' => $tgl_akta_pendirian,
+                                                'lokasi_notaris_pendirian' => $lokasi_notaris_pendirian,
+                                                'nama_notaris_pendirian' => $nama_notaris_pendirian,
+                                                'notaris_perubahan' => $notaris_perubahan,
+                                                'data_lain' => $data_lain,
+                                                'keterangan' => $keterangan
+                                            ];
+                                            //pengolahan file
+                                            if ($_FILES['file']) {
+                                                $file = $Fungsi->importFile($jenis, '');
+                                                //var_dump($file);
+                                                if ($file['result'] == 'ok') {
+                                                    $set['file'] = $file['file'];
+                                                }
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    break;
+                                case 'renstra':
+                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                    if ($rowOrganisasi) {
+                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                        $unit_kerja = $rowOrganisasi->uraian;
+                                        if ($tahun_renstra > 2000) {
+                                            if ($jenis == 'add') {
+                                                $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
+                                                $kodePosting = 'cek_insert';
+                                            }
+                                            // id tujuan
+                                            $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
+                                            $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
+                                            $sasaran_txt = ($tujuan) ? $tujuan->text : '';
+                                            //uraian_prog_keg
+                                            $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                                            $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
+                                            // $uraian_prog_keg = $progkeg->nomenklatur_urusan;
+                                            //kondisi_akhir
+                                            $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
+                                            $jumlah = (float)$dana_thn_1 + (float)$dana_thn_2 + (float)$dana_thn_3 + (float)$dana_thn_4 + (float)$dana_thn_5;
+                                            $dinamic = ['kode' => $kd_sub_keg];
+                                            $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
+                                            if (array_key_exists('kel_rek', $kodeRekUbah)) {
+                                                $kel_rek = $kodeRekUbah['kel_rek'];
+                                            }
+                                            $set = [
+                                                'kd_wilayah' => $kd_wilayah,
+                                                'kd_opd' => $kd_opd,
+                                                'tahun' => $tahun_renstra,
+                                                'kd_sub_keg' => $kd_sub_keg,
+                                                'kel_rek' => $kel_rek,
+                                                'tujuan' => $id_tujuan,
+                                                'sasaran' => $sasaran,
+                                                'sasaran_txt' => $sasaran_txt,
+                                                'uraian_prog_keg' => $uraian_prog_keg,
+                                                'indikator' => $indikator,
+                                                'satuan' => $satuan,
+                                                'data_capaian_awal' => (float)$data_capaian_awal,
+                                                'target_thn_1' => (float)$target_thn_1,
+                                                'dana_thn_1' => (float)$dana_thn_1,
+                                                'target_thn_2' => (float)$target_thn_2,
+                                                'dana_thn_2' => (float)$dana_thn_2,
+                                                'target_thn_3' => (float)$target_thn_3,
+                                                'dana_thn_3' => (float)$dana_thn_3,
+                                                'target_thn_4' => (float)$target_thn_4,
+                                                'dana_thn_4' => (float)$dana_thn_4,
+                                                'target_thn_5' => (float)$target_thn_5,
+                                                'dana_thn_5' => (float)$dana_thn_5,
+                                                'kondisi_akhir' => (float)$kondisi_akhir,
+                                                'jumlah' => (float)$jumlah,
+                                                'lokasi' => $lokasi,
+                                                'keterangan' => $keterangan,
+                                                'disable' => $disable,
+                                                'tanggal' => date('Y-m-d H:i:s'),
+                                                'tgl_update' => date('Y-m-d H:i:s'),
+                                                'username' => $_SESSION["user"]["username"]
+                                            ];
+                                            $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
+                                            $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                                            $kodePosting = '';
+                                        } else {
+                                            $message_tambah = ' (atur tahun renstra OPD)';
+                                            $code = 70;
+                                            $kodePosting = '';
+                                        }
+                                    } else {
+                                        $message_tambah = ' (atur organisasi OPD)';
+                                        $kodePosting = '';
+                                        $code = 70;
+                                    }
+                                    break;
+                                case 'tujuan_renstra':
+                                case 'tujuan_sasaran_renstra':
+                                case 'sasaran_renstra':
+                                    if ($kelompok == 'tujuan') {
+                                        $id_tujuan = 0;
+                                    }
+                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                    if ($rowOrganisasi) {
+                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                        if ($tahun_renstra > 2000) {
+                                            if ($jenis == 'add') {
+                                                $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kelompok', '=', $kelompok, 'AND'], ['text', '=', $text, 'AND']];
+                                                $kodePosting = 'cek_insert';
+                                            }
+                                            $set = [
+                                                'kd_wilayah' => $kd_wilayah,
+                                                'kd_opd' => $kd_opd,
+                                                'tahun' => $tahun_renstra,
+                                                'id_tujuan' => $id_tujuan,
+                                                'kelompok' => $kelompok,
+                                                'text' => $text,
+                                                'disable' => $disable,
+                                                'keterangan' => $keterangan,
+                                                'tanggal' => date('Y-m-d H:i:s'),
+                                                'tgl_update' => date('Y-m-d H:i:s'),
+                                                'username' => $_SESSION["user"]["username"]
+                                            ];
+                                        } else {
+                                            $message_tambah = ' (atur tahun renstra OPD)';
+                                            $code = 70;
+                                            $kodePosting = '';
+                                        }
+                                    } else {
+                                        $message_tambah = ' (atur organisasi OPD)';
+                                        $kodePosting = '';
+                                        $code = 70;
+                                    }
+                                    break;
+                                case 'sub_keg_dpa':
+                                case 'sub_keg_renja':
+                                    $dinamic = ['kode' => $kd_sub_keg];
+                                    $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
+                                    if (array_key_exists('kel_rek', $kodeRekUbah)) {
+                                        $kel_rek = $kodeRekUbah['kel_rek'];
+                                    }
+                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                                    $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kd_opd' => $kd_opd,
+                                        'tahun' => $tahun,
+                                        'kd_sub_keg' => $kd_sub_keg,
+                                        'uraian' => $uraian,
+                                        'kel_rek' => $kel_rek,
+                                        'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
+                                        'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
+                                        'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
+                                        'jumlah_pagu' => $jumlah_pagu,
+                                        'jumlah_pagu_p' => $jumlah_pagu_p,
+                                        'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
+                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                        'disable' => $disable,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
 
+                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                                    $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                                    $data = $cekKodeRek;
+                                    $kodePosting = '';
                                     break;
-                                default:
-                                    break;
-                            }
-                            break;
-                        case 'dppa':
-                        case 'renja_p':
-                        case 'dpa':
-                        case 'renja':
-                            switch ($jenis) {
-                                case 'unkunci':
-                                    $set = ['kunci' => 0];
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                                    break;
-                                case 'unsetujui':
-                                    $set = ['setujui' => 0];
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                                    break;
-                                case 'kunci':
-                                case 'setujui':
-                                    $set = [$jenis => 1];
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                                    break;
-                                case 'add_field_json':
-                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                    $kodePosting = $jenis;
-                                    break;
-                                case 'value1':
-                                    #code...
-                                    break;
-                                default:
+                                case 'dppa':
+                                case 'renja_p':
+                                case 'dpa':
+                                case 'renja':
                                     $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                     // $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
                                     switch ($tabel_pakai) {
@@ -1161,404 +1404,138 @@ class post_data
                                     $data = $insertKodeRek;
                                     $kodePosting = '';
                                     break;
-                            };
-
-
+                                case 'asb':
+                                case 'sbu':
+                                case 'hspk':
+                                case 'ssh':
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'tahun' => $tahun,
+                                        'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
+                                        'uraian_barang' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_barang),
+                                        'spesifikasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $spesifikasi),
+                                        'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
+                                        'harga_satuan' => $harga_satuan,
+                                        'tkdn' => $tkdn,
+                                        'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
+                                        'peraturan' => $id_aturan_[$tbl],
+                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                        'disable' => 0,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                    break;
+                                case 'value':
+                                    break;
+                                case 'value':
+                                    break;
+                                case 'value':
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if ($_FILES) {
+                                if ($_FILES['file']) {
+                                    $file = $Fungsi->importFile($tbl, '');
+                                    //var_dump($file);
+                                    if ($file['result'] == 'ok') {
+                                        $set['file'] = $file['file'];
+                                    } else {
+                                        $tambahan_pesan = "(" . $file['file'] . ")";
+                                    }
+                                }
+                            }
                             break;
-                        case 'sub_keg_dpa':
-                        case 'sub_keg_renja':
-                            switch ($jenis) {
-                                case 'add_field_json':
+                        case 'unkunci':
+                            switch ($tbl) {
+                                case 'renstra':
+
+                                    break;
+                                case 'value':
+                                    break;
+                                default:
+
+                                    break;
+                            }
+                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                            if ($tbl == 2) {
+                                break;
+                            }
+                            $set = ['kunci' => 0];
+                            $kodePosting = 'update_row';
+                            break;
+                        case 'unsetujui':
+                            switch ($tbl) {
+                                case 'renstra':
+
+                                    break;
+                                case 'value':
+                                    break;
+                                default:
+
+                                    break;
+                            }
+                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                            $set = ['setujui' => 0];
+                            $kodePosting = 'update_row';
+                            break;
+                        case 'kunci':
+                        case 'setujui':
+                            switch ($tbl) {
+                                case 'dppa':
+                                case 'renja_p':
+                                case 'dpa':
+                                case 'renja':
+
+                                    break;
+                                case 'value':
+                                    break;
+                                default:
+
+                                    break;
+                            }
+                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                            $set = [$jenis => 1];
+                            $kodePosting = 'update_row';
+                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                            // posting ke dpa, renja_p, dppa
+                            break;
+                        case 'add_field_json':
+                            switch ($tbl) {
+                                case 'sub_keg_dpa':
+                                case 'sub_keg_renja':
                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                     $kodePosting = $jenis;
                                     break;
-                                case 'value1':
-                                    #code...
+                                case 'dppa':
+                                case 'renja_p':
+                                case 'dpa':
+                                case 'renja':
+                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    $kodePosting = $jenis;
+                                    break;
+                                case 'value':
+                                    break;
+                                case 'value':
                                     break;
                                 default:
-                                    $dinamic = ['kode' => $kd_sub_keg];
-                                    $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
-                                    if (array_key_exists('kel_rek', $kodeRekUbah)) {
-                                        $kel_rek = $kodeRekUbah['kel_rek'];
-                                    }
-                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                    $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'tahun' => $tahun,
-                                        'kd_sub_keg' => $kd_sub_keg,
-                                        'uraian' => $uraian,
-                                        'kel_rek' => $kel_rek,
-                                        'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
-                                        'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                        'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
-                                        'jumlah_pagu' => $jumlah_pagu,
-                                        'jumlah_pagu_p' => $jumlah_pagu_p,
-                                        'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => $disable,
-                                        'tanggal' => date('Y-m-d H:i:s'),
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
-                                    ];
-
-                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
-                                    $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
-                                    $data = $cekKodeRek;
-                                    $kodePosting = '';
-                                    break;
-                            };
-
-
-                            break;
-                        case 'tujuan_renstra':
-                        case 'tujuan_sasaran_renstra':
-                        case 'sasaran_renstra':
-                            if ($kelompok == 'tujuan') {
-                                $id_tujuan = 0;
-                            }
-                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                            if ($rowOrganisasi) {
-                                $tahun_renstra = $rowOrganisasi->tahun_renstra;
-                                if ($tahun_renstra > 2000) {
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kelompok', '=', $kelompok, 'AND'], ['text', '=', $text, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'tahun' => $tahun_renstra,
-                                        'id_tujuan' => $id_tujuan,
-                                        'kelompok' => $kelompok,
-                                        'text' => $text,
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'tanggal' => date('Y-m-d H:i:s'),
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
-                                    ];
-                                } else {
-                                    $message_tambah = ' (atur tahun renstra OPD)';
-                                    $code = 70;
-                                    $kodePosting = '';
-                                }
-                            } else {
-                                $message_tambah = ' (atur organisasi OPD)';
-                                $kodePosting = '';
-                                $code = 70;
-                            }
-                            break;
-                        case 'renstra':
-                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                            if ($rowOrganisasi) {
-                                $tahun_renstra = $rowOrganisasi->tahun_renstra;
-                                $unit_kerja = $rowOrganisasi->uraian;
-                                if ($tahun_renstra > 2000) {
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    // id tujuan
-                                    $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
-                                    $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
-                                    $sasaran_txt = ($tujuan) ? $tujuan->text : '';
-                                    //uraian_prog_keg
-                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                    $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
-                                    // $uraian_prog_keg = $progkeg->nomenklatur_urusan;
-                                    //kondisi_akhir
-                                    $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
-                                    $jumlah = (float)$dana_thn_1 + (float)$dana_thn_2 + (float)$dana_thn_3 + (float)$dana_thn_4 + (float)$dana_thn_5;
-                                    $dinamic = ['kode' => $kd_sub_keg];
-                                    $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
-                                    if (array_key_exists('kel_rek', $kodeRekUbah)) {
-                                        $kel_rek = $kodeRekUbah['kel_rek'];
-                                    }
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'tahun' => $tahun_renstra,
-                                        'kd_sub_keg' => $kd_sub_keg,
-                                        'kel_rek' => $kel_rek,
-                                        'tujuan' => $id_tujuan,
-                                        'sasaran' => $sasaran,
-                                        'sasaran_txt' => $sasaran_txt,
-                                        'uraian_prog_keg' => $uraian_prog_keg,
-                                        'indikator' => $indikator,
-                                        'satuan' => $satuan,
-                                        'data_capaian_awal' => (float)$data_capaian_awal,
-                                        'target_thn_1' => (float)$target_thn_1,
-                                        'dana_thn_1' => (float)$dana_thn_1,
-                                        'target_thn_2' => (float)$target_thn_2,
-                                        'dana_thn_2' => (float)$dana_thn_2,
-                                        'target_thn_3' => (float)$target_thn_3,
-                                        'dana_thn_3' => (float)$dana_thn_3,
-                                        'target_thn_4' => (float)$target_thn_4,
-                                        'dana_thn_4' => (float)$dana_thn_4,
-                                        'target_thn_5' => (float)$target_thn_5,
-                                        'dana_thn_5' => (float)$dana_thn_5,
-                                        'kondisi_akhir' => (float)$kondisi_akhir,
-                                        'jumlah' => (float)$jumlah,
-                                        'lokasi' => $lokasi,
-                                        'keterangan' => $keterangan,
-                                        'disable' => $disable,
-                                        'tanggal' => date('Y-m-d H:i:s'),
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
-                                    ];
-                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
-                                    $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
-                                    $kodePosting = '';
-                                } else {
-                                    $message_tambah = ' (atur tahun renstra OPD)';
-                                    $code = 70;
-                                    $kodePosting = '';
-                                }
-                            } else {
-                                $message_tambah = ' (atur organisasi OPD)';
-                                $kodePosting = '';
-                                $code = 70;
-                            }
-                            break;
-                        case 'organisasi':
-                            if ($jenis == 'add') {
-                                $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']];
-                                $kodePosting = 'cek_insert';
-                            }
-                            $set = [
-                                'kd_wilayah' => $kd_wilayah,
-                                'kode' => $kode,
-                                'uraian' => $uraian,
-                                'alamat' => $alamat,
-                                'nama_kepala' => $nama_kepala,
-                                'nip_kepala' => $nip_kepala,
-                                'peraturan' =>  $id_aturan_anggaran,
-                                'tahun_renstra' => $tahun_renstra,
-                                'disable' => $disable,
-                                'keterangan' => $keterangan,
-                                'tanggal' => date('Y-m-d H:i:s'),
-                                'username' => $_SESSION["user"]["username"]
-                            ];
-                            break;
-                        case 'peraturan':
-                            if ($jenis == 'add') {
-                                $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
-                                $kodePosting = 'cek_insert';
-                            }
-                            $kode  = "$nomor:$tgl_pengundangan";
-                            $set = [
-                                'kd_wilayah' => $kd_wilayah,
-                                'kode' => $kode,
-                                'type_dok' => $type_dok,
-                                'judul' => $judul,
-                                'nomor' => $nomor,
-                                'bentuk' => $bentuk,
-                                'bentuk_singkat' => $bentuk_singkat,
-                                't4_penetapan' => $t4_penetapan,
-                                'tgl_penetapan' => $tgl_penetapan,
-                                'tgl_pengundangan' => $tgl_pengundangan,
-                                'disable' => $disable,
-                                'keterangan' => $keterangan,
-                                'status' => $status,
-                                'tanggal' => date('Y-m-d H:i:s'),
-                                'username' => $_SESSION["user"]["username"]
-                            ];
-                            //var_dump($set);
-                            //pengolahan file
-                            if ($_FILES['file']) {
-                                $file = $Fungsi->importFile($tbl, '');
-                                //var_dump($file);
-                                if ($file['result'] == 'ok') {
-                                    $set['file'] = $file['file'];
-                                } else {
-                                    $tambahan_pesan = "(" . $file['file'] . ")";
-                                }
-                            }
-                            break;
-                        case 'pengaturan':
-                            if ($jenis == 'add') {
-                                $kondisi = [['tahun', '=', $tahun]];
-                                $kodePosting = 'cek_insert';
-                            }
-                            $set = [
-                                'kd_wilayah' => $kd_wilayah,
-                                'tahun' => $tahun,
-                                'aturan_anggaran' => $aturan_anggaran,
-                                'aturan_pengadaan' => $aturan_pengadaan,
-                                'aturan_akun' => $aturan_akun,
-                                'aturan_asb' => $aturan_asb,
-                                'aturan_sbu' => $aturan_sbu,
-                                'aturan_ssh' => $aturan_ssh,
-                                'aturan_hspk' => $aturan_hspk,
-                                'aturan_sumber_dana' => $aturan_sumber_dana,
-                                'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
-                                'awal_renstra' => $awal_renstra,
-                                'akhir_renstra' => $akhir_renstra,
-                                'awal_renja' => $awal_renja,
-                                'akhir_renja' => $akhir_renja,
-                                'awal_renja_p' => $awal_renja_p,
-                                'akhir_renja_p' => $akhir_renja_p,
-                                'awal_dpa' => $awal_dpa,
-                                'akhir_dpa' => $akhir_dpa,
-                                'awal_dppa' => $awal_dppa,
-                                'akhir_dppa' => $akhir_dppa,
-                                'disable' => $disable,
-                                'keterangan' => $keterangan,
-                                'tanggal' => date('Y-m-d H:i:s'),
-                                'username' => $_SESSION["user"]["username"]
-                            ];
-                            break;
-                        case 'rekanan':
-                            switch ($jns) {
-                                case 'edit':
-                                    $kondisi = [['id', '=', $id_row]];
-                                    $kodePosting = 'update_row';
-                                case 'input':
-                                    if ($tbl == 'input') {
-                                        $kondisi = [['nama_perusahaan', '=', $nama_perusahaan]];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    //var_dump($notaris_perubahan);
-                                    $set = [
-                                        'nama_perusahaan' => $nama_perusahaan,
-                                        'alamat' => $alamat,
-                                        'npwp' => $npwp,
-                                        'direktur' => $direktur,
-                                        'no_ktp' => $no_ktp,
-                                        'alamat_dir' => $alamat_dir,
-                                        'no_akta_pendirian' => $no_akta_pendirian,
-                                        'tgl_akta_pendirian' => $tgl_akta_pendirian,
-                                        'lokasi_notaris_pendirian' => $lokasi_notaris_pendirian,
-                                        'nama_notaris_pendirian' => $nama_notaris_pendirian,
-                                        'notaris_perubahan' => $notaris_perubahan,
-                                        'data_lain' => $data_lain,
-                                        'keterangan' => $keterangan
-                                    ];
-                                    //pengolahan file
-                                    if ($_FILES['file']) {
-                                        $file = $Fungsi->importFile($jenis, '');
-                                        //var_dump($file);
-                                        if ($file['result'] == 'ok') {
-                                            $set['file'] = $file['file'];
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                        case 'sortir':
-                            $condition = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id_row, 'AND']];
-                            $DB->orderBy('no_sortir');
-                            $result = $DB->getWhereCustom($tabel_pakai, $condition);
-                            $jumlahArray = is_array($result) ? count($result) : 0;
-                            //var_dump($result);
-                            if ($jumlahArray) {
-                                foreach ($result[0] as $row) {
-                                    $no_sortir_awal = (int)$row->no_sortir;
-                                }
-                                switch ($mode_sortir) {
-                                    case 'up_row':
-                                        $no_sortir_change = $no_sortir_awal + 1; //
-                                        $no_sortir_final = $no_sortir_awal - 1; //utama
-                                        break;
-                                    case 'down_row':
-                                        $no_sortir_change = $no_sortir_awal - 1;
-                                        $no_sortir_final = $no_sortir_awal + 1;
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                                switch ($tabel_pakai) {
-                                    case 'analisa_alat':
-                                        # code...
-                                        break;
-                                    case 'analisa_alat_custom':
-                                        # code...
-                                        break;
-                                    case 'daftar_satuan':
-                                        # code...
-                                        break;
-                                    case 'rencana_anggaran_biaya':
-                                        //cari dan update nomor sortir yang sama dengan $no_sortir_final dan ubah minus atau tambah
-                                        $kondisi = [['kd_proyek', '=', $kd_proyek], ['no_sortir', '=', $no_sortir_final, 'AND']];
-                                        $set = [
-                                            'no_sortir' => $no_sortir_change
-                                        ];
-                                        $kondisi2 = $condition;
-                                        $set2 = [
-                                            'no_sortir' => $no_sortir_final
-                                        ];
-                                        break;
-                                    case 'schedule_table':
-                                        # code...
-                                        break;
-                                    case 'lokasi_proyek':
-                                        # code...
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                                $kodePosting = 'update_row';
-                            } else {
-                                $code = 404;
-                            }
-                            break;
-                        case 'profil':
-                            switch ($tbl) {
-                                case 'edit':
-                                    $kondisi = [['id', '=', $id_user]];
-                                    $set = [
-                                        'username' => $username,
-                                        'email' => $email,
-                                        'nama' => $nama,
-                                        'kontak_person' => $kontak_person,
-                                        'nama_org' => $nama_org,
-                                        'type_user' => $type_user,
-                                        'ket' => $ket
-                                    ];
-                                    $kodePosting = 'cek_insert';
-                                    break;
-                                case 'profil':
-                                    $kondisi = [['id', '=', $id_user], ['type_user', '=', $type_user, 'AND']];
-                                    $set = [
-                                        'nama' => $nama,
-                                        'nama_org' => $nama_org,
-                                        //'photo'=>$nama,
-                                        'ket' => $ket,
-                                        'kontak_person' => $kontak_person,
-                                        'font_size' => $font,
-                                        'warna_tbl' => $warna_tbl,
-                                    ];
-                                    if ($_FILES['file']) {
-                                        $file = $Fungsi->importFile($jenis, $kd_proyek = '');
-                                        if ($file['result'] == 'ok') {
-                                            $set['photo'] = $file['file'];
-                                        }
-                                    }
-                                    $kodePosting = 'cek_insert';
-                                    //var_dump($file);
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
-                        case 'x':
-                            switch ($tbl) {
-                                case 'y':
-                                    break;
-                                default:
-                                    # code...
                                     break;
                             }
                             break;
                         default:
-                            $code = 406;
+                            switch ($tbl) {
+                                case 'value':
+                                    break;
+                                case 'value':
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
                     }
                     //JENIS POST DATA/INSERT DATA
                     switch ($kodePosting) {

@@ -787,18 +787,29 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </h2>
                             </div>
                             <form class="ui form segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
-                                <div class="field">
-                                    <label>Tahun</label>
-                                    <div class="ui fluid search selection dropdown" name="tahun">
-                                        <input type="hidden" name="tahun">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">Tahun Anggaran</div>
-                                        <div class="menu">
-                                            <?php
-                                            for ($i = 2020; $i < 2031; $i++) {
-                                                echo '<div class="item" data-value="' . $i . '" data-text="' . $i . '"><i class="podcast icon"></i>' . $i . '</div>';
-                                            }
-                                            ?>
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Tahun</label>
+                                        <div class="ui fluid search selection dropdown" name="tahun">
+                                            <input type="hidden" name="tahun">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Tahun Anggaran</div>
+                                            <div class="menu">
+                                                <?php
+                                                for ($i = 2020; $i < 2031; $i++) {
+                                                    echo '<div class="item" data-value="' . $i . '" data-text="' . $i . '"><i class="podcast icon"></i>' . $i . '</div>';
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Renstra</label>
+                                        <div class="ui calendar year" name="tahun_renstra">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Tahun Renstra" name="tahun_renstra">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -817,8 +828,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                                 <div class="ui basic icon buttons">
                                                     <button class="ui button" name="jalankan" jns="kunci" tbl="renstra" type="button"><i class="lock icon"></i></button>
                                                     <button class="ui button" name="jalankan" jns="unkunci" tbl="renstra" type="button"><i class="unlock icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renstra" type="button"><i class="play icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renstra" type="button"><i class="pause icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renstra" type="button"><i class="check square icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renstra" type="button"><i class="edit icon"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -828,8 +839,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                                 <div class="ui basic icon buttons">
                                                     <button class="ui button" name="jalankan" jns="kunci" tbl="renja" type="button"><i class="lock icon"></i></button>
                                                     <button class="ui button" name="jalankan" jns="unkunci" tbl="renja" type="button"><i class="unlock icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renja" type="button"><i class="play icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja" type="button"><i class="pause icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renja" type="button"><i class="check square icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja" type="button"><i class="edit icon"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -839,30 +850,30 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                                 <div class="ui basic icon buttons">
                                                     <button class="ui button" name="jalankan" jns="kunci" tbl="dpa" type="button"><i class="lock icon"></i></button>
                                                     <button class="ui button" name="jalankan" jns="unkunci" tbl="dpa" type="button"><i class="unlock icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="dpa" type="button"><i class="play icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="dpa" type="button"><i class="pause icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="dpa" type="button"><i class="check square icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="dpa" type="button"><i class="edit icon"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>RENJA PERUBAHAN</td>
                                             <td>
-                                            <div class="ui basic icon buttons">
+                                                <div class="ui basic icon buttons">
                                                     <button class="ui button" name="jalankan" jns="kunci" tbl="renja_p" type="button"><i class="lock icon"></i></button>
                                                     <button class="ui button" name="jalankan" jns="unkunci" tbl="renja_p" type="button"><i class="unlock icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renja_p" type="button"><i class="play icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja_p" type="button"><i class="pause icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renja_p" type="button"><i class="check square icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja_p" type="button"><i class="edit icon"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>D P P A</td>
                                             <td>
-                                            <div class="ui basic icon buttons">
+                                                <div class="ui basic icon buttons">
                                                     <button class="ui button" name="jalankan" jns="kunci" tbl="dppa" type="button"><i class="lock icon"></i></button>
                                                     <button class="ui button" name="jalankan" jns="unkunci" tbl="dppa" type="button"><i class="unlock icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="dppa" type="button"><i class="play icon"></i></button>
-                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="dppa" type="button"><i class="pause icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="dppa" type="button"><i class="check square icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="dppa" type="button"><i class="edit icon"></i></button>
                                                 </div>
                                             </td>
                                         </tr>

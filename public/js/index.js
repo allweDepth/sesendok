@@ -2245,7 +2245,14 @@ $(document).ready(function () {
 					`<i class="trash alternate icon"></i>anda yakin akan ${jenis} dokumen ${tbl} ini?`,
 					`${jenis} mempengaruhi penginputan...!`,
 				];
-				data.tahun = $(`form[name="form_pengaturan"]`).form('get value','tahun');
+				data.tahun = $(`form[name="form_pengaturan"]`).form('get value', 'tahun');
+				if (tbl === 'renstra') {
+					let tanggal = $(`form[name="form_pengaturan"] .ui.calendar.year`).calendar("get date");
+					if (tanggal) {
+						tanggal = `${tanggal.getFullYear()}`;
+						data.tahun = tanggal;
+					}
+				}
 				url = "script/post_data";
 				jalankanAjax = true;
 				break;
@@ -2282,6 +2289,8 @@ $(document).ready(function () {
 			closable: false,
 			onApprove: function () {
 				if (jalankanAjax) {
+					let classToast = 'warning';
+					let iconToast = 'check circle icon';
 					suksesAjax["ajaxku"] = function (result) {
 						switch (jenis) {
 							case "reset":
@@ -2304,23 +2313,37 @@ $(document).ready(function () {
 										case "z":
 											break;
 										default:
-											showToast(result.error.message, {
-												class: "success",
-												icon: "check circle icon",
-											});
+											classToast = "success";
+											iconToast = "check circle icon";
+
 											break;
 									}
 								} else {
-									showToast(result.error.message, {
-										class: "warning",
-										icon: "check circle icon",
-									});
+									classToast = "warning";
+									iconToast = "check circle icon";
 								}
 								break;
 							default:
 								break;
 						};
-						
+						switch (result.error.code) {
+							case 3:
+								classToast = "success";
+								iconToast = "check circle icon";
+								break;
+							case 'value1':
+
+								break;
+							default:
+								classToast = "warning";
+								iconToast = "check circle icon";
+								break;
+						};
+
+						showToast(result.error.message, {
+							class: classToast,
+							icon: iconToast,
+						});
 					};
 					runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
 				} else {
@@ -3305,6 +3328,20 @@ $(document).ready(function () {
 							}
 						}
 					}
+					property = ini.find(".ui.calendar.year");
+					console.log(property);
+					if (property.length > 0) {
+						for (const key of property) {
+							let nameAttr = $(key).find("[name]").attr("name");
+							let tanggal = $(key).calendar("get date");
+							if (tanggal) {
+								tanggal = `${tanggal.getFullYear()}`; //local time
+								console.log(tanggal);
+
+								formData.set(nameAttr, tanggal);
+							}
+						}
+					}
 					property = ini.find(".ui.calendar.datetime");
 					// console.log(property);
 					if (property.length > 0) {
@@ -3734,6 +3771,14 @@ $(document).ready(function () {
 	}
 	let InitializeForm = new FormGlobal(".ui.form");
 	InitializeForm.run();
+	let calendarDate = new CalendarConstructor(".ui.calendar.date");
+	calendarDate.runCalendar();
+	let calendarYear = new CalendarConstructor(".ui.calendar.year");
+	calendarYear.Type("year");
+	calendarYear.runCalendar();
+	let calendarDateTime = new CalendarConstructor(".ui.calendar.datetime");
+	calendarDateTime.Type("datetime");
+	calendarDateTime.runCalendar();
 	//=======================================
 	//===============SEACH GLOBAL============@audit-ok SearchConstructor
 	//=======================================
