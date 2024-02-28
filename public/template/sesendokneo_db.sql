@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 28 Feb 2024 pada 16.33
+-- Waktu pembuatan: 28 Feb 2024 pada 18.50
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -176,7 +176,9 @@ CREATE TABLE `daftar_paket_neo` (
   `file_addendum` varchar(255) DEFAULT NULL,
   `file_pho` varchar(255) DEFAULT NULL,
   `file_fho` varchar(255) DEFAULT NULL,
-  `file` varchar(255) DEFAULT NULL
+  `file` varchar(255) DEFAULT NULL,
+  `setujui` tinyint(1) DEFAULT 0,
+  `kunci` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -222,7 +224,9 @@ CREATE TABLE `dpa_neo` (
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_input` varchar(255) NOT NULL,
-  `username_update` varchar(255) NOT NULL
+  `username_update` varchar(255) NOT NULL,
+  `kunci` tinyint(1) DEFAULT 0,
+  `setujui` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -281,7 +285,9 @@ CREATE TABLE `dppa_neo` (
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_input` varchar(255) NOT NULL,
-  `username_update` varchar(255) NOT NULL
+  `username_update` varchar(255) NOT NULL,
+  `kunci` tinyint(1) DEFAULT 0,
+  `setujui` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -545,7 +551,9 @@ CREATE TABLE `renja_neo` (
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_input` varchar(255) NOT NULL,
-  `username_update` varchar(255) NOT NULL
+  `username_update` varchar(255) NOT NULL,
+  `kunci` tinyint(1) DEFAULT 0,
+  `setujui` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -604,7 +612,9 @@ CREATE TABLE `renja_p_neo` (
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_input` varchar(255) NOT NULL,
-  `username_update` varchar(255) NOT NULL
+  `username_update` varchar(255) NOT NULL,
+  `kunci` tinyint(1) DEFAULT 0,
+  `setujui` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -646,7 +656,9 @@ CREATE TABLE `renstra_skpd_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username` varchar(255) NOT NULL,
+  `setujui` tinyint(1) DEFAULT 0,
+  `kunci` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -837,7 +849,11 @@ CREATE TABLE `sub_keg_renja_neo` (
   `keterangan_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '{}' CHECK (json_valid(`keterangan_json`)),
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username` varchar(255) NOT NULL,
+  `setujui` tinyint(1) DEFAULT 0,
+  `kunci` tinyint(1) DEFAULT 0,
+  `setujui_p` tinyint(1) DEFAULT 0,
+  `kunci_p` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -883,7 +899,9 @@ CREATE TABLE `tujuan_sasaran_renstra_neo` (
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username` varchar(255) NOT NULL,
+  `setujui` tinyint(1) DEFAULT 0,
+  `kunci` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -924,7 +942,7 @@ CREATE TABLE `user_sesendok_biila` (
 
 INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `password`, `kd_organisasi`, `nama_org`, `kd_wilayah`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `tahun`, `kontak_person`, `font_size`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`) VALUES
 (1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$phmt521EHu3PEkilYD/TJ.i1U.ZcMjAHAJt4y88r3O0tfbgs8HQl6', '1.03.0.00.0.00.01.0000', 'Alwi Mansyur', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-01-26 14:17:26', '2024', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
-(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-28 22:39:48', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
+(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-02-29 01:39:25', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
 (3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$J1RLk2kaKqYeuFs2q76vxuoPYTi3cA8dCjRISJlnwlsi3sdHoAKg.', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
 (4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$V.f/.ElwettBd3jyJfMR5epHT0s8NVqaU/mL8ZIqIJo.HBb.6x/Qi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
 (5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$cFR8KdFGXUFBZ5C5payBEOb3aPEXtvYwAKO6Gc6Zdqyjo7WRuDY8.', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');

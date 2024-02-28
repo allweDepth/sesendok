@@ -499,7 +499,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         </tr>
                     </thead>
                     <tbody>
-                       
+
                     </tbody>
                     <tfoot>
                     </tfoot>
@@ -796,107 +796,80 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <div class="menu">
                                             <?php
                                             for ($i = 2020; $i < 2031; $i++) {
-                                                echo '<div class="item" data-value="' . $i . '"><i class="podcast icon"></i>' . $i . '</div>';
+                                                echo '<div class="item" data-value="' . $i . '" data-text="' . $i . '"><i class="podcast icon"></i>' . $i . '</div>';
                                             }
                                             ?>
                                         </div>
                                     </div>
                                 </div>
-                                <h4 class="ui horizontal divider header">
-                                    <i class="tag icon"></i>
-                                    Description
-                                </h4>
-                                <div class="field">
-                                    <label>Anggaran</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_anggaran">
-                                        <input type="hidden" name="aturan_anggaran">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">Anggaran</div>
-                                        <div class="menu">
+                                <h3 class="ui dividing header">Persetujuan Dokumen</h3>
+                                <div class="ui placeholder segment">
+                                    <div class="ui two column stackable center aligned grid">
+                                        <div class="ui vertical divider">Or</div>
+                                        <div class="middle aligned row">
+                                            <div class="column">
+                                                <div class="ui icon header">
+                                                    <i class="world icon"></i>
+                                                    RENJA
+                                                </div>
+                                                <div class="inline">
+                                                    <div class="ui buttons">
+                                                        <button class="ui blue button" name="jalankan" jns="kunci" tbl="renja" type="button">Kunci</button>
+                                                        <div class="or"></div>
+                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="renja" type="button">Setujui</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="column">
+                                                <div class="ui icon header">
+                                                    <i class="world icon"></i>
+                                                    D P A
+                                                </div>
+                                                <div class="inline">
+                                                    <div class="ui buttons">
+                                                    <button class="ui blue button" name="jalankan" jns="kunci" tbl="dpa" type="button">Kunci</button>
+                                                        <div class="or"></div>
+                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="dpa" type="button">Setujui</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="field">
-                                    <label>Pengadaan Barang/Jasa</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_pengadaan">
-                                        <input type="hidden" name="aturan_pengadaan">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">aturan pengadaan</div>
-                                        <div class="menu">
+                                <div class="ui placeholder segment">
+                                    <div class="ui two column stackable center aligned grid">
+                                        <div class="ui vertical divider">Or</div>
+                                        <div class="middle aligned row">
+                                            <div class="column">
+                                                <div class="ui icon header">
+                                                    <i class="world icon"></i>
+                                                    Renja Perubahan
+                                                </div>
+                                                <div class="inline">
+                                                    <div class="ui buttons">
+                                                    <button class="ui blue button" name="jalankan" jns="kunci" tbl="renja_p" type="button">Kunci</button>
+                                                        <div class="or"></div>
+                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="renja_p" type="button">Setujui</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="column">
+                                                <div class="ui icon header">
+                                                    <i class="world icon"></i>
+                                                    D P P A
+                                                </div>
+                                                <div class="inline">
+                                                    <div class="ui buttons">
+                                                    <button class="ui blue button" name="jalankan" jns="kunci" tbl="dppa" type="button">Kunci</button>
+                                                        <div class="or"></div>
+                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="dppa" type="button">Setujui</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="field">
-                                    <label>Akun Belanja</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_akun">
-                                        <input type="hidden" name="aturan_akun">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">Akun Belanja</div>
-                                        <div class="menu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label>Sumber Dana</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_sumber_dana">
-                                        <input type="hidden" name="aturan_sumber_dana">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">Sumber Dana</div>
-                                        <div class="menu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label>Sub Kegiatan</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_sub_kegiatan">
-                                        <input type="hidden" name="aturan_sub_kegiatan">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">Sub Kegiatan</div>
-                                        <div class="menu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label>SSH</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_ssh">
-                                        <input type="hidden" name="aturan_ssh">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">SSH</div>
-                                        <div class="menu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label>HSPK</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_hspk">
-                                        <input type="hidden" name="aturan_hspk">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">HSPK</div>
-                                        <div class="menu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label>ASB</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_asb">
-                                        <input type="hidden" name="aturan_asb">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">ASB</div>
-                                        <div class="menu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label>SBU</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_sbu">
-                                        <input type="hidden" name="aturan_sbu">
-                                        <i class="dropdown icon"></i>
-                                        <div class="default text">SBU</div>
-                                        <div class="menu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4 class="ui dividing header">Jadwal Penganggaran</h4>
+                                <h3 class="ui dividing header">Jadwal Penganggaran</h3>
                                 <div class="two fields">
                                     <div class="field">
                                         <label>Awal Renstra</label>
@@ -997,6 +970,101 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         </div>
                                     </div>
                                 </div>
+                                <h4 class="ui horizontal divider header">
+                                    <i class="tag icon"></i>
+                                    Peraturan yang diginakan
+                                </h4>
+                                <div class="field">
+                                    <label>Anggaran</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_anggaran">
+                                        <input type="hidden" name="aturan_anggaran">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Anggaran</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Pengadaan Barang/Jasa</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_pengadaan">
+                                        <input type="hidden" name="aturan_pengadaan">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">aturan pengadaan</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Akun Belanja</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_akun">
+                                        <input type="hidden" name="aturan_akun">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Akun Belanja</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Sumber Dana</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_sumber_dana">
+                                        <input type="hidden" name="aturan_sumber_dana">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Sumber Dana</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Sub Kegiatan</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_sub_kegiatan">
+                                        <input type="hidden" name="aturan_sub_kegiatan">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Sub Kegiatan</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>SSH</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_ssh">
+                                        <input type="hidden" name="aturan_ssh">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">SSH</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>HSPK</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_hspk">
+                                        <input type="hidden" name="aturan_hspk">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">HSPK</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>ASB</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_asb">
+                                        <input type="hidden" name="aturan_asb">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">ASB</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>SBU</label>
+                                    <div class="ui fluid search selection dropdown" name="aturan_sbu">
+                                        <input type="hidden" name="aturan_sbu">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">SBU</div>
+                                        <div class="menu">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="field"><label>Keterangan</label><textarea name="keterangan" rows="4"></textarea></div>
                                 <div class="field"><label></label>
                                     <div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non Aktif</label></div>

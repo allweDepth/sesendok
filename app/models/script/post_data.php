@@ -150,6 +150,24 @@ class post_data
                     case 'dppa':
                     case 'renja_p':
                         switch ($jenis) {
+                            case 'kunci':
+                            case 'setujui':
+                                if ($type_user === 'admin') {
+                                    $tahun_dokumen = $validate->setRules('tahun', 'tahun dokumen', [
+                                        'required' => true,
+                                        'numeric' => true,
+                                        'max_char' => 4,
+                                        'min_char' => 4
+                                    ]);
+                                } else {
+                                    $tahun_dokumen = $validate->setRules('nabiilainayah_ok', 'anda bukan admin', [
+                                        'required' => true,
+                                        'numeric' => true,
+                                        'max_char' => 8,
+                                        'min_char' => 9
+                                    ]);
+                                }
+                                break;
                             case 'edit':
                                 $id_row = $validate->setRules('id_row', 'id', [
                                     'required' => true,
@@ -1094,6 +1112,10 @@ class post_data
                     $err = 0;
                     $columnName = "*";
                     switch ($jenis) {
+                        case 'kunci':
+                        case 'setujui':
+                            $kodePosting = 'update_row';
+                            break;
                         case 'edit':
                             $kondisi = [['id', '=', $id_row]];
                             $kodePosting = 'update_row';
@@ -1112,7 +1134,6 @@ class post_data
                             }
                             break;
                         case 'add_field_json':
-
                             break;
                         default:
                             break;
@@ -1148,7 +1169,7 @@ class post_data
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'username' => $_SESSION["user"]["username"]
                                     ];
-                                    
+
                                     break;
                                 default:
                                     break;
@@ -1159,6 +1180,11 @@ class post_data
                         case 'dpa':
                         case 'renja':
                             switch ($jenis) {
+                                case 'kunci':
+                                case 'setujui':
+                                    $set = [$jenis => 1];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                                    break;
                                 case 'add_field_json':
                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                     $kodePosting = $jenis;

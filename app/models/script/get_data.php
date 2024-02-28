@@ -194,7 +194,9 @@ class get_data
                         break;
                 }
                 $jumlah_kolom = 0;
-                //FINISH PROSES VALIDASI
+                //==============================
+                //== FINISH PROSES VALIDASI ====
+                //==============================
                 if ($validate->passed()) {
                     $code = 55;
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
@@ -222,6 +224,9 @@ class get_data
                     $dataJson = [];
                     $kodePosting = '';
                     switch ($jenis) {
+                        case 'atur':
+
+                            break;
                         case 'get_pengaturan':
                             $rowTahunAktif = $DB->getWhereOnceCustom($tabel_pakai, [['tahun', '=', $tahun], ['kd_wilayah', '=', $kd_wilayah, 'AND']]);
                             if ($rowTahunAktif) {
@@ -538,17 +543,34 @@ class get_data
                             $data_hereGet_row_json = [0];
                             break;
                         case 'organisasi':
-                            $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
-                            $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
-                            $order = "ORDER BY kode ASC";
-                            $posisi = " LIMIT ?, ?";
-                            $where1 = "kd_wilayah = ? AND disable <= ?";
-                            $data_where1 = [$kd_wilayah, 0];
-                            $whereGet_row_json = "kd_wilayah = ? AND disable <= ?";
-                            $data_hereGet_row_json = [$kd_wilayah, 0];
-                            // $where = "nomor = ?";
-                            // $data_where =  [$text];
-                            $jumlah_kolom = 7;
+                            switch ($jenis) {
+                                case 'atur':
+                                    $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kode ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "kd_wilayah = ? AND disable <= ?";
+                                    $data_where1 = [$kd_wilayah, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? AND disable <= ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, 0];
+                                    $jumlah_kolom = 7;
+                                    break;
+
+                                default:
+                                    $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kode ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "kd_wilayah = ? AND disable <= ?";
+                                    $data_where1 = [$kd_wilayah, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? AND disable <= ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, 0];
+                                    // $where = "nomor = ?";
+                                    // $data_where =  [$text];
+                                    $jumlah_kolom = 7;
+                                    break;
+                            }
+
                             break;
                         case 'peraturan':
                             $like = "kd_wilayah = ? AND disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
@@ -803,7 +825,7 @@ class get_data
                                                 if ($kode_drop) {
                                                     $data['values']['kd_akun'] = [];
                                                     $formValueExplode = explode(',', $kode_drop);
-                                                    
+
                                                     foreach ($formValueExplode as $key_row => $row) {
                                                         $kondisi_result = [['kode', '=', trim($row)]];
                                                         $row_sub = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);

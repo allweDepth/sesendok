@@ -63,6 +63,7 @@ $(document).ready(function () {
 			darkmodeEnabled = true;
 		}
 	});
+
 	//============================
 	//=========CARI DATA======
 	//============================
@@ -393,6 +394,7 @@ $(document).ready(function () {
 			case "rekanan":
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
+			case "atur":
 				jalankanAjax = true;
 				break;
 			case "renja":
@@ -801,18 +803,18 @@ $(document).ready(function () {
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_fho" placeholder="Nomor FHO" non_data`,
 									}) +
-									buatElemenHtml("fieldFileInput2", {
-										label: "Pilih File Dokumen PHO",
-										file: "file_pho",
-										placeholderData: "Pilih File PHO...",
-										accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
-									}) +
-									buatElemenHtml("fieldFileInput2", {
-										label: "Pilih File Dokumen FHO",
-										file: "file_fho",
-										placeholderData: "Pilih File FHO...",
-										accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
-									})
+										buatElemenHtml("fieldFileInput2", {
+											label: "Pilih File Dokumen PHO",
+											file: "file_pho",
+											placeholderData: "Pilih File PHO...",
+											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+										}) +
+										buatElemenHtml("fieldFileInput2", {
+											label: "Pilih File Dokumen FHO",
+											file: "file_fho",
+											placeholderData: "Pilih File FHO...",
+											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+										})
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -2201,10 +2203,10 @@ $(document).ready(function () {
 			},
 		})
 		.flyout("attach events", '[name="flyout"]');
-	//============================
-	//===========DEL ROW==========
-	//============================
-	$("body").on("click", '[name="del_row"]', function (e) {
+	//========================================
+	//===========DEL ROW DAN EKSEKUSI ==========
+	//========================================
+	$("body").on("click", '[name="del_row"], [name="jalankan"]', function (e) {
 		e.stopImmediatePropagation();
 		e.preventDefault();
 		let ini = $(this);
@@ -2220,21 +2222,31 @@ $(document).ready(function () {
 				}
 			}
 		}
-		var url = "script/del_data";
-		var jalankanAjax = false;
-		var contentModal = [
-			'<i class="trash alternate icon"></i>anda yakin akan hapus data ini?',
-			"menghapus data tidak dapat di batalkan...!",
-		];
-		let data = {
-			cari: cari(jenis),
-			rows: countRows(),
-			jenis: jenis,
-			tbl: tbl,
-			halaman: halaman,
-			id_row: id_row,
+		let url = "script/del_data";
+		let jalankanAjax = false;
+		let contentModal = ['<i class="trash alternate icon"></i>anda yakin akan hapus data ini?',
+			"menghapus data tidak dapat di batalkan...!",];
+		let cryptos = false;
+		let data = {};
+		switch (jenis) {
+			case 'lock':
+			case 'setujui':
+				jalankanAjax = true;
+				break;
+			default:
+				break;
 		};
 		switch (jenis) {
+			case 'kunci':
+			case 'setujui':
+				contentModal = [
+					`<i class="trash alternate icon"></i>anda yakin akan ${jenis} dokumen ${tbl} ini?`,
+					`${jenis} mempengaruhi penginputan...!`,
+				];
+				data.tahun = $(`form[name="form_pengaturan"]`).form('get value','tahun');
+				url = "script/post_data";
+				jalankanAjax = true;
+				break;
 			case "reset":
 				//contentModal = ['<i class="trash alternate icon"></i>anda yakin akan mereset tabel data ini?', 'mereset tabel tidak dapat di batalkan...!']
 				var tabelreset = ini.closest(".card").find(".content .header").text();
@@ -2249,92 +2261,94 @@ $(document).ready(function () {
 				break;
 			case "del_row":
 				if (id_row && jenis !== 'direct') {
+					data.id_row = id_row;
 					jalankanAjax = true;
 				}
 				break;
 			default:
 				break;
 		}
+		data.cari = cari(jenis);
+		data.rows = countRows();
+		data.jenis = jenis;
+		data.tbl = tbl;
+		data.halaman = halaman;
 		modal_notif_hapus(contentModal[0], contentModal[1]);
-		$(".ui.hapus.modal")
-			.modal({
-				allowMultiple: true,
-				//observeChanges: true,
-				closable: false,
-				onApprove: function () {
-					if (jalankanAjax) {
-						suksesAjax["ajaxku"] = function (result) {
-							if (result.error.code === 4) {
-								var obj = ini.closest("tr");
-								if (obj.length <= 0) {
-									obj = ini.closest(".item");
-									if (obj.length <= 0) {
-										obj = ini.closest(".comment");
-									}
-								}
-								//console.log(obj);
-								obj.find('input, textarea').addClass("transparent");
-								obj.css("background-color", "#EF617C");
-								obj.fadeOut(600, function () {
-									obj.remove();
-								});
-								switch (jenis) {
-									case "z":
-										break;
-									case "x":
-										switch (tbl) {
-											case "y":
-												break;
-											case "z":
-												break;
-											default:
-												break;
-										}
-										break;
-									default:
-										showToast(result.error.message, {
-											class: "success",
-											icon: "check circle icon",
-										});
-										break;
-								}
-							} else {
-								showToast(result.error.message, {
-									class: "warning",
-									icon: "check circle icon",
-								});
-							}
-						};
-						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
-					} else {
+		$(".ui.hapus.modal").modal({
+			allowMultiple: true,
+			//observeChanges: true,
+			closable: false,
+			onApprove: function () {
+				if (jalankanAjax) {
+					suksesAjax["ajaxku"] = function (result) {
 						switch (jenis) {
-							case "direct":
-								let form = ini.closest("form");
-								let direct = ini.attr("direct"); //jika ada atribut direct hapus direct
-								let obj = ini.closest("tr");
-								if (direct) {
-									obj = ini.closest('[direct="del"]');
-								}
-								obj.find('input, textarea').addClass("transparent");
-								obj.css("background-color", "#EF617C");
-								obj.fadeOut(500, function () {
-									obj.remove();
-									if (typeof form !== "undefined") {
-										//console.log(form);
-										removeRulesForm(form);
-										var reinitForm = new FormGlobal(form);
-										reinitForm.run();
-										addRulesForm(form);
+							case "reset":
+							case "del_row":
+								if (result.error.code === 4) {
+									var obj = ini.closest("tr");
+									if (obj.length <= 0) {
+										obj = ini.closest(".item");
+										if (obj.length <= 0) {
+											obj = ini.closest(".comment");
+										}
 									}
-								});
+									//console.log(obj);
+									obj.find('input, textarea').addClass("transparent");
+									obj.css("background-color", "#EF617C");
+									obj.fadeOut(600, function () {
+										obj.remove();
+									});
+									switch (jenis) {
+										case "z":
+											break;
+										default:
+											showToast(result.error.message, {
+												class: "success",
+												icon: "check circle icon",
+											});
+											break;
+									}
+								} else {
+									showToast(result.error.message, {
+										class: "warning",
+										icon: "check circle icon",
+									});
+								}
 								break;
 							default:
 								break;
-						}
+						};
+						
+					};
+					runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
+				} else {
+					switch (jenis) {
+						case "direct":
+							let form = ini.closest("form");
+							let direct = ini.attr("direct"); //jika ada atribut direct hapus direct
+							let obj = ini.closest("tr");
+							if (direct) {
+								obj = ini.closest('[direct="del"]');
+							}
+							obj.find('input, textarea').addClass("transparent");
+							obj.css("background-color", "#EF617C");
+							obj.fadeOut(500, function () {
+								obj.remove();
+								if (typeof form !== "undefined") {
+									//console.log(form);
+									removeRulesForm(form);
+									var reinitForm = new FormGlobal(form);
+									reinitForm.run();
+									addRulesForm(form);
+								}
+							});
+							break;
+						default:
+							break;
 					}
-				},
-			})
-			.modal("show");
+				}
+			},
+		}).modal("show");
 	});
 	//==================================
 	// download dokumen ke xls/exel
