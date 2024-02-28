@@ -97,6 +97,7 @@ $(document).ready(function () {
 		const dasboard = $(".message.dashboard");
 		let ini = $(this);
 		let tab = ini.attr("data-tab");
+		let jenis_this = ini.attr("jns");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
 		let Text_ssh_sbu = (tbl) ? tbl.toUpperCase() : '';
@@ -123,7 +124,7 @@ $(document).ready(function () {
 				]
 			}
 		}
-		
+
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			tab_renstra: tab_renstra,
@@ -394,35 +395,54 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 				jalankanAjax = true;
 				break;
+			case "renja":
+			case "dpa":
+			case "renja_p":
+			case "dppa":
+			case "sub_keg_renja":
+			case "sub_keg_dpa":
 			case "tab_renja":
+				switch (jenis_this) {
+					case 'rincian_pokok':
+						
+						break;
+					case 'rincian_perubahan':
+						
+						break;
+					default:
+						
+						break;
+				};
+				
 				let anggaranAttr = ini.attr('anggaran');
 				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
 				switch (anggaranAttr) {
 					case 'renja':
-						itemDivDataTab.eq(0).attr('tbl','sub_keg_renja');
+						itemDivDataTab.eq(0).attr('tbl', 'sub_keg_renja');
 						itemDivDataTab.eq(0).text('Sub Kegiatan');
-						itemDivDataTab.eq(1).attr('tb','renja');
+						itemDivDataTab.eq(1).attr('tb', 'renja').attr('id_sub_keg', 'renja');
 						itemDivDataTab.eq(1).text('Renja');
-						itemDivDataTab.eq(2).attr('tb','renja_p');
+						itemDivDataTab.eq(2).attr('tb', 'renja_p');
 						itemDivDataTab.eq(2).text('Renja Perubahan');
 						break;
 					case 'dpa':
-						itemDivDataTab.eq(0).attr('tbl','sub_keg_dpa');
+						itemDivDataTab.eq(0).attr('tbl', 'sub_keg_dpa');
 						itemDivDataTab.eq(0).text('Sub Kegiatan');
-						itemDivDataTab.eq(1).attr('tb','dpa');
+						itemDivDataTab.eq(1).attr('tb', 'dpa');
 						itemDivDataTab.eq(1).text('D P A');
-						itemDivDataTab.eq(2).attr('tb','dppa');
+						itemDivDataTab.eq(2).attr('tb', 'dppa');
 						itemDivDataTab.eq(2).text('DPPA');
 						break;
 				};
-				
-				$(".message.goyang.keterangan").find('p').text(arrayDasboard[tab][3]);
+
+				// $(".message.goyang.keterangan").find('p').text(arrayDasboard[tab][3]);
 				if (tbl) {
 					jalankanAjax = true;
 					divTab.find('button[jns]').attr('tbl', tbl)
 				}
 				switch (tbl) {
 					case "sub_keg_renja":
+					case "sub_keg_dpa":
 					case "dpa":
 					case "dppa":
 					case "renja":
@@ -432,9 +452,20 @@ $(document).ready(function () {
 							.closest('.ui.menu')
 							.find('.item')
 							.not($(elmk))
-							.removeClass('active')
-							;
-						if (tbl === 'sub_keg_renja') {
+							.removeClass('active');
+
+						switch (tbl) {
+							case "sub_keg_renja":
+							case "sub_keg_dpa":
+							case "dpa":
+							case "dppa":
+							case "renja":
+							case "renja_p":
+								break;
+							default:
+								break;
+						}
+						if (tbl === 'sub_keg_renja' || tbl === 'sub_keg_dpa') {
 							divTab.find('table.sub_keg').attr('hidden', "")
 						} else {
 							divTab.find('table.sub_keg').removeAttr('hidden')
@@ -1617,7 +1648,7 @@ $(document).ready(function () {
 						case 'value1':
 							break;
 					};
-					
+
 					break;
 				default:
 					break;
@@ -2498,7 +2529,7 @@ $(document).ready(function () {
 		document.getElementById("header_mdl").textContent = headerModal;
 		addRulesForm(formIni);
 		$("[rms]").mathbiila();
-		
+
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
