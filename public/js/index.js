@@ -697,7 +697,12 @@ $(document).ready(function () {
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="modal_show" jns="get_data" tbl="${tbl}"`,
 								}) +
-								
+								buatElemenHtml("fieldTextAction", {
+									label: "Jadwal dan nomor",
+									atribut: 'name="jadwal" placeholder="Uraian Paket..." readonly',
+									txtLabel: `<i class="search icon"></i>`,
+									atributLabel: `name="modal_show" jns="get_data" tbl="${tbl}"`,
+								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Spesifikasi",
 									atribut: 'name="spesifikasi" rows="2" placeholder="Spesifikasi..."',
@@ -714,28 +719,19 @@ $(document).ready(function () {
 									dataArray: [
 									],
 								}) +
-								
 								buatElemenHtml("fieldText", {
-									label: "TKDN",
+									label: "Nilai Pagu",
 									atribut:
-										'name="tkdn" placeholder="tkdn..." rms',
+										'name="pagu" placeholder="Nilai Pagu..." rms readonly',
 								}) +
-								buatElemenHtml("fieldDropdown", {
-									label: "Mapping Kode Akun dan Belanja",
-									classField: `required`,
-									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
-									kelas: "search clearable multiple kd_akun ajx selection",
-									dataArray: [
-									],
+								buatElemenHtml("fieldText", {
+									label: "Nilai Kontrak",
+									atribut:
+										'name="jumlah" placeholder="Nilai Kontrak..." rms',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="3"',
-								}) +
-								buatElemenHtml("fielToggleCheckbox", {
-									label: "",
-									atribut: 'name="disable" non_data',
-									txtLabel: "Non Aktif",
 								});
 							break;
 						case 'dppa':
