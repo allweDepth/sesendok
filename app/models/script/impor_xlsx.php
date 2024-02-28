@@ -353,7 +353,7 @@ class Impor_xlsx
                                                                     'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp]]],
                                                                     'min_char' => 1
                                                                 ]);
-                                                                
+
                                                                 $uraian = $validateRow->setRules(1, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
@@ -779,7 +779,8 @@ class Impor_xlsx
                                                                 $kd_aset = $validateRow->setRules(0, 'kd_aset', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
-                                                                    'min_char' => 1
+                                                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $_POST['kd_aset']]]],
+                                                                    'min_char' => 4
                                                                 ]);
                                                                 $uraian_kel = $validateRow->setRules(1, 'uraian kelompok', [
                                                                     'sanitize' => 'string',
@@ -794,10 +795,11 @@ class Impor_xlsx
                                                                 $spesifikasi = $validateRow->setRules(3, 'spesifikasi', [
                                                                     'sanitize' => 'string'
                                                                 ]);
+                                                                $satuan_temp = $arrayValidateRow[$keyArray[1]][4];
                                                                 $satuan = $validateRow->setRules(4, 'satuan', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
-                                                                    'min_char' => 1
+                                                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $satuan_temp]]]
                                                                 ]);
                                                                 $harga_satuan = $validateRow->setRules(5, 'harga satuan', [
                                                                     'numeric' => true,
@@ -813,16 +815,16 @@ class Impor_xlsx
                                                                     'min_char' => 1
                                                                 ]);
                                                                 // ubah $kd_rek_standar menjadi array dan ubah ke json mysql
-                                                                $kd_rek_temp = $arrayValidateRow[$keyArray[1]][7];
+                                                                // $kd_rek_temp = $arrayValidateRow[$keyArray[1]][7];
                                                                 //jadikan Array
-                                                                $explodeAwal = explode(',', $kd_rek_temp);
+                                                                $explodeAwal = explode(',', $kd_rek_standar);
                                                                 foreach ($explodeAwal as $key => $row) {
                                                                     $dataRslt = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $row]]);
                                                                     if ($dataRslt <= 0) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
-                                                                $kd_rek_akun = $explodeAwal;
+                                                                $kd_akun = implode(',',$explodeAwal);
                                                                 $keterangan = $validateRow->setRules(8, 'keterangan', [
                                                                     'sanitize' => 'string',
                                                                 ]);
@@ -830,15 +832,12 @@ class Impor_xlsx
                                                                     'kd_wilayah' => $kd_wilayah,
                                                                     'tahun' => $tahun,
                                                                     'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
-                                                                    'uraian_kel' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_kel),
                                                                     'uraian_barang' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_barang),
                                                                     'spesifikasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $spesifikasi),
                                                                     'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
                                                                     'harga_satuan' => $harga_satuan,
                                                                     'tkdn' => $tkdn,
-                                                                    'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
-                                                                    'kd_rek_akun' => json_encode(array("kd_rek_akun" => $kd_rek_akun)),
-                                                                    'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_rek_standar),
+                                                                    'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
                                                                     'peraturan' => $id_aturan,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,

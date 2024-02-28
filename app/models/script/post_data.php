@@ -62,6 +62,89 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($tbl) {
+                    case 'asb':
+                    case 'sbu':
+                    case 'hspk':
+                    case 'ssh':
+                        switch ($jenis) {
+                            case 'edit':
+                                $id_row = $validate->setRules('id_row', 'id', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                            case 'add':
+                                $kd_aset = $validate->setRules('kd_aset', 'kode aset', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $_POST['kd_aset']]]],
+                                    'min_char' => 4
+                                ]);
+
+                                $uraian_barang = $validate->setRules('uraian_barang', 'uraian barang', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $spesifikasi = $validate->setRules('spesifikasi', 'spesifikasi', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $satuan = $validate->setRules('satuan', 'satuan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['satuan']]]]
+                                ]);
+                                $harga_satuan = $validate->setRules('harga_satuan', 'harga satuan', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $tkdn = $validate->setRules('tkdn', 'Tingkat Komponen Dalam Negeri (TKDN)', [
+                                    'numeric_zero' => true
+                                ]);
+                                $merek = $validate->setRules('merek', 'merek', [
+                                    'sanitize' => 'string'
+                                ]);
+                                // urai kode akun
+                                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                if ($kd_akun) {
+                                    $formValueExplode = explode(',', $kd_akun);
+                                    $kd_akun = '';
+                                    foreach ($formValueExplode as $key_row => $row) {
+                                        $kondisi_result = [['kode', '=', trim($row)]];
+                                        $row_sub = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
+                                        // var_dump( $kondisi_result);
+                                        if ($row_sub !== false) {
+                                            if ($key_row == 0) {
+                                                $kd_akun = $row_sub->kode;
+                                            } else {
+                                                $kd_akun .= ',' . $row_sub->kode;
+                                            }
+                                        }
+                                    }
+                                }
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            default:
+                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
+                                    'required' => true,
+                                    'min_char' => 200
+                                ]);
+                                break;
+                        }
+                        break;
                     case 'dpa':
                     case 'renja':
                     case 'dppa':
@@ -1036,6 +1119,43 @@ class post_data
                     }
                     //start buat property
                     switch ($tbl) {
+                        case 'asb':
+                        case 'sbu':
+                        case 'hspk':
+                        case 'ssh':
+                            switch ($jenis) {
+                                case 'add_field_json':
+                                    break;
+                                case 'add':
+                                case 'edit':
+                                    if ($jenis == 'add') {
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'tahun' => $tahun,
+                                        'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
+                                        'uraian_barang' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_barang),
+                                        'spesifikasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $spesifikasi),
+                                        'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
+                                        'harga_satuan' => $harga_satuan,
+                                        'tkdn' => $tkdn,
+                                        'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
+                                        'peraturan' => $id_aturan_[$tbl],
+                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                        'disable' => 0,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                    
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 'dppa':
+                        case 'renja_p':
                         case 'dpa':
                         case 'renja':
                             switch ($jenis) {

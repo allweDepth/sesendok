@@ -1199,23 +1199,18 @@ $(document).ready(function () {
 									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									label: "Uraian Kelompok Barang/Jasa",
-									atribut: 'name="uraian_kel" rows="4" placeholder="Kelompok Barang/Jasa..." disabled',
-								}) +
-								buatElemenHtml("fieldTextarea", {
 									label: "Uraian Barang/Jasa",
-									atribut: 'name="uraian_barang" rows="4" placeholder="Uraian Barang/Jasa..."',
+									atribut: 'name="uraian_barang" rows="2" placeholder="Uraian Barang/Jasa..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Spesifikasi",
-									atribut: 'name="spesifikasi" rows="4" placeholder="Spesifikasi..."',
+									atribut: 'name="spesifikasi" rows="2" placeholder="Spesifikasi..."',
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan"',
 									kelas: "search clearable ajx selection",
 									dataArray: [
-
 									],
 								}) +
 								buatElemenHtml("fieldText", {
@@ -1226,10 +1221,10 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
 									atribut:
-										'name="tkdn" placeholder="tkdn..."',
+										'name="tkdn" placeholder="tkdn..." rms',
 								}) +
 								buatElemenHtml("fieldDropdown", {
-									label: "Rekening / Akun",
+									label: "Mapping Kode Akun dan Belanja",
 									classField: `required`,
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
 									kelas: "search clearable multiple kd_akun ajx selection",
@@ -1238,7 +1233,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
+									atribut: 'name="keterangan" rows="3"',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
