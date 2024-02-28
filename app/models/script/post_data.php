@@ -61,19 +61,508 @@ class post_data
                 //================
                 //PROSES VALIDASI
                 //================
-                switch ($tbl) {
-                    case 'asb':
-                    case 'sbu':
-                    case 'hspk':
-                    case 'ssh':
-                        switch ($jenis) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
+                switch ($jenis) {
+                    case 'unkunci':
+                    case 'unsetujui':
+                    case 'kunci':
+                    case 'setujui':
+                        if ($type_user === 'admin') {
+                            $tahun_dokumen = $validate->setRules('tahun', 'tahun dokumen', [
+                                'required' => true,
+                                'numeric' => true,
+                                'max_char' => 4,
+                                'min_char' => 4
+                            ]);
+                        } else {
+                            $tahun_dokumen = $validate->setRules('nabiilainayah_ok', 'anda bukan admin', [
+                                'required' => true,
+                                'numeric' => true,
+                                'max_char' => 8,
+                                'min_char' => 9
+                            ]);
+                        }
+                        break;
+                    case 'edit':
+                        switch ($tbl) {
+                            case 'profil':
+                                $type_user = $validate->setRules('type_user', 'type user', [
+                                    'sanitize' => 'string',
+                                    'min_char' => 2, //on-off
+                                    'in_array' => ['user', 'admin', 'super']
+                                ]);
+                                break;
+                            case 'value':
+                                # code...
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        $id_row = $validate->setRules('id_row', 'id', [
+                            'required' => true,
+                            'numeric' => true,
+                            'min_char' => 1
+                        ]);
+                    case 'add':
+                        switch ($tbl) {
+                            case 'pengaturan':
+                                $tahun = $validate->setRules('tahun', 'tahun', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 4
+                                ]);
+                                $aturan_anggaran = $validate->setRules('aturan_anggaran', 'Peraturan anggaran', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_anggaran']]]],
                                     'required' => true,
                                     'numeric' => true,
                                     'min_char' => 1
                                 ]);
-                            case 'add':
+                                $aturan_pengadaan = $validate->setRules('aturan_pengadaan', 'Peraturan pengadaan', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_pengadaan']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_akun = $validate->setRules('aturan_akun', 'Peraturan Akun', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_akun']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_sumber_dana = $validate->setRules('aturan_sumber_dana', 'Peraturan sumber dana', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sumber_dana']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_sub_kegiatan = $validate->setRules('aturan_sub_kegiatan', 'Peraturan sub kegiatan', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sub_kegiatan']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_ssh = $validate->setRules('aturan_ssh', 'Peraturan ssh', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_ssh']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_hspk = $validate->setRules('aturan_hspk', 'Peraturan hspk', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_hspk']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_asb = $validate->setRules('aturan_asb', 'Peraturan asb', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_asb']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $aturan_sbu = $validate->setRules('aturan_sbu', 'Peraturan sbu', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sbu']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $awal_renstra = $validate->setRules('awal_renstra', 'tanggal awal renstra', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_renstra = $validate->setRules('akhir_renstra', 'tanggal akhir renstra', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_renja = $validate->setRules('awal_renja', 'tanggal awal renja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                //'/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',2024-2-16 10:10:0
+                                $akhir_renja = $validate->setRules('akhir_renja', 'tanggal akhir renja', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_renja_p = $validate->setRules('awal_renja_p', 'tanggal awal renja perubahan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_renja_p = $validate->setRules('akhir_renja_p', 'tanggal akhir renja perubahan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_dpa = $validate->setRules('awal_dpa', 'tanggal awal dpa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_dpa = $validate->setRules('akhir_dpa', 'tanggal akhir dpa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $awal_dppa = $validate->setRules('awal_dppa', 'tanggal awal dppa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $akhir_dppa = $validate->setRules('akhir_dppa', 'tanggal akhir dppa', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            case 'rekanan':
+                                $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama_perusahaan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                //var_dump($_POST['alamat']);
+                                $alamat = $validate->setRules('alamat', 'alamat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $npwp = $validate->setRules('npwp', 'npwp', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 16
+                                ]);
+                                $direktur = $validate->setRules('direktur', 'direktur', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $no_ktp = $validate->setRules('no_ktp', 'Nomor KTP Direktur', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $alamat_dir = $validate->setRules('alamat_dir', 'Alamat Direktur', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $no_akta_pendirian = $validate->setRules('no_akta_pendirian', 'alamat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $tgl_akta_pendirian = $validate->setRules('tgl_akta_pendirian', 'Tanggal Akta Pendirian', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $lokasi_notaris_pendirian = $validate->setRules('lokasi_notaris_pendirian', 'lokasi_notaris_pendirian', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $nama_notaris_pendirian = $validate->setRules('nama_notaris_pendirian', 'nama_notaris_pendirian', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                //perlu cara khusus JSON
+                                $notaris_perubahan = $validate->setRules('notaris_perubahan', 'Akta Perubahan', [
+                                    'json' => true,
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $data_lain = $validate->setRules('data_lain', 'Data lainnya', [
+                                    'json' => true,
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                //$dataArray = json_decode($dataArray);
+                                // $notaris_perubahan = '{}';
+                                // $data_lain = '{}';
+                                // $file = '';
+                                break;
+                            case 'peraturan':
+                                $type_dok = $validate->setRules('type_dok', 'type', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
+                                ]);
+                                $judul = $validate->setRules('judul', 'judul', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $nomor = $validate->setRules('nomor', 'nomor', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $bentuk = $validate->setRules('bentuk', 'bentuk', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $bentuk_singkat = $validate->setRules('bentuk_singkat', 'bentuk_singkat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $t4_penetapan = $validate->setRules('t4_penetapan', 'tempat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $tgl_penetapan = $validate->setRules('tgl_penetapan', 'tanggal penetapan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                //date time  ^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$
+                                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                $status = $validate->setRules('status', 'status', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['rahasia', 'umum', 'proyek']
+                                ]);
+                                break;
+                            case 'organisasi':
+                                $kode = $validate->setRules('kode', 'kode', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $uraian = $validate->setRules('uraian', 'uraian', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $alamat = $validate->setRules('alamat', 'alamat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $nama_kepala = $validate->setRules('nama_kepala', 'Nama Kepala SKPD', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 18
+                                ]);
+                                $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 4
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            case 'renstra':
+                                $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                if ($rowOrganisasi) {
+                                    $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                }
+                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
+                                    'min_char' => 4
+                                ]);
+                                $sasaran = $validate->setRules('sasaran', 'sasaran', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'inDB' => ['tujuan_sasaran_renstra_neo', 'id', [['id', '=', $_POST['sasaran']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']]],
+                                    'min_char' => 1
+                                ]);
+                                $indikator = $validate->setRules('indikator', 'indikator', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $satuan = $validate->setRules('satuan', 'satuan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $data_capaian_awal = $validate->setRules('data_capaian_awal', 'data capaian awal', [
+                                    'numeric_zero' => true,
+                                    'min_char' => 1
+                                ]);
+                                $target_thn_1 = $validate->setRules('target_thn_1', 'Target tahun pertama', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_1 = $validate->setRules('dana_thn_1', 'Dana tahun pertama', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_2 = $validate->setRules('target_thn_2', 'Target tahun kedua', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_2 = $validate->setRules('dana_thn_2', 'Dana tahun kedua', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_3 = $validate->setRules('target_thn_3', 'Target tahun ketiga', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_3 = $validate->setRules('dana_thn_3', 'Dana tahun ketiga', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_4 = $validate->setRules('target_thn_4', 'Target tahun keempat', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_4 = $validate->setRules('dana_thn_4', 'Dana tahun keempat', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $target_thn_5 = $validate->setRules('target_thn_5', 'Target tahun kelima', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $dana_thn_5 = $validate->setRules('dana_thn_5', 'Dana tahun kelima', [
+                                    'numeric_zero' => true,
+                                ]);
+                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            case 'tujuan_sasaran_renstra':
+                            case 'sasaran_renstra':
+                            case 'tujuan_renstra':
+                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'in_array' => ['tujuan', 'sasaran'],
+                                    'min_char' => 4
+                                ]);
+                                if ($kelompok == 'sasaran') {
+                                    $id_tujuan = $validate->setRules('id_tujuan', 'tujuan', [
+                                        'numeric' => true,
+                                        'required' => true,
+                                        'min_char' => 1
+                                    ]);
+                                }
+                                $text = $validate->setRules('text', 'text', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            case 'sub_keg_dpa':
+                            case 'sub_keg_renja':
+                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
+                                    'min_char' => 4
+                                ]);
+                                //$kel_rek
+                                $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
+                                    'sanitize' => 'string'
+                                ]);
+
+                                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target kinerja hasil', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran sub keg', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $jumlah_pagu_p = $validate->setRules('jumlah_pagu_p', 'jumlah pagu perubahan', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => true,
+                                ]);
+                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            case 'asb':
+                            case 'sbu':
+                            case 'hspk':
+                            case 'ssh':
                                 $kd_aset = $validate->setRules('kd_aset', 'kode aset', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -137,44 +626,10 @@ class post_data
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
-                            default:
-                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
-                                    'required' => true,
-                                    'min_char' => 200
-                                ]);
-                                break;
-                        }
-                        break;
-                    case 'dpa':
-                    case 'renja':
-                    case 'dppa':
-                    case 'renja_p':
-                        switch ($jenis) {
-                            case 'kunci':
-                            case 'setujui':
-                                if ($type_user === 'admin') {
-                                    $tahun_dokumen = $validate->setRules('tahun', 'tahun dokumen', [
-                                        'required' => true,
-                                        'numeric' => true,
-                                        'max_char' => 4,
-                                        'min_char' => 4
-                                    ]);
-                                } else {
-                                    $tahun_dokumen = $validate->setRules('nabiilainayah_ok', 'anda bukan admin', [
-                                        'required' => true,
-                                        'numeric' => true,
-                                        'max_char' => 8,
-                                        'min_char' => 9
-                                    ]);
-                                }
-                                break;
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add':
+                            case 'dpa':
+                            case 'renja':
+                            case 'dppa':
+                            case 'renja_p':
                                 $objek_belanja = $validate->setRules('objek_belanja', 'objek belanja', [
                                     'sanitize' => 'string',
                                     'in_array' => ['gaji', 'barang_jasa_modal', 'bunga', 'subsidi', 'hibah_barang_jasa', 'hibah_uang', 'sosial_barang_jasa', 'sosial_uang', 'keuangan_umum', 'keuangan_khusus', 'btt', 'bos_pusat', 'blud', 'lahan'],
@@ -314,63 +769,62 @@ class post_data
                                 ]);
                                 $pajak = ($pajak == 'on') ? 1 : 0;
                                 break;
-                            default:
-                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
+                            case 'profil':
+                                $nama = $validate->setRules('nama', 'nama', [
+                                    'sanitize' => 'string',
                                     'required' => true,
-                                    'min_char' => 200
+                                    'min_char' => 6
                                 ]);
+                                $username = $validate->setRules('username', 'username', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 6,
+                                    'max_char' => 100,
+                                    'regexp' => "/^[A-Za-z_]{6,}$/",
+                                    'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '!=', $id_user]]]
+                                ]);
+                                $email = $validate->setRules('email', 'email', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 6,
+                                    'max_char' => 255,
+                                    'email' => true,
+                                    'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_user]]]
+                                ]);
+                                $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 6
+                                ]);
+                                $nama_org = $validate->setRules('nama_org', 'Nama Organisasi', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 6
+                                ]);
+                                $ket = $validate->setRules('ket', 'Keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                if ($tbl == 'profil') {
+                                    $font = $validate->setRules('font', 'uraian', [
+                                        'required' => true,
+                                        'numeric' => true
+                                    ]);
+                                    $warna_tbl = $validate->setRules('warna_tbl', 'warna Tabel', [
+                                        'sanitize' => 'string',
+                                        'required' => true,
+                                        'min_char' => 3
+                                    ]);
+                                }
+                                break;
+                            default:
+                                # code...
                                 break;
                         }
                         break;
-                    case 'sub_keg_dpa':
-                    case 'sub_keg_renja':
-                        switch ($jenis) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add':
-                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
-                                    'min_char' => 4
-                                ]);
-                                //$kel_rek
-                                $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
-                                    'sanitize' => 'string'
-                                ]);
-
-                                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target kinerja hasil', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran sub keg', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => true,
-                                ]);
-                                $jumlah_pagu_p = $validate->setRules('jumlah_pagu_p', 'jumlah pagu perubahan', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => true,
-                                ]);
-                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'add_field_json':
+                    case 'add_field_json':
+                        switch ($tbl) {
+                            case 'sub_keg_dpa':
+                            case 'sub_keg_renja':
                                 $uraian_field = $validate->setRules('uraian', 'sub kegiatan', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -414,6 +868,18 @@ class post_data
                                 }
                                 break;
                             default:
+                                # code...
+                                break;
+                        }
+                        break;
+                    default:
+                        switch ($tbl) {
+                            case 'dpa':
+                            case 'renja':
+                            case 'dppa':
+                            case 'renja_p':
+                                break;
+                            default:
                                 $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
                                     'required' => true,
                                     'min_char' => 200
@@ -421,192 +887,8 @@ class post_data
                                 break;
                         }
                         break;
-                    case 'tujuan_sasaran_renstra':
-                    case 'sasaran_renstra':
-                    case 'tujuan_renstra':
-                        switch ($jenis) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add':
-                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['tujuan', 'sasaran'],
-                                    'min_char' => 4
-                                ]);
-                                if ($kelompok == 'sasaran') {
-                                    $id_tujuan = $validate->setRules('id_tujuan', 'tujuan', [
-                                        'numeric' => true,
-                                        'required' => true,
-                                        'min_char' => 1
-                                    ]);
-                                }
-                                $text = $validate->setRules('text', 'text', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'renstra':
-                        switch ($jenis) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add':
-                                $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                if ($rowOrganisasi) {
-                                    $tahun_renstra = $rowOrganisasi->tahun_renstra;
-                                }
-                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
-                                    'min_char' => 4
-                                ]);
-                                $sasaran = $validate->setRules('sasaran', 'sasaran', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'inDB' => ['tujuan_sasaran_renstra_neo', 'id', [['id', '=', $_POST['sasaran']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']]],
-                                    'min_char' => 1
-                                ]);
-                                $indikator = $validate->setRules('indikator', 'indikator', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'satuan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $data_capaian_awal = $validate->setRules('data_capaian_awal', 'data capaian awal', [
-                                    'numeric_zero' => true,
-                                    'min_char' => 1
-                                ]);
-                                $target_thn_1 = $validate->setRules('target_thn_1', 'Target tahun pertama', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_1 = $validate->setRules('dana_thn_1', 'Dana tahun pertama', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_2 = $validate->setRules('target_thn_2', 'Target tahun kedua', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_2 = $validate->setRules('dana_thn_2', 'Dana tahun kedua', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_3 = $validate->setRules('target_thn_3', 'Target tahun ketiga', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_3 = $validate->setRules('dana_thn_3', 'Dana tahun ketiga', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_4 = $validate->setRules('target_thn_4', 'Target tahun keempat', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_4 = $validate->setRules('dana_thn_4', 'Dana tahun keempat', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_5 = $validate->setRules('target_thn_5', 'Target tahun kelima', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_5 = $validate->setRules('dana_thn_5', 'Dana tahun kelima', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'organisasi':
-                        switch ($jenis) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add':
-                                $kode = $validate->setRules('kode', 'kode', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $alamat = $validate->setRules('alamat', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $nama_kepala = $validate->setRules('nama_kepala', 'Nama Kepala SKPD', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'min_char' => 18
-                                ]);
-                                $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 4
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
+                }
+                switch ($tbl) {
                     case 'outbox':
                         switch ($jenis) {
                             case 'add_coment':
@@ -662,416 +944,6 @@ class post_data
                                 break;
                         }
                         break;
-                    case 'peraturan':
-                        switch ($jenis) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add':
-                                $type_dok = $validate->setRules('type_dok', 'type', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
-                                ]);
-                                $judul = $validate->setRules('judul', 'judul', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $nomor = $validate->setRules('nomor', 'nomor', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $bentuk = $validate->setRules('bentuk', 'bentuk', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $bentuk_singkat = $validate->setRules('bentuk_singkat', 'bentuk_singkat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $t4_penetapan = $validate->setRules('t4_penetapan', 'tempat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $tgl_penetapan = $validate->setRules('tgl_penetapan', 'tanggal penetapan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                //date time  ^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$
-                                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                $status = $validate->setRules('status', 'status', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['rahasia', 'umum', 'proyek']
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'pengaturan':
-                        switch ($jenis) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add':
-                                $tahun = $validate->setRules('tahun', 'tahun', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 4
-                                ]);
-                                $aturan_anggaran = $validate->setRules('aturan_anggaran', 'Peraturan anggaran', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_anggaran']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_pengadaan = $validate->setRules('aturan_pengadaan', 'Peraturan pengadaan', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_pengadaan']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_akun = $validate->setRules('aturan_akun', 'Peraturan Akun', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_akun']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_sumber_dana = $validate->setRules('aturan_sumber_dana', 'Peraturan sumber dana', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sumber_dana']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_sub_kegiatan = $validate->setRules('aturan_sub_kegiatan', 'Peraturan sub kegiatan', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sub_kegiatan']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_ssh = $validate->setRules('aturan_ssh', 'Peraturan ssh', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_ssh']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_hspk = $validate->setRules('aturan_hspk', 'Peraturan hspk', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_hspk']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_asb = $validate->setRules('aturan_asb', 'Peraturan asb', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_asb']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_sbu = $validate->setRules('aturan_sbu', 'Peraturan sbu', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sbu']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $awal_renstra = $validate->setRules('awal_renstra', 'tanggal awal renstra', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_renstra = $validate->setRules('akhir_renstra', 'tanggal akhir renstra', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_renja = $validate->setRules('awal_renja', 'tanggal awal renja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                //'/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',2024-2-16 10:10:0
-                                $akhir_renja = $validate->setRules('akhir_renja', 'tanggal akhir renja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_renja_p = $validate->setRules('awal_renja_p', 'tanggal awal renja perubahan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_renja_p = $validate->setRules('akhir_renja_p', 'tanggal akhir renja perubahan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_dpa = $validate->setRules('awal_dpa', 'tanggal awal dpa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_dpa = $validate->setRules('akhir_dpa', 'tanggal akhir dpa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_dppa = $validate->setRules('awal_dppa', 'tanggal awal dppa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_dppa = $validate->setRules('akhir_dppa', 'tanggal akhir dppa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'rekanan':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'input':
-                                $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama_perusahaan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                //var_dump($_POST['alamat']);
-                                $alamat = $validate->setRules('alamat', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $npwp = $validate->setRules('npwp', 'npwp', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 16
-                                ]);
-                                $direktur = $validate->setRules('direktur', 'direktur', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $no_ktp = $validate->setRules('no_ktp', 'Nomor KTP Direktur', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $alamat_dir = $validate->setRules('alamat_dir', 'Alamat Direktur', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $no_akta_pendirian = $validate->setRules('no_akta_pendirian', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $tgl_akta_pendirian = $validate->setRules('tgl_akta_pendirian', 'Tanggal Akta Pendirian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $lokasi_notaris_pendirian = $validate->setRules('lokasi_notaris_pendirian', 'lokasi_notaris_pendirian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $nama_notaris_pendirian = $validate->setRules('nama_notaris_pendirian', 'nama_notaris_pendirian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                //perlu cara khusus JSON
-                                $notaris_perubahan = $validate->setRules('notaris_perubahan', 'Akta Perubahan', [
-                                    'json' => true,
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $data_lain = $validate->setRules('data_lain', 'Data lainnya', [
-                                    'json' => true,
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                //$dataArray = json_decode($dataArray);
-                                // $notaris_perubahan = '{}';
-                                // $data_lain = '{}';
-                                // $file = '';
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'informasi_umum':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'input':
-                                $kode = $validate->setRules('kode', 'kode', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                $nomor_uraian = $validate->setRules('nomor_uraian', 'Nomor', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'satuan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $nilai = $validate->setRules('nilai', 'nilai', [
-                                    'numeric' => true
-                                ]);
-                                $type = 'custom';
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 'profil':
-                        switch ($tbl) {
-                            case 'edit':
-                                $id_user = $validate->setRules('id_row', 'ID', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $type_user = $validate->setRules('type_user', 'type user', [
-                                    'sanitize' => 'string',
-                                    'min_char' => 2, //on-off
-                                    'in_array' => ['user', 'admin', 'super']
-                                ]);
-                                //break;
-                            case 'profil':
-                                $nama = $validate->setRules('nama', 'nama', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6
-                                ]);
-                                $username = $validate->setRules('username', 'username', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6,
-                                    'max_char' => 100,
-                                    'regexp' => "/^[A-Za-z_]{6,}$/",
-                                    'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '!=', $id_user]]]
-                                ]);
-                                $email = $validate->setRules('email', 'email', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6,
-                                    'max_char' => 255,
-                                    'email' => true,
-                                    'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_user]]]
-                                ]);
-                                $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6
-                                ]);
-                                $nama_org = $validate->setRules('nama_org', 'Nama Organisasi', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6
-                                ]);
-                                $ket = $validate->setRules('ket', 'Keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                if ($tbl == 'profil') {
-                                    $font = $validate->setRules('font', 'uraian', [
-                                        'required' => true,
-                                        'numeric' => true
-                                    ]);
-                                    $warna_tbl = $validate->setRules('warna_tbl', 'warna Tabel', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 3
-                                    ]);
-                                }
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
                     case 'x':
                         switch ($tbl) {
                             case 'y':
@@ -1112,6 +984,8 @@ class post_data
                     $err = 0;
                     $columnName = "*";
                     switch ($jenis) {
+                        case 'unkunci':
+                        case 'unsetujui':
                         case 'kunci':
                         case 'setujui':
                             $kodePosting = 'update_row';
@@ -1180,6 +1054,14 @@ class post_data
                         case 'dpa':
                         case 'renja':
                             switch ($jenis) {
+                                case 'unkunci':
+                                    $set = ['kunci' => 0];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                                    break;
+                                case 'unsetujui':
+                                    $set = ['setujui' => 0];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                                    break;
                                 case 'kunci':
                                 case 'setujui':
                                     $set = [$jenis => 1];

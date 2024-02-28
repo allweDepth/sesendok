@@ -803,72 +803,71 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                     </div>
                                 </div>
                                 <h3 class="ui dividing header">Persetujuan Dokumen</h3>
-                                <div class="ui placeholder segment">
-                                    <div class="ui two column stackable center aligned grid">
-                                        <div class="ui vertical divider">Or</div>
-                                        <div class="middle aligned row">
-                                            <div class="column">
-                                                <div class="ui icon header">
-                                                    <i class="world icon"></i>
-                                                    RENJA
+                                <table class="ui very basic table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="collapsing"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>RENSTRA</td>
+                                            <td>
+                                                <div class="ui basic icon buttons">
+                                                    <button class="ui button" name="jalankan" jns="kunci" tbl="renstra" type="button"><i class="lock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unkunci" tbl="renstra" type="button"><i class="unlock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renstra" type="button"><i class="play icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renstra" type="button"><i class="pause icon"></i></button>
                                                 </div>
-                                                <div class="inline">
-                                                    <div class="ui buttons">
-                                                        <button class="ui blue button" name="jalankan" jns="kunci" tbl="renja" type="button">Kunci</button>
-                                                        <div class="or"></div>
-                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="renja" type="button">Setujui</button>
-                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>RENJA</td>
+                                            <td>
+                                                <div class="ui basic icon buttons">
+                                                    <button class="ui button" name="jalankan" jns="kunci" tbl="renja" type="button"><i class="lock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unkunci" tbl="renja" type="button"><i class="unlock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renja" type="button"><i class="play icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja" type="button"><i class="pause icon"></i></button>
                                                 </div>
-                                            </div>
-                                            <div class="column">
-                                                <div class="ui icon header">
-                                                    <i class="world icon"></i>
-                                                    D P A
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>D P A</td>
+                                            <td>
+                                                <div class="ui basic icon buttons">
+                                                    <button class="ui button" name="jalankan" jns="kunci" tbl="dpa" type="button"><i class="lock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unkunci" tbl="dpa" type="button"><i class="unlock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="dpa" type="button"><i class="play icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="dpa" type="button"><i class="pause icon"></i></button>
                                                 </div>
-                                                <div class="inline">
-                                                    <div class="ui buttons">
-                                                    <button class="ui blue button" name="jalankan" jns="kunci" tbl="dpa" type="button">Kunci</button>
-                                                        <div class="or"></div>
-                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="dpa" type="button">Setujui</button>
-                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>RENJA PERUBAHAN</td>
+                                            <td>
+                                            <div class="ui basic icon buttons">
+                                                    <button class="ui button" name="jalankan" jns="kunci" tbl="renja_p" type="button"><i class="lock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unkunci" tbl="renja_p" type="button"><i class="unlock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="renja_p" type="button"><i class="play icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja_p" type="button"><i class="pause icon"></i></button>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui placeholder segment">
-                                    <div class="ui two column stackable center aligned grid">
-                                        <div class="ui vertical divider">Or</div>
-                                        <div class="middle aligned row">
-                                            <div class="column">
-                                                <div class="ui icon header">
-                                                    <i class="world icon"></i>
-                                                    Renja Perubahan
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>D P P A</td>
+                                            <td>
+                                            <div class="ui basic icon buttons">
+                                                    <button class="ui button" name="jalankan" jns="kunci" tbl="dppa" type="button"><i class="lock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unkunci" tbl="dppa" type="button"><i class="unlock icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="setujui" tbl="dppa" type="button"><i class="play icon"></i></button>
+                                                    <button class="ui button" name="jalankan" jns="unsetujui" tbl="dppa" type="button"><i class="pause icon"></i></button>
                                                 </div>
-                                                <div class="inline">
-                                                    <div class="ui buttons">
-                                                    <button class="ui blue button" name="jalankan" jns="kunci" tbl="renja_p" type="button">Kunci</button>
-                                                        <div class="or"></div>
-                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="renja_p" type="button">Setujui</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="column">
-                                                <div class="ui icon header">
-                                                    <i class="world icon"></i>
-                                                    D P P A
-                                                </div>
-                                                <div class="inline">
-                                                    <div class="ui buttons">
-                                                    <button class="ui blue button" name="jalankan" jns="kunci" tbl="dppa" type="button">Kunci</button>
-                                                        <div class="or"></div>
-                                                        <button class="ui positive button" name="jalankan" jns="setujui"  tbl="dppa" type="button">Setujui</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <h3 class="ui dividing header">Jadwal Penganggaran</h3>
                                 <div class="two fields">
                                     <div class="field">
@@ -972,7 +971,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <h4 class="ui horizontal divider header">
                                     <i class="tag icon"></i>
-                                    Peraturan yang diginakan
+                                    Peraturan yang digunakan
                                 </h4>
                                 <div class="field">
                                     <label>Anggaran</label>

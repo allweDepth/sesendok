@@ -2237,6 +2237,8 @@ $(document).ready(function () {
 				break;
 		};
 		switch (jenis) {
+			case 'unkunci':
+			case 'unsetujui':
 			case 'kunci':
 			case 'setujui':
 				contentModal = [
