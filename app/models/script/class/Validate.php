@@ -248,12 +248,13 @@ class Validate
             $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
           }
           break;
+          
         case 'inLikeConcatDB':
           require_once 'DB.php';
           $DB = DB::getInstance();
           //checkArray( $tableName, $columnName, $condition )
           //['user','username',[[ 'id', '=', $id_user][ 'id', '=', $id_user , 'AND']]]
-          if (!$DB->checkArrayLike($ruleValue[0], $ruleValue[1], $ruleValue[2], $formValue)) {
+          if (!$DB->checkArrayLike($ruleValue[0], $ruleValue[1], $ruleValue[2])) {
             $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
           }
           break;

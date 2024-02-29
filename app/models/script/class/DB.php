@@ -389,9 +389,9 @@ class DB
         $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
         return $this->runQuery($query, $dataValuesCheck)->rowCount();
     }
-    // Method untuk check nilai unik dengan beberapa ketentuan, untuk beberapa colum name[ 'id', '=', $id_user , 'AND']
+    // Method untuk check nilai unik dengan beberapa ketentuan, untuk beberapa colum name[ 'id', '= ?', $id_user , 'AND']
     public
-    function checkArrayLike($tableName, $columnName, $condition, $dataValues)
+    function checkArrayLike($tableName, $columnName, $condition)
     {
         $queryArray = "WHERE ";
         $jumlahArray = count($condition);

@@ -885,7 +885,6 @@ $(document).ready(function () {
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
 									kelas: "search clearable kd_akun ajx selection",
 									dataArray: [
-										["", ""]
 									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
@@ -1018,17 +1017,74 @@ $(document).ready(function () {
 										["", ""]
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Tolak Ukur Hasil",
-									atribut: 'name="tolak_ukur_hasil" rows="4" placeholder="indikator..." non_data',
+								buatElemenHtml("accordionField", {
+									label: "Indikator dan Tolok Ukur Kinerja Kegiatan",
+									content: buatElemenHtml("fieldTextarea", {
+										label: "Tolak Ukur Kinerja Capaian Kegiatan",
+										atribut: 'name="tolak_ukur_capaian_keg" rows="2" placeholder="tolak ukur capaian kegiatan..." non_data',
+									}) +
+										buatElemenHtml("fieldText", {
+											label: "Target Kinerja Capaian Kegiatan",
+											atribut: 'name="target_kinerja_capaian_keg" placeholder="target kinerja capaian keg..." non_data',
+										}) +
+										buatElemenHtml("fieldTextarea", {
+											label: "Tolak Ukur Kinerja Keluaran",
+											atribut: 'name="tolak_ukur_keluaran" rows="2" placeholder="tolak ukur keluaran..." non_data',
+										}) +
+										buatElemenHtml("fieldText", {
+											label: "Target Kinerja Keluaran",
+											atribut: 'name="target_kinerja_capaian_keg" placeholder="target kinerja keluaran..." non_data',
+										}) +
+										buatElemenHtml("fieldTextarea", {
+											label: "Tolak Ukur Kinerja Hasil",
+											atribut: 'name="tolak_ukur_hasil" rows="2" placeholder="tolak ukur hasil..." non_data',
+										}) +
+										buatElemenHtml("fieldText", {
+											label: "Target Kinerja Hasil",
+											atribut: 'name="target_kinerja_hasil" placeholder="target kinerja hasil..." non_data',
+										}) +
+										buatElemenHtml("fieldTextarea", {
+											label: "Keluaran Sub Kegiatan",
+											atribut: 'name="keluaran_sub_keg" rows="2" placeholder="keluaran sub keg..." non_data',
+										})
 								}) +
-								buatElemenHtml("fieldText", {
-									label: "Target Kinerja Hasil",
-									atribut: 'name="target_kinerja_hasil" placeholder="target tahun I..." non_data',
+								buatElemenHtml("accordionField", {
+									label: "Indikator dan Tolok Ukur Kinerja Kegiatan Perubahan",
+									content: buatElemenHtml("fieldTextarea", {
+										label: "Tolak Ukur Kinerja Capaian Kegiatan",
+										atribut: 'name="tolak_ukur_capaian_keg_p" rows="2" placeholder="tolak ukur capaian kegiatan..." non_data',
+									}) +
+										buatElemenHtml("fieldText", {
+											label: "Target Kinerja Capaian Kegiatan",
+											atribut: 'name="target_kinerja_capaian_keg_p" placeholder="target kinerja capaian keg..." non_data',
+										}) +
+										buatElemenHtml("fieldTextarea", {
+											label: "Tolak Ukur Kinerja Keluaran",
+											atribut: 'name="tolak_ukur_keluaran_p" rows="2" placeholder="tolak ukur keluaran..." non_data',
+										}) +
+										buatElemenHtml("fieldText", {
+											label: "Target Kinerja Keluaran",
+											atribut: 'name="target_kinerja_capaian_keg_p" placeholder="target kinerja keluaran..." non_data',
+										}) +
+										buatElemenHtml("fieldTextarea", {
+											label: "Tolak Ukur Kinerja Hasil",
+											atribut: 'name="tolak_ukur_hasil_p" rows="2" placeholder="tolak ukur hasil..." non_data',
+										}) +
+										buatElemenHtml("fieldText", {
+											label: "Target Kinerja Hasil",
+											atribut: 'name="target_kinerja_hasil_p" placeholder="target kinerja hasil..." non_data',
+										}) +
+										buatElemenHtml("fieldTextarea", {
+											label: "Keluaran Sub Kegiatan",
+											atribut: 'name="keluaran_sub_keg_p" rows="2" placeholder="keluaran sub keg..." non_data',
+										})
 								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Keluaran Sub Kegiatan",
-									atribut: 'name="keluaran_sub_keg" rows="4" placeholder="keluaran sub keg..." non_data',
+								buatElemenHtml("fieldDropdown", {
+									label: "Sumber Dana",
+									atribut: 'name="sumber_dana" placeholder="pilih sumber dana..."',
+									kelas: "search clearable multiple sumber_dana ajx selection",
+									dataArray: [
+									],
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Jumlah Pagu",
@@ -1848,6 +1904,8 @@ $(document).ready(function () {
 							break;
 						case 'sub_keg_dpa':
 						case 'sub_keg_renja':
+							var dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
+							dropdownSumberDana.returnList({ jenis: "get_row_json", tbl: "sumber_dana" });
 							var dropdown_ajx_sub_keg = new DropdownConstructor('.ui.dropdown.kd_sub_keg.ajx.selection')
 							dropdown_ajx_sub_keg.returnList({ jenis: "get_row_json", tbl: "sub_keg" });
 							break;
@@ -2125,6 +2183,12 @@ $(document).ready(function () {
 																				dropdown_ajx_sub_keg.returnList({ jenis: "get_row_json", tbl: "sub_keg" });
 																				postDataField = false;
 																				break;
+																			case 'sumber_dana':
+																				dropdownSumberDana.valuesDropdown(result.data?.values?.sumber_dana);
+																				dropdownSumberDana.returnList({ jenis: "get_row_json", tbl: "sumber_dana" });
+																				postDataField = false;
+																				break;
+
 																			default:
 																				break;
 																		}

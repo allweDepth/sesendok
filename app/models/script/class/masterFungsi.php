@@ -2280,6 +2280,10 @@ class MasterFungsi
                 $path1 = 'upload';
                 $path2 = 'rekanan';
                 break;
+            case 'organisasi':
+                $path1 = 'upload';
+                $path2 = 'organisasi';
+                break;
             default:
                 break;
         }
@@ -2320,6 +2324,9 @@ class MasterFungsi
             // You should also check filesize here. 
             if ($_FILES['file']['size'] > $maxsize) {
                 throw new RuntimeException('Exceeded filesize limit.');
+            }
+            if ($_FILES['file']['size'] <= 0) {
+                throw new RuntimeException('Exceeded filesize minimum.');
             }
             // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
             // Check MIME Type by yourself.

@@ -106,7 +106,13 @@ class post_data
                     case 'add':
                         switch ($tbl) {
                             case 'pengaturan':
-                                $tahun = $validate->setRules('tahun', 'tahun', [
+                                $tahun = $validate->setRules('tahun', 'tahun anggaran', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 4
+                                ]);
+                                $tahun_renstra = $validate->setRules('tahun_renstra', 'tahun renstra', [
                                     'required' => true,
                                     'numeric' => true,
                                     'min_char' => 4,
@@ -1106,6 +1112,7 @@ class post_data
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'tahun' => $tahun,
+                                        'tahun_renstra' => $tahun_renstra,
                                         'aturan_anggaran' => $aturan_anggaran,
                                         'aturan_pengadaan' => $aturan_pengadaan,
                                         'aturan_akun' => $aturan_akun,

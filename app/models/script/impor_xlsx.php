@@ -503,12 +503,12 @@ class Impor_xlsx
                                                                 //jadikan Array
                                                                 $explodeAwal = explode(';', $sumber_dana_temp);
                                                                 foreach ($explodeAwal as $key => $row) {
-                                                                    $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', $row]]);
+                                                                    $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', trim($row)]]);
                                                                     if ($dataRslt <= 0) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
-                                                                $sumber_dana = $explodeAwal;
+                                                                $sumber_dana = implode(',',$explodeAwal);
                                                                 // $sumber_dana = $validateRow->setRules(8, 'sumber dana', [
                                                                 //     'sanitize' => 'string',
                                                                 //     'required' => true,
@@ -555,7 +555,7 @@ class Impor_xlsx
                                                                     'target_kinerja_keluaran ' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
                                                                     'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
                                                                     'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                                                    'sumber_dana' =>  json_encode(array("sumber_dana" => $sumber_dana)),
+                                                                    'sumber_dana' =>  preg_replace('/(\s\s+|\t|\n)/', ' ', $sumber_dana),
                                                                     'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
                                                                     'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
                                                                     'awal_pelaksanaan' => $awal_pelaksanaan,
@@ -778,14 +778,11 @@ class Impor_xlsx
                                                                 $keyArray = array_keys($arrayValidateRow);
                                                                 $kd_aset = $validateRow->setRules(0, 'kd_aset', [
                                                                     'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $_POST['kd_aset']]]],
-                                                                    'min_char' => 4
+                                                                    'required' => true
                                                                 ]);
-                                                                $uraian_kel = $validateRow->setRules(1, 'uraian kelompok', [
-                                                                    'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'min_char' => 1
+                                                                $kd_aset = $validateRow->setRules(0, 'kd_aset', [
+                                                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $kd_aset]]],
+                                                                    'min_char' => 4
                                                                 ]);
                                                                 $uraian_barang = $validateRow->setRules(2, 'uraian_barang', [
                                                                     'sanitize' => 'string',
@@ -795,12 +792,16 @@ class Impor_xlsx
                                                                 $spesifikasi = $validateRow->setRules(3, 'spesifikasi', [
                                                                     'sanitize' => 'string'
                                                                 ]);
-                                                                $satuan_temp = $arrayValidateRow[$keyArray[1]][4];
+                                                                // $satuan_temp = $arrayValidateRow[$keyArray[1]][4];
                                                                 $satuan = $validateRow->setRules(4, 'satuan', [
                                                                     'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $satuan_temp]]]
+                                                                    'required' => true
                                                                 ]);
+                                                                $satuan = strtolower(preg_replace('/\s+/', '', trim($satuan)));
+                                                                $satuan = $validateRow->setRules(4, "satuan ($satuan)", [
+                                                                    'inLikeConcatDB' => ['satuan_neo', 'value', [['value', "= ?", $satuan]]]
+                                                                ]);
+                                                                $satuan = strtolower(preg_replace('/\s+/', '', trim($satuan)));
                                                                 $harga_satuan = $validateRow->setRules(5, 'harga satuan', [
                                                                     'numeric' => true,
                                                                     'required' => true,
@@ -818,9 +819,10 @@ class Impor_xlsx
                                                                 // $kd_rek_temp = $arrayValidateRow[$keyArray[1]][7];
                                                                 //jadikan Array
                                                                 $explodeAwal = explode(',', $kd_rek_standar);
+                                                                // var_dump($explodeAwal);
                                                                 foreach ($explodeAwal as $key => $row) {
-                                                                    $dataRslt = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $row]]);
-                                                                    if ($dataRslt <= 0) {
+                                                                    $dataRslt = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', trim($row)]]);
+                                                                    if ($dataRslt === false) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
