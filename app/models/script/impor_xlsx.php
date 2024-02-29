@@ -504,7 +504,7 @@ class Impor_xlsx
                                                                 $explodeAwal = explode(';', $sumber_dana_temp);
                                                                 foreach ($explodeAwal as $key => $row) {
                                                                     $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', trim($row)]]);
-                                                                    if ($dataRslt <= 0) {
+                                                                    if ($dataRslt === false) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }

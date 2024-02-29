@@ -248,14 +248,29 @@ class Validate
             $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
           }
           break;
-          
+
         case 'inLikeConcatDB':
           require_once 'DB.php';
           $DB = DB::getInstance();
           //checkArray( $tableName, $columnName, $condition )
-          //['user','username',[[ 'id', '=', $id_user][ 'id', '=', $id_user , 'AND']]]
+          //['user','username',[[ 'id', '= ?', $id_user][ 'id', '= ?', $id_user , 'AND']]]
           if (!$DB->checkArrayLike($ruleValue[0], $ruleValue[1], $ruleValue[2])) {
             $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
+          }
+          break;
+        case 'inLikeConcatDBMultiple':
+          require_once 'DB.php';
+          $DB = DB::getInstance();
+
+          //['user','username',[[ 'id', '= ?', $id_user][ 'id', '= ?', $id_user , 'AND']]]
+          
+ 
+          $formValueExplode = explode(',', $formValue);
+          foreach ($formValueExplode as $key_row => $row) {
+            $ruleValue[2][]=[$ruleValue[1], '= ?', $row, 'AND'];
+            if (!$DB->checkArrayLike($ruleValue[0], $ruleValue[1], $ruleValue[2])) {
+              $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
+            }
           }
           break;
         case 'inDBJsonMultiple':
@@ -266,7 +281,7 @@ class Validate
             $kolom = $ruleValue[1];
             $keyCellKolom = $ruleValue[2];
             $kondisi = $ruleValue[3];
-            $data_klm=$DB->readJSONFieldMultiLevel($ruleValue[0], $kolom, $keyCellKolom, $kondisi);
+            $data_klm = $DB->readJSONFieldMultiLevel($ruleValue[0], $kolom, $keyCellKolom, $kondisi);
             $data_klm = json_decode($data_klm, true);
             $key = array_search($row, $data_klm, true);
             if ($key === false) {

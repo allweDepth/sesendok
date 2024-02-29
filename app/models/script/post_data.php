@@ -682,7 +682,7 @@ class post_data
                                 $sumber_dana = $validate->setRules('sumber_dana', 'sumber dana', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inDBJsonMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana', "sumber_dana", [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                                    'inLikeConcatDBMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana',  [['id', '= ?', $id_sub_keg], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
                                 $jenis_standar_harga = $validate->setRules('jenis_standar_harga', 'jenis komponen', [
                                     'sanitize' => 'string',
