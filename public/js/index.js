@@ -2307,8 +2307,8 @@ $(document).ready(function () {
 			case 'unsetujui':
 			case 'kunci':
 			case 'setujui':
-				
-				jenis_eksekusi = {'unkunci':{'icon':'trash alternate','header':`unlock dokumen dokumen`}
+
+				let jenis_eksekusi = {'unkunci':{'icon':'trash alternate','header':`unlock dokumen dokumen`}
 
 				};
 				contentModal = [
