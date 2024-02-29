@@ -937,30 +937,29 @@ $(document).ready(function () {
 									atribut: 'name="komponen" placeholder="pilih komponen..."',
 									kelas: "search clearable komponen ajx selection",
 									dataArray: [
-										["", ""]
 									],
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
-									kelas: "disabled",
-									atribut: 'name="tkdn" placeholder="tkdn..." rms non_data',
+									kelas: "",
+									atribut: 'name="tkdn" placeholder="tkdn..." rms non_data readonly',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Spesifikasi Komponen",
-									kelas: "disabled",
-									atribut: 'name="spesifikasi" placeholder="spesifikasi..." non_data',
+									kelas: "",
+									atribut: 'name="spesifikasi" placeholder="spesifikasi..." non_data readonly',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Satuan",
-									kelas: "disabled",
+									kelas: "",
 									atribut:
-										'name="satuan" placeholder="satuan komponen..." non_data',
+										'name="satuan" placeholder="satuan komponen..." non_data readonly',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Harga Satuan",
-									kelas: "disabled",
+									kelas: "",
 									atribut:
-										'name="harga_satuan" placeholder="harga satuan..." rms non_data',
+										'name="harga_satuan" placeholder="harga satuan..." rms non_data readonly',
 								}) +
 								buatElemenHtml("fieldDropdownLabel", {
 									label: "Keterangan",
@@ -3748,8 +3747,8 @@ $(document).ready(function () {
 										break;
 								}
 								if (jenisTrigger.length > 0) {
-									let elmTrigger = $(`a[data-tab][tbl="${jenisTrigger}"]:last`);
-									$(`a[data-tab][tbl="${jenisTrigger}"]`).trigger("click");
+									let elmTrigger = $(`a[data-tab][tbl="${jenisTrigger}"]:first`);
+									elmTrigger.trigger("click");
 								}
 								$("[rms]").mathbiila();
 							} else {

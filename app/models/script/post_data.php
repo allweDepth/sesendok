@@ -537,7 +537,6 @@ class post_data
                                 $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
                                     'sanitize' => 'string'
                                 ]);
-
                                 $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target kinerja hasil', [
                                     'sanitize' => 'string'
                                 ]);
@@ -575,7 +574,6 @@ class post_data
                                     'inDB' => ['aset_neo', 'kode', [['kode', '=', $_POST['kd_aset']]]],
                                     'min_char' => 4
                                 ]);
-
                                 $uraian_barang = $validate->setRules('uraian_barang', 'uraian barang', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -672,13 +670,11 @@ class post_data
                                     'in_array' => ['kelompok', 'paket'],
                                     'min_char' => 3
                                 ]);
-
                                 $kelompok = $validate->setRules('kelompok', 'kelompok belanja', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
-
                                 $sumber_dana = $validate->setRules('sumber_dana', 'sumber dana', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1315,7 +1311,6 @@ class post_data
                                         'tgl_update' => date('Y-m-d H:i:s'),
                                         'username' => $_SESSION["user"]["username"]
                                     ];
-
                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
                                     $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                     $data = $cekKodeRek;
@@ -1460,12 +1455,10 @@ class post_data
                         case 'unkunci':
                             switch ($tbl) {
                                 case 'renstra':
-
                                     break;
                                 case 'value':
                                     break;
                                 default:
-
                                     break;
                             }
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
@@ -1478,12 +1471,10 @@ class post_data
                         case 'unsetujui':
                             switch ($tbl) {
                                 case 'renstra':
-
                                     break;
                                 case 'value':
                                     break;
                                 default:
-
                                     break;
                             }
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
@@ -1491,21 +1482,29 @@ class post_data
                             $kodePosting = 'update_row';
                             break;
                         case 'kunci':
+                            $set = [$jenis => 1];
+                            $kodePosting = 'update_row';
+                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+                            break;
                         case 'setujui':
                             switch ($tbl) {
                                 case 'dppa':
+                                    $tabel_posting = '';
+                                    break;
                                 case 'renja_p':
+                                    $tabel_posting = 'dppa_neo';
+                                    break;
                                 case 'dpa':
+                                    $tabel_posting = 'renja_p_neo';
+                                    break;
                                 case 'renja':
-
+                                    $tabel_posting = 'dpa_neo';
                                     break;
                                 case 'value':
                                     break;
                                 default:
-
                                     break;
                             }
-                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
                             $set = [$jenis => 1];
                             $kodePosting = 'update_row';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];

@@ -479,6 +479,34 @@ class DB
         $this->_lastInserId = $this->_pdo->lastInsertId(); //error
         return true;
     }
+    // Method untuk menginput data tabel (query INSERT)
+    public
+    function insert_select($tableName,$columnName, $data)//@audit insert select mysql
+    {
+        $dataKeys = array_keys($data);
+        $dataValues = array_values($data);
+        $placeholder = '(' . str_repeat('?,', count($data) - 1) . '?)';
+        $query = "CONCAT 'INSERT INTO < table_name> (',
+        SELECT GROUP_CONCAT ( CONCAT ('*', COLUMN_NAME, ''') )
+        FROM information_schema.columns
+        WHERE table_schema = ‹database_name>
+        AND table_name = ‹table_name>
+        AND column_name NOT IN ('id')
+        ') SELECT ',
+        SELECT GROUP_CONCAT (CONCAT ('*', COLUMN_NAME, ''')
+        FROM information_schema.columns
+        WHERE table_schema = ‹database_name>
+        AND cabLe name ot able source name>
+        1,' from ‹table_source_name> WHERE < testcolumn> = ‹testvalue>' );";
+        $query = "SELECT {$columnName} INSERT INTO {$tableName} (" . implode(', ', $dataKeys) . ") VALUES {$placeholder}";
+        //var_dump($query);
+        //var_dump($dataValues);
+        $run = $this->runQuery($query, $dataValues);
+        //var_dump($this->_pdo->lastInsertId());//ok lah
+        $this->_count = $run->rowCount(); //ok
+        $this->_lastInserId = $this->_pdo->lastInsertId(); //error
+        return true;
+    }
     // Method untuk mengupdate data tabel (query UPDATE)
     public
     function update($tableName, $data, $condition)
