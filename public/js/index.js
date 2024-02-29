@@ -2307,13 +2307,17 @@ $(document).ready(function () {
 			case 'unsetujui':
 			case 'kunci':
 			case 'setujui':
-
-				let jenis_eksekusi = {'unkunci':{'icon':'trash alternate','header':`unlock dokumen dokumen`}
+				let jns_dok = {'dpa':'DPA','renja': 'Renja','renja_p': 'Renja Perubahan','dppa':'DPPA'};
+				let jenis_eksekusi = {
+					'unkunci': { 'icon': 'unlock alternate', 'header': `unlock dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat user dapat mengedit dokumen...!` },
+					'unsetujui': { 'icon': 'unlock alternate', 'header': `unlock kembali dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat user dapat mengedit dokumen dan menghapus data yang sudah diposting...!` },
+					'kunci': { 'icon': 'lock alternate', 'header': `unlock dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat user dapat mengedit dokumen...!` },
+					'setujui': { 'icon': 'trash alternate', 'header': `posting dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat akan posting ke dokumen selajutnya...!` }
 
 				};
 				contentModal = [
 					`<i class="${jenis_eksekusi[jenis].icon} icon"></i>anda yakin akan ${jenis} dokumen ${tbl} ini?`,
-					`${jenis} mempengaruhi penginputan...!`,
+					`${jenis_eksekusi[jenis].paragraf}`,
 				];
 				data.tahun = $(`form[name="form_pengaturan"]`).form('get value', 'tahun');
 				if (tbl === 'renstra') {
@@ -3633,21 +3637,7 @@ $(document).ready(function () {
 										break;
 									case "monev[informasi]":
 										break;
-									// =================
-									// UNTUK FORM LOKASI
-									// =================
-									case "lokasi":
-										switch (jenis) {
-											case "lokasi":
-											case "lokasi-lokasi":
-											case "lokasi-marker":
-											case "lokasi-polyline":
-											case "lokasi-polygon":
-												break;
-											default:
-												break;
-										}
-										break;
+									
 									// ==================
 									// =UNTUK FORM MODAL=
 									// ==================
@@ -3707,36 +3697,6 @@ $(document).ready(function () {
 														break;
 												}
 												break;
-											case "rekanan":
-												switch (jenis) {
-													case "import":
-													case "edit":
-													case "input":
-														jenisTrigger = tbl;
-														break;
-													default:
-														break;
-												}
-												break;
-											case "sbu": // add row rab dari analisa
-												switch (tbl) {
-													case "ck":
-													case "bm":
-													case "sda":
-														var hasKey = result.data.hasOwnProperty("tbody");
-														if (hasKey) {
-															var rows = result.data.tbody;
-															if (tabel.find("tbody tr:last").length > 0) {
-																tabel.find("tbody tr:last").after(rows);
-															} else {
-																tabel.find("tbody").html(rows);
-															}
-														}
-														break;
-													default:
-														break;
-												}
-												break;
 											case "profil":
 												switch (jenis) {
 													case "edit":
@@ -3788,6 +3748,7 @@ $(document).ready(function () {
 										break;
 								}
 								if (jenisTrigger.length > 0) {
+									let elmTrigger = $(`a[data-tab][tbl="${jenisTrigger}"]:last`);
 									$(`a[data-tab][tbl="${jenisTrigger}"]`).trigger("click");
 								}
 								$("[rms]").mathbiila();
