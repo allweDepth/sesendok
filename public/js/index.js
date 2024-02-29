@@ -2270,7 +2270,7 @@ $(document).ready(function () {
 		})
 		.flyout("attach events", '[name="flyout"]');
 	//========================================
-	//===========DEL ROW DAN EKSEKUSI ==========
+	//===========DEL ROW DAN EKSEKUSI ==========@audit-ok validasi dan delete
 	//========================================
 	$("body").on("click", '[name="del_row"], [name="jalankan"]', function (e) {
 		e.stopImmediatePropagation();
@@ -2307,8 +2307,12 @@ $(document).ready(function () {
 			case 'unsetujui':
 			case 'kunci':
 			case 'setujui':
+				
+				jenis_eksekusi = {'unkunci':{'icon':'trash alternate','header':`unlock dokumen dokumen`}
+
+				};
 				contentModal = [
-					`<i class="trash alternate icon"></i>anda yakin akan ${jenis} dokumen ${tbl} ini?`,
+					`<i class="${jenis_eksekusi[jenis].icon} icon"></i>anda yakin akan ${jenis} dokumen ${tbl} ini?`,
 					`${jenis} mempengaruhi penginputan...!`,
 				];
 				data.tahun = $(`form[name="form_pengaturan"]`).form('get value', 'tahun');
