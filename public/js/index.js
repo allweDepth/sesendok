@@ -115,38 +115,31 @@ $(document).ready(function () {
 			"Rencana Kerja dan Anggaran SKPD",
 			"Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
 		]
-		if (tab === 'tab_renja') {
-			if (ini.attr('anggaran') === 'dpa') {
-				tab_renja = [
-					"clipboard list icon",
-					"DPA",
-					"Daftar Pelaksanaan Anggaran (DPA)",
-					"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
-				]
-			}
-		}
+		let tab_dpa = [
+			"clipboard list icon",
+			"DPA",
+			"Daftar Pelaksanaan Anggaran (DPA)",
+			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
+		]
 
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
-			tab_renstra: tab_renstra,
 			renstra: tab_renstra,
-			tab_renja: tab_renja,
+			renstra: tab_renstra,
+			renja: tab_renja,
 			sub_keg_renja: tab_renja,
+			sub_keg_dpa: tab_dpa,
+			dpa: tab_dpa,
 			tujuan_sasaran_renstra: [
 				"clipboard list icon",
 				"Tujuan Sasaran Renstra",
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi dan kodefikasi program disusun berdasarkan pembagian sub urusan dan kegiatan disusun berdasarkan pembagian kewenangan yang diatur dalam Lampiran Undang-Undang Nomor 23 Tahun 2014.Hal ini dilakukan untuk memastikan ruang lingkup penyelenggaraan pemerintahan daerah dilakukan sesuai dengan keenangannya, sehingga mendukung pelaksanaan asas prinsip akuntabilitas, efisiensi, eksternalitas serta kepentingan strategis nasional",
 			],
-			tab_dpa: [
+			tab_dpa: tab_dpa,
+			dppa: [
 				"clipboard list icon",
-				"DPA",
-				"Dokumen Pelaksanaan Anggaran",
-				"",
-			],
-			tab_dpa_perubahan: [
-				"clipboard list icon",
-				"DPA",
+				"DPPA",
 				"Dokumen Pelaksanaan Perubahan Anggaran",
 				"",
 			],
@@ -288,6 +281,10 @@ $(document).ready(function () {
 			iconDashboard = arrayDasboard[tbl][0];
 			headerDashboard = arrayDasboard[tbl][1];
 			pDashboard = arrayDasboard[tbl][2];
+		} else if (tb in arrayDasboard) {
+			iconDashboard = arrayDasboard[tb][0];
+			headerDashboard = arrayDasboard[tb][1];
+			pDashboard = arrayDasboard[tb][2];
 		}
 		let jalankanAjax = false;
 		//node dashboard
@@ -473,7 +470,8 @@ $(document).ready(function () {
 							divTab.find('table.sub_keg').removeAttr('hidden')
 							data['id_sub_keg'] = ini.closest('tr').attr('id_row');
 							// tambhalan atribut id sub kegiatan di button jns
-							divTab.find('button[jns="add"]').attr('id_sub_keg', data['id_sub_keg'])
+							divTab.find('button[jns="add"]').attr('id_sub_keg', data['id_sub_keg']);
+							divTab.find(`[tb="${tbl}"]`).attr('id_sub_keg', data['id_sub_keg'])
 						}
 						jalankanAjax = true;
 						break;

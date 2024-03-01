@@ -22,17 +22,31 @@ class del_data
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
+        //ambil row user
         $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         if ($rowUsername != false) {
+            foreach ($rowUsername as $key => $value) {
+                ${$key} = $value;
+            }
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
             $kd_opd = $rowUsername->kd_organisasi;
             $id_user = $rowUsername->id;
+            $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+            if ($rowPengaturan != false) {
+                foreach ($rowPengaturan as $key => $value) {
+                    ${$key} = $value;
+                }
+            } else {
+                $id_user = 0;
+                $code = 407;
+            }
         } else {
             $id_user = 0;
             $code = 407;
         }
-        if (!empty($_POST) && $id_user > 0) {
+
+        if (!empty($_POST) && $id_user > 0 && $code != 407) {
             $code = 11;
             if (isset($_POST['jenis'])) {
                 $code = 12;
@@ -163,7 +177,7 @@ class del_data
                                 default:
                                     //standar delete id
                                     $data_row = $DB->getWhereCustom($tabel_pakai, $kondisi);
-                                    var_dump($data_row);
+                                    // var_dump($data_row);
                                     $data[$tabel_pakai] = $DB->delete_array($tabel_pakai, $kondisi);
                                     if ($DB->count() > 0) {
                                         $code = 4;

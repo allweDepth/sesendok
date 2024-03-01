@@ -77,17 +77,17 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
                 <div class="content">
                     <a class="item nabiila" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
-                    <a class="item nabiila" href="#" data-tab="tab_renja" anggaran="renja"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>RENJA</a>
-                    <a class="item nabiila" href="#" data-tab="tab_renja" anggaran="dpa"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>DPA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_renja" anggaran="renja"><span><i class="toggle on icon"></i></span><i class="violet tag icon"></i>RENJA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_renja" anggaran="dpa"><span><i class="toggle on icon"></i></span><i class="yellow tags icon"></i>DPA</a>
                 </div>
             </div>
-            <a class="item" href="#" data-tab="tab_kontrak"><i class="money icon"></i>Kontrak</a>
+            <a class="item" href="#" data-tab="tab_kontrak"><i class="file contract icon"></i>Kontrak</a>
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
                 <div class="content">
-                    <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>Input Realisasi</a>
-                    <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet users cog icon"></i>SPJ</a>
-                    <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow snowplow icon"></i>Laporan</a>
+                    <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple chart pie icon"></i>Input Realisasi</a>
+                    <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet chartline icon"></i>SPJ</a>
+                    <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow chart bar icon"></i>Laporan</a>
                 </div>
             </div>
             <div class="ui accordion inverted item">
@@ -96,29 +96,29 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_ref" tbl="bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sub Kegiatan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="layer group icon"></i>Sub Kegiatan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="rekanan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Rekanan</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="satuan"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Satuan</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="mapping"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Mapping</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="aset"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Neraca</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="akun_belanja"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Akun</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Sumber Dana</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Organisasi</a>
-                    <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="gavel icon"></i>Peraturan</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>Wilayah</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="satuan"><span><i class="toggle on blue icon"></i></span><i class="calculator icon"></i>Satuan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="mapping"><span><i class="toggle on blue icon"></i></span><i class="stream icon"></i>Mapping</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="aset"><span><i class="toggle on blue icon"></i></span><i class="calendar alternate icon"></i>Neraca</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="akun_belanja"><span><i class="toggle on blue icon"></i></span><i class="calendar alternate outline icon"></i>Akun</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="money check alternate icon"></i>Sumber Dana</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="id card icon"></i>Organisasi</a>
+                    <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="balance scale icon"></i>Peraturan</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>Wilayah</a>
                 </div>
             </div>
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
                 <div class="content">
-                    <a class="item" href="#" data-tab="tab_hargasat" tbl="ssh"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>SSH</a>
-                    <a class="item" href="#" data-tab="tab_hargasat" tbl="hspk"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>HSPK</a>
-                    <a class="item" href="#" data-tab="tab_hargasat" tbl="asb"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>ASB</a>
-                    <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SBU</a>
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="ssh"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SSH</a>
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="hspk"><span><i class="toggle on blue icon"></i></span><i class="file alternate icon"></i>HSPK</a>
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="asb"><span><i class="toggle on blue icon"></i></span><i class="file alternate outline icon"></i>ASB</a>
+                    <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file outline icon"></i>SBU</a>
                 </div>
             </div>
             <!-- ut admin-->
-            <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="atur_satu"><i class="comments outline icon"></i>Pengaturan</a>' : ''; ?>
+            <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="atur_satu"><i class="toolbox icon"></i>Pengaturan</a>' : ''; ?>
             <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
             <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
         </div>

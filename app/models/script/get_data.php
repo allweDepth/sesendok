@@ -32,11 +32,21 @@ class get_data
             $kd_wilayah = $rowUsername->kd_wilayah;
             $kd_opd = $rowUsername->kd_organisasi;
             $id_user = $rowUsername->id;
+            $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+            if ($rowPengaturan != false) {
+                foreach ($rowPengaturan as $key => $value) {
+                    ${$key} = $value;
+                }
+            } else {
+                $id_user = 0;
+                $code = 407;
+            }
         } else {
             $id_user = 0;
             $code = 407;
         }
-        if (!empty($_POST) && $id_user > 0) {
+
+        if (!empty($_POST) && $id_user > 0 && $code != 407) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
                 $code = 40;
                 $validate = new Validate($_POST);
@@ -1154,7 +1164,7 @@ class get_data
                                                 if ($sasaran_drop) {
                                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'sasaran', 'AND'], ['id', '=', $sasaran_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
-                                                    $data['values']['sasaran'] = [['name' => $row->text,'text' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true, 'selected' => true]];
+                                                    $data['values']['sasaran'] = [['name' => $row->text, 'text' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true, 'selected' => true]];
                                                 }
                                                 //cari sub_keg dengan kode
                                                 if ($kode_drop) {
@@ -1181,7 +1191,7 @@ class get_data
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $cari_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
                                                     if (count((array)$row)) {
-                                                        $data['values']['kd_akun'] = [['name' => $row->uraian, 'text' => $row->uraian,'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                                        $data['values']['kd_akun'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
                                                     }
                                                 }
                                                 // kelompok
@@ -1217,7 +1227,7 @@ class get_data
                                                     // var_dump($row);
                                                     if (count((array)$row)) {
                                                         $deskripsi = $row->kd_aset . ' (' . number_format($row->harga_satuan, 2, ',', '.') . ')';
-                                                        $data['values']['komponen'] = [['name' => $row->uraian_barang,'text' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'selected' => true]];
+                                                        $data['values']['komponen'] = [['name' => $row->uraian_barang, 'text' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'selected' => true]];
                                                     }
                                                 }
                                                 // sumber_dana
