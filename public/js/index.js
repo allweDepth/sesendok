@@ -5044,6 +5044,7 @@ $(document).ready(function () {
 });
 // onkeypress="return rumus(event);"
 function rumus(evt) {
+	
 	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
 		String.fromCharCode(evt.which)
 	);
