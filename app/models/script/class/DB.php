@@ -320,7 +320,7 @@ class DB
         return $this->get($tableName, $queryLike, $dataValues, $limit);
     }
     // [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'],['tahun', '= ?', $tahun, 'AND']]
-    function getArrayLike($tableName, $columnName, $condition, $limit = []) 
+    function getArrayLike($tableName, $columnName, $condition, $limit = [])
     {
         $queryArray = "WHERE ";
         $jumlahArray = count($condition);
@@ -479,28 +479,23 @@ class DB
         $this->_lastInserId = $this->_pdo->lastInsertId(); //error
         return true;
     }
-    // Method untuk menginput data tabel (query INSERT)
+    // Method untuk menginput data tabel $condition = [[ 'id', '= ?', $id_user ],[ 'id', '= ?', $id_user , 'AND'],...]
     public
-    function insert_select($tableName,$columnName, $data)//@audit insert select mysql
+    function insert_select($tableName, $tablePosting, $columnName, $columnSelect, $condition = []) //@audit insert select mysql
     {
-        $dataKeys = array_keys($data);
-        $dataValues = array_values($data);
-        $placeholder = '(' . str_repeat('?,', count($data) - 1) . '?)';
-        $query = "CONCAT 'INSERT INTO < table_name> (',
-        SELECT GROUP_CONCAT ( CONCAT ('*', COLUMN_NAME, ''') )
-        FROM information_schema.columns
-        WHERE table_schema = ‹database_name>
-        AND table_name = ‹table_name>
-        AND column_name NOT IN ('id')
-        ') SELECT ',
-        SELECT GROUP_CONCAT (CONCAT ('*', COLUMN_NAME, ''')
-        FROM information_schema.columns
-        WHERE table_schema = ‹database_name>
-        AND cabLe name ot able source name>
-        1,' from ‹table_source_name> WHERE < testcolumn> = ‹testvalue>' );";
-        $query = "SELECT {$columnName} INSERT INTO {$tableName} (" . implode(', ', $dataKeys) . ") VALUES {$placeholder}";
-        //var_dump($query);
-        //var_dump($dataValues);
+        $query_where = "";
+        $dataValues = [];
+        if (count($condition)  > 0) {
+            $query_where = " WHERE ";
+            foreach ($condition as $key => $val) {
+                $dataValues[] = $val[2];
+                $query_where .= (count($val) == 4) ? "{$val[3]} {$val[0]} {$val[1]} " : "{$val[0]} {$val[1]} " ;
+            }
+        }
+
+        $query = "INSERT INTO {$tablePosting} ($columnName) SELECT $columnSelect FROM {$tableName} $query_where";
+        var_dump($query);
+        var_dump($dataValues);
         $run = $this->runQuery($query, $dataValues);
         //var_dump($this->_pdo->lastInsertId());//ok lah
         $this->_count = $run->rowCount(); //ok
@@ -728,7 +723,7 @@ class DB
     public function readJSONFieldMultiLevel($tableName, $columnName, $jsonKey, $condition)
     {
         $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT({$columnName}, '$.{$jsonKey}')) AS {$jsonKey} FROM {$tableName}";
-        
+
         $query .= " WHERE";
         $dataValues = [];
         foreach ($condition as $key => $val) {

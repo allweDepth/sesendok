@@ -534,22 +534,66 @@ class post_data
                                     'min_char' => 4
                                 ]);
                                 //$kel_rek
+                                $tolak_ukur_capaian_keg = $validate->setRules('tolak_ukur_capaian_keg', 'tolak_ukur_capaian_keg', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $target_kinerja_capaian_keg = $validate->setRules('target_kinerja_capaian_keg', 'target_kinerja_capaian_keg', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $tolak_ukur_keluaran= $validate->setRules('tolak_ukur_keluaran', 'tolak_ukur_keluaran', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $target_kinerja_keluaran = $validate->setRules('target_kinerja_keluaran', 'target_kinerja_keluaran', [
+                                    'sanitize' => 'string'
+                                ]);
                                 $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
                                     'sanitize' => 'string'
                                 ]);
-                                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target kinerja hasil', [
+                                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target_kinerja_hasil', [
                                     'sanitize' => 'string'
                                 ]);
-                                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran sub keg', [
+                                $tolak_ukur_capaian_keg_p = $validate->setRules('tolak_ukur_capaian_keg_p', 'tolak_ukur_capaian_keg_p', [
                                     'sanitize' => 'string'
                                 ]);
+                                $target_kinerja_capaian_keg_p = $validate->setRules('target_kinerja_capaian_keg_p', 'target_kinerja_capaian_keg_p', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $tolak_ukur_keluaran_p = $validate->setRules('tolak_ukur_keluaran_p', 'tolak_ukur_keluaran_p', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $target_kinerja_keluaran_p = $validate->setRules('target_kinerja_keluaran_p', 'target_kinerja_keluaran_p', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $tolak_ukur_hasil_p = $validate->setRules('tolak_ukur_hasil_p', 'tolak_ukur_hasil_p', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $target_kinerja_hasil_p = $validate->setRules('target_kinerja_hasil_p', 'target_kinerja_hasil_p', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $sumber_dana_temp = $validate->setRules('sumber_dana', 'sumber dana', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
+                                $explodeAwal = explode(',', $sumber_dana_temp);
+                                foreach ($explodeAwal as $key => $row) {
+                                    $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', trim($row)]]);
+                                    if ($dataRslt === false) {
+                                        unset($explodeAwal[$key]);
+                                    }
+                                }
+                                $sumber_dana = preg_replace('/(\s\s+|\t|\n)/', ' ', implode(',',$explodeAwal));
+
+
+
+
                                 $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
                                     'sanitize' => 'string',
-                                    'numeric_zero' => true,
+                                    'numeric' => true,
                                 ]);
                                 $jumlah_pagu_p = $validate->setRules('jumlah_pagu_p', 'jumlah pagu perubahan', [
                                     'sanitize' => 'string',
-                                    'numeric_zero' => true,
+                                    'numeric' => true,
                                 ]);
                                 $lokasi = $validate->setRules('lokasi', 'lokasi', [
                                     'sanitize' => 'string'
@@ -1489,22 +1533,30 @@ class post_data
                         case 'setujui':
                             switch ($tbl) {
                                 case 'dppa':
-                                    $tabel_posting = '';
+                                    $tablePosting = '';
+                                    
                                     break;
                                 case 'renja_p':
-                                    $tabel_posting = 'dppa_neo';
+                                    $tablePosting = 'dppa_neo';
+                                    $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`";
+                                    $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`";
                                     break;
                                 case 'dpa':
-                                    $tabel_posting = 'renja_p_neo';
+                                    $tablePosting = 'renja_p_neo';
+                                    $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`";
+                                    $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`";
                                     break;
                                 case 'renja':
-                                    $tabel_posting = 'dpa_neo';
+                                    $tablePosting = 'dpa_neo';
+                                    $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`";
+                                    $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`";
                                     break;
                                 case 'value':
                                     break;
                                 default:
                                     break;
                             }
+                            $kondisi_insert_select = [['kd_wilayah', '= ?', $kd_wilayah], ['tahun', '= ?', $tahun_dokumen, 'AND']];
                             $set = [$jenis => 1];
                             $kodePosting = 'update_row';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
@@ -1605,6 +1657,28 @@ class post_data
                             if ($DB->count()) {
                                 $code = 3;
                                 $data['update'] = $DB->count();
+                                switch ($jenis) {
+                                    case 'setujui':
+                                        switch ($tbl) {
+                                            case 'dpa':
+                                            case 'renja':
+                                            case 'renja_p':
+                                                $resul = $DB->insert_select($tabel_pakai, $tablePosting, $columnName, $columnSelect, $kondisi_insert_select);
+                                                var_dump($resul);
+                                                break;
+
+                                            default:
+                                                # code...
+                                                break;
+                                        }
+                                        break;
+                                    case 'value1':
+                                        #code...
+                                        break;
+                                    default:
+                                        #code...
+                                        break;
+                                };
                             } else {
                                 $code = 33;
                             }
