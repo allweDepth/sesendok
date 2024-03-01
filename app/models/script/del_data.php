@@ -77,7 +77,6 @@ class del_data
                                     'min_char' => 1
                                 ]);
                                 break;
-
                             default:
                                 # code...
                                 break;

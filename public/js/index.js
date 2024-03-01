@@ -685,17 +685,17 @@ $(document).ready(function () {
 				//TAMBAH ROWS DATA
 				case "add":
 					switch (tbl) {
-						case "daftar_paket":
+						case 'daftar_paket':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldTextarea", {
-									label: "Nama Paket",
-									atribut: 'name="uraian" rows="2" placeholder="Uraian Barang/Jasa..."',
-								}) +
 								buatElemenHtml("fieldTextAction", {
-									label: "Jumlah Uraian Belanja",
+									label: "Uraian Belanja",
 									atribut: 'name="count_uraian_belanja" placeholder="Uraian Paket..." readonly',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="modal_show" jns="uraian_belanja" tbl="${tbl}"`,
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Nama Paket",
+									atribut: 'name="uraian" rows="2" placeholder="Uraian Barang/Jasa..."',
 								}) +
 
 								buatElemenHtml("fieldText", {
@@ -705,7 +705,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan"',
-									kelas: "search clearable ajx selection",
+									kelas: "search clearable satuan ajx selection",
 									dataArray: [
 									],
 								}) +
@@ -722,7 +722,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {//@audit now
 									label: "Metode Pengadaan",
 									atribut: 'name="metode_pengadaan"',
-									kelas: "lainnya selection",
+									kelas: "selection",
 									dataArray: [
 										["swakelola", "Swakelola"],
 										["penyedia", "Penyedia", 'active']
@@ -748,6 +748,7 @@ $(document).ready(function () {
 										["barang", "Barang"],
 										["konstruksi", "Pekerjaan Konstruksi"],
 										["konsultansi", "Jasa Konsultansi"],
+										["konsultansi_non_konst", "Jasa Konsultansi Non Konstruksi"],
 										["jasa_lainnya", "Jasa Lainnya"]
 									],
 								}) +
@@ -1860,6 +1861,14 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
+						case 'daftar_paket':
+							dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
+							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+
+							var allObjek = { jenis: 'non', tbl: 'metodePengadaan' };
+							var dropdownMetodePemilihan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="metode_pengadaan"]')
+							dropdownMetodePemilihan.onChange(allObjek);
+							break;
 						case 'mapping':
 							var dropKdAset = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.ajx[name="kd_aset"]')
 							dropKdAset.returnList({ jenis: "get_row_json", tbl: "aset" });
@@ -2867,6 +2876,7 @@ $(document).ready(function () {
 					let dataChoice = $($choice).find('span.description').text();
 					let Results_ajax = this.result_ajax;
 					let objekArray;
+					let ajaxSend = false
 					switch (jenis) {
 						case 'get_row_json':
 							switch (tbl) {
@@ -2898,10 +2908,10 @@ $(document).ready(function () {
 									break;
 							};
 							break;
+
 						default:
 							break;
 					}
-					let ajaxSend = false
 					if (ajaxSend == true) {
 						let data = {
 							cari: cari(jenis),
@@ -3037,10 +3047,12 @@ $(document).ready(function () {
 		}
 		onChange(allObjek = { jenis: "list_dropdown", tbl: "satuan", ajax: false }) {
 			let ajaxSend = allObjek.ajax;
+			let jenis = allObjek.jenis;
+			let tbl = allObjek.tbl;
 			this.element.dropdown({
 				onChange: function (value, text, $choice) {
 					let dataChoice = $($choice).find('span.description').text();
-					switch (allObjek.jenis) {
+					switch (jenis) {
 						case 'getJsonRows':
 							switch (allObjek.tbl) {
 								case 'tujuan_renstra'://tujuan sasaran renstra
@@ -3065,6 +3077,209 @@ $(document).ready(function () {
 						case 'gantiJenisKomponen':
 							allData = { jenis: 'gantiJenisKomponen', tbl: allObjek.tbl }
 							MethodConstructor.refreshDropdown(allData);
+							break;
+						case 'non':
+							switch (tbl) {
+								case 'metodePengadaan':
+									console.log(value);
+									let value_pengadaan_penyedia = [
+										{
+											value: 'barang',
+											name: 'Barang'
+										},
+										{
+											value: 'konstruksi',
+											name: 'Pekerjaan Konstruksi'
+										},
+										{
+											value: 'konsultansi',
+											name: 'Jasa Konsultansi'
+										},
+										{
+											value: 'konsultansi_non_konst',
+											name: 'Jasa Konsultansi Non Konstruksi'
+										},
+										{
+											value: 'jasa_lainnya',
+											name: 'Jasa Lainnya'
+										},
+									];
+									let value_pengadaan_penyediaSW = [
+										{
+											value: 'swakelola',
+											name: 'swakelola',
+											selected: true
+										}
+									];
+									let value_metode_pemilihan = [
+										{
+											value: 'e_purchasing',
+											name: 'e-purchasing'
+										},
+										{
+											value: 'pengadaan_langsung',
+											name: 'pengadaan langsung'
+										},
+										{
+											value: 'penunjukan',
+											name: 'penunjukan langsung'
+										},
+										{
+											value: 'tender_cepat',
+											name: 'tender cepat'
+										},
+										{
+											value: 'tender',
+											name: 'tender'
+										},
+										{
+											value: 'seleksi',
+											name: 'seleksi'
+										}
+									];
+									let value_metode_pemilihanSW = [
+										{
+											value: 'sw_type_1',
+											name: 'Swakelola Type I'
+										},
+										{
+											value: 'sw_type_2',
+											name: 'Swakelola Type II'
+										},
+										{
+											value: 'sw_type_3',
+											name: 'Swakelola Type III'
+										},
+										{
+											value: 'sw_type_4',
+											name: 'Swakelola Type IV'
+										},
+									];
+									let myForm = $('form[name="form_flyout"]')
+									if (value === 'penyedia') {
+										// 'name="metode_pemilihan"'
+										myForm.find(`[name="metode_pemilihan"]`).dropdown({ values: value_metode_pemilihan })
+										// 'name="pengadaan_penyedia"'
+										myForm.find(`[name="pengadaan_penyedia"]`).dropdown({
+											values: value_pengadaan_penyedia,
+											onChange: function (value, text, $choice) {
+												let jenis_kontrak = [
+													{
+														value: 'lumsum',
+														name: 'Lumsum'
+													},
+													{
+														value: 'harga_satuan',
+														name: 'Harga Satuan'
+													},
+													{
+														value: 'gabungan_lum_sat',
+														name: 'Gabungan Lumsum dan Harga Satuan'
+													},
+													{
+														value: 'terima_jadi',
+														name: 'Terima Jadi (Turnkey)'
+													},
+													{
+														value: 'payung',
+														name: 'Kontrak Payung'
+													}
+												];
+												switch (value) {
+													case 'barang':
+													case 'jasa_lainnya':
+														jenis_kontrak = [
+															{
+																value: 'lumsum',
+																name: 'Lumsum'
+															},
+															{
+																value: 'harga_satuan',
+																name: 'Harga Satuan'
+															},
+															{
+																value: 'gabungan_lum_sat',
+																name: 'Gabungan Lumsum dan Harga Satuan'
+															},
+															{
+																value: 'biaya_plus_imbalan',
+																name: 'Biaya Plus Imbalan'
+															},
+															{
+																value: 'payung',
+																name: 'Kontrak Payung'
+															}
+														];
+													case 'konstruksi':
+														jenis_kontrak = [
+															{
+																value: 'lumsum',
+																name: 'Lumsum'
+															},
+															{
+																value: 'harga_satuan',
+																name: 'Harga Satuan'
+															},
+															{
+																value: 'gabungan_lum_sat',
+																name: 'Gabungan Lumsum dan Harga Satuan'
+															},
+															{
+																value: 'putar_kunci',
+																name: 'Putar Kunci'
+															},
+															{
+																value: 'biaya_plus_imbalan',
+																name: 'Biaya Plus Imbalan'
+															}
+														];
+														case 'konsultansi':
+														jenis_kontrak = [
+															{
+																value: 'lumsum',
+																name: 'Lumsum'
+															},
+															{
+																value: 'waktu_penugasan',
+																name: 'Waktu Penugasan'
+															}
+														];
+														case 'konsultansi_non_konst':
+														jenis_kontrak = [
+															{
+																value: 'lumsum',
+																name: 'Lumsum'
+															},
+															{
+																value: 'waktu_penugasan',
+																name: 'Waktu Penugasan'
+															},
+															{
+																value: 'payung',
+																name: 'Kontrak Payung'
+															}
+
+														];
+														break;
+
+													default:
+														break;
+												}
+												myForm.find(`[name="jns_kontrak"]`).dropdown({ values: jenis_kontrak });
+											}
+										})
+									} else {
+										// 'name="metode_pemilihan"'
+										myForm.find(`[name="metode_pemilihan"]`).dropdown({ values: value_metode_pemilihanSW });
+										// 'name="pengadaan_penyedia"'
+										myForm.find(`[name="pengadaan_penyedia"]`).dropdown({ values: value_pengadaan_penyediaSW });
+										// 'name="jns_kontrak"'
+										myForm.find(`[name="jns_kontrak"]`).dropdown({ values: value_pengadaan_penyediaSW });
+									}
+									break;
+								default:
+									break;
+							};
 							break;
 						case 'xxx':
 							break;
