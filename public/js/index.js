@@ -1920,7 +1920,7 @@ $(document).ready(function () {
 						case 'dpa':
 						case 'renja':
 						case 'dpa':
-						case 'dppa'://@audit drop renja
+						case 'dppa':
 							var tabel_pakai_temporerSubkeg = 'sub_keg_renja';
 							switch (tbl) {
 								case 'dpa':
@@ -2780,7 +2780,6 @@ $(document).ready(function () {
 			case 'uraian_belanja':
 				switch (tblAttr) {
 					case 'daftar_paket':
-
 						mdl.removeClass("tiny");
 						elementForm = buatElemenHtml("fieldSearchGrid", {
 							label: "Uraian Pengelompokan Belanja",
@@ -2809,15 +2808,21 @@ $(document).ready(function () {
 										lbl: `URAIAN`
 									}, {
 										lbl: `PAGU`
+									},{
+										lbl: `KONTRAK`
 									}, {
 										lbl: `AKSI`
 									},
 								],
 								footerTable: [{
 									lbl: `jumlah`,
-									attr: `colspan="3"`
+									attr: `colspan="2"`
 								}, {
-									lbl: ``
+									lbl: 0,
+									attr: `name="jumlah"`
+								}, {
+									lbl: 0,
+									attr: `colspan="2" name="jumlah_kontrak"`
 								}],
 								bodyTable: []
 							});
@@ -4110,7 +4115,7 @@ $(document).ready(function () {
 		searchGlobal(allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'sbu', data_send: {} }) {
 			let MyElmSearch = this.elmSearch;
 			MyElmSearch.search({
-
+				cache:false,
 				minCharacters: allField.minCharacters,
 				maxResults: countRows(),
 				searchDelay: allField.searchDelay,
@@ -4135,6 +4140,7 @@ $(document).ready(function () {
 					title: "title",
 					description: "description",
 					kode: "kode",
+					categories: 'category',
 					category: 'category',
 				},
 				onSelect(result, response) {
@@ -4143,10 +4149,32 @@ $(document).ready(function () {
 					switch (jenis) {
 						case 'get_Search_Json':
 							switch (tbl) {
+								case 'dppa':
 								case 'renja_p':
 									let MyForm = $(`[name="form_modal"]`);
-									let trElm = `<tr id_row="${result.value}"><td>${result.category}</td><td>${result.title}</td><td>${result.jumlah}</td><td><button class="ui red icon mini button" name="del_row" jns="edit" tbl="${tbl}" id_row="${result.value}"><i class="trash alternate outline red icon"></i></button></td></tr>`
-									MyForm.find(`table tbody`).append(trElm);
+									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
+									// harus di cari dulu klo sdh ada add row tidak berlaku
+									let cek_id = MyForm.find(`table tbody tr[id_row="${result.value}"]`);
+									if (cek_id.length <= 0) {
+										let strText = result.jumlah;
+										strText = parseFloat(strText);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										let trElm = `<tr id_row="${result.value}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td>${strText}</td><td><div contenteditable rms onkeypress="return rumus(event);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="edit" tbl="${tbl}" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
+										MyForm.find(`table tbody`).append(trElm);
+										console.log(cellJumlah.text());
+										let jumlah =  0;
+										if(Number(cellJumlah.text()) <= 0){
+											jumlah =  Number(result.jumlah);
+											cellJumlah.text(jumlah);
+										}else{
+											jumlah =  accounting.unformat(cellJumlah.text(), ",") + Number(result.jumlah);
+											
+										}
+										strText = parseFloat(jumlah);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										cellJumlah.text(strText);
+									}
+									$("[rms]").mathbiila();
 									break;
 								case 'value1':
 									break;
@@ -4159,7 +4187,7 @@ $(document).ready(function () {
 						default:
 							break;
 					};
-					
+
 				},
 			});
 		}
