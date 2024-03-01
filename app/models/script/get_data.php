@@ -774,6 +774,19 @@ class get_data
                         case 'get_row_json': //ambil semua rows untuk dropdown
                             $kodePosting = 'get_row_json';
                             switch ($tbl) {
+                                case 'sub_keg_renja':
+                                case 'sub_keg_dpa':
+                                    $like = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR tolak_ukur_capaian_keg LIKE CONCAT('%',?,'%') OR tolak_ukur_keluaran LIKE CONCAT('%',?,'%') OR keluaran_sub_keg LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, 'sub_keg', $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kd_sub_keg ASC";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kel_rek = ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0,'sub_keg'];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
+                                    //pilih kolom yang diambil
+                                    // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kel_rek = ?";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, 'sub_keg'];
+                                    break;
                                 case 'sumber_dana':
                                     $like = "disable <= ? AND(uraian LIKE CONCAT('%',?,'%') OR kode LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [0, $cari, $cari, $cari];
@@ -913,7 +926,11 @@ class get_data
                             switch ($tbl) {
                                 case 'sub_keg_renja':
                                 case 'sub_keg_dpa':
-                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    if (isset($id_sub_keg)) {
+                                        $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    }
+
                                     $kodePosting = $jenis;
                                     break;
                                 case 'value':
@@ -1399,6 +1416,10 @@ class get_data
                                     switch ($jenis) {
                                         case 'get_row_json':
                                             switch ($tbl) {
+                                                case 'sub_keg_renja':
+                                                case 'sub_keg_dpa':
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kd_sub_keg, 'description' => $row->kd_sub_keg, "descriptionVertical" => true];
+                                                    break;
                                                 case 'aset':
                                                 case 'akun_belanja':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];

@@ -101,6 +101,7 @@ $(document).ready(function () {
 		let jenis_this = ini.attr("jns");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
+		let tb = ini.attr("tb");
 		let Text_ssh_sbu = (tbl) ? tbl.toUpperCase() : '';
 		let harga_ssh_asb = [
 			"clipboard list icon",
@@ -294,6 +295,8 @@ $(document).ready(function () {
 		dasboard.find($("div.pDashboard")).html(pDashboard);
 		$(`div[data-tab=${tab}]`).attr("tbl", tbl);
 		let data = {};
+		console.log(tab);
+		
 		switch (tab) {
 			case "tab_hargasat":
 				dasboardheader.text(tbl.toUpperCase());
@@ -719,13 +722,13 @@ $(document).ready(function () {
 									atribut:
 										'name="jumlah" placeholder="Nilai Kontrak..." rms',
 								}) +
-								buatElemenHtml("fieldDropdown", {//@audit now
+								buatElemenHtml("fieldDropdown", {
 									label: "Metode Pengadaan",
 									atribut: 'name="metode_pengadaan"',
 									kelas: "selection",
 									dataArray: [
 										["swakelola", "Swakelola"],
-										["penyedia", "Penyedia", 'active']
+										["penyedia", "Penyedia"]
 									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
@@ -1012,7 +1015,6 @@ $(document).ready(function () {
 									atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
 									kelas: "search clearable kd_sub_keg ajx selection",
 									dataArray: [
-										["", ""]
 									],
 								}) +
 								buatElemenHtml("accordionField", {
@@ -1861,7 +1863,7 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
-						case 'daftar_paket':
+						case 'daftar_paket'://@audit contoh
 							dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 
@@ -2718,6 +2720,7 @@ $(document).ready(function () {
 		let kelasToast = "warning";
 		let pesanToast = 'Koreksi Data';
 		mdl.addClass("tiny");
+
 		switch (jnsAttr) {
 			case 'get_field_json':
 			case 'add_field_json':
@@ -2774,6 +2777,56 @@ $(document).ready(function () {
 					atribut: 'name="uraian" placeholder="pengelompokan belanja..."',
 				});
 				break;
+			case 'uraian_belanja':
+				switch (tblAttr) {
+					case 'daftar_paket':
+
+						mdl.removeClass("tiny");
+						elementForm = buatElemenHtml("fieldSearchGrid", {
+							label: "Uraian Pengelompokan Belanja",
+							kelas: `sub_keg_dpa`,
+							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
+						}) +
+							buatElemenHtml("fieldDropdown", {
+								label: "Sub Kegiatan",
+								atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
+								kelas: "search clearable kd_sub_keg ajx selection",
+								dataArray: [
+								],
+							}) +
+							buatElemenHtml("divider", {
+								header: "h5",
+								aligned: 'left aligned',
+								icon2: `<i class="feather alternate icon"></i>`,
+								label: `Uraian`
+							}) +
+							buatElemenHtml("tabel", {
+								headerTable: [
+									{
+										class: 'collapsing',
+										lbl: `SUB KEGIATAN`
+									}, {
+										lbl: `URAIAN`
+									}, {
+										lbl: `PAGU`
+									}, {
+										lbl: `AKSI`
+									},
+								],
+								footerTable: [{
+									lbl: `jumlah`,
+									attr: `colspan="3"`
+								}, {
+									lbl: ``
+								}],
+								bodyTable: []
+							});
+						break;
+					default:
+						break;
+				}
+				break;
+				break;
 			case 'xxx':
 				break;
 			default:
@@ -2788,7 +2841,22 @@ $(document).ready(function () {
 		document.getElementById("header_mdl").textContent = headerModal;
 		addRulesForm(formIni);
 		$("[rms]").mathbiila();
-
+		switch (jnsAttr) {
+			case 'uraian_belanja':
+				switch (tblAttr) {//@audit sekarang
+					case 'daftar_paket':
+						var dropdown_ajx_sub_keg = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.kd_sub_keg.ajx.selection')
+						dropdown_ajx_sub_keg.returnList({ jenis: "get_row_json", tbl: "sub_keg_dpa" });
+						break;
+					default:
+						break;
+				}
+				break;
+			case 'xxx':
+				break;
+			default:
+				break;
+		}
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
@@ -3210,6 +3278,7 @@ $(document).ready(function () {
 																name: 'Kontrak Payung'
 															}
 														];
+														break;
 													case 'konstruksi':
 														jenis_kontrak = [
 															{
@@ -3233,7 +3302,8 @@ $(document).ready(function () {
 																name: 'Biaya Plus Imbalan'
 															}
 														];
-														case 'konsultansi':
+														break;
+													case 'konsultansi':
 														jenis_kontrak = [
 															{
 																value: 'lumsum',
@@ -3244,7 +3314,8 @@ $(document).ready(function () {
 																name: 'Waktu Penugasan'
 															}
 														];
-														case 'konsultansi_non_konst':
+														break;
+													case 'konsultansi_non_konst':
 														jenis_kontrak = [
 															{
 																value: 'lumsum',
@@ -4259,7 +4330,7 @@ $(document).ready(function () {
 		let atribut = "atribut" in dataElemen ? dataElemen.atribut : "";
 		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
 		let aligned = "aligned" in dataElemen ? dataElemen.align : "";
-		let header = "header" in dataElemen ? dataElemen.align : "h4";
+		let header = "header" in dataElemen ? dataElemen.header : "h4";
 		let atributField = "atributField" in dataElemen ? dataElemen.atributField : "";
 		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let classField = "classField" in dataElemen ? `${dataElemen.classField} ` : "";
@@ -4274,7 +4345,7 @@ $(document).ready(function () {
 		let elemen1Data = "elemen1" in dataElemen ? dataElemen.elemen1 : "";
 		let iconData = "icon" in dataElemen ? dataElemen.icon : "download icon";
 		let icon = "icon" in dataElemen ? dataElemen.icon : "calendar";
-		let icon2 = "icon2" in dataElemen ? dataElemen.icon : "";
+		let icon2 = "icon2" in dataElemen ? dataElemen.icon2 : "";
 		let posisi = "posisi" in dataElemen ? dataElemen.posisi : "left";
 		let colorData = "color" in dataElemen ? dataElemen.color : "positive";
 		let valueData = "value" in dataElemen ? dataElemen.value : "";
@@ -4284,9 +4355,47 @@ $(document).ready(function () {
 		let typeText = "typeText" in dataElemen ? dataElemen.typeText : `type="text"`;
 		let dataArray2 = "dataArray2" in dataElemen ? dataElemen.dataArray2 : [[]]; //contoh buat dropdown yang ada deskripsi
 		let jenisListDropdown = "jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : ""; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]
+		let headerTable = "headerTable" in dataElemen ? dataElemen.headerTable : "";
+		let footerTable = "footerTable" in dataElemen ? dataElemen.footerTable : "";
+		let bodyTable = "bodyTable" in dataElemen ? dataElemen.bodyTable : "";
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		switch (namaElemen) {
+			case "tabel":
+				let head = (headerTable.length > 0) ? '<thead><tr>' : '';
+				let foot = (footerTable.length > 0) ? '<tfoot><tr>' : '';
+				let body = `<tbody>`;
+				//buat header tabel
+				headerTable.forEach(function (val) {
+					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					head += `<th${classRow} ${attrRow}>${lblRow}</th$>`;
+				});
+				head += (headerTable.length > 0) ? '</thead>' : '';
+				//buat body tabel
+				bodyTable.forEach(function (val) {
+					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					body += `<th${classRow} ${attrRow}>${lblRow}</th$>`;
+
+				});
+				body += `</tbody>`;
+				//buat foot tabel
+				footerTable.forEach(function (val) {
+					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					foot += `<td${classRow} ${attrRow}>${lblRow}</td$>`;
+				});
+				foot += (footerTable.length > 0) ? '</tfoot>' : '';
+
+				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
+				break;
 			case "errorForm":
 				elemen = `<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
 				break;
@@ -4305,7 +4414,7 @@ $(document).ready(function () {
 			case "messageLink":
 				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${labelData} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
 				break;
-			case "divider":
+			case "divider"://left aligned
 				elemen = `<${header} class="ui horizontal ${aligned} divider header">${icon2}${label}</${header}>`;
 				break;
 			case "dividerHeader":
