@@ -2120,8 +2120,8 @@ $(document).ready(function () {
 																				break;
 																			case 'sumber_dana':
 																				dropdownSumberDana.valuesDropdown(result.data?.values?.sumber_dana);
-																				allField = { klm: 'sumber_dana', id_sub_keg: id_sub_keg, jns_kel: 'sumber_dana' }
-																				dropdownSumberDana.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
+																				var allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
+																				dropdownSumberDana.returnList({ jenis: "getJsonRows", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
 																			case 'komponen':
 																				let dropdownKomponen = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="komponen"]');
@@ -2306,12 +2306,12 @@ $(document).ready(function () {
 			case 'unsetujui':
 			case 'kunci':
 			case 'setujui':
-				let jns_dok = {'dpa':'DPA','renja': 'Renja','renja_p': 'Renja Perubahan','dppa':'DPPA'};
+				let jns_dok = { 'dpa': 'DPA', 'renja': 'Renja', 'renja_p': 'Renja Perubahan', 'dppa': 'DPPA' };
 				let jenis_eksekusi = {
-					'unkunci': { 'icon': 'unlock alternate', 'header': `unlock dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat user dapat mengedit dokumen...!` },
-					'unsetujui': { 'icon': 'unlock alternate', 'header': `unlock kembali dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat user dapat mengedit dokumen dan menghapus data yang sudah diposting...!` },
-					'kunci': { 'icon': 'lock alternate', 'header': `unlock dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat user dapat mengedit dokumen...!` },
-					'setujui': { 'icon': 'trash alternate', 'header': `posting dokumen ${jns_dok[tbl]} ini`,'paragraf':`ini akan membuat akan posting ke dokumen selajutnya...!` }
+					'unkunci': { 'icon': 'unlock alternate', 'header': `unlock dokumen ${jns_dok[tbl]} ini`, 'paragraf': `ini akan membuat user dapat mengedit dokumen...!` },
+					'unsetujui': { 'icon': 'unlock alternate', 'header': `unlock kembali dokumen ${jns_dok[tbl]} ini`, 'paragraf': `ini akan membuat user dapat mengedit dokumen dan menghapus data yang sudah diposting...!` },
+					'kunci': { 'icon': 'lock alternate', 'header': `unlock dokumen ${jns_dok[tbl]} ini`, 'paragraf': `ini akan membuat user dapat mengedit dokumen...!` },
+					'setujui': { 'icon': 'trash alternate', 'header': `posting dokumen ${jns_dok[tbl]} ini`, 'paragraf': `ini akan membuat akan posting ke dokumen selajutnya...!` }
 
 				};
 				contentModal = [
@@ -3636,7 +3636,7 @@ $(document).ready(function () {
 										break;
 									case "monev[informasi]":
 										break;
-									
+
 									// ==================
 									// =UNTUK FORM MODAL=
 									// ==================

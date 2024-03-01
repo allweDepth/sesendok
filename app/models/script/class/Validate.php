@@ -263,12 +263,16 @@ class Validate
           $DB = DB::getInstance();
 
           //['user','username',[[ 'id', '= ?', $id_user][ 'id', '= ?', $id_user , 'AND']]]
+          $DB->select($ruleValue[1]);
+          $rows_result = $DB->getWhereOnceCustom($ruleValue[0], $ruleValue[2]);
+          $var_a = $ruleValue[1];
+          $rows_result_explode = explode(',', $rows_result->$var_a);
           
- 
           $formValueExplode = explode(',', $formValue);
+          $DB->select('*');
           foreach ($formValueExplode as $key_row => $row) {
-            $ruleValue[2][]=[$ruleValue[1], '= ?', $row, 'AND'];
-            if (!$DB->checkArrayLike($ruleValue[0], $ruleValue[1], $ruleValue[2])) {
+            $key = array_search($row, $rows_result_explode, true);
+            if ($key === false) {
               $this->_errors[$item] = "$itemLabel data tidak ditemukan pilih yang lain";
             }
           }

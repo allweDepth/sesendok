@@ -494,8 +494,8 @@ class DB
         }
 
         $query = "INSERT INTO {$tablePosting} ($columnName) SELECT $columnSelect FROM {$tableName} $query_where";
-        var_dump($query);
-        var_dump($dataValues);
+        // var_dump($query);
+        // var_dump($dataValues);
         $run = $this->runQuery($query, $dataValues);
         //var_dump($this->_pdo->lastInsertId());//ok lah
         $this->_count = $run->rowCount(); //ok

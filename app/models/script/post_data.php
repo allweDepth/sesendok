@@ -552,22 +552,28 @@ class post_data
                                 $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target_kinerja_hasil', [
                                     'sanitize' => 'string'
                                 ]);
-                                $tolak_ukur_capaian_keg_p = $validate->setRules('tolak_ukur_capaian_keg_p', 'tolak_ukur_capaian_keg_p', [
+                                $tolak_ukur_capaian_keg_p = $validate->setRules('tolak_ukur_capaian_keg_p', 'tolak_ukur_capaian_keg perubahan', [
                                     'sanitize' => 'string'
                                 ]);
-                                $target_kinerja_capaian_keg_p = $validate->setRules('target_kinerja_capaian_keg_p', 'target_kinerja_capaian_keg_p', [
+                                $target_kinerja_capaian_keg_p = $validate->setRules('target_kinerja_capaian_keg_p', 'target_kinerja_capaian_keg perubahan', [
                                     'sanitize' => 'string'
                                 ]);
-                                $tolak_ukur_keluaran_p = $validate->setRules('tolak_ukur_keluaran_p', 'tolak_ukur_keluaran_p', [
+                                $tolak_ukur_keluaran_p = $validate->setRules('tolak_ukur_keluaran_p', 'tolak_ukur_keluaran perubahan', [
                                     'sanitize' => 'string'
                                 ]);
-                                $target_kinerja_keluaran_p = $validate->setRules('target_kinerja_keluaran_p', 'target_kinerja_keluaran_p', [
+                                $target_kinerja_keluaran_p = $validate->setRules('target_kinerja_keluaran_p', 'target_kinerja_keluaran perubahan', [
                                     'sanitize' => 'string'
                                 ]);
-                                $tolak_ukur_hasil_p = $validate->setRules('tolak_ukur_hasil_p', 'tolak_ukur_hasil_p', [
+                                $tolak_ukur_hasil_p = $validate->setRules('tolak_ukur_hasil_p', 'tolak_ukur_hasil perubahan', [
                                     'sanitize' => 'string'
                                 ]);
-                                $target_kinerja_hasil_p = $validate->setRules('target_kinerja_hasil_p', 'target_kinerja_hasil_p', [
+                                $target_kinerja_hasil_p = $validate->setRules('target_kinerja_hasil_p', 'target_kinerja_hasil perubahan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran_sub_keg', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $keluaran_sub_keg_p = $validate->setRules('keluaran_sub_keg_p', 'keluaran sub keg perubahan', [
                                     'sanitize' => 'string'
                                 ]);
                                 $sumber_dana_temp = $validate->setRules('sumber_dana', 'sumber dana', [
@@ -719,11 +725,13 @@ class post_data
                                     'required' => true,
                                     'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
+                                
                                 $sumber_dana = $validate->setRules('sumber_dana', 'sumber dana', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inLikeConcatDBMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana',  [['id', '= ?', $id_sub_keg], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                                    'inLikeConcatDBMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana',  [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
                                 ]);
+                                // var_dump($sumber_dana);
                                 $jenis_standar_harga = $validate->setRules('jenis_standar_harga', 'jenis komponen', [
                                     'sanitize' => 'string',
                                     'in_array' => ['ssh', 'sbu', 'hspk', 'asb'],
@@ -1343,9 +1351,21 @@ class post_data
                                         'kd_sub_keg' => $kd_sub_keg,
                                         'uraian' => $uraian,
                                         'kel_rek' => $kel_rek,
+                                        'tolak_ukur_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg),
+                                        'target_kinerja_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg),
+                                        'tolak_ukur_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran),
+                                        'target_kinerja_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
                                         'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
                                         'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
+                                        'tolak_ukur_capaian_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg_p),
+                                        'target_kinerja_capaian_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg_p),
+                                        'tolak_ukur_keluaran_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran_p),
+                                        'target_kinerja_keluaran_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran_p),
+                                        'tolak_ukur_hasil_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil_p),
+                                        'target_kinerja_hasil_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil_p),
                                         'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
+                                        'keluaran_sub_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg_p),
+                                        'sumber_dana' => $sumber_dana,
                                         'jumlah_pagu' => $jumlah_pagu,
                                         'jumlah_pagu_p' => $jumlah_pagu_p,
                                         'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
@@ -1409,6 +1429,7 @@ class post_data
                                         default:
                                             break;
                                     };
+                                    // var_dump($sumber_dana);
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'kd_opd' => $kd_opd,
@@ -1446,6 +1467,9 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_akun' => $kd_akun, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                                    if ($jenis == 'edit') {
+                                        $dinamic['id_row'] = $id_row;
+                                    }
                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                     $data = $insertKodeRek;
                                     $kodePosting = '';

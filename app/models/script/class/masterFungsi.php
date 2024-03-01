@@ -1327,24 +1327,37 @@ class MasterFungsi
                         case 'dppa_neo':
                         case 'renja_p_neo':
                             $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['sumber_dana', '=', $set['sumber_dana'], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND']];
+                            
+                            if (isset($dinamic['id_row'])) {
+                                $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $dinamic['id_row'], 'AND']];
+                            }
                             break;
                         case 'value':
                             break;
                         default:
                             break;
                     };
+                    // var_dump($kondisi);
                     $row_result = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                    // var_dump($row_result->id);
                     // var_dump($row_result);
-                    if ($row_result === false) {
+                    //
+                    if ($row_result === false && !isset($dinamic['id_row'])) {
                         # insert baru
                         $DB->insert($tabel_pakai, $set);
                         $data['note']['add row'][] = $DB->lastInsertId();
                     } else {
                         # update jumlah
-                        $DB->update_array($tabel_pakai, $set, $kondisi);
+                        // var_dump($set);
+                        $id_sdh_ada = (isset($dinamic['id_row'])) ? $dinamic['id_row'] : $row_result->id ;
+                        $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_sdh_ada, 'AND']];
+                        $row_result = $DB->update_array($tabel_pakai, $set, $kondisi);
+                        // var_dump($row_result);
                         if ($DB->count()) {
                             $code = 3;
-                            $data['update'] = $DB->count(); //$DB->count();
+                            $data['note']['update'][] = $id_sdh_ada;
+                            // $data['update'] = $DB->count(); //$DB->count();
+                            // var_dump( $data['update']);
                         } else {
                             $code = 33;
                         }
