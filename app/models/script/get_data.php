@@ -164,6 +164,33 @@ class get_data
                         break;
                     case 'get_rows':
                         break;
+                    case 'get_Search_Json':
+                        switch ($tbl) {
+                            case 'renja':
+                            case 'dpa':
+                            case 'dppa':
+                            case 'renja_p':
+                                switch ($tbl) {
+                                    case 'dpa':
+                                    case 'dppa':
+                                        $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
+                                        break;
+                                    case 'renja':
+                                    case 'renja_p':
+                                        $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
+                                        break;
+                                };
+                                $kd_sub_keg = $validate->setRules('kd_sub_keg', "kd_sub_keg", [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => [$tabel_pakai_temporerSubkeg, 'kd_sub_keg', [['kd_sub_keg', '=', $_POST['kd_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]],
+                                    'min_char' => 1
+                                ]);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     case 'get_row_json':
                         // isset($_POST['jenis'])
                         if (isset($_POST['kd_akun'])) { //@audit masih butuh lanjutan untuk search sbu dkk
@@ -780,7 +807,7 @@ class get_data
                                     $data_like = [$kd_wilayah, $kd_opd, $tahun, 'sub_keg', $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kd_sub_keg ASC";
                                     $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kel_rek = ?";
-                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0,'sub_keg'];
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, 'sub_keg'];
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
                                     //pilih kolom yang diambil
                                     // $DB->select('id, kelompok, id_tujuan, text, keterangan');
@@ -960,6 +987,38 @@ class get_data
                             $kodePosting = 'get_data';
                             switch ($tbl) {
                                 case 'value':
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 'get_Search_Json':
+                            $kodePosting = 'get_row_json';
+                            switch ($tbl) {
+                                case 'renja':
+                                case 'dpa':
+                                case 'dppa':
+                                case 'renja_p':
+                                    switch ($tbl) {
+                                        case 'dpa':
+                                        case 'dppa':
+                                            $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
+                                            break;
+                                        case 'renja':
+                                        case 'renja_p':
+                                            $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
+                                            break;
+                                    };
+                                    $like = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR sumber_dana LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, 'uraian', $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kd_sub_keg ASC";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kel_rek = ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, 'uraian'];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                    //pilih kolom yang diambil
+                                    // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kel_rek = ?";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, 'uraian'];
                                     break;
                                 default:
                                     break;
@@ -1456,6 +1515,33 @@ class get_data
                                                     break;
                                             };
                                             break;
+                                        case 'get_Search_Json':
+                                            $kodePosting = 'get_row_json';
+                                            switch ($tbl) {
+                                                case 'renja':
+                                                case 'dpa':
+                                                case 'dppa':
+                                                case 'renja_p':
+                                                    switch ($tbl) {
+                                                        case 'renja':
+                                                        case 'dpa':
+                                                            $clmJumlah = "jumlah";
+                                                            break;
+                                                        case 'renja_p':
+                                                        case 'dppa':
+                                                            $clmJumlah = "jumlah_p";
+                                                            break;
+                                                        default:
+                                                            # code...
+                                                            break;
+                                                    }
+                                                    $deskripsi = $row->kd_akun . ' (' . number_format($row->$clmJumlah, 2, ',', '.') . ')';
+                                                    $dataJson['results'][] = ['category'=>$row->kd_akun,'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah];
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            break;
                                         case 'value1':
                                             #code...
                                             break;
@@ -1551,11 +1637,16 @@ class get_data
         }
         // cara menampilkan json
         switch ($jenis) {
+            case 'get_Search_Json':
             case 'get_field_json':
             case 'get_row_json':
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+                    case 'renja':
+                    case 'dpa':
+                    case 'dppa':
+                    case 'renja_p':
                     case 'sub_keg_dpa':
                     case 'sub_keg_renja':
                     case 'sumber_dana':

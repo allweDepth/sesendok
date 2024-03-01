@@ -296,7 +296,7 @@ $(document).ready(function () {
 		$(`div[data-tab=${tab}]`).attr("tbl", tbl);
 		let data = {};
 		console.log(tab);
-		
+
 		switch (tab) {
 			case "tab_hargasat":
 				dasboardheader.text(tbl.toUpperCase());
@@ -2957,7 +2957,7 @@ $(document).ready(function () {
 										objekArray = el;
 										return el.value == value;
 									});
-									let MyForm = $(`form[name="form_flyout"]`);
+									var MyForm = $(`form[name="form_flyout"]`);
 									MyForm.form('set values', {
 										tkdn: objekArray.tkdn,
 										satuan: objekArray.satuan,
@@ -2970,13 +2970,20 @@ $(document).ready(function () {
 										)
 									})
 									break;
+								case 'sub_keg_dpa'://@audit sekarang form modal
+									//buatkan konstruktor untuk search
+									MyForm = $(`form[name="form_modal"]`);
+									let kd_sub_keg = MyForm.find(`.ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
+									let searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.sub_keg_dpa');
+									let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'renja_p', data_send: { kd_sub_keg: kd_sub_keg } }
+									searchPrompt.searchGlobal(allField)
+									break;
 								case 'value1':
 									break;
 								default:
 									break;
 							};
 							break;
-
 						default:
 							break;
 					}
@@ -4103,6 +4110,7 @@ $(document).ready(function () {
 		searchGlobal(allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'sbu', data_send: {} }) {
 			let MyElmSearch = this.elmSearch;
 			MyElmSearch.search({
+
 				minCharacters: allField.minCharacters,
 				maxResults: countRows(),
 				searchDelay: allField.searchDelay,
@@ -4120,13 +4128,38 @@ $(document).ready(function () {
 						halaman: 1,
 					}, allField.data_send),
 				},
+				ignoreDiacritics: true,
+				fullTextSearch: 'exact',
 				fields: {
-					results: [0].uraian,
+					results: [0].results,
 					title: "title",
 					description: "description",
 					kode: "kode",
+					category: 'category',
 				},
 				onSelect(result, response) {
+					let jenis = allField.jenis;
+					let tbl = allField.tbl;
+					switch (jenis) {
+						case 'get_Search_Json':
+							switch (tbl) {
+								case 'renja_p':
+									let MyForm = $(`[name="form_modal"]`);
+									let trElm = `<tr id_row="${result.value}"><td>${result.category}</td><td>${result.title}</td><td>${result.jumlah}</td><td><button class="ui red icon mini button" name="del_row" jns="edit" tbl="${tbl}" id_row="${result.value}"><i class="trash alternate outline red icon"></i></button></td></tr>`
+									MyForm.find(`table tbody`).append(trElm);
+									break;
+								case 'value1':
+									break;
+								default:
+									break;
+							};
+							break;
+						case 'value1':
+							break;
+						default:
+							break;
+					};
+					
 				},
 			});
 		}
