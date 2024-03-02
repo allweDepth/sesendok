@@ -1393,7 +1393,7 @@ class get_data
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kd_sub_keg_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
                                                     if (count((array)$row)) {
-                                                        $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
+                                                        $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan,'text' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
                                                     }
                                                 }
                                                 // sumber_dana

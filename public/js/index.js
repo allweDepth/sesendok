@@ -2873,7 +2873,7 @@ $(document).ready(function () {
 		formIni.html(elementForm);
 		document.getElementById("header_mdl").textContent = headerModal;
 		addRulesForm(formIni);
-		$("[rms]").mathbiila();
+		
 		switch (jnsAttr) {
 			case 'uraian_belanja':
 				switch (tblAttr) {
@@ -2893,11 +2893,13 @@ $(document).ready(function () {
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
+					loaderHide();
 					switch (jnsAttr) {
 						case 'uraian_belanja':
 							switch (tblAttr) {
 								case 'daftar_paket':
 									formIni.find(`table tbody`).html(result.data.users);
+									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });
 									break;
 							
 								default:
@@ -2925,6 +2927,7 @@ $(document).ready(function () {
 				});
 			}
 		}
+		$("[rms]").mathbiila();
 	});
 	//===================================
 	//=========== class dropdown ========
@@ -4345,6 +4348,7 @@ $(document).ready(function () {
 				onShow: function () {
 				},
 				onHidden: function () {
+					// loaderHide();
 					$(this).find("form").form("reset");
 				}
 			});
