@@ -1002,7 +1002,30 @@ class get_data
                         case 'get_rows':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
-                                case 'dpa_and_dppa':
+                                case 'dpa_and_dppa': //@audit sekarang php
+                                    $elm = '';
+                                    foreach ($send as $key => $value) {
+                                        // var_dump($key);
+                                        // var_dump($value);
+
+                                        $tabel_pakai = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
+                                        $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+
+                                        if ($row_sub !== false) {
+                                            $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+
+                                            $desimal = ($Fungsi->countDecimals($row_sub->$klm_jumlah) <= 2) ? 2 : $Fungsi->countDecimals($row_sub->$klm_jumlah);
+                                            $paguku = number_format($row_sub->$klm_jumlah, $desimal, ',', '.');
+                                            $desimal = ($Fungsi->countDecimals($value->val_kontrak) <= 2) ? 2 : $Fungsi->countDecimals($value->val_kontrak);
+                                            $kontrak = number_format($value->val_kontrak, $desimal, ',', '.');
+
+                                            $elm .= '<tr id_row="' . $row_sub->id . '" pagu="' . $row_sub->$klm_jumlah . '" dok_anggaran="' . $value->dok_anggaran . '"><td klm="kd_sub_keg">' . $row_sub->kd_sub_keg . '</td><td klm="uraian">' . $row_sub->uraian . '</td><td klm="pagu">' . $paguku . '</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: "uraian_sub_keg", tbl:"renja_p" });">' . $kontrak . '</div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="' . $value->id . '"><i class="trash alternate outline icon"></i></button></td></tr>';
+                                        }
+                                    }
+                                    $data['users'] = $elm;
+                                    // var_dump($elm);
+                                    $kodePosting = '';
                                     break;
                                 default:
                                     break;
