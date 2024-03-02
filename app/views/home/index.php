@@ -81,7 +81,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item nabiila" href="#" data-tab="tab_renja" anggaran="dpa"><span><i class="toggle on icon"></i></span><i class="yellow tags icon"></i>DPA</a>
                 </div>
             </div>
-            <a class="item" href="#" data-tab="tab_kontrak"><i class="file contract icon"></i>Kontrak</a>
+            <a class="item" href="#" data-tab="tab_kontrak" tbl="daftar_paket"><i class="file contract icon"></i>Kontrak</a>
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
                 <div class="content">

@@ -138,6 +138,10 @@ $(document).ready(function () {
 				"Klasifikasi dan kodefikasi program disusun berdasarkan pembagian sub urusan dan kegiatan disusun berdasarkan pembagian kewenangan yang diatur dalam Lampiran Undang-Undang Nomor 23 Tahun 2014.Hal ini dilakukan untuk memastikan ruang lingkup penyelenggaraan pemerintahan daerah dilakukan sesuai dengan keenangannya, sehingga mendukung pelaksanaan asas prinsip akuntabilitas, efisiensi, eksternalitas serta kepentingan strategis nasional",
 			],
 			tab_dpa: tab_dpa,
+			daftar_paket: ["clipboard list icon",
+				"DAFTAR PAKET DAN KONTRAK",
+				"daftar paket pekerjaan",
+				"",],
 			dppa: [
 				"clipboard list icon",
 				"DPPA",
@@ -395,6 +399,7 @@ $(document).ready(function () {
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
 			case "atur":
+			case "tab_kontrak":
 				jalankanAjax = true;
 				break;
 			case "renja":
@@ -2443,21 +2448,7 @@ $(document).ready(function () {
 								obj.remove();
 								switch (tbl) {
 									case 'remove_uraian':
-										let cellJumlah = form.find(`table tfoot [name="jumlah"]`);
-										let cellKontrak = form.find(`table tfoot [name="kontrak"]`);
-										let pagu = 0;
-										let kontrak = 0;
-										$(`[name="form_modal"] table tbody tr`).each(function () {
-											let element = $(this);
-											pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
-											kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
-										});
-										let strText = parseFloat(pagu);
-										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										cellJumlah.text(strText);
-										strText = parseFloat(kontrak);
-										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										cellKontrak.text(strText);
+										onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });
 										break;
 									case 'value1':
 										break;
@@ -2805,10 +2796,12 @@ $(document).ready(function () {
 			case 'uraian_belanja':
 				switch (tblAttr) {
 					case 'daftar_paket':
+						
+						formIni.attr('jns', 'add_uraian').attr('tbl', tblAttr);
 						mdl.removeClass("tiny");
 						elementForm = buatElemenHtml("fieldSearchGrid", {
 							label: "Uraian Pengelompokan Belanja",
-							kelas: `sub_keg_dpa`,
+							kelas: `sub_keg_dpa category`,
 							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
 						}) +
 							buatElemenHtml("fieldDropdown", {
@@ -2872,7 +2865,7 @@ $(document).ready(function () {
 		$("[rms]").mathbiila();
 		switch (jnsAttr) {
 			case 'uraian_belanja':
-				switch (tblAttr) {//@audit sekarang
+				switch (tblAttr) {
 					case 'daftar_paket':
 						var dropdown_ajx_sub_keg = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.kd_sub_keg.ajx.selection')
 						dropdown_ajx_sub_keg.returnList({ jenis: "get_row_json", tbl: "sub_keg_dpa" });
@@ -3793,6 +3786,20 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
+								case 'daftar_paket':
+									switch (jenis) {//@audit sekarang
+										case 'add_uraian':
+											$(".ui.modal.mdl_general").modal("hide");
+											break;
+										case "add":
+										case "edit":
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									};
+
+									break;
 								case "peraturan":
 									switch (jenis) {
 										case "add":
@@ -4099,7 +4106,7 @@ $(document).ready(function () {
 					}
 					switch (nama_form) {
 						case "form_modal":
-							// MyForm.form('reset')
+							MyForm.form('reset')
 							// $(".ui.modal.mdl_general").modal("hide");
 							break;
 						case "form_flyout":
@@ -4223,7 +4230,7 @@ $(document).ready(function () {
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="return rumus(event);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
+										let trElm = `<tr id_row="${result.value} pagu="${result.jumlah}" kd_sub_keg="${result.kd_sub_keg}" kd_akun="${result.kd_akun}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
 										MyForm.find(`table tbody`).append(trElm);
 
 
@@ -5110,6 +5117,38 @@ $(document).ready(function () {
 	};
 });
 // onkeypress="return rumus(event);"
+function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }) {
+	let ini = $(this);
+	switch (params.jns) {
+		case 'uraian_sub_keg':
+			switch (params.tbl) {
+				case 'renja_p':
+					let form = $(`form[name="form_modal"]`);
+					let cellJumlah = form.find(`table tfoot [name="jumlah"]`);
+					let cellKontrak = form.find(`table tfoot [name="kontrak"]`);
+					let pagu = 0;
+					let kontrak = 0;
+					$(`[name="form_modal"] table tbody tr`).each(function () {
+						let element = $(this);
+						pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
+						kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+					});
+					let strText = parseFloat(pagu);
+					strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+					cellJumlah.text(strText);
+					strText = parseFloat(kontrak);
+					strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+					cellKontrak.text(strText);
+					break;
+				default:
+					break;
+			}
+			break;
+
+		default:
+			break;
+	}
+}
 function rumus(evt) {
 
 	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(

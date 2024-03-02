@@ -40,6 +40,16 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'daftar_paket':
+                $rowData['thead'] = trim('<tr>
+                            <th>URAIAN</th>
+                            <th>PAGU</th>
+                            <th>NILAI KONTRAK</th>
+                            <th>PPK</th>
+                            <th>KETERANGAN</th>
+                            <th class="collapsing">AKSI</th>
+                        </tr>');
+                break;
             case 'dppa':
             case 'renja_p':
             case 'dpa':
@@ -224,6 +234,35 @@ class MasterFungsi
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
+                    case 'daftar_paket':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($disable_anggaran <= 0) {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
+                            $buttonEdit = '<div class="ui floating dropdown icon button lainnya">
+                            <i class="wrench icon"></i>
+                                <div class="menu">
+                                    <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
+                                    <div class="divider"></div>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"><i class="pen square blue icon"></i>Rincian</a>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><i class="pen square red icon"></i>Rincian Perubahan</a>
+                                    <div class="item"><div class="ui red empty circular label"></div>Help</div>
+                                </div>
+                            </div>';
+                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="uraian">' . $row->uraian . '</td>
+                                    <td klm="pagu">' . $divAwalAngka  . number_format($row->pagu, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah">' . $divAwalAngka  . number_format($row->jumlah, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="nama_ppk">' . $row->nama_ppk . '</td>
+                                    <td klm="keterangan">' . $row->keterangan . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'dppa':
                     case 'renja_p':
                     case 'dpa':
@@ -813,6 +852,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'daftar_paket':
+                $tabel_pakai = 'daftar_paket_neo';
+                $jumlah_kolom = 7;
+                break;
             case 'dppa':
                 $tabel_pakai = 'dppa_neo';
                 $jumlah_kolom = 7;
@@ -1327,7 +1370,7 @@ class MasterFungsi
                         case 'dppa_neo':
                         case 'renja_p_neo':
                             $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['sumber_dana', '=', $set['sumber_dana'], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND']];
-                            
+
                             if (isset($dinamic['id_row'])) {
                                 $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $dinamic['id_row'], 'AND']];
                             }
@@ -1349,7 +1392,7 @@ class MasterFungsi
                     } else {
                         # update jumlah
                         // var_dump($set);
-                        $id_sdh_ada = (isset($dinamic['id_row'])) ? $dinamic['id_row'] : $row_result->id ;
+                        $id_sdh_ada = (isset($dinamic['id_row'])) ? $dinamic['id_row'] : $row_result->id;
                         $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_sdh_ada, 'AND']];
                         $row_result = $DB->update_array($tabel_pakai, $set, $kondisi);
                         // var_dump($row_result);
