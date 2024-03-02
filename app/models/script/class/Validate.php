@@ -198,6 +198,12 @@ class Validate
             $this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
           }
           break;
+          case 'json_repair':
+            json_decode($formValue);
+            if (json_last_error()) {
+              $this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
+            }
+            break;
         case 'regexp_enc':
           $formValue = $this->encrypt($formValue);
           if (!preg_match($ruleValue, $formValue)) {

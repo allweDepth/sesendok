@@ -164,6 +164,18 @@ class get_data
                         }
                         break;
                     case 'get_rows':
+                        switch ($tbl) {
+                            case 'dpa_and_dppa': //jenis tabel tergantung dari data dok_anggaran tiap baris
+                                $send = $validate->setRules('send', 'data', [
+                                    'min_char' => 8,
+                                    'required' => true,
+                                    'json_repair' => true
+                                ]);
+                                $send = json_decode($send);
+                                break;
+                            default:
+                                break;
+                        }
                         break;
                     case 'get_Search_Json':
                         switch ($tbl) {
@@ -990,7 +1002,7 @@ class get_data
                         case 'get_rows':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
-                                case 'value':
+                                case 'dpa_and_dppa':
                                     break;
                                 default:
                                     break;

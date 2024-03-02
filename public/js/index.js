@@ -701,11 +701,15 @@ $(document).ready(function () {
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="modal_show" jns="uraian_belanja" tbl="${tbl}"`,
 								}) +
+								//text ini di hilangkan untuk menampung id yang dipilih di form_modal
+								buatElemenHtml("text", {
+									atributField: 'name="id_uraian" hidden',
+									atribut: 'name="id_uraian"',
+								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Nama Paket",
 									atribut: 'name="uraian" rows="2" placeholder="Uraian Barang/Jasa..."',
 								}) +
-
 								buatElemenHtml("fieldText", {
 									label: "Volume",
 									atribut: 'name="volume" placeholder="volume output..." rms',
@@ -2795,8 +2799,15 @@ $(document).ready(function () {
 				break;
 			case 'uraian_belanja':
 				switch (tblAttr) {
-					case 'daftar_paket':
-
+					case 'daftar_paket'://@audit sekarang3
+						let json_id_uraian = $(`form[name="form_flyout"]`).form('get value','id_uraian');
+						if (json_id_uraian.length > 2) {
+							json_id_uraian = JSON.parse($(`form[name="form_flyout"]`).form('get value','id_uraian'));
+							jalankanAjax =true;
+							data.jenis='get_rows';
+							data.tbl='dpa_and_dppa';//jenis tabel tergantung dari data dok_anggaran tiap baris
+							data.send = JSON.stringify(json_id_uraian);
+						}
 						formIni.attr('jns', 'add_uraian').attr('tbl', tblAttr);
 						mdl.removeClass("tiny");
 						elementForm = buatElemenHtml("fieldSearchGrid", {
@@ -2882,6 +2893,21 @@ $(document).ready(function () {
 		if (jalankanAjax) {
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
+					switch (jnsAttr) {
+						case 'uraian_belanja':
+							switch (tblAttr) {
+								case 'daftar_paket':
+									
+									break;
+							
+								default:
+									break;
+							}
+							break;
+					
+						default:
+							break;
+					}
 					if (nameAttr === "modal_show") {
 						mdl.modal("show");
 					}
@@ -2992,7 +3018,7 @@ $(document).ready(function () {
 										)
 									})
 									break;
-								case 'sub_keg_dpa'://@audit sekarang form modal
+								case 'sub_keg_dpa':
 									//buatkan konstruktor untuk search
 									MyForm = $(`form[name="form_modal"]`);
 									let kd_sub_keg = MyForm.find(`.ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
@@ -3760,31 +3786,53 @@ $(document).ready(function () {
 						// =================
 						case "form_modal":
 							switch (jenis) {
-								case 'add_field_json':
-									jalankanAjax = true;
-									switch (tbl) {
+								case 'add_uraian':
+									switch (tbl) {//@audit sekarang
 										case 'daftar_paket':
-									switch (jenis) {//@audit sekarang
-										case 'add_uraian':
 											let dataUraian = {};
+											let sx = 0;
+											let namaPaketAwal = '';
+											let kd_akunsub_keg =[];
 											$(`[name="form_modal"] table tbody tr`).each(function () {
+												sx++;
 												let element = $(this);
-												let idUraian = Number(element.find('tr').attr('id_row'));
+												if (sx === 1) {
+													namaPaketAwal = element.find('td[klm="uraian"]').text();
+												}
+												kd_akunsub_keg.push(element.find('td[klm="kd_sub_keg"]').text());
+												let idUraian = Number(element.attr('id_row'));
+												let dok_anggaran = element.attr('dok_anggaran');
 												let kontrak = Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
-												dataUraian[idUraian] = {valKontrak : kontrak};
+												dataUraian[`AL${sx}`] = { id:idUraian,val_kontrak: kontrak,dok_anggaran:dok_anggaran };
 											});
-											let elmUraian = ini.find('input[name=""]')
+											kd_akunsub_keg.toString();
+											if(sx > 1){
+												namaPaketAwal += ' cs.';
+											}
+											let namaPaket = $(`[name="form_flyout"]`).form('get value','uraian');
+											if (namaPaket.length < 2) {
+												namaPaket = namaPaketAwal;
+											}
+											$(`[name="form_flyout"]`).form('set values', {
+												id_uraian: JSON.stringify(dataUraian),
+												uraian: namaPaket,
+												count_uraian_belanja: `${sx} uraian {${kd_akunsub_keg}}`
+											})
+											
 											$(".ui.modal.mdl_general").modal("hide");
-											break;
-										case "add":
-										case "edit":
-											jalankanAjax = true;
 											break;
 										default:
 											break;
 									};
 
 									break;
+								case "add":
+								case "edit":
+									jalankanAjax = true;
+									break;
+								case 'add_field_json':
+									jalankanAjax = true;
+									switch (tbl) {
 										case 'sub_keg_renja':
 										case 'sub_keg_dpa':
 											formData.set('klm', klmAttr);
@@ -3808,7 +3856,7 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
-								
+
 								case "peraturan":
 									switch (jenis) {
 										case "add":
@@ -4227,7 +4275,7 @@ $(document).ready(function () {
 					let tbl = allField.tbl;
 					switch (jenis) {
 						case 'get_Search_Json':
-							switch (tbl) {
+							switch (tbl) {//@audit sekarang
 								case 'dpa_dppa':
 									let MyForm = $(`[name="form_modal"]`);
 									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
@@ -4238,7 +4286,7 @@ $(document).ready(function () {
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value} pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
+										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
 										MyForm.find(`table tbody`).append(trElm);
 										let pagu = 0;
 										let kontrak = 0;
