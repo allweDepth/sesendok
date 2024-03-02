@@ -697,14 +697,14 @@ $(document).ready(function () {
 							dataHtmlku.konten =
 								buatElemenHtml("fieldTextAction", {
 									label: "Uraian Belanja",
-									atribut: 'name="count_uraian_belanja" placeholder="Uraian Paket..." readonly',
+									atribut: 'name="count_uraian_belanja" placeholder="Nama Paket..." readonly',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="modal_show" jns="uraian_belanja" tbl="${tbl}"`,
 								}) +
 								//text ini di hilangkan untuk menampung id yang dipilih di form_modal
 								buatElemenHtml("text", {
 									atributField: 'name="id_uraian" hidden',
-									atribut: 'name="id_uraian"',
+									atribut: 'name="id_uraian" placeholder="Pilih Uraian Belanja"',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Nama Paket",
@@ -723,13 +723,43 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Nilai Pagu",
-									atribut:
-										'name="pagu" placeholder="Nilai Pagu..." rms readonly',
+									atribut: 'name="pagu" placeholder="Nilai Pagu..." rms readonly',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Nilai Kontrak",
 									atribut:
-										'name="jumlah" placeholder="Nilai Kontrak..." rms',
+										'name="jumlah" placeholder="Nilai Kontrak..." rms readonly',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Output Rencana",
+									atribut: 'name="renc_output" rows="2" placeholder="Output Rencana"',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Output",
+									atribut: 'name="output" rows="2" placeholder="output..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Nama PPK",
+									atribut: 'name="nama_ppk" placeholder="Nama Lengkap PPK..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "NIP. PPK",
+									atribut: 'name="nip_ppk" placeholder="NIP. PPK..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Nama PPTK",
+									atribut: 'name="nama_pptk" placeholder="Nama Lengkap PPTK..." non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "NIP. PPTK",
+									atribut: 'name="nip_pptk" placeholder="NIP. PPTK..." non_data',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Rekanan",
+									atribut: 'name="id_rekanan" non_data',
+									kelas: "search clearable rekanan ajx selection",
+									dataArray: [
+									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Metode Pengadaan",
@@ -771,9 +801,23 @@ $(document).ready(function () {
 									dataArray: [
 									],
 								}) +
+								buatElemenHtml("fieldText", {
+									label: "Waktu Pelaksanaan",
+									atribut:
+										'name="waktu_pelaksanaan" placeholder="Nilai Kontrak..." rms non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Waktu Pemeliharaan (jika dibutuhkan)",
+									atribut:
+										'name="waktu_pemeliharaan" placeholder="Pemeliharaan jika diperlukan..." rms non_data',
+								}) +
 								buatElemenHtml("accordionField", {
 									label: "Jadwal Pengadaan",
-									content: buatElemenHtml("calendar", {
+									content: buatElemenHtml("text", {
+										atribut: `name="kd_rup" placeholder="Kode RUP" non_data`,
+									}) + buatElemenHtml("text", {
+										atribut: `name="kd_paket" placeholder="Kode Paket" non_data`,
+									}) + buatElemenHtml("calendar", {
 										atribut: `name="tgl_kontrak" placeholder="Tanggal Kontrak" non_data`, kelas: "date"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_kontrak" placeholder="Nomor Kontrak" non_data`,
@@ -801,6 +845,13 @@ $(document).ready(function () {
 										atribut: `name="tgl_sppbj" placeholder="Tanggal SPPBJ" non_data`, kelas: "date"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_sppbj" placeholder="Nomor SPPBJ" non_data`,
+									})+
+									buatElemenHtml("fieldFileInput2", {
+										label: "Pilih File Kontrak",
+										file: "file_kontrak",
+										atribut: 'non_data',
+										placeholderData: "Pilih File PHO...",
+										accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 									})
 								}) +
 								buatElemenHtml("accordionField", {
@@ -817,19 +868,30 @@ $(document).ready(function () {
 										buatElemenHtml("fieldFileInput2", {
 											label: "Pilih File Dokumen PHO",
 											file: "file_pho",
+											atribut: 'non_data',
 											placeholderData: "Pilih File PHO...",
 											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 										}) +
 										buatElemenHtml("fieldFileInput2", {
 											label: "Pilih File Dokumen FHO",
 											file: "file_fho",
+											atribut: 'non_data',
 											placeholderData: "Pilih File FHO...",
 											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 										})
 								}) +
+								// elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><button class="ui fluid button ${kelasData}" ${atribut}>${valueData}</button></div>`;
+								buatElemenHtml("accordionField", {
+									label: "Tambah Kontrak Addendum",
+									content: buatElemenHtml("button", {
+										kelas: `fluid animated fade`,
+										atribut: `name="add" jns="direct" tbl="addendum"`,
+										value: `<div class="visible content">Tambah</div><div class="hidden content">Addendum Kontrak</div>`,
+									})
+								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="3"',
+									atribut: 'name="keterangan" rows="3" non_data',
 								});
 							break;
 						case 'dppa':
@@ -1859,7 +1921,7 @@ $(document).ready(function () {
 			iconFlyout.attr("class", "").addClass(dataHtmlku.icon);
 			headerFlyout.text(dataHtmlku.header);
 			formIni.html(htmlForm);
-			addRulesForm(formIni);
+			
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
 			calendarDate.runCalendar();
 			let calendarYear = new CalendarConstructor(".ui.calendar.year");
@@ -1868,6 +1930,7 @@ $(document).ready(function () {
 			$('div[name="jml_header"]').dropdown("set selected", 1);
 			$(".ui.accordion").accordion();
 			formIni.find(".ui.dropdown.lainnya").dropdown();
+			addRulesForm(formIni);
 			switch (jenis) {
 				case 'add':
 				case 'edit':
@@ -1875,7 +1938,8 @@ $(document).ready(function () {
 						case 'daftar_paket'://@audit contoh
 							dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
-
+							var dropdown_ajx_rekanan = new DropdownConstructor('.ui.dropdown.rekanan.ajx.selection')
+							dropdown_ajx_rekanan.returnList({ jenis: "get_row_json", tbl: "rekanan", minCharacters: 3 });
 							var allObjek = { jenis: 'non', tbl: 'metodePengadaan' };
 							var dropdownMetodePemilihan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="metode_pengadaan"]')
 							dropdownMetodePemilihan.onChange(allObjek);
@@ -2800,12 +2864,12 @@ $(document).ready(function () {
 			case 'uraian_belanja':
 				switch (tblAttr) {
 					case 'daftar_paket'://@audit sekarang3
-						let json_id_uraian = $(`form[name="form_flyout"]`).form('get value','id_uraian');
+						let json_id_uraian = $(`form[name="form_flyout"]`).form('get value', 'id_uraian');
 						if (json_id_uraian.length > 2) {
-							json_id_uraian = JSON.parse($(`form[name="form_flyout"]`).form('get value','id_uraian'));
-							jalankanAjax =true;
-							data.jenis='get_rows';
-							data.tbl='dpa_and_dppa';//jenis tabel tergantung dari data dok_anggaran tiap baris
+							json_id_uraian = JSON.parse($(`form[name="form_flyout"]`).form('get value', 'id_uraian'));
+							jalankanAjax = true;
+							data.jenis = 'get_rows';
+							data.tbl = 'dpa_and_dppa';//jenis tabel tergantung dari data dok_anggaran tiap baris
 							data.send = JSON.stringify(json_id_uraian);
 						}
 						formIni.attr('jns', 'add_uraian').attr('tbl', tblAttr);
@@ -2873,7 +2937,7 @@ $(document).ready(function () {
 		formIni.html(elementForm);
 		document.getElementById("header_mdl").textContent = headerModal;
 		addRulesForm(formIni);
-		
+
 		switch (jnsAttr) {
 			case 'uraian_belanja':
 				switch (tblAttr) {
@@ -2901,12 +2965,12 @@ $(document).ready(function () {
 									formIni.find(`table tbody`).html(result.data.users);
 									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });
 									break;
-							
+
 								default:
 									break;
 							}
 							break;
-					
+
 						default:
 							break;
 					}
@@ -3795,7 +3859,9 @@ $(document).ready(function () {
 											let dataUraian = {};
 											let sx = 0;
 											let namaPaketAwal = '';
-											let kd_akunsub_keg =[];
+											let kd_akunsub_keg = [];
+											let sumPagu = 0;
+											let sumKontrak = 0;
 											$(`[name="form_modal"] table tbody tr`).each(function () {
 												sx++;
 												let element = $(this);
@@ -3805,23 +3871,30 @@ $(document).ready(function () {
 												kd_akunsub_keg.push(element.find('td[klm="kd_sub_keg"]').text());
 												let idUraian = Number(element.attr('id_row'));
 												let dok_anggaran = element.attr('dok_anggaran');
+												sumPagu += Number(element.attr('pagu'));
 												let kontrak = Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
-												dataUraian[`AL${sx}`] = { id:idUraian,val_kontrak: kontrak,dok_anggaran:dok_anggaran };
+												sumKontrak += kontrak;
+												dataUraian[`AL${sx}`] = { id: idUraian, val_kontrak: kontrak, dok_anggaran: dok_anggaran };
 											});
 											kd_akunsub_keg.toString();
-											if(sx > 1){
+											if (sx > 1) {
 												namaPaketAwal += ' cs.';
 											}
-											let namaPaket = $(`[name="form_flyout"]`).form('get value','uraian');
+											let namaPaket = $(`[name="form_flyout"]`).form('get value', 'uraian');
 											if (namaPaket.length < 2) {
 												namaPaket = namaPaketAwal;
 											}
+											sumPagu = parseFloat(sumPagu);
+											sumPagu = accounting.formatNumber(sumPagu, sumPagu.countDecimals(), ".", ",");
+											sumKontrak = parseFloat(sumKontrak);
+											sumKontrak = accounting.formatNumber(sumKontrak, sumKontrak.countDecimals(), ".", ",");
 											$(`[name="form_flyout"]`).form('set values', {
 												id_uraian: JSON.stringify(dataUraian),
 												uraian: namaPaket,
+												pagu: sumPagu,
+												jumlah: sumKontrak,
 												count_uraian_belanja: `${sx} uraian {${kd_akunsub_keg}}`
 											})
-											
 											$(".ui.modal.mdl_general").modal("hide");
 											break;
 										default:
@@ -3859,7 +3932,20 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
-
+								case "daftar_paket":
+									switch (jenis) {
+										case "add":
+										case "edit":
+											console.log(formData.get('id_uraian'));
+											// let JsonIdUraian = $(`form[name="form_flyout"]`).form('get value', 'id_uraian');
+											// JsonIdUraian = JSON.stringify(JsonIdUraian);
+											// formData.set('id_uraian', JsonIdUraian);
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									}
+									break;
 								case "peraturan":
 									switch (jenis) {
 										case "add":
@@ -4554,6 +4640,20 @@ $(document).ready(function () {
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		switch (namaElemen) {
+			case "button":
+				elemen = `<button class="ui ${kelasData} button" ${atribut}>${valueData}</button>`;
+				break;
+			case "fieldButton":
+				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><button class="ui ${kelasData} button" ${atribut}>${valueData}</button></div>`;
+				break;
+			case "fieldButtonAnimated":
+				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui animated fade button" tabindex="0">
+				<div class="visible content">Sign-up for a Pro account</div>
+				<div class="hidden content">
+				  $12.99 a month
+				</div>
+			  </div></div>`;
+				break;
 			case "tabel":
 				let head = (headerTable.length > 0) ? '<thead><tr>' : '';
 				let foot = (footerTable.length > 0) ? '<tfoot><tr>' : '';
@@ -5043,7 +5143,10 @@ $(document).ready(function () {
 				}
 			}
 			let non_data = $(iterator).attr("non_data");
-			if (typeof non_data === 'undefined' && non_data === false) {
+			console.log(`non_data = ${non_data}`);
+			if (typeof non_data === 'undefined' || non_data === false) {
+				// console.log('masuk addRulesForm');
+				
 				formku.form("add rule", atribut, {
 					rules: [
 						{
@@ -5102,7 +5205,7 @@ $(document).ready(function () {
 				}
 			}
 			var non_data = formku.find(attrName[i]).attr("non_data");
-			if (typeof non_data === "undefined" && non_data === false) {
+			if (typeof non_data === "undefined" || non_data === false) {
 				if (atribut) {
 					//formku.form("remove rule", atribut);
 					formku.form("remove field", atribut);

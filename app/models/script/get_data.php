@@ -817,6 +817,18 @@ class get_data
                         case 'get_row_json': //ambil semua rows untuk dropdown
                             $kodePosting = 'get_row_json';
                             switch ($tbl) {
+                                case 'rekanan':
+                                    $like = "kd_wilayah = ? AND (nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR npwp LIKE CONCAT('%',?,'%') OR nama_notaris_pendirian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY nama_perusahaan ASC";
+                                    $where1 = "kd_wilayah = ? AND disable <= ?";
+                                    $data_where1 =  [$kd_wilayah, 0];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['disable', '<=', 0, 'AND']];
+                                    //pilih kolom yang diambil
+                                    // $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    $whereGet_row_json = "kd_wilayah = ? AND disable <= ? ";
+                                    $data_hereGet_row_json =  [$kd_wilayah, 0];
+                                    break;
                                 case 'sub_keg_renja':
                                 case 'sub_keg_dpa':
                                     $like = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR tolak_ukur_capaian_keg LIKE CONCAT('%',?,'%') OR tolak_ukur_keluaran LIKE CONCAT('%',?,'%') OR keluaran_sub_keg LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
@@ -1507,6 +1519,9 @@ class get_data
                                     switch ($jenis) {
                                         case 'get_row_json':
                                             switch ($tbl) {
+                                                case 'rekanan':
+                                                    $dataJson['results'][] = ['name' => $row->nama_perusahaan,'text' => $row->nama_perusahaan, 'value' => $row->id, 'description' => $row->	npwp.' ('.$row->direktur.')', "descriptionVertical" => true];
+                                                    break;
                                                 case 'sub_keg_renja':
                                                 case 'sub_keg_dpa':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kd_sub_keg, 'description' => $row->kd_sub_keg, "descriptionVertical" => true];
@@ -1678,6 +1693,7 @@ class get_data
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+                    case 'rekanan':
                     case 'renja':
                     case 'dpa':
                     case 'dppa':
