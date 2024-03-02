@@ -348,7 +348,7 @@ class get_data
                                     $data_like = [$kd_wilayah, $tahun, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY uraian ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ?";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ?";
                                     $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
                                     $whereGet_row_json = "kd_wilayah = ? kd_opd = ? AND tahun = ? AND disable <= ?";
                                     $data_hereGet_row_json = [$kd_wilayah, $kd_opd, $tahun, 0];
@@ -1405,7 +1405,7 @@ class get_data
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kd_sub_keg_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
                                                     if (count((array)$row)) {
-                                                        $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan,'text' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
+                                                        $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan, 'text' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
                                                     }
                                                 }
                                                 // sumber_dana
@@ -1520,7 +1520,7 @@ class get_data
                                         case 'get_row_json':
                                             switch ($tbl) {
                                                 case 'rekanan':
-                                                    $dataJson['results'][] = ['name' => $row->nama_perusahaan,'text' => $row->nama_perusahaan, 'value' => $row->id, 'description' => $row->	npwp.' ('.$row->direktur.')', "descriptionVertical" => true];
+                                                    $dataJson['results'][] = ['name' => $row->nama_perusahaan, 'text' => $row->nama_perusahaan, 'value' => $row->id, 'description' => $row->npwp . ' (' . $row->direktur . ')', "descriptionVertical" => true];
                                                     break;
                                                 case 'sub_keg_renja':
                                                 case 'sub_keg_dpa':

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 02 Mar 2024 pada 22.26
+-- Waktu pembuatan: 02 Mar 2024 pada 23.10
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -123,8 +123,8 @@ CREATE TABLE `bidang_urusan_neo` (
 
 CREATE TABLE `daftar_paket_neo` (
   `id` int(11) NOT NULL,
-  `kd_rup` int(11) DEFAULT NULL,
-  `kd_paket` int(11) DEFAULT NULL,
+  `kd_rup` varchar(25) DEFAULT NULL,
+  `kd_paket` varchar(25) DEFAULT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
   `kd_opd` varchar(50) NOT NULL,
   `tahun` year(4) NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE `daftar_paket_neo` (
   `id_uraian` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`id_uraian`)),
   `kd_sub_keg` text NOT NULL,
   `volume` int(11) DEFAULT NULL,
-  `satuan` int(11) DEFAULT NULL,
+  `satuan` varchar(50) DEFAULT NULL,
   `harga_satuan` decimal(36,12) DEFAULT NULL,
   `jumlah` decimal(36,12) DEFAULT NULL,
   `pagu` decimal(36,12) NOT NULL,
@@ -145,11 +145,11 @@ CREATE TABLE `daftar_paket_neo` (
   `id_rekanan` int(11) NOT NULL,
   `nama_rekanan` varchar(255) DEFAULT NULL,
   `nama_ppk` varchar(255) DEFAULT NULL,
-  `nip_ppk` int(18) DEFAULT NULL,
+  `nip_ppk` varchar(25) DEFAULT NULL,
   `nama_pptk` varchar(255) DEFAULT NULL,
   `waktu_pelaksanaan` int(11) DEFAULT NULL,
   `waktu_pemeliharaan` int(11) DEFAULT NULL,
-  `nip_pptk` int(18) DEFAULT NULL,
+  `nip_pptk` varchar(25) DEFAULT NULL,
   `tgl_kontrak` date DEFAULT NULL,
   `no_kontrak` varchar(255) DEFAULT NULL,
   `tgl_persiapan_kont` datetime DEFAULT NULL,

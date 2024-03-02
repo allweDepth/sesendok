@@ -477,33 +477,36 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- tab_kontrak -->
             <!-- ============== -->
             <div class="ui tab basic segment container" data-tab="tab_kontrak" tbl="daftar_paket">
-                <div class="ui info message" name="ketref">Nabiilainayah</div>
-                <div class="ui hidden divider"></div>
-                <div class="ui right floated basic icon buttons">
-                    <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl="daftar_paket"><i class="plus icon"></i></button>
-                    <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
-                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="daftar_paket" type="submit"><i class="alternate download icon"></i></button>
-                </div>
-                <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
-                <div class="ui hidden divider"></div>
-                <div class="ui hidden divider"></div>
-                <table class="ui very basic table insert">
-                    <thead>
-                        <tr>
-                            <th>Uraian Komponen</th>
-                            <th>Pagu</th>
-                            <th>Nilai Kontrak</th>
-                            <th>Nama PPK</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="ui container">
+                    <div class="ui info message" name="ketref">Nabiilainayah</div>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl="daftar_paket"><i class="plus icon"></i></button>
+                        <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="daftar_paket" type="submit"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
+                    <table class="ui very basic table insert">
+                        <thead>
+                            <tr>
+                                <th>Uraian Komponen</th>
+                                <th>Pagu</th>
+                                <th>Nilai Kontrak</th>
+                                <th>Nama PPK</th>
+                                <th>Keterangan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+
             </div>
             <!-- ============== -->
             <!-- tab_input_real -->

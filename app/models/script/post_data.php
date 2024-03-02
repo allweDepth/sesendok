@@ -125,7 +125,7 @@ class post_data
                                     'required' => true,
                                     'json_repair' => true
                                 ]);
-                                $send = json_decode($send);
+                                $send = json_decode($id_uraian);
                                 // atur kembali id uraian
                                 $pagu = 0;
                                 $jumlah = 0;
@@ -138,7 +138,7 @@ class post_data
                                         $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
                                         $pagu += $row_sub->$klm_jumlah;
                                         $jumlah += $value->val_kontrak;
-                                        $kd_sub_keg[] = $row_sub->$kd_sub_keg;
+                                        $kd_sub_keg[] = $row_sub->kd_sub_keg;
                                     } else {
                                         //hapus key yang tidak mempunyai persyaratan
                                         unset($send[$key]);
@@ -157,7 +157,7 @@ class post_data
                                 $uraian = $validate->setRules('uraian', 'uraian', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'json' => true
+                                    'min_char' => 4
                                 ]);
                                 $volume = $validate->setRules('volume', 'volume', [
                                     'required' => true,
@@ -167,14 +167,14 @@ class post_data
                                 $satuan = $validate->setRules('satuan', 'satuan', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_3']]]]
+                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['satuan']]]]
                                 ]);
                                 $id_rekanan = $validate->setRules('id_rekanan', 'Rekanan', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inDB' => ['rekanan_neo', 'id', [['id', "=", $_POST['id_rekanan'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND']]]]
+                                    'inDB' => ['rekanan_neo', 'id', [['id', "=", $_POST['id_rekanan']], ['kd_wilayah', '=', $kd_wilayah, 'AND']]]
                                 ]);
-                                $kondisi = [['id', '=', $id_rekanan], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND']];
+                                $kondisi = [['id', '=', $id_rekanan], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['disable', '<=', 0, 'AND']];
                                 $row_sub = $DB->getWhereOnceCustom('rekanan_neo', $kondisi);
                                 $nama_rekanan = '';
                                 if ($row_sub !== false) {
@@ -384,6 +384,13 @@ class post_data
                                 $kd_paket = $validate->setRules('kd_paket', 'Kode Paket', [
                                     'sanitize' => 'string'
                                 ]);
+                                $renc_output = $validate->setRules('renc_output', 'Output Rencana', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $output = $validate->setRules('output', 'output paket', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $addendum = '{}';
                                 break;
                             case 'pengaturan':
                                 $tahun = $validate->setRules('tahun', 'tahun anggaran', [
@@ -869,10 +876,6 @@ class post_data
                                     }
                                 }
                                 $sumber_dana = preg_replace('/(\s\s+|\t|\n)/', ' ', implode(',', $explodeAwal));
-
-
-
-
                                 $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
                                     'sanitize' => 'string',
                                     'numeric' => true,
@@ -1343,9 +1346,10 @@ class post_data
                             switch ($tbl) {
                                 case 'daftar_paket':
                                     if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kelompok', '=', $kelompok, 'AND'], ['text', '=', $text, 'AND']];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['pagu', '=', $pagu, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     }
+                                    // var_dump(json_encode($id_uraian));
                                     $set = [
                                         'kd_rup' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_rup),
                                         'kd_paket' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_paket),
@@ -1353,7 +1357,7 @@ class post_data
                                         'kd_opd' => $kd_opd,
                                         'tahun' => $tahun,
                                         'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
-                                        'id_uraian' => json_decode($id_uraian),
+                                        'id_uraian' => json_encode($id_uraian),
                                         'kd_sub_keg' => $kd_sub_keg,
                                         'volume' => $volume,
                                         'satuan' => $satuan,
@@ -1851,7 +1855,7 @@ class post_data
                                     break;
                             }
                             if ($_FILES) {
-                                if ($_FILES['file']) {
+                                if (isset($_FILES['file'])) {
                                     $file = $Fungsi->importFile($tbl, '');
                                     //var_dump($file);
                                     if ($file['result'] == 'ok') {

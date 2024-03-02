@@ -235,6 +235,8 @@ class MasterFungsi
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
                     case 'daftar_paket':
+                        $tbl_button = ($tbl == 'sub_keg_renja') ? 'renja' : 'dpa';
+                        $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
                         $divAwal = '';
                         $divAkhir = '';
@@ -247,8 +249,8 @@ class MasterFungsi
                                 <div class="menu">
                                     <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
                                     <div class="divider"></div>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"><i class="pen square blue icon"></i>Rincian</a>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><i class="pen square red icon"></i>Rincian Perubahan</a>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl=""><i class="pen square blue icon"></i>Rincian</a>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl=""><i class="pen square red icon"></i>Rincian Perubahan</a>
                                     <div class="item"><div class="ui red empty circular label"></div>Help</div>
                                 </div>
                             </div>';
