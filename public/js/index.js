@@ -2796,7 +2796,7 @@ $(document).ready(function () {
 			case 'uraian_belanja':
 				switch (tblAttr) {
 					case 'daftar_paket':
-						
+
 						formIni.attr('jns', 'add_uraian').attr('tbl', tblAttr);
 						mdl.removeClass("tiny");
 						elementForm = buatElemenHtml("fieldSearchGrid", {
@@ -2997,7 +2997,7 @@ $(document).ready(function () {
 									MyForm = $(`form[name="form_modal"]`);
 									let kd_sub_keg = MyForm.find(`.ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
 									var searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.sub_keg_dpa');
-									let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'renja_p', data_send: { kd_sub_keg: kd_sub_keg } }
+									let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'dpa_dppa', data_send: { kd_sub_keg: kd_sub_keg } }
 									searchPrompt.searchGlobal(allField)
 									if (kd_sub_keg.length <= 0) {
 										delete window.searchPrompt;//searchPrompt = null;or undefined; or delete window.searchPrompt;
@@ -3763,6 +3763,28 @@ $(document).ready(function () {
 								case 'add_field_json':
 									jalankanAjax = true;
 									switch (tbl) {
+										case 'daftar_paket':
+									switch (jenis) {//@audit sekarang
+										case 'add_uraian':
+											let dataUraian = {};
+											$(`[name="form_modal"] table tbody tr`).each(function () {
+												let element = $(this);
+												let idUraian = Number(element.find('tr').attr('id_row'));
+												let kontrak = Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+												dataUraian[idUraian] = {valKontrak : kontrak};
+											});
+											let elmUraian = ini.find('input[name=""]')
+											$(".ui.modal.mdl_general").modal("hide");
+											break;
+										case "add":
+										case "edit":
+											jalankanAjax = true;
+											break;
+										default:
+											break;
+									};
+
+									break;
 										case 'sub_keg_renja':
 										case 'sub_keg_dpa':
 											formData.set('klm', klmAttr);
@@ -3786,20 +3808,7 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
-								case 'daftar_paket':
-									switch (jenis) {//@audit sekarang
-										case 'add_uraian':
-											$(".ui.modal.mdl_general").modal("hide");
-											break;
-										case "add":
-										case "edit":
-											jalankanAjax = true;
-											break;
-										default:
-											break;
-									};
-
-									break;
+								
 								case "peraturan":
 									switch (jenis) {
 										case "add":
@@ -4161,14 +4170,14 @@ $(document).ready(function () {
 					switch (this.tbl) {
 						case 'dppa':
 						case 'renja_p':
+							break;
+						case 'dpa_dppa':
 							this.url = "script/get_data";
 							let kd_sub_keg = $(`form[name="form_modal"] .ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
 							allField.data_send.kd_sub_keg = kd_sub_keg;
 							if (kd_sub_keg.length <= 0 || !allField.data_send.hasOwnProperty("kd_sub_keg")) {
 								// this.url = '';
 							}
-							console.log(allField.data_send.kd_sub_keg);
-
 							break;
 						case 'value':
 							break;
@@ -4219,8 +4228,7 @@ $(document).ready(function () {
 					switch (jenis) {
 						case 'get_Search_Json':
 							switch (tbl) {
-								case 'dppa':
-								case 'renja_p':
+								case 'dpa_dppa':
 									let MyForm = $(`[name="form_modal"]`);
 									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
 									let cellKontrak = MyForm.find(`table tfoot [name="kontrak"]`);
@@ -4230,10 +4238,8 @@ $(document).ready(function () {
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value} pagu="${result.jumlah}" kd_sub_keg="${result.kd_sub_keg}" kd_akun="${result.kd_akun}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
+										let trElm = `<tr id_row="${result.value} pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
 										MyForm.find(`table tbody`).append(trElm);
-
-
 										let pagu = 0;
 										let kontrak = 0;
 										$(`[name="form_modal"] table tbody tr`).each(function () {

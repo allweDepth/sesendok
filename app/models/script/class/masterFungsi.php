@@ -852,6 +852,31 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'dpa_dppa':
+                $tabel_pakai = '';
+                $user = new User();
+                $DB = DB::getInstance();
+                $user->cekUserSession();
+                $username = $_SESSION["user"]["username"];
+                $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
+                $dataJson['results'] = [];
+                if ($rowUsername != false) {
+                    foreach ($rowUsername as $key => $value) {
+                        ${$key} = $value;
+                    }
+                    $tahun = (int) $rowUsername->tahun;
+                    $kd_wilayah = $rowUsername->kd_wilayah;
+                    $kd_opd = $rowUsername->kd_organisasi;
+                    $id_user = $rowUsername->id;
+                    $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+                    if ($rowPengaturan != false) {
+                        foreach ($rowPengaturan as $key => $value) {
+                            ${$key} = $value;
+                        }
+                        $tabel_pakai = ($setujui_dppa) ? 'dppa_neo' : 'dpa_neo' ;
+                    }
+                } 
+                break;
             case 'daftar_paket':
                 $tabel_pakai = 'daftar_paket_neo';
                 $jumlah_kolom = 7;

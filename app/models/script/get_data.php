@@ -171,16 +171,9 @@ class get_data
                             case 'dpa':
                             case 'dppa':
                             case 'renja_p':
-                                switch ($tbl) {
-                                    case 'dpa':
-                                    case 'dppa':
-                                        $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
-                                        break;
-                                    case 'renja':
-                                    case 'renja_p':
-                                        $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
-                                        break;
-                                };
+                                break;
+                            case 'dpa_dppa':
+                                $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
                                 $kd_sub_keg = $validate->setRules('kd_sub_keg', "kd_sub_keg", [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1010,21 +1003,14 @@ class get_data
                                 case 'dpa':
                                 case 'dppa':
                                 case 'renja_p':
-                                    switch ($tbl) {
-                                        case 'dpa':
-                                        case 'dppa':
-                                            $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
-                                            break;
-                                        case 'renja':
-                                        case 'renja_p':
-                                            $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
-                                            break;
-                                    };
+                                    break;
+                                case 'dpa_dppa':
+                                    $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
                                     $like = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND kel_rek = ? AND kd_sub_keg = ? AND (jumlah LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR sumber_dana LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, 'uraian',$kd_sub_keg, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, 'uraian', $kd_sub_keg, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kd_akun ASC";
                                     $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ? AND kel_rek = ? AND kd_sub_keg = ?";
-                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, 'uraian',$kd_sub_keg];
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, 'uraian', $kd_sub_keg];
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
                                     //pilih kolom yang diambil
                                     // $DB->select('id, kelompok, id_tujuan, text, keterangan');
@@ -1533,21 +1519,24 @@ class get_data
                                                 case 'dpa':
                                                 case 'dppa':
                                                 case 'renja_p':
-                                                    switch ($tbl) {
-                                                        case 'renja':
-                                                        case 'dpa':
+                                                    break;
+                                                case 'dpa_dppa':
+                                                    //memilih dokumen anggaran yang sudah disetujui di pengaturan
+                                                    $dok_anggaran = 'dpa';
+                                                    switch ($tabel_pakai) {
+                                                        case 'dpa_neo':
                                                             $clmJumlah = "jumlah";
                                                             break;
-                                                        case 'renja_p':
                                                         case 'dppa':
                                                             $clmJumlah = "jumlah_p";
+                                                            $dok_anggaran = 'dppa';
                                                             break;
                                                         default:
                                                             # code...
                                                             break;
                                                     }
                                                     $deskripsi = $row->kd_akun . ' (' . number_format($row->$clmJumlah, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['category'=>$row->kd_akun,'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg];
+                                                    $dataJson['results'][] = ['category' => $row->kd_akun, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg, 'dok_anggaran' => $dok_anggaran];
                                                     break;
                                                 default:
                                                     break;
@@ -1657,6 +1646,7 @@ class get_data
                     case 'renja':
                     case 'dpa':
                     case 'dppa':
+                    case 'dpa_dppa':
                     case 'renja_p':
                     case 'sub_keg_dpa':
                     case 'sub_keg_renja':
