@@ -2278,7 +2278,7 @@ $(document).ready(function () {
 		})
 		.flyout("attach events", '[name="flyout"]');
 	//========================================
-	//===========DEL ROW DAN EKSEKUSI ==========@audit-ok validasi dan delete
+	//===========DEL ROW DAN EKSEKUSI ==========@audit-ok val/delete row
 	//========================================
 	$("body").on("click", '[name="del_row"], [name="jalankan"]', function (e) {
 		e.stopImmediatePropagation();
@@ -2441,12 +2441,37 @@ $(document).ready(function () {
 							obj.css("background-color", "#EF617C");
 							obj.fadeOut(500, function () {
 								obj.remove();
+								switch (tbl) {
+									case 'remove_uraian':
+										let cellJumlah = form.find(`table tfoot [name="jumlah"]`);
+										let cellKontrak = form.find(`table tfoot [name="kontrak"]`);
+										let pagu = 0;
+										let kontrak = 0;
+										$(`[name="form_modal"] table tbody tr`).each(function () {
+											let element = $(this);
+											pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
+											kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+										});
+										let strText = parseFloat(pagu);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										cellJumlah.text(strText);
+										strText = parseFloat(kontrak);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										cellKontrak.text(strText);
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
+
 								if (typeof form !== "undefined") {
 									//console.log(form);
 									removeRulesForm(form);
-									var reinitForm = new FormGlobal(form);
+									let reinitForm = new FormGlobal(form);
 									reinitForm.run();
 									addRulesForm(form);
+
 								}
 							});
 							break;
@@ -2822,7 +2847,7 @@ $(document).ready(function () {
 									attr: `name="jumlah"`
 								}, {
 									lbl: 0,
-									attr: `colspan="2" name="jumlah_kontrak"`
+									attr: `colspan="2" name="kontrak"`
 								}],
 								bodyTable: []
 							});
@@ -4191,26 +4216,30 @@ $(document).ready(function () {
 								case 'renja_p':
 									let MyForm = $(`[name="form_modal"]`);
 									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
+									let cellKontrak = MyForm.find(`table tfoot [name="kontrak"]`);
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									let cek_id = MyForm.find(`table tbody tr[id_row="${result.value}"]`);
 									if (cek_id.length <= 0) {
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td>${strText}</td><td><div contenteditable rms onkeypress="return rumus(event);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="edit" tbl="${tbl}" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
+										let trElm = `<tr id_row="${result.value}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="return rumus(event);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
 										MyForm.find(`table tbody`).append(trElm);
-										console.log(cellJumlah.text());
-										let jumlah = 0;
-										if (Number(cellJumlah.text()) <= 0) {
-											jumlah = Number(result.jumlah);
-											cellJumlah.text(jumlah);
-										} else {
-											jumlah = accounting.unformat(cellJumlah.text(), ",") + Number(result.jumlah);
 
-										}
-										strText = parseFloat(jumlah);
+
+										let pagu = 0;
+										let kontrak = 0;
+										$(`[name="form_modal"] table tbody tr`).each(function () {
+											let element = $(this);
+											pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
+											kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+										});
+										strText = parseFloat(pagu);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
 										cellJumlah.text(strText);
+										strText = parseFloat(kontrak);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										cellKontrak.text(strText);
 									}
 									$("[rms]").mathbiila();
 									break;
