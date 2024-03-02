@@ -2808,7 +2808,7 @@ $(document).ready(function () {
 										lbl: `URAIAN`
 									}, {
 										lbl: `PAGU`
-									},{
+									}, {
 										lbl: `KONTRAK`
 									}, {
 										lbl: `AKSI`
@@ -2830,7 +2830,6 @@ $(document).ready(function () {
 					default:
 						break;
 				}
-				break;
 				break;
 			case 'xxx':
 				break;
@@ -2979,9 +2978,12 @@ $(document).ready(function () {
 									//buatkan konstruktor untuk search
 									MyForm = $(`form[name="form_modal"]`);
 									let kd_sub_keg = MyForm.find(`.ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
-									let searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.sub_keg_dpa');
+									var searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.sub_keg_dpa');
 									let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'renja_p', data_send: { kd_sub_keg: kd_sub_keg } }
 									searchPrompt.searchGlobal(allField)
+									if (kd_sub_keg.length <= 0) {
+										delete window.searchPrompt;//searchPrompt = null;or undefined; or delete window.searchPrompt;
+									}
 									break;
 								case 'value1':
 									break;
@@ -4109,19 +4111,55 @@ $(document).ready(function () {
 	//===============SEACH GLOBAL============@audit-ok SearchConstructor
 	//=======================================
 	class SearchConstructor {
+		jenis = '';
+		tbl = '';
+		ajax = false;
+		result_ajax = {};
+		url = "script/get_data";
+		searchDelay = 600;
 		constructor(elmSearch) {
 			this.elmSearch = $(elmSearch); //element;
 		}
 		searchGlobal(allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'sbu', data_send: {} }) {
 			let MyElmSearch = this.elmSearch;
+			this.jenis = allField.jenis;
+			this.tbl = allField.tbl;
+			switch (this.jenis) {
+				case 'get_Search_Json':
+					switch (this.tbl) {
+						case 'dppa':
+						case 'renja_p':
+							this.url = "script/get_data";
+							let kd_sub_keg = $(`form[name="form_modal"] .ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
+							allField.data_send.kd_sub_keg = kd_sub_keg;
+							if (kd_sub_keg.length <= 0 || !allField.data_send.hasOwnProperty("kd_sub_keg")) {
+								// this.url = '';
+							}
+							console.log(allField.data_send.kd_sub_keg);
+
+							break;
+						case 'value':
+							break;
+						case 'value1':
+							break;
+						default:
+							break;
+					};
+					break;
+				case 'value1':
+					break;
+				default:
+					break;
+			};
+			let url = this.url;
 			MyElmSearch.search({
-				cache:false,
+				cache: false,
 				minCharacters: allField.minCharacters,
 				maxResults: countRows(),
 				searchDelay: allField.searchDelay,
 				apiSettings: {
 					method: "POST",
-					url: "script/get_data",
+					url: url,
 					// passed via POST
 					data: Object.assign({
 						jenis: allField.jenis,
@@ -4162,13 +4200,13 @@ $(document).ready(function () {
 										let trElm = `<tr id_row="${result.value}"><td>${result.kd_sub_keg}</td><td>${result.title}</td><td>${strText}</td><td><div contenteditable rms onkeypress="return rumus(event);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="edit" tbl="${tbl}" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`
 										MyForm.find(`table tbody`).append(trElm);
 										console.log(cellJumlah.text());
-										let jumlah =  0;
-										if(Number(cellJumlah.text()) <= 0){
-											jumlah =  Number(result.jumlah);
+										let jumlah = 0;
+										if (Number(cellJumlah.text()) <= 0) {
+											jumlah = Number(result.jumlah);
 											cellJumlah.text(jumlah);
-										}else{
-											jumlah =  accounting.unformat(cellJumlah.text(), ",") + Number(result.jumlah);
-											
+										} else {
+											jumlah = accounting.unformat(cellJumlah.text(), ",") + Number(result.jumlah);
+
 										}
 										strText = parseFloat(jumlah);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
@@ -5044,7 +5082,7 @@ $(document).ready(function () {
 });
 // onkeypress="return rumus(event);"
 function rumus(evt) {
-	
+
 	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
 		String.fromCharCode(evt.which)
 	);

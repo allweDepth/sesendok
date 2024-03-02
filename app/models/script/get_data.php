@@ -24,6 +24,7 @@ class get_data
         $dataJson = array();
         //ambil row user
         $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
+        $dataJson['results'] = [];
         if ($rowUsername != false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
