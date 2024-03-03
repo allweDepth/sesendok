@@ -1936,6 +1936,7 @@ $(document).ready(function () {
 						label: "Pilih File Dokumen",
 						placeholderData: `Pilih File (${acceptFileExt})...`,
 						accept: acceptFileExt,
+						file: data.dok
 					}); //non_data(artinya tidak di dicek form)
 					//dropdown
 
@@ -1970,7 +1971,7 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
-						case 'daftar_paket'://@audit contoh
+						case 'daftar_paket':
 							dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 							var dropdown_ajx_rekanan = new DropdownConstructor('.ui.dropdown.rekanan.ajx.selection')
@@ -2146,8 +2147,9 @@ $(document).ready(function () {
 													let attrElm = $(iterator).attr('name');
 													let postDataField = true;
 													let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
-													// console.log(`attrElm : ${attrElm}`);
-													if (attrElm === 'file') {
+													let text = `${result.data?.users[attrElm]}`;
+													let position = text.search('file');
+													if (attrElm === 'file' || position >=0) {
 														formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 													} else {
 														let strText = null;
@@ -2165,7 +2167,7 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
-																	case 'daftar_paket'://@audit contoh
+																	case 'daftar_paket':
 																		switch (attrElm) {
 																			case 'satuan':
 																				dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
@@ -2354,7 +2356,12 @@ $(document).ready(function () {
 									case 'upload':
 										switch (tbl) {
 											case 'daftar_paket':
-												let namaFileLink = result.data.users[ini.attr("dok")];
+												let dok = ini.attr("dok");
+												console.log(dok);
+												console.log(result.data?.users[dok]);
+												formIni.find(`[name_bayang="${dok}"]`).val(result.data?.users[dok])
+												// formIni.form("set value", dok, result.data?.users[dok]).trigger("change");
+												let namaFileLink = result.data.users[dok];
 												if (namaFileLink) {
 													let splitku = namaFileLink.split('.');
 													let extensionFile = splitku[splitku.length - 1];
@@ -2363,25 +2370,7 @@ $(document).ready(function () {
 														case 'png':
 														case 'jpg':
 														case 'jpeg':
-															formIni.append(`<div class="ui fluid card">
-															<a class="image">
-																<img src="${namaFileLink}">
-															</a>
-															<div class="content">
-																<a class="header">Dokumentasi</a>
-																
-															</div>
-															<div class="extra content">
-    <span class="left floated like">
-      <i class="like icon"></i>
-      Like
-    </span>
-    <span class="right floated star">
-      <i class="star icon"></i>
-      Favorite
-    </span>
-  </div>
-															</div>`);
+															formIni.append(`<div class="ui fluid card"><a class="image"><img src="${namaFileLink}"></a><div class="content"><a class="header" href="${namaFileLink}" target="_blank">Dokumentasi</a></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`);
 															break;
 
 														default:
@@ -2724,15 +2713,15 @@ $(document).ready(function () {
 	$("body").on("click", 'input[name="dum_file"]', function (e) {
 		e.preventDefault();
 		//console.log('masuk dum file')
-		var himp = $(this).closest(".action");
+		let himp = $(this).closest(".action");
 		//console.log(himp.find('input[type="file"]'))
-		var inputFile = himp.find('input[nama="file"]');
+		let inputFile = himp.find('input[nama="file"]');
 		inputFile.val("");
 		//inputFile.click();
 		inputFile.trigger("click");
 		//button.on("click", function () { buttonClick(button, popup); });
 	});
-	$("body").on("change", 'input[type="file"]', function (e) {
+	$("body").on("change", 'input[type="file"]', function (e) {//@audit now
 		let ini = $(this);
 		//Membaca File Excel dengan sheetJS
 		let jenis = ini.attr("jns");
@@ -2827,21 +2816,22 @@ $(document).ready(function () {
 				//$('#wrapper')[0].innerHTML += htmlstr;
 			};
 		}
-		//console.log(e)
-		var himp = ini.closest(".action");
-		var nama_file = e.target.files[0].name;
+
+		let himp = ini.closest(".action");
+		let nama_file = e.target.files[0].name;
+		console.log(`nama_file : ${nama_file}`)
 		himp.find('input[name="dum_file"]').val(nama_file);
-		var file = $(this)[0].files[0].name.toLowerCase(); //this.files[0];
-		var arrayAccept = $(this).attr("accept");
+		let file = $(this)[0].files[0].name.toLowerCase(); //this.files[0];
+		let arrayAccept = $(this).attr("accept");
 		if (arrayAccept !== undefined && arrayAccept.length > 0) {
 			arrayAccept = arrayAccept.split(",");
 		} else {
 			arrayAccept = [".xlsx"];
 		}
 		//console.log(arrayAccept);
-		var fileExp = file.split(".");
+		let fileExp = file.split(".");
 		//console.log(fileExp);
-		var extFile = "." + fileExp[fileExp.length - 1];
+		let extFile = "." + fileExp[fileExp.length - 1];
 		//console.log(extFile);
 		//console.log(arrayAccept.indexOf(extFile));
 		if (arrayAccept.indexOf(extFile) < 0) {
@@ -2961,7 +2951,7 @@ $(document).ready(function () {
 				break;
 			case 'uraian_belanja':
 				switch (tblAttr) {
-					case 'daftar_paket'://@audit sekarang3
+					case 'daftar_paket':
 						let json_id_uraian = $(`form[name="form_flyout"]`).form('get value', 'id_uraian');
 						if (json_id_uraian.length > 2) {
 							json_id_uraian = JSON.parse($(`form[name="form_flyout"]`).form('get value', 'id_uraian'));
@@ -3952,7 +3942,7 @@ $(document).ready(function () {
 						case "form_modal":
 							switch (jenis) {
 								case 'add_uraian':
-									switch (tbl) {//@audit sekarang
+									switch (tbl) {
 										case 'daftar_paket':
 											let dataUraian = {};
 											let sx = 0;
@@ -4467,7 +4457,7 @@ $(document).ready(function () {
 					let tbl = allField.tbl;
 					switch (jenis) {
 						case 'get_Search_Json':
-							switch (tbl) {//@audit sekarang
+							switch (tbl) {
 								case 'dpa_dppa':
 									let MyForm = $(`[name="form_modal"]`);
 									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
@@ -4915,7 +4905,7 @@ $(document).ready(function () {
 			case "fieldFileInput2":
 				//atribut file hanya placeholder
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly="" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly name_bayang="${file}" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" ${atribut2} non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
 				break;
 			case "fieldTextarea":
 				elemen =

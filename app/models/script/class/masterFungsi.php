@@ -2236,11 +2236,15 @@ class MasterFungsi
         //svar_dump($dataWall);
         return $dataWall;
     }
-    public function importFile($tbl, $set=['nameFileDel' => ''])
+    public function importFile($tbl, $set=['dok'=>'','nameFileDel' => ''])
     {
         $nameFileDel = '';
         if(isset($set['nameFileDel'])){
             $nameFileDel = $set['nameFileDel'];
+        }
+        $dok = 'file';
+        if(isset($set['dok'])){
+            $dok = $set['dok'];
         }
         $user = new User();
         $user->cekUserSession();
@@ -2316,13 +2320,13 @@ class MasterFungsi
             // Undefined | Multiple Files | $_FILES Corruption Attack
             // If this request falls under any of them, treat it invalid.
             if (
-                !isset($_FILES['file']['error']) ||
-                is_array($_FILES['file']['error'])
+                !isset($_FILES[$dok]['error']) ||
+                is_array($_FILES[$dok]['error'])
             ) {
                 throw new RuntimeException('Invalid parameters.');
             }
             // Check $_FILES['upfile']['error'] value.
-            switch ($_FILES['file']['error']) {
+            switch ($_FILES[$dok]['error']) {
                 case UPLOAD_ERR_OK:
                     break;
                 case UPLOAD_ERR_NO_FILE:
@@ -2334,17 +2338,17 @@ class MasterFungsi
                     throw new RuntimeException('Unknown errors.');
             }
             // You should also check filesize here. 
-            if ($_FILES['file']['size'] > $maxsize) {
+            if ($_FILES[$dok]['size'] > $maxsize) {
                 throw new RuntimeException('Exceeded filesize limit.');
             }
-            if ($_FILES['file']['size'] <= 0) {
+            if ($_FILES[$dok]['size'] <= 0) {
                 throw new RuntimeException('Exceeded filesize minimum.');
             }
             // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
             // Check MIME Type by yourself.
             $finfo = new finfo(FILEINFO_MIME_TYPE);
             if (false === $ext = array_search(
-                $finfo->file($_FILES['file']['tmp_name']),
+                $finfo->file($_FILES[$dok]['tmp_name']),
                 $valid_extension,
                 true
             )) {
@@ -2357,13 +2361,13 @@ class MasterFungsi
                 $namaFileCustomTambahan = $set['nama_file'];
                 $namaFile = sprintf(
                     "$targetPath%s.%s", //"./uploads/%s.%s",
-                    $namaFileCustomTambahan.'_'.sha1_file($_FILES['file']['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
+                    $namaFileCustomTambahan.'_'.sha1_file($_FILES[$dok]['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
                     $ext
                 );
             }else{
                 $namaFile = sprintf(
                     "$targetPath%s.%s", //"./uploads/%s.%s",
-                    sha1_file($_FILES['file']['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
+                    sha1_file($_FILES[$dok]['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
                     $ext
                 );
             }
@@ -2373,10 +2377,10 @@ class MasterFungsi
                 sha1_file($_FILES['file']['tmp_name']), //sha1_file($_FILES['file']['tmp_name']),
                 $ext
             );*/
-            //var_dump($_FILES);
+            // var_dump($_FILES[$dok]['tmp_name']);
             //var_dump($fileNamePath);
             if (!move_uploaded_file(
-                $_FILES['file']['tmp_name'],
+                $_FILES[$dok]['tmp_name'],
                 $fileNamePath
             )) {
                 throw new RuntimeException('Failed to move uploaded file.');
@@ -2388,16 +2392,16 @@ class MasterFungsi
             if (file_exists($nameFileDel) && strlen($nameFileDel)) {
                 // unlink($nameFileDel);
                 $status  = unlink($nameFileDel) ? 'The file ' . $nameFileDel . ' has been deleted' : 'Error deleting ' . $nameFileDel;
-                return ['result' => 'ok', 'file' => $nameFileDel, 'status' => $status];
+                return ['result' => 'ok', $dok => $nameFileDel, 'status' => $status];
             } else {
                 $status = 'The file ' . $nameFileDel . ' doesnot exist';
                 //return ['result' => 'ok', 'file' => $nameFileDel, 'status' => $status];
             }
             //unlink($nameFileDel);
-            return ['result' => 'ok', 'file' => $namaFile]; //'File is uploaded successfully.'
+            return ['result' => 'ok', $dok => $namaFile]; //'File is uploaded successfully.'
         } catch (RuntimeException $e) {
             //var_dump($e->getMessage());
-            return ['result' => 'error', 'file' => $e->getMessage()]; //$e->getMessage();
+            return ['result' => 'error', $dok => $e->getMessage()]; //$e->getMessage();
         }
     }
     //get dropdown

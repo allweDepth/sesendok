@@ -1383,10 +1383,10 @@ class post_data
                                 switch ($tbl) {
                                     case 'daftar_paket':
                                         $uraian = "kd_paket({$row_sub->id})_dok({$dok})_wilayah({$kd_wilayah})";
-                                        $set_file  = ['nama_file'=>$uraian];
+                                        $set_file  = ['nama_file'=>$uraian,'dok'=>$dok];
                                         if(strlen($row_sub->$dok) > 5){
                                             $nameFileDel = $row_sub->$dok;
-                                            $set_file  = ['nama_file'=>$uraian,'nameFileDel'=>$nameFileDel];
+                                            $set_file  = ['nama_file'=>$uraian,'nameFileDel'=>$nameFileDel,'dok'=>$dok];
                                         }
                                         
                                         break;
@@ -1398,13 +1398,13 @@ class post_data
                                         break;
                                 }
                                 if ($_FILES) {
-                                    if (isset($_FILES['file'])) {
+                                    if (isset($_FILES[$dok])) {
                                         $file = $Fungsi->importFile($tbl, $set_file );
-                                        //var_dump($file);
+                                        // var_dump($file);
                                         if ($file['result'] == 'ok') {
-                                            $set[$dok] = $file['file'];
+                                            $set[$dok] = $file[$dok];
                                         } else {
-                                            $tambahan_pesan = "(" . $file['file'] . ")";
+                                            $tambahan_pesan = "(" . $file[$dok] . ")";
                                         }
                                     }
                                 }
