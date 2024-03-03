@@ -91,6 +91,30 @@ class get_data
                 //PROSES VALIDASI
                 //================
                 switch ($jenis) {
+                    case 'upload':
+                        switch ($tbl) {
+                            case 'daftar_paket':
+                                $val_in_array = ['file_kontrak', 'file_addendum', 'file_pho', 'file_fho', 'file_laporan', 'file_dokumentasi0', 'file_dokumentasi50', 'file_dokumentasi100'];
+                                break;
+                            case 'value':
+                                # code...
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        $id_row = $validate->setRules('id_row', 'dokumen', [
+                            'required' => true,
+                            'numeric' => true,
+                            'min_char' => 1
+                        ]);
+                        $dok = $validate->setRules('dok', 'jenis dokumen', [
+                            'required' => true,
+                            'sanitize' => 'string',
+                            'min_char' => 1,
+                            'in_array' => $val_in_array
+                        ]);
+                        break;
                     case 'get_data':
                         $text = $validate->setRules('text', 'text', [
                             'required' => true,
@@ -291,6 +315,22 @@ class get_data
                     $kodePosting = '';
                     $value_dinamic = [];
                     switch ($jenis) {
+                        case 'upload':
+                            switch ($tbl) {
+                                case 'daftar_paket':
+                                    $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
+                                    $kodePosting = 'get_row';
+                                    $DB->select("kd_sub_keg,uraian,$dok");
+                                    break;
+                                case 'value':
+                                    # code...
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+
+                            break;
                         case 'atur':
                             switch ($tbl) {
                                 case 'organisasi':
@@ -1199,8 +1239,23 @@ class get_data
                                 }
                             }
                             break;
-                        case 'get_data':
                         case 'get_row': //  ambil data 1 baris 
+                            $row_result = $DB->getWhereOnceCustom($tabel_pakai, $kondisi_result);
+                            if ($row_result !== false) {
+                                $data['users'] = $row_result;
+                                switch ($tbl) {
+                                    case 'daftar_paket':
+                                        break;
+                                    case 'value':
+                                        # code...
+                                        break;
+                                    default:
+                                        # code...
+                                        break;
+                                }
+                            }
+                            break;
+                        case 'get_data':
                             $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where_row", $data_where_row);
                             // var_dump($resul);
                             $jumlahArray = is_array($resul) ? count($resul) : 0;
@@ -1251,8 +1306,8 @@ class get_data
                                                         unset($send[$key]);
                                                     }
                                                 }
-                                                $kd_sub_keg = implode(',',$kd_sub_keg);
-                                                $data['users']->count_uraian_belanja= "$si uraian { $kd_sub_keg }";
+                                                $kd_sub_keg = implode(',', $kd_sub_keg);
+                                                $data['users']->count_uraian_belanja = "$si uraian { $kd_sub_keg }";
                                                 break;
                                             case 'mapping':
                                                 $data['values'] = [];

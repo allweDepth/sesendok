@@ -254,7 +254,7 @@ class MasterFungsi
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_pho"><i class="upload blue icon"></i>Unggah PHO</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_fho"><i class="upload blue icon"></i>Unggah FHO</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_laporan"><i class="upload blue icon"></i>Unggah Laporan</div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok"file_dokumentasi0"><i class="upload blue icon"></i>Unggah Dokumentasi 0%</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi0"><i class="upload blue icon"></i>Unggah Dokumentasi 0%</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi50"><i class="upload blue icon"></i>Unggah Dokumentasi 50%</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi100"><i class="upload blue icon"></i>Unggah Dokumentasi 100%</div>
                                     <div class="divider"></div>

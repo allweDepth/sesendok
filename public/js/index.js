@@ -892,6 +892,11 @@ $(document).ready(function () {
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="3" non_data',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
 								});
 							break;
 						case 'dppa':
@@ -1911,16 +1916,19 @@ $(document).ready(function () {
 							break;
 					};
 					break;
-				case "upload":
-					dataHtmlku.icon = "file icon green";
-					dataHtmlku.header = "Import File";
+				case 'upload':
+					dataHtmlku.icon = "file icon blue";
+					dataHtmlku.header = "Unggah File";
 					//file
 					let acceptFileExt = ".pdf,.xlsx,.jpg,.jpeg";
 					switch (tbl) {
-						case value:
-
+						case 'daftar_paket':
+							data.id_row = id_row;
+							formIni.attr("id_row", ini.closest("tr").attr("id_row"));
+							formIni.attr("dok", ini.attr("dok"));
+							data.dok = ini.attr("dok");
+							jalankanAjax = true;
 							break;
-
 						default:
 							break;
 					}
@@ -1930,9 +1938,10 @@ $(document).ready(function () {
 						accept: acceptFileExt,
 					}); //non_data(artinya tidak di dicek form)
 					//dropdown
+
 					switch (tbl) {
 						case 'daftar_paket':
-							formIni.attr("id_row", ini.closest("tr").attr("id_row")).attr("dok", ini.attr("dok"));
+
 							break;
 						case 'value1':
 							break;
@@ -2101,12 +2110,11 @@ $(document).ready(function () {
 		// addRulesForm(formIni);
 		//JALANKAN AJAX
 		if (jalankanAjax) {
-			loaderShow();
+			// loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
 				if (result.success === true) {
 					let hasKey = result.hasOwnProperty("error");
 					if (hasKey) {
-						loaderHide();
 						hasKey = result.error.hasOwnProperty("message");
 						let error_code = result.error.code;
 						let kelasToast = "success";
@@ -2341,11 +2349,55 @@ $(document).ready(function () {
 												}
 												break;
 										}
-										addRulesForm(formIni);
+										// addRulesForm(formIni);
+										break;
+									case 'upload':
+										switch (tbl) {
+											case 'daftar_paket':
+												let namaFileLink = result.data.users[ini.attr("dok")];
+												if (namaFileLink) {
+													let splitku = namaFileLink.split('.');
+													let extensionFile = splitku[splitku.length - 1];
+													switch (extensionFile) {
+														case 'jpeg':
+														case 'png':
+														case 'jpg':
+														case 'jpeg':
+															formIni.append(`<div class="ui fluid card">
+															<a class="image">
+																<img src="${namaFileLink}">
+															</a>
+															<div class="content">
+																<a class="header">Dokumentasi</a>
+																
+															</div>
+															<div class="extra content">
+    <span class="left floated like">
+      <i class="like icon"></i>
+      Like
+    </span>
+    <span class="right floated star">
+      <i class="star icon"></i>
+      Favorite
+    </span>
+  </div>
+															</div>`);
+															break;
+
+														default:
+															break;
+													}
+												}
+
+												break;
+											default:
+												break;
+										}
 										break;
 									default:
 										break;
 								}
+								addRulesForm(formIni);
 								$(".ui.flyout").flyout("toggle");
 								break;
 							case 'value1':
@@ -2356,12 +2408,16 @@ $(document).ready(function () {
 					} else {
 						loaderHide();
 					}
+
+				} else {
+					loaderHide();
 				}
 			};
 			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
+
 		}
 		if (attrName === "flyout" && jalankanAjax === false) {
-			$(".ui.flyout").flyout("toggle");
+			// $(".ui.flyout").flyout("toggle");
 		}
 	});
 	//====================================
@@ -4208,6 +4264,7 @@ $(document).ready(function () {
 											case "akun_belanja":
 											case "wilayah":
 											case "peraturan":
+											case "daftar_paket":
 												switch (jenis) {
 													case "import":
 													case "edit":
@@ -4858,7 +4915,7 @@ $(document).ready(function () {
 			case "fieldFileInput2":
 				//atribut file hanya placeholder
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly="" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" non_data><button class="ui red icon button" name="del_file"><i class="erase icon"></i></button></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly="" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
 				break;
 			case "fieldTextarea":
 				elemen =

@@ -415,6 +415,12 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $addendum = '{}';
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'pengaturan':
                                 $tahun = $validate->setRules('tahun', 'tahun anggaran', [
@@ -729,6 +735,8 @@ class post_data
                                     'numeric' => true,
                                     'in_array' => ['off', 'on']
                                 ]);
+                                
+
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'renstra':
@@ -985,6 +993,7 @@ class post_data
                                     'numeric' => true,
                                     'in_array' => ['off', 'on']
                                 ]);
+                                
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'dpa':
@@ -1321,7 +1330,9 @@ class post_data
                     default:
                         $err = 6;
                 }
+                //==============================
                 //FINISH PROSES VALIDASI
+                //==============================
                 $kodePosting = '';
                 if ($validate->passed()) {
                     $code = 55;
