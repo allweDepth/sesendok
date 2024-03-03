@@ -845,14 +845,14 @@ $(document).ready(function () {
 										atribut: `name="tgl_sppbj" placeholder="Tanggal SPPBJ" non_data`, kelas: "date"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_sppbj" placeholder="Nomor SPPBJ" non_data`,
-									})+
-									buatElemenHtml("fieldFileInput2", {
-										label: "Pilih File Kontrak",
-										file: "file_kontrak",
-										atribut: 'non_data',
-										placeholderData: "Pilih File PHO...",
-										accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
-									})
+									}) +
+										buatElemenHtml("fieldFileInput2", {
+											label: "Pilih File Kontrak",
+											file: "file_kontrak",
+											atribut: 'non_data',
+											placeholderData: "Pilih File PHO...",
+											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
+										})
 								}) +
 								buatElemenHtml("accordionField", {
 									label: "Serah Terima Pengadaan",
@@ -1921,7 +1921,7 @@ $(document).ready(function () {
 			iconFlyout.attr("class", "").addClass(dataHtmlku.icon);
 			headerFlyout.text(dataHtmlku.header);
 			formIni.html(htmlForm);
-			
+
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
 			calendarDate.runCalendar();
 			let calendarYear = new CalendarConstructor(".ui.calendar.year");
@@ -2131,6 +2131,21 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
+																	case 'daftar_paket'://@audit contoh
+																	switch (attrElm) {
+																		case 'satuan':
+																			dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
+																			dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+																			break;
+																		case 'rekanan':
+																			dropdown_ajx_rekanan.valuesDropdown(result.data?.values?.rekanan);
+																			dropdown_ajx_rekanan.returnList({ jenis: "get_row_json", tbl: "rekanan", minCharacters: 3 });
+																		
+																			break;
+																		default:
+																			break;
+																	}
+																		break;
 																	case 'mapping':
 																		switch (attrElm) {
 																			case 'kd_aset':
@@ -5146,7 +5161,7 @@ $(document).ready(function () {
 			console.log(`non_data = ${non_data}`);
 			if (typeof non_data === 'undefined' || non_data === false) {
 				// console.log('masuk addRulesForm');
-				
+
 				formku.form("add rule", atribut, {
 					rules: [
 						{
