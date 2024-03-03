@@ -76,6 +76,30 @@ class post_data
                 //PROSES VALIDASI
                 //================
                 switch ($jenis) {
+                    case 'upload':
+                        switch ($tbl) {
+                            case 'daftar_paket':
+                                $val_in_array = ['file_kontrak', 'file_addendum', 'file_pho', 'file_fho', 'file_laporan', 'file_dokumentasi0', 'file_dokumentasi50', 'file_dokumentasi100'];
+                                break;
+                            case 'value':
+                                # code...
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        $id_row = $validate->setRules('id_row', 'dokumen', [
+                            'required' => true,
+                            'numeric' => true,
+                            'min_char' => 1
+                        ]);
+                        $dok = $validate->setRules('dok', 'jenis dokumen', [
+                            'required' => true,
+                            'sanitize' => 'string',
+                            'min_char' => 1,
+                            'in_array' => $val_in_array
+                        ]);
+                        break;
                     case 'unkunci':
                     case 'unsetujui':
                     case 'kunci':
@@ -324,7 +348,7 @@ class post_data
                                     $tgl_sppbj = $validate->setRules('tgl_sppbj', 'tanggal SPPBJ', [
                                         'sanitize' => 'string',
                                         'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
                                         'min_char' => 8
                                     ]);
                                 }
@@ -1328,6 +1352,57 @@ class post_data
                     //========JENIS==========
                     //=======================
                     switch ($jenis) {
+                        case 'upload':
+                            $set_file = [];
+                            switch ($tbl) {
+                                case 'daftar_paket':
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
+                                    $kodePosting = 'cek_insert';
+                                    $set = [];
+                                    break;
+                                case 'value':
+                                    # code...
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+                            $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                            if ($row_sub) {
+                                switch ($tbl) {
+                                    case 'daftar_paket':
+                                        $uraian = "kd_paket({$row_sub->id})_dok({$dok})_wilayah({$kd_wilayah})";
+                                        $set_file  = ['nama_file'=>$uraian];
+                                        if(strlen($row_sub->$dok) > 5){
+                                            $nameFileDel = $row_sub->$dok;
+                                            $set_file  = ['nama_file'=>$uraian,'nameFileDel'=>$nameFileDel];
+                                        }
+                                        
+                                        break;
+                                    case 'value':
+                                        # code...
+                                        break;
+                                    default:
+                                        # code...
+                                        break;
+                                }
+                                if ($_FILES) {
+                                    if (isset($_FILES['file'])) {
+                                        $file = $Fungsi->importFile($tbl, $set_file );
+                                        //var_dump($file);
+                                        if ($file['result'] == 'ok') {
+                                            $set[$dok] = $file['file'];
+                                        } else {
+                                            $tambahan_pesan = "(" . $file['file'] . ")";
+                                        }
+                                    }
+                                }
+                            } else {
+                                $jenis = '';
+                                $code = 404;
+                            }
+                            
+                            break;
                         case 'edit':
                             $kondisi = [['id', '=', $id_row]];
                             $kodePosting = 'update_row';

@@ -826,19 +826,19 @@ $(document).ready(function () {
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_persiapan_kont" placeholder="Nomor Persiapan Kontrak" non_data`,
 									}) + buatElemenHtml("calendar", {
-										atribut: `name="tgl_spmk" placeholder="Tanggal SPMK" non_data`, kelas: "date"
+										atribut: `name="tgl_spmk" placeholder="Tanggal SPMK" non_data`, kelas: "datetime"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_spmk" placeholder="Nomor Persiapan Kontrak" non_data`,
 									}) + buatElemenHtml("calendar", {
-										atribut: `name="tgl_undangan" placeholder="Tanggal Undangan/Pengumuman" non_data`, kelas: "date"
+										atribut: `name="tgl_undangan" placeholder="Tanggal Undangan/Pengumuman" non_data`, kelas: "datetime"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_undangan" placeholder="Nomor Undangan/Pengumuman" non_data`,
 									}) + buatElemenHtml("calendar", {
-										atribut: `name="tgl_penawaran" placeholder="Tanggal Penawaran" non_data`, kelas: "date"
+										atribut: `name="tgl_penawaran" placeholder="Tanggal Penawaran" non_data`, kelas: "datetime"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_penawaran" placeholder="Nomor Penawaran" non_data`,
 									}) + buatElemenHtml("calendar", {
-										atribut: `name="tgl_nego" placeholder="Tanggal Negoisasi" non_data`, kelas: "date"
+										atribut: `name="tgl_nego" placeholder="Tanggal Negoisasi" non_data`, kelas: "datetime"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_nego" placeholder="Nomor Negoisasi" non_data`,
 									}) + buatElemenHtml("calendar", {
@@ -1910,7 +1910,33 @@ $(document).ready(function () {
 						case 'value1':
 							break;
 					};
+					break;
+				case "upload":
+					dataHtmlku.icon = "file icon green";
+					dataHtmlku.header = "Import File";
+					//file
+					let acceptFileExt = ".pdf,.xlsx,.jpg,.jpeg";
+					switch (tbl) {
+						case value:
 
+							break;
+
+						default:
+							break;
+					}
+					dataHtmlku.konten += buatElemenHtml("fieldFileInput2", {
+						label: "Pilih File Dokumen",
+						placeholderData: `Pilih File (${acceptFileExt})...`,
+						accept: acceptFileExt,
+					}); //non_data(artinya tidak di dicek form)
+					//dropdown
+					switch (tbl) {
+						case 'daftar_paket':
+							formIni.attr("id_row", ini.closest("tr").attr("id_row")).attr("dok", ini.attr("dok"));
+							break;
+						case 'value1':
+							break;
+					};
 					break;
 				default:
 					break;
@@ -1992,7 +2018,7 @@ $(document).ready(function () {
 							break;
 						case 'dpa':
 						case 'renja':
-						case 'dpa':
+						case 'renja_p':
 						case 'dppa':
 							var tabel_pakai_temporerSubkeg = 'sub_keg_renja';
 							switch (tbl) {
@@ -2132,19 +2158,18 @@ $(document).ready(function () {
 																postDataField = false;
 																switch (tbl) {
 																	case 'daftar_paket'://@audit contoh
-																	switch (attrElm) {
-																		case 'satuan':
-																			dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
-																			dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
-																			break;
-																		case 'rekanan':
-																			dropdown_ajx_rekanan.valuesDropdown(result.data?.values?.rekanan);
-																			dropdown_ajx_rekanan.returnList({ jenis: "get_row_json", tbl: "rekanan", minCharacters: 3 });
-																		
-																			break;
-																		default:
-																			break;
-																	}
+																		switch (attrElm) {
+																			case 'satuan':
+																				dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
+																				dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+																				break;
+																			case 'id_rekanan':
+																				dropdown_ajx_rekanan.valuesDropdown(result.data?.values?.id_rekanan);
+																				dropdown_ajx_rekanan.returnList({ jenis: "get_row_json", tbl: "rekanan", minCharacters: 3 });
+																				break;
+																			default:
+																				break;
+																		}
 																		break;
 																	case 'mapping':
 																		switch (attrElm) {
@@ -2191,6 +2216,8 @@ $(document).ready(function () {
 																		break;
 																	case 'dpa':
 																	case 'renja':
+																	case 'renja_p':
+																	case 'dppa':
 																		tabel_pakai_temporerSubkeg = 'sub_keg_renja';
 																		switch (tbl) {
 																			case 'dpa':
@@ -2334,7 +2361,7 @@ $(document).ready(function () {
 			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
 		}
 		if (attrName === "flyout" && jalankanAjax === false) {
-			// $(".ui.flyout").flyout("toggle");
+			$(".ui.flyout").flyout("toggle");
 		}
 	});
 	//====================================
@@ -3949,6 +3976,10 @@ $(document).ready(function () {
 							switch (tbl) {
 								case "daftar_paket":
 									switch (jenis) {
+										case "upload":
+											formData.append("dok", dokAttr);
+											jalankanAjax = true;
+											break;
 										case "add":
 										case "edit":
 											console.log(formData.get('id_uraian'));

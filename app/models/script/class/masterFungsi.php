@@ -249,9 +249,16 @@ class MasterFungsi
                                 <div class="menu">
                                     <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
                                     <div class="divider"></div>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl=""><i class="pen square blue icon"></i>Rincian</a>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl=""><i class="pen square red icon"></i>Rincian Perubahan</a>
-                                    <div class="item"><div class="ui red empty circular label"></div>Help</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_kontrak"><i class="upload blue icon"></i>Unggah File Kontrak</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_addendum"><i class="upload blue icon"></i>Unggah Addendum</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_pho"><i class="upload blue icon"></i>Unggah PHO</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_fho"><i class="upload blue icon"></i>Unggah FHO</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_laporan"><i class="upload blue icon"></i>Unggah Laporan</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok"file_dokumentasi0"><i class="upload blue icon"></i>Unggah Dokumentasi 0%</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi50"><i class="upload blue icon"></i>Unggah Dokumentasi 50%</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi100"><i class="upload blue icon"></i>Unggah Dokumentasi 100%</div>
+                                    <div class="divider"></div>
+                                    <div class="item" name="flyout" jns="download_list" tbl="' . $tbl . '" dok="file_dokumentasi100"><i class="download green icon"></i>Unduh File</div>
                                 </div>
                             </div>';
                             $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
@@ -293,7 +300,7 @@ class MasterFungsi
                                 $kolomVol_3 = 'vol_3_p';
                                 $kolomVol_4 = 'vol_4_p';
                                 $kolomVol_5 = 'vol_5_p';
-                                $kolomHarga_satuan = 'harga_satuan_p';
+                                $kolomHarga_satuan = 'harga_satuan';
                                 $kolomSat_1 = 'sat_1_p';
                                 $kolomSat_2 = 'sat_2_p';
                                 $kolomSat_3 = 'sat_3_p';
@@ -875,9 +882,9 @@ class MasterFungsi
                         foreach ($rowPengaturan as $key => $value) {
                             ${$key} = $value;
                         }
-                        $tabel_pakai = ($setujui_dppa) ? 'dppa_neo' : 'dpa_neo' ;
+                        $tabel_pakai = ($setujui_dppa) ? 'dppa_neo' : 'dpa_neo';
                     }
-                } 
+                }
                 break;
             case 'daftar_paket':
                 $tabel_pakai = 'daftar_paket_neo';
@@ -1813,92 +1820,7 @@ class MasterFungsi
             $code = 37;
         }
     }
-    /*
-    * Copyright (c) 2011-2013 Philipp Tempel
-    *
-    * Permission is hereby granted, free of charge, to any person obtaining a copy
-    * of this software and associated documentation files (the "Software"), to deal
-    * in the Software without restriction, including without limitation the rights
-    * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    * copies of the Software, and to permit persons to whom the Software is
-    * furnished to do so, subject to the following conditions:
-    *
-    * The above copyright notice and this permission notice shall be included in
-    * all copies or substantial portions of the Software.
-    *
-    * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    * THE SOFTWARE.
-    */
-    /**
-     * Get the user's operating system.
-     *
-     * @param string $userAgent The user's user agent
-     *
-     * @return string returns the user's operating system as human readable string,
-     *                if it cannot be determined 'n/a' is returned
-     */
-    public function getOS($userAgent)
-    {
-        // Create list of operating systems with operating system name as array key
-        $oses = array(
-            'iPhone' => '(iPhone)',
-            'Windows 3.11' => 'Win16',
-            'Windows 95' => '(Windows 95)|(Win95)|(Windows_95)',
-            'Windows 98' => '(Windows 98)|(Win98)',
-            'Windows 2000' => '(Windows NT 5.0)|(Windows 2000)',
-            'Windows XP' => '(Windows NT 5.1)|(Windows XP)',
-            'Windows 2003' => '(Windows NT 5.2)',
-            'Windows Vista' => '(Windows NT 6.0)|(Windows Vista)',
-            'Windows 7' => '(Windows NT 6.1)|(Windows 7)',
-            'Windows NT 4.0' => '(Windows NT 4.0)|(WinNT4.0)|(WinNT)|(Windows NT)',
-            'Windows ME' => 'Windows ME',
-            'Open BSD' => 'OpenBSD',
-            'Sun OS' => 'SunOS',
-            'Linux' => '(Linux)|(X11)',
-            'Safari' => '(Safari)',
-            'Mac OS' => '(Mac_PowerPC)|(Macintosh)',
-            'QNX' => 'QNX',
-            'BeOS' => 'BeOS',
-            'OS/2' => 'OS/2',
-            'Search Bot' => '(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp/cat)|(msnbot)|(ia_archiver)',
-        );
-        // Loop through $oses array
-        foreach ($oses as $os => $preg_pattern) {
-            // Use regular expressions to check operating system type
-            if (preg_match('@' . $preg_pattern . '@', $userAgent)) {
-                // Operating system was matched so return $oses key
-                return $os;
-            }
-        }
-        return 'n/a';
-    }
-    public function getBrowser()
-    {
-        global $user_agent;
-        $browser = 'Unknown Browser';
-        $browser_array = array(
-            '/msie/i' => 'Internet Explorer',
-            '/firefox/i' => 'Firefox',
-            '/safari/i' => 'Safari',
-            '/chrome/i' => 'Chrome',
-            '/opera/i' => 'Opera',
-            '/netscape/i' => 'Netscape',
-            '/maxthon/i' => 'Maxthon',
-            '/konqueror/i' => 'Konqueror',
-            '/mobile/i' => 'Handheld Browser',
-        );
-        foreach ($browser_array as $regex => $value) {
-            if (preg_match($regex, $user_agent)) {
-                $browser = $value;
-            }
-        }
-        return $browser;
-    }
+
     // mencari file di folder dan sub folder
     public function cariFile($f, $p = null, $l = 1000)
     { // Recursively find a file $f in directory $p (compare up to $l files)
@@ -2314,8 +2236,12 @@ class MasterFungsi
         //svar_dump($dataWall);
         return $dataWall;
     }
-    public function importFile($tbl, $nameFileDel = '')
+    public function importFile($tbl, $set=['nameFileDel' => ''])
     {
+        $nameFileDel = '';
+        if(isset($set['nameFileDel'])){
+            $nameFileDel = $set['nameFileDel'];
+        }
         $user = new User();
         $user->cekUserSession();
         $type_user = $_SESSION["user"]["type_user"];
@@ -2366,6 +2292,9 @@ class MasterFungsi
             case 'organisasi':
                 $path1 = 'upload';
                 $path2 = 'organisasi';
+                break;
+            case 'daftar_paket':
+                $path2 = 'daftar_paket';
                 break;
             default:
                 break;
@@ -2424,11 +2353,21 @@ class MasterFungsi
             // You should name it uniquely.
             // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
             // On this example, obtain safe unique name from its binary data.
-            $namaFile = sprintf(
-                "$targetPath%s.%s", //"./uploads/%s.%s",
-                sha1_file($_FILES['file']['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
-                $ext
-            );
+            if (isset($set['nama_file'])) {
+                $namaFileCustomTambahan = $set['nama_file'];
+                $namaFile = sprintf(
+                    "$targetPath%s.%s", //"./uploads/%s.%s",
+                    $namaFileCustomTambahan.'_'.sha1_file($_FILES['file']['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
+                    $ext
+                );
+            }else{
+                $namaFile = sprintf(
+                    "$targetPath%s.%s", //"./uploads/%s.%s",
+                    sha1_file($_FILES['file']['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
+                    $ext
+                );
+            }
+            
             $fileNamePath = "$namaFile";/*sprintf(
                 "..$targetPath%s.%s", //"./uploads/%s.%s",
                 sha1_file($_FILES['file']['tmp_name']), //sha1_file($_FILES['file']['tmp_name']),
@@ -2447,7 +2386,7 @@ class MasterFungsi
             //hapus file
             //===============
             if (file_exists($nameFileDel) && strlen($nameFileDel)) {
-                unlink($nameFileDel);
+                // unlink($nameFileDel);
                 $status  = unlink($nameFileDel) ? 'The file ' . $nameFileDel . ' has been deleted' : 'Error deleting ' . $nameFileDel;
                 return ['result' => 'ok', 'file' => $nameFileDel, 'status' => $status];
             } else {
@@ -2832,5 +2771,91 @@ class MasterFungsi
         $HowManyWeeks = (int) ((strtotime($tanggal2) - strtotime($tanggal1)) / 604800); //date('W', strtotime($tanggal2)) - date('W', strtotime($tanggal1));
         $HowManyWeeks = ($HowManyWeeks <= 0) ? 1 : $HowManyWeeks;
         return ['bulan' => $diff_moon, 'weekends' => $HowManyWeeks, 'tanggal1' => strtotime($tanggal1), 'tanggal2' => strtotime($tanggal2)];
+    }
+    /*
+    * Copyright (c) 2011-2013 Philipp Tempel
+    *
+    * Permission is hereby granted, free of charge, to any person obtaining a copy
+    * of this software and associated documentation files (the "Software"), to deal
+    * in the Software without restriction, including without limitation the rights
+    * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    * copies of the Software, and to permit persons to whom the Software is
+    * furnished to do so, subject to the following conditions:
+    *
+    * The above copyright notice and this permission notice shall be included in
+    * all copies or substantial portions of the Software.
+    *
+    * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    * THE SOFTWARE.
+    */
+    /**
+     * Get the user's operating system.
+     *
+     * @param string $userAgent The user's user agent
+     *
+     * @return string returns the user's operating system as human readable string,
+     *                if it cannot be determined 'n/a' is returned
+     */
+    public function getOS($userAgent)
+    {
+        // Create list of operating systems with operating system name as array key
+        $oses = array(
+            'iPhone' => '(iPhone)',
+            'Windows 3.11' => 'Win16',
+            'Windows 95' => '(Windows 95)|(Win95)|(Windows_95)',
+            'Windows 98' => '(Windows 98)|(Win98)',
+            'Windows 2000' => '(Windows NT 5.0)|(Windows 2000)',
+            'Windows XP' => '(Windows NT 5.1)|(Windows XP)',
+            'Windows 2003' => '(Windows NT 5.2)',
+            'Windows Vista' => '(Windows NT 6.0)|(Windows Vista)',
+            'Windows 7' => '(Windows NT 6.1)|(Windows 7)',
+            'Windows NT 4.0' => '(Windows NT 4.0)|(WinNT4.0)|(WinNT)|(Windows NT)',
+            'Windows ME' => 'Windows ME',
+            'Open BSD' => 'OpenBSD',
+            'Sun OS' => 'SunOS',
+            'Linux' => '(Linux)|(X11)',
+            'Safari' => '(Safari)',
+            'Mac OS' => '(Mac_PowerPC)|(Macintosh)',
+            'QNX' => 'QNX',
+            'BeOS' => 'BeOS',
+            'OS/2' => 'OS/2',
+            'Search Bot' => '(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp/cat)|(msnbot)|(ia_archiver)',
+        );
+        // Loop through $oses array
+        foreach ($oses as $os => $preg_pattern) {
+            // Use regular expressions to check operating system type
+            if (preg_match('@' . $preg_pattern . '@', $userAgent)) {
+                // Operating system was matched so return $oses key
+                return $os;
+            }
+        }
+        return 'n/a';
+    }
+    public function getBrowser()
+    {
+        global $user_agent;
+        $browser = 'Unknown Browser';
+        $browser_array = array(
+            '/msie/i' => 'Internet Explorer',
+            '/firefox/i' => 'Firefox',
+            '/safari/i' => 'Safari',
+            '/chrome/i' => 'Chrome',
+            '/opera/i' => 'Opera',
+            '/netscape/i' => 'Netscape',
+            '/maxthon/i' => 'Maxthon',
+            '/konqueror/i' => 'Konqueror',
+            '/mobile/i' => 'Handheld Browser',
+        );
+        foreach ($browser_array as $regex => $value) {
+            if (preg_match($regex, $user_agent)) {
+                $browser = $value;
+            }
+        }
+        return $browser;
     }
 }

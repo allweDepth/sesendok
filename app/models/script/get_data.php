@@ -1210,6 +1210,50 @@ class get_data
                                 switch ($jenis) {
                                     case 'edit':
                                         switch ($tbl) {
+                                            case 'daftar_paket':
+                                                $data['values'] = [];
+                                                $satuan_drop = $data['users']->satuan;
+                                                if ($satuan_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['value', '=', $satuan_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
+                                                    // var_dump($row);
+                                                    if ($row !== false) {
+                                                        $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
+                                                    }
+                                                }
+                                                $cari_drop = $data['users']->id_rekanan;
+                                                if ($cari_drop) {
+                                                    $kondisi_result = $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['disable', '<=', 0, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('rekanan_neo', $kondisi_result);
+                                                    if (count((array)$row)) {
+                                                        $data['values']['id_rekanan'] = [['name' => $row->nama_perusahaan, 'text' => $row->nama_perusahaan, 'value' => $row->id, 'description' => $row->npwp . ' (' . $row->direktur . ')', "descriptionVertical" => true, 'selected' => true]];
+                                                    }
+                                                }
+                                                // tambahkan $data['users'][] count_uraian_belanja
+                                                $send = json_decode($data['users']->id_uraian);
+                                                // atur kembali id uraian
+                                                $pagu = 0;
+                                                $jumlah = 0;
+                                                $kd_sub_keg = [];
+                                                $si = 0;
+                                                foreach ($send as $key => $value) {
+                                                    $si++;
+                                                    $tabel_pakai = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
+                                                    $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                                    $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                                                    if ($row_sub !== false) {
+                                                        $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+                                                        $pagu += $row_sub->$klm_jumlah;
+                                                        $jumlah += $value->val_kontrak;
+                                                        $kd_sub_keg[] = $row_sub->kd_sub_keg;
+                                                    } else {
+                                                        //hapus key yang tidak mempunyai persyaratan
+                                                        unset($send[$key]);
+                                                    }
+                                                }
+                                                $kd_sub_keg = implode(',',$kd_sub_keg);
+                                                $data['users']->count_uraian_belanja= "$si uraian { $kd_sub_keg }";
+                                                break;
                                             case 'mapping':
                                                 $data['values'] = [];
                                                 $kode_drop = $data['users']->kd_aset;

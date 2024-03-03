@@ -477,7 +477,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- tab_kontrak -->
             <!-- ============== -->
             <div class="ui tab basic segment container" data-tab="tab_kontrak" tbl="daftar_paket">
-                <div class="ui container">
+                <div class="ui container" style="position: fixed !important;">
                     <div class="ui info message" name="ketref">Nabiilainayah</div>
                     <div class="ui hidden divider"></div>
                     <div class="ui right floated basic icon buttons">

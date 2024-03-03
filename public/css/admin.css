@@ -18,7 +18,9 @@ body.inverted {
     height: 500px;
     /*height: 80vh;*/
 }
-
+/* .ui.container {
+    position: fixed !important;
+} */
 .ui.input.multi input[type="text"]:not(:first-child) {
     border-radius: 0 !important;
 }
