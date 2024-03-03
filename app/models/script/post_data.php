@@ -149,35 +149,7 @@ class post_data
                                     'required' => true,
                                     'json_repair' => true
                                 ]);
-                                $send = json_decode($id_uraian);
-                                // atur kembali id uraian
-                                $pagu = 0;
-                                $jumlah = 0;
-                                $kd_sub_keg = [];
-                                foreach ($send as $key => $value) {
-                                    $tabel_pakai = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
-                                    $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                    $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
-                                    if ($row_sub !== false) {
-                                        $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
-                                        $pagu += $row_sub->$klm_jumlah;
-                                        $jumlah += $value->val_kontrak;
-                                        $kd_sub_keg[] = $row_sub->kd_sub_keg;
-                                    } else {
-                                        //hapus key yang tidak mempunyai persyaratan
-                                        unset($send[$key]);
-                                    }
-                                }
-                                $kd_sub_keg = implode(',', $kd_sub_keg);
-                                if ($jumlah > $pagu) {
-                                    # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
-                                    $id_uraian = $validate->setRules('nabiila_inayah2509', 'nilai kontrak > nilai pagu', [
-                                        'min_char' => 2000,
-                                        'required' => true,
-                                        'json' => true
-                                    ]);
-                                }
-                                $id_uraian = $send;
+
                                 $uraian = $validate->setRules('uraian', 'uraian', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -735,7 +707,7 @@ class post_data
                                     'numeric' => true,
                                     'in_array' => ['off', 'on']
                                 ]);
-                                
+
 
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
@@ -993,7 +965,7 @@ class post_data
                                     'numeric' => true,
                                     'in_array' => ['off', 'on']
                                 ]);
-                                
+
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'dpa':
@@ -1383,12 +1355,12 @@ class post_data
                                 switch ($tbl) {
                                     case 'daftar_paket':
                                         $uraian = "kd_paket({$row_sub->id})_dok({$dok})_wilayah({$kd_wilayah})";
-                                        $set_file  = ['nama_file'=>$uraian,'dok'=>$dok];
-                                        if(strlen($row_sub->$dok) > 5){
+                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                                        if (strlen($row_sub->$dok) > 5) {
                                             $nameFileDel = $row_sub->$dok;
-                                            $set_file  = ['nama_file'=>$uraian,'nameFileDel'=>$nameFileDel,'dok'=>$dok];
+                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
                                         }
-                                        
+
                                         break;
                                     case 'value':
                                         # code...
@@ -1399,7 +1371,7 @@ class post_data
                                 }
                                 if ($_FILES) {
                                     if (isset($_FILES[$dok])) {
-                                        $file = $Fungsi->importFile($tbl, $set_file );
+                                        $file = $Fungsi->importFile($tbl, $set_file);
                                         // var_dump($file);
                                         if ($file['result'] == 'ok') {
                                             $set[$dok] = $file[$dok];
@@ -1412,7 +1384,7 @@ class post_data
                                 $jenis = '';
                                 $code = 404;
                             }
-                            
+
                             break;
                         case 'edit':
                             $kondisi = [['id', '=', $id_row]];
@@ -1431,6 +1403,37 @@ class post_data
                         case 'add':
                             switch ($tbl) {
                                 case 'daftar_paket':
+                                    //
+                                    $send = json_decode($id_uraian);
+                                    // atur kembali id uraian
+                                    $pagu = 0;
+                                    $jumlah = 0;
+                                    $kd_sub_keg = [];
+                                    foreach ($send as $key => $value) {
+                                        $tabel_pakai = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
+                                        $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                                        if ($row_sub !== false) {
+                                            $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+                                            $pagu += $row_sub->$klm_jumlah;
+                                            $jumlah += $value->val_kontrak;
+                                            $kd_sub_keg[] = $row_sub->kd_sub_keg;
+                                            // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
+                                        } else {
+                                            //hapus key yang tidak mempunyai persyaratan
+                                            unset($send[$key]);
+                                        }
+                                    }
+                                    $kd_sub_keg = implode(',', $kd_sub_keg);
+                                    if ($jumlah > $pagu) {
+                                        # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
+                                        $id_uraian = $validate->setRules('nabiila_inayah2509', 'nilai kontrak > nilai pagu', [
+                                            'min_char' => 2000,
+                                            'required' => true,
+                                            'json' => true
+                                        ]);
+                                    }
+                                    $id_uraian = $send;
                                     if ($jenis == 'add') {
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['pagu', '=', $pagu, 'AND']];
                                         $kodePosting = 'cek_insert';
@@ -2173,7 +2176,7 @@ class post_data
                                 $data['note']['add row'] = $DB->lastInsertId();
                                 $code = 2;
                             }
-                            
+
                             break;
                         case 'cekdouble_insert': //cek data klo tidak ada teruskan insert jika ada jangan update
                             $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);
