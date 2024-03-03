@@ -512,6 +512,62 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- tab_input_real -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_input_real">
+                <div class="ui container">
+                    <h1 class="ui header">Realisasi SKPD<div class="sub header">dokumen realisasi fisik dan keuangan</div>
+                    </h1>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui stretched stackable three column grid">
+                        <div class="column">
+                            <div class="ui orange icon message goyang"><i class="book icon"></i>
+                                <div class="content">
+                                    <div class="header">Total Anggaran</div>
+                                    <p name="total-anggaran"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui icon yellow message goyang">
+                                <i class="chart icon" name="chart-realisasi-fisik-mini">00</i>
+                                <div class="content">
+                                    <div class="header">Kegiatan</div>
+                                    <p name="realisasi-fisik">Jumlah Kegiatan pada SKPD</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini">00</i>
+                                <div class="content">
+                                    <div class="header">Sub Kegiatan</div>
+                                    <p name="realisasi-keu">Jumlah Sub Kegiatan pada SKPD</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ui fluid container">
+                            <div class="ui hidden divider"></div>
+                            <div style="height: 1px">
+                                <div class="ui right floated basic icon buttons">
+                                    <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
+                                    <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
+                                </div>
+                            </div>
+                            <div class="ui hidden divider"></div>
+                            <h3 class="ui dividing header"></h3>
+                        </div>
+                        <div class="ui hidden divider"></div>
+                        <div class="ui long scrolling fluid container">
+                            <table class="ui head foot stuck unstackable celled striped table insert">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- ============== -->
             <!-- tab_spj -->

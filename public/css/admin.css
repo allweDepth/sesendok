@@ -1,9 +1,9 @@
 /*agar border radius di tepi semua element = 0*/
-/*
+
 * {
     border-radius: 0px !important; 
 }
-*/
+
 :root {
     --darkBG: #232B32;
 }

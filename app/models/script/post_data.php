@@ -2158,20 +2158,22 @@ class post_data
                             $jumlahArray = is_array($ListRow) ? count($ListRow) : 0;
                             if ($jumlahArray) {
                                 //update row
-                                $hasilUpdate = $DB->update_array($tabel_pakai, $set, $kondisi);
+                                $DB->update_array($tabel_pakai, $set, $kondisi);
                                 //var_dump($hasilUpdate);
                                 if ($DB->count()) {
                                     $code = 3;
-                                    $data['update'] = $DB->count(); //$DB->count();
+                                    $data['update'] = $DB->count(); //$DB->count();//@audit sekatang update atau insert tabel 'daftar_uraian_paket' jika $tbl = daftar paket
                                 } else {
                                     $code = 33;
                                 }
                             } else {
                                 // inser row
+                                //update atau insert tabel daftar_uraian_paket jika $tbl = daftar paket
                                 $resul = $DB->insert($tabel_pakai, $set);
                                 $data['note']['add row'] = $DB->lastInsertId();
                                 $code = 2;
                             }
+                            
                             break;
                         case 'cekdouble_insert': //cek data klo tidak ada teruskan insert jika ada jangan update
                             $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);
