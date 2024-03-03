@@ -5,7 +5,7 @@ class DB
     private $_host = 'localhost';
     private $_dbname = 'sesendokneo_db';
     private $_username = 'root';
-    private $_password = '';
+    private $_password = '1234';
     // Property internal dari class DB
     private static $_instance = null;
     private $_pdo;

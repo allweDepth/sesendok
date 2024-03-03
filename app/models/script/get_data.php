@@ -39,14 +39,14 @@ class get_data
                     ${$key} = $value;
                 }
             } else {
-                $id_user = 0;
-                $code = 407;
+                // $id_user = 0;
+                // $code = 407;
             }
         } else {
             $id_user = 0;
             $code = 407;
         }
-
+        $jenis = '';
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
                 $code = 40;

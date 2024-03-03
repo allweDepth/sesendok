@@ -438,7 +438,7 @@ class MasterFungsi
                         $divAkhir = '';
                         $file = $row->file;
                         $fileTag = '';
-                        if (strlen($file)) {
+                        if (strlen($file ?? '')) {
                             $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
                         }
                         if ($type_user == 'admin') {
@@ -518,7 +518,7 @@ class MasterFungsi
                         }
                         $file = $row->file;
                         $fileTag = '';
-                        if (strlen($file)) {
+                        if (strlen($file ?? '')) {
                             $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
@@ -541,7 +541,7 @@ class MasterFungsi
                         $divAkhir = '';
                         $file = $row->file;
                         $fileTag = '';
-                        if (strlen($file)) {
+                        if (strlen($file ?? '')) {
                             $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
                         }
                         if ($type_user == 'admin') {
@@ -677,7 +677,7 @@ class MasterFungsi
                         $divAkhir = '';
                         $file = $row->file;
                         $fileTag = '';
-                        if (strlen($file)) {
+                        if (strlen($file ?? '')) {
                             $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
                         }
                         if ($type_user == 'admin') {
@@ -769,7 +769,7 @@ class MasterFungsi
                         } else {
                             $harga_sat = '';
                         }
-                        if (strlen($row->rumus) > 0 || ($row->kode) == ($row->kd_analisa)) {
+                        if (strlen($row->rumus ?? '') > 0 || ($row->kode) == ($row->kd_analisa)) {
                             $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
                             $koef = '<td klm="koefisien">' . number_format($row->koefisien, $desimal, ',', '.') . '</td>';
                         }
@@ -2405,7 +2405,7 @@ class MasterFungsi
         }
     }
     //get dropdown
-    public function getDropdownItem($get_data = [], $nama_tabel, $nama_dropdown, $jenisdropdown = 'list', $jumlah_kolom_dropdown = 1, $type_user = 'user')
+    public function getDropdownItem($get_data , $nama_tabel, $nama_dropdown, $jenisdropdown = 'list', $jumlah_kolom_dropdown = 1, $type_user = 'user')
     {
         $hasil = '';
         switch ($jenisdropdown) {

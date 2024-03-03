@@ -42,10 +42,7 @@ class post_data
                 foreach ($rowPengaturan as $key => $value) {
                     ${$key} = $value;
                 }
-            } else {
-                $id_user = 0;
-                $code = 407;
-            }
+            } 
         } else {
             $id_user = 0;
             $code = 407;
