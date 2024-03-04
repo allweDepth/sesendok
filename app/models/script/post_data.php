@@ -1412,7 +1412,8 @@ class post_data
                                         $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
                                         $row_sub = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi);
                                         if ($row_sub !== false) {
-                                            //ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
+                                            //$kumpulanRowSub[] ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
+                                            $row_sub['dok']=$value->dok_anggaran;
                                             $kumpulanRowSub[] =$row_sub;
                                             $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
                                             $pagu += $row_sub->$klm_jumlah;
