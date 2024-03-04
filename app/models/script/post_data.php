@@ -1436,7 +1436,7 @@ class post_data
                                         # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
                                         $kodePosting = '';
                                         $code=405;
-                                        $tambahan_pesan = 'jumlah kontrak lebih besar dari besaran pagu';
+                                        $tambahan_pesan = '(jumlah kontrak lebih besar dari besaran pagu)';
                                         // $id_uraian = $validate->setRules('nabiila_inayah2509', 'nilai kontrak > nilai pagu', [
                                         //     'min_char' => 2000,
                                         //     'required' => true,
