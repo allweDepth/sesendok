@@ -42,7 +42,7 @@ class post_data
                 foreach ($rowPengaturan as $key => $value) {
                     ${$key} = $value;
                 }
-            } 
+            }
         } else {
             $id_user = 0;
             $code = 407;
@@ -1406,12 +1406,15 @@ class post_data
                                     $pagu = 0;
                                     $jumlah = 0;
                                     $kd_sub_keg = [];
+                                    $kumpulanRowSub = [];
                                     foreach ($send as $key => $value) {
-                                        $tabel_pakai = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
+                                        $tabel_pakaiku = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
                                         $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi);
                                         if ($row_sub !== false) {
-                                            $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+                                            //ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
+                                            $kumpulanRowSub[] =$row_sub;
+                                            $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
                                             $pagu += $row_sub->$klm_jumlah;
                                             $jumlah += $value->val_kontrak;
                                             $kd_sub_keg[] = $row_sub->kd_sub_keg;
@@ -2121,6 +2124,28 @@ class post_data
                                 $data['update'] = $DB->count();
                                 switch ($jenis) {
                                     case 'setujui':
+                                    case 'kunci':
+                                        $set = [$jenis . '_' . $tbl => 1];
+                                    case 'unkunci':
+                                    case 'unsetujui':
+                                        if ($jenis == 'unkunci' || $jenis == 'unsetujui') {
+                                            $jenisnya = $jenis;
+                                            $jenisnya = substr($jenisnya, 2);//hilangkan un depan kata
+                                            $set = [$jenisnya . '_' . $tbl => 0];
+                                        }
+                                        // update di tabel pengaturan
+                                        $tabel_pengaturan = 'pengaturan_neo';
+                                        
+                                        $resul_pengaturan = $DB->update_array($tabel_pengaturan, $set, $kondisi);
+                                        break;
+
+                                    default:
+                                        # code...
+                                        break;
+                                }
+                                switch ($jenis) {
+
+                                    case 'setujui':
                                         switch ($tbl) {
                                             case 'dpa':
                                             case 'renja':
@@ -2133,6 +2158,7 @@ class post_data
                                                     $resul = $DB->delete_array($tablePosting2, $kondisi_delete);
                                                     $resul = $DB->insert_select($tabel_pakai2, $tablePosting2, $columnName2, $columnSelect2, $kondisi_insert_select);
                                                 }
+
 
                                                 // var_dump($resul);
                                                 break;
