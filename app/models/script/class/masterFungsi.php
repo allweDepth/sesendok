@@ -265,8 +265,8 @@ class MasterFungsi
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="uraian">' . $row->uraian . '</td>
-                                    <td klm="pagu">' . $divAwalAngka  . number_format($row->pagu, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="jumlah">' . $divAwalAngka  . number_format($row->jumlah, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="pagu">' . $divAwalAngka  . number_format((float)$row->pagu, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah">' . $divAwalAngka  . number_format((float)$row->jumlah, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="nama_ppk">' . $row->nama_ppk . '</td>
                                     <td klm="keterangan">' . $row->keterangan . '</td>
                                     <td>' . $buttons . '</td>
@@ -332,16 +332,16 @@ class MasterFungsi
                             $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button></div>';
                         }
                         // var_dump($row->{$kolomVol_1});
-                        $koefisien = number_format($row->{$kolomVol_1}, 2, ',', '.');
-                        $koefisien .= ($row->{$kolomVol_2} > 0) ? ' x ' . number_format($row->{$kolomVol_2}, 2, ',', '.') : '';
-                        $koefisien .= ($row->{$kolomVol_3} > 0) ? ' x ' . number_format($row->{$kolomVol_3}, 2, ',', '.') : '';
-                        $koefisien .= ($row->{$kolomVol_4} > 0) ? ' x ' . number_format($row->{$kolomVol_4}, 2, ',', '.') : '';
+                        $koefisien = number_format((float)$row->{$kolomVol_1}, 2, ',', '.');
+                        $koefisien .= ($row->{$kolomVol_2} > 0) ? ' x ' . number_format((float)$row->{$kolomVol_2}, 2, ',', '.') : '';
+                        $koefisien .= ($row->{$kolomVol_3} > 0) ? ' x ' . number_format((float)$row->{$kolomVol_3}, 2, ',', '.') : '';
+                        $koefisien .= ($row->{$kolomVol_4} > 0) ? ' x ' . number_format((float)$row->{$kolomVol_4}, 2, ',', '.') : '';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_akun">' . $row->kd_akun . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
                                     <td >' . $koefisien .  '</td>
-                                    <td klm="' . $kolomHarga_satuan . '">' . $divAwalAngka  . number_format($row->{$kolomHarga_satuan}, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="' . $kolomJumlah . '">' . $divAwalAngka  . number_format($row->{$kolomJumlah}, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="' . $kolomHarga_satuan . '">' . $divAwalAngka  . number_format((float)$row->{$kolomHarga_satuan}, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="' . $kolomJumlah . '">' . $divAwalAngka  . number_format((float)$row->{$kolomJumlah}, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
@@ -372,10 +372,10 @@ class MasterFungsi
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_sub_keg">' . $row->kd_sub_keg . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
-                                    <td klm="jumlah_pagu">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="jumlah_rincian">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="jumlah_pagu_p">' . $divAwalAngka  . number_format($row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
-                                    <td klm="jumlah_rincian_p">' . $divAwalAngka  . number_format($row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah_pagu">' . $divAwalAngka  . number_format((float)$row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah_rincian">' . $divAwalAngka  . number_format((float)$row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah_pagu_p">' . $divAwalAngka  . number_format((float)$row->jumlah_pagu, 2, ',', '.') . $divAkhir .  '</td>
+                                    <td klm="jumlah_rincian_p">' . $divAwalAngka  . number_format((float)$row->jumlah_rincian, 2, ',', '.') . $divAkhir .  '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
@@ -398,19 +398,19 @@ class MasterFungsi
                                     <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
                                     <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
                                     <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
-                                    <td klm="data_capaian_awal">' . $divAwalAngka . number_format($row->data_capaian_awal, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_1">' . $divAwalAngka . number_format($row->target_thn_1, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_1">' . $divAwalAngka . number_format($row->dana_thn_1, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_2">' . $divAwalAngka . number_format($row->target_thn_2, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_2">' . $divAwalAngka . number_format($row->dana_thn_2, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_3">' . $divAwalAngka . number_format($row->target_thn_3, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_3">' . $divAwalAngka . number_format($row->dana_thn_3, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_4">' . $divAwalAngka . number_format($row->target_thn_4, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_4">' . $divAwalAngka . number_format($row->dana_thn_4, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_5">' . $divAwalAngka . number_format($row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_5">' . $divAwalAngka . number_format($row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="kondisi_akhir">' .  number_format($row->kondisi_akhir, 2, ',', '.') . '</td>
-                                    <td klm="jumlah">' .  number_format($row->jumlah, $desimal, ',', '.') . '</td>
+                                    <td klm="data_capaian_awal">' . $divAwalAngka . number_format((float)$row->data_capaian_awal, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_1">' . $divAwalAngka . number_format((float)$row->target_thn_1, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_1">' . $divAwalAngka . number_format((float)$row->dana_thn_1, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_2">' . $divAwalAngka . number_format((float)$row->target_thn_2, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_2">' . $divAwalAngka . number_format((float)$row->dana_thn_2, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_3">' . $divAwalAngka . number_format((float)$row->target_thn_3, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_3">' . $divAwalAngka . number_format((float)$row->dana_thn_3, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_4">' . $divAwalAngka . number_format((float)$row->target_thn_4, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_4">' . $divAwalAngka . number_format((float)$row->dana_thn_4, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="target_thn_5">' . $divAwalAngka . number_format((float)$row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="dana_thn_5">' . $divAwalAngka . number_format((float)$row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
+                                    <td klm="kondisi_akhir">' .  number_format((float)$row->kondisi_akhir, 2, ',', '.') . '</td>
+                                    <td klm="jumlah">' .  number_format((float)$row->jumlah, $desimal, ',', '.') . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
                         break;
@@ -482,7 +482,7 @@ class MasterFungsi
                         <td klm="uraian_barang">' . $divAwal . $row->uraian_barang . $divAkhir . '</td>
                         <td klm="spesifikasi">' . $divAwal . $row->spesifikasi . $divAkhir . '</td>
                         <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
-                        <td klm="harga_satuan">' . $divAwalAngka . number_format($row->harga_satuan, $desimal, ',', '.') . $divAkhir . '</td>
+                        <td klm="harga_satuan">' . $divAwalAngka . number_format((float)$row->harga_satuan, $desimal, ',', '.') . $divAkhir . '</td>
                         <td klm="tkdn">' . $divAwal . $row->tkdn . $divAkhir . '</td>
                         <td>' . $buttons . '</td></tr>');
                         break;
@@ -734,7 +734,7 @@ class MasterFungsi
                                 <td>' . $row->jenis . '</td>
                                 <td klm="uraian"><div contenteditable>' . $row->uraian . '</div></td>
                                 <td>' . $row->satuan . '</td>
-                                <td klm="harga_satuan"><div contenteditable rms onkeypress="return rumus(event);">' . number_format($row->harga_satuan, $desimal, ',', '.') . '</div></td>
+                                <td klm="harga_satuan"><div contenteditable rms onkeypress="return rumus(event);">' . number_format((float)$row->harga_satuan, $desimal, ',', '.') . '</div></td>
                                 <td klm="sumber_data"><div contenteditable>' . $row->sumber_data . '</div></td>
                                 <td klm="spesifikasi"><div contenteditable>' . $row->spesifikasi . '</div></td>
                                 <td klm="keterangan"><div contenteditable>' . $row->keterangan . '</div></td>
@@ -759,19 +759,19 @@ class MasterFungsi
                         $koef = $row->koefisien;
                         if ($koef > 0) {
                             $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
-                            $koef = '<td klm="koefisien"><div contenteditable rms>' . number_format($row->koefisien, $desimal, ',', '.') . '</div></td>';
+                            $koef = '<td klm="koefisien"><div contenteditable rms>' . number_format((float)$row->koefisien, $desimal, ',', '.') . '</div></td>';
                         } else {
                             $koef = '<td klm="koefisien"></td>';
                         }
                         if ($row->harga_satuan > 0) {
                             $desimal = ($this->countDecimals($row->harga_satuan) < 2) ? 2 : $this->countDecimals($row->harga_satuan);
-                            $harga_sat = number_format($row->harga_satuan, $desimal, ',', '.');
+                            $harga_sat = number_format((float)$row->harga_satuan, $desimal, ',', '.');
                         } else {
                             $harga_sat = '';
                         }
                         if (strlen($row->rumus ?? '') > 0 || ($row->kode) == ($row->kd_analisa)) {
                             $desimal = ($this->countDecimals($row->koefisien) < 2) ? 2 : $this->countDecimals($row->koefisien);
-                            $koef = '<td klm="koefisien">' . number_format($row->koefisien, $desimal, ',', '.') . '</td>';
+                            $koef = '<td klm="koefisien">' . number_format((float)$row->koefisien, $desimal, ',', '.') . '</td>';
                         }
                         $desimal = ($this->countDecimals($row->jumlah_harga) < 2) ? 2 : $this->countDecimals($row->jumlah_harga);
                         if (($row->kode) == ($row->kd_analisa)) {
@@ -783,7 +783,7 @@ class MasterFungsi
                             <td klm="satuan"><div contenteditable>' . $row->satuan . '</div></td>
                             ' . $koef . '
                             <td klm="harga_satuan">' . $harga_sat . '</td>
-                            <td klm="jumlah_harga">' . number_format($row->jumlah_harga, $desimal, ',', '.') . '</td>
+                            <td klm="jumlah_harga">' . number_format((float)$row->jumlah_harga, $desimal, ',', '.') . '</td>
                             <td klm="rumus"><div contenteditable>' . $row->rumus . '</div></td>
                             <td> <div class="ui mini basic icon buttons"><button class="ui button" name="modal_2"><i class="edit blue icon"></i></button><button class="ui button" name="del_row" jns="direct" tbl="del_row"><i class="trash alternate outline icon"></i></button><button class="ui button up_row"><i class="angle up icon"></i></button></div></td></tr>');
                         }
@@ -2503,12 +2503,12 @@ class MasterFungsi
                     case 'analisa_quarry':
                         $row = (array)$row;
                         //var_dump($row['keterangan']);
-                        $content = '<div class="header">' . $row['kd_analisa']  . ' : ' . $row['uraian'] . '</div>' . $row['kode']  . ' (Rp ' . number_format($row['koefisien'], 2, ',', '.')  . ')';
+                        $content = '<div class="header">' . $row['kd_analisa']  . ' : ' . $row['uraian'] . '</div>' . $row['kode']  . ' (Rp ' . number_format((float)$row['koefisien'], 2, ',', '.')  . ')';
                         if ($jenis == 'analisa_quarry' && strlen($row['keterangan']) > 0) {
                             $ket = json_decode($row['keterangan'], TRUE);
                             $lokasi = $ket['lokasi'];
                             $tujuan = $ket['tujuan'];
-                            $content = '<div class="header">' . $row['kd_analisa']  . ' : ' . $row['uraian'] . ' : lokasi =>:' . $lokasi . ' : tujuan =>:' . $tujuan . '</div>' . $row['kode']  . ' (Rp ' . number_format($row['koefisien'], 2, ',', '.')  . ')';
+                            $content = '<div class="header">' . $row['kd_analisa']  . ' : ' . $row['uraian'] . ' : lokasi =>:' . $lokasi . ' : tujuan =>:' . $tujuan . '</div>' . $row['kode']  . ' (Rp ' . number_format((float)$row['koefisien'], 2, ',', '.')  . ')';
                         }
                         $rowData['list'] .= '<div class="item">
                             <div class="right floated content">
@@ -2542,7 +2542,7 @@ class MasterFungsi
                             <i class="large teal money check middle aligned icon"></i>
                             <div class="content">
                                 <div class="header">' . $row['kd_analisa']  . ' : ' . $row['keterangan'] . '</div>
-                                (Rp ' . number_format($row['jumlah_harga'], 2, ',', '.')  . ')
+                                (Rp ' . number_format((float)$row['jumlah_harga'], 2, ',', '.')  . ')
                             </div>
                         </div>';
                         break;

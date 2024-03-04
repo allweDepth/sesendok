@@ -609,22 +609,22 @@ class get_data
                                                 <tr>
                                                     <td>Bidang</td>
                                                     <td>' . $bidang_sub_keg['kd_bidang']->uraian . ' (' . $bidang_sub_keg['kd_bidang']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Program</td>
                                                     <td>' . $bidang_sub_keg['kd_prog']->uraian . ' (' . $bidang_sub_keg['kd_prog']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Kegiatan</td>
                                                     <td>' . $bidang_sub_keg['kd_keg']->uraian . ' (' . $bidang_sub_keg['kd_keg']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Sub Kegiatan</td>
                                                     <td>' . $bidang_sub_keg['kd_sub_keg']->uraian . ' (' . $bidang_sub_keg['kd_sub_keg']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format($bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
                                                 </tr>';
                                             $data['tr_sub_keg'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
                                         } else {
@@ -1068,9 +1068,9 @@ class get_data
                                             $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
 
                                             $desimal = ($Fungsi->countDecimals($row_sub->$klm_jumlah) <= 2) ? 2 : $Fungsi->countDecimals($row_sub->$klm_jumlah);
-                                            $paguku = number_format($row_sub->$klm_jumlah, $desimal, ',', '.');
+                                            $paguku = number_format((float)$row_sub->$klm_jumlah, $desimal, ',', '.');
                                             $desimal = ($Fungsi->countDecimals($value->val_kontrak) <= 2) ? 2 : $Fungsi->countDecimals($value->val_kontrak);
-                                            $kontrak = number_format($value->val_kontrak, $desimal, ',', '.');
+                                            $kontrak = number_format((float)$value->val_kontrak, $desimal, ',', '.');
 
                                             $elm .= '<tr id_row="' . $row_sub->id . '" pagu="' . $row_sub->$klm_jumlah . '" dok_anggaran="' . $value->dok_anggaran . '"><td klm="kd_sub_keg">' . $row_sub->kd_sub_keg . '</td><td klm="uraian">' . $row_sub->uraian . '</td><td klm="pagu">' . $paguku . '</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: "uraian_sub_keg", tbl:"renja_p" });">' . $kontrak . '</div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="' . $value->id . '"><i class="trash alternate outline icon"></i></button></td></tr>';
                                         }
@@ -1445,7 +1445,7 @@ class get_data
                                                     // var_dump($kondisi_result);
                                                     // var_dump($row);
                                                     if (count((array)$row)) {
-                                                        $deskripsi = $row->kd_aset . ' (' . number_format($row->harga_satuan, 2, ',', '.') . ')';
+                                                        $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
                                                         $data['values']['komponen'] = [['name' => $row->uraian_barang, 'text' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'selected' => true]];
                                                     }
                                                 }
@@ -1651,7 +1651,7 @@ class get_data
                                                 case 'asb':
                                                 case 'ssh':
                                                 case 'sbu':
-                                                    $deskripsi = $row->kd_aset . ' (' . number_format($row->harga_satuan, 2, ',', '.') . ')';
+                                                    $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
                                                     $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
                                                     break;
                                                 case 'value1':
@@ -1684,7 +1684,7 @@ class get_data
                                                             # code...
                                                             break;
                                                     }
-                                                    $deskripsi = $row->kd_akun . ' (' . number_format($row->$clmJumlah, 2, ',', '.') . ')';
+                                                    $deskripsi = $row->kd_akun . ' (' . number_format((float)$row->$clmJumlah, 2, ',', '.') . ')';
                                                     $dataJson['results'][] = ['category' => $row->kd_akun, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg, 'dok_anggaran' => $dok_anggaran];
                                                     break;
                                                 default:
