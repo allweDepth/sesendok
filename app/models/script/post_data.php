@@ -1426,18 +1426,22 @@ class post_data
                                         }
                                     }
                                     $kd_sub_keg = implode(',', $kd_sub_keg);
-                                    if ($jumlah > $pagu) {
-                                        # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
-                                        $id_uraian = $validate->setRules('nabiila_inayah2509', 'nilai kontrak > nilai pagu', [
-                                            'min_char' => 2000,
-                                            'required' => true,
-                                            'json' => true
-                                        ]);
-                                    }
+                                    
                                     $id_uraian = $send;
                                     if ($jenis == 'add') {
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['pagu', '=', $pagu, 'AND']];
                                         $kodePosting = 'cek_insert';
+                                    }
+                                    if ($jumlah > $pagu) {
+                                        # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
+                                        $kodePosting = '';
+                                        $code=405;
+                                        $tambahan_pesan = 'jumlah kontrak lebih besar dari besaran pagu';
+                                        // $id_uraian = $validate->setRules('nabiila_inayah2509', 'nilai kontrak > nilai pagu', [
+                                        //     'min_char' => 2000,
+                                        //     'required' => true,
+                                        //     'json' => true
+                                        // ]);
                                     }
                                     // var_dump(json_encode($id_uraian));
                                     $set = [
