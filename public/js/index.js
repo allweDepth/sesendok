@@ -1938,7 +1938,7 @@ $(document).ready(function () {
 						placeholderData: `Pilih File (${acceptFileExt})...`,
 						accept: acceptFileExt,
 						file: data.dok
-					}) + `<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img src="" jns="img" onerror="imgsrc(this)"></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`; //non_data(artinya tidak di dicek form)
+					}) + `<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img jns="img" onerror="imgsrc(this)"></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`; //non_data(artinya tidak di dicek form)
 					//dropdown
 
 					switch (tbl) {
@@ -2371,7 +2371,7 @@ $(document).ready(function () {
 														case 'png':
 														case 'jpg':
 														case 'jpeg':
-															formIni.find('img[src]').attr('src', namaFileLink);
+															formIni.find('img').attr('src', namaFileLink);
 															formIni.find('[href]').attr('href', namaFileLink);
 															// formIni.append(`<div class="ui fluid card"><a class="image"><img src="${namaFileLink}"></a><div class="content"><a class="header" href="${namaFileLink}" target="_blank">Dokumentasi</a></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`);
 															break;
@@ -2401,9 +2401,9 @@ $(document).ready(function () {
 								break;
 						};
 					} else {
-						loaderHide();
+						
 					}
-
+					loaderHide();
 				} else {
 					loaderHide();
 				}
@@ -5242,10 +5242,8 @@ $(document).ready(function () {
 				}
 			}
 			let non_data = $(iterator).attr("non_data");
-			console.log(`non_data = ${non_data}`);
 			if (typeof non_data === 'undefined' || non_data === false) {
 				// console.log('masuk addRulesForm');
-
 				formku.form("add rule", atribut, {
 					rules: [
 						{
@@ -5258,33 +5256,6 @@ $(document).ready(function () {
 				formku.form("remove field", atribut);
 			}
 		}
-		/*
-		for (i = 0; i < attrName.length; i++) {
-			let atribut = formku.find(attrName[i]).attr("name");
-			let lbl = formku.find(attrName[i]).attr("placeholder");
-			if (lbl === undefined) {
-				lbl = formku.find(attrName[i]).closest(".field").find("label").text();
-				if (lbl === undefined || lbl === "") {
-					lbl = formku.find(attrName[i]).closest(".field").find("div.sub.header").text();
-				}
-				if (lbl === undefined || lbl === "") {
-					lbl = atribut.replaceAll(/_/g, " ");
-				}
-			}
-			let non_data = formku.find(attrName[i]).attr("non_data");
-			if (typeof non_data === "undefined" || non_data === false) {
-				formku.form("add rule", atribut, {
-					rules: [
-						{
-							type: "empty",
-							prompt: "Lengkapi Data " + lbl,
-						},
-					],
-				});
-			} else {
-				formku.form("remove field", atribut);
-			}
-		}*/
 	}
 	//
 	function removeRulesForm(formku) {
@@ -5310,10 +5281,6 @@ $(document).ready(function () {
 					formku.form("remove field", atribut);
 					//console.log('atribut remove rule: ' + atribut)
 				}
-			} else {
-				//console.log($(attrName[i]).is)
-				//if ($(attrName[i]).is)
-				//$(attrName[i]).addClass('enabled').attr('readonly').val(0);
 			}
 		}
 		$(formku).form("set auto check");

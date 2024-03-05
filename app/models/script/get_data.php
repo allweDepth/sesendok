@@ -1037,6 +1037,15 @@ class get_data
                         case 'getJsonRows': //ambil semua rows untuk dropdown
                             $kodePosting = 'getAllValJson';
                             switch ($tbl) {
+                                case 'tujuan_renstra':
+                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                                    if ($rowOrganisasi) {
+                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND']];
+                                        //pilih kolom yang diambil
+                                        $DB->select('id, kelompok, id_tujuan, text, keterangan');
+                                    }
+                                    break;
                                 case 'sub_keg_renja':
                                 case 'sub_keg_dpa':
                                     // var_dump(isset($nama_kolom));
@@ -1333,7 +1342,6 @@ class get_data
                                             case 'hspk':
                                             case 'ssh':
                                                 $data['values'] = [];
-
                                                 $kode_drop = $data['users']->kd_aset;
                                                 if ($kode_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
@@ -1535,7 +1543,7 @@ class get_data
                                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND'], ['id', '=', $value_b, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
                                                     if (count((array)$row)) {
-                                                        $data['values']['id_tujuan'] = [['name' => $row->text, 'value' => $row->id, 'description' => $row->kelompok, "descriptionVertical" => true, 'selected' => true]];
+                                                        $data['values']['id_tujuan'] = [['name' => $row->text, 'value' => $row->id, 'selected' => true]];
                                                     }
                                                 }
                                                 break;
@@ -1551,8 +1559,7 @@ class get_data
                                         switch ($tbl) {
                                             case 'tujuan_renstra':
                                                 // buatkan json dropdown tujuan renstra
-                                                foreach ($resul as $row) {
-                                                }
+                                                
                                                 break;
                                             case 'value1':
                                                 #code...
@@ -1633,7 +1640,7 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->kode, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'tujuan_renstra':
-                                                    $dataJson['results'][] = ['name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
+                                                    $dataJson['results'][] = ['text' => $row->text,'name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
                                                     break;
                                                 case 'sasaran_renstra':
                                                     $dataJson['results'][] = ['name' => $row->text, 'text' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
