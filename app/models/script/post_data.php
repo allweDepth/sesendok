@@ -1407,14 +1407,15 @@ class post_data
                                     $jumlah = 0;
                                     $kd_sub_keg = [];
                                     $kumpulanRowSub = [];
+                                    $kumpulanRowSub_del= [];
                                     foreach ($send as $key => $value) {
                                         $tabel_pakaiku = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
                                         $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
                                         $row_sub = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi);
                                         if ($row_sub !== false) {
                                             //$kumpulanRowSub[] ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
-                                            $row_sub['dok']=$value->dok_anggaran;
-                                            $kumpulanRowSub[] =$row_sub;
+                                            $row_sub->dok = $value->dok_anggaran;
+                                            $kumpulanRowSub[] = $row_sub;
                                             $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
                                             $pagu += $row_sub->$klm_jumlah;
                                             $jumlah += $value->val_kontrak;
@@ -1422,11 +1423,12 @@ class post_data
                                             // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
                                         } else {
                                             //hapus key yang tidak mempunyai persyaratan
+                                            $kumpulanRowSub_del[] = $value;
                                             unset($send[$key]);
                                         }
                                     }
                                     $kd_sub_keg = implode(',', $kd_sub_keg);
-                                    
+                                    // var_dump($row_sub);
                                     $id_uraian = $send;
                                     if ($jenis == 'add') {
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['pagu', '=', $pagu, 'AND']];
@@ -1435,7 +1437,7 @@ class post_data
                                     if ($jumlah > $pagu) {
                                         # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
                                         $kodePosting = '';
-                                        $code=405;
+                                        $code = 405;
                                         $tambahan_pesan = '(jumlah kontrak lebih besar dari besaran pagu)';
                                         // $id_uraian = $validate->setRules('nabiila_inayah2509', 'nilai kontrak > nilai pagu', [
                                         //     'min_char' => 2000,
@@ -2135,12 +2137,12 @@ class post_data
                                     case 'unsetujui':
                                         if ($jenis == 'unkunci' || $jenis == 'unsetujui') {
                                             $jenisnya = $jenis;
-                                            $jenisnya = substr($jenisnya, 2);//hilangkan un depan kata
+                                            $jenisnya = substr($jenisnya, 2); //hilangkan un depan kata
                                             $set = [$jenisnya . '_' . $tbl => 0];
                                         }
                                         // update di tabel pengaturan
                                         $tabel_pengaturan = 'pengaturan_neo';
-                                        
+
                                         $resul_pengaturan = $DB->update_array($tabel_pengaturan, $set, $kondisi);
                                         break;
 

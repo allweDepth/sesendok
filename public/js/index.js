@@ -4034,10 +4034,6 @@ $(document).ready(function () {
 											break;
 										case "add":
 										case "edit":
-											console.log(formData.get('id_uraian'));
-											// let JsonIdUraian = $(`form[name="form_flyout"]`).form('get value', 'id_uraian');
-											// JsonIdUraian = JSON.stringify(JsonIdUraian);
-											// formData.set('id_uraian', JsonIdUraian);
 											jalankanAjax = true;
 											break;
 										default:
@@ -4262,6 +4258,7 @@ $(document).ready(function () {
 											case "peraturan":
 											case "daftar_paket":
 												switch (jenis) {
+													case "upload":
 													case "import":
 													case "edit":
 													case "add":
@@ -4366,6 +4363,7 @@ $(document).ready(function () {
 				},
 				onDirty: function (e) {
 					//return true
+					return false;
 				},
 				onFailure: function (e) {
 					loaderHide();
