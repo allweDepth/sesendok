@@ -138,9 +138,20 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         <div class="pusher">
             <div class="basic segment">
                 <div class="ui demo page dimmer light">
+                <!-- <div class="ui massive blue text elastic loader"></div> -->
+                    <h1 class="spin">
+                    
+                        <span class="spin let1">l</span>
+                        <span class="spin let2">o</span>
+                        <span class="spin let3">a</span>
+                        <span class="spin let4">d</span>
+                        <span class="spin let5">i</span>
+                        <span class="spin let6">n</span>
+                        <span class="spin let7">g</span>
+                    </h1>
                     <!-- <div class="ui massive blue text elastic loader">Loading...</div> -->
                     <!-- <div class="putar">Loading</div> -->
-                    <div class="putar2">
+                    <!-- <div class="putar2">
                         <span style="--i:0;"></span>
                         <span style="--i:1;"></span>
                         <span style="--i:2;"></span>
@@ -157,7 +168,10 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         <span style="--i:13;"></span>
                         <span style="--i:14;"></span>
                         <span style="--i:15;"></span>
-                    </div>
+                    </div> -->
+                    <!-- <div class="ring">Loading
+                        <span class="spin"></span>
+                    </div> -->
                 </div>
             </div>
             <!-- sticky-->
@@ -561,7 +575,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="ui fluid container">
                             <div class="ui hidden divider"></div>
                             <div style="height: 1px">
