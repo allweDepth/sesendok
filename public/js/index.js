@@ -2378,6 +2378,8 @@ $(document).ready(function () {
 															formIni.find('img[src],[href]').attr('href',namaFileLink);
 															break;
 													}
+												}else{
+													formIni.find('.ribbon.label').text('Unggah File');
 												}
 
 												break;
