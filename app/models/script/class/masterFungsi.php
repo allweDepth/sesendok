@@ -253,12 +253,14 @@ class MasterFungsi
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_addendum"><i class="upload blue icon"></i>Unggah Addendum</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_pho"><i class="upload blue icon"></i>Unggah PHO</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_fho"><i class="upload blue icon"></i>Unggah FHO</div>
+                                    <div class="divider"></div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_laporan"><i class="upload blue icon"></i>Unggah Laporan</div>
+                                    <div class="divider"></div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi0"><i class="upload blue icon"></i>Unggah Dokumentasi 0%</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi50"><i class="upload blue icon"></i>Unggah Dokumentasi 50%</div>
                                     <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi100"><i class="upload blue icon"></i>Unggah Dokumentasi 100%</div>
-                                    <div class="divider"></div>
-                                    <div class="item" name="flyout" jns="download_list" tbl="' . $tbl . '" dok="file_dokumentasi100"><i class="download green icon"></i>Unduh File</div>
+                                    
+                                    
                                 </div>
                             </div>';
                             $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';

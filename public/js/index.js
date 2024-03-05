@@ -1937,7 +1937,7 @@ $(document).ready(function () {
 						placeholderData: `Pilih File (${acceptFileExt})...`,
 						accept: acceptFileExt,
 						file: data.dok
-					}); //non_data(artinya tidak di dicek form)
+					})+`<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img src=""></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`; //non_data(artinya tidak di dicek form)
 					//dropdown
 
 					switch (tbl) {
@@ -2370,10 +2370,12 @@ $(document).ready(function () {
 														case 'png':
 														case 'jpg':
 														case 'jpeg':
-															formIni.append(`<div class="ui fluid card"><a class="image"><img src="${namaFileLink}"></a><div class="content"><a class="header" href="${namaFileLink}" target="_blank">Dokumentasi</a></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`);
+															formIni.find('img[src],[href]').attr('src',namaFileLink).attr('href',namaFileLink);
+															// formIni.append(`<div class="ui fluid card"><a class="image"><img src="${namaFileLink}"></a><div class="content"><a class="header" href="${namaFileLink}" target="_blank">Dokumentasi</a></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`);
 															break;
 
 														default:
+															formIni.find('img[src],[href]').attr('href',namaFileLink);
 															break;
 													}
 												}
@@ -4146,7 +4148,7 @@ $(document).ready(function () {
 					};
 					if (jalankanAjax) {
 						suksesAjax["ajaxku"] = function (result) {
-							var kelasToast = "success";
+							let kelasToast = "success";
 							if (result.success === true) {
 								if (tbl === "import") {
 									var pesan = "";
