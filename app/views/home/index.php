@@ -138,7 +138,26 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         <div class="pusher">
             <div class="basic segment">
                 <div class="ui demo page dimmer light">
-                    <div class="ui massive blue text elastic loader">Loading...</div>
+                    <!-- <div class="ui massive blue text elastic loader">Loading...</div> -->
+                    <!-- <div class="putar">Loading</div> -->
+                    <div class="putar2">
+                        <span style="--i:0;"></span>
+                        <span style="--i:1;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:3;"></span>
+                        <span style="--i:4;"></span>
+                        <span style="--i:5;"></span>
+                        <span style="--i:6;"></span>
+                        <span style="--i:7;"></span>
+                        <span style="--i:8;"></span>
+                        <span style="--i:9;"></span>
+                        <span style="--i:10;"></span>
+                        <span style="--i:11;"></span>
+                        <span style="--i:12;"></span>
+                        <span style="--i:13;"></span>
+                        <span style="--i:14;"></span>
+                        <span style="--i:15;"></span>
+                    </div>
                 </div>
             </div>
             <!-- sticky-->
