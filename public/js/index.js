@@ -64,6 +64,7 @@ $(document).ready(function () {
 		}
 	});
 
+
 	//============================
 	//=========CARI DATA======
 	//============================
@@ -1937,7 +1938,7 @@ $(document).ready(function () {
 						placeholderData: `Pilih File (${acceptFileExt})...`,
 						accept: acceptFileExt,
 						file: data.dok
-					})+`<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img src=""></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`; //non_data(artinya tidak di dicek form)
+					}) + `<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img src="" jns="img" onerror="imgsrc(this)"></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`; //non_data(artinya tidak di dicek form)
 					//dropdown
 
 					switch (tbl) {
@@ -2149,7 +2150,7 @@ $(document).ready(function () {
 													let dropDownElmAjx = $(iterator).closest('.ui.dropdown.ajx');
 													let text = `${result.data?.users[attrElm]}`;
 													let position = text.search('file');
-													if (attrElm === 'file' || position >=0) {
+													if (attrElm === 'file' || position >= 0) {
 														formIni.form("set value", 'dum_file', result.data?.users[attrElm]);
 													} else {
 														let strText = null;
@@ -2370,15 +2371,16 @@ $(document).ready(function () {
 														case 'png':
 														case 'jpg':
 														case 'jpeg':
-															formIni.find('img[src],[href]').attr('src',namaFileLink).attr('href',namaFileLink);
+															formIni.find('img[src]').attr('src', namaFileLink);
+															formIni.find('[href]').attr('href', namaFileLink);
 															// formIni.append(`<div class="ui fluid card"><a class="image"><img src="${namaFileLink}"></a><div class="content"><a class="header" href="${namaFileLink}" target="_blank">Dokumentasi</a></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`);
 															break;
 
 														default:
-															formIni.find('img[src],[href]').attr('href',namaFileLink);
+															formIni.find('[href]').attr('href', namaFileLink);
 															break;
 													}
-												}else{
+												} else {
 													formIni.find('.ribbon.label').text('Unggah File');
 												}
 
@@ -5430,4 +5432,21 @@ function ketikUbah(evt) {
 	strText = accounting.formatNumber(perkal, perkal.countDecimals(), ".", ",");
 	MyForm.form('set value', 'jumlah', strText);
 	MyForm.form('set value', 'volume', vol_1_kali * vol_2_kali * vol_3_kali * vol_4_kali);
+}
+//========================
+//======== ON ERROR ======
+//========================
+function imgsrc(e) {
+	let ini = $(e);
+	let jenis = ini.attr('jns');
+	const myArray = ['img/notfoundwi.jpg', 'img/notfound.jpg', 'img/notfoundall.jpg',];
+	const randomElement = myArray[Math.floor(Math.random() * myArray.length)];
+	switch (jenis) {
+		case 'img':
+			ini.attr('src', randomElement);
+			break;
+		default:
+			ini.attr('src', 'img/notfound.jpg');
+			break;
+	};
 }

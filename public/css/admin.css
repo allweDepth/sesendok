@@ -1,7 +1,7 @@
 /*agar border radius di tepi semua element = 0*/
 
 * {
-    border-radius: 0px !important; 
+    border-radius: 0px !important;
 }
 
 :root {
@@ -13,11 +13,83 @@ body.inverted {
 
 }
 
+.putar {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    background: transparent;
+    border: 1px solid #3c3c3c;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 111px;
+    font-family: sans-serif;
+    color: #fff000;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px #fff000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.putar2 { position: relative;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+.putar2 span {
+    position: absolute;
+    width: 5px;
+    height: 62.5px;
+    background: transparent;
+    border-bottom: 10px solid transparent;
+    transform-origin: bottom;
+    transform: rotate(calc(22.5deg * var(--i)));
+}
+.putar2 span::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background: #0af;
+    box-shadow: 0 0 5px #0af;
+    border-radius: 2.5px;
+    animation: animate 1.5s linear infinite;
+    animation-delay: calc(0.1s * var(--i));
+}
+
+@keyframes animate {
+    0% {
+        transform: translate(40px) rotate(-45deg);
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        transform: translate(22.5px)
+    }
+    100% {
+        transform: translate(40px) rotate(45deg);
+        filter: hue-rotate(360deg);
+    }
+}
+
+
+
 #map {
     width: 100%;
     height: 500px;
     /*height: 80vh;*/
 }
+
 /* .ui.container {
     position: fixed !important;
 } */
