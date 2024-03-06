@@ -54,6 +54,7 @@ class Impor_xlsx
             $id_user = 0;
             $code = 407;
         }
+        $disableImport = 0;
         if (!empty($_POST) && $id_user > 0 && !empty($_FILES["file"]["name"])) {
             if (isset($_POST['jenis'])) {
                 $targetDir = "uploads/";
@@ -167,7 +168,7 @@ class Impor_xlsx
                                         case 'dpa':
                                         case 'renja_p':
                                         case 'dppa':
-                                            $RowHeaderValidate = ['KODE AKUN', 'URAIAN', 'JENIS KELOMPOK', 'KELOMPOK', 'JENIS KOMPONEN', 'NAMA KOMPONEN', 'HARGA SAT. KOMPONEN', 'SATUAN KOMPONEN', 'VOL', 'JUMLAH', 'KODE SUMBER DANA', 'KETERANGAN'];
+                                            $RowHeaderValidate = ['KODE AKUN', 'URAIAN', 'JENIS KELOMPOK', 'KELOMPOK', 'JENIS KOMPONEN', 'NAMA KOMPONEN', 'HARGA SAT. KOMPONEN', 'SATUAN KOMPONEN', 'SATUAN', 'VOLUME', 'JUMLAH', 'KODE SUMBER DANA', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'sub_keg_renja':
@@ -379,7 +380,7 @@ class Impor_xlsx
                                                                     'min_char' => 3
                                                                 ]);
                                                                 $tabel_pakai_temporer2 = $Fungsi->tabel_pakai($jenis_standar_harga)['tabel_pakai'];
-                                                                $komponen = $validateRow->setRules(5, 'kelompok', [
+                                                                $komponen = $validateRow->setRules(5, 'komponen', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'max_char' => 400,
@@ -389,10 +390,10 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'numeric' => true
                                                                 ]);
-                                                                $komponen = $validateRow->setRules(5, 'kelompok', [
-                                                                    'inLikeConcatDB' => [$tabel_pakai_temporer2, 'uraian_barang', [['uraian_barang', "LIKE CONCAT('%',?,'%')", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND']]]
+                                                                $komponen = $validateRow->setRules(5, 'komponen', [
+                                                                    'inLikeConcatDB' => [$tabel_pakai_temporer2, 'uraian_barang', [['uraian_barang', "LIKE CONCAT('%',?,'%')", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']]]
                                                                 ]);
-                                                                $kondisi_result = [['uraian_barang', "MATCH(uraian_barang) AGAINST(?)", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND']];
+                                                                $kondisi_result = [['uraian_barang', "MATCH(uraian_barang) AGAINST(?)", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']];
                                                                 $row = $DB->getWhereOnceArrayLike($tabel_pakai_temporer2, '*', $kondisi_result);
                                                                 var_dump($row);
                                                                 if ($row !== false) {

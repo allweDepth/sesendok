@@ -62,4 +62,22 @@ kode 3-29;
 (h) transmigrasi dengan kode 3-32.
 1. Kode Urusan/Unsur
 2. Kode
+
+
+
+objek belanja
+["gaji", "Belanja Gaji dan Tunjangan ASN"],
+									["barang_jasa_modal", "Belanja Barang Jasa dan Modal", "active"],
+									["bunga", "Belanja Bunga"],
+									["subsidi", "Belanja Subsidi"],
+									["hibah_barang_jasa", "Belanja Hibah (Barang/Jasa)"],
+									["hibah_uang", "Belanja Hibah (Uang)"],
+									["sosial_barang_jasa", "Belanja Bantuan Sosial (Barang/Jasa)"],
+									["sosial_uang", "Belanja Bantuan Sosial (Uang)"],
+									["keuangan_umum", "Belania Bantuan Keuangan Umum"],5.4.02
+									["keuangan_khusus", "Belanja Bantuan Keuangan Khusus"],
+									["btt", "Belanja Tidak Terduga (BTT)"],
+									["bos_pusat", "Dana BOS (BOS Pusat)"],
+									["blud", "Belanja Operasional (BLUD)"],
+									["lahan", "Pembebasan Tanah/ Lahan"]
     */

@@ -1908,10 +1908,13 @@ $(document).ready(function () {
 					});
 					switch (tbl) {
 						case 'dpa':
-						case 'renja':
 						case 'dppa':
-						case 'renja_p':
-							formIni.attr("id_sub_keg", ini.attr("id_sub_keg"));
+						case 'renja':
+						case 'renja_p'://@audit now
+							// console.log(ini.closest('.ui.tab').find(`.ui.menu a.active[tb="${tbl}"]`));
+							
+							formIni.attr("id_sub_keg", ini.closest('.ui.tab').find(`.ui.menu a.active[tb="${tbl}"]`).attr("id_sub_keg"));
+							formIni.attr("dok", ini.attr("dok"));
 							break;
 						case 'value1':
 							break;
@@ -1930,6 +1933,7 @@ $(document).ready(function () {
 							data.dok = ini.attr("dok");
 							jalankanAjax = true;
 							break;
+						
 						default:
 							break;
 					}
@@ -2401,7 +2405,7 @@ $(document).ready(function () {
 								break;
 						};
 					} else {
-						
+
 					}
 					loaderHide();
 				} else {
