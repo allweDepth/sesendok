@@ -393,7 +393,7 @@ class Impor_xlsx
                                                                 $komponen = $validateRow->setRules(5, 'komponen', [
                                                                     'inLikeConcatDB' => [$tabel_pakai_temporer2, 'uraian_barang', [['uraian_barang', "LIKE CONCAT('%',?,'%')", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']]]
                                                                 ]);
-                                                                $kondisi_result = [['uraian_barang', "MATCH(uraian_barang) AGAINST(?)", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']];
+                                                                $kondisi_result = [['', "MATCH(uraian_barang) AGAINST(?)", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']];
                                                                 $row = $DB->getWhereOnceArrayLike($tabel_pakai_temporer2, '*', $kondisi_result);
                                                                 var_dump($row);
                                                                 if ($row !== false) {

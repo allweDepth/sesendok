@@ -94,7 +94,7 @@ class DB
             $item = array('code' => $code, 'message' => $message);
             $json = array('success' => false, 'data' => $pesan, 'error' => $item);
             
-            // echo json_encode($json);
+            echo json_encode($json);
         }
         return $stmt;
     }
@@ -335,8 +335,8 @@ class DB
             $dataValuesCheck[] = $condition[$x][2];
         }
         $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
-        var_dump($query);
-        var_dump($dataValuesCheck);
+        // var_dump($query);
+        // var_dump($dataValuesCheck);
         // return $this->runQuery($query, $dataValuesCheck);
         return $this->get($tableName, $query, $dataValuesCheck, $limit);
     }
