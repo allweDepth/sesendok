@@ -82,7 +82,21 @@ class del_data
                                 break;
                         }
                         break;
+                    case 'reset':
+                    case 'del_all':
+                        if ($type_user !== 'admin)') {
+                            $andabukanadmin = $validate->setRules('nabiilainayah_bilang_anda_bukan_admin', 'anda bukan admin', [
+                                'required' => true,
+                                'inArray' => ['andabukanadminbosku']
+                            ]);
+                        }
                     default:
+                    if ($type_user !== 'admin)') {
+                        $andabukanadmin = $validate->setRules('bukantempatandadelete', 'periksa kembali perintahnya', [
+                            'required' => true,
+                            'inArray' => ['andabukanadminbosku']
+                        ]);
+                    }
                         break;
                 }
                 //FINISH PROSES VALIDASI
@@ -240,7 +254,7 @@ class del_data
                             break;
                     }
                 } else {
-                    $err = 29;
+                    $code = 39;
                     $pesan = $validate->getError();
                     $data['error_validate'][] = $pesan;
                 }

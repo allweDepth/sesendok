@@ -340,6 +340,16 @@ class DB
         // return $this->runQuery($query, $dataValuesCheck);
         return $this->get($tableName, $query, $dataValuesCheck, $limit);
     }
+    public
+    function getWhereOnceArrayLike($tableName, $columnName, $condition = [])
+    {
+        $result = $this->getArrayLike($tableName, $columnName, $condition);
+        if (!empty($result)) {
+            return $result[0];
+        } else {
+            return false;
+        }
+    }
     //Perintah DISTINCT digunakan untuk select data yang sama dari hasil tampilan query SELECT.
     public
     function getDistinct($tableName, $columnName, $condition)

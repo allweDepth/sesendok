@@ -321,10 +321,8 @@ class Impor_xlsx
                                                         }
                                                         break;
                                                     case 'value':
-                                                        # code...
                                                         break;
                                                     default:
-                                                        # code...
                                                         break;
                                                 }
                                                 $validateRow = new Validate($getData);
@@ -353,19 +351,101 @@ class Impor_xlsx
                                                                     'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp]]],
                                                                     'min_char' => 1
                                                                 ]);
-
                                                                 $uraian = $validateRow->setRules(1, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'min_char' => 1
                                                                 ]);
                                                                 //cari dan insert di kolom keterangan_json $tabel_pakai_temp
-                                                                $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                                $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'keterangan_json', 'jenis_kelompok' => 'keterangan_json', 'uraian_field' => $uraian, 'dataKondisiField' => $dataKondisiField];
                                                                 $Fungsi->add_update_field_json($dinamic);
 
+                                                                $jenis_kelompok = $validateRow->setRules(2, 'jenis kelompok uraian pilih paket atau kelompok', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'inArray' => ['paket', 'kelompok']
+                                                                ]);
+                                                                $kelompok = $validateRow->setRules(3, 'kelompok', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'max_char' => 255,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                                $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'kelompok_json', 'jenis_kelompok' => $jenis_kelompok, 'uraian_field' => $kelompok, 'dataKondisiField' => $dataKondisiField];
+                                                                $Fungsi->add_update_field_json($dinamic);
 
+                                                                $jenis_standar_harga = $validateRow->setRules(4, 'jenis komponen', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'in_array' => ['ssh', 'sbu', 'hspk', 'asb'],
+                                                                    'min_char' => 3
+                                                                ]);
+                                                                $tabel_pakai_temporer2 = $Fungsi->tabel_pakai($jenis_standar_harga)['tabel_pakai'];
+                                                                $komponen = $validateRow->setRules(5, 'kelompok', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'max_char' => 400,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $harga_satuan = $validateRow->setRules(6, 'harga satuan', [
+                                                                    'required' => true,
+                                                                    'numeric' => true
+                                                                ]);
+                                                                $komponen = $validateRow->setRules(5, 'kelompok', [
+                                                                    'inLikeConcatDB' => [$tabel_pakai_temporer2, 'uraian_barang', [['uraian_barang', "LIKE CONCAT('%',?,'%')", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND']]]
+                                                                ]);
+                                                                $kondisi_result = [['uraian_barang', "MATCH(uraian_barang) AGAINST(?)", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND']];
+                                                                $row = $DB->getWhereOnceArrayLike($tabel_pakai_temporer2, '*', $kondisi_result);
+                                                                var_dump($row);
+                                                                if ($row !== false) {
+                                                                    $id_standar_harga = $row->id;
+                                                                    $harga_satuan = $row->harga_satuan;
+                                                                    $komponen = $row->uraian_barang;
+                                                                    $spesifikasi = $row->spesifikasi;
+                                                                    $tkdn = $row->tkdn;
+                                                                } else {
+                                                                    //buatkan error 
+                                                                    $komponen = $validateRow->setRules(5, "tidak ditemukan uraian barang di $jenis_standar_harga", [
+                                                                        'required' => true,
+                                                                        'inArray' => ['andabukanadminboskusakonne']
+                                                                    ]);
+                                                                }
 
+                                                                $satuan = $validateRow->setRules(5, 'kelompok', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'max_char' => 400,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $explodeAwal = explode(';', $satuan);
+                                                                foreach ($explodeAwal as $key => $row_foreach) {
+                                                                    $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['kode', '=', $row_foreach]]);
+                                                                    if ($dataRslt <= 0) {
+                                                                        unset($explodeAwal[$key]);
+                                                                    }
+                                                                }
+                                                                $satuan = implode(',', $explodeAwal);
+
+                                                                $volume = $validateRow->setRules(8, 'kelompok', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'max_char' => 400,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $satuan = $validateRow->setRules(8, 'kelompok', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'max_char' => 400,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $explodeAwal = explode(';', $volume);
+                                                                $jumlahVolume = 0;
+                                                                foreach ($explodeAwal as $key => $row_foreach) {
+                                                                    $jumlahVolume++;
+                                                                    ${"vol_$jumlahVolume"} = (float)$row_foreach;
+                                                                }
 
                                                                 $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
                                                                 //jadikan Array
@@ -376,7 +456,7 @@ class Impor_xlsx
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
-                                                                $sumber_dana = $explodeAwal;
+                                                                $sumber_dana = implode(',', $explodeAwal);
                                                                 // $sumber_dana = $validateRow->setRules(8, 'sumber dana', [
                                                                 //     'sanitize' => 'string',
                                                                 //     'required' => true,
@@ -508,7 +588,7 @@ class Impor_xlsx
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
-                                                                $sumber_dana = implode(',',$explodeAwal);
+                                                                $sumber_dana = implode(',', $explodeAwal);
                                                                 // $sumber_dana = $validateRow->setRules(8, 'sumber dana', [
                                                                 //     'sanitize' => 'string',
                                                                 //     'required' => true,
@@ -826,7 +906,7 @@ class Impor_xlsx
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
-                                                                $kd_akun = implode(',',$explodeAwal);
+                                                                $kd_akun = implode(',', $explodeAwal);
                                                                 $keterangan = $validateRow->setRules(8, 'keterangan', [
                                                                     'sanitize' => 'string',
                                                                 ]);
