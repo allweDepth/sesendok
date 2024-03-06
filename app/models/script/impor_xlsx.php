@@ -96,9 +96,6 @@ class Impor_xlsx
                                     'min_char' => 1
                                 ]);
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'min_char' => 1,
                                     'inDB' => [$tabel_pakai_temp, 'id', [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
                                 ]);
                                 $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temp, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
@@ -348,8 +345,7 @@ class Impor_xlsx
                                                                 $kd_akun = $validateRow->setRules(0, 'kode akun', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
-                                                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp]]],
-                                                                    'min_char' => 1
+                                                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp],['sub_rincian_objek', '>', 0,'AND']]]
                                                                 ]);
                                                                 $uraian = $validateRow->setRules(1, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
@@ -428,6 +424,14 @@ class Impor_xlsx
                                                                 $explodeVol = explode(';', $volume);
                                                                 $explodeAwal = explode(';', $satuan);
                                                                 $jumlahVolume = 0;
+                                                                $sat_1 = 0;
+                                                                $sat_2 = 0;
+                                                                $sat_3 =0;
+                                                                $sat_4= 0;
+                                                                $vol_1 = 0;
+                                                                $vol_2 = 0;
+                                                                $vol_3 =0;
+                                                                $vol_4= 0;
                                                                 foreach ($explodeAwal as $key => $row_foreach) {
                                                                     $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['kode', '=', $row_foreach]]);
                                                                     if ($dataRslt <= 0) {
@@ -450,13 +454,12 @@ class Impor_xlsx
                                                                     }
                                                                 }
                                                                 $sumber_dana = implode(',', $explodeAwal);
-                                                                // $sumber_dana = $validateRow->setRules(8, 'sumber dana', [
-                                                                //     'sanitize' => 'string',
-                                                                //     'required' => true,
-                                                                //     'inDB' => ['sumber_dana_neo', 'kode', [['kode', '=', $sumber_dana_temp]]],
-                                                                //     'min_char' => 1
-                                                                // ]);
-
+                                                                $vol_1_kali = ($vol_1) ? $vol_1 : 1;
+                                                                $vol_2_kali = ($vol_2) ? $vol_2 : 1;
+                                                                $vol_3_kali = ($vol_3) ? $vol_3 : 1;
+                                                                $vol_4_kali = ($vol_4) ? $vol_4 : 1;
+                                                                $volume = $vol_1_kali * $vol_2_kali * $vol_3_kali * $vol_4_kali;
+                                                                $jumlah = $volume * $harga_satuan;
                                                                 $keterangan = $validateRow->setRules(14, 'keterangan', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -503,12 +506,9 @@ class Impor_xlsx
                                                                     default:
                                                                         break;
                                                                 };
-
-
-
                                                                 //uraian_prog_keg
-                                                                $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                                                $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
+                                                                // $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                                                                // $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
                                                                 $arrayDataRows = [
                                                                     'kd_wilayah' => $kd_wilayah,
                                                                     'kd_opd' => $kd_opd,
