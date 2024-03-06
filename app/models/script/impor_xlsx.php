@@ -507,6 +507,8 @@ class Impor_xlsx
                                                                     default:
                                                                         break;
                                                                 };
+                                                                $objek_belanja = 'barang_jasa_modal';//masih butuh cara 
+                                                                // 'in_array' => ['gaji', 'barang_jasa_modal', 'bunga', 'subsidi', 'hibah_barang_jasa', 'hibah_uang', 'sosial_barang_jasa', 'sosial_uang', 'keuangan_umum', 'keuangan_khusus', 'btt', 'bos_pusat', 'blud', 'lahan'],
                                                                 //uraian_prog_keg
                                                                 // $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                                                 // $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
