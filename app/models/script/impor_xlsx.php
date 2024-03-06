@@ -413,38 +413,31 @@ class Impor_xlsx
                                                                     ]);
                                                                 }
 
-                                                                $satuan = $validateRow->setRules(5, 'kelompok', [
+                                                                $satuan = $validateRow->setRules(7, 'kelompok', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'max_char' => 400,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $explodeAwal = explode(';', $satuan);
-                                                                foreach ($explodeAwal as $key => $row_foreach) {
-                                                                    $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['kode', '=', $row_foreach]]);
-                                                                    if ($dataRslt <= 0) {
-                                                                        unset($explodeAwal[$key]);
-                                                                    }
-                                                                }
-                                                                $satuan = implode(',', $explodeAwal);
-
                                                                 $volume = $validateRow->setRules(8, 'kelompok', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'max_char' => 400,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $satuan = $validateRow->setRules(8, 'kelompok', [
-                                                                    'sanitize' => 'string',
-                                                                    'required' => true,
-                                                                    'max_char' => 400,
-                                                                    'min_char' => 1
-                                                                ]);
-                                                                $explodeAwal = explode(';', $volume);
+                                                                $explodeVol = explode(';', $volume);
+                                                                $explodeAwal = explode(';', $satuan);
                                                                 $jumlahVolume = 0;
                                                                 foreach ($explodeAwal as $key => $row_foreach) {
-                                                                    $jumlahVolume++;
-                                                                    ${"vol_$jumlahVolume"} = (float)$row_foreach;
+                                                                    $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['kode', '=', $row_foreach]]);
+                                                                    if ($dataRslt <= 0) {
+                                                                        $jumlahVolume++;
+                                                                        unset($explodeAwal[$key]);
+                                                                        // convert $row_foreach dari , menjadi .
+                                                                        //ambil satuan dan volume
+                                                                        ${"vol_$jumlahVolume"} = (float)$row_foreach;
+                                                                        ${"sat_$jumlahVolume"} = $explodeVol[(int)$jumlahVolume - 1];
+                                                                    }
                                                                 }
 
                                                                 $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
@@ -463,30 +456,56 @@ class Impor_xlsx
                                                                 //     'inDB' => ['sumber_dana_neo', 'kode', [['kode', '=', $sumber_dana_temp]]],
                                                                 //     'min_char' => 1
                                                                 // ]);
-                                                                $lokasi = $validateRow->setRules(9, 'lokasi', [
-                                                                    'sanitize' => 'string'
-                                                                ]);
-                                                                $keluaran_sub_keg = $validateRow->setRules(10, 'keluaran sub keg', [
-                                                                    'sanitize' => 'string'
-                                                                ]);
-                                                                $awal_pelaksanaan = $validateRow->setRules(11, 'tanggal awal pelaksanaan', [
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'required' => true,
-                                                                    'max_char' => 100,
-                                                                    'min_char' => 8
-                                                                ]);
-                                                                $akhir_pelaksanaan = $validateRow->setRules(12, 'tanggal akhir pelaksanaan', [
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'required' => true,
-                                                                    'max_char' => 100,
-                                                                    'min_char' => 8
-                                                                ]);
-                                                                $jumlah_pagu = $validateRow->setRules(13, 'jumlah_pagu', [
-                                                                    'numeric_zero' => true,
-                                                                ]);
+
                                                                 $keterangan = $validateRow->setRules(14, 'keterangan', [
                                                                     'sanitize' => 'string'
                                                                 ]);
+                                                                switch ($tabel_pakai) {
+                                                                    case 'sub_keg_dpa_neo':
+                                                                    case 'sub_keg_renja_neo':
+                                                                        $kolomJumlah = 'jumlah';
+                                                                        break;
+                                                                    case 'dpa_neo':
+                                                                    case 'renja_neo':
+                                                                        $kolomJumlah = 'jumlah';
+                                                                        $kolomVol_1 = 'vol_1';
+                                                                        $kolomVol_2 = 'vol_2';
+                                                                        $kolomVol_3 = 'vol_3';
+                                                                        $kolomVol_4 = 'vol_4';
+                                                                        $kolomVol_5 = 'vol_5';
+                                                                        $kolomHarga_satuan = 'harga_satuan';
+                                                                        $kolomVolume = 'volume';
+                                                                        $kolomSat_1 = 'sat_1';
+                                                                        $kolomSat_2 = 'sat_2';
+                                                                        $kolomSat_3 = 'sat_3';
+                                                                        $kolomSat_4 = 'sat_4';
+                                                                        $kolomSat_5 = 'sat_5';
+                                                                        break;
+                                                                    case 'dppa_neo':
+                                                                    case 'renja_p_neo':
+                                                                        $kolomJumlah = 'jumlah_p';
+                                                                        $kolomVol_1 = 'vol_1_p';
+                                                                        $kolomVol_2 = 'vol_2_p';
+                                                                        $kolomVol_3 = 'vol_3_p';
+                                                                        $kolomVol_4 = 'vol_4_p';
+                                                                        $kolomVol_5 = 'vol_5_p';
+                                                                        $kolomHarga_satuan = 'harga_satuan_p';
+                                                                        $kolomVolume = 'volume_p';
+                                                                        $kolomSat_1 = 'sat_1_p';
+                                                                        $kolomSat_2 = 'sat_2_p';
+                                                                        $kolomSat_3 = 'sat_3_p';
+                                                                        $kolomSat_4 = 'sat_4_p';
+                                                                        $kolomSat_5 = 'sat_5_p';
+                                                                        break;
+                                                                    case 'renstra_neo':
+                                                                        $kolomJumlah = 'jumlah';
+                                                                        break;
+                                                                    default:
+                                                                        break;
+                                                                };
+
+
+
                                                                 //uraian_prog_keg
                                                                 $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                                                 $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
@@ -495,25 +514,36 @@ class Impor_xlsx
                                                                     'kd_opd' => $kd_opd,
                                                                     'tahun' => $tahun,
                                                                     'kd_sub_keg' => $kd_sub_keg,
-                                                                    'kel_rek' => $kel_rek,
-                                                                    'uraian' => $uraian_prog_keg,
-                                                                    'tolak_ukur_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg),
-                                                                    'target_kinerja_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg),
-                                                                    'tolak_ukur_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran),
-                                                                    'target_kinerja_keluaran ' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
-                                                                    'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
-                                                                    'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                                                    'sumber_dana' =>  json_encode(array("sumber_dana" => $sumber_dana)),
-                                                                    'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
-                                                                    'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
-                                                                    'awal_pelaksanaan' => $awal_pelaksanaan,
-                                                                    'akhir_pelaksanaan' => $akhir_pelaksanaan,
-                                                                    'jumlah_pagu' => (float)$jumlah_pagu,
+                                                                    'kd_akun' => $kd_akun,
+                                                                    'kel_rek' => 'uraian', //kd
+                                                                    'objek_belanja' => $objek_belanja,
+                                                                    'uraian' => $uraian,
+                                                                    'jenis_kelompok' => $jenis_kelompok,
+                                                                    'kelompok' => $kelompok,
+                                                                    'jenis_standar_harga' => $jenis_standar_harga,
+                                                                    'id_standar_harga' => $id_standar_harga,
+                                                                    'komponen' => $komponen,
+                                                                    'spesifikasi' => $spesifikasi,
+                                                                    'tkdn' => (float)$tkdn,
+                                                                    'pajak' => $pajak,
+                                                                    $kolomHarga_satuan => $harga_satuan,
+                                                                    $kolomVol_1 => $vol_1,
+                                                                    $kolomVol_2 => $vol_2,
+                                                                    $kolomVol_3 => $vol_3,
+                                                                    $kolomVol_4 => $vol_4,
+                                                                    $kolomSat_1 => $sat_1,
+                                                                    $kolomSat_2 => $sat_2,
+                                                                    $kolomSat_3 => $sat_3,
+                                                                    $kolomSat_4 => $sat_4,
+                                                                    $kolomVolume => $volume,
+                                                                    $kolomJumlah => $jumlah,
+                                                                    'sumber_dana' => $sumber_dana,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_input' => $_SESSION["user"]["username"],
+                                                                    'username_update' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $arrayDataRows_nonSubKeg = [
                                                                     'kd_wilayah' => $kd_wilayah,
