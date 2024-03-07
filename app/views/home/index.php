@@ -821,6 +821,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             $data_card->sub_keg_dpa = ['header' => 'SUB KEGIATAN DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
                             $data_card->dpa = ['header' => 'DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
                             $data_card->dppa = ['header' => 'DPPA', 'meta' => 'dpa perubahan', 'description' => 'dpa perubahan', 'icon' => 'violet users cog'];
+                            $data_card->daftar_kontrak = ['header' => 'KONTRAK', 'meta' => 'daftar kontrak', 'description' => 'kontraktual/swakelola', 'icon' => 'violet users cog'];
                             if ($type_user == 'admin') {
                                 $data_card->satuan = ['header' => 'Satuan', 'meta' => 'Ukuran suatu besaran', 'description' => 'Satuan atau satuan ukur atau unit digunakan untuk memastikan kebenaran pengukuran', 'icon' => 'user plus'];
                                 $data_card->divisi = ['header' => 'Divisi', 'meta' => 'Task HSP', 'description' => 'Pembagian divisi pekerjaan', 'icon' => 'teal users cog'];

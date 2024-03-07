@@ -2567,7 +2567,6 @@ $(document).ready(function () {
 										default:
 											classToast = "success";
 											iconToast = "check circle icon";
-
 											break;
 									}
 								} else {
@@ -2591,7 +2590,6 @@ $(document).ready(function () {
 								iconToast = "check circle icon";
 								break;
 						};
-
 						showToast(result.error.message, {
 							class: classToast,
 							icon: iconToast,

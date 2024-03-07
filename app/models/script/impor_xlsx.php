@@ -425,7 +425,7 @@ class Impor_xlsx
                                                                     'min_char' => 1
                                                                 ]);
                                                                 $explodeVol = explode(';', $volume);
-                                                                $explodeAwal = explode(';', $satuan);
+                                                                $explodeSat = explode(';', $satuan);
                                                                 $jumlahVolume = 0;
                                                                 $sat_1 = '';
                                                                 $sat_2 = '';
@@ -435,23 +435,18 @@ class Impor_xlsx
                                                                 $vol_2 = 0;
                                                                 $vol_3 = 0;
                                                                 $vol_4 = 0;
-                                                                if(count($explodeVol) > 0){
+                                                                if (count($explodeVol) > 0) {
                                                                     foreach ($explodeVol as $key => $row_foreach) {
-                                                                        $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['value', '=', $explodeAwal[(int)$jumlahVolume]]]);
-                                                                        if ($dataRslt !== false) {
-                                                                            $jumlahVolume++;
-                                                                            
-                                                                            var_dump($row_foreach);
-                                                                            ${"vol_$jumlahVolume"} = (float)$row_foreach;
-                                                                            var_dump(${"vol_$jumlahVolume"});
-                                                                            ${"sat_$jumlahVolume"} = $explodeAwal[(int)$jumlahVolume - 1];
-                                                                        }else{
-                                                                            unset($explodeAwal[$key]);
+                                                                        if (array_key_exists($key, $explodeSat)) {
+                                                                            $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['value', '=', $explodeSat[$key]]]);
+                                                                        } else {
+                                                                            $explodeSat[$key] = 'paket';
                                                                         }
+                                                                        $ni = $key + 1;
+                                                                        ${"vol_$ni"} = (float)$row_foreach;
+                                                                        ${"sat_$ni"} = $explodeSat[$key];
                                                                     }
                                                                 }
-                                                                
-
                                                                 $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
                                                                 //jadikan Array
                                                                 $explodeAwal = explode(';', $sumber_dana_temp);
