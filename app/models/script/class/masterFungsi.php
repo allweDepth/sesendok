@@ -888,7 +888,7 @@ class MasterFungsi
                     }
                 }
                 break;
-                case 'daftar_kontrak':
+            case 'daftar_kontrak':
             case 'daftar_paket':
                 $tabel_pakai = 'daftar_paket_neo';
                 $jumlah_kolom = 7;
@@ -2239,14 +2239,14 @@ class MasterFungsi
         //svar_dump($dataWall);
         return $dataWall;
     }
-    public function importFile($tbl, $set=['dok'=>'','nameFileDel' => ''])
+    public function importFile($tbl, $set = ['dok' => '', 'nameFileDel' => ''])
     {
         $nameFileDel = '';
-        if(isset($set['nameFileDel'])){
+        if (isset($set['nameFileDel'])) {
             $nameFileDel = $set['nameFileDel'];
         }
         $dok = 'file';
-        if(isset($set['dok'])){
+        if (isset($set['dok'])) {
             $dok = $set['dok'];
         }
         $user = new User();
@@ -2364,17 +2364,17 @@ class MasterFungsi
                 $namaFileCustomTambahan = $set['nama_file'];
                 $namaFile = sprintf(
                     "$targetPath%s.%s", //"./uploads/%s.%s",
-                    $namaFileCustomTambahan.'_'.sha1_file($_FILES[$dok]['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
+                    $namaFileCustomTambahan . '_' . sha1_file($_FILES[$dok]['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
                     $ext
                 );
-            }else{
+            } else {
                 $namaFile = sprintf(
                     "$targetPath%s.%s", //"./uploads/%s.%s",
                     sha1_file($_FILES[$dok]['tmp_name']) . "_{$id_user}", //sha1_file($_FILES['file']['tmp_name']),
                     $ext
                 );
             }
-            
+
             $fileNamePath = "$namaFile";/*sprintf(
                 "..$targetPath%s.%s", //"./uploads/%s.%s",
                 sha1_file($_FILES['file']['tmp_name']), //sha1_file($_FILES['file']['tmp_name']),
@@ -2408,7 +2408,7 @@ class MasterFungsi
         }
     }
     //get dropdown
-    public function getDropdownItem($get_data , $nama_tabel, $nama_dropdown, $jenisdropdown = 'list', $jumlah_kolom_dropdown = 1, $type_user = 'user')
+    public function getDropdownItem($get_data, $nama_tabel, $nama_dropdown, $jenisdropdown = 'list', $jumlah_kolom_dropdown = 1, $type_user = 'user')
     {
         $hasil = '';
         switch ($jenisdropdown) {

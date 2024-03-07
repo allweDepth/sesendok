@@ -355,6 +355,7 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'min_char' => 1
                                                                 ]);
+                                                                $uraian=preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian);
                                                                 //cari dan insert di kolom keterangan_json $tabel_pakai_temp
                                                                 $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'keterangan_json', 'jenis_kelompok' => 'keterangan_json', 'uraian_field' => $uraian, 'dataKondisiField' => $dataKondisiField];
@@ -371,6 +372,7 @@ class Impor_xlsx
                                                                     'max_char' => 255,
                                                                     'min_char' => 1
                                                                 ]);
+                                                                $kelompok=preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok);
                                                                 $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'kelompok_json', 'jenis_kelompok' => $jenis_kelompok, 'uraian_field' => $kelompok, 'dataKondisiField' => $dataKondisiField];
                                                                 $Fungsi->add_update_field_json($dinamic);
@@ -538,7 +540,6 @@ class Impor_xlsx
 
                                                                 $uraian_akun = strtolower($uraian_akun);
                                                                 // str_contains untuk php 8
-
                                                                 if (str_contains($uraian_akun, 'belanja bunga')) {
                                                                     $objek_belanja = 'bunga';
                                                                 } else
