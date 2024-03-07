@@ -84,19 +84,19 @@ class del_data
                         break;
                     case 'reset':
                     case 'del_all':
-                        if ($type_user !== 'admin)') {
+                        if($type_user !== 'admin') {
                             $andabukanadmin = $validate->setRules('nabiilainayah_bilang_anda_bukan_admin', 'anda bukan admin', [
                                 'required' => true,
                                 'inArray' => ['andabukanadminbosku']
                             ]);
                         }
                     default:
-                    if ($type_user !== 'admin)') {
-                        $andabukanadmin = $validate->setRules('bukantempatandadelete', 'periksa kembali perintahnya', [
-                            'required' => true,
-                            'inArray' => ['andabukanadminbosku']
-                        ]);
-                    }
+                        if ($type_user !== 'admin') {
+                            $andabukanadmin = $validate->setRules('bukantempatandadelete', 'periksa kembali perintahnya', [
+                                'required' => true,
+                                'inArray' => ['andabukanadminbosku']
+                            ]);
+                        }
                         break;
                 }
                 //FINISH PROSES VALIDASI

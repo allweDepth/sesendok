@@ -412,13 +412,13 @@ class Impor_xlsx
                                                                     ]);
                                                                 }
 
-                                                                $satuan = $validateRow->setRules(7, 'kelompok', [
+                                                                $satuan = $validateRow->setRules(8, 'kelompok', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'max_char' => 400,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $volume = $validateRow->setRules(8, 'kelompok', [
+                                                                $volume = $validateRow->setRules(9, 'kelompok', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'max_char' => 400,
@@ -427,25 +427,30 @@ class Impor_xlsx
                                                                 $explodeVol = explode(';', $volume);
                                                                 $explodeAwal = explode(';', $satuan);
                                                                 $jumlahVolume = 0;
-                                                                $sat_1 = 0;
-                                                                $sat_2 = 0;
-                                                                $sat_3 = 0;
-                                                                $sat_4 = 0;
+                                                                $sat_1 = '';
+                                                                $sat_2 = '';
+                                                                $sat_3 = '';
+                                                                $sat_4 = '';
                                                                 $vol_1 = 0;
                                                                 $vol_2 = 0;
                                                                 $vol_3 = 0;
                                                                 $vol_4 = 0;
-                                                                foreach ($explodeAwal as $key => $row_foreach) {
-                                                                    $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['value', '=', $row_foreach]]);
-                                                                    if ($dataRslt !== false) {
-                                                                        $jumlahVolume++;
-                                                                        unset($explodeAwal[$key]);
-                                                                        // convert $row_foreach dari , menjadi .
-                                                                        //ambil satuan dan volume
-                                                                        ${"vol_$jumlahVolume"} = (float)$row_foreach;
-                                                                        ${"sat_$jumlahVolume"} = $explodeVol[(int)$jumlahVolume - 1];
+                                                                if(count($explodeVol) > 0){
+                                                                    foreach ($explodeVol as $key => $row_foreach) {
+                                                                        $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['value', '=', $explodeAwal[(int)$jumlahVolume]]]);
+                                                                        if ($dataRslt !== false) {
+                                                                            $jumlahVolume++;
+                                                                            
+                                                                            var_dump($row_foreach);
+                                                                            ${"vol_$jumlahVolume"} = (float)$row_foreach;
+                                                                            var_dump(${"vol_$jumlahVolume"});
+                                                                            ${"sat_$jumlahVolume"} = $explodeAwal[(int)$jumlahVolume - 1];
+                                                                        }else{
+                                                                            unset($explodeAwal[$key]);
+                                                                        }
                                                                     }
                                                                 }
+                                                                
 
                                                                 $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
                                                                 //jadikan Array
