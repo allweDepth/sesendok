@@ -1477,7 +1477,6 @@ class get_data
                                                 }
                                                 // keterangan/uraian
                                                 $cari_drop = $data['users']->uraian;
-
                                                 if ($cari_drop) {
                                                     $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                     $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'keterangan_json', 'keterangan_json', $dataKondisiField);
@@ -1494,6 +1493,7 @@ class get_data
                                                     $def2 = "sat_{$i}";
                                                     $cari_vol = $data['users']->{$def};
                                                     $cari_sat = $data['users']->{$def2};
+                                                    $data['values'][$def] = $cari_vol;
                                                     if ($cari_vol > 0) {
                                                         $kondisi_result = [['disable', '<=', 0], ['value', '=', $cari_sat, 'AND']];
                                                         $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
