@@ -1912,7 +1912,7 @@ $(document).ready(function () {
 						case 'renja':
 						case 'renja_p'://@audit now
 							// console.log(ini.closest('.ui.tab').find(`.ui.menu a.active[tb="${tbl}"]`));
-							
+
 							formIni.attr("id_sub_keg", ini.closest('.ui.tab').find(`.ui.menu a.active[tb="${tbl}"]`).attr("id_sub_keg"));
 							formIni.attr("dok", ini.attr("dok"));
 							break;
@@ -1933,7 +1933,7 @@ $(document).ready(function () {
 							data.dok = ini.attr("dok");
 							jalankanAjax = true;
 							break;
-						
+
 						default:
 							break;
 					}
@@ -2578,7 +2578,9 @@ $(document).ready(function () {
 								break;
 						};
 						switch (result.error.code) {
+							case 2:
 							case 3:
+							case 4:
 								classToast = "success";
 								iconToast = "check circle icon";
 								break;

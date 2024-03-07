@@ -888,6 +888,7 @@ class MasterFungsi
                     }
                 }
                 break;
+                case 'daftar_kontrak':
             case 'daftar_paket':
                 $tabel_pakai = 'daftar_paket_neo';
                 $jumlah_kolom = 7;
