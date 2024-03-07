@@ -101,6 +101,7 @@ class Impor_xlsx
                                 ]);
                                 $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temp, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
                                 $kd_sub_keg = ($row_kd_sub_keg !== false) ? $row_kd_sub_keg->kd_sub_keg : '';
+
                                 break;
                             default:
                                 # code...
@@ -346,8 +347,9 @@ class Impor_xlsx
                                                                 $kd_akun = $validateRow->setRules(0, 'kode akun', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
-                                                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp],['sub_rincian_objek', '>', 0,'AND']]]
+                                                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp], ['sub_rincian_objek', '>', 0, 'AND']]]
                                                                 ]);
+
                                                                 $uraian = $validateRow->setRules(1, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
@@ -395,7 +397,7 @@ class Impor_xlsx
                                                                 ]);
                                                                 $kondisi_result = [['', "MATCH(uraian_barang) AGAINST(?)", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']];
                                                                 $row = $DB->getWhereOnceArrayLike($tabel_pakai_temporer2, $kondisi_result);
-                                                                var_dump($row);
+                                                                // var_dump($row);
                                                                 if ($row !== false) {
                                                                     $id_standar_harga = $row->id;
                                                                     $harga_satuan = $row->harga_satuan;
@@ -427,15 +429,15 @@ class Impor_xlsx
                                                                 $jumlahVolume = 0;
                                                                 $sat_1 = 0;
                                                                 $sat_2 = 0;
-                                                                $sat_3 =0;
-                                                                $sat_4= 0;
+                                                                $sat_3 = 0;
+                                                                $sat_4 = 0;
                                                                 $vol_1 = 0;
                                                                 $vol_2 = 0;
-                                                                $vol_3 =0;
-                                                                $vol_4= 0;
+                                                                $vol_3 = 0;
+                                                                $vol_4 = 0;
                                                                 foreach ($explodeAwal as $key => $row_foreach) {
                                                                     $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['value', '=', $row_foreach]]);
-                                                                    if ($dataRslt <= 0) {
+                                                                    if ($dataRslt !== false) {
                                                                         $jumlahVolume++;
                                                                         unset($explodeAwal[$key]);
                                                                         // convert $row_foreach dari , menjadi .
@@ -450,7 +452,7 @@ class Impor_xlsx
                                                                 $explodeAwal = explode(';', $sumber_dana_temp);
                                                                 foreach ($explodeAwal as $key => $row) {
                                                                     $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', $row]]);
-                                                                    if ($dataRslt <= 0) {
+                                                                    if ($dataRslt !== false) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
@@ -507,11 +509,71 @@ class Impor_xlsx
                                                                     default:
                                                                         break;
                                                                 };
-                                                                $objek_belanja = 'barang_jasa_modal';//masih butuh cara 
+                                                                $pajak = 0;
+                                                                //masih butuh cara 
+                                                                $objek_belanja = 'barang_jasa_modal';
+                                                                $dataRslt = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $kd_akun], ['sub_rincian_objek', '>', 0, 'AND']]);
+                                                                if ($dataRslt !== false) {
+                                                                    $uraian_akun = $dataRslt->uraian;
+                                                                }
+                                                                $akun = $dataRslt->akun;
+                                                                $kelompok = $dataRslt->kelompok;
+                                                                $jenis = $dataRslt->jenis;
+                                                                $objek = $dataRslt->objek;
+                                                                $rekAkunObjek = implode('.', [$akun, $kelompok, $Fungsi->zero_pad($jenis, 2)]);
+                                                                switch ($rekAkunObjek) {
+                                                                    case '5.1.01':
+                                                                        $objek_belanja = 'gaji';
+                                                                        break;
+                                                                    case '5.1.02':
+                                                                        $objek_belanja = 'barang_jasa_modal';
+                                                                        break;
+                                                                    case '5.1.05':
+                                                                        $objek_belanja = 'barang_jasa_modal';
+                                                                        break;
+                                                                    default:
+                                                                        # code...
+                                                                        break;
+                                                                }
+
+                                                                $uraian_akun = strtolower($uraian_akun);
+                                                                // str_contains untuk php 8
+
+                                                                if (str_contains($uraian_akun, 'belanja bunga')) {
+                                                                    $objek_belanja = 'bunga';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'hibah uang')) {
+                                                                    $objek_belanja = 'hibah_uang';
+                                                                }
+                                                                if (str_contains($uraian_akun, 'hibah barang')) {
+                                                                    $objek_belanja = 'hibah_barang_jasa';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'keuangan khusus')) {
+                                                                    $objek_belanja = 'keuangan_khusus';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'keuangan umum')) {
+                                                                    $objek_belanja = 'keuangan_umum';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'bantuan sosial uang')) {
+                                                                    $objek_belanja = 'sosial_uang';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'bantuan sosial barang')) {
+                                                                    $objek_belanja = 'sosial_barang_jasa';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'belanja subsidi')) {
+                                                                    $objek_belanja = 'subsidi';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'hibah uang')) {
+                                                                    $objek_belanja = 'hibah_uang';
+                                                                } else
+                                                                if (str_contains($uraian_akun, 'hibah barang')) {
+                                                                    $objek_belanja = 'hibah_barang';
+                                                                }
                                                                 // 'in_array' => ['gaji', 'barang_jasa_modal', 'bunga', 'subsidi', 'hibah_barang_jasa', 'hibah_uang', 'sosial_barang_jasa', 'sosial_uang', 'keuangan_umum', 'keuangan_khusus', 'btt', 'bos_pusat', 'blud', 'lahan'],
                                                                 //uraian_prog_keg
                                                                 // $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
                                                                 // $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
+                                                                $kel_rek = 'uraian';
                                                                 $arrayDataRows = [
                                                                     'kd_wilayah' => $kd_wilayah,
                                                                     'kd_opd' => $kd_opd,
@@ -548,22 +610,11 @@ class Impor_xlsx
                                                                     'username_input' => $_SESSION["user"]["username"],
                                                                     'username_update' => $_SESSION["user"]["username"]
                                                                 ];
-                                                                $arrayDataRows_nonSubKeg = [
-                                                                    'kd_wilayah' => $kd_wilayah,
-                                                                    'kd_opd' => $kd_opd,
-                                                                    'tahun' => $tahun,
-                                                                    'kd_sub_keg' => $kd_sub_keg,
-                                                                    'kel_rek' => $kel_rek,
-                                                                    'uraian' => $uraian_prog_keg,
-                                                                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                                                    'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
-                                                                ];
+                                                                $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $arrayDataRows, 'kd_akun' => $kd_akun, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+
                                                                 //$string = preg_replace('/\s/', ' ', $string);
-                                                                $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
-                                                                $getWhereArrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
+                                                                // $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
+                                                                // $getWhereArrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'sub_keg_renja':
@@ -1669,6 +1720,11 @@ class Impor_xlsx
                                                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'kd_akun' => '', 'set' => $arrayDataRows, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
                                                                     $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                                                     break;
+                                                                case 'renja':
+                                                                case 'dpa':
+                                                                case 'renja_p':
+                                                                case 'dppa':
+                                                                    $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
                                                                 default:
                                                                     # code...
                                                                     break;

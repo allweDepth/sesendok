@@ -352,7 +352,7 @@ class get_data
                             break;
                         case 'get_pengaturan':
                             $rowTahunAktif = $DB->getWhereOnceCustom($tabel_pakai, [['tahun', '=', $tahun], ['kd_wilayah', '=', $kd_wilayah, 'AND']]);
-                            if ($rowTahunAktif) {
+                            if ($rowTahunAktif !== false) {
                                 $rowTahun = $rowTahunAktif;
                             } else {
                                 $rowTahun = "pengaturan tahun $tahun tidak ditemukan";
@@ -560,7 +560,7 @@ class get_data
                                 case 'renja_p':
                                 case 'dppa':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $unit_kerja = $rowOrganisasi->uraian;
                                         switch ($tbl) {
                                             case 'renja':
@@ -585,7 +585,7 @@ class get_data
                                         };
                                         $value_dinamic = ['id_sub_keg' => $id_sub_keg];
                                         $rowSubKeg = $DB->getWhereOnceCustom($tabel_sub_keg, [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['id', '=', $id_sub_keg, 'AND']]);
-                                        if ($rowSubKeg) {
+                                        if ($rowSubKeg !== false) {
                                             $kd_sub_keg = $rowSubKeg->kd_sub_keg;
                                             $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok, uraian";
                                             $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
@@ -641,7 +641,7 @@ class get_data
                                     break;
                                 case 'tujuan_renstra':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
@@ -669,7 +669,7 @@ class get_data
                                     break;
                                 case 'sasaran_renstra':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
@@ -697,7 +697,7 @@ class get_data
                                     break;
                                 case 'tujuan_sasaran_renstra':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
@@ -725,7 +725,7 @@ class get_data
                                     break;
                                 case 'renstra':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
@@ -754,7 +754,7 @@ class get_data
                                 case 'sub_keg_renja':
                                 case 'sub_keg_dpa':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR tolak_ukur_capaian_keg LIKE CONCAT('%',?,'%') OR tolak_ukur_keluaran LIKE CONCAT('%',?,'%') OR keluaran_sub_keg LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                         $data_like = [$kd_wilayah, $kd_opd, $tahun, $cari, $cari, $cari, $cari, $cari, $cari];
                                         $order = "ORDER BY kd_sub_keg ASC";
@@ -794,7 +794,7 @@ class get_data
                             switch ($tbl) {
                                 case 'renstra':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
@@ -822,7 +822,7 @@ class get_data
                                     break;
                                 case 'tujuan_sasaran_renstra':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
@@ -910,7 +910,7 @@ class get_data
                                     break;
                                 case 'sasaran_renstra':
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
+                                    if ($rowOrganisasi !== false) {
                                         $tahun_renstra = $rowOrganisasi->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
@@ -1148,7 +1148,7 @@ class get_data
                                                         // cari di data sumber dana
                                                         $kondisi_result_sub = [['kode', '=', $row]];
                                                         $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
-                                                        if ($row_sub) {
+                                                        if ($row_sub !== false) {
                                                             $uraian = $row_sub->uraian;
                                                             $dataJson['results'][] = ['name' => $uraian, 'value' => $row];
                                                         } else {
@@ -1218,7 +1218,7 @@ class get_data
                                                             $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
                                                             // var_dump($row);
                                                             // var_dump($row_sub);
-                                                            if ($row_sub) {
+                                                            if ($row_sub !== false) {
                                                                 $uraian = $row_sub->uraian;
                                                                 $dataJson['results'][] = ['name' => $uraian, 'value' => $row];
                                                             } else {
@@ -1289,7 +1289,7 @@ class get_data
                                                 if ($cari_drop) {
                                                     $kondisi_result = $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['disable', '<=', 0, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('rekanan_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $data['values']['id_rekanan'] = [['name' => $row->nama_perusahaan, 'text' => $row->nama_perusahaan, 'value' => $row->id, 'description' => $row->npwp . ' (' . $row->direktur . ')', "descriptionVertical" => true, 'selected' => true]];
                                                     }
                                                 }
@@ -1324,7 +1324,7 @@ class get_data
                                                 if ($kode_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('aset_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $data['values']['kd_aset'] = [['name' => $row->uraian, 'value' => $row->kode, 'selected' => true]];
                                                     }
                                                 }
@@ -1332,7 +1332,7 @@ class get_data
                                                 if ($cari_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $cari_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $data['values']['kd_akun'] = [['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
                                                     }
                                                 }
@@ -1417,7 +1417,7 @@ class get_data
                                                 if ($cari_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $cari_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $data['values']['kd_akun'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
                                                     }
                                                 }
@@ -1452,7 +1452,7 @@ class get_data
                                                     $row = $DB->getWhereOnceCustom("{$jenis_standar_harga}_neo", $kondisi_result);
                                                     // var_dump($kondisi_result);
                                                     // var_dump($row);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
                                                         $data['values']['komponen'] = [['name' => $row->uraian_barang, 'text' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'selected' => true]];
                                                     }
@@ -1465,7 +1465,7 @@ class get_data
                                                     foreach ($formValueExplode as $key_row => $row) {
                                                         $kondisi_result_sub = [['kode', '=', $row]];
                                                         $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
-                                                        if (count((array)$row)) {
+                                                        if ($row_sub !== false) {
                                                             if ($row_sub) {
                                                                 $uraian_sumberDana = $row_sub->uraian;
                                                             } else {
@@ -1497,7 +1497,7 @@ class get_data
                                                     if ($cari_vol > 0) {
                                                         $kondisi_result = [['disable', '<=', 0], ['value', '=', $cari_sat, 'AND']];
                                                         $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
-                                                        if (count((array)$row)) {
+                                                        if ($row !== false) {
                                                             $data['values']["sat_{$i}"] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
                                                         }
                                                     }
@@ -1511,7 +1511,7 @@ class get_data
                                                 if ($kd_sub_keg_drop) {
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kd_sub_keg_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('sub_kegiatan_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $data['values']['kd_sub_keg'] = [['name' => $row->nomenklatur_urusan, 'text' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, 'descriptionVertical' => true, 'selected' => true]];
                                                     }
                                                 }
@@ -1523,7 +1523,7 @@ class get_data
                                                     foreach ($formValueExplode as $key_row => $row) {
                                                         $kondisi_result_sub = [['kode', '=', $row]];
                                                         $row_sub = $DB->getWhereOnceCustom('sumber_dana_neo', $kondisi_result_sub);
-                                                        if (count((array)$row)) {
+                                                        if ($row_sub !== false) {
                                                             if ($row_sub) {
                                                                 $uraian_sumberDana = $row_sub->uraian;
                                                             } else {
@@ -1542,7 +1542,7 @@ class get_data
                                                 if ($value_a == 'sasaran' && $value_b > 0) {
                                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND'], ['id', '=', $value_b, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', $kondisi_result);
-                                                    if (count((array)$row)) {
+                                                    if ($row !== false) {
                                                         $data['values']['id_tujuan'] = [['name' => $row->text, 'value' => $row->id, 'selected' => true]];
                                                     }
                                                 }

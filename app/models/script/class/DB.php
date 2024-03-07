@@ -335,8 +335,8 @@ class DB
             $dataValuesCheck[] = $condition[$x][2];
         }
         // $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
-        var_dump($queryArray);
-        var_dump($dataValuesCheck);
+        // var_dump($queryArray);
+        // var_dump($dataValuesCheck);
         // return $this->runQuery($query, $dataValuesCheck);
         return $this->get($tableName,$queryArray, $dataValuesCheck);
     }
