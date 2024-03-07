@@ -410,18 +410,7 @@ $(document).ready(function () {
 			case "sub_keg_renja":
 			case "sub_keg_dpa":
 			case "tab_renja":
-				switch (jenis_this) {
-					case 'rincian_pokok':
-
-						break;
-					case 'rincian_perubahan':
-
-						break;
-					default:
-
-						break;
-				};
-
+				
 				let anggaranAttr = ini.attr('anggaran');
 				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
 				switch (anggaranAttr) {
@@ -2584,9 +2573,6 @@ $(document).ready(function () {
 								classToast = "success";
 								iconToast = "check circle icon";
 								break;
-							case 'value1':
-
-								break;
 							default:
 								classToast = "warning";
 								iconToast = "check circle icon";
@@ -2614,8 +2600,6 @@ $(document).ready(function () {
 								switch (tbl) {
 									case 'remove_uraian':
 										onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });
-										break;
-									case 'value1':
 										break;
 									default:
 										break;

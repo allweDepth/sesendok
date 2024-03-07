@@ -384,7 +384,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ============== -->
             <!-- tab_renja dan dpa -->
             <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_renja">
+            <div class="ui tab basic segment" data-tab="tab_renja" tbl="sub_keg_renja">
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
@@ -432,20 +432,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="ui positif icon message goyang keterangan"><i class="book icon"></i>
-                            <div class="content">
-                                <p name="total-anggaran"></p>
-                            </div>
-                        </div>
-                        <div class="ui stretched stackable five column grid">
-                            <div class="column">
-                                <div class="ui orange icon message goyang"><i class="book icon"></i>
-                                    <div class="content">
-                                        <div class="header">Total Anggaran</div>
-                                        <p name="total-anggaran"></p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="ui stretched stackable four column grid">
                             <div class="column">
                                 <div class="ui icon yellow message goyang">
                                     <i class="chart icon" name="chart-realisasi-fisik-mini">00</i>
