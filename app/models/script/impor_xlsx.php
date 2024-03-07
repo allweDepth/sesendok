@@ -354,7 +354,7 @@ class Impor_xlsx
                                                                     'min_char' => 1
                                                                 ]);
                                                                 //cari dan insert di kolom keterangan_json $tabel_pakai_temp
-                                                                $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                                $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'keterangan_json', 'jenis_kelompok' => 'keterangan_json', 'uraian_field' => $uraian, 'dataKondisiField' => $dataKondisiField];
                                                                 $Fungsi->add_update_field_json($dinamic);
 
@@ -369,7 +369,7 @@ class Impor_xlsx
                                                                     'max_char' => 255,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                                $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'kelompok_json', 'jenis_kelompok' => $jenis_kelompok, 'uraian_field' => $kelompok, 'dataKondisiField' => $dataKondisiField];
                                                                 $Fungsi->add_update_field_json($dinamic);
 
@@ -394,7 +394,7 @@ class Impor_xlsx
                                                                     'inLikeConcatDB' => [$tabel_pakai_temporer2, 'uraian_barang', [['uraian_barang', "LIKE CONCAT('%',?,'%')", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']]]
                                                                 ]);
                                                                 $kondisi_result = [['', "MATCH(uraian_barang) AGAINST(?)", $komponen], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND'], ['harga_satuan', '= ?', $harga_satuan, 'AND'], ['kd_akun', "LIKE CONCAT('%',?,'%')", $kd_akun, 'AND']];
-                                                                $row = $DB->getWhereOnceArrayLike($tabel_pakai_temporer2, '*', $kondisi_result);
+                                                                $row = $DB->getWhereOnceArrayLike($tabel_pakai_temporer2, $kondisi_result);
                                                                 var_dump($row);
                                                                 if ($row !== false) {
                                                                     $id_standar_harga = $row->id;
@@ -434,7 +434,7 @@ class Impor_xlsx
                                                                 $vol_3 =0;
                                                                 $vol_4= 0;
                                                                 foreach ($explodeAwal as $key => $row_foreach) {
-                                                                    $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['kode', '=', $row_foreach]]);
+                                                                    $dataRslt = $DB->getWhereOnceCustom('satuan_neo', [['value', '=', $row_foreach]]);
                                                                     if ($dataRslt <= 0) {
                                                                         $jumlahVolume++;
                                                                         unset($explodeAwal[$key]);

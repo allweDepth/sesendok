@@ -305,7 +305,7 @@ class DB
     // Method untuk mengambil isi tabel dengan pencarian (query LIKE) array columnLike multiple kolom
     public
     //[[ 'id' ],[ 'nama kolom', 'AND']]
-    function getLike_array($tableName, $search, $limit = [], $condition)
+    function getLike_array($tableName, $search, $limit , $condition)
     { //[]
         $queryLike = "WHERE ";
         $jumlahArray = count($condition);
@@ -321,7 +321,7 @@ class DB
         return $this->get($tableName, $queryLike, $dataValues, $limit);
     }
     // [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'],['tahun', '= ?', $tahun, 'AND']]
-    function getArrayLike($tableName, $columnName, $condition, $limit = [])
+    function getArrayLike($tableName, $condition )
     {
         $queryArray = "WHERE ";
         $jumlahArray = count($condition);
@@ -334,16 +334,16 @@ class DB
             }
             $dataValuesCheck[] = $condition[$x][2];
         }
-        $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
-        // var_dump($query);
-        // var_dump($dataValuesCheck);
+        // $query = "SELECT {$columnName} FROM {$tableName} {$queryArray} ";
+        var_dump($queryArray);
+        var_dump($dataValuesCheck);
         // return $this->runQuery($query, $dataValuesCheck);
-        return $this->get($tableName, $query, $dataValuesCheck, $limit);
+        return $this->get($tableName,$queryArray, $dataValuesCheck);
     }
     public
-    function getWhereOnceArrayLike($tableName, $columnName, $condition = [])
+    function getWhereOnceArrayLike($tableName, $condition = [])
     {
-        $result = $this->getArrayLike($tableName, $columnName, $condition);
+        $result = $this->getArrayLike($tableName, $condition);
         if (!empty($result)) {
             return $result[0];
         } else {
