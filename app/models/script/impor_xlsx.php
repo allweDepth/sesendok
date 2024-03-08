@@ -449,12 +449,21 @@ class Impor_xlsx
                                                                         ${"sat_$ni"} = $explodeSat[$key];
                                                                     }
                                                                 }
-                                                                $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][8];
+                                                                $sumber_dana_temp = $validateRow->setRules(11, 'sumber dana', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                // $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][11];
                                                                 //jadikan Array
-                                                                $explodeAwal = explode(';', $sumber_dana_temp);
-                                                                foreach ($explodeAwal as $key => $row) {
-                                                                    $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', $row]]);
-                                                                    if ($dataRslt !== false) {
+                                                                // $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
+                                                                // $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'kelompok_json', 'jenis_kelompok' => $jenis_kelompok, 'uraian_field' => $kelompok, 'dataKondisiField' => $dataKondisiField];
+                                                                $explodeAwal = explode(';',$sumber_dana_temp);
+                                                                $explodeSumberDanaSubKeg = explode(',',$row_kd_sub_keg->sumber_dana);
+                                                                foreach ($explodeAwal as $key => $row_foreach) { 
+                                                                    $keySearch = array_search($row_foreach, $explodeSumberDanaSubKeg, true);
+                                                                    
+                                                                    if ($keySearch === false) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
                                                                 }
@@ -465,7 +474,7 @@ class Impor_xlsx
                                                                 $vol_4_kali = ($vol_4) ? $vol_4 : 1;
                                                                 $volume = $vol_1_kali * $vol_2_kali * $vol_3_kali * $vol_4_kali;
                                                                 $jumlah = $volume * $harga_satuan;
-                                                                $keterangan = $validateRow->setRules(14, 'keterangan', [
+                                                                $keterangan = $validateRow->setRules(12, 'keterangan', [
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 switch ($tabel_pakai) {
