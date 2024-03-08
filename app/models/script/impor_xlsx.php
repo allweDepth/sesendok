@@ -454,10 +454,6 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                // $sumber_dana_temp = $arrayValidateRow[$keyArray[1]][11];
-                                                                //jadikan Array
-                                                                // $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
-                                                                // $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'kelompok_json', 'jenis_kelompok' => $jenis_kelompok, 'uraian_field' => $kelompok, 'dataKondisiField' => $dataKondisiField];
                                                                 $explodeAwal = explode(';',$sumber_dana_temp);
                                                                 $explodeSumberDanaSubKeg = explode(',',$row_kd_sub_keg->sumber_dana);
                                                                 foreach ($explodeAwal as $key => $row_foreach) { 
