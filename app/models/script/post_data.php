@@ -2206,7 +2206,7 @@ class post_data
                                 $data['note']['add row'] = $DB->lastInsertId();
                                 $code = 2;
                             }
-
+                            
                             break;
                         case 'cekdouble_insert': //cek data klo tidak ada teruskan insert jika ada jangan update
                             $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);

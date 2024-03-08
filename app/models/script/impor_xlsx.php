@@ -97,7 +97,7 @@ class Impor_xlsx
                                     'min_char' => 1
                                 ]);
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
-                                    'inDB' => [$tabel_pakai_temp, 'id', [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['	sub_keg', '>', 0, 'AND']]]
+                                    'inDB' => [$tabel_pakai_temp, 'id', [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
                                 ]);
                                 $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temp, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
                                 if ($row_kd_sub_keg === false) {
@@ -106,7 +106,6 @@ class Impor_xlsx
                                         'min_char' => 200
                                     ]);
                                 }
-                                
                                 $kd_sub_keg = ($row_kd_sub_keg !== false) ? $row_kd_sub_keg->kd_sub_keg : '';
                                 // 'count_array'=>['.',6],//1 urusan,1 bidang,1 prog,2 keg,1 sub_keg
                                 break;
@@ -541,8 +540,6 @@ class Impor_xlsx
                                                                         $objek_belanja = 'gaji';
                                                                         break;
                                                                     case '5.1.02':
-                                                                        $objek_belanja = 'barang_jasa_modal';
-                                                                        break;
                                                                     case '5.1.05':
                                                                         $objek_belanja = 'barang_jasa_modal';
                                                                         break;
