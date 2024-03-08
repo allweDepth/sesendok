@@ -179,6 +179,13 @@ class Validate
             $this->_errors[$item] = "Format $itemLabel tidak sesuai";
           }
           break;
+           //tambahan alwi
+        case 'count_array': //'count_array'=>[';',4]
+          $arrayku = explode($ruleValue[0],$formValue);
+          if (!count($arrayku) == (int)$ruleValue[1]) {
+            $this->_errors[$item] = "jumlah larik $itemLabel != {$ruleValue[0]}";
+          }
+          break;
           //tambahan alwi
         case 'in_array':
           $formValue = (gettype($formValue) == 'string') ? strtolower($formValue) : $formValue;
