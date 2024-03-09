@@ -794,7 +794,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Waktu Pelaksanaan",
 									atribut:
-										'name="waktu_pelaksanaan" placeholder="Nilai Kontrak..." rms non_data',
+										'name="waktu_pelaksanaan" placeholder="Waktu Pelaksanaan..." rms non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Waktu Pemeliharaan (jika dibutuhkan)",

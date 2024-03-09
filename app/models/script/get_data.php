@@ -306,7 +306,7 @@ class get_data
                         $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
                         $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
                         $tahun_pengaturan = $rowTahunAktif->tahun;
-                    }else {
+                    } else {
                         $id_peraturan = 0;
                     }
                     //tabel pakai
@@ -1105,6 +1105,7 @@ class get_data
                                     break;
                                 case 'dpa_dppa':
                                     $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
+                                    //tambahkan kriteria jika id nama uraian belum ada di tabel daftar_uraian_paket
                                     $like = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND kel_rek = ? AND kd_sub_keg = ? AND (jumlah LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR sumber_dana LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $kd_opd, $tahun, 'uraian', $kd_sub_keg, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kd_akun ASC";
@@ -1562,7 +1563,7 @@ class get_data
                                         switch ($tbl) {
                                             case 'tujuan_renstra':
                                                 // buatkan json dropdown tujuan renstra
-                                                
+
                                                 break;
                                             case 'value1':
                                                 #code...
@@ -1643,7 +1644,7 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->kode, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'tujuan_renstra':
-                                                    $dataJson['results'][] = ['text' => $row->text,'name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
+                                                    $dataJson['results'][] = ['text' => $row->text, 'name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
                                                     break;
                                                 case 'sasaran_renstra':
                                                     $dataJson['results'][] = ['name' => $row->text, 'text' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
@@ -1686,7 +1687,7 @@ class get_data
                                                         case 'dpa_neo':
                                                             $clmJumlah = "jumlah";
                                                             break;
-                                                        case 'dppa':
+                                                        case 'dppa_neo':
                                                             $clmJumlah = "jumlah_p";
                                                             $dok_anggaran = 'dppa';
                                                             break;
@@ -1694,8 +1695,13 @@ class get_data
                                                             # code...
                                                             break;
                                                     }
-                                                    $deskripsi = $row->kd_akun . ' (' . number_format((float)$row->$clmJumlah, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['category' => $row->kd_akun, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg, 'dok_anggaran' => $dok_anggaran];
+                                                    //tambahkan kriteria jika id nama uraian belum ada di tabel daftar_uraian_paket
+                                                    $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $row->id, 'AND'], ['dok', '=', $dok_anggaran, 'AND']];
+                                                    $row_sub2 = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi1);
+                                                    if ($row_sub2 === false) {
+                                                        $deskripsi = $row->kd_akun . ' (' . number_format((float)$row->$clmJumlah, 2, ',', '.') . ')';
+                                                        $dataJson['results'][] = ['category' => $row->kd_akun, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg, 'dok_anggaran' => $dok_anggaran];
+                                                    }
                                                     break;
                                                 default:
                                                     break;
@@ -1766,7 +1772,7 @@ class get_data
                                 $code = 202; //202
                             }
                             // var_dump($get_data);
-                            $value_dinamic['tahun_tabel']= $tahun;
+                            $value_dinamic['tahun_tabel'] = $tahun;
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user, $value_dinamic);
                             $data = array_merge($dataTabel, $data);
                             break;

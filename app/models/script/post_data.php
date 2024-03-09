@@ -1423,8 +1423,8 @@ class post_data
                                             $row_sub->dok = $value->dok_anggaran;
                                             $id_dok_anggaran = $value->id;
                                             //cek dahulu ada tidak di daftar_uraian_paket
-                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $value->dok_anggaran, 'AND']];
-                                            $row_sub2 = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi1);
+                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $value->dok_anggaran, 'AND']];
+                                            $row_sub2 = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi1);
                                             if ($row_sub2 === false) {
                                                 $kumpulanRowSub[] = $row_sub;
                                                 $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
