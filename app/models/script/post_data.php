@@ -416,6 +416,12 @@ class post_data
                                     'numeric' => true,
                                     'min_char' => 1
                                 ]);
+                                $aturan_organisasi = $validate->setRules('aturan_organisasi', 'Peraturan Organisasi', [
+                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_organisasi']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
                                 $aturan_akun = $validate->setRules('aturan_akun', 'Peraturan Akun', [
                                     'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_akun']]]],
                                     'required' => true,
@@ -1605,6 +1611,7 @@ class post_data
                                         'tahun_renstra' => $tahun_renstra,
                                         'aturan_anggaran' => $aturan_anggaran,
                                         'aturan_pengadaan' => $aturan_pengadaan,
+                                        'aturan_organisasi' => $aturan_organisasi,
                                         'aturan_akun' => $aturan_akun,
                                         'aturan_asb' => $aturan_asb,
                                         'aturan_sbu' => $aturan_sbu,
