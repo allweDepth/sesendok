@@ -34,7 +34,7 @@ class get_data
             $kd_opd = $rowUsername->kd_organisasi;
             $id_user = $rowUsername->id;
             $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-            if ($rowPengaturan != false) {
+            if ($rowPengaturan !== false) {
                 foreach ($rowPengaturan as $key => $value) {
                     ${$key} = $value;
                 }
@@ -292,7 +292,10 @@ class get_data
                     $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                     //var_dump($rowTahunAktif);
                     $group_by = "";
-                    if ($rowTahunAktif) {
+                    if ($rowTahunAktif !== false) {
+                        foreach ($rowTahunAktif as $key => $value) {
+                            ${$key} = $value;
+                        }
                         $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
                         $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
                         $id_aturan_akun = $rowTahunAktif->aturan_akun;
@@ -303,7 +306,7 @@ class get_data
                         $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
                         $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
                         $tahun_pengaturan = $rowTahunAktif->tahun;
-                    } else {
+                    }else {
                         $id_peraturan = 0;
                     }
                     //tabel pakai
@@ -1763,6 +1766,7 @@ class get_data
                                 $code = 202; //202
                             }
                             // var_dump($get_data);
+                            $value_dinamic['tahun_tabel']= $tahun;
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user, $value_dinamic);
                             $data = array_merge($dataTabel, $data);
                             break;

@@ -150,6 +150,9 @@ class Impor_xlsx
                                         $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                                         // var_dump($rowTahunAktif);
                                         if ($rowTahunAktif) {
+                                            foreach ($rowTahunAktif as $key => $value) {
+                                                ${$key} = $value;
+                                            }
                                             $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
                                             $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
                                             $id_aturan_akun = $rowTahunAktif->aturan_akun;
@@ -159,7 +162,8 @@ class Impor_xlsx
                                             $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
                                             $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
                                             $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
-                                            $tahun = $rowTahunAktif->tahun;
+                                            $id_aturan_organisasi = $rowTahunAktif->aturan_organisasi;
+                                            
                                         } else {
                                             $id_peraturan = 0;
                                             $disableImport = 1;
@@ -1130,7 +1134,7 @@ class Impor_xlsx
                                                                     'kode' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kode),
                                                                     'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
                                                                     'disable' => 0,
-                                                                    'peraturan' => $id_aturan_anggaran,
+                                                                    'peraturan' => $id_aturan_organisasi,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'username' => $_SESSION["user"]["username"]
