@@ -1413,20 +1413,29 @@ class post_data
                                     $jumlah = 0;
                                     $kd_sub_keg = [];
                                     $kumpulanRowSub = [];
-                                    $kumpulanRowSub_del= [];
+                                    $kumpulanRowSub_del = [];
                                     foreach ($send as $key => $value) {
                                         $tabel_pakaiku = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
-                                        $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi);
+                                        $kondisi1 = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi1);
                                         if ($row_sub !== false) {
                                             //$kumpulanRowSub[] ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
                                             $row_sub->dok = $value->dok_anggaran;
-                                            $kumpulanRowSub[] = $row_sub;
-                                            $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
-                                            $pagu += $row_sub->$klm_jumlah;
-                                            $jumlah += $value->val_kontrak;
-                                            $kd_sub_keg[] = $row_sub->kd_sub_keg;
-                                            // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
+                                            $id_dok_anggaran = $value->id;
+                                            //cek dahulu ada tidak di daftar_uraian_paket
+                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $value->dok_anggaran, 'AND']];
+                                            $row_sub2 = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi1);
+                                            if ($row_sub2 === false) {
+                                                $kumpulanRowSub[] = $row_sub;
+                                                $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+                                                $pagu += $row_sub->$klm_jumlah;
+                                                $jumlah += $value->val_kontrak;
+                                                $kd_sub_keg[] = $row_sub->kd_sub_keg;
+                                                // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
+                                            }else{
+                                                $kumpulanRowSub_del[] = $value;
+                                                unset($send[$key]);
+                                            }
                                         } else {
                                             //hapus key yang tidak mempunyai persyaratan
                                             $kumpulanRowSub_del[] = $value;
@@ -1439,6 +1448,8 @@ class post_data
                                     if ($jenis == 'add') {
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['pagu', '=', $pagu, 'AND']];
                                         $kodePosting = 'cek_insert';
+                                    } else if ($jenis == 'edit') {
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['id', '=', $id_paket, 'AND']];
                                     }
                                     if ($jumlah > $pagu) {
                                         # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
@@ -2202,7 +2213,7 @@ class post_data
                                 //var_dump($hasilUpdate);
                                 if ($DB->count()) {
                                     $code = 3;
-                                    $data['update'] = $DB->count(); //$DB->count();//@audit sekatang update atau insert tabel 'daftar_uraian_paket' jika $tbl = daftar paket
+                                    $data['update'] = $DB->count(); //$DB->count();
                                 } else {
                                     $code = 33;
                                 }
@@ -2213,7 +2224,30 @@ class post_data
                                 $data['note']['add row'] = $DB->lastInsertId();
                                 $code = 2;
                             }
-                            
+                            switch ($jenis) {
+                                case 'edit':
+                                case 'add':
+                                    switch ($tbl) {
+                                        case 'daftar_paket': //@audit
+                                            // sekatang update atau insert tabel 'daftar_uraian_paket' jika $tbl = daftar paket
+                                            // $kumpulanRowSub_del= [];
+                                            if ($code == 3) {
+                                                # edit
+                                            } else if ($code == 2) {
+                                                # insert
+                                            }
+                                            break;
+                                        case 'value':
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    break;
+
+                                default:
+                                    # code...
+                                    break;
+                            }
                             break;
                         case 'cekdouble_insert': //cek data klo tidak ada teruskan insert jika ada jangan update
                             $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);

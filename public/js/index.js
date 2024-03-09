@@ -835,14 +835,7 @@ $(document).ready(function () {
 										atribut: `name="tgl_sppbj" placeholder="Tanggal SPPBJ" non_data`, kelas: "date"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_sppbj" placeholder="Nomor SPPBJ" non_data`,
-									}) +
-										buatElemenHtml("fieldFileInput2", {
-											label: "Pilih File Kontrak",
-											file: "file_kontrak",
-											atribut: 'non_data',
-											placeholderData: "Pilih File PHO...",
-											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
-										})
+									})
 								}) +
 								buatElemenHtml("accordionField", {
 									label: "Serah Terima Pengadaan",
@@ -854,23 +847,8 @@ $(document).ready(function () {
 										atribut: `name="tgl_fho" placeholder="Tanggal FHO" non_data`, kelas: "datetime"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_fho" placeholder="Nomor FHO" non_data`,
-									}) +
-										buatElemenHtml("fieldFileInput2", {
-											label: "Pilih File Dokumen PHO",
-											file: "file_pho",
-											atribut: 'non_data',
-											placeholderData: "Pilih File PHO...",
-											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
-										}) +
-										buatElemenHtml("fieldFileInput2", {
-											label: "Pilih File Dokumen FHO",
-											file: "file_fho",
-											atribut: 'non_data',
-											placeholderData: "Pilih File FHO...",
-											accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
-										})
+									}) 
 								}) +
-								// elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><button class="ui fluid button ${kelasData}" ${atribut}>${valueData}</button></div>`;
 								buatElemenHtml("accordionField", {
 									label: "Tambah Kontrak Addendum",
 									content: buatElemenHtml("button", {
@@ -1954,6 +1932,9 @@ $(document).ready(function () {
 
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
 			calendarDate.runCalendar();
+			let calendarDateTime = new CalendarConstructor(".ui.calendar.datetime");
+			calendarDateTime.Type("datetime");
+			calendarDateTime.runCalendar();
 			let calendarYear = new CalendarConstructor(".ui.calendar.year");
 			calendarYear.Type("year");
 			calendarYear.runCalendar();
@@ -4246,6 +4227,7 @@ $(document).ready(function () {
 											case "peraturan":
 											case "daftar_paket":
 												switch (jenis) {
+													case "get_tbl":
 													case "upload":
 													case "import":
 													case "edit":
