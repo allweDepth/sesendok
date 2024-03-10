@@ -1773,6 +1773,39 @@ class get_data
                             }
                             // var_dump($get_data);
                             $value_dinamic['tahun_tabel'] = $tahun;
+                            $set = [];
+                            switch ($tbl) {
+                                case 'sub_keg_renja':
+                                case 'sub_keg_dpa':
+                                case 'renja':
+                                case 'renja_p':
+                                case 'dpa':
+                                case 'dppa':
+                                case 'renstra':
+                                case 'tujuan_renstra':
+                                case 'sasaran_renstra':
+                                case 'tujuan_sasaran_renstra':
+                                    $set = [
+                                        'kunci_renstra' => $kunci_renstra,
+                                        'kunci_renja' => $kunci_renja,
+                                        'kunci_dpa' => $kunci_dpa,
+                                        'kunci_renja_p' => $kunci_renja_p,
+                                        'kunci_dppa' => $kunci_dppa,
+                                        'kunci_paket' => $kunci_paket,
+                                        'kunci_realisasi' => $kunci_realisasi,
+                                        'setujui_renstra' => $setujui_renstra,
+                                        'setujui_renja' => $setujui_renja,
+                                        'setujui_dpa' => $setujui_dpa,
+                                        'setujui_renja_p' => $setujui_renja_p,
+                                        'setujui_dppa' => $setujui_dppa
+                                    ];
+                                    break;
+
+                                default:
+                                    # code...
+                                    break;
+                            }
+                            $value_dinamic = array_merge($value_dinamic, $set);
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user, $value_dinamic);
                             $data = array_merge($dataTabel, $data);
                             break;

@@ -227,9 +227,41 @@ class MasterFungsi
         if (isset($rowData['thead'])) {
             $rowData['thead'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $rowData['thead']);
         }
+
         $jumlahArray = is_array($get_data) ? count($get_data) : 0;
         if ($jumlahArray > 0) {
             $myrow = 0;
+            switch ($tbl) {
+                case 'sub_keg_renja':
+                case 'sub_keg_dpa':
+                case 'renja':
+                case 'renja_p':
+                case 'dpa':
+                case 'dppa':
+                case 'renstra':
+                case 'tujuan_renstra':
+                case 'sasaran_renstra':
+                case 'tujuan_sasaran_renstra':
+                    $kunci_renstra = $value_dinamic['kunci_renstra'];
+                    $kunci_renja = $value_dinamic['kunci_renja'];
+                    $kunci_dpa = $value_dinamic['kunci_dpa'];
+                    $kunci_renja_p = $value_dinamic['kunci_renja_p'];
+                    $kunci_dppa = $value_dinamic['kunci_dppa'];
+                    $kunci_paket = $value_dinamic['kunci_paket'];
+                    $kunci_realisasi = $value_dinamic['kunci_realisasi'];
+                    $setujui_renstra = $value_dinamic['setujui_renstra'];
+                    $setujui_renja = $value_dinamic['setujui_renja'];
+                    $setujui_dpa = $value_dinamic['setujui_dpa'];
+                    $setujui_renja_p = $value_dinamic['setujui_renja_p'];
+                    $setujui_dppa = $value_dinamic['setujui_dppa'];
+
+
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
             foreach ($get_data as $row) {
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
@@ -238,9 +270,10 @@ class MasterFungsi
                         $tbl_button = ($tbl == 'sub_keg_renja') ? 'renja' : 'dpa';
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
+                        $buttonEdit = '';
                         $divAwal = '';
                         $divAkhir = '';
-                        if ($disable_anggaran <= 0) {
+                        if ($kunci_realisasi <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
@@ -316,8 +349,9 @@ class MasterFungsi
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
                         $divAwal = '';
+                        $divAwalAngka= '';
                         $divAkhir = '';
-                        if ($disable_anggaran <= 0) {
+                        if (${"kunci_$tbl"} <= 0 && ${"setujui_$tbl"} <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
@@ -354,8 +388,9 @@ class MasterFungsi
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
                         $divAwal = '';
+                        $divAwalAngka= '';
                         $divAkhir = '';
-                        if ($disable_anggaran <= 0) {
+                        if ($kunci_dpa <= 0 || $setujui_dpa <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
