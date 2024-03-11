@@ -46,6 +46,26 @@ class get_data
             $id_user = 0;
             $code = 407;
         }
+        $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+        //var_dump($rowTahunAktif);
+        $group_by = "";
+        if ($rowTahunAktif !== false) {
+            foreach ($rowTahunAktif as $key => $value) {
+                ${$key} = $value;
+            }
+            $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
+            $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
+            $id_aturan_akun = $rowTahunAktif->aturan_akun;
+            $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
+            $id_aturan_asb = $rowTahunAktif->aturan_asb;
+            $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
+            $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
+            $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
+            $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
+            $tahun_pengaturan = $rowTahunAktif->tahun;
+        } else {
+            $id_peraturan = 0;
+        }
         $jenis = '';
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
@@ -300,26 +320,7 @@ class get_data
                 //==============================
                 if ($validate->passed()) {
                     $code = 55;
-                    $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-                    //var_dump($rowTahunAktif);
-                    $group_by = "";
-                    if ($rowTahunAktif !== false) {
-                        foreach ($rowTahunAktif as $key => $value) {
-                            ${$key} = $value;
-                        }
-                        $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
-                        $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
-                        $id_aturan_akun = $rowTahunAktif->aturan_akun;
-                        $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
-                        $id_aturan_asb = $rowTahunAktif->aturan_asb;
-                        $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
-                        $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
-                        $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
-                        $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
-                        $tahun_pengaturan = $rowTahunAktif->tahun;
-                    } else {
-                        $id_peraturan = 0;
-                    }
+
                     //tabel pakai
                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                     $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
