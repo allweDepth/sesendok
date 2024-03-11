@@ -323,6 +323,19 @@ div.menu.transition.visible {
     z-index: 999 !important;
 }
 
+.ui.inverted.red.menu,
+.ui.inverted.menu .red.active.item {
+    background-color: transparent !important;
+}
+
+/* .ui.inverted.form input {
+    background: rgba(0, 0, 0, .87) !important;
+    color: rgba(0, 0, 0, .87) !important;
+} */
+
+/* background: #121212 !important; */
+/* rgba(0, 0, 0, .87) */
+
 /* .ui.bottom.attached.pushable {
     margin-top: 44px !important;
 
