@@ -47,7 +47,7 @@ class get_data
             $code = 407;
         }
         $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-        //var_dump($rowTahunAktif);
+        // var_dump($rowTahunAktif);
         $group_by = "";
         if ($rowTahunAktif !== false) {
             foreach ($rowTahunAktif as $key => $value) {
@@ -1879,7 +1879,7 @@ class get_data
                             }
                             $value_dinamic = array_merge($value_dinamic, $set);
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user, $value_dinamic);
-                            $data = array_merge($dataTabel, $data);
+                            $data = array_merge($dataTabel, $data,$set);
                             break;
                         case 'get_Dropdown':
                             $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1);

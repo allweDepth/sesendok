@@ -516,6 +516,7 @@ $(document).ready(function () {
 											const elmTableSubKeg = divTab.find("table.sub_keg");
 											elmTableSubKeg.html(result.data.tr_sub_keg);
 										}
+										
 										break;
 									case 'value1':
 										break;

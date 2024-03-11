@@ -190,7 +190,7 @@ class MasterFungsi
                 break;
             case 'sumber_dana':
                 $rowData['thead'] = trim('<tr><th class="collapsing">KODE KOMPONEN</th>
-                <th>KOMPONEN</th>
+                <th class="five wide">KOMPONEN</th>
                 <th>KETERANGAN</th>
                         <th class="collapsing">AKSI</th>
                     </tr>');

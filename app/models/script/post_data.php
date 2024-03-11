@@ -2229,7 +2229,7 @@ class post_data
                                 case 'add':
                                     switch ($tbl) {
                                         case 'daftar_paket': //@audit
-                                            // sekatang update atau insert tabel 'daftar_uraian_paket' jika $tbl = daftar paket
+                                            // sekarang update atau insert tabel 'daftar_uraian_paket' jika $tbl = daftar paket
                                             // $kumpulanRowSub_del= [];
                                             if ($code == 3) {
                                                 # edit
