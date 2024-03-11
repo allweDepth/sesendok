@@ -996,16 +996,14 @@ $(document).ready(function () {
 									atribut: 'name="spesifikasi" placeholder="spesifikasi..." non_data readonly',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Satuan",
+									label: "Satuan Komponen",
 									kelas: "",
-									atribut:
-										'name="satuan" placeholder="satuan komponen..." non_data readonly',
+									atribut: 'name="satuan" placeholder="satuan komponen..." non_data readonly',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Harga Satuan",
+									label: "Harga Satuan Komponen",
 									kelas: "",
-									atribut:
-										'name="harga_satuan" placeholder="harga satuan..." rms non_data readonly',
+									atribut: 'name="harga_satuan" placeholder="harga satuan..." rms non_data readonly',
 								}) +
 								buatElemenHtml("fieldDropdownLabel", {
 									label: "Keterangan",
@@ -2926,11 +2924,13 @@ $(document).ready(function () {
 					case 'hspk':
 					case 'asb':
 						var kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_standar_harga"').dropdown('get value')
-						elementForm =buatElemenHtml("fieldSearchGrid", {
-								kelas2: '',
-								kelas: `${kelasSearch}`,
-								atribut: 'name="uraian"',
-							}) +
+						elementForm = buatElemenHtml("text", {
+							atribut: 'name="id" placeholder="Pilih komponen" readonly hidden',
+						}) + buatElemenHtml("fieldSearchGrid", {
+							kelas2: '',
+							kelas: `${kelasSearch}`,
+							atribut: 'name="uraian"',
+						}) +
 							buatElemenHtml("fieldText", {
 								label: "Kode Komponen",
 								atribut: 'name="kd_aset" placeholder="kode komponen..." non_data readonly',
@@ -3072,9 +3072,14 @@ $(document).ready(function () {
 					case 'asb':
 						var searchHargaSat = new SearchConstructor('form[name="form_modal"] .ui.search');
 						let kd_akun = $(`form[name="form_flyout"]`).form('get value', 'kd_akun')
-						let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: tblAttr, data_send: {kd_akun:kd_akun} };
+						let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: tblAttr, data_send: { kd_akun: kd_akun } };
 						searchHargaSat.searchGlobal(allField);
-
+						let komponen = $(`form[name="form_flyout"]`).form('get value', 'komponen');
+						if (komponen > 0) {
+							jalankanAjax = true;
+							data.id_row = komponen;
+							data.jenis = 'get_row';
+						}
 						break;
 					default:
 						break;
@@ -3090,6 +3095,31 @@ $(document).ready(function () {
 				if (result.success === true) {
 					loaderHide();
 					switch (jnsAttr) {
+						case 'search_field_json':
+							switch (tblAttr) {
+								case 'sbu':
+								case 'ssh':
+								case 'hspk':
+								case 'asb':
+									let strText = parseFloat(result?.data?.users?.harga_satuan);
+									strText = accounting.formatNumber(result?.data?.users?.harga_satuan, strText.countDecimals(), ".", ",");
+									$(`form[name="form_modal"]`).form('set values', {
+										id: result?.data?.users?.id,
+										kd_aset: result?.data?.users?.kd_aset,
+										uraian_barang: result?.data?.users?.uraian_barang,
+										spesifikasi: result?.data?.users?.spesifikasi,
+										satuan: result?.data?.users?.satuan,
+										harga_satuan: strText,
+										tkdn: result?.data?.users?.tkdn,
+										kd_akun: result?.data?.users?.kd_akun,
+										keterangan: result?.data?.users?.keterangan,
+										disable: result?.data?.users?.disable
+									});
+									break;
+								default:
+									break;
+							}
+							break;
 						case 'uraian_belanja':
 							switch (tblAttr) {
 								case 'daftar_paket':
@@ -4527,6 +4557,7 @@ $(document).ready(function () {
 									let strText = parseFloat(result.harga_satuan);
 									strText = accounting.formatNumber(result.harga_satuan, strText.countDecimals(), ".", ",");
 									$(`form[name="form_modal"]`).form('set values', {
+										id: result.value,
 										kd_aset: result.kd_aset,
 										uraian_barang: result.title,
 										spesifikasi: result.spesifikasi,

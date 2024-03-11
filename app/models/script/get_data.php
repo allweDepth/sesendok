@@ -221,6 +221,23 @@ class get_data
                                 break;
                         }
                         break;
+                    case 'get_row':
+                        switch ($tbl) {
+                            case 'sbu':
+                            case 'ssh':
+                            case 'hspk':
+                            case 'asb':
+                                $id_row = $validate->setRules('id_row', 'id_row', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     case 'get_Search_Json':
                         switch ($tbl) {
                             case 'sbu':
@@ -330,6 +347,19 @@ class get_data
                     $kodePosting = '';
                     $value_dinamic = [];
                     switch ($jenis) {
+                        case 'get_row':
+                            $kodePosting = 'get_row';
+                            switch ($tbl) {
+                                case 'sbu':
+                                case 'ssh':
+                                case 'hspk':
+                                case 'asb':
+                                    $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['peraturan', '=', ${"id_aturan_$tbl"}, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
                         case 'upload':
                             switch ($tbl) {
                                 case 'daftar_paket':
@@ -1475,7 +1505,7 @@ class get_data
                                                         $cari_drop = $data['users']->kelompok;
                                                         // var_dump($cari_drop);
                                                         $key = array_search($cari_drop, $data_klm, true);
-                                                       
+
                                                         $data['values']['kelompok'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
                                                     }
                                                 }
