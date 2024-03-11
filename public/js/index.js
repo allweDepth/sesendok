@@ -410,7 +410,7 @@ $(document).ready(function () {
 			case "sub_keg_renja":
 			case "sub_keg_dpa":
 			case "tab_renja":
-				
+
 				let anggaranAttr = ini.attr('anggaran');
 				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
 				switch (anggaranAttr) {
@@ -847,7 +847,7 @@ $(document).ready(function () {
 										atribut: `name="tgl_fho" placeholder="Tanggal FHO" non_data`, kelas: "datetime"
 									}) + buatElemenHtml("text", {
 										atribut: `name="no_fho" placeholder="Nomor FHO" non_data`,
-									}) 
+									})
 								}) +
 								buatElemenHtml("accordionField", {
 									label: "Tambah Kontrak Addendum",
@@ -967,7 +967,7 @@ $(document).ready(function () {
 									label: "Jenis Standar Harga",
 									classField: `required`,
 									atribut: 'name="jenis_standar_harga" placeholder="jenis standar harga..."',
-									kelas: "clearable lainnya selection",
+									kelas: "selection",
 									dataArray: [
 										["ssh", "SSH"],
 										["sbu", "SBU"],
@@ -1033,18 +1033,18 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "Volume",
 									classField: `required`,
-									kelas: "disabled",
-									atribut: `name="${volumeku}" placeholder="volume..." rms`,
+									kelas: "",
+									atribut: `name="${volumeku}" placeholder="volume..." rms readonly`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Koefisien (Keterangan Jumlah)",
-									kelas: "disabled",
-									atribut: 'name="koef_ket" placeholder="keterangan jumlah..." non_data',
+									kelas: "",
+									atribut: 'name="koef_ket" placeholder="keterangan jumlah..." non_data readonly',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Total Belanja",
-									kelas: "disabled",
-									atribut: `name="${jumlahku}" placeholder="jumlah..." rms non_data`,
+									kelas: "",
+									atribut: `name="${jumlahku}" placeholder="jumlah..." rms non_data readonly`,
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -1965,6 +1965,7 @@ $(document).ready(function () {
 						case "asb":
 						case "ssh":
 						case "hspk":
+
 							// name="kd_aset"
 							var dropdownKdAset = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_aset"]');
 							dropdownKdAset.returnList({ jenis: "get_row_json", tbl: 'aset' });
@@ -1973,6 +1974,7 @@ $(document).ready(function () {
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 							var dropdownKdAkun = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.kd_akun.ajx.selection')
 							dropdownKdAkun.returnList({ jenis: "get_row_json", tbl: "akun_belanja_val" });
+
 							break;
 						case 'tujuan_sasaran_renstra':
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
@@ -2867,6 +2869,7 @@ $(document).ready(function () {
 		let kelasToast = "warning";
 		let pesanToast = 'Koreksi Data';
 		mdl.addClass("tiny");
+		console.log(tblAttr);
 
 		switch (jnsAttr) {
 			case 'get_field_json':
@@ -2917,12 +2920,60 @@ $(document).ready(function () {
 				}
 				break;
 			case 'search_field_json':
-				let kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_standar_harga"').dropdown('get value')
-				elementForm = buatElemenHtml("fieldSearchGrid", {
-					label: "Uraian Pengelompokan Belanja",
-					kelas: `${kelasSearch}`,
-					atribut: 'name="uraian" placeholder="pengelompokan belanja..."',
-				});
+				switch (tblAttr) {
+					case 'sbu':
+					case 'ssh':
+					case 'hspk':
+					case 'asb':
+						var kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_standar_harga"').dropdown('get value')
+						elementForm =buatElemenHtml("fieldSearchGrid", {
+								kelas2: '',
+								kelas: `${kelasSearch}`,
+								atribut: 'name="uraian"',
+							}) +
+							buatElemenHtml("fieldText", {
+								label: "Kode Komponen",
+								atribut: 'name="kd_aset" placeholder="kode komponen..." non_data readonly',
+							}) +
+							buatElemenHtml("fieldTextarea", {
+								label: "Uraian",
+								atribut: 'name="uraian_barang" placeholder="uraian..." rows="2" readonly',
+							}) +
+							buatElemenHtml("fieldTextarea", {
+								label: "Spesifikasi",
+								atribut: 'name="spesifikasi" placeholder="spesifikasi..." rows="2" non_data readonly',
+							}) +
+							buatElemenHtml("fieldText", {
+								label: "Satuan",
+								kelas: "",
+								atribut: 'name="satuan" placeholder="satuan..."non_data readonly',
+							}) +
+							buatElemenHtml("fieldText", {
+								label: "Harga Satuan Komponen",
+								atribut: 'name="harga_satuan" placeholder="Harga Satuan Komponen" rms non_data readonly',
+							}) +
+							buatElemenHtml("fieldText", {
+								label: "TKDN",
+
+								atribut: 'name="tkdn" placeholder="tkdn..." non_data readonly',
+							}) +
+							buatElemenHtml("fieldTextarea", {
+								label: "Mapping Kode Akun",
+								atribut: 'name="kd_akun" placeholder="Mapping Kode Akun..." rows="2" readonly',
+							}) +
+							buatElemenHtml("fieldTextarea", {
+								label: "Keterangan",
+								atribut: 'name="keterangan" placeholder="keterangan..." rows="3" non_data readonly',
+							}) +
+							buatElemenHtml("fielToggleCheckbox", {
+								label: "",
+								atribut: 'name="disable" non_data readonly',
+								txtLabel: "Non Aktif",
+							});
+						break;
+					default:
+						break;
+				}
 				break;
 			case 'uraian_belanja':
 				switch (tblAttr) {
@@ -2992,6 +3043,7 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+		$('.ui.sticky').sticky('refresh');
 		let modalGeneral = new ModalConstructor(mdl);
 		modalGeneral.globalModal();
 		let InitializeForm = new FormGlobal(formIni);
@@ -3007,6 +3059,22 @@ $(document).ready(function () {
 					case 'daftar_paket':
 						var dropdown_ajx_sub_keg = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.kd_sub_keg.ajx.selection')
 						dropdown_ajx_sub_keg.returnList({ jenis: "get_row_json", tbl: "sub_keg_dpa" });
+						break;
+					default:
+						break;
+				}
+				break;
+			case 'search_field_json':
+				switch (tblAttr) {
+					case 'sbu':
+					case 'ssh':
+					case 'hspk':
+					case 'asb':
+						var searchHargaSat = new SearchConstructor('form[name="form_modal"] .ui.search');
+						let kd_akun = $(`form[name="form_flyout"]`).form('get value', 'kd_akun')
+						let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: tblAttr, data_send: {kd_akun:kd_akun} };
+						searchHargaSat.searchGlobal(allField);
+
 						break;
 					default:
 						break;
@@ -3053,6 +3121,21 @@ $(document).ready(function () {
 					icon: "check circle icon",
 				});
 			}
+		}
+		switch (tblAttr) {
+			case 'sbu':
+			case 'ssh':
+			case 'hspk':
+			case 'asb':
+				// $('.ui.sticky.melayang').sticky({
+				// 	context: '.ui.form[name="form_modal"]',
+				// 	pushing: true
+				// });
+				// $('.ui.sticky').sticky('refresh');
+
+				break;
+			default:
+				break;
 		}
 		$("[rms]").mathbiila();
 	});
@@ -3331,6 +3414,8 @@ $(document).ready(function () {
 							MethodConstructor.refreshDropdown(allData);
 							break;
 						case 'gantiJenisKomponen':
+							//name="jenis_standar_harga"
+							$(`form[name="form_flyout"] button[name="modal_show"][jns="search_field_json"]`).attr('tbl', value);
 							allData = { jenis: 'gantiJenisKomponen', tbl: allObjek.tbl }
 							MethodConstructor.refreshDropdown(allData);
 							break;
@@ -4429,9 +4514,30 @@ $(document).ready(function () {
 				onSelect(result, response) {
 					let jenis = allField.jenis;
 					let tbl = allField.tbl;
+					console.log(jenis);
+					console.log(tbl);
+					console.log(result);
 					switch (jenis) {
 						case 'get_Search_Json':
 							switch (tbl) {
+								case 'sbu':
+								case 'ssh':
+								case 'hspk':
+								case 'asb':
+									let strText = parseFloat(result.harga_satuan);
+									strText = accounting.formatNumber(result.harga_satuan, strText.countDecimals(), ".", ",");
+									$(`form[name="form_modal"]`).form('set values', {
+										kd_aset: result.kd_aset,
+										uraian_barang: result.title,
+										spesifikasi: result.spesifikasi,
+										satuan: result.satuan,
+										harga_satuan: strText,
+										tkdn: result.tkdn,
+										kd_akun: result.kd_akun,
+										keterangan: result.keterangan,
+										disable: result.disable
+									});
+									break;
 								case 'dpa_dppa':
 									let MyForm = $(`[name="form_modal"]`);
 									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
@@ -4465,6 +4571,13 @@ $(document).ready(function () {
 								default:
 									break;
 							};
+							break;
+						case 'search_field_json':
+							switch (tbl) {
+
+								default:
+									break;
+							}
 							break;
 						case 'value1':
 							break;
@@ -4798,7 +4911,7 @@ $(document).ready(function () {
 					<i class="${icon} icon"></i>${valueData}</a></div>`;
 				break;
 			case "fieldSearchGrid"://untuk modal
-				elemen = `<div class="ui aligned grid">
+				elemen = `<div class="ui aligned grid ${kelas2}">
 					<div class="right floated right aligned column">
 						<div class="ui scrolling search ${kelasData} fluid category">
 							<div class="ui icon input"><input class="prompt" type="text" placeholder="Cari..." autocomplete="off" ${atribut}><i class="search icon"></i></div>

@@ -203,6 +203,17 @@ class get_data
                         break;
                     case 'get_Search_Json':
                         switch ($tbl) {
+                            case 'sbu':
+                            case 'ssh':
+                            case 'hspk':
+                            case 'asb':
+                                $kd_akun = $validate->setRules('kd_akun', "kode akun", [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inDB' => ['akun_neo', 'kode', [['disable', '<=', 0], ['peraturan', '=', ${"id_aturan_$tbl"}, 'AND']]],
+                                    'min_char' => 1
+                                ]);
+                                break;
                             case 'renja':
                             case 'dpa':
                             case 'dppa':
@@ -565,6 +576,7 @@ class get_data
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                                     if ($rowOrganisasi !== false) {
                                         $unit_kerja = $rowOrganisasi->uraian;
+                                        $jumlahRincian_Input = 'jumlah_rincian';
                                         switch ($tbl) {
                                             case 'renja':
                                                 $tabel_sub_keg = 'sub_keg_renja_neo';
@@ -573,6 +585,7 @@ class get_data
                                             case 'renja_p':
                                                 $tabel_sub_keg = 'sub_keg_renja_neo';
                                                 $tabel_tbl = 'sub_keg_renja';
+                                                $jumlahRincian_Input = 'jumlah_rincian_p';
                                                 break;
                                             case 'dpa':
                                                 $tabel_sub_keg = 'sub_keg_dpa_neo';
@@ -581,6 +594,7 @@ class get_data
                                             case 'dppa':
                                                 $tabel_sub_keg = 'sub_keg_dpa_neo';
                                                 $tabel_tbl = 'sub_keg_dpa';
+                                                $jumlahRincian_Input = 'jumlah_rincian_p';
                                                 break;
                                             default:
                                                 #code...
@@ -612,22 +626,22 @@ class get_data
                                                 <tr>
                                                     <td>Bidang</td>
                                                     <td>' . $bidang_sub_keg['kd_bidang']->uraian . ' (' . $bidang_sub_keg['kd_bidang']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_bidang']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_bidang']->{$jumlahRincian_Input}, 2, ',', '.') . '</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Program</td>
                                                     <td>' . $bidang_sub_keg['kd_prog']->uraian . ' (' . $bidang_sub_keg['kd_prog']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_prog']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_prog']->{$jumlahRincian_Input}, 2, ',', '.') . '</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Kegiatan</td>
                                                     <td>' . $bidang_sub_keg['kd_keg']->uraian . ' (' . $bidang_sub_keg['kd_keg']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_keg']->{$jumlahRincian_Input}, 2, ',', '.') . '</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Sub Kegiatan</td>
                                                     <td>' . $bidang_sub_keg['kd_sub_keg']->uraian . ' (' . $bidang_sub_keg['kd_sub_keg']->kd_sub_keg . ')</td>
-                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_sub_keg']->jumlah_rincian, 2, ',', '.') . '</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['kd_sub_keg']->{$jumlahRincian_Input}, 2, ',', '.') . '</td>
                                                 </tr>';
                                             $data['tr_sub_keg'] = preg_replace('/(\s\s+|\t|\n)/', ' ', $data['tr_sub_keg']);
                                         } else {
@@ -1098,6 +1112,19 @@ class get_data
                         case 'get_Search_Json':
                             $kodePosting = 'get_row_json';
                             switch ($tbl) {
+                                case 'hspk':
+                                case 'sbu':
+                                case 'ssh':
+                                case 'asb':
+                                    $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND peraturan = ? AND (kd_aset LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $tahun, 0, ${"id_aturan_$tbl"}, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kd_aset ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND peraturan = ?";
+                                    $data_where1 =  [$kd_wilayah, $tahun, 0, ${"id_aturan_$tbl"}];
+                                    $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND peraturan = ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $tahun, 0, ${"id_aturan_$tbl"}];
+                                    break;
                                 case 'renja':
                                 case 'dpa':
                                 case 'dppa':
@@ -1673,8 +1700,18 @@ class get_data
                                             };
                                             break;
                                         case 'get_Search_Json':
-                                            $kodePosting = 'get_row_json';
                                             switch ($tbl) {
+                                                case 'hspk':
+                                                case 'asb':
+                                                case 'ssh':
+                                                case 'sbu':
+                                                    $kd_akun_db = explode(',', $row->kd_akun);
+                                                    if (in_array($kd_akun, $kd_akun_db)) {
+                                                        $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
+                                                        $dataJson['results'][] = ['title' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'keterangan' => $row->keterangan, 'disable' => $row->disable, 'kd_aset' => $row->kd_aset, 'kd_akun' => $row->kd_akun];
+                                                    }
+
+                                                    break;
                                                 case 'renja':
                                                 case 'dpa':
                                                 case 'dppa':
