@@ -535,10 +535,10 @@ class Impor_xlsx
                                                                     $uraian_akun = $dataRslt->uraian;
                                                                 }
                                                                 $akun = $dataRslt->akun;
-                                                                $kelompok = $dataRslt->kelompok;
+                                                                $kelompok_akun = $dataRslt->kelompok;
                                                                 $jenis = $dataRslt->jenis;
                                                                 $objek = $dataRslt->objek;
-                                                                $rekAkunObjek = implode('.', [$akun, $kelompok, $Fungsi->zero_pad($jenis, 2)]);
+                                                                $rekAkunObjek = implode('.', [$akun, $kelompok_akun, $Fungsi->zero_pad($jenis, 2)]);
                                                                 switch ($rekAkunObjek) {
                                                                     case '5.1.01':
                                                                         $objek_belanja = 'gaji';

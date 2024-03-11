@@ -1471,7 +1471,11 @@ class get_data
                                                     $data_klm = $DB->readJSONField($tabel_pakai_temporerSubkeg, 'kelompok_json', $cari_drop, $dataKondisiField);
                                                     $data_klm = json_decode($data_klm, true);
                                                     if ($data_klm) {
+                                                        // var_dump($data_klm);
+                                                        $cari_drop = $data['users']->kelompok;
+                                                        // var_dump($cari_drop);
                                                         $key = array_search($cari_drop, $data_klm, true);
+                                                       
                                                         $data['values']['kelompok'] = [['name' => $data_klm[$key], 'value' => $data_klm[$key], 'selected' => true]];
                                                     }
                                                 }
