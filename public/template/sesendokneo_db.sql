@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 09 Mar 2024 pada 14.17
--- Versi server: 10.4.28-MariaDB
--- Versi PHP: 8.2.4
+-- Waktu pembuatan: 11 Mar 2024 pada 15.36
+-- Versi server: 11.3.2-MariaDB
+-- Versi PHP: 8.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,7 +45,7 @@ CREATE TABLE `akun_neo` (
   `keterangan` text DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE `asb_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -97,7 +97,7 @@ CREATE TABLE `aset_neo` (
   `keterangan` text DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -113,7 +113,7 @@ CREATE TABLE `bidang_urusan_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `disable` int(11) NOT NULL DEFAULT 0,
   `aksi` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -184,7 +184,7 @@ CREATE TABLE `daftar_paket_neo` (
   `disable` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -211,7 +211,7 @@ CREATE TABLE `daftar_realisasi_neo` (
   `username_update` varchar(255) NOT NULL,
   `tgl_update` datetime NOT NULL,
   `file` varchar(400) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -237,7 +237,7 @@ CREATE TABLE `daftar_uraian_paket` (
   `realisasi_vol` decimal(36,12) DEFAULT NULL,
   `realisasi_jumlah` decimal(36,12) DEFAULT NULL,
   `keterangan` varchar(400) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -286,7 +286,7 @@ CREATE TABLE `dpa_neo` (
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0,
   `id_renja` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -349,7 +349,7 @@ CREATE TABLE `dppa_neo` (
   `setujui` tinyint(1) DEFAULT 0,
   `id_dpa` int(11) DEFAULT NULL,
   `id_renja_p` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -375,7 +375,7 @@ CREATE TABLE `hspk_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -391,7 +391,7 @@ CREATE TABLE `kd_wilayah_neo` (
   `disable` int(11) DEFAULT NULL,
   `peraturan` int(11) NOT NULL,
   `keterangan` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -407,7 +407,7 @@ CREATE TABLE `kegiatan_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -428,7 +428,7 @@ CREATE TABLE `mapping_aset_akun` (
   `peraturan` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -453,7 +453,7 @@ CREATE TABLE `organisasi_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -495,7 +495,7 @@ CREATE TABLE `pengaturan_neo` (
   `setujui` tinyint(1) DEFAULT 0,
   `kunci_renstra` tinyint(1) DEFAULT NULL,
   `kunci_renja` tinyint(1) DEFAULT NULL,
-  `kunci__dpa` tinyint(1) DEFAULT NULL,
+  `kunci_dpa` tinyint(1) DEFAULT NULL,
   `kunci_renja_p` tinyint(1) DEFAULT NULL,
   `kunci_dppa` tinyint(1) DEFAULT NULL,
   `kunci_paket` tinyint(1) DEFAULT NULL,
@@ -507,7 +507,7 @@ CREATE TABLE `pengaturan_neo` (
   `setujui_dppa` tinyint(1) DEFAULT NULL,
   `setujui_paket` tinyint(1) DEFAULT NULL,
   `setujui_realisasi` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -534,7 +534,7 @@ CREATE TABLE `peraturan_neo` (
   `username` varchar(255) DEFAULT NULL,
   `tanggal` date NOT NULL,
   `keterangan` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -550,7 +550,7 @@ CREATE TABLE `program_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -584,7 +584,7 @@ CREATE TABLE `rab_paket_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -618,7 +618,7 @@ CREATE TABLE `rekanan_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `username` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -666,7 +666,7 @@ CREATE TABLE `renja_neo` (
   `username_update` varchar(255) NOT NULL,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -728,7 +728,7 @@ CREATE TABLE `renja_p_neo` (
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0,
   `id_dpa` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -772,7 +772,7 @@ CREATE TABLE `renstra_skpd_neo` (
   `username` varchar(255) NOT NULL,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -791,7 +791,7 @@ CREATE TABLE `satuan_neo` (
   `peraturan` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -817,7 +817,7 @@ CREATE TABLE `sbu_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -843,7 +843,7 @@ CREATE TABLE `ssh_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -869,7 +869,7 @@ CREATE TABLE `sub_kegiatan_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -919,7 +919,7 @@ CREATE TABLE `sub_keg_dpa_neo` (
   `kunci` tinyint(1) DEFAULT 0,
   `setujui_p` tinyint(1) DEFAULT 0,
   `kunci_p` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -969,7 +969,7 @@ CREATE TABLE `sub_keg_renja_neo` (
   `kunci` tinyint(1) DEFAULT 0,
   `setujui_p` tinyint(1) DEFAULT 0,
   `kunci_p` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -993,7 +993,7 @@ CREATE TABLE `sumber_dana_neo` (
   `keterangan` text DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -1017,7 +1017,7 @@ CREATE TABLE `tujuan_sasaran_renstra_neo` (
   `username` varchar(255) NOT NULL,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 
@@ -1049,7 +1049,7 @@ CREATE TABLE `user_sesendok_biila` (
   `disable_realisasi` tinyint(1) NOT NULL DEFAULT 1,
   `disable_chat` tinyint(1) NOT NULL DEFAULT 1,
   `ket` varchar(250) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data untuk tabel `user_sesendok_biila`
@@ -1083,7 +1083,7 @@ CREATE TABLE `wilayah_neo` (
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL,
   `file` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Indexes for dumped tables
