@@ -507,20 +507,46 @@ $(document).ready(function () {
 									elmthead.html(result.data.thead);
 								}
 								divTab.find(`.ui.dropdown`).dropdown({});
+								let dokumenAnggaran = '';
+								switch (tbl) {
+									case 'tujuan_renstra':
+									case 'tujuan_sasaran_renstra':
+									case 'sasaran_renstra':
+									case 'renstra':
+										dokumenAnggaran = 'renstra';
+										break;
+									case 'renja':
+									case 'dpa':
+									case 'renja_p':
+									case 'dppa':
+										dokumenAnggaran = tbl;
+										break;
+									case 'sub_keg_renja':
+									case 'sub_keg_dpa':
+										const myArray = tbl.split("_");
+										dokumenAnggaran = myArray[2];
+										break;
+								};
 								switch (tbl) {
 									case 'renja':
 									case 'dpa':
 									case 'renja_p':
 									case 'dppa':
-										if (tbl !== 'sub_keg_renja') {
-											const elmTableSubKeg = divTab.find("table.sub_keg");
-											elmTableSubKeg.html(result.data.tr_sub_keg);
+										const elmTableSubKeg = divTab.find("table.sub_keg");
+										elmTableSubKeg.html(result.data.tr_sub_keg);
+									case 'sub_keg_renja':
+									case 'sub_keg_dpa':
+									case 'tujuan_renstra':
+									case 'tujuan_sasaran_renstra':
+									case 'sasaran_renstra':
+									case 'renstra':
+										window['kunci_' + dokumenAnggaran] = result.data[`kunci_${dokumenAnggaran}`];
+										window['setujui_' + dokumenAnggaran] = result.data[`setujui_${dokumenAnggaran}`];
+										if (window['kunci_' + dokumenAnggaran] || window['setujui_' + dokumenAnggaran]) {
+											divTab.find(`button[jns="add"], button[jns="import"]`).attr('disabled', '');
+										} else {
+											divTab.find(`button[jns="add"], button[jns="import"]`).removeAttr('disabled');
 										}
-										
-										break;
-									case 'value1':
-										break;
-									default:
 										break;
 								};
 								$("[rms]").mathbiila();
