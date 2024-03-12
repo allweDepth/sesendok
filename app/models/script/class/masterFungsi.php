@@ -383,14 +383,25 @@ class MasterFungsi
                                 </tr>');
                         break;
                     case 'sub_keg_dpa':
+                        $disable_button = 0;
+                        if ($kunci_dppa > 0 || $setujui_dppa > 0) {
+                            $disable_button = 1;
+                        }
                     case 'sub_keg_renja':
+                        if ($tbl == 'sub_keg_renja') {
+                            if ($kunci_renja_p > 0 || $setujui_renja_p > 0) {
+                                $disable_button = 1;
+                            }else{
+                                $disable_button = 0;
+                            }
+                        }
                         $tbl_button = ($tbl == 'sub_keg_renja') ? 'renja' : 'dpa';
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
                         $divAwal = '';
                         $divAwalAngka= '';
                         $divAkhir = '';
-                        if ($kunci_dpa <= 0 || $setujui_dpa <= 0) {
+                        if ($disable_button <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';

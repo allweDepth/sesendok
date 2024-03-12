@@ -522,9 +522,11 @@ $(document).ready(function () {
 										dokumenAnggaran = tbl;
 										break;
 									case 'sub_keg_renja':
+										dokumenAnggaran = 'renja_p';
+										break;
 									case 'sub_keg_dpa':
 										const myArray = tbl.split("_");
-										dokumenAnggaran = myArray[2];
+										dokumenAnggaran = 'dppa';
 										break;
 								};
 								switch (tbl) {

@@ -152,6 +152,7 @@ class post_data
                                     'required' => true,
                                     'min_char' => 4
                                 ]);
+                                $uraian = preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian);
                                 $volume = $validate->setRules('volume', 'volume', [
                                     'required' => true,
                                     'numeric' => true,
@@ -1422,20 +1423,12 @@ class post_data
                                             //$kumpulanRowSub[] ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
                                             $row_sub->dok = $value->dok_anggaran;
                                             $id_dok_anggaran = $value->id;
-                                            //cek dahulu ada tidak di daftar_uraian_paket
-                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $value->dok_anggaran, 'AND']];
-                                            $row_sub2 = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi1);
-                                            if ($row_sub2 === false) {
-                                                $kumpulanRowSub[] = $row_sub;
-                                                $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
-                                                $pagu += $row_sub->$klm_jumlah;
-                                                $jumlah += $value->val_kontrak;
-                                                $kd_sub_keg[] = $row_sub->kd_sub_keg;
-                                                // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
-                                            }else{
-                                                $kumpulanRowSub_del[] = $value;
-                                                unset($send[$key]);
-                                            }
+                                            $kumpulanRowSub[] = $row_sub;
+                                            $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+                                            $pagu += $row_sub->$klm_jumlah;
+                                            $jumlah += $value->val_kontrak;
+                                            $kd_sub_keg[] = $row_sub->kd_sub_keg;
+                                            // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
                                         } else {
                                             //hapus key yang tidak mempunyai persyaratan
                                             $kumpulanRowSub_del[] = $value;
@@ -1446,75 +1439,72 @@ class post_data
                                     // var_dump($row_sub);
                                     $id_uraian = $send;
                                     if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['pagu', '=', $pagu, 'AND']];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     } else if ($jenis == 'edit') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['id', '=', $id_paket, 'AND']];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['id', '=', $id_row, 'AND']];
                                     }
                                     if ($jumlah > $pagu) {
                                         # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
                                         $kodePosting = '';
                                         $code = 405;
-                                        $tambahan_pesan = '(jumlah kontrak lebih besar dari besaran pagu)';
-                                        // $id_uraian = $validate->setRules('nabiila_inayah2509', 'nilai kontrak > nilai pagu', [
-                                        //     'min_char' => 2000,
-                                        //     'required' => true,
-                                        //     'json' => true
-                                        // ]);
+                                        $tambahan_pesan = '(nilai jumlah kontrak lebih besar dari besaran pagu)';
+                                    } else {
+                                        // var_dump(json_encode($id_uraian));
+                                        $set = [
+                                            'kd_rup' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_rup),
+                                            'kd_paket' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_paket),
+                                            'kd_wilayah' => $kd_wilayah,
+                                            'kd_opd' => $kd_opd,
+                                            'tahun' => $tahun,
+                                            'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
+                                            'id_uraian' => json_encode($id_uraian),
+                                            'kd_sub_keg' => $kd_sub_keg,
+                                            'volume' => $volume,
+                                            'satuan' => $satuan,
+                                            'jumlah' => $jumlah,
+                                            'pagu' => $pagu,
+                                            'metode_pengadaan' => $metode_pengadaan,
+                                            'metode_pemilihan' => $metode_pemilihan,
+                                            'pengadaan_penyedia' => $pengadaan_penyedia,
+                                            'jns_kontrak' => $jns_kontrak,
+                                            'renc_output' => $renc_output,
+                                            'output' => $output,
+                                            'id_rekanan' => $id_rekanan,
+                                            'nama_rekanan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_rekanan),
+                                            'nama_ppk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_ppk),
+                                            'nip_ppk' => $nip_ppk,
+                                            'nama_pptk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_pptk),
+                                            'waktu_pelaksanaan' => $waktu_pelaksanaan,
+                                            'waktu_pemeliharaan' => $waktu_pemeliharaan,
+                                            'nip_pptk' => $nip_pptk,
+                                            'tgl_kontrak' => $tgl_kontrak,
+                                            'no_kontrak' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_kontrak),
+                                            'tgl_persiapan_kont' => $tgl_persiapan_kont,
+                                            'no_persiapan_kont' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_persiapan_kont),
+                                            'tgl_spmk' => $tgl_spmk,
+                                            'no_spmk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_spmk),
+                                            'addendum' => $addendum,
+                                            'tgl_undangan' => $tgl_undangan,
+                                            'no_undangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_undangan),
+                                            'tgl_penawaran' => $tgl_penawaran,
+                                            'no_penawaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_penawaran),
+                                            'tgl_nego' => $tgl_nego,
+                                            'no_nego' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_nego),
+                                            'tgl_sppbj' => $tgl_sppbj,
+                                            'no_sppbj' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_sppbj),
+                                            'tgl_pho' => $tgl_pho,
+                                            'no_pho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_pho),
+                                            'tgl_fho' => $tgl_fho,
+                                            'no_fho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_fho),
+                                            'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                            'disable' => $disable,
+                                            'username' => $username,
+                                            'tanggal' => date('Y-m-d H:i:s'),
+                                            'username' => $_SESSION["user"]["username"]
+                                        ];
                                     }
-                                    // var_dump(json_encode($id_uraian));
-                                    $set = [
-                                        'kd_rup' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_rup),
-                                        'kd_paket' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_paket),
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'tahun' => $tahun,
-                                        'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
-                                        'id_uraian' => json_encode($id_uraian),
-                                        'kd_sub_keg' => $kd_sub_keg,
-                                        'volume' => $volume,
-                                        'satuan' => $satuan,
-                                        'jumlah' => $jumlah,
-                                        'pagu' => $pagu,
-                                        'metode_pengadaan' => $metode_pengadaan,
-                                        'metode_pemilihan' => $metode_pemilihan,
-                                        'pengadaan_penyedia' => $pengadaan_penyedia,
-                                        'jns_kontrak' => $jns_kontrak,
-                                        'renc_output' => $renc_output,
-                                        'output' => $output,
-                                        'id_rekanan' => $id_rekanan,
-                                        'nama_rekanan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_rekanan),
-                                        'nama_ppk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_ppk),
-                                        'nip_ppk' => $nip_ppk,
-                                        'nama_pptk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_pptk),
-                                        'waktu_pelaksanaan' => $waktu_pelaksanaan,
-                                        'waktu_pemeliharaan' => $waktu_pemeliharaan,
-                                        'nip_pptk' => $nip_pptk,
-                                        'tgl_kontrak' => $tgl_kontrak,
-                                        'no_kontrak' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_kontrak),
-                                        'tgl_persiapan_kont' => $tgl_persiapan_kont,
-                                        'no_persiapan_kont' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_persiapan_kont),
-                                        'tgl_spmk' => $tgl_spmk,
-                                        'no_spmk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_spmk),
-                                        'addendum' => $addendum,
-                                        'tgl_undangan' => $tgl_undangan,
-                                        'no_undangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_undangan),
-                                        'tgl_penawaran' => $tgl_penawaran,
-                                        'no_penawaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_penawaran),
-                                        'tgl_nego' => $tgl_nego,
-                                        'no_nego' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_nego),
-                                        'tgl_sppbj' => $tgl_sppbj,
-                                        'no_sppbj' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_sppbj),
-                                        'tgl_pho' => $tgl_pho,
-                                        'no_pho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_pho),
-                                        'tgl_fho' => $tgl_fho,
-                                        'no_fho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_fho),
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => $disable,
-                                        'username' => $username,
-                                        'tanggal' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
-                                    ];
+
                                     break;
                                 case 'profil':
                                     switch ($jenis) {
@@ -2214,14 +2204,22 @@ class post_data
                                 if ($DB->count()) {
                                     $code = 3;
                                     $data['update'] = $DB->count(); //$DB->count();
+                                    $id_row_paket = $ListRow->id;
+                                    $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
+                                    $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
+                                    if ($row_sub2 !== false) {
+                                        foreach ($row_sub2 as $key => $value) {
+                                            # code...
+                                        }
+                                    }
                                 } else {
                                     $code = 33;
                                 }
                             } else {
                                 // inser row
-                                //update atau insert tabel daftar_uraian_paket jika $tbl = daftar paket
                                 $resul = $DB->insert($tabel_pakai, $set);
                                 $data['note']['add row'] = $DB->lastInsertId();
+                                $id_row_paket = $data['note']['add row'];
                                 $code = 2;
                             }
                             switch ($jenis) {
@@ -2232,7 +2230,21 @@ class post_data
                                             // sekarang update atau insert tabel 'daftar_uraian_paket' jika $tbl = daftar paket
                                             // $kumpulanRowSub_del= [];
                                             if ($code == 3) {
-                                                # edit
+                                                # edit/update
+                                                //cek dahulu ada tidak di daftar_uraian_paket
+                                                $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $value->dok_anggaran, 'AND']];
+                                                $row_sub2 = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi1);
+                                                if ($row_sub2 === false) {
+                                                    $kumpulanRowSub[] = $row_sub;
+                                                    $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+                                                    $pagu += $row_sub->$klm_jumlah;
+                                                    $jumlah += $value->val_kontrak;
+                                                    $kd_sub_keg[] = $row_sub->kd_sub_keg;
+                                                    // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
+                                                } else {
+                                                    $kumpulanRowSub_del[] = $value;
+                                                    unset($send[$key]);
+                                                }
                                             } else if ($code == 2) {
                                                 # insert
                                             }

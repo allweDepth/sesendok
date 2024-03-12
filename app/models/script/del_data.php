@@ -147,6 +147,13 @@ class del_data
                                     $data[$tbl] = $DB->delete_array($tabel_pakai, $kondisi);
                                     if ($DB->count() > 0) {
                                         $code = 4;
+                                        switch ($tbl) {
+                                            case 'daftar_kontrak':
+                                                
+                                                break;
+                                            default:
+                                                break;
+                                        };
                                     } else {
                                         $code = 35;
                                     }
@@ -176,6 +183,13 @@ class del_data
                                 //var_dump($resul);
                                 if ($resul) {
                                     $code = 2;
+                                    switch ($tbl) {
+                                        case 'daftar_kontrak':
+                                            $DB->runQuery2("DELETE FROM daftar_uraian_paket");
+                                            break;
+                                        default:
+                                            break;
+                                    };
                                 } else {
                                     $code = 46;
                                 };
