@@ -23,7 +23,7 @@ class Validate
         header("Location: login");
       }
     }
-    //var_dump($_SESSION);
+    // var_dump($_SESSION);
     // var_dump($formValue);
     if ($formValue != null) {
       require_once 'CryptoUtils.php';
@@ -31,13 +31,13 @@ class Validate
       return $crypto->decrypt($formValue, $keyEncrypt);
     }
   }
-
+// 
   public function setRules($item, $itemLabel, $rules)
   {
     // kondisi if isset() diperlukan untuk form checkbox atau radio yang kemungkinan kosong
     if (isset($this->_formMethod[$item])) {
       $formValue = trim($this->_formMethod[$item]);
-      //var_dump($formValue);
+      // var_dump($formValue);
     } else {
       $formValue = "";
     }
@@ -52,7 +52,7 @@ class Validate
         $formValue = $this->encrypt($formValue);
       }
     }
-    //var_dump($formValue);
+    // var_dump($formValue);
     foreach ($rules as $rule => $ruleValue) {
       // var_dump($rule);
       // var_dump($ruleValue);

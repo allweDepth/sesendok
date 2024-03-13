@@ -15,24 +15,29 @@ class App
         //controller
         // var_dump($url);
         if ($url && file_exists('../app/controllers/' . $url[0] . '.php')) {
-            if ($url[0] == 'register') {
-                $this->controller = $url[0];
-                // var_dump('ok');
-            } else {
-                session_start();
-                //var_dump($_SESSION["user"]);
-                if (isset($_SESSION["user"])) {
-                    if ($_SESSION["user"]['disable_login'] <= 0) {
-                        if ($url[0] == 'login' || $url[0] == 'register') {
-                            $url[0] = 'home';
+            //var_dump($_SESSION["user"]);
+            switch ($url[0]) {
+                case 'data_teknis':
+                case 'register':
+                    $this->controller = $url[0];
+                    break;
+                default:
+                    session_start();
+                    if (isset($_SESSION["user"])) {
+                        if ($_SESSION["user"]['disable_login'] <= 0) {
+
+                            if ($url[0] == 'login' || $url[0] == 'register') {
+                                $url[0] = 'home';
+                            }
+                            $this->controller = $url[0];
                         }
+                    } else {
+                        $url[0] == 'login';
                         $this->controller = $url[0];
                     }
-                } else {
-                    $url[0] == 'login';
-                    $this->controller = $url[0];
-                }
+                    break;
             }
+
 
             unset($url[0]);
         }

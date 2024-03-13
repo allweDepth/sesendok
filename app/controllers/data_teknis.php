@@ -1,5 +1,5 @@
 <?php
-class Login extends Controller
+class Data_Teknis extends Controller
 {
     public function index()
     {
@@ -18,7 +18,7 @@ class Login extends Controller
         $dataFooter['tambahan_js'] = '';
         $dataFooter['key_encrypt'] = KEY_ENCRYPT;
         $this->view('templates/header_login', $dataHeader);
-        $this->view('login/index');
+        $this->view('data_teknis/index');
         $this->view('templates/footer', $dataFooter);
         
     }

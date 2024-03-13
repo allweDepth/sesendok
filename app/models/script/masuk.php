@@ -3,7 +3,7 @@ class Masuk
 {
     public function masuk()
     {
-        //var_dump($_POST);
+        // var_dump($_POST);
         require 'init.php';
         unset($_SESSION["user"]);
         $DB = DB::getInstance();
@@ -11,9 +11,10 @@ class Masuk
         $user = new User();
         $validate = new Validate($_POST);
         //$crypto = new CryptoUtils();
-        
+        // var_dump($_POST);
+        // var_dump($validate);
         if (isset($_POST['login'])) {
-            
+            // var_dump($_POST);
             $username = $validate->setRules('username', 'Username', [
                 'sanitize' => 'string',
                 'required' => true,
@@ -27,12 +28,18 @@ class Masuk
                 'min_char' => 4
             ]);
             
-            //var_dump($password);
+            // var_dump($password);
+            // $password = password_hash($password, PASSWORD_DEFAULT);
+            // var_dump(password_hash($password, PASSWORD_DEFAULT));
             //$password = $crypto->decrypt($password, $keyEncrypt);
             if ($validate->passed()) {
-                $data = $DB->getQuery('SELECT * FROM user_sesendok_biila WHERE username = ? OR email = ?', [$username, $username])[0];
+                
+                $data = $DB->getQuery('SELECT * FROM user_sesendok_biila WHERE (username = ? OR email = ?)', [$username, $username])[0];
+                // var_dump($data);
+                $passIsValid = password_verify($password, $data->password);
+                // var_dump("passIsValid = $passIsValid");
                 //var_dump(sizeof((array)$data));
-                if (sizeof((array)$data) > 0 && $data->disable_login <= 0) { // ubah ke array sebelum menggunakan sizeof
+                if (sizeof((array)$data) > 0 && $data->disable_login <= 0 && $passIsValid) { // ubah ke array sebelum menggunakan sizeof
                     $pesanError = '';
                     //var_dump($data->disable_login);
                     //$pesanError = $user->validasiLogin($_POST);
@@ -40,10 +47,11 @@ class Masuk
                         $status = session_status();
                         if ($status == PHP_SESSION_NONE) {
                             //There is no active session
-                            session_start();
+                            session_destroy();
                         } else
                         if ($status == PHP_SESSION_DISABLED) {
                             //Sessions are not available
+                            session_destroy();
                         } else
                         if ($status == PHP_SESSION_ACTIVE) {
                             //Destroy current and start new one
@@ -75,6 +83,8 @@ class Masuk
                 $session = $validate->getError();
                 // var_dump($validate->getError());
             }
+        }else{
+            $session = 7;
         }
         return $session;
     }
