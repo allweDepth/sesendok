@@ -7,7 +7,7 @@ class Masuk
         require 'init.php';
         unset($_SESSION["user"]);
         $DB = DB::getInstance();
-        $keyEncrypt = $_SESSION["key_encrypt"];
+        $keyEncrypt = $_SESSION['key_encrypt'];
         $user = new User();
         $validate = new Validate($_POST);
         //$crypto = new CryptoUtils();

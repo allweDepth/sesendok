@@ -25,10 +25,15 @@ class Validate
     }
     // var_dump($_SESSION);
     // var_dump($formValue);
-    if ($formValue != null) {
+    if ($formValue != null && $keyEncrypt) {
       require_once 'CryptoUtils.php';
       $crypto = new CryptoUtils();
+      var_dump($keyEncrypt);
+      // var_dump($formValue);
+      // var_dump($crypto->decrypt($formValue, $keyEncrypt));
       return $crypto->decrypt($formValue, $keyEncrypt);
+    }else{
+
     }
   }
 // 
@@ -41,11 +46,12 @@ class Validate
     } else {
       $formValue = "";
     }
-
+    // var_dump($formValue);
     // jalankan proses sanitize untuk setiap item (jika disyaratkan)
     if (array_key_exists('sanitize', $rules)) {
       $formValue = Input::runSanitize($formValue, $rules['sanitize']);
     }
+    // var_dump($formValue);
     //var_dump($this->_formMethod[$item]);
     if (array_key_exists('cry', $this->_formMethod)) {
       if ($this->_formMethod['cry']) {

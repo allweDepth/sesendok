@@ -8,6 +8,7 @@
 <?= $data['tambahan_js'] ?>
 <script type="text/javascript">
     const halamanDefault = '<?php echo $data['key_encrypt'] ?>';
+    const halamandok = '<?php echo $data['dok'] ?>';
 </script>
 <script>
     const BASEURL = '<?= BASEURL; ?>';

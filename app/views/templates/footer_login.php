@@ -11,6 +11,7 @@
 <script src="<?= BASEURL; ?>/js/Encryption.js"></script>
 <script type="text/javascript">
     const halamanDefault = '<?php echo $data['key_encrypt'] ?>';
+    const halamandok = '<?php echo $data['dok'] ?>';
 </script>
 <script src="<?= BASEURL; ?>/js/index.js">
 </script>

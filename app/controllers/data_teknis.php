@@ -3,20 +3,15 @@ class Data_Teknis extends Controller
 {
     public function index()
     {
-        if (KEY_ENCRYPT) {
-            //var_dump($_SESSION);
-            $_SESSION["key_encrypt"] = KEY_ENCRYPT;
-            // var_dump($_SESSION);
-        } else {
-            //header("Location: login");
-        }
+        $_SESSION['key_encrypt'] = KEY_ENCRYPT;
         $dataHeader['awalHeader'] = '';
         $dataHeader['title'] = '| Login';
         $dataHeader['css'] = 'css/login.css';
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
-        $dataFooter['key_encrypt'] = KEY_ENCRYPT;
+        $dataFooter['dok'] = 'data_teknis';
+        $dataFooter['key_encrypt'] = $_SESSION['key_encrypt'];
         $this->view('templates/header_login', $dataHeader);
         $this->view('data_teknis/index');
         $this->view('templates/footer', $dataFooter);

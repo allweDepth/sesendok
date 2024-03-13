@@ -25,7 +25,6 @@ class App
                     session_start();
                     if (isset($_SESSION["user"])) {
                         if ($_SESSION["user"]['disable_login'] <= 0) {
-
                             if ($url[0] == 'login' || $url[0] == 'register') {
                                 $url[0] = 'home';
                             }

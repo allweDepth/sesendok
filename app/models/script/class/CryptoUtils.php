@@ -17,6 +17,7 @@ class CryptoUtils
     public function decrypt($encryptedString, $key)
     {
         $json = json_decode(base64_decode($encryptedString), true);
+        // var_dump($json);
         try {
             $salt = hex2bin($json["salt"]);
             $iv = hex2bin($json["iv"]);
@@ -83,6 +84,4 @@ class CryptoUtils
     {
         $this->encryptMethod = $cipherMethod;
     } // setCipherMethod
-
-
 }

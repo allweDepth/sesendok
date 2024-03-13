@@ -96,7 +96,7 @@ $(document).ready(function () {
             username = encryption.encrypt(username, keyEncryption);
             password = encryption.encrypt(password, keyEncryption);
 
-            const url = BASEURL + "Login/masuk";
+            const url = BASEURL + halamandok+"/masuk";
             console.log(url);
             console.log('disini js key=' + keyEncryption);
             var data = {
