@@ -7,13 +7,13 @@ class Controller
     }
     public function model($model)
     {
-        
+
         set_include_path(implode(PATH_SEPARATOR, array(
             realpath(__DIR__ . '/'),
             get_include_path()
         )));
         require_once '../app/models/' . $model . '.php';
-        
+
         return new $model;
     }
     public function script($script)
@@ -23,7 +23,11 @@ class Controller
             get_include_path()
         )));
         require_once '../app/models/script/' . $script . '.php';
-        
+        $listScript = explode('/', $script);
+        if (count($listScript) > 1) {
+            $script = $listScript[count($listScript) - 1];
+        }
+        // var_dump($script);
         return new $script;
     }
     public function getFileJson($path = '../app/models/script/candaan.json')

@@ -167,7 +167,7 @@ $(document).ready(function () {
 					// this url just returns a list of tags (with API response expected above)
 					cache: false,
 					method: "POST",
-					url: "script/register_akun",
+					url: "script/register/wilayah",
 					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
@@ -202,7 +202,7 @@ $(document).ready(function () {
 					// this url just returns a list of tags (with API response expected above)
 					cache: false,
 					method: "POST",
-					url: "script/register_akun",
+					url: BASEURL + "/register/wilayah",
 					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
@@ -288,38 +288,7 @@ $(document).ready(function () {
 		restore() {
 			this.element.dropdown("restore defaults");
 		}
-		users(get) {
-			get = this.element.dropdown("get query");
-			this.element.dropdown({
-				//$(".satuan.ui.dropdown").dropdown({
-				apiSettings: {
-					cache: false,
-					// this url just returns a list of tags (with API response expected above)
-					method: "POST",
-					url: "script/register_akun",
-					//throttle: 1000,//delay perintah
-					// passed via POST
-					data: {
-						jenis: "user",
-						tbl: "get_users_list",
-						cari: function (value) {
-							return get;
-							//console.log($('.satuan.ui.dropdown').dropdown('get query'));
-						},
-						rows: "all",
-						halaman: 1,
-					},
-					fields: {
-						results: "results",
-					},
-					filterRemoteData: true,
-				},
-				className: {
-					//item: "item vertical",
-				},
-				saveRemoteData: false,
-			});
-		}
+		
 		setVal(val) {
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown("set selected", val);

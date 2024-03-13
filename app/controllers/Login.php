@@ -20,7 +20,6 @@ class Login extends Controller
     public function masuk()
     { 
         $data = $this->script("masuk")->masuk();
-        // var_dump($data);
         echo $data;
     }
 }

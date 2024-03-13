@@ -18,7 +18,7 @@ class MasterFungsi
         $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
         $classRow = '';
-        $Fungsi = new MasterFungsi();
+        
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;

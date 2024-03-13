@@ -28,7 +28,7 @@ class Validate
     if ($formValue != null && $keyEncrypt) {
       require_once 'CryptoUtils.php';
       $crypto = new CryptoUtils();
-      var_dump($keyEncrypt);
+      // var_dump($keyEncrypt);
       // var_dump($formValue);
       // var_dump($crypto->decrypt($formValue, $keyEncrypt));
       return $crypto->decrypt($formValue, $keyEncrypt);

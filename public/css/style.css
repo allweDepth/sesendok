@@ -1,0 +1,9 @@
+.ui.footer {
+    position: sticky !important;
+    /* position: absolute !important; */
+    bottom: 0 !important;
+    width: 100% !important;
+}
+.stripe.segment{
+    padding-bottom: 350px !important;
+}

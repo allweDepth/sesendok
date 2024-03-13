@@ -155,4 +155,5 @@ class Register
 		$json = array('success' => $sukses, 'data' => $data, 'error' => $item);
 		return json_encode($json);
 	}
+	
 }
