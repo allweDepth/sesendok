@@ -289,7 +289,7 @@ $(document).ready(function () {
 									case 'list_dropdown':
 										switch (tbl) {
 											case 'wilayah'://tujuan sasaran renstra
-												$(`.ui.organisasi.dropdown.ajx`).dropdown('');
+												$(`.ui.organisasi.dropdown.ajx`).dropdown({values:result.results});
 												
 												break;
 											default:
