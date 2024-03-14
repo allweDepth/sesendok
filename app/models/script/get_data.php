@@ -415,15 +415,20 @@ class get_data
                                 foreach ($peraturan as $row) {
                                     $dataJson['results'][] = ['name' => $row->judul,'text'=>$row->judul_singkat, 'value' => $row->id, 'description' => $row->nomor];
                                 }
-                            }//@audit now tambahkan value dropdown organisasi
+                            }
+                            $DB->select('*');
+
+                            //@audit now tambahkan value dropdown organisasi
+                            $cari_drop = $data['row_tahun']->id_opd_tampilkan;
+                            if ($cari_drop) {
+                                $kondisi_result = [['disable', '<=', 0], ['id', '=', $cari_drop, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND']];
+                                $row = $DB->getWhereOnceCustom('organisasi_neo', $kondisi_result);
+                                if ($row !== false) {
+                                    $data['values']['id_opd_tampilkan'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->id, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                }
+                            }
                             //var_dump($peraturan);
                             $data['peraturan'] = $dataJson['results'];
-                            switch ($tbl) {
-                                case 'value':
-                                    break;
-                                default:
-                                    break;
-                            }
                             break;
                         case 'get_tbl':
                             $kodePosting = 'get_tbl';
