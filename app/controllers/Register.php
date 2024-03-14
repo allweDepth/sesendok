@@ -27,35 +27,8 @@ class Register extends Controller
     }
     public function wilayah()
     {
-        require_once '../app/models/script/class/Validate.php';
-        $validate = new Validate($_POST);
-        $jenis = $validate->setRules('jenis', 'jenis', [
-            'sanitize' => 'string',
-            'required' => true,
-            'min_char' => 1,
-            'max_char' => 100
-        ]);
-        $tbl = $validate->setRules('tbl', 'tbl', [
-            'sanitize' => 'string',
-            'required' => true,
-            'min_char' => 1,
-            'max_char' => 100
-        ]);
-        if ($validate->passed()) {
-            switch ($jenis) {
-                case 'list_dropdown':
-                    switch ($tbl) {
-                        case 'wilayah':
-                            #code...
-                            break;
-                    };
-                    
-                    break;
-                default:
-                    #code...
-                    break;
-            };
-            
-        }
+        $send = ['jns'=>'json_list_dropdown','tbl'=>'wilayah','kondisi'=>[['disable','<= ?',0]]];
+        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        echo $data;
     }
 }

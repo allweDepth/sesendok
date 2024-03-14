@@ -30,6 +30,20 @@ class Controller
         // var_dump($script);
         return new $script;
     }
+    public function scriptConstruct($script,$data= [])
+    {
+        set_include_path(implode(PATH_SEPARATOR, array(
+            realpath(__DIR__ . '/'),
+            get_include_path()
+        )));
+        require_once '../app/models/script/' . $script . '.php';
+        $listScript = explode('/', $script);
+        if (count($listScript) > 1) {
+            $script = $listScript[count($listScript) - 1];
+        }
+        // var_dump($script);
+        return $script::createInstance($data);;
+    }
     public function getFileJson($path = '../app/models/script/candaan.json')
     {
         $jsonString = file_get_contents($path);
