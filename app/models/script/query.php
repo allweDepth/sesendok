@@ -68,11 +68,27 @@ class Query
         $tbl = $this->_tbl;
         $tabel_pakai =  $this->_tabel_pakai;
         $kondisi = [];
+        $data = [];
         $dataJson = array();
         $message_tambah = '';
         $code = 1;
+        $sukses = false;
         if (array_key_exists('kondisi', $this->_data)) {
             $kondisi = $this->_data['kondisi'];
+            switch ($jenis) {
+                case 'json_list_dropdown':
+                    switch ($tbl) {
+                        case 'organisasi':
+                            // var_dump($this->_data);
+                            // $kd_wilayah =  $this->_data['kondisi']['kd_wilayah'];
+                            // $kondisi['kd_wilayah'] = $kd_wilayah;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    break;
+            }
             $result = $this->getRows($kondisi);
             // var_dump($result);
             switch ($jenis) {
@@ -84,7 +100,12 @@ class Query
                             $text_json = 'uraian';
                             $description_json = 'kode';
                             break;
-
+                        case 'organisasi':
+                            $name_json = 'uraian';
+                            $value_json = 'kode';
+                            $text_json = 'uraian';
+                            $description_json = 'kode';
+                            break;
                         default:
                             # code...
                             break;
@@ -95,12 +116,13 @@ class Query
                     # code...
                     break;
             }
-            var_dump($result[0]);
-            var_dump(gettype($result));
+            // var_dump($result[0]);
+            // var_dump(gettype($result));
             if (is_array($result)) {
-                foreach ($result as $key => $value) {
+                foreach ($result as $key => $row) {
                     $dataJson['results'][] = ['name' => $row->$name_json, 'text' => $row->$text_json, 'value' => $row->$value_json, 'description' => $row->$description_json, "descriptionVertical" => true];
                 }
+                $sukses = true;
             }
 
             $item = array('code' => $code, 'message' => hasilServer[$code] . $message_tambah);
@@ -117,6 +139,6 @@ class Query
         if ($kondisi !== false) {
             $dataJson = $DB->getArrayLike($tabel_pakai, $kondisi);
         }
-        return json_encode($dataJson, JSON_HEX_APOS);;
+        return $dataJson;
     }
 }

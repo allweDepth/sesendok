@@ -251,7 +251,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="ui fluid search selection dropdown ajx">
+                        <div class="ui fluid search selection organisasi dropdown ajx">
                             <input type="hidden" name="organisasi">
                             <i class="dropdown icon"></i>
                             <div class="default text"><i class="fax icon"></i>Organisasi</div>

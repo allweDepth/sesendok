@@ -1,148 +1,148 @@
 var dok = '';
 $(document).ready(function () {
-    "use strict";
-    // fix menu when passed
-    $('.masthead')
-        .visibility({
-            once: false,
-            onBottomPassed: function () {
-                $('.fixed.menu').transition('fade in');
-            },
-            onBottomPassedReverse: function () {
-                $('.fixed.menu').transition('fade out');
-            }
-        })
-        ;
-    let handler = {
-        activate: function () {
-            if (!$(this).hasClass('dropdown browse')) {
-                $(this)
-                    .addClass('active')
-                    .closest('.ui.menu')
-                    .find('.item')
-                    .not($(this))
-                    .removeClass('active')
-                    ;
-            }
-        }
-    }
-    $(".menu .item.inayah").on('click', handler.activate);
-    // create sidebar and attach to menu open
-    $('.ui.sidebar')
-        .sidebar('attach events', '.toc.item')
-        ;
-    $(".ui.accordion").accordion();
-    $(".ui.accordion.menu_utama").accordion({
-        exclusive: false
-    });
-    //Sticking to Own Context
-    $('.ui.sticky')
-        .sticky({
-            context: '.pusher',
-            pushing: true
-        });
+	"use strict";
+	// fix menu when passed
+	$('.masthead')
+		.visibility({
+			once: false,
+			onBottomPassed: function () {
+				$('.fixed.menu').transition('fade in');
+			},
+			onBottomPassedReverse: function () {
+				$('.fixed.menu').transition('fade out');
+			}
+		})
+		;
+	let handler = {
+		activate: function () {
+			if (!$(this).hasClass('dropdown browse')) {
+				$(this)
+					.addClass('active')
+					.closest('.ui.menu')
+					.find('.item')
+					.not($(this))
+					.removeClass('active')
+					;
+			}
+		}
+	}
+	$(".menu .item.inayah").on('click', handler.activate);
+	// create sidebar and attach to menu open
+	$('.ui.sidebar')
+		.sidebar('attach events', '.toc.item')
+		;
+	$(".ui.accordion").accordion();
+	$(".ui.accordion.menu_utama").accordion({
+		exclusive: false
+	});
+	//Sticking to Own Context
+	$('.ui.sticky')
+		.sticky({
+			context: '.pusher',
+			pushing: true
+		});
 
-    var keyEncryption = halamanDefault;
-    let encryption = new Encryption();
+	var keyEncryption = halamanDefault;
+	let encryption = new Encryption();
 
-    function modal_notif(kop, conten) {
+	function modal_notif(kop, conten) {
 
-        $('#kop_notifikasi').html(kop);
-        $('#conten_notifikasi').html('<p>' + conten + '</p>');
-        $('.ui.basic.modal.info').modal('show');
-    }
-    $(document).on('click', "a[name='modal']", function (event) {
-        event.preventDefault();
-        $('.ui.modal.login')
-            .modal('show')
-            ;
-    })
-    $(document).on('click', "a[name='modal-register']", function (event) {
-        event.preventDefault();
-        $('.ui.modal.register')
-            .modal('show')
-            ;
-    })
-    $(document).on('click', "button[name='login']", function (event) {
-        event.preventDefault();
-        dok = $(this).attr('value');
-        $('.ui.form').form('submit');
-        return false;
-    })
-    $('.ui.form').form({
-        fields: {
-            username: {
-                identifier: 'username',
-                rules: [{
-                    type: 'empty',
-                    prompt: 'Please enter your username or e-mail'
-                }]
-            },
-            password: {
-                identifier: 'password',
-                rules: [{
-                    type: 'empty',
-                    prompt: 'Please enter your password'
-                }]
-            }
-        },
-        onSuccess: function (event) {
-            event.preventDefault();
-            //$(this).serialize();
+		$('#kop_notifikasi').html(kop);
+		$('#conten_notifikasi').html('<p>' + conten + '</p>');
+		$('.ui.basic.modal.info').modal('show');
+	}
+	$(document).on('click', "a[name='modal']", function (event) {
+		event.preventDefault();
+		$('.ui.modal.login')
+			.modal('show')
+			;
+	})
+	$(document).on('click', "a[name='modal-register']", function (event) {
+		event.preventDefault();
+		$('.ui.modal.register')
+			.modal('show')
+			;
+	})
+	$(document).on('click', "button[name='login']", function (event) {
+		event.preventDefault();
+		dok = $(this).attr('value');
+		$('.ui.form').form('submit');
+		return false;
+	})
+	$('.ui.form').form({
+		fields: {
+			username: {
+				identifier: 'username',
+				rules: [{
+					type: 'empty',
+					prompt: 'Please enter your username or e-mail'
+				}]
+			},
+			password: {
+				identifier: 'password',
+				rules: [{
+					type: 'empty',
+					prompt: 'Please enter your password'
+				}]
+			}
+		},
+		onSuccess: function (event) {
+			event.preventDefault();
+			//$(this).serialize();
 
-            var dataku = $(this).serializeArray();
-            var username = dataku[0].value;
-            var password = dataku[1].value;
-            username = encryption.encrypt(username, keyEncryption);
-            password = encryption.encrypt(password, keyEncryption);
+			var dataku = $(this).serializeArray();
+			var username = dataku[0].value;
+			var password = dataku[1].value;
+			username = encryption.encrypt(username, keyEncryption);
+			password = encryption.encrypt(password, keyEncryption);
 
-            const url = BASEURL + halamandok+"/masuk";
-            console.log(url);
-            console.log('disini js key=' + keyEncryption);
-            var data = {
-                username: username,
-                password: password,
-                login: 'login',
-                dok: 'dok',
-                cry: true
-            }
-            $.ajax({
-                type: "POST",
-                data: data,
-                url: url,
-                dataType: 'JSon',
-                success: function (result) {
-                    console.log("result = " + result);
-                    //$(this).reset(); alert result;
-                    if (parseInt(result) == 1) {
-                        window.location.href = BASEURL + "home"; //admin
-                    } else if (parseInt(result) == 2) {
-                        window.location.href = BASEURL + "home";
-                    } else if (parseInt(result) == 6) {
-                        modal_notif(
-                            '<i class="info icon"></i>Akun belum aktif',
-                            'Hubungi admin untuk mengaktifkan akun anda'
-                        );
-                    } else if (parseInt(result) == 7) {
-                        modal_notif(
-                            '<i class="info icon"></i>Gagal Login',
-                            'Kombinasi akun anda salah'
-                        );
-                    }
-                },
-                error: function (jqXHR, status, err) {
-                    //loaderHide();
-                    // console.log(jqXHR);
-                    // console.log(status);
-                    // modal_notif('<i class="info icon"></i>' + status, jqXHR);
-                }
-            });
-            (async () => {
-            })();
-        }
-    });
-    
-    //===================================
+			const url = BASEURL + halamandok + "/masuk";
+			console.log(url);
+			console.log('disini js key=' + keyEncryption);
+			var data = {
+				username: username,
+				password: password,
+				login: 'login',
+				dok: 'dok',
+				cry: true
+			}
+			$.ajax({
+				type: "POST",
+				data: data,
+				url: url,
+				dataType: 'JSon',
+				success: function (result) {
+					console.log("result = " + result);
+					//$(this).reset(); alert result;
+					if (parseInt(result) == 1) {
+						window.location.href = BASEURL + "home"; //admin
+					} else if (parseInt(result) == 2) {
+						window.location.href = BASEURL + "home";
+					} else if (parseInt(result) == 6) {
+						modal_notif(
+							'<i class="info icon"></i>Akun belum aktif',
+							'Hubungi admin untuk mengaktifkan akun anda'
+						);
+					} else if (parseInt(result) == 7) {
+						modal_notif(
+							'<i class="info icon"></i>Gagal Login',
+							'Kombinasi akun anda salah'
+						);
+					}
+				},
+				error: function (jqXHR, status, err) {
+					//loaderHide();
+					// console.log(jqXHR);
+					// console.log(status);
+					// modal_notif('<i class="info icon"></i>' + status, jqXHR);
+				}
+			});
+			(async () => {
+			})();
+		}
+	});
+
+	//===================================
 	//=========== class dropdown ========
 	//===================================
 	class DropdownConstructor {
@@ -150,6 +150,7 @@ $(document).ready(function () {
 		tbl = '';
 		ajax = false;
 		result_ajax = {};
+		url = BASEURL + "/register/wilayah";
 		constructor(element) {
 			this.element = $(element); //element;
 			// this.methodConstructor = new MethodConstructor();
@@ -189,9 +190,36 @@ $(document).ready(function () {
 				// saveRemoteData: false,
 			});
 		}
-		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3) {
+		returnListOnChange(jenis = "list_dropdown", tbl = "satuan", minCharacters = 3, allField = {}) {
 			let get = this.element.dropdown("get query");
 			let elm = this.element;
+			let dataSend = Object.assign({
+				jenis: jenis,
+				tbl: tbl,
+				cari: function (value) {
+					return elm.dropdown("get query");
+				},
+				rows: '10', //"all",
+				halaman: 1
+			}, allField);
+			switch (jenis) {
+				case 'list_dropdown':
+					switch (tbl) {
+						case 'wilayah':
+							this.url = BASEURL + "/register/wilayah";
+							break;
+						case 'organisasi':
+							this.url = BASEURL + "/register/organisasi";
+							break;
+						default:
+							break;
+					}
+					break;
+				case 'value1':
+					break;
+				default:
+					break;
+			};
 			this.element.dropdown({
 				minCharacters: minCharacters,
 				maxResults: 10,
@@ -202,30 +230,24 @@ $(document).ready(function () {
 					// this url just returns a list of tags (with API response expected above)
 					cache: false,
 					method: "POST",
-					url: BASEURL + "/register/wilayah",
+					url: this.url,
 					throttle: 600,
 					//throttle: 1000,//delay perintah
 					// passed via POST
-					data: {
-						jenis: jenis,
-						tbl: tbl,
-						cari: function (value) {
-							return elm.dropdown("get query");
-						},
-						rows: '10', //"all",
-						halaman: 1,
-					}, fields: {
+					data: dataSend,
+					fields: {
 						results: "results",
 					},
 					// filterRemoteData: true,
 				},
 				onChange: function (value, text, $choice) {
 					let dataChoice = $($choice).find('span.description').text();
+					let ajaxSend = false;
 					switch (jenis) {
-						case 'getJsonRows':
+						case 'list_dropdown':
 							switch (tbl) {
-								case 'tujuan_renstra'://tujuan sasaran renstra
-									
+								case 'wilayah'://tujuan sasaran renstra
+									ajaxSend = true;
 									break;
 								default:
 									break;
@@ -238,22 +260,36 @@ $(document).ready(function () {
 					};
 					if (ajaxSend == true) {
 						let data = {
-							cari: '',
-							rows: 10,
 							jenis: jenis,
-							tbl: tbl,
-							halaman: halaman,
+							tbl: tbl
 						};
 						let url = 'script/register_akun';
 						let cryptos = false;
-
+						switch (jenis) {
+							case 'list_dropdown':
+								switch (tbl) {
+									case 'wilayah'://tujuan sasaran renstra
+										let elementDrop = $(`.ui.organisasi.dropdown.ajx`);
+										data.kd_wilayah = $('.ui.wilayah.dropdown.ajx').dropdown('get value');
+										url = BASEURL + "/register/organisasi";
+										break;
+									default:
+										break;
+								}
+								break;
+							case 'value1':
+								break;
+							default:
+								break;
+						};
 						suksesAjax["ajaxku"] = function (result) {
 							var kelasToast = "success";
 							if (result.success === true) {
 								switch (jenis) {
-									case 'getJsonRows':
+									case 'list_dropdown':
 										switch (tbl) {
-											case 'tujuan_renstra'://tujuan sasaran renstra
+											case 'wilayah'://tujuan sasaran renstra
+												$(`.ui.organisasi.dropdown.ajx`).dropdown('');
 												
 												break;
 											default:
@@ -272,7 +308,7 @@ $(document).ready(function () {
 								class: kelasToast,
 								icon: "check circle icon",
 							});
-							loaderHide();
+							
 						};
 						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
 					}
@@ -288,7 +324,7 @@ $(document).ready(function () {
 		restore() {
 			this.element.dropdown("restore defaults");
 		}
-		
+
 		setVal(val) {
 			//this.element.dropdown('preventChangeTrigger', true);
 			this.element.dropdown("set selected", val);
@@ -302,7 +338,7 @@ $(document).ready(function () {
 						case 'getJsonRows':
 							switch (tbl) {
 								case 'tujuan_renstra'://tujuan sasaran renstra
-									
+
 									break;
 								default:
 									break;
@@ -329,7 +365,7 @@ $(document).ready(function () {
 							if (result.success === true) {
 								switch (jenis) {
 									case 'getJsonRows':
-										
+
 										break;
 									case 'value1':
 										break;
@@ -358,8 +394,8 @@ $(document).ready(function () {
 			})
 		}
 	}
-    let dropdownWilayah = new DropdownConstructor('.ui.wilayah.dropdown.ajx');
-    dropdownWilayah.returnListOnChange("list_dropdown", "wilayah", 3);
+	let dropdownWilayah = new DropdownConstructor('.ui.wilayah.dropdown.ajx');
+	dropdownWilayah.returnListOnChange("list_dropdown", "wilayah", 3);
 
 
 	//=============================
@@ -400,7 +436,7 @@ $(document).ready(function () {
 				var callback = suksesAjax[params.callback](data);
 			})
 			.fail(function (jqXHR, textStatus, err) {
-				loaderHide();
+				
 				//console.log(textStatus);
 				//console.log(jqXHR.responseText.split(','));
 				//console.log(JSON.parse(jqXHR.responseText));

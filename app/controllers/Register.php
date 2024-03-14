@@ -31,4 +31,10 @@ class Register extends Controller
         $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
         echo $data;
     }
+    public function organisasi()
+    {
+        $send = ['jns'=>'json_list_dropdown','tbl'=>'organisasi','kondisi'=>[['kd_wilayah','= ?',$_POST['kd_wilayah']],['disable','<= ?',0,'AND']]];
+        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        echo $data;
+    }
 }
