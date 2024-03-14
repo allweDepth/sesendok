@@ -118,16 +118,21 @@ class Query
             }
             // var_dump($result[0]);
             // var_dump(gettype($result));
+            $dataJson['results'] = [];
             if (is_array($result)) {
                 foreach ($result as $key => $row) {
                     $dataJson['results'][] = ['name' => $row->$name_json, 'text' => $row->$text_json, 'value' => $row->$value_json, 'description' => $row->$description_json, "descriptionVertical" => true];
                 }
+                $code = 200;
                 $sukses = true;
+            } else {
+                $code = 204;
             }
-
-            $item = array('code' => $code, 'message' => hasilServer[$code] . $message_tambah);
-            $json = array('success' => $sukses,  'results' => $dataJson['results'],  'data' => $data, 'error' => $item);
+        } else {
+            $code = 416;
         }
+        $item = array('code' => $code, 'message' => hasilServer[$code] . $message_tambah);
+        $json = array('success' => $sukses,  'results' => $dataJson['results'],  'data' => $data, 'error' => $item);
         return json_encode($json, JSON_HEX_APOS);
     }
     public function getRows($kondisi)

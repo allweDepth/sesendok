@@ -2,9 +2,9 @@
 <div class="ui large top fixed menu">
     <div class="ui container">
         <a class="item inayah" href="login">Home</a>
-        <a class="active item inayah" href="data_teknis">Data Teknis</a>
+        <a class="item inayah" href="data_teknis">Data Teknis</a>
         <a class="item inayah" href="organisasi">Organisasi</a>
-        <a class="item inayah" href="anggaran">Anggaran</a>
+        <a class="active item inayah" href="anggaran">Anggaran</a>
         <div class="right menu">
             <div class="item">
                 <a class="ui button" name="modal">Log in</a>
@@ -18,9 +18,9 @@
 <!-- Sidebar Menu -->
 <div class="ui vertical inverted sidebar menu">
     <a class="item inayah" href="login">Home</a>
-    <a class="active item inayah">Data Teknis</a>
+    <a class="item inayah">Data Teknis</a>
     <a class="item inayah" href="organisasi">Organisasi</a>
-    <a class="item inayah" href="anggaran">Anggaran</a>
+    <a class="active item inayah" href="anggaran">Anggaran</a>
     <a class="item inayah" name="modal">Login</a>
     <a class="item inayah" name="modal-register">Signup</a>
 </div>

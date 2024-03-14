@@ -99,7 +99,7 @@ $(document).ready(function () {
 			const url = BASEURL + halamandok + "/masuk";
 			console.log(url);
 			console.log('disini js key=' + keyEncryption);
-			var data = {
+			let data = {
 				username: username,
 				password: password,
 				login: 'login',
@@ -141,7 +141,236 @@ $(document).ready(function () {
 			})();
 		}
 	});
+//=======================================
+	//===============FORM GLOBAL=============
+	//=======================================
+	class FormGlobal {//@audit-ok Form
+		constructor(form) {
+			this.form = $(form); //element;
+		}
+		run() {
+			let MyForm = this.form;
+			MyForm.form({
+				autoCheckRequired: true,
+				onSuccess: function (e) {
+					e.preventDefault();
+					loaderShow();
+					const [node] = $(MyForm);
+					const attrs = {}
+					$.each(node.attributes, (index, attribute) => {
+						attrs[attribute.name] = attribute.value;
+						let attrName = attribute.name;
+						//membuat variabel
+						let myVariable = attrName + 'Attr';
+						window[myVariable] = attribute.value;
+					});
+					console.log(attrs);
+					let jalankanAjax = false;
+					let ini = $(this);
+					let tbl = ini.attr("tbl");
+					let dataType = "Json";
+					let jenis = ini.attr("jns");
+					let nama_form = ini.attr("name");
+					let cryptos = false;
+					//loaderShow();
+					let formData = new FormData(this);
+					//ubah angka indonesia menjadi standar
+					let elmRms = MyForm.find('input[rms]');
+					Object.keys(elmRms).forEach((key) => {
+						let element = $(elmRms[key]);
+						let namaAttr = element.attr("name");
+						if (namaAttr !== undefined) {
+							formData.set(namaAttr, accounting.unformat(formData.get(namaAttr), ","));
+						}
+					});
+					formData.set("jenis", jenis);
+					formData.set("tbl", tbl);
+					let url = "script/post_data";
+					formData.set("cari", cari(jenis));
+					formData.set("rows", countRows());
+					let id_row = ini.attr("id_row");
+					if (typeof id_row === "undefined") {
+						id_row = ini.closest("tr").attr("id_row");
+						if (typeof id_row === "undefined") {
+							id_row = ini.closest("div.item").attr("id_row");
+						}
+					}
+					if (typeof id_row !== "undefined") {
+						formData.set("id_row", id_row);
+					}
+					//tampilkan form data
+					formData.forEach((value, key) => {
+						// console.log(key + " " + value)
+					});
+					
+					// global mencari element date dan checkbox
+					let property = ini.find(`.ui.toggle.checkbox input[name]`);
+					if (property.length > 0) {
+						for (const key of property) {
+							let namaAttr = $(key).attr("name");
+							(formData.has(namaAttr) === false)
+								? formData.set(namaAttr, 'off')
+								: formData.set(namaAttr, 'on'); // Returns false
+						}
+					}
+					property = ini.find(".ui.calendar.date");
+					if (property.length > 0) {
+						for (const key of property) {
+							let nameAttr = $(key).find("[name]").attr("name");
+							let tanggal = $(key).calendar("get date");
+							if (tanggal) {
+								tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
+									}-${tanggal.getDate()}`; //local time
+								formData.set(nameAttr, tanggal);
+							}
+						}
+					}
+					property = ini.find(".ui.calendar.year");
+					console.log(property);
+					if (property.length > 0) {
+						for (const key of property) {
+							let nameAttr = $(key).find("[name]").attr("name");
+							let tanggal = $(key).calendar("get date");
+							if (tanggal) {
+								tanggal = `${tanggal.getFullYear()}`; //local time
+								console.log(tanggal);
 
+								formData.set(nameAttr, tanggal);
+							}
+						}
+					}
+					property = ini.find(".ui.calendar.datetime");
+					// console.log(property);
+					if (property.length > 0) {
+						for (const key of property) {
+							let nameAttr = $(key).find("[name]").attr("name");
+							let tanggal = $(key).calendar("get date");
+							if (tanggal) {
+								tanggal = new Date(tanggal).toISOString().slice(0, 19).replace('T', ' ');
+								formData.set(nameAttr, tanggal);
+							}
+						}
+					}
+					switch (nama_form) {
+						// =================
+						// UNTUK FORM MODAL
+						// =================
+						case "form_modal":
+							
+							break;
+						// =================
+						// UNTUK FORM FLYOUT
+						// =================
+						case "form_flyout":
+							
+							break;
+						// ====================
+						// UNTUK PENGATURAN====
+						// ====================
+						case "form_pengaturan":
+							formData.has("disable") === false
+								? formData.append("disable", 'off')
+								: formData.set("disable", 'on'); // Returns false
+							jalankanAjax = true;
+							break;
+						// =================
+						// UNTUK MODAL 2====
+						// =================
+						case "form_modal_kedua":
+							var atributFormAwal = ini.attr("nama_modal_awal");
+							var mdlTujuan = $('div[name="' + atributFormAwal + '"]');
+							var formTujuan = mdlTujuan.find("form");
+							var dataForm = ini.form("get values");
+							var tbodyFormAwal = formTujuan.find("table tbody");
+							var indexTr = ini.attr("indextr");
+							var trTable = tbodyFormAwal.children();
+							var tdEdit = trTable.eq(indexTr).find("td");
+							Object.keys(tdEdit).forEach((key) => {
+								var element = $(tdEdit[key]);
+								var nama_kolom = element.attr("klm");
+								if (typeof dataForm[nama_kolom] !== "undefined") {
+									var elemenku = element.children();
+									if (elemenku.length > 0) {
+										element.children().text(dataForm[nama_kolom]); // jika ada div contenteditable
+									} else {
+										element.text(dataForm[nama_kolom]);
+									}
+								}
+							});
+							break;
+						// =================
+						// UNTUK PROFIL====
+						// =================
+						case "profil":
+							//[name="ket"]
+							formData.set("ket", $('textarea[name="ket"]').val());
+							jalankanAjax = true;
+							break;
+						default:
+							break;
+					}
+					switch (tbl) {
+						case 'value':
+							break;
+						case 'value1':
+							break;
+						default:
+							break;
+					};
+					if (jalankanAjax) {
+						suksesAjax["ajaxku"] = function (result) {
+							let kelasToast = "success";
+							if (result.success === true) {
+								
+							} else {
+								kelasToast = "warning"; //'success'
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: "check circle icon",
+							});
+							loaderHide();
+						};
+						runAjax(
+							url,
+							"POST",
+							formData,
+							dataType,
+							false,
+							false,
+							"ajaxku",
+							cryptos
+						);
+						//runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
+						//runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
+					} else {
+					}
+					switch (nama_form) {
+						case "form_modal":
+							MyForm.form('reset')
+							// $(".ui.modal.mdl_general").modal("hide");
+							break;
+						case "form_flyout":
+							//$('.ui.flyout').flyout('hide');
+							break;
+						case "form_modal_kedua":
+							$('div[name="mdl_kedua"]').modal("hide");
+							break;
+						default:
+							break;
+					}
+				},
+				onDirty: function (e) {
+					//return true
+					return false;
+				},
+				onFailure: function (e) {
+					loaderHide();
+					return false;
+				},
+			});
+		}
+	}
 	//===================================
 	//=========== class dropdown ========
 	//===================================
@@ -283,7 +512,7 @@ $(document).ready(function () {
 								break;
 						};
 						suksesAjax["ajaxku"] = function (result) {
-							var kelasToast = "success";
+							let kelasToast = "success";
 							if (result.success === true) {
 								switch (jenis) {
 									case 'list_dropdown':
@@ -464,10 +693,6 @@ $(document).ready(function () {
 		callback,
 		cryptos = false
 	) {
-		/*
-			runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
-			runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
-			*/
 		if (type === undefined) {
 			type = "POST";
 		}
@@ -512,5 +737,39 @@ $(document).ready(function () {
 			callback
 		);
 		generalAjax(params);
+	}
+	function showToast(message, settings) {
+		settings.title = settings.title === undefined ? "info !" : settings.title;
+		settings.position =
+			settings.position === undefined ? "top center" : settings.position;
+		settings.class = settings.class === undefined ? "info" : settings.class; //warna
+		settings.icon = settings.icon === undefined ? false : settings.icon;
+		settings.showProgress =
+			settings.showProgress === undefined ? "bottom" : settings.showProgress;
+		settings.displayTime =
+			settings.displayTime === undefined ? 4500 : settings.displayTime; //0 jika ingin tampil terus sebelum diklik
+		settings.showMethod =
+			settings.showMethod === undefined ? "zoom" : settings.showMethod;
+		settings.showDuration =
+			settings.showDuration === undefined ? 1000 : settings.showDuration;
+		settings.hideMethod =
+			settings.hideMethod === undefined ? "fade" : settings.hideMethod;
+		settings.hideDuration =
+			settings.hideDuration === undefined ? 1000 : settings.hideDuration;
+		$("body").toast({
+			title: settings.title,
+			position: settings.position,
+			class: settings.class,
+			showIcon: settings.icon,
+			message: message,
+			showProgress: settings.showProgress,
+			displayTime: settings.displayTime,
+			transition: {
+				showMethod: settings.showMethod,
+				showDuration: settings.showDuration,
+				hideMethod: settings.hideMethod,
+				hideDuration: settings.hideDuration,
+			},
+		});
 	}
 });

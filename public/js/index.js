@@ -1621,7 +1621,11 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Judul",
-									atribut: 'name="judul" rows="4" placeholder="Uraian..."',
+									atribut: 'name="judul" rows="3" placeholder="Uraian..."',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Uraian Singkat Peraturan",
+									atribut: 'name="judul_singkat" rows="3" placeholder="Uraian Singkat..."',
 								}) +
 								buatElemenHtml("fieldTextAction", {
 									label: "Nomor",
