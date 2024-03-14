@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 11 Mar 2024 pada 15.36
+-- Waktu pembuatan: 14 Mar 2024 pada 12.35
 -- Versi server: 11.3.2-MariaDB
 -- Versi PHP: 8.3.3
 
@@ -98,6 +98,43 @@ CREATE TABLE `aset_neo` (
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `asn_pemda_neo`
+--
+
+CREATE TABLE `asn_pemda_neo` (
+  `id` int(11) NOT NULL,
+  `kd_wilayah` varchar(255) NOT NULL,
+  `kd_opd` varchar(255) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `nip` varchar(18) NOT NULL,
+  `pangkat` int(11) NOT NULL,
+  `gol` varchar(1) NOT NULL,
+  `jabatan` varchar(255) NOT NULL,
+  `kategori_foto` varchar(255) NOT NULL,
+  `t4_lahir` date DEFAULT NULL,
+  `tgl_lahir` date DEFAULT NULL,
+  `nama_ayah` varchar(255) DEFAULT NULL,
+  `nama_ibu` varchar(255) DEFAULT NULL,
+  `nama_pasangan` varchar(255) DEFAULT NULL,
+  `nama_anak_1` varchar(255) DEFAULT NULL,
+  `nama_anak_2` varchar(255) DEFAULT NULL,
+  `nama_anak_3` varchar(255) DEFAULT NULL,
+  `nama_anak_4` varchar(255) DEFAULT NULL,
+  `nama_anak_5` varchar(255) DEFAULT NULL,
+  `pengikut` int(11) DEFAULT NULL,
+  `suka` int(11) DEFAULT NULL,
+  `akun_fb` varchar(255) DEFAULT NULL,
+  `akun_ig` varchar(255) DEFAULT NULL,
+  `akun_x` varchar(255) DEFAULT NULL,
+  `akun_yt` varchar(255) DEFAULT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `motto` varchar(255) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -488,7 +525,6 @@ CREATE TABLE `pengaturan_neo` (
   `awal_renstra` datetime DEFAULT NULL,
   `akhir_renstra` datetime DEFAULT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
-  `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
   `username` varchar(266) NOT NULL,
   `kunci` tinyint(1) DEFAULT 0,
@@ -506,7 +542,9 @@ CREATE TABLE `pengaturan_neo` (
   `setujui_renja_p` tinyint(1) DEFAULT NULL,
   `setujui_dppa` tinyint(1) DEFAULT NULL,
   `setujui_paket` tinyint(1) DEFAULT NULL,
-  `setujui_realisasi` tinyint(1) DEFAULT NULL
+  `setujui_realisasi` tinyint(1) DEFAULT NULL,
+  `id_opd_tampilkan` int(11) NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -521,6 +559,7 @@ CREATE TABLE `peraturan_neo` (
   `kode` varchar(255) NOT NULL,
   `type_dok` varchar(255) NOT NULL,
   `judul` varchar(400) NOT NULL,
+  `judul_singkat` varchar(255) DEFAULT NULL,
   `nomor` varchar(255) NOT NULL,
   `bentuk` varchar(255) NOT NULL,
   `bentuk_singkat` varchar(255) NOT NULL,
@@ -1056,11 +1095,11 @@ CREATE TABLE `user_sesendok_biila` (
 --
 
 INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `password`, `kd_organisasi`, `nama_org`, `kd_wilayah`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `tahun`, `kontak_person`, `font_size`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`) VALUES
-(1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$phmt521EHu3PEkilYD/TJ.i1U.ZcMjAHAJt4y88r3O0tfbgs8HQl6', '1.03.0.00.0.00.01.0000', 'Alwi Mansyur', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-03-09 19:24:56', '2024', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
-(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$Zxp6h5J9v8MiUtUZpDvNKe81qhVaN9gBTVusn/ov9mVwti/du1q1G', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-03-09 19:27:42', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
-(3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$J1RLk2kaKqYeuFs2q76vxuoPYTi3cA8dCjRISJlnwlsi3sdHoAKg.', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
-(4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$V.f/.ElwettBd3jyJfMR5epHT0s8NVqaU/mL8ZIqIJo.HBb.6x/Qi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
-(5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$cFR8KdFGXUFBZ5C5payBEOb3aPEXtvYwAKO6Gc6Zdqyjo7WRuDY8.', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');
+(1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'Alwi Mansyur', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-03-14 20:24:40', '2024', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
+(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-03-14 20:33:12', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
+(3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
+(4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
+(5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');
 
 -- --------------------------------------------------------
 
@@ -1106,6 +1145,12 @@ ALTER TABLE `asb_neo` ADD FULLTEXT KEY `uraian_barang` (`uraian_barang`);
 -- Indeks untuk tabel `aset_neo`
 --
 ALTER TABLE `aset_neo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `asn_pemda_neo`
+--
+ALTER TABLE `asn_pemda_neo`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1303,6 +1348,12 @@ ALTER TABLE `asb_neo`
 --
 ALTER TABLE `aset_neo`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `asn_pemda_neo`
+--
+ALTER TABLE `asn_pemda_neo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `bidang_urusan_neo`
