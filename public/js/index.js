@@ -3044,14 +3044,8 @@ $(document).ready(function () {
 							}) +
 							buatElemenHtml("tabel", {
 								headerTable: [
-									{
-										class: 'collapsing',
-										lbl: `SUB KEGIATAN`
-									}, {
-										lbl: `URAIAN`
-									}, {
-										lbl: `PAGU`
-									}, {
+									{ class: 'collapsing', lbl: `SUB KEGIATAN` },
+									{ lbl: `URAIAN` }, { lbl: `VOL.` }, { lbl: `SAT.` }, { lbl: `PAGU` }, {
 										lbl: `KONTRAK`
 									}, {
 										lbl: `AKSI`
@@ -3059,7 +3053,7 @@ $(document).ready(function () {
 								],
 								footerTable: [{
 									lbl: `jumlah`,
-									attr: `colspan="2"`
+									attr: `colspan="4"`
 								}, {
 									lbl: 0,
 									attr: `name="jumlah"`
@@ -4087,8 +4081,11 @@ $(document).ready(function () {
 												let dok_anggaran = element.attr('dok_anggaran');
 												sumPagu += Number(element.attr('pagu'));
 												let kontrak = Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+												let vol_kontrak = Number(accounting.unformat(element.find(`[klm="vol_kontrak"] div`).text(), ","));
+												let sat_kontrak = element.find(`[klm="sat_kontrak"] div`).text();
 												sumKontrak += kontrak;
-												dataUraian[`AL${sx}`] = { id: idUraian, val_kontrak: kontrak, dok_anggaran: dok_anggaran };
+												dataUraian[`AL${sx}`] = { id: idUraian, val_kontrak: kontrak, dok_anggaran: dok_anggaran, vol_kontrak: vol_kontrak, sat_kontrak: sat_kontrak };
+												
 											});
 											kd_akunsub_keg.toString();
 											if (sx > 1) {
@@ -4605,17 +4602,22 @@ $(document).ready(function () {
 										disable: result.disable
 									});
 									break;
-								case 'dpa_dppa':
+								case 'dpa_dppa'://@audit now paket
 									let MyForm = $(`[name="form_modal"]`);
 									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
 									let cellKontrak = MyForm.find(`table tfoot [name="kontrak"]`);
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									let cek_id = MyForm.find(`table tbody tr[id_row="${result.value}"]`);
 									if (cek_id.length <= 0) {
+										//vol
+										let strvol = parseFloat(result.vol);
+										strvol = accounting.formatNumber(strvol, strvol.countDecimals(), ".", ",");
+
+										//jumlah
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
+										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
 										MyForm.find(`table tbody`).append(trElm);
 										let pagu = 0;
 										let kontrak = 0;

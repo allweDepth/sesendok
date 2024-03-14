@@ -271,7 +271,7 @@ class get_data
                         break;
                     case 'get_row_json':
                         // isset($_POST['jenis'])
-                        if (isset($_POST['kd_akun'])) { //@audit masih butuh lanjutan untuk search sbu dkk
+                        if (isset($_POST['kd_akun'])) { 
                             $kd_sub_keg = $validate->setRules('kd_akun', "kode akun", [
                                 'sanitize' => 'string',
                                 'required' => true,
@@ -418,7 +418,7 @@ class get_data
                             }
                             $DB->select('*');
 
-                            //@audit now tambahkan value dropdown organisasi
+                            //tambahkan value dropdown organisasi
                             $cari_drop = $data['row_tahun']->id_opd_tampilkan;
                             if ($cari_drop) {
                                 $kondisi_result = [['disable', '<=', 0], ['id', '=', $cari_drop, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND']];
@@ -1126,7 +1126,7 @@ class get_data
                         case 'get_rows':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
-                                case 'dpa_and_dppa': //@audit sekarang php
+                                case 'dpa_and_dppa': 
                                     $elm = '';
                                     foreach ($send as $key => $value) {
                                         // var_dump($key);
@@ -1144,7 +1144,10 @@ class get_data
                                             $desimal = ($Fungsi->countDecimals($value->val_kontrak) <= 2) ? 2 : $Fungsi->countDecimals($value->val_kontrak);
                                             $kontrak = number_format((float)$value->val_kontrak, $desimal, ',', '.');
 
-                                            $elm .= '<tr id_row="' . $row_sub->id . '" pagu="' . $row_sub->$klm_jumlah . '" dok_anggaran="' . $value->dok_anggaran . '"><td klm="kd_sub_keg">' . $row_sub->kd_sub_keg . '</td><td klm="uraian">' . $row_sub->uraian . '</td><td klm="pagu">' . $paguku . '</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: "uraian_sub_keg", tbl:"renja_p" });">' . $kontrak . '</div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="' . $value->id . '"><i class="trash alternate outline icon"></i></button></td></tr>';
+                                            $desimal2 = ($Fungsi->countDecimals($value->vol_kontrak) <= 2) ? 2 : $Fungsi->countDecimals($value->vol_kontrak);
+                                            $vol = number_format((float)$value->vol_kontrak, $desimal2, ',', '.');
+
+                                            $elm .= '<tr id_row="' . $row_sub->id . '" pagu="' . $row_sub->$klm_jumlah . '" dok_anggaran="' . $value->dok_anggaran . '"><td klm="kd_sub_keg">' . $row_sub->kd_sub_keg . '</td><td klm="uraian">' . $row_sub->uraian . '</td><td klm="vol_kontrak"><div contenteditable rms>' . $vol . '</div></td><td klm="sat_kontrak"><div contenteditable>' . $value->sat_kontrak . '</div></td><td klm="pagu">' . $paguku . '</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: "uraian_sub_keg", tbl:"renja_p" });">' . $kontrak . '</div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="' . $value->id . '"><i class="trash alternate outline icon"></i></button></td></tr>';
                                         }
                                     }
                                     $data['users'] = $elm;
@@ -1254,7 +1257,7 @@ class get_data
 
                             $jumlahArray = is_array($results) ? count($results) : 0;
 
-                            //@audit
+                            
                             $dataJson['results'] = [];
                             if ($jumlahArray > 0) {
                                 switch ($jenis) {
@@ -1775,9 +1778,13 @@ class get_data
                                                     $dok_anggaran = 'dpa';
                                                     switch ($tabel_pakai) {
                                                         case 'dpa_neo':
+                                                            $clmVol = "volume";
+                                                            $clmSat = "sat_1";
                                                             $clmJumlah = "jumlah";
                                                             break;
                                                         case 'dppa_neo':
+                                                            $clmVol = "volume_p";
+                                                            $clmSat = "sat_1_p";
                                                             $clmJumlah = "jumlah_p";
                                                             $dok_anggaran = 'dppa';
                                                             break;
@@ -1790,7 +1797,7 @@ class get_data
                                                     $row_sub2 = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi1);
                                                     if ($row_sub2 === false) {
                                                         $deskripsi = $row->kd_akun . ' (' . number_format((float)$row->$clmJumlah, 2, ',', '.') . ')';
-                                                        $dataJson['results'][] = ['category' => $row->kd_akun, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg, 'dok_anggaran' => $dok_anggaran];
+                                                        $dataJson['results'][] = ['category' => $row->kd_akun, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg, 'dok_anggaran' => $dok_anggaran, 'sat' => $row->$clmSat, 'vol' => $row->$clmVol];
                                                     }
                                                     break;
                                                 default:
@@ -1865,6 +1872,7 @@ class get_data
                             $value_dinamic['tahun_tabel'] = $tahun;
                             $set = [];
                             switch ($tbl) {
+                                case 'daftar_paket':
                                 case 'sub_keg_renja':
                                 case 'sub_keg_dpa':
                                 case 'renja':

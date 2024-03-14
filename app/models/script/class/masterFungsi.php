@@ -232,6 +232,7 @@ class MasterFungsi
         if ($jumlahArray > 0) {
             $myrow = 0;
             switch ($tbl) {
+                case 'daftar_paket':
                 case 'sub_keg_renja':
                 case 'sub_keg_dpa':
                 case 'renja':
@@ -254,8 +255,6 @@ class MasterFungsi
                     $setujui_dpa = $value_dinamic['setujui_dpa'];
                     $setujui_renja_p = $value_dinamic['setujui_renja_p'];
                     $setujui_dppa = $value_dinamic['setujui_dppa'];
-
-
                     break;
 
                 default:
