@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 14 Mar 2024 pada 12.35
+-- Waktu pembuatan: 14 Mar 2024 pada 13.40
 -- Versi server: 11.3.2-MariaDB
 -- Versi PHP: 8.3.3
 
@@ -559,7 +559,7 @@ CREATE TABLE `peraturan_neo` (
   `kode` varchar(255) NOT NULL,
   `type_dok` varchar(255) NOT NULL,
   `judul` varchar(400) NOT NULL,
-  `judul_singkat` varchar(255) DEFAULT NULL,
+  `judul_singkat` varchar(400) DEFAULT NULL,
   `nomor` varchar(255) NOT NULL,
   `bentuk` varchar(255) NOT NULL,
   `bentuk_singkat` varchar(255) NOT NULL,

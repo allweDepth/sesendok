@@ -163,7 +163,6 @@ class Impor_xlsx
                                             $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
                                             $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
                                             $id_aturan_organisasi = $rowTahunAktif->aturan_organisasi;
-                                            
                                         } else {
                                             $id_peraturan = 0;
                                             $disableImport = 1;
@@ -357,7 +356,7 @@ class Impor_xlsx
                                                                 $kd_akun = $validateRow->setRules(0, 'kode akun', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
-                                                                    'count_array'=>['.',6],
+                                                                    'count_array' => ['.', 6],
                                                                     'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun_temp], ['sub_rincian_objek', '>', 0, 'AND']]]
                                                                 ]);
 
@@ -366,7 +365,7 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $uraian=preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian);
+                                                                $uraian = preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian);
                                                                 //cari dan insert di kolom keterangan_json $tabel_pakai_temp
                                                                 $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'keterangan_json', 'jenis_kelompok' => 'keterangan_json', 'uraian_field' => $uraian, 'dataKondisiField' => $dataKondisiField];
@@ -383,7 +382,7 @@ class Impor_xlsx
                                                                     'max_char' => 255,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $kelompok=preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok);
+                                                                $kelompok = preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok);
                                                                 $dataKondisiField = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'sub_keg', 'AND']];
                                                                 $dinamic = ['tabel_pakai' => $tabel_pakai_temp, 'nama_kolom' => 'kelompok_json', 'jenis_kelompok' => $jenis_kelompok, 'uraian_field' => $kelompok, 'dataKondisiField' => $dataKondisiField];
                                                                 $Fungsi->add_update_field_json($dinamic);
@@ -465,11 +464,11 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'min_char' => 1
                                                                 ]);
-                                                                $explodeAwal = explode(';',$sumber_dana_temp);
-                                                                $explodeSumberDanaSubKeg = explode(',',$row_kd_sub_keg->sumber_dana);
-                                                                foreach ($explodeAwal as $key => $row_foreach) { 
+                                                                $explodeAwal = explode(';', $sumber_dana_temp);
+                                                                $explodeSumberDanaSubKeg = explode(',', $row_kd_sub_keg->sumber_dana);
+                                                                foreach ($explodeAwal as $key => $row_foreach) {
                                                                     $keySearch = array_search($row_foreach, $explodeSumberDanaSubKeg, true);
-                                                                    
+
                                                                     if ($keySearch === false) {
                                                                         unset($explodeAwal[$key]);
                                                                     }
@@ -1215,11 +1214,22 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'min_char' => 4
                                                                 ]);
+                                                                $judul = preg_replace('/(\s\s+|\t|\n)/', ' ', $judul);
                                                                 $nomor = $validateRow->setRules(2, 'nomor', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'min_char' => 4
                                                                 ]);
+                                                                
+                                                                $nomor = preg_replace('/(\s\s+|\t|\n)/', ' ', $nomor);
+                                                                $judul_singkatArray = explode(' ', $judul);
+                                                                $jumlahArray = count($judul_singkatArray);
+                                                                $batasMax = ($jumlahArray >= 6) ? 6 : $jumlahArray;
+                                                                $judul_singkat = '';
+                                                                for ($i = 0; $i < $batasMax; $i++) {
+                                                                    $judul_singkat .= ' ' . $judul_singkatArray[$i];
+                                                                }
+                                                                $judul_singkat = preg_replace('/(\s\s+|\t|\n)/', ' ', trim($judul_singkat)).' '.$nomor;
                                                                 $bentuk = $validateRow->setRules(3, 'bentuk', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
@@ -1265,6 +1275,7 @@ class Impor_xlsx
                                                                     'kode' => $kode,
                                                                     'type_dok' => $type_dok,
                                                                     'judul' => $judul,
+                                                                    'judul_singkat' => $judul_singkat,
                                                                     'nomor' => $nomor,
                                                                     'bentuk' => $bentuk,
                                                                     'bentuk_singkat' => $bentuk_singkat,

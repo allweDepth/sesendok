@@ -526,6 +526,12 @@ class post_data
                                     'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
                                     'min_char' => 8
                                 ]);
+                                $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
+                                    'inDB' => ['organisasi_neo', 'id', [['id', '=', (int)$_POST['id_opd_tampilkan']]]],
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1633,6 +1639,7 @@ class post_data
                                         'disable' => $disable,
                                         'keterangan' => $keterangan,
                                         'tanggal' => date('Y-m-d H:i:s'),
+                                        'id_opd_tampilkan' => $id_opd_tampilkan,
                                         'username' => $_SESSION["user"]["username"]
                                     ];
                                     break;
@@ -2204,13 +2211,30 @@ class post_data
                                 if ($DB->count()) {
                                     $code = 3;
                                     $data['update'] = $DB->count(); //$DB->count();
-                                    $id_row_paket = $ListRow->id;
-                                    $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
-                                    $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
-                                    if ($row_sub2 !== false) {
-                                        foreach ($row_sub2 as $key => $value) {
+                                    switch ($jenis) {
+                                        case 'edit':
+                                        case 'add':
+                                            switch ($tbl) {
+                                                case 'daftar_paket': //@audit
+                                                    $id_row_paket = $ListRow->id;
+                                                    $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
+                                                    $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
+                                                    if ($row_sub2 !== false) {
+                                                        foreach ($row_sub2 as $key => $value) {
+                                                            # code...
+                                                        }
+                                                    }
+                                                    break;
+                                                case 'value':
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            break;
+
+                                        default:
                                             # code...
-                                        }
+                                            break;
                                     }
                                 } else {
                                     $code = 33;

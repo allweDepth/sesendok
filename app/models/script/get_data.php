@@ -405,17 +405,17 @@ class get_data
                             $data['tahun'] = $tahun;
                             $data['row_tahun'] = $rowTahun;
                             //pilih kolom yang diambil
-                            $DB->select('id, judul, nomor, tgl_pengundangan, keterangan');
+                            $DB->select('id, judul,judul_singkat, nomor, tgl_pengundangan, keterangan');
                             $peraturan = $DB->getWhereArray('peraturan_neo', [['disable', '=', 0], ['status', '=', 'umum', 'AND']]);
                             //var_dump(count($peraturan));
                             $jumlahArray = is_array($peraturan) ? count($peraturan) : 0;
-                            //@audit
+                           
                             $dataJson['results'] = [];
                             if ($jumlahArray > 0) {
                                 foreach ($peraturan as $row) {
-                                    $dataJson['results'][] = ['name' => $row->judul, 'value' => $row->id, 'description' => $row->nomor];
+                                    $dataJson['results'][] = ['name' => $row->judul,'text'=>$row->judul_singkat, 'value' => $row->id, 'description' => $row->nomor];
                                 }
-                            }
+                            }//@audit now tambahkan value dropdown organisasi
                             //var_dump($peraturan);
                             $data['peraturan'] = $dataJson['results'];
                             switch ($tbl) {
@@ -905,6 +905,16 @@ class get_data
                         case 'get_row_json': //ambil semua rows untuk dropdown
                             $kodePosting = 'get_row_json';
                             switch ($tbl) {
+                                case 'organisasi':
+                                    $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kode ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "kd_wilayah = ? AND disable <= ?";
+                                    $data_where1 = [$kd_wilayah, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? AND disable <= ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, 0];
+                                    break;
                                 case 'rekanan':
                                     $like = "kd_wilayah = ? AND (nama_perusahaan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR direktur LIKE CONCAT('%',?,'%') OR npwp LIKE CONCAT('%',?,'%') OR nama_notaris_pendirian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $cari, $cari, $cari, $cari, $cari, $cari];
@@ -1691,6 +1701,9 @@ class get_data
                                     switch ($jenis) {
                                         case 'get_row_json':
                                             switch ($tbl) {
+                                                case 'organisasi':
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->id, 'description' => $row->kode . ' (' . $row->nama_kepala . ')', "descriptionVertical" => true];
+                                                    break;
                                                 case 'rekanan':
                                                     $dataJson['results'][] = ['name' => $row->nama_perusahaan, 'text' => $row->nama_perusahaan, 'value' => $row->id, 'description' => $row->npwp . ' (' . $row->direktur . ')', "descriptionVertical" => true];
                                                     break;
@@ -1914,6 +1927,7 @@ class get_data
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+                    case 'organisasi':
                     case 'rekanan':
                     case 'renja':
                     case 'dpa':

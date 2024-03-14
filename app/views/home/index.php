@@ -1066,7 +1066,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </h4>
                                 <div class="field">
                                     <label>Anggaran</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_anggaran">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_anggaran">
                                         <input type="hidden" name="aturan_anggaran">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Anggaran</div>
@@ -1076,7 +1076,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>Pengadaan Barang/Jasa</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_pengadaan">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_pengadaan">
                                         <input type="hidden" name="aturan_pengadaan">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">aturan pengadaan</div>
@@ -1086,7 +1086,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>Organisasi</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_organisasi">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_organisasi">
                                         <input type="hidden" name="aturan_organisasi">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">organisasi</div>
@@ -1096,7 +1096,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>Akun Belanja</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_akun">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_akun">
                                         <input type="hidden" name="aturan_akun">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Akun Belanja</div>
@@ -1106,7 +1106,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>Sumber Dana</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_sumber_dana">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_sumber_dana">
                                         <input type="hidden" name="aturan_sumber_dana">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Sumber Dana</div>
@@ -1116,7 +1116,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>Sub Kegiatan</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_sub_kegiatan">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_sub_kegiatan">
                                         <input type="hidden" name="aturan_sub_kegiatan">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">Sub Kegiatan</div>
@@ -1126,7 +1126,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>SSH</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_ssh">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_ssh">
                                         <input type="hidden" name="aturan_ssh">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">SSH</div>
@@ -1136,7 +1136,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>HSPK</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_hspk">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_hspk">
                                         <input type="hidden" name="aturan_hspk">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">HSPK</div>
@@ -1146,7 +1146,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>ASB</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_asb">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_asb">
                                         <input type="hidden" name="aturan_asb">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">ASB</div>
@@ -1156,7 +1156,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>SBU</label>
-                                    <div class="ui fluid search selection dropdown" name="aturan_sbu">
+                                    <div class="ui fluid search selection aturan dropdown" name="aturan_sbu">
                                         <input type="hidden" name="aturan_sbu">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">SBU</div>
@@ -1166,8 +1166,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 </div>
                                 <div class="field">
                                     <label>Kode OPD Tampilkan</label>
-                                    <div class="ui fluid search selection dropdown" name="organisasi">
-                                        <input type="hidden" name="roganisasi">
+                                    <div class="ui fluid search selection dropdown" name="id_opd_tampilkan">
+                                        <input type="hidden" name="id_opd_tampilkan">
                                         <i class="dropdown icon"></i>
                                         <div class="default text">organisasi</div>
                                         <div class="menu">
