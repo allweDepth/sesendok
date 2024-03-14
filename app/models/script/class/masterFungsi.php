@@ -276,7 +276,7 @@ class MasterFungsi
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttonEdit = '<div class="ui floating dropdown icon button lainnya">
+                            $buttonEdit = '<div class="ui floating scrolling dropdown icon button lainnya">
                             <i class="wrench icon"></i>
                                 <div class="menu">
                                     <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>

@@ -242,7 +242,7 @@ class post_data
                                 }
                                 //akali tanggal 
                                 $tgl_kontrak = '0000-00-00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_kontrak']) > 7) {
+                                if (strlen($_POST['tgl_kontrak'] ?? '') > 7) {
                                     $tgl_kontrak = $validate->setRules('tgl_kontrak', 'tanggal kontrak', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -254,7 +254,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_persiapan_kont = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_persiapan_kont']) > 7) {
+                                if (strlen($_POST['tgl_persiapan_kont'] ?? '') > 7) {
                                     $tgl_persiapan_kont = $validate->setRules('tgl_persiapan_kont', 'tanggal persiapan kontrak', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -266,7 +266,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_spmk = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_spmk']) > 7) {
+                                if (strlen($_POST['tgl_spmk'] ?? '') > 7) {
                                     $tgl_spmk = $validate->setRules('tgl_spmk', 'tanggal spmk', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -278,7 +278,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_undangan = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_undangan']) > 7) {
+                                if (strlen($_POST['tgl_undangan'] ?? '') > 7) {
                                     $tgl_spmk = $validate->setRules('tgl_undangan', 'tanggal undangan', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -290,7 +290,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_penawaran = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_penawaran']) > 7) {
+                                if (strlen($_POST['tgl_penawaran'] ?? '') > 7) {
                                     $tgl_penawaran = $validate->setRules('tgl_penawaran', 'tanggal penawaran', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -302,7 +302,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_nego = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_nego']) > 7) {
+                                if (strlen($_POST['tgl_nego'] ?? '') > 7) {
                                     $tgl_nego = $validate->setRules('tgl_nego', 'tanggal negoisasi', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -314,7 +314,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_sppbj = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_sppbj']) > 7) {
+                                if (strlen($_POST['tgl_sppbj'] ?? '') > 7) {
                                     $tgl_sppbj = $validate->setRules('tgl_sppbj', 'tanggal SPPBJ', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -326,7 +326,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_pho = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_pho']) > 7) {
+                                if (strlen($_POST['tgl_pho'] ?? '') > 7) {
                                     $tgl_pho = $validate->setRules('tgl_pho', 'tanggal PHO', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -338,7 +338,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 $tgl_fho = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_fho']) > 7) {
+                                if (strlen($_POST['tgl_fho'] ?? '') > 7) {
                                     $tgl_fho = $validate->setRules('tgl_fho', 'tanggal FHO', [
                                         'sanitize' => 'string',
                                         'required' => true,
@@ -1366,7 +1366,7 @@ class post_data
                                     case 'daftar_paket':
                                         $uraian = "kd_paket({$row_sub->id})_dok({$dok})_wilayah({$kd_wilayah})";
                                         $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
-                                        if (strlen($row_sub->$dok) > 5) {
+                                        if (strlen($row_sub->$dok ?? '') > 5) {
                                             $nameFileDel = $row_sub->$dok;
                                             $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
                                         }
