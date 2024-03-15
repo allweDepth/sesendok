@@ -564,7 +564,7 @@
 <div class="ui basic modal tiny register">
     <div class="ui middle aligned center aligned grid">
         <div class="column">
-            <form class="ui form register" method="POST">
+            <form class="ui form register" name="form_modal">
                 <div class="ui stacked segment">
                     <h2 class="ui teal image header"><i class="home icon"></i>
                         <div class="content"> Register seSendok

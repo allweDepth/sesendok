@@ -61,9 +61,11 @@ $(document).ready(function () {
 		event.preventDefault();
 		$('.ui.modal.register')
 			.modal('show');
+		let MyForm = $(`.ui.form[name="form_modal"]`);
+		MyForm.attr('jns', 'register').attr('tbl', 'register');
 		let modalGeneral = new ModalConstructor(`.ui.modal.register`);
 		modalGeneral.globalModal();
-		let form = new FormGlobal(`form.ui.form.register`);
+		let form = new FormGlobal(`.ui.form[name="form_modal"]`);
 		form.addRulesForm();
 		form.run();
 
@@ -238,8 +240,6 @@ $(document).ready(function () {
 							let tanggal = $(key).calendar("get date");
 							if (tanggal) {
 								tanggal = `${tanggal.getFullYear()}`; //local time
-								console.log(tanggal);
-
 								formData.set(nameAttr, tanggal);
 							}
 						}
@@ -261,7 +261,25 @@ $(document).ready(function () {
 						// UNTUK FORM MODAL
 						// =================
 						case "form_modal":
+							switch (jenis) {
+								case 'register':
+									switch (tbl) {
+										case 'register':
+											cryptos = true;
+											jalankanAjax = true;
+											url =BASEURL + halamandok + "/register";
+											// const url = BASEURL + halamandok + "/masuk";
+											formData.set('register', 'register');
+											break;
 
+										default:
+											break;
+									}
+									break;
+
+								default:
+									break;
+							}
 							break;
 						// =================
 						// UNTUK FORM FLYOUT
@@ -340,7 +358,7 @@ $(document).ready(function () {
 					}
 					switch (nama_form) {
 						case "form_modal":
-							MyForm.form('reset')
+							// MyForm.form('reset')
 							// $(".ui.modal.mdl_general").modal("hide");
 							break;
 						case "form_flyout":

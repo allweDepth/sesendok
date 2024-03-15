@@ -4,9 +4,10 @@ class Register
 	public function register()
 	{
 		require 'init_no_session.php';
+		// var_dump($_POST);
 		$DB = DB::getInstance();
 		$keyEncrypt = $_SESSION["key_encrypt"];
-		$user = new User();
+		// $user = new User();
 		$validate = new Validate($_POST);
 		$sukses = false;
 		$code = 40;
@@ -19,6 +20,7 @@ class Register
 				'regexp' => '/^[A-Za-z0-9]+$/',
 				'min_char' => 8
 			]);
+			// var_dump($username);
 			$password = $validate->setRules('password', 'Pasword', [
 				'sanitize' => 'string',
 				'required' => true,
@@ -30,19 +32,25 @@ class Register
 				'required' => true,
 				'min_char' => 8
 			]);
-			$kd_wilayah_temp = $_POST['kd_wilayah'];
 			$kd_wilayah = $validate->setRules('kd_wilayah', 'kode wilayah', [
 				'sanitize' => 'string',
 				'required' => true,
-				'inDB' => ['organisasi_neo', 'kode', [['kode', '=', $kd_wilayah_temp]]],
-				'min_char' => 2
+				'min_char' => 1
 			]);
-
-
-			$kd_organisasi = $validate->setRules('kd_organisasi', 'Organisasi', [
+			$kd_wilayah = $validate->setRules('kd_wilayah', 'kode wilayah', [
 				'sanitize' => 'string',
 				'required' => true,
-				'min_char' => 3
+				'inDB' => ['wilayah_neo', 'kode', [['kode', '=', $kd_wilayah]]],
+				'min_char' => 1
+			]);
+
+			$kd_organisasi = $validate->setRules('organisasi', 'Organisasi', [
+				'sanitize' => 'string',
+				'required' => true,
+				'min_char' => 1
+			]);
+			$kd_organisasi = $validate->setRules('organisasi', 'Organisasi', [
+				'inDB' => ['organisasi_neo', 'kode', [['kode', '=', $kd_organisasi],['kd_wilayah', '=', $kd_wilayah,'AND']]]
 			]);
 			$kontak = $validate->setRules('kontak_person', 'Kontak Person', [
 				'sanitize' => 'string',
@@ -107,6 +115,7 @@ class Register
 					$code = 202;
 				}
 			} else {
+				$code = 406;
 				$data = $validate->getError();
 			}
 		} else if (isset($_POST['jenis'])) {

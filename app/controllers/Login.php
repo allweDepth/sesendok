@@ -25,6 +25,7 @@ class Login extends Controller
     public function register()
     {
         $data = $this->script("register")->register();
+        // var_dump('masuksini');
         echo $data;
     }
     public function wilayah()
