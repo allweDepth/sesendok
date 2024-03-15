@@ -338,8 +338,12 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="ui left icon input"> <i class="lock icon"></i>
+                        <div class="ui right labeled left icon input">
+                            <i class="lock icon"></i>
                             <input type="password" name="password" placeholder="Password">
+                            <a onclick="changePassView()" class="ui tag label">
+                                <i class="eye icon"></i>
+                            </a>
                         </div>
                     </div>
                     <div class="field">

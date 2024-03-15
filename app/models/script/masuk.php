@@ -4,8 +4,11 @@ class Masuk
     public function masuk()
     {
         // var_dump($_POST);
-        require 'init.php';
-        unset($_SESSION["user"]);
+        require 'init_no_session.php';
+        if (isset($_SESSION["user"])) {
+            unset($_SESSION["user"]);
+        }
+        
         $DB = DB::getInstance();
         $keyEncrypt = $_SESSION['key_encrypt'];
         $user = new User();
@@ -68,8 +71,12 @@ class Masuk
                         $DB->runQuery('UPDATE `user_sesendok_biila` SET tgl_login = NOW() WHERE id = ?', [$id]);
                         if ($type_user == 'admin') {
                             $session = 1;
+                            // header("Location: home");
+                            exit;
                         } else {
                             $session = 1; //$session = 2;
+                            // header("Location: home");
+                            // exit();
                         }
                     } else {
                         $session = 4;

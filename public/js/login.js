@@ -73,7 +73,7 @@ $(document).ready(function () {
 	$(document).on('click', "button[name='login']", function (event) {
 		event.preventDefault();
 		dok = $(this).attr('value');
-		$('.ui.form').form('submit');
+		$('.ui.form.login').form('submit');
 		return false;
 	})
 	$('.ui.form.login').form({
@@ -267,7 +267,7 @@ $(document).ready(function () {
 										case 'register':
 											cryptos = true;
 											jalankanAjax = true;
-											url =BASEURL + halamandok + "/register";
+											url = BASEURL + halamandok + "/register";
 											// const url = BASEURL + halamandok + "/masuk";
 											formData.set('register', 'register');
 											break;
@@ -899,4 +899,10 @@ $(document).ready(function () {
 	function loaderHide() {
 		$(".demo.page.dimmer:first").dimmer("hide");
 	}
+
 });
+function changePassView() {
+	let getPwdView = $("input[name='password']");
+	const type = getPwdView.attr("type") === "password" ? "text" : "password";
+	getPwdView.attr("type", type)
+}
