@@ -46,13 +46,26 @@ class Validate
     } else {
       $formValue = "";
     }
-    // var_dump($formValue);
+    // jalankan proses hilangkan duble spasi item (jika disyaratkan)
+    if (array_key_exists('del_2_spasi', $rules)) {
+      $formValue = preg_replace('/(\s\s+|\t|\n)/', ' ', $formValue);
+    }
+    // jalankan proses hilangkan duble spasi item (jika disyaratkan)
+    if (array_key_exists('preg_replace', $rules)) {
+      $formValue = preg_replace($rules[0], $rules[1], $formValue);
+    }
+    // jalankan proses huruf kecil item (jika disyaratkan)
+    if (array_key_exists('strtolower', $rules)) {
+      $formValue = strtolower($formValue);
+    }
+    // jalankan proses huruf kapital item (jika disyaratkan)
+    if (array_key_exists('strtoupper', $rules)) {
+      $formValue = strtoupper($formValue);
+    }
     // jalankan proses sanitize untuk setiap item (jika disyaratkan)
     if (array_key_exists('sanitize', $rules)) {
       $formValue = Input::runSanitize($formValue, $rules['sanitize']);
     }
-    // var_dump($formValue);
-    //var_dump($this->_formMethod[$item]);
     if (array_key_exists('cry', $this->_formMethod)) {
       if ($this->_formMethod['cry']) {
         $formValue = $this->encrypt($formValue);

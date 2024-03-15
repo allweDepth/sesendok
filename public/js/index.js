@@ -401,6 +401,7 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 			case "atur":
 			case "tab_kontrak":
+			
 				jalankanAjax = true;
 				break;
 			case "renja":
@@ -4272,7 +4273,7 @@ $(document).ready(function () {
 								case 'tbl':
 									break;
 								default:
-									formData.set(key, encryption.encrypt(value,keyEncryption));
+									formData.set(key, encryption.encrypt(value, keyEncryption));
 									break;
 							}
 						});
@@ -4540,7 +4541,7 @@ $(document).ready(function () {
 		}
 		removeRulesForm(formku) {
 			let MyForm = this.form;
-		
+
 			var attrName = MyForm.find($("input[name],textarea[name]"));
 			var i = 0;
 			//console.log(MyForm)

@@ -106,6 +106,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="id card icon"></i>Organisasi</a>
                     <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="balance scale icon"></i>Peraturan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>Wilayah</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>ASN</a>
                 </div>
             </div>
             <div class="ui accordion inverted item">

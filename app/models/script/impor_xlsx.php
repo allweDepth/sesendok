@@ -143,6 +143,7 @@ class Impor_xlsx
                                     case 'sub_keg':
                                     case 'aset':
                                     case 'mapping':
+                                    case 'asn':
                                     case 'organisasi':
                                         // case 'peraturan':
                                     case 'satuan':
@@ -174,6 +175,10 @@ class Impor_xlsx
                                     //menentukan data
                                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     switch ($tbl) {
+                                        case 'asn':
+                                            $RowHeaderValidate = ['No.', 'NAMA', 'GELAR', 'JABATAN', 'NIP', 'GOL.', 'RUANG', 'TEMPAT LAHIR', 'TANGGAL LAHIR', 'AGAMA', 'JENIS KELAMIN', 'JENIS KEPEGAWAIAN', 'STATUS KEPEGAWAIAN', 'No. KTP', 'NPWP', 'ALAMAT', 'NO. HP', 'EMAIL', 'STATUS', 'NO. BUKU NIKAH', 'TANGGAL NIKAH', 'NAMA ANAK', 'NIK ANAK', 'NAMA AYAH', 'NAMA IBU', 'NAMA PASANGAN', 'NO. KARPEG', 'TGL. KARPEG', 'NO. TASPEN', 'TGL. TASPEN', 'NO.KARSI KARSU', 'TGL KARSI KARSU', 'NO.SK TERKHIR', 'TGL.SK TERKHIR', 'Pj.TTD SK TERAKHIR', 'NO.SK CPNS', 'TGL.SK CPNS', 'Pj.TTD SK CPNS', 'NO.SK PNS', 'TGL.SK PNS', 'Pj.TTD SK PNS', 'NAMA SD', 'IJASAH SD', 'TGL IJASAH SD', 'LOKASI SD', 'NAMA SMP', 'IJASAH SMP', 'TGL IJASAH SMP', 'LOKASI SSMP', 'NAMA SMU', 'IJASAH SMU', 'TGL IJASAH SMU', 'LOKASI SMU', 'NAMA PEND. TERAKHIR', 'IJASAH PEND. TERAKHIR', 'TGL IJASAH PEND. TERAKHIR', 'LOKASI PEND. TERAKHIR', 'KETERANGAN', 'KELOMPOK'];
+                                            $count_col_min = count($RowHeaderValidate);
+                                            break;
                                         case 'renja':
                                         case 'dpa':
                                         case 'renja_p':
@@ -344,6 +349,519 @@ class Impor_xlsx
                                                         //PROSES VALIDASI CELL EXCELL
                                                         //============================
                                                         switch ($tbl) {
+                                                            case 'asn':
+                                                                $nama = $validateRow->setRules(1, 'nama', [
+                                                                    'del_2_spasi' => true,
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                ]);
+                                                                $gelar = $validateRow->setRules(2, 'gelar', [
+                                                                    'del_2_spasi' => true,
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $jabatan = $validateRow->setRules(3, 'alamat', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $nip = $validateRow->setRules(34, 'nip', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'max_char' => 18,
+                                                                    'min_char' => 18,
+                                                                    'unique' => ['db_asn_pemda_neo', 'nip']
+                                                                ]);
+                                                                $nip = preg_replace("/[^0-9]/", "", $nip);
+                                                                $golongan = $validateRow->setRules(5, 'golongan', [
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'inArray' => [1, 2, 3, 4, 'i', 'ii', 'iii', 'iv'],
+                                                                    'max_char' => 1,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                switch ($golongan) {
+                                                                    case "i":
+                                                                        $golongan = 1;
+                                                                        break;
+                                                                    case "ii":
+                                                                        $golongan = 2;
+                                                                        break;
+                                                                    case "iii":
+                                                                        $golongan = 3;
+                                                                        break;
+                                                                    case "iv":
+                                                                        $golongan = 4;
+                                                                        break;
+                                                                    default:
+                                                                        $golongan = (int)$golongan;
+                                                                }
+                                                                $ruang = $validateRow->setRules(6, 'golongan', [
+                                                                    'strtolower' => true,
+                                                                    'sanitize' => 'string',
+                                                                    'required' => true,
+                                                                    'inArray' => ['a', 'b', 'c', 'd', 'e'],
+                                                                    'max_char' => 1,
+                                                                    'min_char' => 1
+                                                                ]);
+                                                                $t4_lahir = $validateRow->setRules(7, 'tempat lahir', [
+                                                                    'strtolower' => true,
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_lahir = $validateRow->setRules(8, 'tanggal lahir', [
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'required' => true,
+                                                                    'max_char' => 100,
+                                                                    'min_char' => 8
+                                                                ]);
+
+                                                                $agama = $validateRow->setRules(9, 'golongan', [
+                                                                    'strtolower' => true,
+                                                                    'sanitize' => 'string',
+                                                                    'inArray' => ['islam', 'kristen', 'katolik', 'protestan', 'yahudi', 'budha', 'konghucu', 'hindu', 'kepercayaan']
+                                                                ]);
+                                                                $kelamin = $validateRow->setRules(10, 'golongan', [
+                                                                    'strtolower' => true,
+                                                                    'sanitize' => 'string',
+                                                                    'inArray' => ['pria', 'wanita']
+                                                                ]);
+
+                                                                $jenis_kepeg = $validateRow->setRules(11, 'jenis kepegawaian', [
+                                                                    'strtolower' => true,
+                                                                    'sanitize' => 'string',
+                                                                    'inArray' => ['pnsp', 'pnsd1', 'pnsd2', 'pnsp_dpb1', 'pnsp_dpb2', 'pnsp_dpk1','pnsp_dpk2','pnsd_dpb_pusat','pnsd_dpk_pusat','swasta']
+                                                                ]);
+                                                                //dpb=diperbantukan,dpk=dipekerjakan
+                                                                switch ($jenis_kepeg) {
+                                                                    case "pusat":
+                                                                    case "pnsp":
+                                                                    case "p":
+                                                                    case "pns pusat":
+                                                                    case "asn pusat":
+                                                                    case "kementerian":
+                                                                    case "lembaga":
+                                                                        $jenis_kepeg = 'pnsp';
+                                                                        break;
+                                                                    case "1":
+                                                                    case "i":
+                                                                    case "pnsd1":
+                                                                    case "pnsd 1":
+                                                                    case "pnsd i":
+                                                                    case "pns tk.1":
+                                                                    case "pns tk 1":
+                                                                    case "pns tk i":
+                                                                    case "pns i":
+                                                                    case "pns 1":
+                                                                        $jenis_kepeg = 'pnsd1';
+                                                                        break;
+                                                                    case "2":
+                                                                    case "ii":
+                                                                    case "tingkat 2":
+                                                                    case "tingkat ii":
+                                                                    case "pnsd2":
+                                                                    case "pnsd 2":
+                                                                    case "pnsd ii":
+                                                                    case "pns tk.2":
+                                                                    case "pns tk 2":
+                                                                    case "pns tk ii":
+                                                                    case "pns tk.ii":
+                                                                    case "pns tk. ii":
+                                                                    case "pns tk. 2":
+                                                                    case "pns ii":
+                                                                    case "pns 2":
+                                                                    case "pnsd tk.2":
+                                                                    case "pnsd tk 2":
+                                                                    case "pnsd tk ii":
+                                                                    case "pnsd tk.ii":
+                                                                    case "pnsd tk. ii":
+                                                                    case "pnsd tk. 2":
+                                                                    case "pnsd ii":
+                                                                    case "pnsd 2":
+                                                                    case "asnd2":
+                                                                    case "asnd 2":
+                                                                    case "asnd ii":
+                                                                    case "asn tk.2":
+                                                                    case "asn tk 2":
+                                                                    case "asn tk ii":
+                                                                    case "asn tk.ii":
+                                                                    case "asn tk. ii":
+                                                                    case "asn tk. 2":
+                                                                    case "asn ii":
+                                                                    case "asn 2":
+                                                                    case "asnd tk.2":
+                                                                    case "asnd tk 2":
+                                                                    case "asnd tk ii":
+                                                                    case "asnd tk.ii":
+                                                                    case "asnd tk. ii":
+                                                                    case "asnd tk. 2":
+                                                                    case "asnd ii":
+                                                                    case "asnd 2":
+                                                                        $jenis_kepeg = 'pnsd2';
+                                                                        break;
+                                                                    case "pnsp dpb. i":
+                                                                    case "pnsp dpb. 1":
+                                                                    case "pnsp dpb 1":
+                                                                    case "pnsp dpb 1":
+                                                                        $jenis_kepeg = 'pnsp_dpb1'; //dpb=diperbantukan
+                                                                        break;
+                                                                    case "pnsp dpb. ii":
+                                                                    case "pnsp dpb. 2":
+                                                                    case "pnsp dpb 2":
+                                                                    case "pnsp dpb 2":
+                                                                        $jenis_kepeg = 'pnsp_dpb2';
+                                                                        break;
+                                                                    case "pnsp dpk. i":
+                                                                    case "pnsp dpk. 1":
+                                                                    case "pnsp dpk 1":
+                                                                    case "pnsp dpk 1":
+                                                                    case "pnsp_dpk1":
+                                                                        $jenis_kepeg = 'pnsp_dpk1'; //dpk=dipekerjakan
+                                                                        break;
+                                                                    case "pnsp dpk. ii": //pnsp=pns pusat
+                                                                    case "pnsp dpk. 2":
+                                                                    case "pnsp dpk 2":
+                                                                    case "pnsp dpk 2":
+                                                                    case "pnsp_dpk2":
+                                                                        $jenis_kepeg = 'pnsp_dpb2';
+                                                                        break;
+                                                                    case "pnsd dpb. pusat":
+                                                                    case "pnsd dpb pusat":
+                                                                    case "pnsd_dpb_pusat":
+                                                                        $jenis_kepeg = 'pnsd_dpb_pusat';
+                                                                        break;
+                                                                    case "pnsd dpk. pusat":
+                                                                    case "pnsd dpk. p":
+                                                                    case "pnsd dpk pusat":
+                                                                    case "pnsd dpk p":
+                                                                    case "pnsd_dpk_pusat":
+                                                                    case "pnsd_dpk_p":
+                                                                        $jenis_kepeg = 'pnsd_dpk_pusat';
+                                                                        break;
+                                                                    case "swasta":
+                                                                        $jenis_kepeg = 'swasta';
+                                                                        break;
+                                                                    default:
+                                                                        $jenis_kepeg = 'pnsd2';
+                                                                }
+
+                                                                $status_kepeg = $validateRow->setRules(12, 'status kepegawaian', [
+                                                                    'strtolower' => true,
+                                                                    'sanitize' => 'string',
+                                                                    'inArray' => ['capeg', 'peg_tetap', 'mpp', 'pen_uang_tunggu', 'peg_seorsing', 'cuti','peg_sementara','peg_bulanan']
+                                                                ]);
+                                                                switch ($status_kepeg) {
+                                                                    case "capeg":
+                                                                    case "cpns":
+                                                                    case "calon":
+                                                                    case "calon pegawai":
+                                                                        $status_kepeg = 'capeg';
+                                                                        break;
+                                                                    case "tetap":
+                                                                    case "pns":
+                                                                    case "pegawai":
+                                                                    case "asn":
+                                                                    case "tetap":
+                                                                    case "pegawai":
+                                                                    case "peg_tetap":
+                                                                    case "peg tetap":
+                                                                    case "pegtetap":
+                                                                    case "peg.tetap":
+                                                                    case "peg. tetap":
+                                                                    case "pegawai tetap":
+                                                                        $status_kepeg = 'peg_tetap';
+                                                                        break;
+                                                                    case "mpp":
+                                                                        $status_kepeg = 'mpp';
+                                                                        break;
+                                                                    case "pen_uang_tunggu":
+                                                                    case "pen uang tunggu":
+                                                                    case "pen. uang tunggu":
+                                                                    case "pensiun":
+                                                                    case "pensiunan":
+                                                                        $status_kepeg = 'pen_uang_tunggu';
+                                                                        break;
+                                                                    case "peg_seorsing":
+                                                                    case "peg seorsing":
+                                                                        $status_kepeg = 'peg_seorsing';
+                                                                        break;
+                                                                    case "cuti":
+                                                                        $status_kepeg = 'cuti';
+                                                                        break;
+                                                                    case "peg_sementara":
+                                                                    case "peg. sementara":
+                                                                    case "sementara":
+                                                                    case "pegawai sementara":
+                                                                        $status_kepeg = 'peg_sementara';
+                                                                        break;
+                                                                    case "peg_bulanan":
+                                                                    case "peg bulanan":
+                                                                    case "peg. bulanan":
+                                                                    case "pegawai bulanan":
+                                                                    case "bulanan":
+                                                                        $status_kepeg = 'peg_bulanan';
+                                                                        break;
+                                                                    default:
+                                                                        $status_kepeg = 'peg_tetap';
+                                                                }
+
+
+                                                                $no_ktp = $validateRow->setRules(13, 'ktp', [
+                                                                    'preg_replace' => ["/[^0-9]/", ""],
+                                                                    'sanitize' => 'string',
+                                                                ]);
+                                                                $npwp = $validateRow->setRules(14, 'npwp', [
+                                                                    'sanitize' => 'string',
+                                                                ]);
+                                                                $npwp = preg_replace("/[^0-9]/", "", $npwp);
+                                                                $alamat = $validateRow->setRules(15, 'alamat', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $kontak_person = $validateRow->setRules(16, 'kontak person', [
+                                                                    'preg_replace' => ["/[^0-9]/", ""],
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                // $kontak_person = preg_replace("/[^0-9]/", "", $getData[15]);
+                                                                $email = $validateRow->setRules(17, 'email', [
+                                                                    'sanitize' => 'string',
+                                                                    'email' => true
+                                                                ]);
+                                                                $status = $validateRow->setRules(18, 'status kepegawaian', [
+                                                                    'strtolower' => true,
+                                                                    'sanitize' => 'string',
+                                                                    'inArray' => ['duda','janda','duda-janda', 'lajang', 'menikah']
+                                                                ]);
+                                                                $no_buku_nikah = $validateRow->setRules(19, 'no_buku_nikah', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_nikah = $validateRow->setRules(20, 'tgl_nikah', [
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+
+                                                                $nama_anak = $validateRow->setRules(21, 'nama_anak', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+                                                                $nik_anak = $validateRow->setRules(22, 'nik_anak', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+
+                                                                $nama_ayah = $validateRow->setRules(23, 'nama_ayah', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $nama_ibu = $validateRow->setRules(24, 'nama_ibu', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $nama_pasangan = $validateRow->setRules(25, 'nama_pasangan', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                //
+                                                                $no_karpeg = $validateRow->setRules(26, 'no_karpeg', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_karpeg = $validateRow->setRules(27, 'tgl_karpeg', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+
+                                                                $no_taspen = $validateRow->setRules(28, 'no_taspen', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_taspen = $validateRow->setRules(29, 'tgl_taspen', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $no_karsi_karsu = $validateRow->setRules(30, 'no_karsi_karsu', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_karsi_karsu = $validateRow->setRules(31, 'tgl_karsi_karsu', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+
+                                                                $nmr_sk_terakhir = $validateRow->setRules(32, 'nmr_sk_terakhir', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_sk_terakhir = $validateRow->setRules(33, 'tgl_sk_terakhir', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $pj_sk_terakhir = $validateRow->setRules(34, 'pj_sk_terakhir', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+                                                                $nmr_sk_cpns = $validateRow->setRules(35, 'nmr_sk_cpns', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_sk_cpns = $validateRow->setRules(36, 'tgl_sk_cpns', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $pj_sk_cpns = $validateRow->setRules(37, 'pj_sk_cpns', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+                                                                $nmr_sk_pns = $validateRow->setRules(38, 'nmr_sk_pns', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_sk_pns = $validateRow->setRules(39, 'tgl_sk_pns', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $pj_sk_pns = $validateRow->setRules(40, 'pj_sk_pns', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+                                                                //pendidikan
+                                                                $pend_sekolah_sd = $validateRow->setRules(41, 'pend_sekolah_sd', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_ijasah_sd = $validateRow->setRules(42, 'pend_ijasah_sd', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_tgl_tmt_sd = $validateRow->setRules(43, 'pend_tgl_tmt_sd', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $pend_t4_sd = $validateRow->setRules(44, 'pend_t4_sd', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+                                                                $pend_sekolah_smp = $validateRow->setRules(45, 'pend_sekolah_smp', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_ijasah_smp = $validateRow->setRules(46, 'pend_ijasah_smp', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_tgl_tmt_smp = $validateRow->setRules(47, 'pend_tgl_tmt_smp', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $pend_t4_smp = $validateRow->setRules(48, 'pend_t4_smp', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+                                                                $pend_sekolah_smu = $validateRow->setRules(49, 'pend_sekolah_smu', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_ijasah_smu = $validateRow->setRules(50, 'pend_ijasah_smu', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_tgl_tmt_smu = $validateRow->setRules(51, 'pend_tgl_tmt_smu', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $pend_t4_smu = $validateRow->setRules(52, 'pend_t4_smu', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+                                                                $pend_sekolah_akhir = $validateRow->setRules(53, 'pend_sekolah_akhir', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_ijasah_akhir = $validateRow->setRules(54, 'pend_ijasah_akhir', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $pend_tgl_tmt_akhir = $validateRow->setRules(55, 'pend_tgl_tmt_akhir', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $pend_t4_akhir = $validateRow->setRules(56, 'no_karpeg', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+
+
+                                                                $sk_pangkat_terakhir = $validateRow->setRules(57, 'sk_pangkat_terakhir', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $tgl_tmt_akhir = $validateRow->setRules(58, 'tgl_tmt_akhir', [
+                                                                    'sanitize' => 'string',
+                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                    'max_char' => 100
+                                                                ]);
+                                                                $keterangan = $validateRow->setRules(59, 'keterangan', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                $kelompok = $validateRow->setRules(60, 'kelompok', [
+                                                                    'sanitize' => 'string'
+                                                                ]);
+                                                                //data
+                                                                $arrayDataRows = [
+                                                                    'kd_wilayah' => $kd_wilayah,
+                                                                    'kd_opd' => $kd_opd,
+                                                                    'nama' => $nama,
+                                                                    'gelar' => $gelar,
+                                                                    'kelompok' => $kelompok,
+                                                                    'jabatan' => $jabatan,
+                                                                    'nip' => $nip,
+                                                                    'golongan' => $golongan,
+                                                                    'ruang' => $ruang,
+                                                                    't4_lahir' => $t4_lahir,
+                                                                    'tgl_lahir' => $tgl_lahir,
+                                                                    'agama' => $agama,
+                                                                    'kelamin' => $kelamin,
+                                                                    'jenis_kepeg' => $jenis_kepeg,
+                                                                    'status_kepeg' => $status_kepeg,
+                                                                    'no_ktp' => $no_ktp,
+                                                                    'npwp' => $npwp,
+                                                                    'alamat' => $alamat,
+                                                                    'kontak_person' => $kontak_person,
+                                                                    'email' => $email,
+                                                                    'status' => $status,
+                                                                    'no_buku_nikah' => $no_buku_nikah,
+                                                                    'tgl_nikah' => $tgl_nikah,
+                                                                    'nama_anak' => $nama_anak,
+                                                                    'nik_anak' => $nik_anak,
+                                                                    'nama_ayah' => $nama_ayah,
+                                                                    'nama_ibu' => $nama_ibu,
+                                                                    'nama_pasangan' => $nama_pasangan,
+                                                                    'no_karpeg' => $no_karpeg,
+                                                                    'tgl_karpeg' => $tgl_karpeg,
+                                                                    'no_taspen' => $no_taspen,
+                                                                    'tgl_taspen' => $tgl_taspen,
+                                                                    'no_karsi_karsu' => $no_karsi_karsu,
+                                                                    'tgl_karsi_karsu' => $tgl_karsi_karsu,
+                                                                    'nmr_sk_terakhir' => $nmr_sk_terakhir,
+                                                                    'tgl_sk_terakhir' => $tgl_sk_terakhir,
+                                                                    'pj_sk_terakhir' => $pj_sk_terakhir,
+                                                                    'nmr_sk_cpns' => $nmr_sk_cpns,
+                                                                    'tgl_sk_cpns' => $tgl_sk_cpns,
+                                                                    'pj_sk_cpns' => $pj_sk_cpns,
+                                                                    'nmr_sk_pns' => $nmr_sk_pns,
+                                                                    'tgl_sk_pns' => $tgl_sk_pns,
+                                                                    'pj_sk_pns' => $pj_sk_pns,
+                                                                    'pend_sekolah_sd' => $pend_sekolah_sd,
+                                                                    'pend_ijasah_sd' => $pend_ijasah_sd,
+                                                                    'pend_tgl_tmt_sd' => $pend_tgl_tmt_sd,
+                                                                    'pend_t4_sd' => $pend_t4_sd,
+                                                                    'pend_sekolah_smp' => $pend_sekolah_smp,
+                                                                    'pend_ijasah_smp' => $pend_ijasah_smp,
+                                                                    'pend_tgl_tmt_smp' => $pend_tgl_tmt_smp,
+                                                                    'pend_t4_smp' => $pend_t4_smp,
+                                                                    'pend_sekolah_smu' => $pend_sekolah_smu,
+                                                                    'pend_ijasah_smu' => $pend_ijasah_smu,
+                                                                    'pend_tgl_tmt_smu' => $pend_tgl_tmt_smu,
+                                                                    'pend_t4_smu' => $pend_t4_smu,
+                                                                    'pend_sekolah_akhir' => $pend_sekolah_akhir,
+                                                                    'pend_ijasah_akhir' => $pend_ijasah_akhir,
+                                                                    'pend_tgl_tmt_akhir' => $pend_tgl_tmt_akhir,
+                                                                    'pend_t4_akhir' => $pend_t4_akhir,
+                                                                    'sk_pangkat_terakhir' => $sk_pangkat_terakhir,
+                                                                    'tgl_tmt_akhir' => $tgl_tmt_akhir,
+                                                                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                                                    'disable' => 0,
+                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"]
+                                                                ];
+                                                                break;
                                                             case 'renja':
                                                             case 'dpa':
                                                             case 'renja_p':
@@ -1220,7 +1738,7 @@ class Impor_xlsx
                                                                     'required' => true,
                                                                     'min_char' => 4
                                                                 ]);
-                                                                
+
                                                                 $nomor = preg_replace('/(\s\s+|\t|\n)/', ' ', $nomor);
                                                                 $judul_singkatArray = explode(' ', $judul);
                                                                 $jumlahArray = count($judul_singkatArray);
@@ -1229,7 +1747,7 @@ class Impor_xlsx
                                                                 for ($i = 0; $i < $batasMax; $i++) {
                                                                     $judul_singkat .= ' ' . $judul_singkatArray[$i];
                                                                 }
-                                                                $judul_singkat = preg_replace('/(\s\s+|\t|\n)/', ' ', trim($judul_singkat)).' '.$nomor;
+                                                                $judul_singkat = preg_replace('/(\s\s+|\t|\n)/', ' ', trim($judul_singkat)) . ' ' . $nomor;
                                                                 $bentuk = $validateRow->setRules(3, 'bentuk', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
