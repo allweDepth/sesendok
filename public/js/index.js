@@ -4085,7 +4085,7 @@ $(document).ready(function () {
 												let sat_kontrak = element.find(`[klm="sat_kontrak"] div`).text();
 												sumKontrak += kontrak;
 												dataUraian[`AL${sx}`] = { id: idUraian, val_kontrak: kontrak, dok_anggaran: dok_anggaran, vol_kontrak: vol_kontrak, sat_kontrak: sat_kontrak };
-												
+
 											});
 											kd_akunsub_keg.toString();
 											if (sx > 1) {
@@ -4263,6 +4263,21 @@ $(document).ready(function () {
 						default:
 							break;
 					};
+					if (cryptos) {
+						let keyEncryption = halamanDefault;
+						let encryption = new Encryption();
+						formData.forEach((value, key) => {
+							switch (key) {
+								case 'jenis':
+								case 'tbl':
+									break;
+								default:
+									formData.set(key, encryption.encrypt(value,keyEncryption));
+									break;
+							}
+						});
+						formData.set('cry', true);
+					}
 					if (jalankanAjax) {
 						suksesAjax["ajaxku"] = function (result) {
 							let kelasToast = "success";
@@ -4463,10 +4478,12 @@ $(document).ready(function () {
 						//runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
 						//runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
 					} else {
+						loaderHide();
 					}
 					switch (nama_form) {
 						case "form_modal":
 							MyForm.form('reset')
+							loaderHide();
 							// $(".ui.modal.mdl_general").modal("hide");
 							break;
 						case "form_flyout":
@@ -4488,6 +4505,67 @@ $(document).ready(function () {
 					return false;
 				},
 			});
+		}
+		addRulesForm() {
+			let MyForm = this.form;
+			MyForm.form("set auto check");
+			let elmtInputTextarea = MyForm.find($("input[name],textarea[name]"));
+			for (const iterator of elmtInputTextarea) {
+				let atribut = $(iterator).attr("name");
+				let lbl = $(iterator).attr("placeholder");
+				if (lbl === undefined) {
+					lbl = $(iterator).closest(".field").find("label").text();
+					if (lbl === undefined || lbl === "") {
+						lbl = $(iterator).closest(".field").find("div.sub.header").text();
+					}
+					if (lbl === undefined || lbl === "") {
+						lbl = atribut.replaceAll(/_/g, " ");
+					}
+				}
+				let non_data = $(iterator).attr("non_data");
+				if (typeof non_data === 'undefined' || non_data === false) {
+					// console.log('masuk addRulesForm');
+					MyForm.form("add rule", atribut, {
+						rules: [
+							{
+								type: "empty",
+								prompt: "Lengkapi Data " + lbl,
+							},
+						],
+					});
+				} else {
+					MyForm.form("remove field", atribut);
+				}
+			}
+		}
+		removeRulesForm(formku) {
+			let MyForm = this.form;
+		
+			var attrName = MyForm.find($("input[name],textarea[name]"));
+			var i = 0;
+			//console.log(MyForm)
+			for (i = 0; i < attrName.length; i++) {
+				var atribut = MyForm.find(attrName[i]).attr("name");
+				var lbl = MyForm.find(attrName[i]).attr("placeholder");
+				if (lbl === undefined) {
+					lbl = MyForm.find(attrName[i]).closest(".field").find("label").text();
+					if (lbl === undefined || lbl === "") {
+						lbl = MyForm.find(attrName[i]).closest(".field").find("div.sub.header").text();
+					}
+					if (lbl === undefined || lbl === "") {
+						lbl = atribut.replaceAll(/_/g, " ");
+					}
+				}
+				var non_data = formku.find(attrName[i]).attr("non_data");
+				if (typeof non_data === "undefined" || non_data === false) {
+					if (atribut) {
+						//formku.form("remove rule", atribut);
+						MyForm.form("remove field", atribut);
+						//console.log('atribut remove rule: ' + atribut)
+					}
+				}
+			}
+			$(formku).form("set auto check");
 		}
 	}
 	let InitializeForm = new FormGlobal(".ui.form");

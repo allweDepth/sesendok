@@ -42,7 +42,8 @@
                 <a class="item inayah" href="anggaran">Anggaran</a>
                 <div class="right item">
                     <a class="ui inverted button" name="modal">Log in</a>
-                    <a class="ui inverted button" href="register" target="_blank">Sign Up</a>
+                    <a class="ui inverted button" name="modal-register">Sign Up</a>
+                    <!-- <a class="ui inverted button" href="register" target="_blank">Sign Up</a> -->
                 </div>
             </div>
         </div>

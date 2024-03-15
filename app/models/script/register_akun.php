@@ -3,7 +3,7 @@ class Register
 {
 	public function register()
 	{
-		require 'init.php';
+		require 'init_no_session.php';
 		$DB = DB::getInstance();
 		$keyEncrypt = $_SESSION["key_encrypt"];
 		$user = new User();

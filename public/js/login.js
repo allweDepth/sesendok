@@ -60,8 +60,13 @@ $(document).ready(function () {
 	$(document).on('click', "a[name='modal-register']", function (event) {
 		event.preventDefault();
 		$('.ui.modal.register')
-			.modal('show')
-			;
+			.modal('show');
+		let modalGeneral = new ModalConstructor(`.ui.modal.register`);
+		modalGeneral.globalModal();
+		let form = new FormGlobal(`form.ui.form.register`);
+		form.addRulesForm();
+		form.run();
+
 	})
 	$(document).on('click', "button[name='login']", function (event) {
 		event.preventDefault();
@@ -69,7 +74,7 @@ $(document).ready(function () {
 		$('.ui.form').form('submit');
 		return false;
 	})
-	$('.ui.form').form({
+	$('.ui.form.login').form({
 		fields: {
 			username: {
 				identifier: 'username',
@@ -141,7 +146,7 @@ $(document).ready(function () {
 			})();
 		}
 	});
-//=======================================
+	//=======================================
 	//===============FORM GLOBAL=============
 	//=======================================
 	class FormGlobal {//@audit-ok Form
@@ -186,8 +191,8 @@ $(document).ready(function () {
 					formData.set("jenis", jenis);
 					formData.set("tbl", tbl);
 					let url = "script/post_data";
-					formData.set("cari", cari(jenis));
-					formData.set("rows", countRows());
+					// formData.set("cari", cari(jenis));
+					// formData.set("rows", countRows());
 					let id_row = ini.attr("id_row");
 					if (typeof id_row === "undefined") {
 						id_row = ini.closest("tr").attr("id_row");
@@ -202,7 +207,7 @@ $(document).ready(function () {
 					formData.forEach((value, key) => {
 						// console.log(key + " " + value)
 					});
-					
+
 					// global mencari element date dan checkbox
 					let property = ini.find(`.ui.toggle.checkbox input[name]`);
 					if (property.length > 0) {
@@ -256,55 +261,28 @@ $(document).ready(function () {
 						// UNTUK FORM MODAL
 						// =================
 						case "form_modal":
-							
+
 							break;
 						// =================
 						// UNTUK FORM FLYOUT
 						// =================
 						case "form_flyout":
-							
+
 							break;
 						// ====================
 						// UNTUK PENGATURAN====
 						// ====================
 						case "form_pengaturan":
-							formData.has("disable") === false
-								? formData.append("disable", 'off')
-								: formData.set("disable", 'on'); // Returns false
-							jalankanAjax = true;
 							break;
 						// =================
 						// UNTUK MODAL 2====
 						// =================
 						case "form_modal_kedua":
-							var atributFormAwal = ini.attr("nama_modal_awal");
-							var mdlTujuan = $('div[name="' + atributFormAwal + '"]');
-							var formTujuan = mdlTujuan.find("form");
-							var dataForm = ini.form("get values");
-							var tbodyFormAwal = formTujuan.find("table tbody");
-							var indexTr = ini.attr("indextr");
-							var trTable = tbodyFormAwal.children();
-							var tdEdit = trTable.eq(indexTr).find("td");
-							Object.keys(tdEdit).forEach((key) => {
-								var element = $(tdEdit[key]);
-								var nama_kolom = element.attr("klm");
-								if (typeof dataForm[nama_kolom] !== "undefined") {
-									var elemenku = element.children();
-									if (elemenku.length > 0) {
-										element.children().text(dataForm[nama_kolom]); // jika ada div contenteditable
-									} else {
-										element.text(dataForm[nama_kolom]);
-									}
-								}
-							});
 							break;
 						// =================
 						// UNTUK PROFIL====
 						// =================
 						case "profil":
-							//[name="ket"]
-							formData.set("ket", $('textarea[name="ket"]').val());
-							jalankanAjax = true;
 							break;
 						default:
 							break;
@@ -317,11 +295,26 @@ $(document).ready(function () {
 						default:
 							break;
 					};
+					if (cryptos) {
+						let keyEncryption = halamanDefault;
+						let encryption = new Encryption();
+						formData.forEach((value, key) => {
+							switch (key) {
+								case 'jenis':
+								case 'tbl':
+									break;
+								default:
+									formData.set(key, encryption.encrypt(value, keyEncryption));
+									break;
+							}
+						});
+						formData.set('cry', true);
+					}
 					if (jalankanAjax) {
 						suksesAjax["ajaxku"] = function (result) {
 							let kelasToast = "success";
 							if (result.success === true) {
-								
+
 							} else {
 								kelasToast = "warning"; //'success'
 							}
@@ -370,7 +363,103 @@ $(document).ready(function () {
 				},
 			});
 		}
+		addRulesForm() {
+			let MyForm = this.form;
+			MyForm.form("set auto check");
+			let elmtInputTextarea = MyForm.find($("input[name],textarea[name]"));
+			for (const iterator of elmtInputTextarea) {
+				let atribut = $(iterator).attr("name");
+				let lbl = $(iterator).attr("placeholder");
+				if (lbl === undefined) {
+					lbl = $(iterator).closest(".field").find("label").text();
+					if (lbl === undefined || lbl === "") {
+						lbl = $(iterator).closest(".field").find("div.sub.header").text();
+					}
+					if (lbl === undefined || lbl === "") {
+						lbl = atribut.replaceAll(/_/g, " ");
+					}
+				}
+				let non_data = $(iterator).attr("non_data");
+				if (typeof non_data === 'undefined' || non_data === false) {
+					console.log('masuk addRulesForm');
+					MyForm.form("add rule", atribut, {
+						rules: [
+							{
+								type: "empty",
+								prompt: "Lengkapi Data " + lbl,
+							},
+						],
+					});
+				} else {
+					MyForm.form("remove field", atribut);
+				}
+			}
+		}
+		removeRulesForm(formku) {
+			let MyForm = this.form;
+
+			var attrName = MyForm.find($("input[name],textarea[name]"));
+			var i = 0;
+			//console.log(MyForm)
+			for (i = 0; i < attrName.length; i++) {
+				var atribut = MyForm.find(attrName[i]).attr("name");
+				var lbl = MyForm.find(attrName[i]).attr("placeholder");
+				if (lbl === undefined) {
+					lbl = MyForm.find(attrName[i]).closest(".field").find("label").text();
+					if (lbl === undefined || lbl === "") {
+						lbl = MyForm.find(attrName[i]).closest(".field").find("div.sub.header").text();
+					}
+					if (lbl === undefined || lbl === "") {
+						lbl = atribut.replaceAll(/_/g, " ");
+					}
+				}
+				var non_data = formku.find(attrName[i]).attr("non_data");
+				if (typeof non_data === "undefined" || non_data === false) {
+					if (atribut) {
+						//formku.form("remove rule", atribut);
+						MyForm.form("remove field", atribut);
+						//console.log('atribut remove rule: ' + atribut)
+					}
+				}
+			}
+			$(formku).form("set auto check");
+		}
 	}
+	//============================================================
+	// . FUNGSI ADD RULE UNTUK SEMUA INPUT DAN TEXT AREA
+	//============================================================
+	//=======================================
+	//===============MODAL GLOBAL=============
+	//=======================================
+	class ModalConstructor {//@audit-ok ModalConstructor
+		constructor(modal) {
+			this.modal = $(modal); //element;
+		}
+		globalModal() {
+			let MyModal = this.modal;
+			MyModal.modal({
+				allowMultiple: true,
+				//observeChanges: true,
+				closable: false,
+				transition: "vertical flip", //slide down,'slide up','browse right','browse','swing up','vertical flip','fly down','drop','zoom','scale'
+				onDeny: function () {
+					//return false;//console.log('saya menekan tombol cancel');
+				},
+				onApprove: function () {
+					// jika di tekan yes
+					$(this).find("form").trigger("submit");
+					return false;
+				},
+				onShow: function () {
+				},
+				onHidden: function () {
+					// loaderHide();
+					$(this).find("form").form("reset");
+				}
+			});
+		}
+	}
+	//
 	//===================================
 	//=========== class dropdown ========
 	//===================================
@@ -518,8 +607,8 @@ $(document).ready(function () {
 									case 'list_dropdown':
 										switch (tbl) {
 											case 'wilayah'://tujuan sasaran renstra
-												$(`.ui.organisasi.dropdown.ajx`).dropdown({values:result.results});
-												
+												$(`.ui.organisasi.dropdown.ajx`).dropdown({ values: result.results });
+
 												break;
 											default:
 												break;
@@ -537,7 +626,7 @@ $(document).ready(function () {
 								class: kelasToast,
 								icon: "check circle icon",
 							});
-							
+
 						};
 						runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku", cryptos);
 					}
@@ -665,7 +754,7 @@ $(document).ready(function () {
 				var callback = suksesAjax[params.callback](data);
 			})
 			.fail(function (jqXHR, textStatus, err) {
-				
+
 				//console.log(textStatus);
 				//console.log(jqXHR.responseText.split(','));
 				//console.log(JSON.parse(jqXHR.responseText));
@@ -771,5 +860,25 @@ $(document).ready(function () {
 				hideDuration: settings.hideDuration,
 			},
 		});
+	}
+	// fungsi notifikasi
+	function loaderShow() {
+		var tinggi = $(window).height();
+		//$('body > .demo.page.dimmer').dimmer('setting', {closable:true, debug:false}).dimmer('show');
+		$(".demo.page.dimmer:first")
+			.css("height", tinggi)
+			.dimmer({
+				closable: false,
+				debug: false,
+				"set opacity": 0,
+			})
+			.dimmer("show");
+		//jika lebih dari 120 detik otomatis hilang sendiri
+		// setTimeout(function () {
+		// 	$(".demo.page.dimmer:first").dimmer("hide");
+		// }, 120000);
+	}
+	function loaderHide() {
+		$(".demo.page.dimmer:first").dimmer("hide");
 	}
 });
