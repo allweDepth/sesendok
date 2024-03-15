@@ -132,6 +132,12 @@ $(document).ready(function () {
 			sub_keg_renja: tab_renja,
 			sub_keg_dpa: tab_dpa,
 			dpa: tab_dpa,
+			asn: [
+				"clipboard list icon",
+				"Aparatur Sipil Negara",
+				"Data Kepegawaian",
+				"Merupakan data kepegawaian satuan perangkat daerah",
+			],
 			tujuan_sasaran_renstra: [
 				"clipboard list icon",
 				"Tujuan Sasaran Renstra",
