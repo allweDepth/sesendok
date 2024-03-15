@@ -3,7 +3,8 @@ class Login extends Controller
 {
     public function index()
     {
-        $_SESSION["key_encrypt"] = KEY_ENCRYPT;
+        $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
+        $_SESSION["key_encrypt"] = $key_encrypt;
         $dataHeader['awalHeader'] = '';
         $dataHeader['title'] = '| Login';
         $dataHeader['css'] = 'css/login.css';
@@ -11,7 +12,7 @@ class Login extends Controller
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
         $dataFooter['dok'] = 'Login';
-        $dataFooter['key_encrypt'] = $_SESSION["key_encrypt"];
+        $dataFooter['key_encrypt'] = $key_encrypt;
         $this->view('templates/header_login', $dataHeader);
         $this->view('login/index');
         $this->view('templates/footer', $dataFooter);

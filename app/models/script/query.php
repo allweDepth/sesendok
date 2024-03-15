@@ -146,4 +146,11 @@ class Query
         }
         return $dataJson;
     }
+    public function key_encrypt(){
+        $msx = rand(32, 64);
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()<>?{}#$&=-*^@';
+        $keyEnc = substr(str_shuffle($permitted_chars), 0, $msx);
+        return $keyEnc;
+    }
+    
 }

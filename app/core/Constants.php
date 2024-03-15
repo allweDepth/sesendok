@@ -4,6 +4,8 @@ define('BASEURL', 'http://localhost/sesendokneo/public/');
 $msx = rand(32, 64);
 $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()<>?{}#$&=-*^@';
 $keyEnc = substr(str_shuffle($permitted_chars), 0, $msx);
+define('KEY_ENCRYPT', $keyEnc);
+
 define('hasilServer', [
     1 => 'berhasil run',
     2 => 'berhasil tambah data',
@@ -96,4 +98,3 @@ define('hasilServer', [
     224  => 'I Love You Too' #Artinya adalah Today, Tomorrow dan Forever.Angka 2 artinya two yang artinya twoday,today,
 ]);
 
-define('KEY_ENCRYPT', $keyEnc);
