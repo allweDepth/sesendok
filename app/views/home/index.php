@@ -811,6 +811,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             $data_card->dppa = ['header' => 'DPPA', 'meta' => 'dpa perubahan', 'description' => 'dpa perubahan', 'icon' => 'violet users cog'];
                             $data_card->daftar_kontrak = ['header' => 'KONTRAK', 'meta' => 'daftar kontrak', 'description' => 'kontraktual/swakelola', 'icon' => 'violet users cog'];
                             if ($type_user == 'admin') {
+                                $data_card->asn = ['header' => 'Aparatur Sipil Negara', 'meta' => 'ASN', 'description' => 'Aparatur Sipil Negara', 'icon' => 'user plus'];
                                 $data_card->satuan = ['header' => 'Satuan', 'meta' => 'Ukuran suatu besaran', 'description' => 'Satuan atau satuan ukur atau unit digunakan untuk memastikan kebenaran pengukuran', 'icon' => 'user plus'];
                                 $data_card->divisi = ['header' => 'Divisi', 'meta' => 'Task HSP', 'description' => 'Pembagian divisi pekerjaan', 'icon' => 'teal users cog'];
                                 $data_card->chat = ['header' => 'Ruang Chating', 'meta' => 'Chat, message', 'description' => 'ruang di peruntukkan chat', 'icon' => 'comments outline'];

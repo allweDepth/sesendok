@@ -40,6 +40,17 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'asn':
+                $rowData['thead'] = trim('<tr>
+                            <th>NAMA</th>
+                            <th>NIP</th>
+                            <th>JABATAN</th>
+                            <th>TEMPAT LAHIR</th>
+                            <th>STATUS</th>
+                            <th>KETERANGAN</th>
+                            <th class="collapsing">AKSI</th>
+                        </tr>');
+                break;
             case 'daftar_paket':
                 $rowData['thead'] = trim('<tr>
                             <th>URAIAN</th>
@@ -86,26 +97,26 @@ class MasterFungsi
                 <th colspan="11">Target Kinerja Program dan Kerangka Pendanaan</th>
                 <th class="collapsing" rowspan="3">Jumlah</th>
                 <th class="collapsing" rowspan="3">AKSI</th>
-            </tr>
-            <tr class="center aligned">
-                <th colspan="2">Tahun-1</th>
-                <th colspan="2">Tahun-2</th>
-                <th colspan="2">Tahun-3</th>
-                <th colspan="2">Tahun-4</th>
-                <th colspan="2">Tahun-5</th>
-                <th rowspan="2">Kondisi Kinerja Akhir Renstra</th>
-            </tr>
-            <tr class="center aligned">
-                <th>Target</th>
-                <th>Rp.</th>
-                <th>Target</th>
-                <th>Rp.</th>
-                <th>Target</th>
-                <th>Rp.</th>
-                <th>Target</th>
-                <th>Rp.</th>
-                <th>Target</th>
-                <th>Rp.</th> </tr>';
+                </tr>
+                <tr class="center aligned">
+                    <th colspan="2">Tahun-1</th>
+                    <th colspan="2">Tahun-2</th>
+                    <th colspan="2">Tahun-3</th>
+                    <th colspan="2">Tahun-4</th>
+                    <th colspan="2">Tahun-5</th>
+                    <th rowspan="2">Kondisi Kinerja Akhir Renstra</th>
+                </tr>
+                <tr class="center aligned">
+                    <th>Target</th>
+                    <th>Rp.</th>
+                    <th>Target</th>
+                    <th>Rp.</th>
+                    <th>Target</th>
+                    <th>Rp.</th>
+                    <th>Target</th>
+                    <th>Rp.</th>
+                    <th>Target</th>
+                    <th>Rp.</th> </tr>';
                 break;
             case 'tujuan_sasaran_renstra':
                 $rowData['thead'] = trim('<tr>
@@ -265,6 +276,32 @@ class MasterFungsi
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
+                    case 'asn':
+                        $buttons = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        $file = $row->file_photo;
+                        $fileTag = '';
+                        if (strlen($file ?? '')) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="nama">' . $divAwal . $row->nama . $divAkhir . '</td>
+                                    <td klm="nip">'. $row->nip . '</td>
+                                    <td klm="jabatan">' . $divAwal . $row->jabatan . $divAkhir . '</td>
+                                    <td klm="t4_lahir">' . $divAwal . $row->t4_lahir . $divAkhir . '</td>
+                                    <td klm="status">' . $divAwal . $row->status . $divAkhir . '</td>
+                                    <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'daftar_paket':
                         $tbl_button = ($tbl == 'sub_keg_renja') ? 'renja' : 'dpa';
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
@@ -908,6 +945,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'asn':
+                $tabel_pakai = 'db_asn_pemda_neo';
+                $jumlah_kolom = 7;
+                break;
             case 'dpa_dppa':
                 $tabel_pakai = '';
                 $user = new User();

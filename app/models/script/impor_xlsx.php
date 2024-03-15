@@ -176,7 +176,7 @@ class Impor_xlsx
                                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     switch ($tbl) {
                                         case 'asn':
-                                            $RowHeaderValidate = ['No.', 'NAMA', 'GELAR', 'JABATAN', 'NIP', 'GOL.', 'RUANG', 'TEMPAT LAHIR', 'TANGGAL LAHIR', 'AGAMA', 'JENIS KELAMIN', 'JENIS KEPEGAWAIAN', 'STATUS KEPEGAWAIAN', 'No. KTP', 'NPWP', 'ALAMAT', 'NO. HP', 'EMAIL', 'STATUS', 'NO. BUKU NIKAH', 'TANGGAL NIKAH', 'NAMA ANAK', 'NIK ANAK', 'NAMA AYAH', 'NAMA IBU', 'NAMA PASANGAN', 'NO. KARPEG', 'TGL. KARPEG', 'NO. TASPEN', 'TGL. TASPEN', 'NO.KARSI KARSU', 'TGL KARSI KARSU', 'NO.SK TERKHIR', 'TGL.SK TERKHIR', 'Pj.TTD SK TERAKHIR', 'NO.SK CPNS', 'TGL.SK CPNS', 'Pj.TTD SK CPNS', 'NO.SK PNS', 'TGL.SK PNS', 'Pj.TTD SK PNS', 'NAMA SD', 'IJASAH SD', 'TGL IJASAH SD', 'LOKASI SD', 'NAMA SMP', 'IJASAH SMP', 'TGL IJASAH SMP', 'LOKASI SSMP', 'NAMA SMU', 'IJASAH SMU', 'TGL IJASAH SMU', 'LOKASI SMU', 'NAMA PEND. TERAKHIR', 'IJASAH PEND. TERAKHIR', 'TGL IJASAH PEND. TERAKHIR', 'LOKASI PEND. TERAKHIR', 'KETERANGAN', 'KELOMPOK'];
+                                            $RowHeaderValidate = ['No.', 'NAMA', 'GELAR', 'JABATAN', 'NIP', 'GOL.', 'RUANG', 'TEMPAT LAHIR', 'TANGGAL LAHIR', 'AGAMA', 'JENIS KELAMIN', 'JENIS KEPEGAWAIAN', 'STATUS KEPEGAWAIAN', 'No. KTP', 'NPWP', 'ALAMAT', 'NO. HP', 'EMAIL', 'STATUS', 'NO. BUKU NIKAH', 'TANGGAL NIKAH', 'NAMA ANAK', 'NIK ANAK', 'NAMA AYAH', 'NAMA IBU', 'NAMA PASANGAN', 'NO. KARPEG', 'TGL. KARPEG', 'NO. TASPEN', 'TGL. TASPEN', 'NO.KARSI KARSU', 'TGL KARSI KARSU', 'NO.SK TERKHIR', 'TGL.SK TERKHIR', 'Pj.TTD SK TERAKHIR', 'NO.SK CPNS', 'TGL.SK CPNS', 'Pj.TTD SK CPNS', 'NO.SK PNS', 'TGL.SK PNS', 'Pj.TTD SK PNS', 'NAMA SD', 'IJASAH SD', 'TGL IJASAH SD', 'LOKASI SD', 'NAMA SMP', 'IJASAH SMP', 'TGL IJASAH SMP', 'LOKASI SSMP', 'NAMA SMU', 'IJASAH SMU', 'TGL IJASAH SMU', 'LOKASI SMU', 'NAMA PEND. TERAKHIR', 'IJASAH PEND. TERAKHIR', 'TGL IJASAH PEND. TERAKHIR', 'LOKASI PEND. TERAKHIR', 'SK PANGKAT TERAKHIR', 'TGL.SK TERAKHIR', 'KETERANGAN', 'KELOMPOK'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'renja':
@@ -362,7 +362,7 @@ class Impor_xlsx
                                                                 $jabatan = $validateRow->setRules(3, 'alamat', [
                                                                     'sanitize' => 'string'
                                                                 ]);
-                                                                $nip = $validateRow->setRules(34, 'nip', [
+                                                                $nip = $validateRow->setRules(4, 'nip', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,
                                                                     'max_char' => 18,
@@ -426,7 +426,7 @@ class Impor_xlsx
                                                                 $jenis_kepeg = $validateRow->setRules(11, 'jenis kepegawaian', [
                                                                     'strtolower' => true,
                                                                     'sanitize' => 'string',
-                                                                    'inArray' => ['pnsp', 'pnsd1', 'pnsd2', 'pnsp_dpb1', 'pnsp_dpb2', 'pnsp_dpk1','pnsp_dpk2','pnsd_dpb_pusat','pnsd_dpk_pusat','swasta']
+                                                                    'inArray' => ['pnsp', 'pnsd1', 'pnsd2', 'pnsp_dpb1', 'pnsp_dpb2', 'pnsp_dpk1', 'pnsp_dpk2', 'pnsd_dpb_pusat', 'pnsd_dpk_pusat', 'swasta']
                                                                 ]);
                                                                 //dpb=diperbantukan,dpk=dipekerjakan
                                                                 switch ($jenis_kepeg) {
@@ -544,7 +544,7 @@ class Impor_xlsx
                                                                 $status_kepeg = $validateRow->setRules(12, 'status kepegawaian', [
                                                                     'strtolower' => true,
                                                                     'sanitize' => 'string',
-                                                                    'inArray' => ['capeg', 'peg_tetap', 'mpp', 'pen_uang_tunggu', 'peg_seorsing', 'cuti','peg_sementara','peg_bulanan']
+                                                                    'inArray' => ['capeg', 'peg_tetap', 'mpp', 'pen_uang_tunggu', 'peg_seorsing', 'cuti', 'peg_sementara', 'peg_bulanan']
                                                                 ]);
                                                                 switch ($status_kepeg) {
                                                                     case "capeg":
@@ -625,16 +625,22 @@ class Impor_xlsx
                                                                 $status = $validateRow->setRules(18, 'status kepegawaian', [
                                                                     'strtolower' => true,
                                                                     'sanitize' => 'string',
-                                                                    'inArray' => ['duda','janda','duda-janda', 'lajang', 'menikah']
+                                                                    'inArray' => ['duda', 'janda', 'duda-janda', 'lajang', 'menikah']
                                                                 ]);
                                                                 $no_buku_nikah = $validateRow->setRules(19, 'no_buku_nikah', [
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_nikah = $validateRow->setRules(20, 'tgl_nikah', [
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
-
+                                                                if (strlen($tgl_nikah ?? '') >= 6) {
+                                                                    $tgl_nikah = $validateRow->setRules(20, 'tgl_nikah', [
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $tgl_nikah = date("Y-m-d", strtotime(trim($tgl_nikah)));
+                                                                }
                                                                 $nama_anak = $validateRow->setRules(21, 'nama_anak', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -658,36 +664,62 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_karpeg = $validateRow->setRules(27, 'tgl_karpeg', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
-
+                                                                if (strlen($tgl_karpeg ?? '') >= 6) {
+                                                                    $tgl_karpeg = $validateRow->setRules(27, 'tgl_karpeg', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $tgl_karpeg = date("Y-m-d", strtotime(trim($tgl_karpeg)));
+                                                                }
                                                                 $no_taspen = $validateRow->setRules(28, 'no_taspen', [
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_taspen = $validateRow->setRules(29, 'tgl_taspen', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($tgl_taspen ?? '') >= 6) {
+                                                                    $tgl_taspen = $validateRow->setRules(29, 'tgl_taspen', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $tgl_taspen = date("Y-m-d", strtotime(trim($tgl_taspen)));
+                                                                }
                                                                 $no_karsi_karsu = $validateRow->setRules(30, 'no_karsi_karsu', [
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_karsi_karsu = $validateRow->setRules(31, 'tgl_karsi_karsu', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
-
+                                                                if (strlen($tgl_karsi_karsu ?? '') >= 6) {
+                                                                    $tgl_karsi_karsu = $validateRow->setRules(31, 'tgl_karsi_karsu', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $tgl_karsi_karsu = date("Y-m-d", strtotime(trim($tgl_karsi_karsu)));
+                                                                }
                                                                 $nmr_sk_terakhir = $validateRow->setRules(32, 'nmr_sk_terakhir', [
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_sk_terakhir = $validateRow->setRules(33, 'tgl_sk_terakhir', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($tgl_sk_terakhir ?? '') >= 6) {
+                                                                    $tgl_sk_terakhir = $validateRow->setRules(33, 'tgl_sk_terakhir', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $tgl_sk_terakhir = date("Y-m-d", strtotime(trim($tgl_sk_terakhir)));
+                                                                }
                                                                 $pj_sk_terakhir = $validateRow->setRules(34, 'pj_sk_terakhir', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -696,10 +728,17 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_sk_cpns = $validateRow->setRules(36, 'tgl_sk_cpns', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($tgl_sk_cpns ?? '') >= 6) {
+                                                                    $tgl_sk_cpns = $validateRow->setRules(36, 'tgl_sk_cpns', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $tgl_sk_cpns = date("Y-m-d", strtotime(trim($tgl_sk_cpns)));
+                                                                }
                                                                 $pj_sk_cpns = $validateRow->setRules(37, 'pj_sk_cpns', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -708,10 +747,17 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_sk_pns = $validateRow->setRules(39, 'tgl_sk_pns', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($tgl_sk_pns ?? '') >= 6) {
+                                                                    $tgl_sk_pns = $validateRow->setRules(39, 'tgl_sk_pns', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $tgl_sk_pns = date("Y-m-d", strtotime(trim($tgl_sk_pns)));
+                                                                }
                                                                 $pj_sk_pns = $validateRow->setRules(40, 'pj_sk_pns', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -724,10 +770,17 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $pend_tgl_tmt_sd = $validateRow->setRules(43, 'pend_tgl_tmt_sd', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($pend_tgl_tmt_sd ?? '') >= 6) {
+                                                                    $pend_tgl_tmt_sd = $validateRow->setRules(43, 'pend_tgl_tmt_sd', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $pend_tgl_tmt_sd = date("Y-m-d", strtotime(trim($pend_tgl_tmt_sd)));
+                                                                }
                                                                 $pend_t4_sd = $validateRow->setRules(44, 'pend_t4_sd', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -739,10 +792,17 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $pend_tgl_tmt_smp = $validateRow->setRules(47, 'pend_tgl_tmt_smp', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($pend_tgl_tmt_smp ?? '') >= 6) {
+                                                                    $pend_tgl_tmt_smp = $validateRow->setRules(47, 'pend_tgl_tmt_smp', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $pend_tgl_tmt_smp = date("Y-m-d", strtotime(trim($pend_tgl_tmt_smp)));
+                                                                }
                                                                 $pend_t4_smp = $validateRow->setRules(48, 'pend_t4_smp', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -754,10 +814,17 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $pend_tgl_tmt_smu = $validateRow->setRules(51, 'pend_tgl_tmt_smu', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($pend_tgl_tmt_smu ?? '') >= 6) {
+                                                                    $pend_tgl_tmt_smu = $validateRow->setRules(51, 'pend_tgl_tmt_smu', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $pend_tgl_tmt_smu = date("Y-m-d", strtotime(trim($pend_tgl_tmt_smu)));
+                                                                }
                                                                 $pend_t4_smu = $validateRow->setRules(52, 'pend_t4_smu', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -769,10 +836,17 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $pend_tgl_tmt_akhir = $validateRow->setRules(55, 'pend_tgl_tmt_akhir', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($pend_tgl_tmt_akhir ?? '') >= 6) {
+                                                                    $pend_tgl_tmt_akhir = $validateRow->setRules(55, 'pend_tgl_tmt_akhir', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                }else {
+                                                                    $pend_tgl_tmt_akhir = date("Y-m-d", strtotime(trim($pend_tgl_tmt_akhir)));
+                                                                }
                                                                 $pend_t4_akhir = $validateRow->setRules(56, 'no_karpeg', [
                                                                     'sanitize' => 'string'
                                                                 ]);
@@ -782,15 +856,22 @@ class Impor_xlsx
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $tgl_tmt_akhir = $validateRow->setRules(58, 'tgl_tmt_akhir', [
-                                                                    'sanitize' => 'string',
-                                                                    'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
-                                                                    'max_char' => 100
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($tgl_tmt_akhir ?? '') >= 6) {
+                                                                    $tgl_tmt_akhir = $validateRow->setRules(58, 'tgl_tmt_akhir', [
+                                                                        'sanitize' => 'string',
+                                                                        'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
+                                                                        'max_char' => 100
+                                                                    ]);
+                                                                } else {
+                                                                    $tgl_tmt_akhir = date("Y-m-d", strtotime(trim($tgl_tmt_akhir)));
+                                                                }
                                                                 $keterangan = $validateRow->setRules(59, 'keterangan', [
                                                                     'sanitize' => 'string'
                                                                 ]);
                                                                 $kelompok = $validateRow->setRules(60, 'kelompok', [
-                                                                    'sanitize' => 'string'
+                                                                    'numeric' => true
                                                                 ]);
                                                                 //data
                                                                 $arrayDataRows = [
@@ -861,6 +942,9 @@ class Impor_xlsx
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'username' => $_SESSION["user"]["username"]
                                                                 ];
+                                                                $update_arrayData = [['nip', '=', $nip]];
+                                                                $getWhereArrayData = [['nip', '=', $nip]];
+                                                                $no_sort++;
                                                                 break;
                                                             case 'renja':
                                                             case 'dpa':
@@ -2195,6 +2279,7 @@ class Impor_xlsx
                                                         //=====================================
                                                         if ($validateRow->passed()) {
                                                             switch ($tbl) {
+                                                                case 'asn':
                                                                 case 'rekanan':
                                                                 case 'hspk':
                                                                 case 'ssh':

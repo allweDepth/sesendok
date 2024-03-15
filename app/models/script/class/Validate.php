@@ -52,7 +52,7 @@ class Validate
     }
     // jalankan proses hilangkan duble spasi item (jika disyaratkan)
     if (array_key_exists('preg_replace', $rules)) {
-      $formValue = preg_replace($rules[0], $rules[1], $formValue);
+      $formValue = preg_replace($rules["preg_replace"][0], $rules["preg_replace"][1], $formValue);
     }
     // jalankan proses huruf kecil item (jika disyaratkan)
     if (array_key_exists('strtolower', $rules)) {
