@@ -19,6 +19,8 @@ class App
             switch ($url[0]) {
                 case 'data_teknis':
                 case 'register':
+                case 'anggaran':
+                case 'organisasi':
                     $this->controller = $url[0];
                     break;
                 default:

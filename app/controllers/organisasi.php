@@ -10,7 +10,7 @@ class Organisasi extends Controller
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
-        $dataFooter['dok'] = 'organisasi';
+        $dataFooter['dok'] = 'Organisasi';
         $dataFooter['key_encrypt'] = $_SESSION['key_encrypt'];
         $this->view('templates/header_login', $dataHeader);
         $this->view('organisasi/index');

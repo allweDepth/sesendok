@@ -72,7 +72,7 @@ class Masuk
                         if ($type_user == 'admin') {
                             $session = 1;
                             // header("Location: home");
-                            exit;
+                            // exit;
                         } else {
                             $session = 1; //$session = 2;
                             // header("Location: home");

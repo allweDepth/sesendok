@@ -15,7 +15,6 @@ class Login extends Controller
         $this->view('templates/header_login', $dataHeader);
         $this->view('login/index');
         $this->view('templates/footer', $dataFooter);
-        
     }
     public function masuk()
     { 

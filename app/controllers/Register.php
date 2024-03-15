@@ -15,6 +15,7 @@ class Register extends Controller
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
+        $dataFooter['dok'] = 'Register';
         $dataFooter['key_encrypt'] = KEY_ENCRYPT;
         $this->view('templates/header', $dataHeader);
         $this->view('register/index');
