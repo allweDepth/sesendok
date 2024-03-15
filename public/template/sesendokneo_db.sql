@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 14 Mar 2024 pada 13.40
+-- Waktu pembuatan: 15 Mar 2024 pada 17.34
 -- Versi server: 11.3.2-MariaDB
--- Versi PHP: 8.3.3
+-- Versi PHP: 8.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -98,43 +98,6 @@ CREATE TABLE `aset_neo` (
   `tanggal` datetime NOT NULL,
   `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `asn_pemda_neo`
---
-
-CREATE TABLE `asn_pemda_neo` (
-  `id` int(11) NOT NULL,
-  `kd_wilayah` varchar(255) NOT NULL,
-  `kd_opd` varchar(255) NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `nip` varchar(18) NOT NULL,
-  `pangkat` int(11) NOT NULL,
-  `gol` varchar(1) NOT NULL,
-  `jabatan` varchar(255) NOT NULL,
-  `kategori_foto` varchar(255) NOT NULL,
-  `t4_lahir` date DEFAULT NULL,
-  `tgl_lahir` date DEFAULT NULL,
-  `nama_ayah` varchar(255) DEFAULT NULL,
-  `nama_ibu` varchar(255) DEFAULT NULL,
-  `nama_pasangan` varchar(255) DEFAULT NULL,
-  `nama_anak_1` varchar(255) DEFAULT NULL,
-  `nama_anak_2` varchar(255) DEFAULT NULL,
-  `nama_anak_3` varchar(255) DEFAULT NULL,
-  `nama_anak_4` varchar(255) DEFAULT NULL,
-  `nama_anak_5` varchar(255) DEFAULT NULL,
-  `pengikut` int(11) DEFAULT NULL,
-  `suka` int(11) DEFAULT NULL,
-  `akun_fb` varchar(255) DEFAULT NULL,
-  `akun_ig` varchar(255) DEFAULT NULL,
-  `akun_x` varchar(255) DEFAULT NULL,
-  `akun_yt` varchar(255) DEFAULT NULL,
-  `foto` varchar(255) DEFAULT NULL,
-  `motto` varchar(255) DEFAULT NULL,
-  `keterangan` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -274,6 +237,116 @@ CREATE TABLE `daftar_uraian_paket` (
   `realisasi_vol` decimal(36,12) DEFAULT NULL,
   `realisasi_jumlah` decimal(36,12) DEFAULT NULL,
   `keterangan` varchar(400) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `db_asn_pemda_neo`
+--
+
+CREATE TABLE `db_asn_pemda_neo` (
+  `id` int(11) NOT NULL,
+  `kd_wilayah` varchar(50) NOT NULL,
+  `kd_opd` varchar(50) NOT NULL,
+  `nama` varchar(400) NOT NULL,
+  `gelar_depan` varchar(50) DEFAULT NULL,
+  `gelar` varchar(60) DEFAULT NULL,
+  `nip` varchar(18) NOT NULL,
+  `t4_lahir` varchar(100) NOT NULL,
+  `tgl_lahir` date NOT NULL,
+  `file_akta_lahir` varchar(255) DEFAULT NULL,
+  `golongan` varchar(1) NOT NULL,
+  `ruang` varchar(1) NOT NULL,
+  `agama` varchar(100) DEFAULT NULL,
+  `kelamin` varchar(100) DEFAULT NULL,
+  `jenis_kepeg` varchar(100) DEFAULT NULL,
+  `status_kepeg` varchar(100) DEFAULT NULL,
+  `jabatan` varchar(50) DEFAULT NULL,
+  `id_jabatan` int(11) DEFAULT NULL,
+  `no_ktp` varchar(100) DEFAULT NULL,
+  `file_ktp` varchar(255) DEFAULT NULL,
+  `no_kk` varchar(255) DEFAULT NULL,
+  `tgl_kk` date DEFAULT NULL,
+  `file_kk` varchar(255) DEFAULT NULL,
+  `npwp` varchar(21) DEFAULT NULL,
+  `file_npwp` varchar(255) DEFAULT NULL,
+  `alamat` varchar(300) DEFAULT NULL,
+  `kontak_person` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `no_buku_nikah` varchar(225) DEFAULT NULL,
+  `tgl_nikah` date DEFAULT NULL,
+  `file_buku_nikah` varchar(255) DEFAULT NULL,
+  `nama_anak` varchar(400) DEFAULT NULL,
+  `nik_anak` varchar(400) DEFAULT NULL,
+  `nama_ayah` varchar(100) DEFAULT NULL,
+  `nama_ibu` varchar(100) DEFAULT NULL,
+  `nama_pasangan` varchar(100) DEFAULT NULL,
+  `no_karpeg` varchar(100) DEFAULT NULL,
+  `tgl_karpeg` date DEFAULT NULL,
+  `file_karpeg` varchar(255) DEFAULT NULL,
+  `no_taspen` varchar(100) DEFAULT NULL,
+  `tgl_taspen` date DEFAULT NULL,
+  `no_karsi_karsu` varchar(100) DEFAULT NULL,
+  `tgl_karsi_karsu` date DEFAULT NULL,
+  `file_karsi_karsu` varchar(255) DEFAULT NULL,
+  `nmr_sk_terakhir` varchar(150) DEFAULT NULL,
+  `tgl_sk_terakhir` date DEFAULT NULL,
+  `pj_sk_terakhir` varchar(150) DEFAULT NULL,
+  `nmr_sk_cpns` varchar(150) DEFAULT NULL,
+  `tgl_sk_cpns` date DEFAULT NULL,
+  `pj_sk_cpns` varchar(150) DEFAULT NULL,
+  `nmr_sk_pns` varchar(150) DEFAULT NULL,
+  `tgl_sk_pns` date DEFAULT NULL,
+  `pj_sk_pns` varchar(150) DEFAULT NULL,
+  `pend_sekolah_sd` varchar(225) DEFAULT NULL,
+  `pend_ijasah_sd` varchar(225) DEFAULT NULL,
+  `pend_tgl_tmt_sd` date DEFAULT NULL,
+  `pend_t4_sd` varchar(225) DEFAULT NULL,
+  `pend_file_sd` varchar(225) DEFAULT NULL,
+  `pend_sekolah_smp` varchar(225) DEFAULT NULL,
+  `pend_ijasah_smp` varchar(225) DEFAULT NULL,
+  `pend_tgl_tmt_smp` date DEFAULT NULL,
+  `pend_t4_smp` varchar(225) DEFAULT NULL,
+  `pend_file_smp` varchar(225) DEFAULT NULL,
+  `pend_sekolah_smu` varchar(255) DEFAULT NULL,
+  `pend_ijasah_smu` varchar(255) DEFAULT NULL,
+  `pend_tgl_tmt_smu` date DEFAULT NULL,
+  `pend_t4_smu` varchar(255) DEFAULT NULL,
+  `pend_file_smu` varchar(80) DEFAULT NULL,
+  `pend_sekolah_s1` varchar(255) DEFAULT NULL,
+  `pend_ijasah_s1` varchar(255) DEFAULT NULL,
+  `pend_tgl_tmt_s1` date DEFAULT NULL,
+  `pend_t4_s1` varchar(255) DEFAULT NULL,
+  `pend_file_s1` varchar(80) DEFAULT NULL,
+  `pend_sekolah_s2` varchar(255) DEFAULT NULL,
+  `pend_ijasah_s2` varchar(255) DEFAULT NULL,
+  `pend_tgl_tmt_s2` date DEFAULT NULL,
+  `pend_t4_s2` varchar(255) DEFAULT NULL,
+  `pend_file_s2` varchar(80) DEFAULT NULL,
+  `pend_sekolah_s3` varchar(255) DEFAULT NULL,
+  `pend_ijasah_s3` varchar(255) DEFAULT NULL,
+  `pend_tgl_tmt_s3` date DEFAULT NULL,
+  `pend_t4_s3` varchar(255) DEFAULT NULL,
+  `pend_file_s3` varchar(80) DEFAULT NULL,
+  `pend_sekolah_akhir` varchar(255) DEFAULT NULL,
+  `pend_ijasah_akhir` varchar(255) DEFAULT NULL,
+  `pend_tgl_tmt_akhir` date DEFAULT NULL,
+  `pend_t4_akhir` varchar(255) DEFAULT NULL,
+  `pend_file_akhir` varchar(80) DEFAULT NULL,
+  `file_photo` varchar(255) DEFAULT NULL,
+  `gapok` decimal(20,2) DEFAULT NULL,
+  `aktif` tinyint(1) DEFAULT NULL,
+  `no_urut` int(11) DEFAULT NULL,
+  `unit_kerja` varchar(255) DEFAULT NULL,
+  `no_rekening` varchar(150) DEFAULT NULL,
+  `nama_bank` varchar(150) DEFAULT NULL,
+  `urutan` int(11) DEFAULT NULL,
+  `kelompok` int(11) DEFAULT NULL,
+  `suka` int(11) DEFAULT NULL,
+  `follow` int(11) DEFAULT NULL,
+  `ket` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -1096,7 +1169,7 @@ CREATE TABLE `user_sesendok_biila` (
 
 INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `password`, `kd_organisasi`, `nama_org`, `kd_wilayah`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `tahun`, `kontak_person`, `font_size`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`) VALUES
 (1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'Alwi Mansyur', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-03-14 20:24:40', '2024', 'pasangkayu ji', 90.00, 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan'),
-(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-03-14 20:33:12', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
+(2, 'nabiila', 'nabiila@gmail.com', 'nabiila', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '76.01', 'admin', 'images/avatar/bbf4f78067dad81bec03965da604932e9e18f570_2.jpg', '2018-06-09 15:54:29', '2024-03-15 22:47:53', '2024', '08128888', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu'),
 (3, 'inayah', 'inayah@gmail.com', 'inayah', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'PT. Angin Ribat Skali dan satgat mengesankan sekali', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke'),
 (4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', 80.00, NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.'),
 (5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', 80.00, 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu');
@@ -1148,12 +1221,6 @@ ALTER TABLE `aset_neo`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `asn_pemda_neo`
---
-ALTER TABLE `asn_pemda_neo`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `bidang_urusan_neo`
 --
 ALTER TABLE `bidang_urusan_neo`
@@ -1176,6 +1243,12 @@ ALTER TABLE `daftar_realisasi_neo`
 --
 ALTER TABLE `daftar_uraian_paket`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `db_asn_pemda_neo`
+--
+ALTER TABLE `db_asn_pemda_neo`
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indeks untuk tabel `dpa_neo`
@@ -1350,12 +1423,6 @@ ALTER TABLE `aset_neo`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `asn_pemda_neo`
---
-ALTER TABLE `asn_pemda_neo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT untuk tabel `bidang_urusan_neo`
 --
 ALTER TABLE `bidang_urusan_neo`
@@ -1377,6 +1444,12 @@ ALTER TABLE `daftar_realisasi_neo`
 -- AUTO_INCREMENT untuk tabel `daftar_uraian_paket`
 --
 ALTER TABLE `daftar_uraian_paket`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `db_asn_pemda_neo`
+--
+ALTER TABLE `db_asn_pemda_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
