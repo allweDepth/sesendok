@@ -1230,6 +1230,38 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- profil -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="profil">
+            <div class="ui special centered card">
+				<div class="content">
+					<div class="right floated meta">14h</div>
+					<img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Alwi Mansyur
+				</div>
+
+				<div class="blurring dimmable image">
+					<div class="ui dimmer">
+						<div class="content">
+							<div class="center">
+								<div class="ui inverted button">Add Friend</div>
+							</div>
+						</div>
+					</div>
+					<img src="img/avatar/large/elliot.jpg">
+				</div>
+
+				<div class="content">
+					<span class="right floated">
+						<i class="heart outline like icon"></i>
+						17 likes
+					</span>
+					<i class="comment icon"></i>
+					3 comments
+				</div>
+				<div class="extra content">
+					<div class="ui large transparent left icon input">
+						<i class="heart outline icon"></i>
+						<input type="text" placeholder="Add Comment...">
+					</div>
+				</div>
+				</div>
             </div>
             <!-- =========================-->
             <!-- =========================-->
@@ -1313,6 +1345,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             </div>
         </div>
     </div>
+     <!-- jangan dihapus untuk upload file di dimmer langsung eksekusi  -->
+    <input type="file" id="invisibleupload1" class="ui invisible file input">
     <!-- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>-->
     <script src="<?= BASEURL; ?>vendor/jquery-3.7.1.min.js"></script>
     <script src="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.js">

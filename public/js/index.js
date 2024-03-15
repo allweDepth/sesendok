@@ -26,7 +26,7 @@ $(document).ready(function () {
 		}
 	}
 	$(".menu .item.inayah").on('click', handler.activate);
-	$(".ui.dropdown").dropdown();
+	// $(".ui.dropdown").dropdown();
 	$(".menu .item").tab();
 	// fix main menu to page on passing
 	// $('.main.menu, .sticky.main').visibility({
@@ -399,6 +399,7 @@ $(document).ready(function () {
 			case "wilayah":
 			case "sbu":
 			case "ssh":
+			case "asn":
 			case "asb":
 			case "hspk":
 			case "satuan":
@@ -407,7 +408,7 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 			case "atur":
 			case "tab_kontrak":
-			
+
 				jalankanAjax = true;
 				break;
 			case "renja":
@@ -719,9 +720,43 @@ $(document).ready(function () {
 						dataHtmlku.icon = "edit icon";
 						dataHtmlku.header = "Edit Data";
 					}
-				//TAMBAH ROWS DATA
+					//TAMBAH ROWS DATA
+					switch (tbl) {
+						case 'asn':
+
+							dataHtmlku.konten =
+								buatElemenHtml("card3", {
+									label: "Nama Lengkap",
+									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
+								})
+							break;
+
+						default:
+							break;
+					}
 				case "add":
 					switch (tbl) {
+						case 'asn':
+							dataHtmlku.konten +=
+								buatElemenHtml("fieldText", {
+									label: "Nama Lengkap",
+									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
+								}) +
+								buatElemenHtml("fieldTextAction", {
+									label: "Nomor Induk Pegawai",
+									atribut: 'name="nip" placeholder="NIP"',
+									txtLabel: `<i class="search icon"></i>`,
+									atributLabel: `name="cek" type="button" jns="cek_nip" tbl="asn"`,
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Gelar",
+									atribut: 'name="gelar" placeholder="Gelar belakang nama"',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Gelar Depan Nama",
+									atribut: 'name="gelar_depan" placeholder="Gelar Depan Nama"',
+								})
+							break;
 						case 'daftar_paket':
 							dataHtmlku.konten =
 								buatElemenHtml("fieldTextAction", {
@@ -2159,7 +2194,8 @@ $(document).ready(function () {
 										// set nilai form 
 										let elmAttrName = formIni.find('input[name],textarea[name]');
 										switch (tbl) {
-											case 'xxxxxx':
+											case 'xcv':
+												break;
 											default://isi form dengan data
 												for (const iterator of elmAttrName) {
 													let attrElm = $(iterator).attr('name');
@@ -2185,6 +2221,7 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
+
 																	case 'daftar_paket':
 																		switch (attrElm) {
 																			case 'satuan':
@@ -2369,7 +2406,15 @@ $(document).ready(function () {
 												}
 												break;
 										}
-										// addRulesForm(formIni);
+										switch (tbl) {
+											case 'asn':
+												$('.special.card .dimmable.image').dimmer({
+													on: 'ontouchstart' in document.documentElement ? 'click' : 'hover'
+												});
+												break;
+											default:
+												break;
+										}
 										break;
 									case 'upload':
 										switch (tbl) {
@@ -2431,6 +2476,11 @@ $(document).ready(function () {
 		if (attrName === "flyout" && jalankanAjax === false) {
 			// $(".ui.flyout").flyout("toggle");
 		}
+
+	});
+	$('.special.card .dimmable.image').dimmer({
+		// As hover is not working on mobile, you might use click on those devices as fallback
+		on: 'ontouchstart' in document.documentElement ? 'click' : 'hover'
 	});
 	//====================================
 	//=========== flyout =================
@@ -4974,6 +5024,83 @@ $(document).ready(function () {
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		switch (namaElemen) {
+			case "card":
+				elemen = `<div class="ui fluid card">
+					<div class="image">
+						<img src="../images/avatar2/large/kristy.png">
+					</div>
+					<div class="content">
+						<a class="header">Kristy</a>
+						<div class="meta">
+							<span class="date">Joined in 2013</span>
+						</div>
+						<div class="description">
+							Kristy is an art director living in New York.
+						</div>
+					</div>
+					<div class="extra content">
+						<a>
+							<i class="user icon"></i>
+							22 Friends
+						</a>
+					</div>
+				</div>`;
+				break;
+			case "card2":
+				elemen = `<div class="ui special fluid card">
+					<div class="blurring dimmable image">
+						<div class="ui dimmer">
+							<div class="content">
+								<div class="center">
+									<div class="ui inverted button">Add Friend</div>
+								</div>
+							</div>
+						</div>
+						<img src="img/avatar/large/elliot.jpg">
+					</div>
+					<div class="content">
+						<a class="header">Team Fu</a>
+						<div class="meta">
+							<span class="date">Created in Sep 2014</span>
+						</div>
+					</div>
+					<div class="extra content">
+						<a>
+							<i class="users icon"></i>
+							2 Members
+						</a>
+					</div>
+					</div>`;
+				break;
+			case "card3":
+				elemen =
+					`<div class="ui special fluid card">
+						<div class="content">
+							<div class="right floated meta">14h</div>
+							<img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Elliot
+						</div>
+						<div class="blurring dimmable image">
+							<div class="ui dimmer">
+								<div class="content">
+									<div class="center">
+										<label for="invisibleupload1" name="direct_upload" id_row="" jns="uploadfile" tbl="asn" class="ui inverted icon button">
+											<i class="file icon"></i>Open any file
+										</label>
+									</div>
+								</div>
+							</div>
+							<img src="img/avatar/large/elliot.jpg">
+						</div>
+						<div class="content">
+							<span class="right floated">
+								<i class="heart outline like icon"></i>
+								17 likes
+							</span>
+							<i class="comment icon"></i>
+							3 comments
+						</div>
+					</div>`;
+				break;
 			case "button":
 				elemen = `<button class="ui ${kelasData} button" ${atribut}>${valueData}</button>`;
 				break;
