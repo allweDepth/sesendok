@@ -1346,7 +1346,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         </div>
     </div>
      <!-- jangan dihapus untuk upload file di dimmer langsung eksekusi  -->
-    <input type="file" id="invisibleupload1" class="ui invisible file input">
+    <input type="file" id="directupload1" class="ui invisible file input">
     <!-- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>-->
     <script src="<?= BASEURL; ?>vendor/jquery-3.7.1.min.js"></script>
     <script src="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.js">

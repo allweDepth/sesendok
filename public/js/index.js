@@ -629,10 +629,93 @@ $(document).ready(function () {
 	});
 	//=====================================================
 	//===========button posting data =======@audit-ok add
-	//=====================================================
-	$("body").on("click", '[name="add"],[name="tambah"]', function (e) {
-		e.preventDefault();
+	//=====================================================name="direct"
+	$("body").on("click", '[name="add"],[name="tambah"],[name="direct"]', function (e) {
+		// e.preventDefault();
+		let ini = $(this);
+		let jenis = ini.attr("jns");
+		let tbl = ini.attr("tbl");
+		let id_row = ini.attr('id_row');
+		switch (jenis) {
+			case 'directuploadfile':
+				switch (tbl) {
+					case 'asn':
+						//upload langsung file
+						$("#directupload1").val("");
+						id_row = ini.closest('form').attr('id_row')
+						$(`#directupload1`).attr('jns', jenis).attr('tbl', tbl).attr('id_row', id_row)
+						break;
+					default:
+						break;
+				}
+				break;
+
+			default:
+				break;
+		}
 	})
+	$("body").on("change", '#directupload1', function (e) {//@audit-ok langsung upload file
+		let ini = $(this);
+		let jenis = ini.attr('jns');
+		let tbl = ini.attr('tbl');
+		let id_row = ini.attr('id_row');
+		let cryptos = false;
+		let jalankanAjax = true;
+		let dataType = "Json";
+		let url='script/post_data';
+		if (id_row) {
+			let uploadedFile = document.getElementById('directupload1').files[0];
+			var formData = new FormData();
+			formData.append("jenis", jenis);
+			formData.append("tbl", tbl);
+			formData.append("id_row", id_row);
+			formData.append("file", uploadedFile);
+			if (cryptos) {
+				let keyEncryption = halamanDefault;
+				let encryption = new Encryption();
+				formData.forEach((value, key) => {
+					switch (key) {
+						case 'jenis':
+						case 'tbl':
+							break;
+						default:
+							formData.set(key, encryption.encrypt(value, keyEncryption));
+							break;
+					}
+				});
+				formData.set('cry', true);
+			}
+			if (jalankanAjax) {
+				suksesAjax["ajaxku"] = function (result) {
+					let kelasToast = "success";
+					if (result.success === true) {
+						
+					} else {
+						kelasToast = "warning"; //'success'
+					}
+					showToast(result.error.message, {
+						class: kelasToast,
+						icon: "check circle icon",
+					});
+					loaderHide();
+				};
+				runAjax(
+					url,
+					"POST",
+					formData,
+					dataType,
+					false,
+					false,
+					"ajaxku",
+					cryptos
+				);
+				//runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
+				//runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
+			} else {
+				loaderHide();
+			}
+		}
+	});
 	//=====================================================
 	//===========button ambil data/get_data/ flyout =======@audit-ok flyout
 	//=====================================================
@@ -2485,30 +2568,29 @@ $(document).ready(function () {
 	//====================================
 	//=========== flyout =================
 	//====================================
-	$(".ui.flyout")
-		.flyout({
-			closable: false,
-			context: $(".bottom.pushable"),
-			onShow: function () {
-				$('#biilainayah').addClass('disabled');
-				// loaderHide();
-				// console.log('onShow flyout');
-			},
-			onHide: function (choice) {
-				// 		//console.log(choice);
-				$('#biilainayah').removeClass('disabled');
-				let form = $(".ui.flyout form");
-				form.form("clear");
-				removeRulesForm(form);
-				// 		// //inisialize kembali agar tidak error di console
-				var reinitForm = new FormGlobal(form);
-				reinitForm.run();
-			},
-			onApprove: function (elemen) {
-				$(elemen).closest("div.flyout").find("form").form("submit");
-				return false;
-			},
-		})
+	$(".ui.flyout").flyout({
+		closable: false,
+		context: $(".bottom.pushable"),
+		onShow: function () {
+			$('#biilainayah').addClass('disabled');
+			// loaderHide();
+			// console.log('onShow flyout');
+		},
+		onHide: function (choice) {
+			// 		//console.log(choice);
+			$('#biilainayah').removeClass('disabled');
+			let form = $(".ui.flyout form");
+			form.form("clear");
+			removeRulesForm(form);
+			// 		// //inisialize kembali agar tidak error di console
+			var reinitForm = new FormGlobal(form);
+			reinitForm.run();
+		},
+		onApprove: function (elemen) {
+			$(elemen).closest("div.flyout").find("form").form("submit");
+			return false;
+		},
+	})
 		.flyout("attach events", '[name="flyout"]');
 	//========================================
 	//===========DEL ROW DAN EKSEKUSI ==========@audit-ok val/delete row
@@ -4312,14 +4394,7 @@ $(document).ready(function () {
 						default:
 							break;
 					}
-					switch (tbl) {
-						case 'value':
-							break;
-						case 'value1':
-							break;
-						default:
-							break;
-					};
+					
 					if (cryptos) {
 						let keyEncryption = halamanDefault;
 						let encryption = new Encryption();
@@ -5083,7 +5158,7 @@ $(document).ready(function () {
 							<div class="ui dimmer">
 								<div class="content">
 									<div class="center">
-										<label for="invisibleupload1" name="direct_upload" id_row="" jns="uploadfile" tbl="asn" class="ui inverted icon button">
+										<label for="directupload1" name="direct" id_row="" jns="directuploadfile" tbl="asn" class="ui inverted icon button">
 											<i class="file icon"></i>Open any file
 										</label>
 									</div>
