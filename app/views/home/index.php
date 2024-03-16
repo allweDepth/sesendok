@@ -858,8 +858,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </a>
                         </div>
                     </div>
-                    <div class="seven wide stretched right column">
-                        <div class="ui tab scrolling basic" data-tab="pengaturan">
+                    <div class="fourteen wide stretched right column">
+                        <div class="ui tab basic container" data-tab="pengaturan">
                             <div class="ui teal inverted segment top attached">
                                 <h2 class="ui header left">
                                     <i class="settings icon"></i>

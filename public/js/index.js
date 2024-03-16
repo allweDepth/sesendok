@@ -144,6 +144,12 @@ $(document).ready(function () {
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi dan kodefikasi program disusun berdasarkan pembagian sub urusan dan kegiatan disusun berdasarkan pembagian kewenangan yang diatur dalam Lampiran Undang-Undang Nomor 23 Tahun 2014.Hal ini dilakukan untuk memastikan ruang lingkup penyelenggaraan pemerintahan daerah dilakukan sesuai dengan keenangannya, sehingga mendukung pelaksanaan asas prinsip akuntabilitas, efisiensi, eksternalitas serta kepentingan strategis nasional",
 			],
+			users: [
+				"users icon",
+				"users",
+				"Pengaturan Akun",
+				"Pengaturan akun",
+			],
 			tab_dpa: tab_dpa,
 			daftar_paket: ["clipboard list icon",
 				"DAFTAR PAKET DAN KONTRAK",
@@ -406,9 +412,9 @@ $(document).ready(function () {
 			case "rekanan":
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
-			case "atur":
 			case "tab_kontrak":
-
+			case "atur":
+			case "users":
 				jalankanAjax = true;
 				break;
 			case "renja":
@@ -418,7 +424,6 @@ $(document).ready(function () {
 			case "sub_keg_renja":
 			case "sub_keg_dpa":
 			case "tab_renja":
-
 				let anggaranAttr = ini.attr('anggaran');
 				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
 				switch (anggaranAttr) {
@@ -814,19 +819,40 @@ $(document).ready(function () {
 					//TAMBAH ROWS DATA
 					switch (tbl) {
 						case 'asn':
-
 							dataHtmlku.konten =
 								buatElemenHtml("card3", {
 									label: "Nama Lengkap",
 									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
 								})
 							break;
-
 						default:
 							break;
 					}
 				case "add":
 					switch (tbl) {
+						case 'users':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldText", {
+									label: "Nama Lengkap",
+									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
+								}) +
+								buatElemenHtml("fieldTextAction", {
+									label: "Nomor Induk Pegawai",
+									atribut: 'name="nip" placeholder="NIP"',
+									txtLabel: `<i class="search icon"></i>`,
+									atributLabel: `name="cek" type="button" jns="cek_nip" tbl="asn"`,
+								}) + 
+								buatElemenHtml("fieldTextAction", {
+									label: "username",
+									atribut: 'name="username" placeholder="username"',
+									txtLabel: `<i class="search icon"></i>`,
+									atributLabel: `name="cek" type="button" jns="cek" tbl="users" klm="username"`,
+								}) + 
+								buatElemenHtml("fieldText", {
+									label: "email",
+									atribut: 'name="email" placeholder="Nama Lengkap (tanpa gelar)" readonly',
+								})
+							break;
 						case 'asn':
 							dataHtmlku.konten +=
 								buatElemenHtml("fieldText", {
