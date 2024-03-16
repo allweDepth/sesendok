@@ -450,15 +450,15 @@ $(document).ready(function () {
 						itemDivDataTab.eq(0).text('Sub Kegiatan');
 						itemDivDataTab.eq(1).attr('tbl', 'renja').attr('id_sub_keg', 'renja');
 						itemDivDataTab.eq(1).text('Renja');
-						itemDivDataTab.eq(2).attr('tbl', 'renja_p');
+						itemDivDataTab.eq(2).attr('tbl', 'renja_p').attr('id_sub_keg', 'renja');
 						itemDivDataTab.eq(2).text('Renja Perubahan');
 						break;
 					case 'sub_keg_dpa':
 						itemDivDataTab.eq(0).attr('tbl', 'sub_keg_dpa');
 						itemDivDataTab.eq(0).text('Sub Kegiatan');
-						itemDivDataTab.eq(1).attr('tbl', 'dpa');
+						itemDivDataTab.eq(1).attr('tbl', 'dpa').attr('id_sub_keg', 'renja');
 						itemDivDataTab.eq(1).text('D P A');
-						itemDivDataTab.eq(2).attr('tbl', 'dppa');
+						itemDivDataTab.eq(2).attr('tbl', 'dppa').attr('id_sub_keg', 'renja');
 						itemDivDataTab.eq(2).text('DPPA');
 						break;
 					default:
