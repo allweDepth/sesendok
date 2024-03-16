@@ -7,7 +7,7 @@ $keyEnc = substr(str_shuffle($permitted_chars), 0, $msx);
 define('KEY_ENCRYPT', $keyEnc);
 
 define('hasilServer', [
-    1 => 'berhasil run',
+    1 => 'berhasil dijalankan',
     2 => 'berhasil tambah data',
     3 => 'berhasil update',
     4 => 'berhasil delete',

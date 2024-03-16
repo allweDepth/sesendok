@@ -140,6 +140,112 @@ class post_data
                         ]);
                     case 'add':
                         switch ($tbl) {
+                            case 'asn':
+                                $nama = $validate->setRules('nama', 'nama', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                ]);
+                                $gelar = $validate->setRules('gelar', 'gelar', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $jabatan = $validate->setRules('jabatan', 'alamat', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $nip = $validate->setRules('nip', 'nip', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'max_char' => 18,
+                                    'min_char' => 18,
+                                    // 'unique' => ['db_asn_pemda_neo', 'nip']
+                                ]);
+                                $golongan = $validate->setRules('golongan', 'golongan', [
+                                    'max_char' => 1,
+                                    'min_char' => 1,
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'inArray' => [1, 2, 3, 4]
+                                ]);
+                                $ruang = $validate->setRules('ruang', 'golongan', [
+                                    'strtolower' => true,
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inArray' => ['a', 'b', 'c', 'd', 'e'],
+                                    'max_char' => 1,
+                                    'min_char' => 1
+                                ]);
+                                $t4_lahir = $validate->setRules('t4_lahir', 'tempat lahir', [
+                                    'strtolower' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $tgl_lahir = $validate->setRules('tgl_lahir', 'tanggal lahir', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+
+                                $agama = $validate->setRules('agama', 'golongan', [
+                                    'strtolower' => true,
+                                    'sanitize' => 'string',
+                                    'inArray' => ['islam', 'kristen', 'katolik', 'protestan', 'yahudi', 'budha', 'konghucu', 'hindu', 'kepercayaan']
+                                ]);
+                                $kelamin = $validate->setRules('kelamin', 'golongan', [
+                                    'strtolower' => true,
+                                    'sanitize' => 'string',
+                                    'inArray' => ['pria', 'wanita']
+                                ]);
+                                $jenis_kepeg = $validate->setRules('jenis_kepeg', 'jenis kepegawaian', [
+                                    'strtolower' => true,
+                                    'sanitize' => 'string',
+                                    'inArray' => ['pnsp', 'pnsd1', 'pnsd2', 'pnsp_dpb1', 'pnsp_dpb2', 'pnsp_dpk1', 'pnsp_dpk2', 'pnsd_dpb_pusat', 'pnsd_dpk_pusat', 'swasta']
+                                ]);
+                                $status_kepeg = $validate->setRules('status_kepeg', 'status kepegawaian', [
+                                    'strtolower' => true,
+                                    'sanitize' => 'string',
+                                    'inArray' => ['capeg', 'peg_tetap', 'mpp', 'pen_uang_tunggu', 'peg_seorsing', 'cuti', 'peg_sementara', 'peg_bulanan']
+                                ]);
+                                $status = $validate->setRules('status', 'status kepegawaian', [
+                                    'strtolower' => true,
+                                    'sanitize' => 'string',
+                                    'inArray' => ['duda', 'janda', 'duda-janda', 'lajang', 'menikah']
+                                ]);
+                                $no_ktp = $validate->setRules('no_ktp', 'ktp', [
+                                    'preg_replace' => ["/[^0-9]/", ""],
+                                    'sanitize' => 'string',
+                                ]);
+                                $npwp = $validate->setRules('npwp', 'npwp', [
+                                    'preg_replace' => ["/[^0-9]/", ""],
+                                    'sanitize' => 'string',
+                                ]);
+                                $alamat = $validate->setRules('alamat', 'alamat', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
+                                    'preg_replace' => ["/[^0-9]/", ""],
+                                    'sanitize' => 'string'
+                                ]);
+                                // $kontak_person = preg_replace("/[^0-9]/", "", $getData[15]);
+                                $email = $validate->setRules('email', 'email', [
+                                    'sanitize' => 'string',
+                                    'email' => true
+                                ]);
+                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                                    'numeric' => true
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
                             case 'daftar_paket':
                                 $id_uraian = $validate->setRules('id_uraian', 'uraian paket', [
                                     'min_char' => 8,
@@ -529,8 +635,8 @@ class post_data
                                 $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
                                     'numeric_zero' => true,
                                 ]);
-                                $id_opd_tampilkan=(int)$id_opd_tampilkan;
-                                if($id_opd_tampilkan > 0){
+                                $id_opd_tampilkan = (int)$id_opd_tampilkan;
+                                if ($id_opd_tampilkan > 0) {
                                     $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
                                         'inDB' => ['organisasi_neo', 'id', [['id', '=', (int)$_POST['id_opd_tampilkan']]]],
                                         'required' => true,
@@ -538,7 +644,7 @@ class post_data
                                         'min_char' => 1
                                     ]);
                                 }
-                                
+
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1419,6 +1525,78 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'asn':
+                                    $kondisi = [['nip', '=', $nip], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                                    $kodePosting = 'cek_insert';
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kd_opd' => $kd_opd,
+                                        'nama' => $nama,
+                                        'gelar' => $gelar,
+                                        'kelompok' => $kelompok,
+                                        'jabatan' => $jabatan,
+                                        'nip' => $nip,
+                                        'golongan' => $golongan,
+                                        'ruang' => $ruang,
+                                        't4_lahir' => $t4_lahir,
+                                        'tgl_lahir' => $tgl_lahir,
+                                        'agama' => $agama,
+                                        'kelamin' => $kelamin,
+                                        'jenis_kepeg' => $jenis_kepeg,
+                                        'status_kepeg' => $status_kepeg,
+                                        'no_ktp' => $no_ktp,
+                                        'npwp' => $npwp,
+                                        'alamat' => $alamat,
+                                        'kontak_person' => $kontak_person,
+                                        'email' => $email,
+                                        'status' => $status,
+                                        // 'no_buku_nikah' => $no_buku_nikah,
+                                        // 'tgl_nikah' => $tgl_nikah,
+                                        // 'nama_anak' => $nama_anak,
+                                        // 'nik_anak' => $nik_anak,
+                                        // 'nama_ayah' => $nama_ayah,
+                                        // 'nama_ibu' => $nama_ibu,
+                                        // 'nama_pasangan' => $nama_pasangan,
+                                        // 'no_karpeg' => $no_karpeg,
+                                        // 'tgl_karpeg' => $tgl_karpeg,
+                                        // 'no_taspen' => $no_taspen,
+                                        // 'tgl_taspen' => $tgl_taspen,
+                                        // 'no_karsi_karsu' => $no_karsi_karsu,
+                                        // 'tgl_karsi_karsu' => $tgl_karsi_karsu,
+                                        // 'nmr_sk_terakhir' => $nmr_sk_terakhir,
+                                        // 'tgl_sk_terakhir' => $tgl_sk_terakhir,
+                                        // 'pj_sk_terakhir' => $pj_sk_terakhir,
+                                        // 'nmr_sk_cpns' => $nmr_sk_cpns,
+                                        // 'tgl_sk_cpns' => $tgl_sk_cpns,
+                                        // 'pj_sk_cpns' => $pj_sk_cpns,
+                                        // 'nmr_sk_pns' => $nmr_sk_pns,
+                                        // 'tgl_sk_pns' => $tgl_sk_pns,
+                                        // 'pj_sk_pns' => $pj_sk_pns,
+                                        // 'pend_sekolah_sd' => $pend_sekolah_sd,
+                                        // 'pend_ijasah_sd' => $pend_ijasah_sd,
+                                        // 'pend_tgl_tmt_sd' => $pend_tgl_tmt_sd,
+                                        // 'pend_t4_sd' => $pend_t4_sd,
+                                        // 'pend_sekolah_smp' => $pend_sekolah_smp,
+                                        // 'pend_ijasah_smp' => $pend_ijasah_smp,
+                                        // 'pend_tgl_tmt_smp' => $pend_tgl_tmt_smp,
+                                        // 'pend_t4_smp' => $pend_t4_smp,
+                                        // 'pend_sekolah_smu' => $pend_sekolah_smu,
+                                        // 'pend_ijasah_smu' => $pend_ijasah_smu,
+                                        // 'pend_tgl_tmt_smu' => $pend_tgl_tmt_smu,
+                                        // 'pend_t4_smu' => $pend_t4_smu,
+                                        // 'pend_sekolah_akhir' => $pend_sekolah_akhir,
+                                        // 'pend_ijasah_akhir' => $pend_ijasah_akhir,
+                                        // 'pend_tgl_tmt_akhir' => $pend_tgl_tmt_akhir,
+                                        // 'pend_t4_akhir' => $pend_t4_akhir,
+                                        // 'sk_pangkat_terakhir' => $sk_pangkat_terakhir,
+                                        // 'tgl_tmt_akhir' => $tgl_tmt_akhir,
+                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                        'disable' => $disable,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                    break;
                                 case 'daftar_paket':
                                     //
                                     $send = json_decode($id_uraian);
@@ -1439,13 +1617,13 @@ class post_data
                                             $row_sub->dok = $value->dok_anggaran;
                                             $row_sub->nilai_kont = $row_sub->$klm_jumlah;
                                             $row_sub->vol_kontrak = $value->vol_kontrak;
-                                            $row_sub->sat_kontrak =$value->sat_kontrak;
+                                            $row_sub->sat_kontrak = $value->sat_kontrak;
 
 
 
                                             $id_dok_anggaran = $value->id;
                                             $kumpulanRowSub[] = $row_sub;
-                                            
+
                                             $pagu += $row_sub->$klm_jumlah;
                                             $jumlah += $value->val_kontrak;
                                             $kd_sub_keg[] = $row_sub->kd_sub_keg;
@@ -2254,7 +2432,7 @@ class post_data
                                             // $id_row_paket = $ListRow->id;
                                             //data paket jika ada
 
-                                            
+
                                             //compare dengan $kumpulanRowSub[] 
                                             foreach ($kumpulanRowSub as $key => $value) {
                                                 $id_dok_anggaran = $value->id;
@@ -2272,7 +2450,7 @@ class post_data
                                                 // var_dump($row_cari);
                                                 //set value 
                                                 $set_insert = [
-                                                    'id_paket' =>$id_row_paket,// $id_row,
+                                                    'id_paket' => $id_row_paket, // $id_row,
                                                     'id_dok_anggaran' => $id_dok_anggaran,
                                                     'dok' => $dok,
                                                     'tahun' => $tahun,

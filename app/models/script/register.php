@@ -11,6 +11,7 @@ class Register
 		$validate = new Validate($_POST);
 		$sukses = false;
 		$code = 40;
+		var_dump($keyEncrypt);
 		// $crypto = new CryptoUtils();
 		if (isset($_POST['register']) and isset($_POST['setuju'])) {
 			$username = $validate->setRules('username', 'Username', [
@@ -25,6 +26,13 @@ class Register
 				'sanitize' => 'string',
 				'required' => true,
 				'min_char' => 8
+			]);
+			$nip = $validate->setRules('nip', 'nip', [
+				'sanitize' => 'string',
+				'required' => true,
+				'max_char' => 18,
+				'min_char' => 18,
+				// 'unique' => ['db_asn_pemda_neo', 'nip']
 			]);
 			$nama = $validate->setRules('nama', 'Nama Lengkap', [
 				'sanitize' => 'string',
@@ -82,6 +90,7 @@ class Register
 					'username' => $username,
 					'email' => $email,
 					'nama' => $nama,
+					'nip' => $nip,
 					'password' => $password,
 					'kd_organisasi' => $kd_organisasi,
 					'nama_org' => $nama_org,

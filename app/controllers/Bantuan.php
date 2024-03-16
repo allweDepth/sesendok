@@ -9,7 +9,7 @@ class Bantuan extends Controller
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = '';
         $dataFooter['tambahan_js'] = '<script src="'.BASEURL.'js/about.js"></script>';
-        $dataFooter['key_encrypt'] = '';
+        // $dataFooter['key_encrypt'] = '';
         $this->view('templates/header', $dataHeader);
         $this->view('bantuan/index');
         $this->view('templates/footer', $dataFooter);

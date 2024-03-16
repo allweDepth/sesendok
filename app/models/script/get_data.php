@@ -400,7 +400,7 @@ class get_data
                             if ($rowTahunAktif !== false) {
                                 $rowTahun = $rowTahunAktif;
                                 $DB->select('*');
-
+                                $data['row_tahun'] = $rowTahun;
                                 //tambahkan value dropdown organisasi
                                 $cari_drop = $data['row_tahun']->id_opd_tampilkan;
                                 if ($cari_drop) {
@@ -433,6 +433,16 @@ class get_data
                         case 'get_tbl':
                             $kodePosting = 'get_tbl';
                             switch ($tbl) {
+                                case 'users':
+                                    $like = "id > ? AND disable <= ? AND(nama LIKE CONCAT('%',?,'%') OR username LIKE CONCAT('%',?,'%') OR email LIKE CONCAT('%',?,'%') OR kd_organisasi LIKE CONCAT('%',?,'%') OR nama_org LIKE CONCAT('%',?,'%') OR kd_wilayah LIKE CONCAT('%',?,'%') OR tgl_daftar LIKE CONCAT('%',?,'%') OR tahun LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [0, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY nama ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "id > ? AND disable <= ?";
+                                    $data_where1 =  [0, 0];
+                                    $whereGet_row_json = "id > ? AND disable <= ?";
+                                    $data_hereGet_row_json = [0, 0];
+                                    break;
                                 case 'asn':
                                     $like = "kd_wilayah = ? AND kd_opd = ? AND disable <= ? AND(nama LIKE CONCAT('%',?,'%') OR 	nip LIKE CONCAT('%',?,'%') OR t4_lahir LIKE CONCAT('%',?,'%') OR tgl_lahir LIKE CONCAT('%',?,'%') OR jabatan LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR npwp LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR nama_anak LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
@@ -1264,10 +1274,7 @@ class get_data
                             break;
                         case 'getAllValJson':
                             $results = $DB->getWhereArray($tabel_pakai, $kondisi);
-
                             $jumlahArray = is_array($results) ? count($results) : 0;
-
-
                             $dataJson['results'] = [];
                             if ($jumlahArray > 0) {
                                 switch ($jenis) {

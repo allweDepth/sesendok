@@ -327,6 +327,8 @@ $(document).ready(function () {
 							}
 						});
 						formData.set('cry', true);
+						console.log(keyEncryption);
+						
 					}
 					if (jalankanAjax) {
 						suksesAjax["ajaxku"] = function (result) {
@@ -541,11 +543,11 @@ $(document).ready(function () {
 			switch (jenis) {
 				case 'list_dropdown':
 					switch (tbl) {
-						case 'wilayah':
-							this.url = BASEURL + "/register/wilayah";
+						case 'wilayah'://url = BASEURL + halamandok + "/register";
+							this.url = BASEURL + halamandok + "/wilayah";
 							break;
 						case 'organisasi':
-							this.url = BASEURL + "/register/organisasi";
+							this.url = BASEURL + halamandok + "/organisasi";
 							break;
 						default:
 							break;
@@ -607,7 +609,7 @@ $(document).ready(function () {
 									case 'wilayah'://tujuan sasaran renstra
 										let elementDrop = $(`.ui.organisasi.dropdown.ajx`);
 										data.kd_wilayah = $('.ui.wilayah.dropdown.ajx').dropdown('get value');
-										url = BASEURL + "/register/organisasi";
+										url = BASEURL + halamandok + "/organisasi";
 										break;
 									default:
 										break;

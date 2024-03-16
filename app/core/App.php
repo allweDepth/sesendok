@@ -17,6 +17,7 @@ class App
         if ($url && file_exists('../app/controllers/' . $url[0] . '.php')) {
             //var_dump($_SESSION["user"]);
             switch ($url[0]) {
+                case 'login':
                 case 'data_teknis':
                 case 'register':
                 case 'anggaran':

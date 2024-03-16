@@ -230,7 +230,11 @@
                             <input type="text" name="nama" placeholder="Nama Lengkap">
                         </div>
                     </div>
-
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="list icon"></i>
+                            <input type="text" name="nip" placeholder="NIP">
+                        </div>
+                    </div>
                     <div class="field">
                         <div class="ui left icon input"> <i class="fax icon"></i>
                             <input type="text" name="kontak_person" placeholder="kontak person">

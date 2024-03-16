@@ -18,7 +18,7 @@ class MasterFungsi
         $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user]]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
         $classRow = '';
-        
+
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;
@@ -40,6 +40,19 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'users':
+                $rowData['thead'] = trim('<tr>
+                <th>NAMA</th>
+                <th>NIP</th>
+                <th>USERNAME</th>
+                <th>ORGANISASI</th>
+                <th>TAHUN</th>
+                <th>LOGIN</th>
+                <th>KONTAK PERSON</th>
+                <th>KETERANGAN</th>
+                <th class="collapsing">AKSI</th>
+            </tr>');
+                break;
             case 'asn':
                 $rowData['thead'] = trim('<tr>
                             <th>NAMA</th>
@@ -276,6 +289,27 @@ class MasterFungsi
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
+                    case 'users':
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="nama">' . $divAwal . $row->nama . $divAkhir . '</td>
+                                    <td klm="nip">' . $row->nip . '</td>
+                                    <td>' . $row->username  . '</td>
+                                    <td klm="nama_org">' . $divAwal . $row->nama_org . $divAkhir . '</td>
+                                    <td klm="tahun">' . $row->tahun . '</td>
+                                    <td klm="tgl_login">' . $row->tgl_login  . '</td>
+                                    <td klm="kontak_person">' . $row->kontak_person  . '</td>
+                                    <td klm="ket">' . $divAwal . $row->ket . $divAkhir . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        }
+
+                        break;
                     case 'asn':
                         $buttons = '';
                         $divAwal = '';
@@ -294,7 +328,7 @@ class MasterFungsi
                         }
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="nama">' . $divAwal . $row->nama . $divAkhir . '</td>
-                                    <td klm="nip">'. $row->nip . '</td>
+                                    <td klm="nip">' . $row->nip . '</td>
                                     <td klm="jabatan">' . $divAwal . $row->jabatan . $divAkhir . '</td>
                                     <td klm="t4_lahir">' . $divAwal . $row->t4_lahir . $divAkhir . '</td>
                                     <td klm="status">' . $divAwal . $row->status . $divAkhir . '</td>
@@ -385,7 +419,7 @@ class MasterFungsi
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
                         $divAwal = '';
-                        $divAwalAngka= '';
+                        $divAwalAngka = '';
                         $divAkhir = '';
                         if (${"kunci_$tbl"} <= 0 && ${"setujui_$tbl"} <= 0) {
                             $divAwal = '<div contenteditable>';
@@ -427,7 +461,7 @@ class MasterFungsi
                         if ($tbl == 'sub_keg_renja') {
                             if ($kunci_renja_p > 0 || $setujui_renja_p > 0) {
                                 $disable_button = 1;
-                            }else{
+                            } else {
                                 $disable_button = 0;
                             }
                         }
@@ -435,7 +469,7 @@ class MasterFungsi
                         $tbl_button_p = ($tbl == 'sub_keg_renja') ? 'renja_p' : 'dppa';
                         $buttons = '';
                         $divAwal = '';
-                        $divAwalAngka= '';
+                        $divAwalAngka = '';
                         $divAkhir = '';
                         if ($disable_button <= 0) {
                             $divAwal = '<div contenteditable>';
@@ -945,6 +979,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'users':
+                $tabel_pakai = 'user_sesendok_biila';
+                $jumlah_kolom = 9;
+                break;
             case 'asn':
                 $tabel_pakai = 'db_asn_pemda_neo';
                 $jumlah_kolom = 7;

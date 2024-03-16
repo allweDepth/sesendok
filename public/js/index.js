@@ -26,7 +26,7 @@ $(document).ready(function () {
 		}
 	}
 	$(".menu .item.inayah").on('click', handler.activate);
-	// $(".ui.dropdown").dropdown();
+	$(".ui.dropdown").dropdown();
 	$(".menu .item").tab();
 	// fix main menu to page on passing
 	// $('.main.menu, .sticky.main').visibility({
@@ -665,7 +665,7 @@ $(document).ready(function () {
 		let cryptos = false;
 		let jalankanAjax = true;
 		let dataType = "Json";
-		let url='script/post_data';
+		let url = 'script/post_data';
 		if (id_row) {
 			let uploadedFile = document.getElementById('directupload1').files[0];
 			var formData = new FormData();
@@ -692,7 +692,7 @@ $(document).ready(function () {
 				suksesAjax["ajaxku"] = function (result) {
 					let kelasToast = "success";
 					if (result.success === true) {
-						
+
 					} else {
 						kelasToast = "warning"; //'success'
 					}
@@ -752,6 +752,11 @@ $(document).ready(function () {
 			renstra: 'template/19. Renstra Template.xlsx',
 			sub_keg_renja: 'template/20. Format Sub Kegiatan Renja:DPA:DPPA.xlsx',
 			sub_keg_dpa: 'template/20. Format Sub Kegiatan Renja:DPA:DPPA.xlsx',
+			renja: 'template/21. Form Renja DPA DPPA.xlsx',
+			renja_p: 'template/21. Form Renja DPA DPPA.xlsx',
+			dpa: 'template/21. Form Renja DPA DPPA.xlsx',
+			dppa: 'template/21. Form Renja DPA DPPA.xlsx',
+			asn: 'template/26. ASN OPD DPUPR.xlsx',
 		};
 		let attrName = ini.attr("name");
 		let jenis = ini.attr("jns");
@@ -836,12 +841,153 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Gelar",
-									atribut: 'name="gelar" placeholder="Gelar belakang nama"',
+									atribut: 'name="gelar" placeholder="Gelar belakang nama" non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Gelar Depan Nama",
-									atribut: 'name="gelar_depan" placeholder="Gelar Depan Nama"',
-								})
+									atribut: 'name="gelar_depan" placeholder="Gelar Depan Nama" non_data',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Jabatan",
+									atribut: 'name="jabatan" placeholder="Jabatan..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Tempat Lahir",
+									atribut: 'name="t4_lahir" placeholder="tempat lahir" non_data',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal Lahir",
+									atribut: 'placeholder="Input tanggal lahir.." name="tgl_lahir" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Golongan",
+									atribut: 'name="golongan"',
+									kelas: "selection",
+									dataArray: [
+										["1", "I"],
+										["2", "II"],
+										["3", "III"],
+										["4", "IV"]
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Ruang",
+									atribut: 'name="ruang"',
+									kelas: "selection",
+									dataArray: [
+										["a", "a"],
+										["b", "b"],
+										["c", "c"],
+										["d", "d"],
+										["e", "e"]
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Jenis Kepegawaian",
+									atribut: 'name="jenis_kepeg"',
+									kelas: "selection",
+									dataArray: [
+										["pnsp", "ASN pusat"],
+										["pnsd1", "ASN Provinsi"],
+										["pnsd2", "ASN Kabupaten/Kota"],
+										["pnsp_dpb1", "ASN Pusat diperbantukan Provinsi"],
+										["pnsp_dpb2", "ASN Pusat diperbantukan Kab./Kota"],
+										["pnsp_dpk1", "ASN Pusat dipekerjakan Provinsi"],
+										["pnsp_dpk2", "ASN Pusat dipekerjakan Kab./Kota"],
+										["pnsd_dpb_pusat", "ASN Daerah diperbantukan Pusat"],
+										["pnsd_dpk_pusat", "ASN Daerah dipekerjakan Pusat"],
+										["swasta", "Swasta"]
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Status Kepegawaian",
+									atribut: 'name="status_kepeg"',
+									kelas: "selection",
+									dataArray: [
+										["capeg", "Calon Pegawai"],
+										["peg_tetap", "ASN/Pegawai tetap"],
+										["mpp", "mpp"],
+										["pen_uang_tunggu", "Pensiunan"],
+										["peg_seorsing", "Pegawai Seorsing"],
+										["cuti", "Cuti"],
+										["peg_sementara", "Pegawai Sementara"],
+										["peg_bulanan", "Pegawai Bulanan"]
+									],
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Nomor KTP",
+									atribut: 'name="no_ktp" placeholder="Nomor ktp..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "NPWP",
+									atribut: 'name="npwp" placeholder="NPWP..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Alamat",
+									atribut: 'name="alamat" placeholder="Alamat..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kontak Person",
+									atribut: 'name="kontak_person" placeholder="Kontak Person..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "email",
+									atribut: 'name="email" placeholder="email..."',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Agama",
+									atribut: 'name="agama"',
+									kelas: "selection",
+									dataArray: [
+										["islam", "Islam"],
+										["kristen", "Kristen"],
+										["katolik", "Katolik"],
+										["protestan", "Protestan"],
+										["hindu", "Hindu"],
+										["budha", "Budha"],
+										["konghucu", "Konghucu"],
+										["yahudi", "Yahudi"],
+										["kepercayaan", "Kepercayaan Tuhan YME."]
+									],
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Kelamin",
+									atribut: 'name="kelamin"',
+									kelas: "selection",
+									dataArray: [
+										["pria", "Pria"],
+										["wanita", "Wanita"]
+									],
+								}) + buatElemenHtml("fieldDropdown", {
+									label: "Status",
+									atribut: 'name="status"',
+									kelas: "selection",
+									dataArray: [
+										["menikah", "Menikah"],
+										["janda-duda", "Duda-Janda"],
+										["lajang", "Lajang"]
+									],
+								}) + buatElemenHtml("fieldDropdown", {
+									label: "Kelompok Jabatan",
+									atribut: 'name="kelompok"',
+									kelas: "selection",
+									dataArray: [
+										["1", "I (Kepala OPD)"],
+										["2", "II (Sekretaris/Kepala Bidang)"],
+										["3", "III"],
+										["4", "IV"]
+									],
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="2" non_data',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
 							break;
 						case 'daftar_paket':
 							dataHtmlku.konten =
@@ -1418,7 +1564,6 @@ $(document).ready(function () {
 									atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
 									kelas: "search clearable kode ajx selection",
 									dataArray: [
-										["", ""]
 									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
@@ -1430,8 +1575,6 @@ $(document).ready(function () {
 									atribut: 'name="satuan" placeholder="pilih satuan..."',
 									kelas: "search clearable satuan ajx selection",
 									dataArray: [
-										["paket", "Paket"],
-										["m", "m"]
 									],
 								}) +
 								buatElemenHtml("fieldText", {
@@ -4397,7 +4540,7 @@ $(document).ready(function () {
 						default:
 							break;
 					}
-					
+
 					if (cryptos) {
 						let keyEncryption = halamanDefault;
 						let encryption = new Encryption();
