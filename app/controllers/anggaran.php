@@ -15,7 +15,7 @@ class Anggaran extends Controller
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
-        $dataFooter['dok'] = 'anggaran';
+        $dataFooter['dok'] = 'Anggaran';
         $dataFooter['key_encrypt'] = $_SESSION['key_encrypt'];
         $this->view('templates/header_login', $dataHeader);
         $this->view('anggaran/index');

@@ -29,443 +29,71 @@
 <div class="pusher">
     <div class="ui vertical stripe segment">
         <div class="ui container">
-            <table class="ui celled padded table">
+            <table class="ui celled structured striped table">
                 <thead>
                     <tr>
-                        <th class="single line">Evidence Rating</th>
-                        <th>Effect</th>
-                        <th>Efficacy</th>
-                        <th>Consensus</th>
-                        <th>Comments</th>
+                        <th class="collapsing" rowspan="2">No.</th>
+                        <th rowspan="2">Uraian</th>
+                        <th class="center aligned collapsing" colspan="9">Tahun</th>
+                    </tr>
+                    <tr>
+                        <th>2015</th>
+                        <th>2016</th>
+                        <th>2017</th>
+                        <th>2018</th>
+                        <th>2019</th>
+                        <th>2020</th>
+                        <th>2021</th>
+                        <th>2022</th>
+                        <th>2023</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            <h2 class="ui center aligned header">A</h2>
-                        </td>
-                        <td class="single line">
-                            Power Output
-                        </td>
-                        <td>
-                            <div class="ui yellow rating" data-rating="3" data-max-rating="3"></div>
-                        </td>
-                        <td class="right aligned">
-                            80% <br>
-                            <a href="#">18 studies</a>
-                        </td>
-                        <td>Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders.</td>
+                        <td>1</td>
+                        <td>Jumlah rumah tinggal berakses sanitasi</td>
+                        <td>16187</td>
+                        <td>17595</td>
+                        <td>18718</td>
+                        <td>19673</td>
+                        <td>20,413</td>
+                        <td>24,007</td>
+                        <td>24,267</td>
+                        <td>24,837</td>
+                        <td>24,837</td>
                     </tr>
                     <tr>
-                        <td>
-                            <h2 class="ui center aligned header">A</h2>
-                        </td>
-                        <td class="single line">
-                            Weight
-                        </td>
-                        <td>
-                            <div class="ui yellow rating" data-rating="3" data-max-rating="3"></div>
-                        </td>
-                        <td class="right aligned">
-                            100% <br>
-                            <a href="#">65 studies</a>
-                        </td>
-                        <td>Creatine is the reference compound for power improvement, with numbers from one meta-analysis to assess potency</td>
+                        <td>2</td>
+                        <td>Jumlah rumah tinggal</td>
+                        <td>37488</td>
+                        <td>38648</td>
+                        <td>40258</td>
+                        <td>41064</td>
+                        <td>39714</td>
+                        <td>41,420</td>
+                        <td>42,835</td>
+                        <td>42,832</td>
+                        <td>42,832</td>
                     </tr>
+
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="5">
-                            <div class="ui right floated pagination menu">
-                                <a class="icon item">
-                                    <i class="left chevron icon"></i>
-                                </a>
-                                <a class="item">1</a>
-                                <a class="item">2</a>
-                                <a class="item">3</a>
-                                <a class="item">4</a>
-                                <a class="icon item">
-                                    <i class="right chevron icon"></i>
-                                </a>
-                            </div>
-                        </th>
+                        <th></th>
+                        <th>Persentase</th>
+                        <th>43.18%</th>
+                        <th>45.53%</th>
+                        <th>46.50%</th>
+                        <th>47.91%</th>
+                        <th>51.40%</th>
+                        <th>57.96%</th>
+                        <th>56.65%</th>
+                        <th>57.99%</th>
+                        <th>57.99%</th>
                     </tr>
                 </tfoot>
             </table>
-            <table class="ui definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Arguments</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>reset rating</td>
-                        <td>None</td>
-                        <td>Resets rating to default value</td>
-                    </tr>
-                    <tr>
-                        <td>set rating</td>
-                        <td>rating (integer)</td>
-                        <td>Sets the current star rating to specified value</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="ui definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Arguments</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>reset rating</td>
-                        <td>None</td>
-                        <td>Resets rating to default value</td>
-                    </tr>
-                    <tr>
-                        <td>set rating</td>
-                        <td>rating (integer)</td>
-                        <td>Sets the current star rating to specified value</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="ui definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Arguments</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>reset rating</td>
-                        <td>None</td>
-                        <td>Resets rating to default value</td>
-                    </tr>
-                    <tr>
-                        <td>set rating</td>
-                        <td>rating (integer)</td>
-                        <td>Sets the current star rating to specified value</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="ui definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Arguments</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>reset rating</td>
-                        <td>None</td>
-                        <td>Resets rating to default value</td>
-                    </tr>
-                    <tr>
-                        <td>set rating</td>
-                        <td>rating (integer)</td>
-                        <td>Sets the current star rating to specified value</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="ui definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Arguments</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>reset rating</td>
-                        <td>None</td>
-                        <td>Resets rating to default value</td>
-                    </tr>
-                    <tr>
-                        <td>set rating</td>
-                        <td>rating (integer)</td>
-                        <td>Sets the current star rating to specified value</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="ui definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Arguments</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>reset rating</td>
-                        <td>None</td>
-                        <td>Resets rating to default value</td>
-                    </tr>
-                    <tr>
-                        <td>set rating</td>
-                        <td>rating (integer)</td>
-                        <td>Sets the current star rating to specified value</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="ui compact celled definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Registration Date</th>
-                        <th>E-mail address</th>
-                        <th>Premium Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>John Lilki</td>
-                        <td>September 14, 2013</td>
-                        <td>jhlilk22@yahoo.com</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jamie Harington</td>
-                        <td>January 11, 2014</td>
-                        <td>jamieharingonton@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jill Lewis</td>
-                        <td>May 11, 2014</td>
-                        <td>jilsewris22@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                </tbody>
-                <tfoot class="full-width">
-                    <tr>
-                        <th></th>
-                        <th colspan="4">
-                            <div class="ui right floated small primary labeled icon button">
-                                <i class="user icon"></i> Add User
-                            </div>
-                            <div class="ui small button">
-                                Approve
-                            </div>
-                            <div class="ui small  disabled button">
-                                Approve All
-                            </div>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-            <table class="ui compact celled definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Registration Date</th>
-                        <th>E-mail address</th>
-                        <th>Premium Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>John Lilki</td>
-                        <td>September 14, 2013</td>
-                        <td>jhlilk22@yahoo.com</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jamie Harington</td>
-                        <td>January 11, 2014</td>
-                        <td>jamieharingonton@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jill Lewis</td>
-                        <td>May 11, 2014</td>
-                        <td>jilsewris22@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                </tbody>
-                <tfoot class="full-width">
-                    <tr>
-                        <th></th>
-                        <th colspan="4">
-                            <div class="ui right floated small primary labeled icon button">
-                                <i class="user icon"></i> Add User
-                            </div>
-                            <div class="ui small button">
-                                Approve
-                            </div>
-                            <div class="ui small  disabled button">
-                                Approve All
-                            </div>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-            <table class="ui compact celled definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Registration Date</th>
-                        <th>E-mail address</th>
-                        <th>Premium Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>John Lilki</td>
-                        <td>September 14, 2013</td>
-                        <td>jhlilk22@yahoo.com</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jamie Harington</td>
-                        <td>January 11, 2014</td>
-                        <td>jamieharingonton@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jill Lewis</td>
-                        <td>May 11, 2014</td>
-                        <td>jilsewris22@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                </tbody>
-                <tfoot class="full-width">
-                    <tr>
-                        <th></th>
-                        <th colspan="4">
-                            <div class="ui right floated small primary labeled icon button">
-                                <i class="user icon"></i> Add User
-                            </div>
-                            <div class="ui small button">
-                                Approve
-                            </div>
-                            <div class="ui small  disabled button">
-                                Approve All
-                            </div>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-            <table class="ui compact celled definition table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Registration Date</th>
-                        <th>E-mail address</th>
-                        <th>Premium Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>John Lilki</td>
-                        <td>September 14, 2013</td>
-                        <td>jhlilk22@yahoo.com</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jamie Harington</td>
-                        <td>January 11, 2014</td>
-                        <td>jamieharingonton@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
-                            </div>
-                        </td>
-                        <td>Jill Lewis</td>
-                        <td>May 11, 2014</td>
-                        <td>jilsewris22@yahoo.com</td>
-                        <td>Yes</td>
-                    </tr>
-                </tbody>
-                <tfoot class="full-width">
-                    <tr>
-                        <th></th>
-                        <th colspan="4">
-                            <div class="ui right floated small primary labeled icon button">
-                                <i class="user icon"></i> Add User
-                            </div>
-                            <div class="ui small button">
-                                Approve
-                            </div>
-                            <div class="ui small  disabled button">
-                                Approve All
-                            </div>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
+            <table class="ui celled structured striped table"><thead><tr><th class="collapsing">No.</th><th class="center aligned">Kecamatan</th><th class="center aligned">Jumlah rumah tinggal</th><th class="center aligned">Jumlah rumah tinggal berakses sanitasi</th><th class="center aligned">Persentase</th></tr></thead><tbody><tr><td>1</td><td>Sarudu</td><td>3.529</td><td>3.187</td><td>86,49%</td></tr><tr><td>2</td><td>Dapurang</td><td>4.270</td><td>2.337</td><td>64,40%</td></tr><tr><td>3</td><td>Duripoku</td><td>1.532</td><td>952</td><td>61,46%</td></tr><tr><td>4</td><td>Baras</td><td>5.387</td><td>1.759</td><td>34,38%</td></tr><tr><td>5</td><td>Bulutaba</td><td>2.816</td><td>2.022</td><td>62,92%</td></tr><tr><td>6</td><td>Lariang</td><td>1.777</td><td>1.266</td><td>65,32%</td></tr><tr><td>7</td><td>Pasangkayu</td><td>7.734</td><td>3.913</td><td>53,21%</td></tr><tr><td>8</td><td>Tikke Raya</td><td>4.236</td><td>2.514</td><td>54,85%</td></tr><tr><td>9</td><td>Pedongga</td><td>2.932</td><td>1.863</td><td>79,87%</td></tr><tr><td>10</td><td>Bambalamotu</td><td>4.474</td><td>2.676</td><td>56,87%</td></tr><tr><td>11</td><td>Bambaira</td><td>2.392</td><td>1.329</td><td>47,61%</td></tr><tr><td>12</td><td>Sarjo</td><td>1.753</td><td>1.019</td><td>48,37%</td></tr></tbody><tfoot><tr><th></th><th></th><th>42.832</th><th>24.837</th><th>57,99%</th></tr></tfoot></table>
         </div>
     </div>
     <div class="ui inverted vertical footer segment">
