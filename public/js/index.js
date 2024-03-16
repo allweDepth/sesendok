@@ -100,6 +100,7 @@ $(document).ready(function () {
 		let ini = $(this);
 		let tab = ini.attr("data-tab");
 		let jenis_this = ini.attr("jns");
+		let jns = ini.attr("jns");
 		let jenis = "get_tbl"; //get data
 		let tbl = ini.attr("tbl");
 		let tb = ini.attr("tb");
@@ -123,7 +124,6 @@ $(document).ready(function () {
 			"Daftar Pelaksanaan Anggaran (DPA)",
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
 		]
-
 		let arrayDasboard = {
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			renstra: tab_renstra,
@@ -154,14 +154,13 @@ $(document).ready(function () {
 			daftar_paket: ["clipboard list icon",
 				"DAFTAR PAKET DAN KONTRAK",
 				"daftar paket pekerjaan",
-				"",],
+				"Kontrak Pengadaan Barang/Jasa yang selanjutnya disebut Kontrak adalah perjanjian tertulis antara PA/KPA/PPK dengan Penyedia Barang/Jasa atau pelaksana Swakelola",],
 			dppa: [
 				"clipboard list icon",
 				"DPPA",
 				"Dokumen Pelaksanaan Perubahan Anggaran",
 				"",
 			],
-			tab_kontrak: ["clipboard list icon", "KONTRAK", "perjanjian", ""],
 			tab_input_real: ["clipboard list icon", "Realisasi", "Input Realisasi"],
 			tab_spj: ["clipboard list icon", "Renja", "Rencana Kerja"],
 			tab_lap: ["clipboard list icon", "Renja", "Rencana Kerja"],
@@ -315,6 +314,10 @@ $(document).ready(function () {
 		console.log(tab);
 
 		switch (tab) {
+			case "tab_kontrak":
+				$('div[name="ketref"]').html(arrayDasboard[tbl][3]);
+				jalankanAjax = true;
+				break;
 			case "tab_hargasat":
 				dasboardheader.text(tbl.toUpperCase());
 				$('div[name="kethargasat"]').html(arrayDasboard[tab][3]);
@@ -412,7 +415,7 @@ $(document).ready(function () {
 			case "rekanan":
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
-			case "tab_kontrak":
+
 			case "atur":
 			case "users":
 				jalankanAjax = true;
@@ -424,67 +427,74 @@ $(document).ready(function () {
 			case "sub_keg_renja":
 			case "sub_keg_dpa":
 			case "tab_renja":
-				let anggaranAttr = ini.attr('anggaran');
 				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
-				switch (anggaranAttr) {
-					case 'renja':
+				switch (jns) {
+					case 'rincian_perubahan':
+					case 'rincian_pokok':
+						data['id_sub_keg'] = ini.closest('tr').attr('id_row');
+						break;
+					default:
+						switch (tbl) {
+							case "dpa":
+							case "dppa":
+							case "renja":
+							case "renja_p":
+								data['id_sub_keg'] = ini.attr('id_sub_keg');
+								break;
+						}
+						break;
+				}
+				switch (tbl) {
+					case 'sub_keg_renja':
 						itemDivDataTab.eq(0).attr('tbl', 'sub_keg_renja');
 						itemDivDataTab.eq(0).text('Sub Kegiatan');
-						itemDivDataTab.eq(1).attr('tb', 'renja').attr('id_sub_keg', 'renja');
+						itemDivDataTab.eq(1).attr('tbl', 'renja').attr('id_sub_keg', 'renja');
 						itemDivDataTab.eq(1).text('Renja');
-						itemDivDataTab.eq(2).attr('tb', 'renja_p');
+						itemDivDataTab.eq(2).attr('tbl', 'renja_p');
 						itemDivDataTab.eq(2).text('Renja Perubahan');
 						break;
-					case 'dpa':
+					case 'sub_keg_dpa':
 						itemDivDataTab.eq(0).attr('tbl', 'sub_keg_dpa');
 						itemDivDataTab.eq(0).text('Sub Kegiatan');
-						itemDivDataTab.eq(1).attr('tb', 'dpa');
+						itemDivDataTab.eq(1).attr('tbl', 'dpa');
 						itemDivDataTab.eq(1).text('D P A');
-						itemDivDataTab.eq(2).attr('tb', 'dppa');
+						itemDivDataTab.eq(2).attr('tbl', 'dppa');
 						itemDivDataTab.eq(2).text('DPPA');
 						break;
-				};
-
+					default:
+						break;
+				}
 				// $(".message.goyang.keterangan").find('p').text(arrayDasboard[tab][3]);
 				if (tbl) {
-					jalankanAjax = true;
 					divTab.find('button[jns]').attr('tbl', tbl)
 				}
 				switch (tbl) {
 					case "sub_keg_renja":
 					case "sub_keg_dpa":
+						divTab.find('table.sub_keg').attr('hidden', "")
+						jalankanAjax = true;
 					case "dpa":
 					case "dppa":
 					case "renja":
 					case "renja_p":
-						let elmk = divTab.find(`.secondary.menu [tb="${tbl}"]`);
-						elmk.addClass('active')
-							.closest('.ui.menu')
-							.find('.item')
-							.not($(elmk))
-							.removeClass('active');
-
-						switch (tbl) {
-							case "sub_keg_renja":
-							case "sub_keg_dpa":
-							case "dpa":
-							case "dppa":
-							case "renja":
-							case "renja_p":
-								break;
-							default:
-								break;
-						}
-						if (tbl === 'sub_keg_renja' || tbl === 'sub_keg_dpa') {
-							divTab.find('table.sub_keg').attr('hidden', "")
-						} else {
+						let elmk = divTab.find(`.secondary.menu [tbl="${tbl}"]`);
+						console.log(data['id_sub_keg']);
+						if (tbl !== 'sub_keg_renja' && tbl !== 'sub_keg_dpa' && data['id_sub_keg'] > 0) {
 							divTab.find('table.sub_keg').removeAttr('hidden')
-							data['id_sub_keg'] = ini.closest('tr').attr('id_row');
 							// tambhalan atribut id sub kegiatan di button jns
-							divTab.find('button[jns="add"]').attr('id_sub_keg', data['id_sub_keg']);
-							divTab.find(`[tb="${tbl}"]`).attr('id_sub_keg', data['id_sub_keg'])
+							if (data['id_sub_keg'] > 0) {
+								divTab.find('button[jns="add"]').attr('id_sub_keg', data['id_sub_keg']);
+								divTab.find(`[tbl="${tbl}"]`).attr('id_sub_keg', data['id_sub_keg'])
+								jalankanAjax = true;
+							}
 						}
-						jalankanAjax = true;
+						if (jalankanAjax) {
+							elmk.addClass('active')
+								.closest('.ui.menu')
+								.find('.item')
+								.not($(elmk))
+								.removeClass('active');
+						}
 						break;
 					default:
 						break;
@@ -841,13 +851,13 @@ $(document).ready(function () {
 									atribut: 'name="nip" placeholder="NIP"',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="cek" type="button" jns="cek_nip" tbl="asn"`,
-								}) + 
+								}) +
 								buatElemenHtml("fieldTextAction", {
 									label: "username",
 									atribut: 'name="username" placeholder="username"',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="cek" type="button" jns="cek" tbl="users" klm="username"`,
-								}) + 
+								}) +
 								buatElemenHtml("fieldText", {
 									label: "email",
 									atribut: 'name="email" placeholder="Nama Lengkap (tanpa gelar)" readonly',
@@ -933,7 +943,7 @@ $(document).ready(function () {
 									dataArray: [
 										["capeg", "Calon Pegawai"],
 										["peg_tetap", "ASN/Pegawai tetap"],
-										["mpp", "mpp"],
+										["mpp", "Masa Persiapan Pensiun"],
 										["pen_uang_tunggu", "Pensiunan"],
 										["peg_seorsing", "Pegawai Seorsing"],
 										["cuti", "Cuti"],
@@ -2210,8 +2220,7 @@ $(document).ready(function () {
 						case 'renja':
 						case 'renja_p'://@audit now
 							// console.log(ini.closest('.ui.tab').find(`.ui.menu a.active[tb="${tbl}"]`));
-
-							formIni.attr("id_sub_keg", ini.closest('.ui.tab').find(`.ui.menu a.active[tb="${tbl}"]`).attr("id_sub_keg"));
+							formIni.attr("id_sub_keg", ini.closest('.ui.tab').find(`.ui.menu a.active[tbl="${tbl}"]`).attr("id_sub_keg"));
 							formIni.attr("dok", ini.attr("dok"));
 							break;
 						case 'value1':

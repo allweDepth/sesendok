@@ -77,8 +77,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
                 <div class="content">
                     <a class="item nabiila" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
-                    <a class="item nabiila" href="#" data-tab="tab_renja" anggaran="renja"><span><i class="toggle on icon"></i></span><i class="violet tag icon"></i>RENJA</a>
-                    <a class="item nabiila" href="#" data-tab="tab_renja" anggaran="dpa"><span><i class="toggle on icon"></i></span><i class="yellow tags icon"></i>DPA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_renja"><span><i class="toggle on icon"></i></span><i class="violet tag icon"></i>RENJA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_dpa"><span><i class="toggle on icon"></i></span><i class="yellow tags icon"></i>DPA</a>
                 </div>
             </div>
             <a class="item" href="#" data-tab="tab_kontrak" tbl="daftar_paket"><i class="file contract icon"></i>Kontrak</a>
@@ -386,17 +386,17 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ============== -->
             <!-- tab_renja dan dpa -->
             <!-- ============== -->
-            <div class="ui tab basic segment" data-tab="tab_renja" tbl="sub_keg_renja">
+            <div class="ui tab basic segment" data-tab="tab_renja">
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
-                            <a class="item inayah" data-tab="tab_renja" tbl="sub_keg_renja">
+                            <a class="item inayah" data-tab="tab_renja" >
                                 Sub Kegiatan
                             </a>
-                            <a class="item" data-tab="tab_renja" tb="renja">
+                            <a class="item" data-tab="tab_renja">
                                 Renja
                             </a>
-                            <a class="item" data-tab="tab_renja" tb="renja_p">
+                            <a class="item" data-tab="tab_renja">
                                 Renja Perubahan
                             </a>
                         </div>
