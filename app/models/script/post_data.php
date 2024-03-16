@@ -78,8 +78,8 @@ class post_data
                             case 'daftar_paket':
                                 $val_in_array = ['file_kontrak', 'file_addendum', 'file_pho', 'file_fho', 'file_laporan', 'file_dokumentasi0', 'file_dokumentasi50', 'file_dokumentasi100'];
                                 break;
-                            case 'value':
-                                # code...
+                            case 'asn':
+                                $val_in_array = ['file_akta_lahir', 'file_ktp', 'file_kk', 'file_npwp', 'file_buku_nikah', 'file_karpeg', 'file_karsi_karsu', 'file_photo', 'pend_file_sd', 'pend_file_smp', 'pend_file_smu', 'pend_file_s1', 'pend_file_s2', 'pend_file_s3'];
                                 break;
                             default:
                                 # code...
@@ -1466,8 +1466,10 @@ class post_data
                                     $kodePosting = 'cek_insert';
                                     $set = [];
                                     break;
-                                case 'value':
-                                    # code...
+                                case 'asn':
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], , ['id', '=', $id_row, 'AND']];
+                                    $kodePosting = 'cek_insert';
+                                    $set = [];
                                     break;
                                 default:
                                     # code...
@@ -1485,8 +1487,9 @@ class post_data
                                         }
 
                                         break;
-                                    case 'value':
-                                        # code...
+                                    case 'asn':
+                                        $uraian = "nip({$row_sub->nip})_dok({$dok})_wilayah({$kd_wilayah})";
+                                        $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
                                         break;
                                     default:
                                         # code...
@@ -1835,6 +1838,9 @@ class post_data
                                         'id_opd_tampilkan' => $id_opd_tampilkan,
                                         'username' => $_SESSION["user"]["username"]
                                     ];
+                                    if ($jenis == 'add') {
+                                        // $set['']=1;
+                                    }
                                     break;
                                 case 'rekanan':
                                     switch ($jns) {
@@ -2412,6 +2418,23 @@ class post_data
                                 }
                             } else {
                                 // inser row
+                                switch ($jenis) {
+                                    case 'add':
+                                        switch ($tbl) {
+                                            case 'pengaturan':
+                                                $set['kunci_renstra'] = 1;
+                                                $set['kunci_renja'] = 1;
+                                                $set['kunci_dpa'] = 1;
+                                                $set['kunci_renja_p'] = 1;
+                                                $set['kunci_dppa'] = 1;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
                                 $resul = $DB->insert($tabel_pakai, $set);
                                 $data['note']['add row'] = $DB->lastInsertId();
                                 $id_row_paket = $data['note']['add row'];
@@ -2419,20 +2442,21 @@ class post_data
                             }
                             switch ($jenis) {
                                 case 'edit':
-                                    $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
-                                    //ambil data ruas dengan id paket
-                                    $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
-                                    if ($row_sub2 !== false) {
-                                        // foreach ($row_sub2 as $key => $value) {
-                                        // }
+                                    switch ($tbl) {
+                                        case 'daftar_paket':
+                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
+                                            //ambil data ruas dengan id paket
+                                            $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
+                                            if ($row_sub2 !== false) {
+                                                // foreach ($row_sub2 as $key => $value) {
+                                                // }
+                                            }
                                     }
                                 case 'add':
                                     switch ($tbl) {
                                         case 'daftar_paket': //@audit sekarang pemaketan
                                             // $id_row_paket = $ListRow->id;
                                             //data paket jika ada
-
-
                                             //compare dengan $kumpulanRowSub[] 
                                             foreach ($kumpulanRowSub as $key => $value) {
                                                 $id_dok_anggaran = $value->id;
@@ -2474,7 +2498,6 @@ class post_data
                                                     $resul = $DB->update_array('daftar_uraian_paket', $set_insert, $kondisi_cari);
                                                 }
                                             }
-
                                             break;
                                         case 'value':
                                             break;
@@ -2482,7 +2505,6 @@ class post_data
                                             break;
                                     }
                                     break;
-
                                 default:
                                     # code...
                                     break;

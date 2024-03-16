@@ -440,6 +440,9 @@ $(document).ready(function () {
 							case "renja":
 							case "renja_p":
 								data['id_sub_keg'] = ini.attr('id_sub_keg');
+								if (ini.attr('name') === 'page') {
+									data['id_sub_keg'] =$(`a.item[tbl="${tbl}"][id_sub_keg]`).attr('id_sub_keg');
+								}
 								break;
 						}
 						break;
@@ -654,6 +657,18 @@ $(document).ready(function () {
 		let jenis = ini.attr("jns");
 		let tbl = ini.attr("tbl");
 		let id_row = ini.attr('id_row');
+
+
+		const [node] = ini;
+		const attrs = {}
+		$.each(node.attributes, (index, attribute) => {
+			attrs[attribute.name] = attribute.value;
+			let attrName = attribute.name;
+			//membuat variabel
+			let myVariable = attrName;
+			window[myVariable] = attribute.value;
+		});
+
 		switch (jenis) {
 			case 'directuploadfile':
 				switch (tbl) {
@@ -661,7 +676,7 @@ $(document).ready(function () {
 						//upload langsung file
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
-						$(`#directupload1`).attr('jns', jenis).attr('tbl', tbl).attr('id_row', id_row)
+						$(`#directupload1`).attr('jns', jenis).attr('tbl', tbl).attr('id_row', id_row).attr('dok', dok).attr('accept', accept)
 						break;
 					default:
 						break;
@@ -677,6 +692,7 @@ $(document).ready(function () {
 		let jenis = ini.attr('jns');
 		let tbl = ini.attr('tbl');
 		let id_row = ini.attr('id_row');
+		let dok = ini.attr('dok');
 		let cryptos = false;
 		let jalankanAjax = true;
 		let dataType = "Json";
@@ -684,6 +700,7 @@ $(document).ready(function () {
 		if (id_row) {
 			let uploadedFile = document.getElementById('directupload1').files[0];
 			var formData = new FormData();
+			formData.append("dok", dok);
 			formData.append("jenis", jenis);
 			formData.append("tbl", tbl);
 			formData.append("id_row", id_row);
@@ -5339,8 +5356,8 @@ $(document).ready(function () {
 							<div class="ui dimmer">
 								<div class="content">
 									<div class="center">
-										<label for="directupload1" name="direct" id_row="" jns="directuploadfile" tbl="asn" class="ui inverted icon button">
-											<i class="file icon"></i>Open any file
+										<label for="directupload1" name="direct" id_row="" jns="upload" tbl="asn" dok="file_photo" class="ui inverted icon button" accept="jpg,png,jpeg,img">
+											<i class="file icon"></i>Upload File
 										</label>
 									</div>
 								</div>
