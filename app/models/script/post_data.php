@@ -527,11 +527,18 @@ class post_data
                                     'min_char' => 8
                                 ]);
                                 $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
-                                    'inDB' => ['organisasi_neo', 'id', [['id', '=', (int)$_POST['id_opd_tampilkan']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
+                                    'numeric_zero' => true,
                                 ]);
+                                $id_opd_tampilkan=(int)$id_opd_tampilkan;
+                                if($id_opd_tampilkan > 0){
+                                    $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
+                                        'inDB' => ['organisasi_neo', 'id', [['id', '=', (int)$_POST['id_opd_tampilkan']]]],
+                                        'required' => true,
+                                        'numeric' => true,
+                                        'min_char' => 1
+                                    ]);
+                                }
+                                
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'sanitize' => 'string',
                                     'required' => true,

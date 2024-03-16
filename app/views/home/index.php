@@ -106,9 +106,10 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="id card icon"></i>Organisasi</a>
                     <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="balance scale icon"></i>Peraturan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>Wilayah</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>ASN</a>
+                    
                 </div>
             </div>
+            <a class="item" href="#" data-tab="tab_ref" tbl="asn"><i class="users icon"></i>ASN</a>
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
                 <div class="content">
@@ -137,8 +138,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             </div>
         </div>
         <div class="pusher">
-            <div class="basic segment">
-                <div class="ui demo page dimmer light">
+            <div class="basic center segment">
+                <div class="ui demo page dimmer center light">
                 <!-- <div class="ui massive blue text elastic loader"></div> -->
                     <h1 class="spin">
                     
@@ -1169,7 +1170,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <div class="field">
                                     <label>Kode OPD Tampilkan</label>
                                     <div class="ui fluid search selection dropdown" name="id_opd_tampilkan">
-                                        <input type="hidden" name="id_opd_tampilkan">
+                                        <input type="hidden" name="id_opd_tampilkan" non_data>
                                         <i class="dropdown icon"></i>
                                         <div class="default text">organisasi</div>
                                         <div class="menu">

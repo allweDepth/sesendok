@@ -568,9 +568,12 @@ $(document).ready(function () {
 									case "pengaturan":
 										// result.data?.tahun;
 										var dropdown_ajx_org = new DropdownConstructor('form[name="form_pengaturan"] .ui.dropdown[name="id_opd_tampilkan"]');
-										dropdown_ajx_org.valuesDropdown(result.data.values.id_opd_tampilkan);//@audit sekarang
+										let hasKey = result?.data.hasOwnProperty("values");
+										if (hasKey) {
+											dropdown_ajx_org.valuesDropdown(result.data.values.id_opd_tampilkan);//@audit sekarang
+										}
 										dropdown_ajx_org.returnList({ jenis: "get_row_json", tbl: "organisasi", minCharacters: 1 });
-										let formPengaturan = $('form[name="form_pengaturan"]');//@audit now
+										let formPengaturan = $('form[name="form_pengaturan"]');
 										$('form[name="form_pengaturan"] .ui.dropdown.aturan').dropdown({
 											values: result?.data?.peraturan,
 										})

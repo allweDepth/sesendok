@@ -271,7 +271,7 @@ class get_data
                         break;
                     case 'get_row_json':
                         // isset($_POST['jenis'])
-                        if (isset($_POST['kd_akun'])) { 
+                        if (isset($_POST['kd_akun'])) {
                             $kd_sub_keg = $validate->setRules('kd_akun', "kode akun", [
                                 'sanitize' => 'string',
                                 'required' => true,
@@ -399,6 +399,17 @@ class get_data
                             $rowTahunAktif = $DB->getWhereOnceCustom($tabel_pakai, [['tahun', '=', $tahun], ['kd_wilayah', '=', $kd_wilayah, 'AND']]);
                             if ($rowTahunAktif !== false) {
                                 $rowTahun = $rowTahunAktif;
+                                $DB->select('*');
+
+                                //tambahkan value dropdown organisasi
+                                $cari_drop = $data['row_tahun']->id_opd_tampilkan;
+                                if ($cari_drop) {
+                                    $kondisi_result = [['disable', '<=', 0], ['id', '=', $cari_drop, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND']];
+                                    $row = $DB->getWhereOnceCustom('organisasi_neo', $kondisi_result);
+                                    if ($row !== false) {
+                                        $data['values']['id_opd_tampilkan'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->id, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                    }
+                                }
                             } else {
                                 $rowTahun = "pengaturan tahun $tahun tidak ditemukan";
                             }
@@ -409,24 +420,13 @@ class get_data
                             $peraturan = $DB->getWhereArray('peraturan_neo', [['disable', '=', 0], ['status', '=', 'umum', 'AND']]);
                             //var_dump(count($peraturan));
                             $jumlahArray = is_array($peraturan) ? count($peraturan) : 0;
-                           
                             $dataJson['results'] = [];
                             if ($jumlahArray > 0) {
                                 foreach ($peraturan as $row) {
-                                    $dataJson['results'][] = ['name' => $row->judul,'text'=>$row->judul_singkat, 'value' => $row->id, 'description' => $row->nomor];
+                                    $dataJson['results'][] = ['name' => $row->judul, 'text' => $row->judul_singkat, 'value' => $row->id, 'description' => $row->nomor];
                                 }
                             }
                             $DB->select('*');
-
-                            //tambahkan value dropdown organisasi
-                            $cari_drop = $data['row_tahun']->id_opd_tampilkan;
-                            if ($cari_drop) {
-                                $kondisi_result = [['disable', '<=', 0], ['id', '=', $cari_drop, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND']];
-                                $row = $DB->getWhereOnceCustom('organisasi_neo', $kondisi_result);
-                                if ($row !== false) {
-                                    $data['values']['id_opd_tampilkan'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->id, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
-                                }
-                            }
                             //var_dump($peraturan);
                             $data['peraturan'] = $dataJson['results'];
                             break;
@@ -1136,7 +1136,7 @@ class get_data
                         case 'get_rows':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
-                                case 'dpa_and_dppa': 
+                                case 'dpa_and_dppa':
                                     $elm = '';
                                     foreach ($send as $key => $value) {
                                         // var_dump($key);
@@ -1267,7 +1267,7 @@ class get_data
 
                             $jumlahArray = is_array($results) ? count($results) : 0;
 
-                            
+
                             $dataJson['results'] = [];
                             if ($jumlahArray > 0) {
                                 switch ($jenis) {
@@ -1915,7 +1915,7 @@ class get_data
                             }
                             $value_dinamic = array_merge($value_dinamic, $set);
                             $dataTabel = $Fungsi->getTabel($tbl, $tabel_pakai, $get_data, $jmlhalaman, $halaman, $jumlah_kolom, $type_user, $value_dinamic);
-                            $data = array_merge($dataTabel, $data,$set);
+                            $data = array_merge($dataTabel, $data, $set);
                             break;
                         case 'get_Dropdown':
                             $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $where1 $order ", $data_where1);
