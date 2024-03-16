@@ -629,6 +629,15 @@ class get_data
                                 case 'dpa':
                                 case 'renja_p':
                                 case 'dppa':
+                                    switch ($tabel_pakai) {
+                                        case 'dppa_neo':
+                                        case 'renja_p_neo':
+                                            $kolomHarga_satuan = 'harga_satuan_p';
+                                            break;
+                                        default:
+                                            $kolomHarga_satuan = 'harga_satuan';
+                                            break;
+                                    }
                                     $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
                                     if ($rowOrganisasi !== false) {
                                         $unit_kerja = $rowOrganisasi->uraian;
@@ -660,11 +669,11 @@ class get_data
                                         $rowSubKeg = $DB->getWhereOnceCustom($tabel_sub_keg, [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['id', '=', $id_sub_keg, 'AND']]);
                                         if ($rowSubKeg !== false) {
                                             $kd_sub_keg = $rowSubKeg->kd_sub_keg;
-                                            $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok, uraian";
+                                            $group_by = "GROUP BY sumber_dana, jenis_kelompok, kelompok, uraian,komponen,$kolomHarga_satuan";
                                             $data['unit_kerja'] = "$unit_kerja ($kd_opd)";
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kd_sub_keg = ? AND kel_rek = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR komponen LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun, $kd_sub_keg, 'uraian', $cari, $cari, $cari, $cari, $cari, $cari, $cari];
-                                            $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian ASC";
+                                            $order = "ORDER BY kd_sub_keg, jenis_kelompok,kelompok,uraian,komponen ASC";
                                             $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? AND kel_rek = ?";
                                             $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg, 'uraian'];
                                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];

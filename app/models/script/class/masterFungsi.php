@@ -1530,7 +1530,16 @@ class MasterFungsi
                         case 'renja_neo':
                         case 'dppa_neo':
                         case 'renja_p_neo':
-                            $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['sumber_dana', '=', $set['sumber_dana'], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND']];
+                            switch ($tabel_pakai) {
+                                case 'dppa_neo':
+                                case 'renja_p_neo':
+                                    $kolomHarga_satuan = 'harga_satuan_p';
+                                    break;
+                                default:
+                                    $kolomHarga_satuan = 'harga_satuan';
+                                    break;
+                            }
+                            $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['sumber_dana', '=', $set['sumber_dana'], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND'], ['komponen', '=', $set['komponen'], 'AND'], [$kolomHarga_satuan, '=', $set[$kolomHarga_satuan], 'AND'], ['jenis_standar_harga', '=', $set['jenis_standar_harga'], 'AND']];
 
                             if (isset($dinamic['id_row'])) {
                                 $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $dinamic['id_row'], 'AND']];
