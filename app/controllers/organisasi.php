@@ -3,14 +3,19 @@ class Organisasi extends Controller
 {
     public function index()
     {
-        $_SESSION['key_encrypt'] = KEY_ENCRYPT;
+        if (isset($_SESSION["user"])) {
+            unset($_SESSION["user"]);
+        }
+        session_start();
+        $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
+        $_SESSION["key_encrypt"] = $key_encrypt;
         $dataHeader['awalHeader'] = '';
         $dataHeader['title'] = '| Login';
         $dataHeader['css'] = 'css/login.css';
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
-        $dataFooter['dok'] = 'Organisasi';
+        $dataFooter['dok'] = 'organisasi';
         $dataFooter['key_encrypt'] = $_SESSION['key_encrypt'];
         $this->view('templates/header_login', $dataHeader);
         $this->view('organisasi/index');
@@ -20,7 +25,6 @@ class Organisasi extends Controller
     public function masuk()
     { 
         $data = $this->script("masuk")->masuk();
-        // var_dump($data);
         echo $data;
     }
     public function register()

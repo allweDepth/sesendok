@@ -3,9 +3,12 @@ class Data_Teknis extends Controller
 {
     public function index()
     {
+        if (isset($_SESSION["user"])) {
+            unset($_SESSION["user"]);
+        }
+        session_start();
         $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
-        unset($_SESSION['key_encrypt']);
-        $_SESSION['key_encrypt'] = $key_encrypt;
+        $_SESSION["key_encrypt"] = $key_encrypt;
         $dataHeader['awalHeader'] = '';
         $dataHeader['title'] = '| Data Teknis';
         $dataHeader['css'] = 'css/login.css';
@@ -21,7 +24,6 @@ class Data_Teknis extends Controller
     public function masuk()
     {
         $data = $this->script("masuk")->masuk();
-        var_dump($_SESSION['key_encrypt']);
         echo $data;
     }
     public function register()

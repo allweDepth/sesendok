@@ -3,14 +3,19 @@ class Anggaran extends Controller
 {
     public function index()
     {
-        $_SESSION['key_encrypt'] = KEY_ENCRYPT;
+        if (isset($_SESSION["user"])) {
+            unset($_SESSION["user"]);
+        }
+        session_start();
+        $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
+        $_SESSION["key_encrypt"] = $key_encrypt;
         $dataHeader['awalHeader'] = '';
-        $dataHeader['title'] = '| Login';
+        $dataHeader['title'] = '| Anggaran';
         $dataHeader['css'] = 'css/login.css';
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
-        $dataFooter['dok'] = 'data_teknis';
+        $dataFooter['dok'] = 'anggaran';
         $dataFooter['key_encrypt'] = $_SESSION['key_encrypt'];
         $this->view('templates/header_login', $dataHeader);
         $this->view('anggaran/index');

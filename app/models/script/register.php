@@ -11,7 +11,7 @@ class Register
 		$validate = new Validate($_POST);
 		$sukses = false;
 		$code = 40;
-		var_dump($keyEncrypt);
+		// var_dump($keyEncrypt);
 		// $crypto = new CryptoUtils();
 		if (isset($_POST['register']) and isset($_POST['setuju'])) {
 			$username = $validate->setRules('username', 'Username', [
@@ -46,10 +46,7 @@ class Register
 				'min_char' => 1
 			]);
 			$kd_wilayah = $validate->setRules('kd_wilayah', 'kode wilayah', [
-				'sanitize' => 'string',
-				'required' => true,
-				'inDB' => ['wilayah_neo', 'kode', [['kode', '=', $kd_wilayah]]],
-				'min_char' => 1
+				'inDB' => ['wilayah_neo', 'kode', [['kode', '=', $kd_wilayah]]]
 			]);
 
 			$kd_organisasi = $validate->setRules('organisasi', 'Organisasi', [
@@ -60,6 +57,8 @@ class Register
 			$kd_organisasi = $validate->setRules('organisasi', 'Organisasi', [
 				'inDB' => ['organisasi_neo', 'kode', [['kode', '=', $kd_organisasi],['kd_wilayah', '=', $kd_wilayah,'AND']]]
 			]);
+			$rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']]);
+			$nama_org = $rowOrganisasi->uraian;
 			$kontak = $validate->setRules('kontak_person', 'Kontak Person', [
 				'sanitize' => 'string',
 				'required' => true,
