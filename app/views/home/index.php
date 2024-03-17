@@ -106,10 +106,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="id card icon"></i>Organisasi</a>
                     <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="balance scale icon"></i>Peraturan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>Wilayah</a>
-
                 </div>
             </div>
-            <a class="item" href="#" data-tab="tab_ref" tbl="asn"><i class="users icon"></i>ASN</a>
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
                 <div class="content">
@@ -119,6 +117,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file outline icon"></i>SBU</a>
                 </div>
             </div>
+            <a class="item" href="#" data-tab="tab_ref" tbl="asn"><i class="users icon"></i>ASN</a>
             <!-- ut admin-->
             <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="atur_satu"><i class="toolbox icon"></i>Pengaturan</a>' : ''; ?>
             <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
@@ -1347,7 +1346,10 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         </div>
     </div>
     <!-- jangan dihapus untuk upload file di dimmer langsung eksekusi  -->
-    <input type="file" id="directupload1" class="ui invisible file input">
+    <form class="ui form" name="form_upload" hidden>
+        <input type="file" id="directupload1" class="ui invisible file input">
+    </form>
+
     <!-- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>-->
     <script src="<?= BASEURL; ?>vendor/jquery-3.7.1.min.js"></script>
     <script src="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.js">

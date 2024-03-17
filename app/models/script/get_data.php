@@ -423,7 +423,7 @@ class get_data
                             $dataJson['results'] = [];
                             if ($jumlahArray > 0) {
                                 foreach ($peraturan as $row) {
-                                    $dataJson['results'][] = ['name' => $row->judul, 'text' => $row->judul_singkat, 'value' => $row->id, 'description' => $row->nomor];
+                                    $dataJson['results'][] = ['name' => $row->judul, 'text' => $row->judul_singkat, 'value' => $row->id, 'description' => $row->nomor, "descriptionVertical" => true];
                                 }
                             }
                             $DB->select('*');

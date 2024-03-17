@@ -159,7 +159,7 @@ class MasterFungsi
                 //Kode Komponen	Uraian Komponen	Spesifikasi	Satuan	Harga Satuan	TKDN	Aksi
                 $rowData['thead'] = trim('<tr>
                                 <th class="collapsing">Kode Komponen</th>
-                                <th>Uraian Komponen</th>
+                                <th class="five wide">Uraian Komponen</th>
                                 <th>Spesifikasi</th>
                                 <th>Satuan</th>
                                 <th>Harga Satuan</th>
@@ -224,7 +224,7 @@ class MasterFungsi
             case 'akun_belanja':
                 $rowData['thead'] = trim('<tr>
                         <th class="collapsing">KODE KOMPONEN</th>
-                        <th>KOMPONEN</th>
+                        <th class="five wide">KOMPONEN</th>
                         <th>KETERANGAN</th>
                         <th class="collapsing">AKSI</th>
                     </tr>');

@@ -2587,7 +2587,7 @@ $(document).ready(function () {
 										}
 										switch (tbl) {
 											case 'asn':
-												
+
 												$('form[name="form_flyout"] .special.card .dimmable.image').dimmer({
 													on: 'ontouchstart' in document.documentElement ? 'click' : 'hover'
 												});
@@ -2699,7 +2699,7 @@ $(document).ready(function () {
 			reinitForm.run();
 		},
 		onApprove: function (elemen) {
-			$(elemen).closest("div.flyout").find("form").form("submit");
+			$(elemen).closest("div.flyout").find("form").form('submit');
 			return false;
 		},
 	})
@@ -2968,7 +2968,7 @@ $(document).ready(function () {
 	//===========button posting data =======@audit-ok add
 	//=====================================================name="direct"
 	$("body").on("click", '[name="add"],[name="tambah"],[name="direct"]', function (e) {
-		// e.preventDefault();
+		e.preventDefault();
 		let ini = $(this);
 		let jenis = ini.attr("jns");
 		let tbl = ini.attr("tbl");
@@ -2992,7 +2992,7 @@ $(document).ready(function () {
 						//upload langsung file
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
-						$(`#directupload1`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
+						$(`#directupload1,form[name="form_upload"]`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
 						$("#directupload1").click();
 						break;
 					default:
@@ -3002,82 +3002,20 @@ $(document).ready(function () {
 			default:
 				break;
 		}
-
 	})
-	$("body").on("change", '#directupload1', function (e) {//@audit-ok langsung upload file
-		// e.preventDefault();
-		// e.stopPropogation();
+	$("body").on("change", '#directupload1', function (e) {//@audit langsung upload file
+		e.preventDefault();
 		let ini = $(this);
-		let jenis = ini.attr('jns');
-		let tbl = ini.attr('tbl');
 		let id_row = ini.attr('id_row');
-		let dok = ini.attr('dok');
-		let cryptos = false;
-		let accept = ini.attr('accept');
-		let jalankanAjax = false;
-		let dataType = "Json";
-		let url = 'script/post_data';
+		console.log(id_row);
 		if (id_row) {
-			console.log('masukji');
-
-			let uploadedFile = document.getElementById('directupload1').files[0];
-			var formData = new FormData();
-			formData.append("dok", dok);
-			formData.append("jenis", jenis);
-			formData.append("tbl", tbl);
-			formData.append("id_row", id_row);
-			formData.append(dok, uploadedFile);
-			jalankanAjax = true;
-			if (cryptos) {
-				let keyEncryption = halamanDefault;
-				let encryption = new Encryption();
-				formData.forEach((value, key) => {
-					switch (key) {
-						case 'jenis':
-						case 'tbl':
-							break;
-						default:
-							formData.set(key, encryption.encrypt(value, keyEncryption));
-							break;
-					}
-				});
-				formData.set('cry', true);
-			}
-			if (jalankanAjax) {
-				suksesAjax["ajaxku"] = function (result) {
-
-					let kelasToast = "success";
-					if (result.success === true) {
-
-					} else {
-						kelasToast = "warning"; //'success'
-					}
-					showToast(result.error.message, {
-						class: kelasToast,
-						icon: "check circle icon",
-					});
-
-					loaderHide();
-
-				};
-				runAjax(
-					url,
-					"POST",
-					formData,
-					dataType,
-					false,
-					false,
-					"ajaxku",
-					cryptos
-				);
-				//runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
-				//runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
-			} else {
-				loaderHide();
-			}
+			let myForm = new FormGlobal(`form[name="form_upload"]`);
+			myForm.run();
+			$(`form[name="form_upload"]`).form('submit');
+			
 		}
 		// e.stopPropogation();
-		// return false;
+		
 	});
 	///=================================
 	///==== IMPOR FILE XLSX=============
@@ -3206,10 +3144,7 @@ $(document).ready(function () {
 		}
 		//console.log(arrayAccept);
 		let fileExp = file.split(".");
-		//console.log(fileExp);
 		let extFile = "." + fileExp[fileExp.length - 1];
-		//console.log(extFile);
-		//console.log(arrayAccept.indexOf(extFile));
 		if (arrayAccept.indexOf(extFile) < 0) {
 			//if (!file.endsWith('.xlsx')) {
 			modal_notif(
@@ -3218,7 +3153,6 @@ $(document).ready(function () {
 			);
 			ini.val("");
 			return false;
-		} else {
 		}
 	});
 	$("body").on("click", 'button[name="del_file"]', function (e) {
@@ -4134,8 +4068,6 @@ $(document).ready(function () {
 			})
 		}
 	}
-	setTimeout(function () {
-	}, 500);
 	//===================================
 	//=========== class calendar ========
 	//===================================
@@ -4617,6 +4549,24 @@ $(document).ready(function () {
 							formData.set("ket", $('textarea[name="ket"]').val());
 							jalankanAjax = true;
 							break;
+
+						// =================
+						// UNTUK UPLOAD DIRECT FILE====
+						// =================
+						case "form_upload":
+							//@audit form sekarang upload file
+							console.log(id_row);
+							if (id_row) {
+								console.log('masukji di formnya');
+								let uploadedFile = document.getElementById('directupload1').files[0];
+								formData.append("dok", dok);
+								formData.append("jenis", jenis);
+								formData.append("tbl", tbl);
+								formData.append("id_row", id_row);
+								formData.append(dok, uploadedFile);
+								jalankanAjax = true;
+							}
+							break;
 						default:
 							break;
 					}
@@ -4839,6 +4789,7 @@ $(document).ready(function () {
 					} else {
 						loaderHide();
 					}
+					
 					switch (nama_form) {
 						case "form_modal":
 							MyForm.form('reset')
@@ -4862,7 +4813,7 @@ $(document).ready(function () {
 				onFailure: function (e) {
 					loaderHide();
 					return false;
-				},
+				}
 			});
 		}
 		addRulesForm() {
@@ -6008,7 +5959,7 @@ $(document).ready(function () {
 	};
 	//touppercase "pascal".toProperCase();
 	String.prototype.toProperCase = function () {
-		return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+		return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 	};
 });
 // onkeypress="return rumus(event);"
@@ -6045,7 +5996,6 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }) {
 	}
 }
 function rumus(evt) {
-
 	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
 		String.fromCharCode(evt.which)
 	);
