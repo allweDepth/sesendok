@@ -1024,6 +1024,7 @@ class Impor_xlsx
                                                                         'required' => true,
                                                                         'inArray' => ['andabukanadminboskusakonne']
                                                                     ]);
+                                                                    break;
                                                                 }
 
                                                                 $satuan = $validateRow->setRules(8, 'kelompok', [

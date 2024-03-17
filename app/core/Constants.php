@@ -5,7 +5,7 @@ $msx = rand(32, 64);
 $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()<>?{}#$&=-*^@';
 $keyEnc = substr(str_shuffle($permitted_chars), 0, $msx);
 define('KEY_ENCRYPT', $keyEnc);
-
+define('PAJAK', 11);
 define('hasilServer', [
     1 => 'berhasil dijalankan',
     2 => 'berhasil tambah data',

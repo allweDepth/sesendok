@@ -81,6 +81,7 @@ class MasterFungsi
                 $rowData['thead'] = trim('<tr>
                             <th>KODE KOMPONEN</th>
                             <th>URAIAN</th>
+                            <th>KOMPONEN</th>
                             <th>KOEFISIEN</th>
                             <th>HARGA SATUAN</th>
                             <th>TOTAL</th>
@@ -445,6 +446,7 @@ class MasterFungsi
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_akun">' . $row->kd_akun . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
+                                    <td klm="komponen">' .  $row->komponen .  '</td>
                                     <td >' . $koefisien .  '</td>
                                     <td klm="' . $kolomHarga_satuan . '">' . $divAwalAngka  . number_format((float)$row->{$kolomHarga_satuan}, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="' . $kolomJumlah . '">' . $divAwalAngka  . number_format((float)$row->{$kolomJumlah}, 2, ',', '.') . $divAkhir .  '</td>
@@ -1019,19 +1021,19 @@ class MasterFungsi
                 break;
             case 'dppa':
                 $tabel_pakai = 'dppa_neo';
-                $jumlah_kolom = 7;
+                $jumlah_kolom = 8;
                 break;
             case 'dpa':
                 $tabel_pakai = 'dpa_neo';
-                $jumlah_kolom = 7;
+                $jumlah_kolom =8;
                 break;
             case 'renja_p':
                 $tabel_pakai = 'renja_p_neo';
-                $jumlah_kolom = 7;
+                $jumlah_kolom = 8;
                 break;
             case 'renja':
                 $tabel_pakai = 'renja_neo';
-                $jumlah_kolom = 7;
+                $jumlah_kolom = 8;
                 break;
             case 'sub_keg_dpa':
                 $tabel_pakai = 'sub_keg_dpa_neo';

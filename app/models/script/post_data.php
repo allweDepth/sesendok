@@ -1467,7 +1467,7 @@ class post_data
                                     $set = [];
                                     break;
                                 case 'asn':
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], , ['id', '=', $id_row, 'AND']];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['id', '=', $id_row, 'AND']];
                                     $kodePosting = 'cek_insert';
                                     $set = [];
                                     break;
@@ -2179,38 +2179,38 @@ class post_data
                         case 'unkunci':
                             switch ($tbl) {
                                 case 'renstra':
-                                    break;
-                                case 'value':
+                                case 'renja':
+                                case 'renja_p':
+                                case 'dpa':
+                                case 'dppa':
+                                    $set = ["kunci_$tbl" => 0];
                                     break;
                                 default:
                                     break;
                             }
+                            $tabel_pakai = 'pengaturan_neo';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
                             if ($tbl == 2) {
                                 break;
                             }
-                            $set = ['kunci' => 0];
                             $kodePosting = 'update_row';
                             break;
                         case 'unsetujui':
-                            switch ($tbl) {
-                                case 'renstra':
-                                    break;
-                                case 'value':
-                                    break;
-                                default:
-                                    break;
-                            }
+                            
+                            $set = ["setujui_$tbl" => 0];
+                            $tabel_pakai = 'pengaturan_neo';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                            $set = ['setujui' => 0];
+                           
                             $kodePosting = 'update_row';
                             break;
                         case 'kunci':
-                            $set = [$jenis => 1];
+                            $tabel_pakai = 'pengaturan_neo';
+                            $set = ["kunci_$tbl" => 0];
                             $kodePosting = 'update_row';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
                             break;
                         case 'setujui':
+                            $tabel_pakai = 'pengaturan_neo';
                             switch ($tbl) {
                                 case 'dppa':
                                     $tablePosting = '';
@@ -2243,7 +2243,7 @@ class post_data
                             }
                             $kondisi_delete = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
                             $kondisi_insert_select = [['kd_wilayah', '= ?', $kd_wilayah], ['tahun', '= ?', $tahun_dokumen, 'AND']];
-                            $set = [$jenis => 1];
+                            $set = ["setujui_$tbl" => 1];
                             $kodePosting = 'update_row';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
                             // posting ke dpa, renja_p, dppa
@@ -2338,7 +2338,7 @@ class post_data
                         case 'update_row': //untuk 1 row
                             $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
                             $jumlahArray = is_array($resul) ? count($resul) : 0;
-                            // var_dump($set);
+                            // var_dump($kondisi);
                             //var_dump($DB->count());
                             if ($DB->count()) {
                                 $code = 3;
@@ -2346,26 +2346,23 @@ class post_data
                                 switch ($jenis) {
                                     case 'setujui':
                                     case 'kunci':
-                                        $set = [$jenis . '_' . $tbl => 1];
+                                        // $set = [$jenis . '_' . $tbl => 1];
                                     case 'unkunci':
                                     case 'unsetujui':
-                                        if ($jenis == 'unkunci' || $jenis == 'unsetujui') {
-                                            $jenisnya = $jenis;
-                                            $jenisnya = substr($jenisnya, 2); //hilangkan un depan kata
-                                            $set = [$jenisnya . '_' . $tbl => 0];
-                                        }
-                                        // update di tabel pengaturan
-                                        $tabel_pengaturan = 'pengaturan_neo';
-
-                                        $resul_pengaturan = $DB->update_array($tabel_pengaturan, $set, $kondisi);
+                                        // if ($jenis == 'unkunci' || $jenis == 'unsetujui') {
+                                        //     $jenisnya = $jenis;
+                                        //     $jenisnya = substr($jenisnya, 2); //hilangkan un depan kata
+                                        //     $set = [$jenisnya . '_' . $tbl => 0];
+                                        // }
+                                        // // update di tabel pengaturan
+                                        // $tabel_pengaturan = 'pengaturan_neo';
+                                        // $resul_pengaturan = $DB->update_array($tabel_pengaturan, $set, $kondisi);
                                         break;
-
                                     default:
                                         # code...
                                         break;
                                 }
                                 switch ($jenis) {
-
                                     case 'setujui':
                                         switch ($tbl) {
                                             case 'dpa':
@@ -2374,13 +2371,10 @@ class post_data
                                                 // hapus dahulu sebelum insert
                                                 $resul = $DB->delete_array($tablePosting, $kondisi_delete);
                                                 $resul = $DB->insert_select($tabel_pakai, $tablePosting, $columnName, $columnSelect, $kondisi_insert_select);
-
                                                 if ($tbl == 'renja') {
                                                     $resul = $DB->delete_array($tablePosting2, $kondisi_delete);
                                                     $resul = $DB->insert_select($tabel_pakai2, $tablePosting2, $columnName2, $columnSelect2, $kondisi_insert_select);
                                                 }
-
-
                                                 // var_dump($resul);
                                                 break;
 

@@ -76,7 +76,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
                 <div class="content">
-                    <a class="item nabiila" href="#" data-tab="tab_renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
+                    <a class="item nabiila" href="#" data-tab="tab_renstra" tbl="renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
                     <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_renja"><span><i class="toggle on icon"></i></span><i class="violet tag icon"></i>RENJA</a>
                     <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_dpa"><span><i class="toggle on icon"></i></span><i class="yellow tags icon"></i>DPA</a>
                 </div>
@@ -106,7 +106,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="id card icon"></i>Organisasi</a>
                     <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="balance scale icon"></i>Peraturan</a>
                     <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>Wilayah</a>
-                    
+
                 </div>
             </div>
             <a class="item" href="#" data-tab="tab_ref" tbl="asn"><i class="users icon"></i>ASN</a>
@@ -140,9 +140,9 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
         <div class="pusher">
             <div class="basic center segment">
                 <div class="ui demo page dimmer center light">
-                <!-- <div class="ui massive blue text elastic loader"></div> -->
+                    <!-- <div class="ui massive blue text elastic loader"></div> -->
                     <h1 class="spin">
-                    
+
                         <span class="spin let1">l</span>
                         <span class="spin let2">o</span>
                         <span class="spin let3">a</span>
@@ -300,11 +300,11 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
+                            <a class="active item inayah" data-tab="tab_renstra" tbl="renstra">
+                                Renstra
+                            </a>
                             <a class="item inayah" data-tab="tab_renstra" tbl="tujuan_sasaran_renstra">
                                 Tujuan dan Sasaran
-                            </a>
-                            <a class="item inayah" data-tab="tab_renstra" tbl="renstra">
-                                Renstra
                             </a>
                         </div>
                     </div>
@@ -390,7 +390,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <div class="ui stackable grid">
                     <div class="two wide left column">
                         <div class="ui red secondary vertical pointing fluid menu">
-                            <a class="item inayah" data-tab="tab_renja" >
+                            <a class="item inayah" data-tab="tab_renja">
                                 Sub Kegiatan
                             </a>
                             <a class="item" data-tab="tab_renja">
@@ -1231,38 +1231,38 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- profil -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="profil">
-            <div class="ui special centered card">
-				<div class="content">
-					<div class="right floated meta">14h</div>
-					<img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Alwi Mansyur
-				</div>
+                <div class="ui special centered card">
+                    <div class="content">
+                        <div class="right floated meta">14h</div>
+                        <img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Alwi Mansyur
+                    </div>
 
-				<div class="blurring dimmable image">
-					<div class="ui dimmer">
-						<div class="content">
-							<div class="center">
-								<div class="ui inverted button">Add Friend</div>
-							</div>
-						</div>
-					</div>
-					<img src="img/avatar/large/elliot.jpg">
-				</div>
+                    <div class="blurring dimmable image">
+                        <div class="ui dimmer">
+                            <div class="content">
+                                <div class="center">
+                                    <div class="ui inverted button">Add Friend</div>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="img/avatar/large/elliot.jpg">
+                    </div>
 
-				<div class="content">
-					<span class="right floated">
-						<i class="heart outline like icon"></i>
-						17 likes
-					</span>
-					<i class="comment icon"></i>
-					3 comments
-				</div>
-				<div class="extra content">
-					<div class="ui large transparent left icon input">
-						<i class="heart outline icon"></i>
-						<input type="text" placeholder="Add Comment...">
-					</div>
-				</div>
-				</div>
+                    <div class="content">
+                        <span class="right floated">
+                            <i class="heart outline like icon"></i>
+                            17 likes
+                        </span>
+                        <i class="comment icon"></i>
+                        3 comments
+                    </div>
+                    <div class="extra content">
+                        <div class="ui large transparent left icon input">
+                            <i class="heart outline icon"></i>
+                            <input type="text" placeholder="Add Comment...">
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- =========================-->
             <!-- =========================-->
@@ -1346,7 +1346,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             </div>
         </div>
     </div>
-     <!-- jangan dihapus untuk upload file di dimmer langsung eksekusi  -->
+    <!-- jangan dihapus untuk upload file di dimmer langsung eksekusi  -->
     <input type="file" id="directupload1" class="ui invisible file input">
     <!-- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>-->
     <script src="<?= BASEURL; ?>vendor/jquery-3.7.1.min.js"></script>

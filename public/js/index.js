@@ -441,7 +441,7 @@ $(document).ready(function () {
 							case "renja_p":
 								data['id_sub_keg'] = ini.attr('id_sub_keg');
 								if (ini.attr('name') === 'page') {
-									data['id_sub_keg'] =$(`a.item[tbl="${tbl}"][id_sub_keg]`).attr('id_sub_keg');
+									data['id_sub_keg'] = $(`a.item[tbl="${tbl}"][id_sub_keg]`).attr('id_sub_keg');
 								}
 								break;
 						}
@@ -2845,7 +2845,7 @@ $(document).ready(function () {
 					let tanggal = $(`form[name="form_pengaturan"] .ui.calendar.year`).calendar("get date");
 					if (tanggal) {
 						tanggal = `${tanggal.getFullYear()}`;
-						data.tahun = tanggal;
+						data.tahun_renstra = tanggal;
 					}
 				}
 				url = "script/post_data";
@@ -4711,6 +4711,7 @@ $(document).ready(function () {
 											case "rekanan":
 											case "satuan":
 											case "aset":
+											case "asn":
 											case "mapping":
 											case "sub_keg":
 											case "organisasi":
@@ -4782,7 +4783,7 @@ $(document).ready(function () {
 										break;
 								}
 								if (jenisTrigger.length > 0) {
-									let elmTrigger = $(`a[data-tab][tbl="${jenisTrigger}"]:first`);
+									let elmTrigger = $(`a[data-tab][tbl="${jenisTrigger}"]:last`);
 									elmTrigger.trigger("click");
 								}
 								$("[rms]").mathbiila();
