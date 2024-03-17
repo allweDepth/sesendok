@@ -648,109 +648,8 @@ $(document).ready(function () {
 			);
 		}
 	});
-	//=====================================================
-	//===========button posting data =======@audit-ok add
-	//=====================================================name="direct"
-	$("body").on("click", '[name="add"],[name="tambah"],[name="direct"]', function (e) {
-		// e.preventDefault();
-		let ini = $(this);
-		let jenis = ini.attr("jns");
-		let tbl = ini.attr("tbl");
-		let id_row = ini.attr('id_row');
-
-
-		const [node] = ini;
-		const attrs = {}
-		$.each(node.attributes, (index, attribute) => {
-			attrs[attribute.name] = attribute.value;
-			let attrName = attribute.name;
-			//membuat variabel
-			let myVariable = attrName;
-			window[myVariable] = attribute.value;
-		});
-
-		switch (jenis) {
-			case 'directuploadfile':
-				switch (tbl) {
-					case 'asn':
-						//upload langsung file
-						$("#directupload1").val("");
-						id_row = ini.closest('form').attr('id_row')
-						$(`#directupload1`).attr('jns', jenis).attr('tbl', tbl).attr('id_row', id_row).attr('dok', dok).attr('accept', accept)
-						break;
-					default:
-						break;
-				}
-				break;
-
-			default:
-				break;
-		}
-	})
-	$("body").on("change", '#directupload1', function (e) {//@audit-ok langsung upload file
-		let ini = $(this);
-		let jenis = ini.attr('jns');
-		let tbl = ini.attr('tbl');
-		let id_row = ini.attr('id_row');
-		let dok = ini.attr('dok');
-		let cryptos = false;
-		let jalankanAjax = true;
-		let dataType = "Json";
-		let url = 'script/post_data';
-		if (id_row) {
-			let uploadedFile = document.getElementById('directupload1').files[0];
-			var formData = new FormData();
-			formData.append("dok", dok);
-			formData.append("jenis", jenis);
-			formData.append("tbl", tbl);
-			formData.append("id_row", id_row);
-			formData.append("file", uploadedFile);
-			if (cryptos) {
-				let keyEncryption = halamanDefault;
-				let encryption = new Encryption();
-				formData.forEach((value, key) => {
-					switch (key) {
-						case 'jenis':
-						case 'tbl':
-							break;
-						default:
-							formData.set(key, encryption.encrypt(value, keyEncryption));
-							break;
-					}
-				});
-				formData.set('cry', true);
-			}
-			if (jalankanAjax) {
-				suksesAjax["ajaxku"] = function (result) {
-					let kelasToast = "success";
-					if (result.success === true) {
-
-					} else {
-						kelasToast = "warning"; //'success'
-					}
-					showToast(result.error.message, {
-						class: kelasToast,
-						icon: "check circle icon",
-					});
-					loaderHide();
-				};
-				runAjax(
-					url,
-					"POST",
-					formData,
-					dataType,
-					false,
-					false,
-					"ajaxku",
-					cryptos
-				);
-				//runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
-				//runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
-			} else {
-				loaderHide();
-			}
-		}
-	});
+	
+	
 	//=====================================================
 	//===========button ambil data/get_data/ flyout =======@audit-ok flyout
 	//=====================================================
@@ -2502,7 +2401,6 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
-
 																	case 'daftar_paket':
 																		switch (attrElm) {
 																			case 'satuan':
@@ -2689,9 +2587,11 @@ $(document).ready(function () {
 										}
 										switch (tbl) {
 											case 'asn':
-												$('.special.card .dimmable.image').dimmer({
+												$('form[name="form_flyout"] .special.card .dimmable.image').dimmer({
 													on: 'ontouchstart' in document.documentElement ? 'click' : 'hover'
 												});
+												//
+												formIni.find('.ui.card img').attr('src',result?.data?.users?.file_photo)
 												break;
 											default:
 												break;
@@ -2976,6 +2876,8 @@ $(document).ready(function () {
 			},
 		}).modal("show");
 	});
+
+
 	//==================================
 	// download dokumen ke xls/exel
 	//==================================
@@ -3048,6 +2950,121 @@ $(document).ready(function () {
 			}
 		}
 	});
+	//=====================================================
+	//===========button posting data =======@audit-ok add
+	//=====================================================name="direct"
+	$("body").on("click", '[name="add"],[name="tambah"],[name="direct"]', function (e) {
+		// e.preventDefault();
+		let ini = $(this);
+		let jenis = ini.attr("jns");
+		let tbl = ini.attr("tbl");
+		let id_row = ini.attr('id_row');
+		let accept = ini.attr('accept');
+
+		const [node] = ini;
+		const attrs = {}
+		$.each(node.attributes, (index, attribute) => {
+			attrs[attribute.name] = attribute.value;
+			let attrName = attribute.name;
+			//membuat variabel
+			let myVariable = attrName;
+			window[myVariable] = attribute.value;
+		});
+		switch (jenis) {
+			case 'upload':
+				switch (tbl) {
+					case 'asn':
+						console.log('masukji 1');
+						//upload langsung file
+						$("#directupload1").val("");
+						id_row = ini.closest('form').attr('id_row')
+						$(`#directupload1`).attr({'jns':jenis,'tbl':tbl,'id_row':id_row,'dok':dok,'accept':accept})
+						$("#directupload1").click();
+						break;
+					default:
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+		
+	})
+	$("body").on("change", '#directupload1', function (e) {//@audit-ok langsung upload file
+		// e.preventDefault();
+		// e.stopPropogation();
+		let ini = $(this);
+		let jenis = ini.attr('jns');
+		let tbl = ini.attr('tbl');
+		let id_row = ini.attr('id_row');
+		let dok = ini.attr('dok');
+		let cryptos = false;
+		let accept = ini.attr('accept');
+		let jalankanAjax = false;
+		let dataType = "Json";
+		let url = 'script/post_data';
+		if (id_row) {
+			console.log('masukji');
+			
+			let uploadedFile = document.getElementById('directupload1').files[0];
+			var formData = new FormData();
+			formData.append("dok", dok);
+			formData.append("jenis", jenis);
+			formData.append("tbl", tbl);
+			formData.append("id_row", id_row);
+			formData.append(dok, uploadedFile);
+			jalankanAjax = true;
+			if (cryptos) {
+				let keyEncryption = halamanDefault;
+				let encryption = new Encryption();
+				formData.forEach((value, key) => {
+					switch (key) {
+						case 'jenis':
+						case 'tbl':
+							break;
+						default:
+							formData.set(key, encryption.encrypt(value, keyEncryption));
+							break;
+					}
+				});
+				formData.set('cry', true);
+			}
+			if (jalankanAjax) {
+				suksesAjax["ajaxku"] = function (result) {
+					
+					let kelasToast = "success";
+					if (result.success === true) {
+
+					} else {
+						kelasToast = "warning"; //'success'
+					}
+					showToast(result.error.message, {
+						class: kelasToast,
+						icon: "check circle icon",
+					});
+					
+					loaderHide();
+					
+				};
+				runAjax(
+					url,
+					"POST",
+					formData,
+					dataType,
+					false,
+					false,
+					"ajaxku",
+					cryptos
+				);
+				//runAjax("script/master_read_xlsx", "POST", formData, false, false, false, 'upload_renja');// untuk type file
+				//runAjax("script/load_data", "POST", data, 'text', undefined, undefined, "draft_renstra");// type text
+			} else {
+				loaderHide();
+			}
+		}
+		// e.stopPropogation();
+		// return false;
+	});
 	///=================================
 	///==== IMPOR FILE XLSX=============
 	///=================================
@@ -3060,16 +3077,13 @@ $(document).ready(function () {
 	});
 	$("body").on("click", 'input[name="dum_file"]', function (e) {
 		e.preventDefault();
-		//console.log('masuk dum file')
 		let himp = $(this).closest(".action");
-		//console.log(himp.find('input[type="file"]'))
 		let inputFile = himp.find('input[nama="file"]');
 		inputFile.val("");
-		//inputFile.click();
 		inputFile.trigger("click");
-		//button.on("click", function () { buttonClick(button, popup); });
 	});
 	$("body").on("change", 'input[type="file"]', function (e) {//@audit now
+		// e.preventDefault();
 		let ini = $(this);
 		//Membaca File Excel dengan sheetJS
 		let jenis = ini.attr("jns");
@@ -5357,13 +5371,13 @@ $(document).ready(function () {
 							<div class="ui dimmer">
 								<div class="content">
 									<div class="center">
-										<label for="directupload1" name="direct" id_row="" jns="upload" tbl="asn" dok="file_photo" class="ui inverted icon button" accept="jpg,png,jpeg,img">
+										<button for="directupload1" name="direct" type="button" id_row="" jns="upload" tbl="asn" dok="file_photo" class="ui inverted icon button" accept=".jpg,.png,.jpeg,.img">
 											<i class="file icon"></i>Upload File
-										</label>
+										</button>
 									</div>
 								</div>
 							</div>
-							<img src="img/avatar/large/elliot.jpg">
+							<img src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)">
 						</div>
 						<div class="content">
 							<span class="right floated">

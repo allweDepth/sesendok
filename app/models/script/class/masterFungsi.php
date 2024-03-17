@@ -1025,7 +1025,7 @@ class MasterFungsi
                 break;
             case 'dpa':
                 $tabel_pakai = 'dpa_neo';
-                $jumlah_kolom =8;
+                $jumlah_kolom = 8;
                 break;
             case 'renja_p':
                 $tabel_pakai = 'renja_p_neo';
@@ -2431,6 +2431,10 @@ class MasterFungsi
                 $path1 = 'upload';
                 $path2 = 'rekanan';
                 break;
+            case 'asn':
+                $path1 = 'upload';
+                $path2 = 'asn';
+                break;
             case 'organisasi':
                 $path1 = 'upload';
                 $path2 = 'organisasi';
@@ -2516,14 +2520,6 @@ class MasterFungsi
                 $ext
             );*/
             // var_dump($_FILES[$dok]['tmp_name']);
-            //var_dump($fileNamePath);
-            if (!move_uploaded_file(
-                $_FILES[$dok]['tmp_name'],
-                $fileNamePath
-            )) {
-                throw new RuntimeException('Failed to move uploaded file.');
-            }
-            //var_dump($nameFileDel);
             //===============
             //hapus file
             //===============
@@ -2535,6 +2531,15 @@ class MasterFungsi
                 $status = 'The file ' . $nameFileDel . ' doesnot exist';
                 //return ['result' => 'ok', 'file' => $nameFileDel, 'status' => $status];
             }
+            //var_dump($fileNamePath);
+            if (!move_uploaded_file(
+                $_FILES[$dok]['tmp_name'],
+                $fileNamePath
+            )) {
+                throw new RuntimeException('Failed to move uploaded file.');
+            }
+            //var_dump($nameFileDel);
+            
             //unlink($nameFileDel);
             return ['result' => 'ok', $dok => $namaFile]; //'File is uploaded successfully.'
         } catch (RuntimeException $e) {

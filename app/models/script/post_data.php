@@ -1489,7 +1489,11 @@ class post_data
                                         break;
                                     case 'asn':
                                         $uraian = "nip({$row_sub->nip})_dok({$dok})_wilayah({$kd_wilayah})";
-                                        $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                                        if (strlen($row_sub->$dok ?? '') > 2) {
+                                            $nameFileDel = $row_sub->$dok;
+                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                                        }
                                         break;
                                     default:
                                         # code...
@@ -1498,7 +1502,6 @@ class post_data
                                 if ($_FILES) {
                                     if (isset($_FILES[$dok])) {
                                         $file = $Fungsi->importFile($tbl, $set_file);
-                                        // var_dump($file);
                                         if ($file['result'] == 'ok') {
                                             $set[$dok] = $file[$dok];
                                         } else {
@@ -1506,6 +1509,7 @@ class post_data
                                         }
                                     }
                                 }
+                                // var_dump($set);
                             } else {
                                 $jenis = '';
                                 $code = 404;
