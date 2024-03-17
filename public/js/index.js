@@ -648,8 +648,8 @@ $(document).ready(function () {
 			);
 		}
 	});
-	
-	
+
+
 	//=====================================================
 	//===========button ambil data/get_data/ flyout =======@audit-ok flyout
 	//=====================================================
@@ -2587,11 +2587,25 @@ $(document).ready(function () {
 										}
 										switch (tbl) {
 											case 'asn':
+												
 												$('form[name="form_flyout"] .special.card .dimmable.image').dimmer({
 													on: 'ontouchstart' in document.documentElement ? 'click' : 'hover'
 												});
 												//
-												formIni.find('.ui.card img').attr('src',result?.data?.users?.file_photo)
+												if (result?.data?.hasOwnProperty('users')) {
+													console.log(formIni.find('.ui.avatar.image').after());
+													// let card = document.querySelector('.ui.special.fluid.card');
+													// let NameElement = card.querySelector('.content');
+													// NameElement.textContent = result?.data?.users.nama.toProperCase();
+													if (result?.data?.users.hasOwnProperty('file_photo')) {
+														let angka = result?.data?.users?.file_photo
+														if (angka) {
+															formIni.find('.ui.card img').attr('src', result?.data?.users?.file_photo)
+														}
+													}
+												}
+
+
 												break;
 											default:
 												break;
@@ -2978,7 +2992,7 @@ $(document).ready(function () {
 						//upload langsung file
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
-						$(`#directupload1`).attr({'jns':jenis,'tbl':tbl,'id_row':id_row,'dok':dok,'accept':accept})
+						$(`#directupload1`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
 						$("#directupload1").click();
 						break;
 					default:
@@ -2988,7 +3002,7 @@ $(document).ready(function () {
 			default:
 				break;
 		}
-		
+
 	})
 	$("body").on("change", '#directupload1', function (e) {//@audit-ok langsung upload file
 		// e.preventDefault();
@@ -3005,7 +3019,7 @@ $(document).ready(function () {
 		let url = 'script/post_data';
 		if (id_row) {
 			console.log('masukji');
-			
+
 			let uploadedFile = document.getElementById('directupload1').files[0];
 			var formData = new FormData();
 			formData.append("dok", dok);
@@ -3031,7 +3045,7 @@ $(document).ready(function () {
 			}
 			if (jalankanAjax) {
 				suksesAjax["ajaxku"] = function (result) {
-					
+
 					let kelasToast = "success";
 					if (result.success === true) {
 
@@ -3042,9 +3056,9 @@ $(document).ready(function () {
 						class: kelasToast,
 						icon: "check circle icon",
 					});
-					
+
 					loaderHide();
-					
+
 				};
 				runAjax(
 					url,
@@ -5365,7 +5379,7 @@ $(document).ready(function () {
 					`<div class="ui special fluid card">
 						<div class="content">
 							<div class="right floated meta">14h</div>
-							<img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Elliot
+							<img class="ui avatar image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)"> Elliot
 						</div>
 						<div class="blurring dimmable image">
 							<div class="ui dimmer">
@@ -5991,6 +6005,10 @@ $(document).ready(function () {
 			return str.split(".")[1].length || 0;
 		}
 		return str.split("-")[1] || 0;
+	};
+	//touppercase "pascal".toProperCase();
+	String.prototype.toProperCase = function () {
+		return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	};
 });
 // onkeypress="return rumus(event);"

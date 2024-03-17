@@ -619,9 +619,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                 <div class="ui hidden divider"></div>
                 <div class="ui hidden divider"></div>
-                <button for="directupload1" name="direct" type="button" jns="upload" tbl="asn" dok="file_photo" class="ui inverted icon <button" accept=".jpg,.png,.jpeg,.img" id_row="1">
-											<i class="file icon"></i>Upload File
-										</button>
                 <table class="ui very basic table insert">
                     <thead>
                         <tr>
