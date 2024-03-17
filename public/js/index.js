@@ -588,7 +588,7 @@ $(document).ready(function () {
 										var dropdown_ajx_org = new DropdownConstructor('form[name="form_pengaturan"] .ui.dropdown[name="id_opd_tampilkan"]');
 										let hasKey = result?.data.hasOwnProperty("values");
 										if (hasKey) {
-											dropdown_ajx_org.valuesDropdown(result.data.values.id_opd_tampilkan);//@audit sekarang
+											dropdown_ajx_org.valuesDropdown(result.data.values.id_opd_tampilkan);
 										}
 										dropdown_ajx_org.returnList({ jenis: "get_row_json", tbl: "organisasi", minCharacters: 1 });
 										let formPengaturan = $('form[name="form_pengaturan"]');
@@ -602,6 +602,20 @@ $(document).ready(function () {
 												formPengaturan.form("set value", attrElm, result?.data?.row_tahun[attrElm]);
 											}
 										}
+										$(`button[jns="kunci"] i,button[jns="setujui"] i`).removeClass('red')
+										let buttonElm = $(`form[name="form_pengaturan"]`).find(`button[jns="kunci"]`);
+										buttonElm.each(function (index, element) {
+											// element == this
+											let tabelPakai = $(element).attr('tbl')
+											if (result?.data?.row_tahun[`kunci_${tabelPakai}`] > 0) {
+												$(`button[jns="kunci"][tbl="${tabelPakai}"] i`).addClass('red')
+											}
+											console.log(tabelPakai);
+											
+											if (result?.data?.row_tahun[`setujui_${tabelPakai}`] > 0) {
+												$(`button[jns="setujui"][tbl="${tabelPakai}"] i`).addClass('red')
+											}
+										});
 										addRulesForm(formPengaturan);
 										break;
 									case "xxx":
