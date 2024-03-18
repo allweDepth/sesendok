@@ -19,6 +19,7 @@ class Organisasi extends Controller
         $dataFooter['key_encrypt'] = $_SESSION['key_encrypt'];
         $this->view('templates/header_login', $dataHeader);
         $this->view('organisasi/index');
+        $this->view('templates/footer_modal');
         $this->view('templates/footer', $dataFooter);
         
     }

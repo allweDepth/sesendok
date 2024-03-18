@@ -2,8 +2,8 @@
 <div class="ui large top fixed menu">
     <div class="ui container">
         <a class="item inayah" href="login">Home</a>
-        <a class="item inayah" href="pelayanan">Pelayanan</a>
-        <a class="active item inayah" href="data_teknis">Data Teknis</a>
+        <a class="active item inayah" href="pelayanan">Pelayanan</a>
+        <a class="item inayah" href="data_teknis">Data Teknis</a>
         <a class="item inayah" href="organisasi">Organisasi</a>
         <a class="item inayah" href="anggaran">Anggaran</a>
         <div class="right menu">
@@ -16,6 +16,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Page Contents -->
 <div class="pusher">

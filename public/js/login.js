@@ -28,9 +28,9 @@ $(document).ready(function () {
 	}
 	$(".menu .item.inayah").on('click', handler.activate);
 	// create sidebar and attach to menu open
-	$('.ui.sidebar')
-		.sidebar('attach events', '.toc.item')
-		;
+	// $('.ui.sidebar')
+	// 	.sidebar('attach events', '.toc.item')
+	// 	;
 	$(".ui.accordion").accordion();
 	$(".ui.accordion.menu_utama").accordion({
 		exclusive: false

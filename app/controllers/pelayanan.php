@@ -1,5 +1,5 @@
 <?php
-class Anggaran extends Controller
+class Pelayanan extends Controller
 {
     public function index()
     {
@@ -10,15 +10,15 @@ class Anggaran extends Controller
         $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
         $_SESSION["key_encrypt"] = $key_encrypt;
         $dataHeader['awalHeader'] = '';
-        $dataHeader['title'] = '| Anggaran';
+        $dataHeader['title'] = '| Pelayanan';
         $dataHeader['css'] = 'css/login.css';
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
         $dataFooter['tambahan_js'] = '';
-        $dataFooter['dok'] = 'Anggaran';
-        $dataFooter['key_encrypt'] = $_SESSION['key_encrypt'];
+        $dataFooter['dok'] = 'Pelayanan';
+        $dataFooter['key_encrypt'] = $key_encrypt;
         $this->view('templates/header_login', $dataHeader);
-        $this->view('anggaran/index');
+        $this->view('pelayanan/index');
         $this->view('templates/footer_modal');
         $this->view('templates/footer', $dataFooter);
     }

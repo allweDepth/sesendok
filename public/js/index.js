@@ -940,9 +940,10 @@ $(document).ready(function () {
 									kelas: "selection",
 									dataArray: [
 										["1", "I (Kepala OPD)"],
-										["2", "II (Sekretaris/Kepala Bidang)"],
-										["3", "III"],
-										["4", "IV"]
+										["2", "II (Sekretaris)"],
+										["3", "III (Kepala Bidang)"],
+										["4", "IV"],
+										["5", "V (non ASN)"]
 									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
@@ -2601,7 +2602,6 @@ $(document).ready(function () {
 										}
 										switch (tbl) {
 											case 'asn':
-
 												$('form[name="form_flyout"] .special.card .dimmable.image').dimmer({
 													on: 'ontouchstart' in document.documentElement ? 'click' : 'hover'
 												});
@@ -2618,8 +2618,6 @@ $(document).ready(function () {
 														}
 													}
 												}
-
-
 												break;
 											default:
 												break;
@@ -5323,7 +5321,7 @@ $(document).ready(function () {
 								</div>
 							</div>
 						</div>
-						<img src="img/avatar/large/elliot.jpg">
+						<img src="img/avatar/default.jpeg" onerror="imgsrc(this)">
 					</div>
 					<div class="content">
 						<a class="header">Team Fu</a>
@@ -5344,7 +5342,7 @@ $(document).ready(function () {
 					`<div class="ui special fluid card">
 						<div class="content">
 							<div class="right floated meta">14h</div>
-							<img class="ui avatar image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)"> Elliot
+							<img class="ui avatar image" src="img/avatar/default.jpeg" onerror="imgsrc(this)"> Aparatur Sipil Negara (ASN)
 						</div>
 						<div class="blurring dimmable image">
 							<div class="ui dimmer">
@@ -5356,7 +5354,7 @@ $(document).ready(function () {
 									</div>
 								</div>
 							</div>
-							<img src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)">
+							<img src="img/avatar/default.jpeg" onerror="imgsrc(this)">
 						</div>
 						<div class="content">
 							<span class="right floated">

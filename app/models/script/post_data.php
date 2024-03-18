@@ -233,7 +233,8 @@ class post_data
                                     'email' => true
                                 ]);
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [
-                                    'numeric' => true
+                                    'numeric' => true,
+                                    'inArray' => [1, 2, 3, 4, 5, 6]
                                 ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'del_2_spasi' => true,
@@ -2204,12 +2205,11 @@ class post_data
                             $set = ["setujui_$tbl" => 0];
                             $tabel_pakai = 'pengaturan_neo';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                           
                             $kodePosting = 'update_row';
                             break;
                         case 'kunci':
                             $tabel_pakai = 'pengaturan_neo';
-                            $set = ["kunci_$tbl" => 0];
+                            $set = ["kunci_$tbl" =>1];
                             $kodePosting = 'update_row';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
                             break;

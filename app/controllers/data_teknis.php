@@ -19,6 +19,7 @@ class Data_Teknis extends Controller
         $dataFooter['key_encrypt'] = $key_encrypt;
         $this->view('templates/header_login', $dataHeader);
         $this->view('data_teknis/index');
+        $this->view('templates/footer_modal');
         $this->view('templates/footer', $dataFooter);
     }
     public function masuk()
