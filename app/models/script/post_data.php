@@ -140,6 +140,42 @@ class post_data
                         ]);
                     case 'add':
                         switch ($tbl) {
+                            case 'berita':
+                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inArray' => ['berita', 'pelayanan', 'data_teknis', 'organisasi','anggaran']
+                                ]);
+                                $judul = $validate->setRules('judul', 'Judul Berita', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                ]);
+                                $tanggal = $validate->setRules('tanggal', 'tanggal berita', [
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'required' => true,
+                                    'max_char' => 100,
+                                    'min_char' => 8
+                                ]);
+                                $uraian_html = $validate->setRules('uraian_html', 'Markup HTML', [
+                                    'del_2_spasi' => true,
+                                    'required' => true,
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $urutan = $validate->setRules('urutan', 'Nomor Urut', [
+                                    'numeric' => true,
+                                    'required' => true
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
                             case 'asn':
                                 $nama = $validate->setRules('nama', 'nama', [
                                     'del_2_spasi' => true,
@@ -1533,6 +1569,26 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'berita':
+                                    $kondisi = [['judul', '=', $judul], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tanggal', '=', $tanggal, 'AND']];
+                                    $kodePosting = 'cek_insert';
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'judul' => $judul,
+                                        'kelompok' => $kelompok,
+                                        'uraian_html' => $uraian_html,
+                                        'urutan' => $urutan,
+                                        'tanggal' => $tanggal,
+                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                                        'disable' => $disable,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $set['username']=$_SESSION["user"]["username"];
+                                        $set['tgl_insert']=date('Y-m-d H:i:s');
+                                    }
+                                    break;
                                 case 'asn':
                                     $kondisi = [['nip', '=', $nip], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
                                     $kodePosting = 'cek_insert';

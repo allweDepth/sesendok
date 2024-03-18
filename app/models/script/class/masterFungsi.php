@@ -43,7 +43,7 @@ class MasterFungsi
             case 'berita':
                 $rowData['thead'] = trim('<tr>
                 <th>KELOMPOK</th>
-                <th>URAIAN</th>
+                <th>JUDUL</th>
                 <th>KETERANGAN</th>
                 <th class="collapsing">AKSI</th>
             </tr>');
@@ -308,7 +308,7 @@ class MasterFungsi
                         <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                 <td klm="kelompok">' .  $row->kelompok . '</td>
-                                <td klm="jenis">' . $row->jenis . '</td>
+                                <td klm="judul">' . $row->judul . '</td>
                                 <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                 <td>' . $buttons . '</td>
                             </tr>');

@@ -611,7 +611,7 @@ $(document).ready(function () {
 												$(`button[jns="kunci"][tbl="${tabelPakai}"] i`).addClass('red')
 											}
 											console.log(tabelPakai);
-											
+
 											if (result?.data?.row_tahun[`setujui_${tabelPakai}`] > 0) {
 												$(`button[jns="setujui"][tbl="${tabelPakai}"] i`).addClass('red')
 											}
@@ -770,6 +770,48 @@ $(document).ready(function () {
 					}
 				case "add":
 					switch (tbl) {
+						case 'berita':
+							dataHtmlku.konten =
+								buatElemenHtml("fieldDropdown", {
+									label: "Kelompok Berita",
+									atribut: 'name="kelompok"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["berita", "Berita"],
+										["pelayanan", "Pelayanan"],
+										["data_teknis", "Data Teknis"],
+										["organisasi", "Organisasi"],
+										["anggaran", "Anggaran"]
+									],
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Nomor Urut",
+									atribut: 'name="urutan" placeholder="Nomor Urutan Berita(101..)" rms',
+								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tanggal",
+									atribut: 'placeholder="Input tanggal Berita.." name="tanggal" readonly',
+									kelas: "date",
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Judul Berita",
+									atribut: 'name="judul" rows="2"',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									labelTambahan : ` <div class="ui circular right aligned red horizontal label"><i class="search icon"></i> tampilkan</div>`,
+									label: "Markup HTML",
+									atribut: 'name="uraian_html" rows="4"',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="2" non_data',
+								}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							break;
 						case 'users':
 							dataHtmlku.konten =
 								buatElemenHtml("fieldText", {
@@ -3024,10 +3066,10 @@ $(document).ready(function () {
 			let myForm = new FormGlobal(`form[name="form_upload"]`);
 			myForm.run();
 			$(`form[name="form_upload"]`).form('submit');
-			
+
 		}
 		// e.stopPropogation();
-		
+
 	});
 	///=================================
 	///==== IMPOR FILE XLSX=============
@@ -4452,6 +4494,7 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
+
 								case "daftar_paket":
 									switch (jenis) {
 										case "upload":
@@ -4504,6 +4547,7 @@ $(document).ready(function () {
 								case "renstra":
 								case "tujuan_sasaran_renstra":
 								case "sub_keg_renja":
+								case "berita":
 								case "sub_keg_dpa":
 									jalankanAjax = true;
 									// 'id_sub_keg'
@@ -4708,6 +4752,7 @@ $(document).ready(function () {
 											case "sumber_dana":
 											case "akun_belanja":
 											case "wilayah":
+											case "berita":
 											case "peraturan":
 											case "daftar_paket":
 												switch (jenis) {
@@ -4801,7 +4846,7 @@ $(document).ready(function () {
 					} else {
 						loaderHide();
 					}
-					
+
 					switch (nama_form) {
 						case "form_modal":
 							MyForm.form('reset')
@@ -5254,6 +5299,7 @@ $(document).ready(function () {
 	//================================
 	function buatElemenHtml(namaElemen = "", dataElemen = {}) {//@audit-ok create elm
 		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
+		let labelTambahan="labelTambahan" in dataElemen ? dataElemen.labelTambahan : "";
 		let content = "content" in dataElemen ? dataElemen.content : "";
 		let atribut = "atribut" in dataElemen ? dataElemen.atribut : "";
 		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
@@ -5475,13 +5521,13 @@ $(document).ready(function () {
 				break;
 			case "fieldCalendar":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui calendar ${kelasData}"  ${atribut2}><div class="ui input left icon"><i class="calendar icon"></i><input type="text"  ${atribut}"></div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui calendar ${kelasData}"  ${atribut2}><div class="ui input left icon"><i class="calendar icon"></i><input type="text" ${atribut}></div></div></div>`;
 				break;
 			case "fieldAndLabel":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label> ${elemen1Data}</div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${labelData} ${labelTambahan}</label> ${elemen1Data}</div>`;
 				break;
 			case "fieldText":
-				elemen = `<div class="${classField}field" ${atributField}><label> ${labelData} </label><div class="ui ${kelasData} input"><input type="${typeText}" ${atribut} ></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${labelData} ${labelTambahan}</label><div class="ui ${kelasData} input"><input type="${typeText}" ${atribut} ></div></div>`;
 				break;
 			case "multiFieldTextAction":
 				let inputElm = '';
@@ -5491,7 +5537,7 @@ $(document).ready(function () {
 				}
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>
-					${labelData}
+					${labelData}${labelTambahan}
 					</label><div class="ui action fluid input multi">
 					${inputElm}
 					<button class="ui teal button" ${atributLabel}>${txtLabelData}</button> </div></div>`;
@@ -5502,10 +5548,10 @@ $(document).ready(function () {
 				break;
 			case "fieldTextLabelKanan":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right labeled input"><input type="${typeText}" ${placeholderData} ${atribut}><div class="ui basic label" ${atributLabel}>" ${txtLabelData}</div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData} ${labelTambahan}</label><div class="ui fluid right labeled input"><input type="${typeText}" ${placeholderData} ${atribut}><div class="ui basic label" ${atributLabel}>" ${txtLabelData}</div></div></div>`;
 				break;
 			case "fieldTextIcon":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid ${posisi} icon input"><input type="${typeText}" ${atribut}><i class="${icon} icon"></i></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}${labelTambahan}</label><div class="ui fluid ${posisi} icon input"><input type="${typeText}" ${atribut}><i class="${icon} icon"></i></div></div>`;
 				break;
 			case "textIcon":
 				elemen =
@@ -5520,7 +5566,7 @@ $(document).ready(function () {
 			case "fieldText2":
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +
+					labelData +labelTambahan+
 					"</label><input " +
 					placeholderData +
 					' name="username" type="text" ' +
@@ -5530,7 +5576,7 @@ $(document).ready(function () {
 			case "fieldFileInput":
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +
+					labelData +labelTambahan+
 					'</label><div class="ui file input"><input type="file" ' +
 					atribut +
 					"></div></div>";
@@ -5538,15 +5584,12 @@ $(document).ready(function () {
 			case "fieldFileInput2":
 				//atribut file hanya placeholder
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly name_bayang="${file}" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" ${atribut2} non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}${labelTambahan}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly name_bayang="${file}" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" ${atribut2} non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
 				break;
 			case "fieldTextarea":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +
-					"</label><textarea " +
-					atribut +
-					"></textarea></div>";
+					`<div class="${classField}field" ${atributField}><label>${labelData}${labelTambahan}</label><textarea 
+					${atribut}></textarea></div>`;
 				break;
 			case "fieldCheckbox":
 				elemen = `<div class="inline${classField} field" ${atributField}><div class="ui checkbox"><input type="checkbox" tabindex="0" class="hidden" ${atribut}><label>${labelData}</label></div></div>`;
