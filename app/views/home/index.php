@@ -240,7 +240,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <i class="large list ol middle aligned icon"></i>
                             <div class="content">
                                 <a class="header">Referensi >> Organisasi</a>
-                                <div class="description">input Organisasi dan tahun renstra OPD (admin)</div>
+                                <div class="description">input Organisasi (admin)</div>
                             </div>
                         </div>
                         <div class="item">
@@ -851,9 +851,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </a>
                             <a class="item inayah" data-tab="atur" tbl="users">
                                 Users
-                            </a>
-                            <a class="item inayah" data-tab="atur" tbl="organisasi">
-                                SKPD
                             </a>
                         </div>
                     </div>

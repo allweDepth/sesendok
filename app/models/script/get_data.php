@@ -743,9 +743,9 @@ class get_data
                                     }
                                     break;
                                 case 'tujuan_renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi !== false) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, 'tujuan', $cari, $cari, $cari];
@@ -771,9 +771,9 @@ class get_data
                                     }
                                     break;
                                 case 'sasaran_renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi !== false) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, 'sasaran', $cari, $cari, $cari];
@@ -799,9 +799,9 @@ class get_data
                                     }
                                     break;
                                 case 'tujuan_sasaran_renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi !== false) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari];
@@ -827,9 +827,9 @@ class get_data
                                     }
                                     break;
                                 case 'renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi !== false) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
@@ -896,9 +896,9 @@ class get_data
                             $data_where_row =  [$id_row];
                             switch ($tbl) {
                                 case 'renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi !== false) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
@@ -924,9 +924,9 @@ class get_data
                                     }
                                     break;
                                 case 'tujuan_sasaran_renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi !== false) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari];
@@ -1009,7 +1009,7 @@ class get_data
                                     $jumlah_kolom = 9;
                                     break;
                                 case 'sub_keg':
-                                    // $kondisi = [['kode', '=', $kd_wilayah], ['nomenklatur_urusan', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND']];
+                                    
                                     $like = "sub_keg > ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [0, 0, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kode ASC";
@@ -1022,9 +1022,9 @@ class get_data
                                     // $data_where =  [$text];
                                     break;
                                 case 'sasaran_renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi !== false) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, 'sasaran', $cari, $cari, $cari];
@@ -1050,9 +1050,9 @@ class get_data
                                     }
                                     break;
                                 case 'tujuan_renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND kelompok = ?  AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, 'tujuan', $cari, $cari, $cari];
@@ -1151,9 +1151,9 @@ class get_data
                             $kodePosting = 'getAllValJson';
                             switch ($tbl) {
                                 case 'tujuan_renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND']];
                                         //pilih kolom yang diambil
                                         $DB->select('id, kelompok, id_tujuan, text, keterangan');

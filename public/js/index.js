@@ -404,7 +404,6 @@ $(document).ready(function () {
 			case "organisasi":
 			case "wilayah":
 			case "mapping":
-			case "organisasi":
 			case "wilayah":
 			case "sbu":
 			case "ssh":
@@ -2799,10 +2798,13 @@ $(document).ready(function () {
 					`<i class="${jenis_eksekusi[jenis].icon} icon"></i>anda yakin akan ${jenis} dokumen ${tbl} ini?`,
 					`${jenis_eksekusi[jenis].paragraf}`,
 				];
-				data.tahun = $(`form[name="form_pengaturan"]`).form('get value', 'tahun');
+				data.tahun = $(`form[name="form_pengaturan"]`).form('get value', 'tahun').getFullYear();
 				if (tbl === 'renstra') {
-					let tanggal = $(`form[name="form_pengaturan"] .ui.calendar.year`).calendar("get date");
+					//The setDate method works inplace on the object, and the return value of the function is the timestamp of the new date. makanya gunakan new date
+					let tanggal = $(`form[name="form_pengaturan"] .ui.calendar.year[name="tahun_renstra"]`).calendar("get date");
 					if (tanggal) {
+						console.log( tanggal);
+						
 						tanggal = `${tanggal.getFullYear()}`;
 						data.tahun_renstra = tanggal;
 					}
@@ -4741,17 +4743,7 @@ $(document).ready(function () {
 									// ==================
 									case "form_modal":
 										switch (jenis) {
-											case "analisa_alat_custom":
-												jenisTrigger = "analisa_alat";
-											case "analisa_ck":
-											case "analisa_bm":
-											case "analisa_sda":
-											case "analisa_quarry":
-											case "analisa_alat":
-												jenisTrigger = tbl;
-												break;
-											case "analisa_alat":
-												break;
+											
 											case "y":
 												break;
 											case "z":

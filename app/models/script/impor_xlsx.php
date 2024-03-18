@@ -126,6 +126,7 @@ class Impor_xlsx
 
                                 //tentukan peraturan yang membutuhkan
                                 switch ($tbl) {
+                                    case 'renstra':
                                     case 'sub_keg_renja':
                                     case 'sub_keg_dpa':
                                     case 'renja':
@@ -193,14 +194,13 @@ class Impor_xlsx
                                             break;
                                         case 'renstra':
                                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                            $tahun_renstra = ($rowOrganisasi) ? $rowOrganisasi->tahun_renstra : 0;
+                                            
                                             $unit_kerja = ($rowOrganisasi) ? $rowOrganisasi->uraian : 'unit kerja tidak ditemukan';
                                             $RowHeaderValidate = ['SASARAN', 'KODE', 'PROGRAM DAN KEGIATAN', 'SATUAN', 'INDIKATOR', 'DATA CAPAIAN AWAL', 'TARGET TAHUN 1', 'DANA TAHUN 1', 'TARGET TAHUN 2', 'DANA TAHUN 2', 'TARGET TAHUN 3', 'DANA TAHUN 3', 'TARGET TAHUN 4', 'DANA TAHUN 4', 'TARGET TAHUN 5', 'DANA TAHUN 5', 'LOKASI', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'tujuan_sasaran_renstra':
-                                            $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                            $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                            
                                             $RowHeaderValidate = ['KELOMPOK', 'TUJUAN/SASARAN', 'INDIKATOR SASARAN', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
