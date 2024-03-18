@@ -299,20 +299,20 @@ class MasterFungsi
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
                     case 'berita':
-                        
-                    if ($type_user == 'admin') {
-                        $divAwal = '<div contenteditable>';
-                        $divAkhir = '</div>';
-                        $buttons = '<div class="ui icon basic mini buttons">
+
+                        if ($type_user == 'admin') {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $buttons = '<div class="ui icon basic mini buttons">
                         <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                         <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                            $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                 <td klm="kelompok">' .  $row->kelompok . '</td>
                                 <td klm="judul">' . $row->judul . '</td>
                                 <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                 <td>' . $buttons . '</td>
                             </tr>');
-                    }
+                        }
                         break;
                     case 'users':
                         if ($type_user == 'admin') {
@@ -406,6 +406,7 @@ class MasterFungsi
                     case 'renja_p':
                     case 'dpa':
                     case 'renja':
+                        $buttonDel = '</div>';
                         switch ($tbl) {
                             case 'dpa':
                             case 'renja':
@@ -421,9 +422,11 @@ class MasterFungsi
                                 $kolomSat_3 = 'sat_3';
                                 $kolomSat_4 = 'sat_4';
                                 $kolomSat_5 = 'sat_5';
+                                $buttonDel = '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button></div>';
                                 break;
                             case 'dppa':
                             case 'renja_p':
+                                $id_dok = 'id_dpa';
                                 $kolomJumlah = 'jumlah_p';
                                 $kolomVol_1 = 'vol_1_p';
                                 $kolomVol_2 = 'vol_2_p';
@@ -436,6 +439,9 @@ class MasterFungsi
                                 $kolomSat_3 = 'sat_3_p';
                                 $kolomSat_4 = 'sat_4_p';
                                 $kolomSat_5 = 'sat_5_p';
+                                if($row->id_dpa <= 0){
+                                    $buttonDel = '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button></div>';
+                                }
                                 break;
                             default:
                                 break;
@@ -460,7 +466,10 @@ class MasterFungsi
                                     <div class="item"><div class="ui red empty circular label"></div>Help</div>
                                 </div>
                             </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="edit outline blue icon"></i></button>';
-                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button></div>';
+                            
+                            
+                            
+                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . $buttonDel;
                         }
                         // var_dump($row->{$kolomVol_1});
                         $koefisien = number_format((float)$row->{$kolomVol_1}, 2, ',', '.');
@@ -1199,11 +1208,15 @@ class MasterFungsi
         $Sumprogkeg = [];
         $rek_Proses = $this->kelolaRek($dinamic);
         // var_dump($rek_Proses);
-        for ($i = 1; $i <= $rek_Proses['sum_rek']; $i++) {
+        for ($i = 0; $i <= $rek_Proses['sum_rek']; $i++) {
             if ($i == 4) {
                 continue;
             }
             switch ($i) {
+                case 0:
+
+                    $kel_rek = 'opd';
+                    break;
                 case 1:
                     $kd_sub_kegOk = $rek_Proses['kd_urusan'];
                     $kel_rek = 'kd_urusan';
@@ -1228,12 +1241,21 @@ class MasterFungsi
                     #code...
                     break;
             };
-            $DB->select($column);
-            $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
+            
+            if ($i == 0) {
+                $DB->select("SUM(jumlah_rincian_p) AS jumlah_rincian_p,SUM(jumlah_rincian) AS jumlah_rincian");
+                $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'urusan', 'AND']];
+            }else{
+                $DB->select($column);
+                $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
+                
+            }
             $Sumprogkeg[$kel_rek] = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+            
             // $Sumprogkeg[$kel_rek] = $DB->getWhereCustom($tabel_pakai, $kondisi);
             // var_dump($Sumprogkeg);
         }
+
         // $DB->select('*');
         return $Sumprogkeg;
     }
@@ -2571,7 +2593,7 @@ class MasterFungsi
                 throw new RuntimeException('Failed to move uploaded file.');
             }
             //var_dump($nameFileDel);
-            
+
             //unlink($nameFileDel);
             return ['result' => 'ok', $dok => $namaFile]; //'File is uploaded successfully.'
         } catch (RuntimeException $e) {

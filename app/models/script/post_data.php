@@ -1154,6 +1154,32 @@ class post_data
                                         $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
                                         break;
                                 };
+                                //ut satuan dan vol
+                                switch ($tbl) {
+                                    case 'dpa':
+                                    case 'renja':
+                                        $kolSat1 = 'sat_1';
+                                        $kolSat2 = 'sat_2';
+                                        $kolSat3 = 'sat_3';
+                                        $kolSat4 = 'sat_4';
+                                        $kolVol1 = 'vol_1';
+                                        $kolVol2 = 'vol_2';
+                                        $kolVol3 = 'vol_3';
+                                        $kolVol4 = 'vol_4';
+                                        break;
+
+                                    case 'dppa':
+                                    case 'renja_p':
+                                        $kolSat1 = 'sat_1_p';
+                                        $kolSat2 = 'sat_2_p';
+                                        $kolSat3 = 'sat_3_p';
+                                        $kolSat4 = 'sat_4_p';
+                                        $kolVol1 = 'vol_1_p';
+                                        $kolVol2 = 'vol_2_p';
+                                        $kolVol3 = 'vol_3_p';
+                                        $kolVol4 = 'vol_4_p';
+                                        break;
+                                };
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
                                     'sanitize' => 'string',
                                     'numeric' => true,
@@ -1206,53 +1232,53 @@ class post_data
                                     'required' => true,
                                     'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
-                                $vol_1 = $validate->setRules('vol_1', 'koefisien perkalian 1', [
+                                $vol_1 = $validate->setRules($kolVol1, 'koefisien perkalian 1', [
                                     'required' => true,
                                     'numeric' => true,
                                     'min_char' => 1
                                 ]);
-                                $sat_1 = $validate->setRules('sat_1', 'satuan koefisien perkalian 1', [
+                                $sat_1 = $validate->setRules($kolSat1, 'satuan koefisien perkalian 1', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_1']]]]
+                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat1]]]]
                                 ]);
                                 $vol_2 = 0;
-                                $vol_2 = $validate->setRules('vol_2', 'koefisien perkalian 2', [
+                                $vol_2 = $validate->setRules($kolVol2, 'koefisien perkalian 2', [
                                     'sanitize' => 'string',
                                     'numeric_zero' => true,
                                 ]);
                                 $sat_2 = '';
                                 if ($vol_2 > 0) {
-                                    $sat_2 = $validate->setRules('sat_2', 'satuan koefisien perkalian 2', [
+                                    $sat_2 = $validate->setRules($kolSat2, 'satuan koefisien perkalian 2', [
                                         'sanitize' => 'string',
                                         'required' => true,
-                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_2']]]]
+                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat2]]]]
                                     ]);
                                 }
                                 $vol_3 = 0;
-                                $vol_3 = $validate->setRules('vol_3', 'koefisien perkalian 3', [
+                                $vol_3 = $validate->setRules($kolVol3, 'koefisien perkalian 3', [
                                     'sanitize' => 'string',
                                     'numeric_zero' => true,
                                 ]);
                                 $sat_3 = '';
                                 if ($vol_3 > 0) {
-                                    $sat_3 = $validate->setRules('sat_3', 'satuan koefisien perkalian 3', [
+                                    $sat_3 = $validate->setRules($kolSat3, 'satuan koefisien perkalian 3', [
                                         'sanitize' => 'string',
                                         'required' => true,
-                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_3']]]]
+                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat3]]]]
                                     ]);
                                 }
                                 $vol_4 = 0;
-                                $vol_4 = $validate->setRules('vol_3', 'koefisien perkalian 3', [
+                                $vol_4 = $validate->setRules($kolVol4, 'koefisien perkalian 3', [
                                     'sanitize' => 'string',
                                     'numeric_zero' => true,
                                 ]);
                                 $sat_4 = '';
                                 if ($vol_4 > 0) {
-                                    $sat_4 = $validate->setRules('sat_4', 'satuan koefisien perkalian 4', [
+                                    $sat_4 = $validate->setRules($kolSat4, 'satuan koefisien perkalian 4', [
                                         'sanitize' => 'string',
                                         'required' => true,
-                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['sat_4']]]]
+                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat4]]]]
                                     ]);
                                 }
                                 $vol_1_kali = ($vol_1) ? $vol_1 : 1;

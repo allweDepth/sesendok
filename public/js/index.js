@@ -480,7 +480,7 @@ $(document).ready(function () {
 					case "renja":
 					case "renja_p":
 						let elmk = divTab.find(`.secondary.menu [tbl="${tbl}"]`);
-						
+
 						if (tbl !== 'sub_keg_renja' && tbl !== 'sub_keg_dpa' && data['id_sub_keg'] > 0) {
 							divTab.find('table.sub_keg').removeAttr('hidden')
 							// tambhalan atribut id sub kegiatan di button jns
@@ -2313,6 +2313,10 @@ $(document).ready(function () {
 						case 'renja':
 						case 'renja_p':
 						case 'dppa':
+							let sumber = 'sumber_dana';
+							// if (tbl == 'dppa' || tbl == 'renja_p') {
+							// 	sumber = 'sumber_dana_p';
+							// }
 							var tabel_pakai_temporerSubkeg = 'sub_keg_renja';
 							switch (tbl) {
 								case 'dpa':
@@ -2331,7 +2335,7 @@ $(document).ready(function () {
 							allObjek = { jenis: 'gantiJenisKomponen' };
 							dropdownJenisKomponen.onChange(allObjek);
 							var dropdownSumberDana = new DropdownConstructor('.ui.dropdown.sumber_dana.ajx.selection')
-							var allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
+							var allField = { klm: sumber, id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: sumber }
 							dropdownSumberDana.returnList({ jenis: "getJsonRows", tbl: tabel_pakai_temporerSubkeg, set: allField });
 							var dropdownKeterangan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="uraian"]')
 							allField = { klm: 'keterangan_json', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'keterangan_json' };
@@ -2536,8 +2540,15 @@ $(document).ready(function () {
 																				allField = { klm: 'kelompok_json', id_sub_keg: id_sub_keg }
 																				dropdownKelompok.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
+																				case 'sumber_dana_p':
 																			case 'sumber_dana':
-																				dropdownSumberDana.valuesDropdown(result.data?.values?.sumber_dana);
+																				let sumber = 'sumber_dana';
+																				if (tbl == 'dppa' || tbl == 'renja_p') {
+																					sumber = 'sumber_dana_p';
+																				}
+																				dropdownSumberDana.valuesDropdown(result.data?.values[sumber]);
+																				console.log(result.data?.values[sumber]);
+																				
 																				var allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
 																				dropdownSumberDana.returnList({ jenis: "getJsonRows", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
@@ -2554,20 +2565,24 @@ $(document).ready(function () {
 																				allField = { klm: 'keterangan_json', id_sub_keg: id_sub_keg, jns_kel: 'keterangan_json' }
 																				dropdownKeterangan.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
+																				case 'sat_1_p':
 																			case 'sat_1':
-																				dropdownSatuanRenja1.valuesDropdown(result.data?.values?.sat_1);
+																				dropdownSatuanRenja1.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja1.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																				break;
+																				case 'sat_2_p':
 																			case 'sat_2':
-																				dropdownSatuanRenja2.valuesDropdown(result.data?.values?.sat_2);
+																				dropdownSatuanRenja2.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja2.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																				break;
+																				case 'sat_3_p':
 																			case 'sat_3':
-																				dropdownSatuanRenja3.valuesDropdown(result.data?.values?.sat_3);
+																				dropdownSatuanRenja3.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja3.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																				break;
+																				case 'sat_4_p':
 																			case 'sat_4':
-																				dropdownSatuanRenja4.valuesDropdown(result.data?.values?.sat_4);
+																				dropdownSatuanRenja4.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja4.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																			default:
 																				break;
@@ -2803,8 +2818,8 @@ $(document).ready(function () {
 					//The setDate method works inplace on the object, and the return value of the function is the timestamp of the new date. makanya gunakan new date
 					let tanggal = $(`form[name="form_pengaturan"] .ui.calendar.year[name="tahun_renstra"]`).calendar("get date");
 					if (tanggal) {
-						console.log( tanggal);
-						
+						console.log(tanggal);
+
 						tanggal = `${tanggal.getFullYear()}`;
 						data.tahun_renstra = tanggal;
 					}
@@ -4743,7 +4758,7 @@ $(document).ready(function () {
 									// ==================
 									case "form_modal":
 										switch (jenis) {
-											
+
 											case "y":
 												break;
 											case "z":

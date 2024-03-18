@@ -700,14 +700,14 @@ class get_data
                                             //tambahkan data dari tabel sub_keg_renja_neo/sub_keg_dpa_neo nama sub kegiatan/kegiatan/program/bidang/perangkat daerah
                                             $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ? AND kd_sub_keg = ? ";
                                             $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
-                                            $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
+                                            $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, jumlah_rincian,jumlah_rincian_p'];
                                             $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
                                             // var_dump($bidang_sub_keg);
                                             // keterangan di atas
                                             $data['tr_sub_keg'] = '<tr>
                                                     <td class="collapsing">Perangkat Daerah</td>
                                                     <td>' . $data['unit_kerja'] . '</td>
-                                                    <td class="right aligned collapsing">Rp. 0,00</td>
+                                                    <td class="right aligned collapsing">Rp. ' . number_format((float)$bidang_sub_keg['opd']->{$jumlahRincian_Input}, 2, ',', '.') . '</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Bidang</td>
@@ -1009,7 +1009,7 @@ class get_data
                                     $jumlah_kolom = 9;
                                     break;
                                 case 'sub_keg':
-                                    
+
                                     $like = "sub_keg > ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [0, 0, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kode ASC";
@@ -1599,9 +1599,17 @@ class get_data
                                                     }
                                                 }
                                                 // sumber_dana
-                                                $cari_drop = $data['users']->sumber_dana;
-                                                if ($cari_drop) {
+
+                                                
+
+                                                if ($tbl == 'dppa' || $tbl == 'renja_p') {
+                                                    $cari_drop = $data['users']->sumber_dana_p;
+                                                    $data['values']['sumber_dana_p'] = [];
+                                                } else {
                                                     $data['values']['sumber_dana'] = [];
+                                                    $cari_drop = $data['users']->sumber_dana;
+                                                }
+                                                if ($cari_drop) {
                                                     $formValueExplode = explode(',', $cari_drop);
                                                     foreach ($formValueExplode as $key_row => $row) {
                                                         $kondisi_result_sub = [['kode', '=', $row]];
@@ -1612,7 +1620,11 @@ class get_data
                                                             } else {
                                                                 $uraian_sumberDana = 'data tidak ditemukan';
                                                             }
-                                                            $data['values']['sumber_dana'][] = ['name' => $uraian_sumberDana, 'value' => $row, 'selected' => true];
+                                                            if ($tbl == 'dppa' || $tbl == 'renja_p') {
+                                                                $data['values']['sumber_dana_p'][] = ['name' => $uraian_sumberDana, 'value' => $row, 'selected' => true];
+                                                            } else {
+                                                                $data['values']['sumber_dana'][] = ['name' => $uraian_sumberDana, 'value' => $row, 'selected' => true];
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -1639,7 +1651,12 @@ class get_data
                                                         $kondisi_result = [['disable', '<=', 0], ['value', '=', $cari_sat, 'AND']];
                                                         $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
                                                         if ($row !== false) {
-                                                            $data['values']["sat_{$i}"] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
+                                                            // harus dibedakan satuan pokok dan perubahan
+                                                            $valSat = "sat_{$i}";
+                                                            if ($tbl == 'dppa' || $tbl == 'renja_p') {
+                                                                $valSat = "sat_{$i}_p";
+                                                            }
+                                                            $data['values'][$valSat] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
                                                         }
                                                     }
                                                 }

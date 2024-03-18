@@ -480,8 +480,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <h3 class="ui dividing header"></h3>
                             </div>
                             <div class="ui hidden divider"></div>
-                            <div class="ui long scrolling fluid container">
-                                <table class="ui head foot stuck unstackable celled striped table insert">
+                            <table class="ui head celled striped table insert">
                                     <thead>
                                     </thead>
                                     <tbody>
@@ -489,7 +488,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                     <tfoot>
                                     </tfoot>
                                 </table>
-                            </div>
                         </div>
                     </div>
                 </div>
