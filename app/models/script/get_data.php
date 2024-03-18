@@ -434,24 +434,24 @@ class get_data
                             $kodePosting = 'get_tbl';
                             switch ($tbl) {
                                 case 'berita':
-                                    $like = "kd_wilayah = ? AND id > ? AND disable <= ? AND(jenis LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR uraian_html LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [0, 0, $cari, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND id > ? AND(jenis LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR uraian_html LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [0, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kelompok, urutan ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "kd_wilayah = ? AND id > ? AND disable <= ?";
-                                    $data_where1 =  [$kd_wilayah, 0, 0];
-                                    $whereGet_row_json = "kd_wilayah = ? AND id > ? AND disable <= ?";
-                                    $data_hereGet_row_json = [$kd_wilayah, 0, 0];
+                                    $where1 = "kd_wilayah = ? AND id > ?";
+                                    $data_where1 =  [$kd_wilayah, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? AND id > ? AND";
+                                    $data_hereGet_row_json = [$kd_wilayah, 0];
                                     break;
                                 case 'users':
-                                    $like = "id > ? AND disable <= ? AND(nama LIKE CONCAT('%',?,'%') OR username LIKE CONCAT('%',?,'%') OR email LIKE CONCAT('%',?,'%') OR kd_organisasi LIKE CONCAT('%',?,'%') OR nama_org LIKE CONCAT('%',?,'%') OR kd_wilayah LIKE CONCAT('%',?,'%') OR tgl_daftar LIKE CONCAT('%',?,'%') OR tahun LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [0, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $like = "id > ? AND(nama LIKE CONCAT('%',?,'%') OR username LIKE CONCAT('%',?,'%') OR email LIKE CONCAT('%',?,'%') OR kd_organisasi LIKE CONCAT('%',?,'%') OR nama_org LIKE CONCAT('%',?,'%') OR kd_wilayah LIKE CONCAT('%',?,'%') OR tgl_daftar LIKE CONCAT('%',?,'%') OR tahun LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY nama ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "id > ? AND disable <= ?";
-                                    $data_where1 =  [0, 0];
-                                    $whereGet_row_json = "id > ? AND disable <= ?";
-                                    $data_hereGet_row_json = [0, 0];
+                                    $where1 = "id > ?";
+                                    $data_where1 =  [0];
+                                    $whereGet_row_json = "id > ?";
+                                    $data_hereGet_row_json = [0];
                                     break;
                                 case 'asn':
                                     $like = "kd_wilayah = ? AND kd_opd = ? AND disable <= ? AND(nama LIKE CONCAT('%',?,'%') OR 	nip LIKE CONCAT('%',?,'%') OR t4_lahir LIKE CONCAT('%',?,'%') OR tgl_lahir LIKE CONCAT('%',?,'%') OR jabatan LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR npwp LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR nama_anak LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";

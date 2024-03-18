@@ -798,9 +798,9 @@ $(document).ready(function () {
 									atribut: 'name="judul" rows="2"',
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									labelTambahan : ` <div class="ui circular right aligned red horizontal label"><i class="search icon"></i> tampilkan</div>`,
+									labelTambahan: ` <button class="ui circular right aligned blue horizontal label button" name="modal_show" tbl="berita" jns="modal_show"> tampilkan</button>`,
 									label: "Markup HTML",
-									atribut: 'name="uraian_html" rows="4"',
+									atribut: 'name="uraian_html" rows="20"',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -3255,15 +3255,17 @@ $(document).ready(function () {
 		});
 		let kelasToast = "warning";
 		let pesanToast = 'Koreksi Data';
-		mdl.addClass("tiny");
+
 		console.log(tblAttr);
 
 		switch (jnsAttr) {
 			case 'get_field_json':
 			case 'add_field_json':
 				switch (tblAttr) {
+
 					case 'sub_keg_dpa':
 					case 'sub_keg_renja':
+						mdl.addClass("tiny");
 						let id_sub_keg = ini.closest('.ui.form').attr('id_sub_keg');
 						data.id_sub_keg = id_sub_keg;
 						data.klm = klmAttr;
@@ -3421,6 +3423,20 @@ $(document).ready(function () {
 						break;
 				}
 				break;
+			case 'modal_show':
+				switch (tblAttr) {
+					case 'berita':
+						elementForm = buatElemenHtml("piledSegment", {
+							atribut: 'name="uraian_html" ',
+						}) +
+							buatElemenHtml("fieldTextarea", {
+								label: "Markup HTML",
+								atribut: 'name="uraian_html" placeholder="keterangan..." rows="5"',
+							})
+
+						break;
+				}
+				break;
 			case 'xxx':
 				break;
 			default:
@@ -3437,6 +3453,21 @@ $(document).ready(function () {
 		addRulesForm(formIni);
 
 		switch (jnsAttr) {
+			case 'modal_show':
+				switch (tblAttr) {
+					case 'berita':
+						let komponen = $(`form[name="form_flyout"]`).form('get value', 'uraian_html');
+						$(`form[name="form_modal"]`).form('set value', 'uraian_html', komponen)
+						let elmTambahan = buatElemenHtml("ribbonLabel", {
+							label: "Result HTML",
+							posisi:"right",
+							kelas:"yellow",
+							atribut: 'name="uraian_html" placeholder="keterangan..."',
+						})
+						$(`form[name="form_modal"]`).find('.segment').html(elmTambahan+komponen);
+						break;
+				}
+				break;
 			case 'uraian_belanja':
 				switch (tblAttr) {
 					case 'daftar_paket':
@@ -5299,7 +5330,8 @@ $(document).ready(function () {
 	//================================
 	function buatElemenHtml(namaElemen = "", dataElemen = {}) {//@audit-ok create elm
 		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
-		let labelTambahan="labelTambahan" in dataElemen ? dataElemen.labelTambahan : "";
+		let labelTambahan = "labelTambahan" in dataElemen ? dataElemen.labelTambahan : "";
+		
 		let content = "content" in dataElemen ? dataElemen.content : "";
 		let atribut = "atribut" in dataElemen ? dataElemen.atribut : "";
 		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
@@ -5473,8 +5505,27 @@ $(document).ready(function () {
 			case "fieldTextAccordion":
 				elemen = `<div><label class="visible" style="display: block !important;">${labelData}</label><input ${atribut} type="text" class="visible" style="display: inline-block !important;"></div>`;
 				break;
+			case "ribbonLabel":
+				elemen = `<a class="ui ${posisi} ribbon label ${kelasData}">${labelData}</a>`;
+				break;
+			case "piledSegment":
+				elemen = `<div class="ui piled segment ${kelasData}"></div>`;
+				break;
 			case "segment":
-				elemen = `<div class="ui segments"><div class="ui segment"></div><div class="ui segment"></div></div>`;
+				elemen = `<div class="ui segment ${kelasData}"></div>`;
+				break;
+			case "segments":
+				elemen = `<div class="ui piled segments ${kelasData}">
+				<div class="ui segment">
+					<p>Top</p>
+					</div>
+					<div class="ui segment">
+						<p>Middle</p>
+					</div>
+					<div class="ui segment">
+						<p>Bottom</p>
+					</div>
+					</div>`;
 				break;
 			case "messageLink":
 				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${labelData} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
@@ -5566,7 +5617,7 @@ $(document).ready(function () {
 			case "fieldText2":
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +labelTambahan+
+					labelData + labelTambahan +
 					"</label><input " +
 					placeholderData +
 					' name="username" type="text" ' +
@@ -5576,7 +5627,7 @@ $(document).ready(function () {
 			case "fieldFileInput":
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +labelTambahan+
+					labelData + labelTambahan +
 					'</label><div class="ui file input"><input type="file" ' +
 					atribut +
 					"></div></div>";
@@ -5585,6 +5636,9 @@ $(document).ready(function () {
 				//atribut file hanya placeholder
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>${labelData}${labelTambahan}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly name_bayang="${file}" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" ${atribut2} non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
+				break;
+			case "segment":
+				elemen = `<div class="ui segment ${kelasData}" ${atribut}>${labelData}</div>`;
 				break;
 			case "fieldTextarea":
 				elemen =
