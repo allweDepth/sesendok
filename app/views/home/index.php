@@ -872,16 +872,10 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <div class="two fields">
                                     <div class="field">
                                         <label>Tahun</label>
-                                        <div class="ui fluid search selection dropdown" name="tahun">
-                                            <input type="hidden" name="tahun">
-                                            <i class="dropdown icon"></i>
-                                            <div class="default text">Tahun Anggaran</div>
-                                            <div class="menu">
-                                                <?php
-                                                for ($i = 2020; $i < 2031; $i++) {
-                                                    echo '<div class="item" data-value="' . $i . '" data-text="' . $i . '"><i class="podcast icon"></i>' . $i . '</div>';
-                                                }
-                                                ?>
+                                        <div class="ui calendar year" name="tahun">
+                                            <div class="ui input left icon">
+                                                <i class="calendar icon"></i>
+                                                <input type="text" placeholder="Tahun Anggaran" name="tahun" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -890,7 +884,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         <div class="ui calendar year" name="tahun_renstra">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                <input type="text" placeholder="Tahun Renstra" name="tahun_renstra">
+                                                <input type="text" placeholder="Tahun Renstra" name="tahun_renstra" readonly>
                                             </div>
                                         </div>
                                     </div>

@@ -2019,11 +2019,6 @@ $(document).ready(function () {
 									label: "Nama SKPD",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldCalendar", {
-									label: "Renstra",
-									kelas: "year",
-									atribut: 'name="tahun_renstra" placeholder="tahun renstra..."',
-								}) +
 								buatElemenHtml("fieldText", {
 									label: "Alamat",
 									atribut:

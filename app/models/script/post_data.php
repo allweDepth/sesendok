@@ -144,7 +144,7 @@ class post_data
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inArray' => ['berita', 'pelayanan', 'data_teknis', 'organisasi','anggaran']
+                                    'inArray' => ['berita', 'pelayanan', 'data_teknis', 'organisasi', 'anggaran']
                                 ]);
                                 $judul = $validate->setRules('judul', 'Judul Berita', [
                                     'del_2_spasi' => true,
@@ -853,12 +853,12 @@ class post_data
                                     'required' => true,
                                     'min_char' => 18
                                 ]);
-                                $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 4
-                                ]);
+                                // $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
+                                //     'numeric' => true,
+                                //     'required' => true,
+                                //     'min_char' => 4,
+                                //     'max_char' => 4
+                                // ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
                                     'sanitize' => 'string'
                                 ]);
@@ -872,9 +872,9 @@ class post_data
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'renstra':
-                                $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                if ($rowOrganisasi) {
-                                    $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                if ($rowPengaturan !== false) {
+                                    $tahun_renstra = $rowPengaturan->tahun_renstra;
                                 }
                                 $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
                                     'sanitize' => 'string',
@@ -1585,8 +1585,8 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $set['username']=$_SESSION["user"]["username"];
-                                        $set['tgl_insert']=date('Y-m-d H:i:s');
+                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }
                                     break;
                                 case 'asn':
@@ -1822,7 +1822,6 @@ class post_data
                                         'nama_kepala' => $nama_kepala,
                                         'nip_kepala' => $nip_kepala,
                                         'peraturan' => $id_aturan_anggaran,
-                                        'tahun_renstra' => $tahun_renstra,
                                         'disable' => $disable,
                                         'keterangan' => $keterangan,
                                         'tanggal' => date('Y-m-d H:i:s'),
@@ -1943,9 +1942,9 @@ class post_data
                                     }
                                     break;
                                 case 'renstra':
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         $unit_kerja = $rowOrganisasi->uraian;
                                         if ($tahun_renstra > 2000) {
                                             if ($jenis == 'add') {
@@ -2020,9 +2019,9 @@ class post_data
                                     if ($kelompok == 'tujuan') {
                                         $id_tujuan = 0;
                                     }
-                                    $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                    if ($rowOrganisasi) {
-                                        $tahun_renstra = $rowOrganisasi->tahun_renstra;
+                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                                    if ($rowPengaturan !== false) {
+                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
                                             if ($jenis == 'add') {
                                                 $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kelompok', '=', $kelompok, 'AND'], ['text', '=', $text, 'AND']];
@@ -2208,15 +2207,15 @@ class post_data
                                         'peraturan' => ${"aturan_$tbl"},
                                         'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                         'disable' => 0,
-                                        
+
                                     ];
                                     if ($jenis == 'add') {
-                                        $set['tanggal']=date('Y-m-d H:i:s');
-                                        $set['username']=$_SESSION["user"]["username"];
+                                        $set['tanggal'] = date('Y-m-d H:i:s');
+                                        $set['username'] = $_SESSION["user"]["username"];
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     }
-                                    
+
                                     break;
                                 case 'value':
                                     break;
@@ -2259,7 +2258,7 @@ class post_data
                             $kodePosting = 'update_row';
                             break;
                         case 'unsetujui':
-                            
+
                             $set = ["setujui_$tbl" => 0];
                             $tabel_pakai = 'pengaturan_neo';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
@@ -2267,7 +2266,7 @@ class post_data
                             break;
                         case 'kunci':
                             $tabel_pakai = 'pengaturan_neo';
-                            $set = ["kunci_$tbl" =>1];
+                            $set = ["kunci_$tbl" => 1];
                             $kodePosting = 'update_row';
                             $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
                             break;
@@ -2278,13 +2277,13 @@ class post_data
                                     $tablePosting = '';
 
                                     break;
-                                case 'renja_p'://renja p ke dppa
+                                case 'renja_p': //renja p ke dppa
                                     $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     $tablePosting = 'dppa_neo';
                                     $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id_renja_p`";
                                     $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id`";
                                     break;
-                                case 'dpa'://dpa ke renja_p
+                                case 'dpa': //dpa ke renja_p
                                     $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     $tablePosting = 'renja_p_neo';
                                     $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`";
@@ -2292,7 +2291,7 @@ class post_data
                                     $tablePosting2 = 'sub_keg_dpa_neo';
                                     $tabel_pakai2 = 'sub_keg_renja_neo';
                                     break;
-                                case 'renja'://renja ke dpa
+                                case 'renja': //renja ke dpa
                                     $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     $tablePosting = 'dpa_neo';
                                     $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `id_renja`";

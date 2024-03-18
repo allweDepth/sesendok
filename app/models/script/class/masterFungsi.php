@@ -205,7 +205,7 @@ class MasterFungsi
                 $rowData['thead'] = trim('<tr>
                             <th class="collapsing">Kode</th>
                             <th>Uraian</th>
-                            <th>Renstra</th>
+                            <th>Kepala SKPD</th>
                             <th>keterangan</th>
                             <th class="collapsing">AKSI</th>
                         </tr>');
@@ -810,7 +810,7 @@ class MasterFungsi
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                                         <td klm="kode">' . $divAwal . $row->kode . $divAkhir . '</td>
                                                         <td klm="uraian">' . $divAwal . $row->uraian . $divAkhir . '</td>
-                                                        <td klm="tahun_renstra">' . $row->tahun_renstra  . '</td>
+                                                        <td klm="nama_kepala">' . $row->nama_kepala  . '</td>
                                                         <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
                                                         <td>' . $buttons . '</td>
                                                     </tr>');
