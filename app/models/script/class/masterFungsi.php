@@ -40,6 +40,14 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'berita':
+                $rowData['thead'] = trim('<tr>
+                <th>KELOMPOK</th>
+                <th>URAIAN</th>
+                <th>KETERANGAN</th>
+                <th class="collapsing">AKSI</th>
+            </tr>');
+                break;
             case 'users':
                 $rowData['thead'] = trim('<tr>
                 <th>NAMA</th>
@@ -290,6 +298,22 @@ class MasterFungsi
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
+                    case 'berita':
+                        
+                    if ($type_user == 'admin') {
+                        $divAwal = '<div contenteditable>';
+                        $divAkhir = '</div>';
+                        $buttons = '<div class="ui icon basic mini buttons">
+                        <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                        <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                <td klm="kelompok">' .  $row->kelompok . '</td>
+                                <td klm="jenis">' . $row->jenis . '</td>
+                                <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
+                                <td>' . $buttons . '</td>
+                            </tr>');
+                    }
+                        break;
                     case 'users':
                         if ($type_user == 'admin') {
                             $divAwal = '<div contenteditable>';
@@ -981,6 +1005,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'berita':
+                $tabel_pakai = 'berita_neo';
+                $jumlah_kolom = 9;
+                break;
             case 'users':
                 $tabel_pakai = 'user_sesendok_biila';
                 $jumlah_kolom = 9;
