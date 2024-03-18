@@ -4,6 +4,15 @@
     bottom: 0 !important;
     width: 100% !important;
 }
-.stripe.segment{
+
+.stripe.segment {
     padding-bottom: 350px !important;
+}
+
+blockquote {
+    border-left: 4px solid #777777;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 0 2em;
+    margin: 1em 0 2em;
 }

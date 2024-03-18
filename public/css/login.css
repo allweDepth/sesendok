@@ -21,3 +21,11 @@ body>.grid {
 .column {
     max-width: 450px;
 }
+
+blockquote {
+    border-left: 4px solid #777777;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 0 2em;
+    margin: 1em 0 2em;
+}

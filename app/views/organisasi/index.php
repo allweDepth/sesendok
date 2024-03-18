@@ -1,6 +1,9 @@
 <!-- Following Menu -->
 <div class="ui large top fixed menu">
     <div class="ui container">
+    <div class="header item">
+            <img class="logo" src="img/logo.png">
+        </div>
         <a class="item inayah" href="login">Home</a>
         <a class="item inayah" href="pelayanan">Pelayanan</a>
         <a class="item inayah" href="data_teknis">Data Teknis</a>

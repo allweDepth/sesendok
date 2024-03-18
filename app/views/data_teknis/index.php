@@ -1,6 +1,9 @@
 <!-- Following Menu -->
 <div class="ui large top fixed menu">
     <div class="ui container">
+        <div class="header item">
+            <img class="logo" src="img/logo.png">
+        </div>
         <a class="item inayah" href="login">Home</a>
         <a class="item inayah" href="pelayanan">Pelayanan</a>
         <a class="active item inayah" href="data_teknis">Data Teknis</a>
@@ -85,6 +88,111 @@
                     </tr>
                 </tfoot>
             </table>
-            <table class="ui celled structured striped table"><thead><tr><th class="collapsing">No.</th><th class="center aligned">Kecamatan</th><th class="center aligned">Jumlah rumah tinggal</th><th class="center aligned">Jumlah rumah tinggal berakses sanitasi</th><th class="center aligned">Persentase</th></tr></thead><tbody><tr><td>1</td><td>Sarudu</td><td>3.529</td><td>3.187</td><td>86,49%</td></tr><tr><td>2</td><td>Dapurang</td><td>4.270</td><td>2.337</td><td>64,40%</td></tr><tr><td>3</td><td>Duripoku</td><td>1.532</td><td>952</td><td>61,46%</td></tr><tr><td>4</td><td>Baras</td><td>5.387</td><td>1.759</td><td>34,38%</td></tr><tr><td>5</td><td>Bulutaba</td><td>2.816</td><td>2.022</td><td>62,92%</td></tr><tr><td>6</td><td>Lariang</td><td>1.777</td><td>1.266</td><td>65,32%</td></tr><tr><td>7</td><td>Pasangkayu</td><td>7.734</td><td>3.913</td><td>53,21%</td></tr><tr><td>8</td><td>Tikke Raya</td><td>4.236</td><td>2.514</td><td>54,85%</td></tr><tr><td>9</td><td>Pedongga</td><td>2.932</td><td>1.863</td><td>79,87%</td></tr><tr><td>10</td><td>Bambalamotu</td><td>4.474</td><td>2.676</td><td>56,87%</td></tr><tr><td>11</td><td>Bambaira</td><td>2.392</td><td>1.329</td><td>47,61%</td></tr><tr><td>12</td><td>Sarjo</td><td>1.753</td><td>1.019</td><td>48,37%</td></tr></tbody><tfoot><tr><th></th><th></th><th>42.832</th><th>24.837</th><th>57,99%</th></tr></tfoot></table>
+            <table class="ui celled structured striped table">
+                <thead>
+                    <tr>
+                        <th class="collapsing">No.</th>
+                        <th class="center aligned">Kecamatan</th>
+                        <th class="center aligned">Jumlah rumah tinggal</th>
+                        <th class="center aligned">Jumlah rumah tinggal berakses sanitasi</th>
+                        <th class="center aligned">Persentase</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Sarudu</td>
+                        <td>3.529</td>
+                        <td>3.187</td>
+                        <td>86,49%</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Dapurang</td>
+                        <td>4.270</td>
+                        <td>2.337</td>
+                        <td>64,40%</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Duripoku</td>
+                        <td>1.532</td>
+                        <td>952</td>
+                        <td>61,46%</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Baras</td>
+                        <td>5.387</td>
+                        <td>1.759</td>
+                        <td>34,38%</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Bulutaba</td>
+                        <td>2.816</td>
+                        <td>2.022</td>
+                        <td>62,92%</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Lariang</td>
+                        <td>1.777</td>
+                        <td>1.266</td>
+                        <td>65,32%</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Pasangkayu</td>
+                        <td>7.734</td>
+                        <td>3.913</td>
+                        <td>53,21%</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Tikke Raya</td>
+                        <td>4.236</td>
+                        <td>2.514</td>
+                        <td>54,85%</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Pedongga</td>
+                        <td>2.932</td>
+                        <td>1.863</td>
+                        <td>79,87%</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Bambalamotu</td>
+                        <td>4.474</td>
+                        <td>2.676</td>
+                        <td>56,87%</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Bambaira</td>
+                        <td>2.392</td>
+                        <td>1.329</td>
+                        <td>47,61%</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Sarjo</td>
+                        <td>1.753</td>
+                        <td>1.019</td>
+                        <td>48,37%</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>42.832</th>
+                        <th>24.837</th>
+                        <th>57,99%</th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
