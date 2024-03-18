@@ -433,6 +433,16 @@ class get_data
                         case 'get_tbl':
                             $kodePosting = 'get_tbl';
                             switch ($tbl) {
+                                case 'realisasi':
+                                    $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ? AND(ket_paket LIKE CONCAT('%',?,'%') OR 	ket_uraian_paket LIKE CONCAT('%',?,'%') OR 	tanggal LIKE CONCAT('%',?,'%') OR jumlah LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $tahun, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY id_paket ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? kd_opd = ? AND tahun = ? AND disable <= ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    break;
                                 case 'berita':
                                     $like = "kd_wilayah = ? AND id > ? AND(jenis LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%') OR uraian_html LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [0, $cari, $cari, $cari, $cari];
@@ -642,7 +652,7 @@ class get_data
                                     switch ($tabel_pakai) {
                                         case 'dppa_neo':
                                         case 'renja_p_neo':
-                                            $kolomHarga_satuan = 'harga_satuan_p';
+                                            $kolomHarga_satuan = 'harga_satuan';
                                             break;
                                         default:
                                             $kolomHarga_satuan = 'harga_satuan';
@@ -692,6 +702,7 @@ class get_data
                                             $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun, 0, $kd_sub_keg];
                                             $dinamic = ['tbl' => $tabel_tbl, 'kode' => $kd_sub_keg, 'column' => 'id, kd_sub_keg, uraian, jumlah_pagu, jumlah_pagu_p, 	jumlah_rincian, jumlah_rincian_p'];
                                             $bidang_sub_keg = $Fungsi->get_bidang_sd_sub_keg($dinamic);
+                                            // var_dump($bidang_sub_keg);
                                             // keterangan di atas
                                             $data['tr_sub_keg'] = '<tr>
                                                     <td class="collapsing">Perangkat Daerah</td>
@@ -1200,6 +1211,16 @@ class get_data
                         case 'get_Search_Json':
                             $kodePosting = 'get_row_json';
                             switch ($tbl) {
+                                case 'daftar_paket':
+                                    $like = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND (uraian LIKE CONCAT('%',?,'%') OR id_uraian LIKE CONCAT('%',?,'%') OR metode_pengadaan LIKE CONCAT('%',?,'%') OR metode_pemilihan LIKE CONCAT('%',?,'%') OR nama_rekanan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $tahun, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY id ASC";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun];
+                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? ";
+                                    $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun];
+                                    break;
                                 case 'hspk':
                                 case 'sbu':
                                 case 'ssh':
@@ -1793,6 +1814,11 @@ class get_data
                                             break;
                                         case 'get_Search_Json':
                                             switch ($tbl) {
+                                                case 'daftar_paket':
+                                                    $kd_akun_db = explode(',', $row->kd_akun);
+                                                    $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
+                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $row->id_uraian, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu];
+                                                    break;
                                                 case 'hspk':
                                                 case 'asb':
                                                 case 'ssh':
@@ -1802,7 +1828,6 @@ class get_data
                                                         $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
                                                         $dataJson['results'][] = ['title' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'keterangan' => $row->keterangan, 'disable' => $row->disable, 'kd_aset' => $row->kd_aset, 'kd_akun' => $row->kd_akun];
                                                     }
-
                                                     break;
                                                 case 'renja':
                                                 case 'dpa':
@@ -1976,6 +2001,7 @@ class get_data
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+                    case 'daftar_paket':
                     case 'organisasi':
                     case 'rekanan':
                     case 'renja':

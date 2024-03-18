@@ -2132,7 +2132,7 @@ class post_data
                                             $kolomVol_3 = 'vol_3_p';
                                             $kolomVol_4 = 'vol_4_p';
                                             $kolomVol_5 = 'vol_5_p';
-                                            $kolomHarga_satuan = 'harga_satuan_p';
+                                            $kolomHarga_satuan = 'harga_satuan';
                                             $kolomVolume = 'volume_p';
                                             $kolomSat_1 = 'sat_1_p';
                                             $kolomSat_2 = 'sat_2_p';
@@ -2195,10 +2195,6 @@ class post_data
                                 case 'sbu':
                                 case 'hspk':
                                 case 'ssh':
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    }
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'tahun' => $tahun,
@@ -2209,12 +2205,18 @@ class post_data
                                         'harga_satuan' => $harga_satuan,
                                         'tkdn' => $tkdn,
                                         'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
-                                        'peraturan' => $id_aturan_[$tbl],
+                                        'peraturan' => ${"aturan_$tbl"},
                                         'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                         'disable' => 0,
-                                        'tanggal' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
+                                        
                                     ];
+                                    if ($jenis == 'add') {
+                                        $set['tanggal']=date('Y-m-d H:i:s');
+                                        $set['username']=$_SESSION["user"]["username"];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $kodePosting = 'cek_insert';
+                                    }
+                                    
                                     break;
                                 case 'value':
                                     break;
@@ -2276,17 +2278,22 @@ class post_data
                                     $tablePosting = '';
 
                                     break;
-                                case 'renja_p':
+                                case 'renja_p'://renja p ke dppa
+                                    $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     $tablePosting = 'dppa_neo';
                                     $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id_renja_p`";
                                     $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id`";
                                     break;
-                                case 'dpa':
+                                case 'dpa'://dpa ke renja_p
+                                    $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     $tablePosting = 'renja_p_neo';
                                     $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`";
                                     $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `id`";
+                                    $tablePosting2 = 'sub_keg_dpa_neo';
+                                    $tabel_pakai2 = 'sub_keg_renja_neo';
                                     break;
-                                case 'renja':
+                                case 'renja'://renja ke dpa
+                                    $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                                     $tablePosting = 'dpa_neo';
                                     $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `id_renja`";
                                     $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `id`";
@@ -2430,7 +2437,7 @@ class post_data
                                             case 'renja_p':
                                                 // hapus dahulu sebelum insert
                                                 $resul = $DB->delete_array($tablePosting, $kondisi_delete);
-                                                $resul = $DB->insert_select($tabel_pakai, $tablePosting, $columnName, $columnSelect, $kondisi_insert_select);
+                                                $resul = $DB->insert_select($tabel_from, $tablePosting, $columnName, $columnSelect, $kondisi_insert_select);
                                                 if ($tbl == 'renja') {
                                                     $resul = $DB->delete_array($tablePosting2, $kondisi_delete);
                                                     $resul = $DB->insert_select($tabel_pakai2, $tablePosting2, $columnName2, $columnSelect2, $kondisi_insert_select);

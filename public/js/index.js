@@ -415,7 +415,7 @@ $(document).ready(function () {
 			case "rekanan":
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
-
+			case "realisasi":
 			case "atur":
 			case "users":
 				jalankanAjax = true;
@@ -481,7 +481,7 @@ $(document).ready(function () {
 					case "renja":
 					case "renja_p":
 						let elmk = divTab.find(`.secondary.menu [tbl="${tbl}"]`);
-						console.log(data['id_sub_keg']);
+						
 						if (tbl !== 'sub_keg_renja' && tbl !== 'sub_keg_dpa' && data['id_sub_keg'] > 0) {
 							divTab.find('table.sub_keg').removeAttr('hidden')
 							// tambhalan atribut id sub kegiatan di button jns
@@ -610,8 +610,6 @@ $(document).ready(function () {
 											if (result?.data?.row_tahun[`kunci_${tabelPakai}`] > 0) {
 												$(`button[jns="kunci"][tbl="${tabelPakai}"] i`).addClass('red')
 											}
-											console.log(tabelPakai);
-
 											if (result?.data?.row_tahun[`setujui_${tabelPakai}`] > 0) {
 												$(`button[jns="setujui"][tbl="${tabelPakai}"] i`).addClass('red')
 											}
@@ -871,7 +869,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Golongan",
 									atribut: 'name="golongan"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["1", "I"],
 										["2", "II"],
@@ -882,7 +880,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Ruang",
 									atribut: 'name="ruang"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["a", "a"],
 										["b", "b"],
@@ -894,7 +892,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Jenis Kepegawaian",
 									atribut: 'name="jenis_kepeg"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["pnsp", "ASN pusat"],
 										["pnsd1", "ASN Provinsi"],
@@ -911,7 +909,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Status Kepegawaian",
 									atribut: 'name="status_kepeg"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["capeg", "Calon Pegawai"],
 										["peg_tetap", "ASN/Pegawai tetap"],
@@ -946,7 +944,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Agama",
 									atribut: 'name="agama"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["islam", "Islam"],
 										["kristen", "Kristen"],
@@ -962,7 +960,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldDropdown", {
 									label: "Kelamin",
 									atribut: 'name="kelamin"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["pria", "Pria"],
 										["wanita", "Wanita"]
@@ -970,7 +968,7 @@ $(document).ready(function () {
 								}) + buatElemenHtml("fieldDropdown", {
 									label: "Status",
 									atribut: 'name="status"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["menikah", "Menikah"],
 										["janda-duda", "Duda-Janda"],
@@ -979,7 +977,7 @@ $(document).ready(function () {
 								}) + buatElemenHtml("fieldDropdown", {
 									label: "Kelompok Jabatan",
 									atribut: 'name="kelompok"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
 										["1", "I (Kepala OPD)"],
 										["2", "II (Sekretaris)"],
@@ -1648,6 +1646,7 @@ $(document).ready(function () {
 						case 'rekanan':
 							dataHtmlku.konten = buatElemenHtml("fieldTextAction", {
 								label: "Nama Perusahaan",
+								txtLabel: `<i class="search icon"></i>`,
 								atribut: 'name="nama_perusahaan" placeholder="Nama Perusahaan..."',
 								atributLabel: `name="get_data" jns="${jenis}" tbl="cek_kode"`,
 							}) +
@@ -2649,7 +2648,6 @@ $(document).ready(function () {
 												});
 												//
 												if (result?.data?.hasOwnProperty('users')) {
-													console.log(formIni.find('.ui.avatar.image').after());
 													// let card = document.querySelector('.ui.special.fluid.card');
 													// let NameElement = card.querySelector('.content');
 													// NameElement.textContent = result?.data?.users.nama.toProperCase();
@@ -2669,8 +2667,6 @@ $(document).ready(function () {
 										switch (tbl) {
 											case 'daftar_paket':
 												let dok = ini.attr("dok");
-												console.log(dok);
-												console.log(result.data?.users[dok]);
 												formIni.find(`[name_bayang="${dok}"]`).val(result.data?.users[dok])
 												// formIni.form("set value", dok, result.data?.users[dok]).trigger("change");
 												let namaFileLink = result.data.users[dok];
@@ -3042,7 +3038,6 @@ $(document).ready(function () {
 			case 'upload':
 				switch (tbl) {
 					case 'asn':
-						console.log('masukji 1');
 						//upload langsung file
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
@@ -3061,7 +3056,6 @@ $(document).ready(function () {
 		e.preventDefault();
 		let ini = $(this);
 		let id_row = ini.attr('id_row');
-		console.log(id_row);
 		if (id_row) {
 			let myForm = new FormGlobal(`form[name="form_upload"]`);
 			myForm.run();
@@ -3187,7 +3181,6 @@ $(document).ready(function () {
 
 		let himp = ini.closest(".action");
 		let nama_file = e.target.files[0].name;
-		console.log(`nama_file : ${nama_file}`)
 		himp.find('input[name="dum_file"]').val(nama_file);
 		let file = $(this)[0].files[0].name.toLowerCase(); //this.files[0];
 		let arrayAccept = $(this).attr("accept");
@@ -3229,7 +3222,6 @@ $(document).ready(function () {
 			let myVariable = attrName + 'Attr';
 			window[myVariable] = attribute.value;
 		});
-		console.log(attrs);
 		let url = 'script/get_data'
 		let jalankanAjax = false;
 		let mdl = $('.ui.modal[name="mdl_general"]');
@@ -3255,9 +3247,7 @@ $(document).ready(function () {
 		});
 		let kelasToast = "warning";
 		let pesanToast = 'Koreksi Data';
-
-		console.log(tblAttr);
-
+		formIni.attr({ 'jns': jnsAttr, 'tbl': tblAttr });
 		switch (jnsAttr) {
 			case 'get_field_json':
 			case 'add_field_json':
@@ -3433,7 +3423,18 @@ $(document).ready(function () {
 								label: "Markup HTML",
 								atribut: 'name="uraian_html" placeholder="keterangan..." rows="5"',
 							})
-
+						break;
+				}
+				break;
+			case 'edit':
+			case 'add':
+				switch (tblAttr) {
+					case 'realisasi':
+						elementForm = buatElemenHtml("fieldSearchGrid", {
+							label: "Uraian Pengelompokan Belanja",
+							kelas: `sub_keg_dpa category`,
+							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
+						})
 						break;
 				}
 				break;
@@ -3453,6 +3454,16 @@ $(document).ready(function () {
 		addRulesForm(formIni);
 
 		switch (jnsAttr) {
+			case 'edit':
+			case 'add':
+				switch (tblAttr) {
+					case 'realisasi':
+						var searchPaket = new SearchConstructor('form[name="form_modal"] .ui.search');
+						let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'daftar_paket', data_send: {} };
+						searchPaket.searchGlobal(allField);
+						break;
+				}
+				break;
 			case 'modal_show':
 				switch (tblAttr) {
 					case 'berita':
@@ -3460,11 +3471,11 @@ $(document).ready(function () {
 						$(`form[name="form_modal"]`).form('set value', 'uraian_html', komponen)
 						let elmTambahan = buatElemenHtml("ribbonLabel", {
 							label: "Result HTML",
-							posisi:"right",
-							kelas:"yellow",
+							posisi: "right",
+							kelas: "yellow",
 							atribut: 'name="uraian_html" placeholder="keterangan..."',
 						})
-						$(`form[name="form_modal"]`).find('.segment').html(elmTambahan+komponen);
+						$(`form[name="form_modal"]`).find('.segment').html(elmTambahan + komponen);
 						break;
 				}
 				break;
@@ -3866,7 +3877,6 @@ $(document).ready(function () {
 						case 'non':
 							switch (tbl) {
 								case 'metodePengadaan':
-									console.log(value);
 									let value_pengadaan_penyedia = [
 										{
 											value: 'barang',
@@ -4288,10 +4298,8 @@ $(document).ready(function () {
 					switch (typeOnChange) {
 						case 'tab="lap-harian"':
 							var tanggal = new Date(date);
-							//console.log(tanggal);
 							tanggal = `${tanggal.getFullYear()}-${tanggal.getMonth() + 1
 								}-${tanggal.getDate()}`; //local time
-							//console.log(tanggal);
 							$('a[data-tab="lap-harian"][tbl="get_list"]').trigger("click");
 							break;
 						case "value2":
@@ -4328,7 +4336,6 @@ $(document).ready(function () {
 						let myVariable = attrName + 'Attr';
 						window[myVariable] = attribute.value;
 					});
-					console.log(attrs);
 					let jalankanAjax = false;
 					let ini = $(this);
 					let tbl = ini.attr("tbl");
@@ -4401,21 +4408,17 @@ $(document).ready(function () {
 						}
 					}
 					property = ini.find(".ui.calendar.year");
-					console.log(property);
 					if (property.length > 0) {
 						for (const key of property) {
 							let nameAttr = $(key).find("[name]").attr("name");
 							let tanggal = $(key).calendar("get date");
 							if (tanggal) {
 								tanggal = `${tanggal.getFullYear()}`; //local time
-								console.log(tanggal);
-
 								formData.set(nameAttr, tanggal);
 							}
 						}
 					}
 					property = ini.find(".ui.calendar.datetime");
-					// console.log(property);
 					if (property.length > 0) {
 						for (const key of property) {
 							let nameAttr = $(key).find("[name]").attr("name");
@@ -4443,6 +4446,13 @@ $(document).ready(function () {
 						// =================
 						case "form_modal":
 							switch (jenis) {
+								case 'modal_show':
+									switch (tbl) {
+										case 'berita':
+											$(`form[name="form_flyout"]`).form('set value', 'uraian_html', formData.get("uraian_html"));
+											break;
+									}
+									break;
 								case 'add_uraian':
 									switch (tbl) {
 										case 'daftar_paket':
@@ -4642,9 +4652,7 @@ $(document).ready(function () {
 						// =================
 						case "form_upload":
 							//@audit form sekarang upload file
-							console.log(id_row);
 							if (id_row) {
-								console.log('masukji di formnya');
 								let uploadedFile = document.getElementById('directupload1').files[0];
 								formData.append("dok", dok);
 								formData.append("jenis", jenis);
@@ -4695,7 +4703,6 @@ $(document).ready(function () {
 										}
 									}
 								}
-								//console.log(nama_form);
 								let jenisTrigger = ""; //jenisTrigger = jenis;
 								switch (nama_form) {
 									// ===========================
@@ -4882,6 +4889,16 @@ $(document).ready(function () {
 						case "form_modal":
 							MyForm.form('reset')
 							loaderHide();
+							switch (jenis) {
+								case 'modal_show':
+									switch (tbl) {
+										case 'berita':
+											$(".ui.modal.mdl_general").modal("hide");
+											break;
+									}
+									break;
+							};
+
 							// $(".ui.modal.mdl_general").modal("hide");
 							break;
 						case "form_flyout":
@@ -4922,7 +4939,6 @@ $(document).ready(function () {
 				}
 				let non_data = $(iterator).attr("non_data");
 				if (typeof non_data === 'undefined' || non_data === false) {
-					// console.log('masuk addRulesForm');
 					MyForm.form("add rule", atribut, {
 						rules: [
 							{
@@ -4941,7 +4957,6 @@ $(document).ready(function () {
 
 			var attrName = MyForm.find($("input[name],textarea[name]"));
 			var i = 0;
-			//console.log(MyForm)
 			for (i = 0; i < attrName.length; i++) {
 				var atribut = MyForm.find(attrName[i]).attr("name");
 				var lbl = MyForm.find(attrName[i]).attr("placeholder");
@@ -4957,9 +4972,7 @@ $(document).ready(function () {
 				var non_data = formku.find(attrName[i]).attr("non_data");
 				if (typeof non_data === "undefined" || non_data === false) {
 					if (atribut) {
-						//formku.form("remove rule", atribut);
 						MyForm.form("remove field", atribut);
-						//console.log('atribut remove rule: ' + atribut)
 					}
 				}
 			}
@@ -5149,7 +5162,6 @@ $(document).ready(function () {
 				closable: false,
 				transition: "vertical flip", //slide down,'slide up','browse right','browse','swing up','vertical flip','fly down','drop','zoom','scale'
 				onDeny: function () {
-					//return false;//console.log('saya menekan tombol cancel');
 				},
 				onApprove: function () {
 					// jika di tekan yes
@@ -5213,8 +5225,6 @@ $(document).ready(function () {
 			processData: params.processData,
 		})
 			.done(function (data) {
-				//console.log(suksesAjax);
-				//console.log('sukses ajax : '+params.callback);
 				var callback = suksesAjax[params.callback](data);
 			})
 			.fail(function (jqXHR, textStatus, err) {
@@ -5331,7 +5341,7 @@ $(document).ready(function () {
 	function buatElemenHtml(namaElemen = "", dataElemen = {}) {//@audit-ok create elm
 		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
 		let labelTambahan = "labelTambahan" in dataElemen ? dataElemen.labelTambahan : "";
-		
+
 		let content = "content" in dataElemen ? dataElemen.content : "";
 		let atribut = "atribut" in dataElemen ? dataElemen.atribut : "";
 		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";

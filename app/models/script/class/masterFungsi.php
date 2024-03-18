@@ -1005,6 +1005,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'realisasi':
+                $tabel_pakai = 'realisasi_neo';
+                $jumlah_kolom = 9;
+                break;
             case 'berita':
                 $tabel_pakai = 'berita_neo';
                 $jumlah_kolom = 9;
@@ -1563,7 +1567,7 @@ class MasterFungsi
                             switch ($tabel_pakai) {
                                 case 'dppa_neo':
                                 case 'renja_p_neo':
-                                    $kolomHarga_satuan = 'harga_satuan_p';
+                                    $kolomHarga_satuan = 'harga_satuan';
                                     break;
                                 default:
                                     $kolomHarga_satuan = 'harga_satuan';

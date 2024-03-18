@@ -85,9 +85,9 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
                 <div class="content">
-                    <a class="item" href="#" data-tab="tab_input_real"><span><i class="toggle on icon"></i></span><i class="purple chart pie icon"></i>Input Realisasi</a>
-                    <a class="item" href="#" data-tab="tab_spj"><span><i class="toggle on icon"></i></span><i class="violet chartline icon"></i>SPJ</a>
-                    <a class="item" href="#" data-tab="tab_lap"><span><i class="toggle on icon"></i></span><i class="yellow chart bar icon"></i>Laporan</a>
+                    <a class="item" href="#" data-tab="tab_input_real" tbl="realisasi"><span><i class="toggle on icon"></i></span><i class="purple chart pie icon"></i>Input Realisasi</a>
+                    <a class="item" href="#" data-tab="tab_input_real" tbl="spj"><span><i class="toggle on icon"></i></span><i class="violet chartline icon"></i>SPJ</a>
+                    <a class="item" href="#" data-tab="tab_input_real" tbl="laporan"><span><i class="toggle on icon"></i></span><i class="yellow chart bar icon"></i>Laporan</a>
                 </div>
             </div>
             <div class="ui accordion inverted item">
@@ -550,16 +550,16 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <div class="ui icon yellow message goyang">
                                 <i class="chart icon" name="chart-realisasi-fisik-mini">00</i>
                                 <div class="content">
-                                    <div class="header">Kegiatan</div>
-                                    <p name="realisasi-fisik">Jumlah Kegiatan pada SKPD</p>
+                                    <div class="header">Total Kontrak</div>
+                                    <p name="realisasi-fisik">Jumlah kontrak</p>
                                 </div>
                             </div>
                         </div>
                         <div class="column">
                             <div class="ui olive icon message goyang"><i class="chart icon" name="chart-realisasi-keu-mini">00</i>
                                 <div class="content">
-                                    <div class="header">Sub Kegiatan</div>
-                                    <p name="realisasi-keu">Jumlah Sub Kegiatan pada SKPD</p>
+                                    <div class="header">Jumlah Realisasi</div>
+                                    <p name="realisasi-keu">Jumlah realisasi</p>
                                 </div>
                             </div>
                         </div>
@@ -568,9 +568,9 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <div class="ui hidden divider"></div>
                             <div style="height: 1px">
                                 <div class="ui right floated basic icon buttons">
-                                    <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
+                                    <button class="ui button" name="modal_show" jns="add" tbl="realisasi" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
                                     <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
-                                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
+                                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="realisasi" type="submit"><i class="alternate download icon"></i></button>
                                 </div>
                             </div>
                             <div class="ui hidden divider"></div>
