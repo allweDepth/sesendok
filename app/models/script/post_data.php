@@ -1166,6 +1166,7 @@ class post_data
                                         $kolVol2 = 'vol_2';
                                         $kolVol3 = 'vol_3';
                                         $kolVol4 = 'vol_4';
+                                        $sumberDan='sumber_dana';
                                         break;
 
                                     case 'dppa':
@@ -1178,6 +1179,7 @@ class post_data
                                         $kolVol2 = 'vol_2_p';
                                         $kolVol3 = 'vol_3_p';
                                         $kolVol4 = 'vol_4_p';
+                                        $sumberDan='sumber_dana_p';
                                         break;
                                 };
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
@@ -1200,7 +1202,7 @@ class post_data
                                     'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
 
-                                $sumber_dana = $validate->setRules('sumber_dana', 'sumber dana', [
+                                $sumber_dana = $validate->setRules($sumberDan, 'sumber dana', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'inLikeConcatDBMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana',  [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
@@ -2200,7 +2202,7 @@ class post_data
                                         $kolomSat_4 => $sat_4,
                                         $kolomVolume => $volume,
                                         $kolomJumlah => $jumlah,
-                                        'sumber_dana' => $sumber_dana,
+                                        $sumberDan => $sumber_dana,
                                         'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                         'disable' => 0,
                                         'tanggal' => date('Y-m-d H:i:s'),

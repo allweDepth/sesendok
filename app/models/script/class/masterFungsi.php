@@ -1534,6 +1534,7 @@ class MasterFungsi
             $kolomVol_3 = '';
             $kolomVol_4 = '';
             $kolomVol_5 = '';
+            $klmSumberDana = 'sumber_dana';
             switch ($tabel_pakai) {
                 case 'sub_keg_dpa_neo':
                 case 'sub_keg_renja_neo':
@@ -1555,6 +1556,7 @@ class MasterFungsi
                     break;
                 case 'dppa_neo':
                 case 'renja_p_neo':
+                    $klmSumberDana = 'sumber_dana_p';
                     $kolomJumlah = 'jumlah_p';
                     $kolomUraian = 'uraian';
                     $kolomVol_1 = 'Vol_1_p';
@@ -1595,7 +1597,7 @@ class MasterFungsi
                                     $kolomHarga_satuan = 'harga_satuan';
                                     break;
                             }
-                            $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['sumber_dana', '=', $set['sumber_dana'], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND'], ['komponen', '=', $set['komponen'], 'AND'], [$kolomHarga_satuan, '=', $set[$kolomHarga_satuan], 'AND'], ['jenis_standar_harga', '=', $set['jenis_standar_harga'], 'AND']];
+                            $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], [$klmSumberDana, '=', $set[$klmSumberDana], 'AND'], ['jenis_kelompok', '=', $set['jenis_kelompok'], 'AND'], ['kelompok', '=', $set['kelompok'], 'AND'], ['uraian', '=', $set['uraian'], 'AND'], ['komponen', '=', $set['komponen'], 'AND'], [$kolomHarga_satuan, '=', $set[$kolomHarga_satuan], 'AND'], ['jenis_standar_harga', '=', $set['jenis_standar_harga'], 'AND']];
 
                             if (isset($dinamic['id_row'])) {
                                 $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $dinamic['id_row'], 'AND']];
