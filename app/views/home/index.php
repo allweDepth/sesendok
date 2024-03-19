@@ -17,7 +17,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>seSendok</title>
     <link rel="stylesheet" href="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.min.css">
-    <link rel="stylesheet" href="<?= BASEURL; ?>/css/admin.css">
+    <link rel="stylesheet" href="<?= BASEURL; ?>css/admin.css">
     <link rel="shortcut icon" href="<?= BASEURL; ?>img/logo.png">
 </head>
 
