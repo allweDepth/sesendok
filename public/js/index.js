@@ -414,7 +414,7 @@ $(document).ready(function () {
 			case "rekanan":
 			case "tujuan_sasaran_renstra":
 			case "tujuan_sasaran":
-			case "realisasi":
+			case "tab_input_real":
 			case "atur":
 			case "users":
 				jalankanAjax = true;
@@ -2540,7 +2540,7 @@ $(document).ready(function () {
 																				allField = { klm: 'kelompok_json', id_sub_keg: id_sub_keg }
 																				dropdownKelompok.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
-																				case 'sumber_dana_p':
+																			case 'sumber_dana_p':
 																			case 'sumber_dana':
 																				let sumber = 'sumber_dana';
 																				if (tbl == 'dppa' || tbl == 'renja_p') {
@@ -2548,7 +2548,7 @@ $(document).ready(function () {
 																				}
 																				dropdownSumberDana.valuesDropdown(result.data?.values[sumber]);
 																				console.log(result.data?.values[sumber]);
-																				
+
 																				var allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
 																				dropdownSumberDana.returnList({ jenis: "getJsonRows", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
@@ -2565,22 +2565,22 @@ $(document).ready(function () {
 																				allField = { klm: 'keterangan_json', id_sub_keg: id_sub_keg, jns_kel: 'keterangan_json' }
 																				dropdownKeterangan.returnList({ jenis: "get_field_json", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
-																				case 'sat_1_p':
+																			case 'sat_1_p':
 																			case 'sat_1':
 																				dropdownSatuanRenja1.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja1.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																				break;
-																				case 'sat_2_p':
+																			case 'sat_2_p':
 																			case 'sat_2':
 																				dropdownSatuanRenja2.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja2.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																				break;
-																				case 'sat_3_p':
+																			case 'sat_3_p':
 																			case 'sat_3':
 																				dropdownSatuanRenja3.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja3.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																				break;
-																				case 'sat_4_p':
+																			case 'sat_4_p':
 																			case 'sat_4':
 																				dropdownSatuanRenja4.valuesDropdown(result.data?.values[attrElm]);
 																				dropdownSatuanRenja4.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
@@ -3446,7 +3446,37 @@ $(document).ready(function () {
 							label: "Uraian Pengelompokan Belanja",
 							kelas: `sub_keg_dpa category`,
 							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
-						})
+						}) +
+							buatElemenHtml("tabel", {
+								headerTable: [
+									{ class: 'collapsing', lbl: `SUB KEGIATAN` },
+									{ lbl: `URAIAN` }, { lbl: `VOL.` }, { lbl: `SAT.` }, { lbl: `PAGU` }, {
+										lbl: `KONTRAK`
+									}, { lbl: `VOL.REALISASI` }, { lbl: `REALISASI` }, {
+										lbl: `AKSI`
+									},
+								],
+								footerTable: [{
+									lbl: `jumlah`,
+									attr: `colspan="4"`
+								}, {
+									lbl: 0,
+									attr: `name="jumlah"`
+								}, {
+									lbl: 0,
+									attr: `name="kontrak"`
+								}, {
+									lbl: 0,
+									attr: `name="realisasi_vol"`
+								}, {
+									lbl: '',
+									attr: `name="realisasi_jumlah"`
+								}, {
+									lbl: 0,
+									attr: ``
+								}],
+								bodyTable: []
+							});
 						break;
 				}
 				break;
@@ -5093,12 +5123,12 @@ $(document).ready(function () {
 										disable: result.disable
 									});
 									break;
-								case 'dpa_dppa'://@audit now paket
+								case 'dpa_dppa':
 									let MyForm = $(`[name="form_modal"]`);
-									let cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
-									let cellKontrak = MyForm.find(`table tfoot [name="kontrak"]`);
+									var cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
+									var cellKontrak = MyForm.find(`table tfoot [name="kontrak"]`);
 									// harus di cari dulu klo sdh ada add row tidak berlaku
-									let cek_id = MyForm.find(`table tbody tr[id_row="${result.value}"]`);
+									var cek_id = MyForm.find(`table tbody tr[id_row="${result.value}"]`);
 									if (cek_id.length <= 0) {
 										//vol
 										let strvol = parseFloat(result.vol);
@@ -5110,6 +5140,39 @@ $(document).ready(function () {
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
 										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
 										MyForm.find(`table tbody`).append(trElm);
+										let pagu = 0;
+										let kontrak = 0;
+										$(`[name="form_modal"] table tbody tr`).each(function () {
+											let element = $(this);
+											pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
+											kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+										});
+										strText = parseFloat(pagu);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										cellJumlah.text(strText);
+										strText = parseFloat(kontrak);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										cellKontrak.text(strText);
+									}
+									$("[rms]").mathbiila();
+									break;
+								case 'daftar_paket'://@audit now paket//untuk select paket di input realisasi
+									let myForm = $(`[name="form_modal"]`);
+									cellJumlah = myForm.find(`table tfoot [name="jumlah"]`);
+									cellKontrak = myForm.find(`table tfoot [name="kontrak"]`);
+									// harus di cari dulu klo sdh ada add row tidak berlaku
+									cek_id = myForm.find(`table tbody tr[id_row="${result.value}"]`);
+									if (cek_id.length <= 0) {
+										//vol
+										let strvol = parseFloat(result.vol);
+										strvol = accounting.formatNumber(strvol, strvol.countDecimals(), ".", ",");
+
+										//jumlah
+										let strText = result.jumlah;
+										strText = parseFloat(strText);
+										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
+										myForm.find(`table tbody`).append(trElm);
 										let pagu = 0;
 										let kontrak = 0;
 										$(`[name="form_modal"] table tbody tr`).each(function () {

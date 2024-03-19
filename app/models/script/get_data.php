@@ -1832,8 +1832,8 @@ class get_data
                                         case 'get_Search_Json':
                                             switch ($tbl) {
                                                 case 'daftar_paket':
-                                                    $kd_akun_db = explode(',', $row->kd_akun);
-                                                    $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
+                                                    $kd_sub_dbkeg = explode(',', $row->kd_sub_keg);
+                                                    $deskripsi = $row->nama_rekanan . ' (Pagu' . number_format((float)$row->pagu, 2, ',', '.') . ')';
                                                     $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $row->id_uraian, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu];
                                                     break;
                                                 case 'hspk':

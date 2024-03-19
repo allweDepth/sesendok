@@ -480,16 +480,16 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <h3 class="ui dividing header"></h3>
                             </div>
                             <div class="ui hidden divider"></div>
-                            
+
                         </div>
                         <table class="ui celled striped table insert">
-                                    <thead>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
+                            <thead>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
