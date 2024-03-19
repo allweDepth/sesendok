@@ -1,5 +1,5 @@
 <!-- Following Menu -->
-<div class="ui large top fixed menu">
+<div class="ui yellow inverted large top fixed menu">
     <div class="ui container">
         <div class="header item">
             <img class="logo" src="img/logo.png">
@@ -19,9 +19,47 @@
         </div>
     </div>
 </div>
-
+<!-- Sidebar Menu -->
+<div class="ui vertical inverted sidebar menu">
+    <a class="active item inayah">Home</a>
+    <a class="item inayah" href="pelayanan">Pelayanan</a>
+    <a class="item inayah" href="data_teknis">Data Teknis</a>
+    <a class="item inayah" href="organisasi">Organisasi</a>
+    <a class="item inayah" href="anggaran">Anggaran</a>
+    <a class="item inayah" name="modal">Login</a>
+    <a class="item inayah" name="modal-register">Signup</a>
+</div>
 <!-- Page Contents -->
 <div class="pusher">
+    <div class="ui inverted vertical masthead center aligned segment">
+
+        <div class="ui container">
+            <div class="ui large secondary inverted pointing menu">
+                <a class="toc item">
+                    <i class="sidebar icon"></i>
+                </a>
+                <a class="active item inayah">Home</a>
+                <a class="item inayah" href="pelayanan">Pelayanan</a>
+                <a class="item inayah" href="data_teknis">Data Teknis</a>
+                <a class="item inayah" href="organisasi">Organisasi</a>
+                <a class="item inayah" href="anggaran">Anggaran</a>
+                <div class="right item">
+                    <a class="ui inverted button" name="modal">Log in</a>
+                    <a class="ui inverted button" name="modal-register">Sign Up</a>
+                    <!-- <a class="ui inverted button" href="register" target="_blank">Sign Up</a> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="ui text container">
+            <h1 class="ui inverted header">
+                D P U P R
+            </h1>
+            <h2>kabupaten pasangkayu</h2>
+            <a class="ui huge primary button" href="data_teknis">Data Teknis <i class="right arrow icon"></i></a>
+        </div>
+
+    </div>
     <div class="ui vertical stripe segment">
         <div class="ui container">
             <table class="ui celled structured striped table">

@@ -4,6 +4,9 @@
         <div class="header item">
             <img class="logo" src="img/logo.png">
         </div>
+        <a class="toc item">
+                <i class="sidebar icon"></i>
+            </a>
         <a class="item inayah" href="login">Home</a>
         <a class="active item inayah" href="pelayanan">Pelayanan</a>
         <a class="item inayah" href="data_teknis">Data Teknis</a>
@@ -21,15 +24,24 @@
 </div>
 
 
+<!-- Sidebar Menu -->
+<div class="ui vertical inverted sidebar menu">
+    <a class="item inayah">Home</a>
+    <a class="active item inayah" href="pelayanan">Pelayanan</a>
+    <a class="item inayah" href="data_teknis">Data Teknis</a>
+    <a class="item inayah" href="organisasi">Organisasi</a>
+    <a class="item inayah" href="anggaran">Anggaran</a>
+    <a class="item inayah" name="modal">Login</a>
+    <a class="item inayah" name="modal-register">Signup</a>
+</div>
 <!-- Page Contents -->
 <div class="pusher">
+   
     <div class="ui vertical stripe segment">
         <div class="ui container">
-
             <h2 class="ui dividing header">
                 Layanan
             </h2>
-
             <div class="no example">
                 <blockquote>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim ratione nesciunt qui a velit distinctio aliquam. Aliquid et velit debitis, voluptatum facilis ullam maiores quae inventore doloremque impedit vitae eligendi ipsa corporis quod eos, ea saepe perferendis sapiente, eveniet beatae facere unde. Veritatis, doloribus totam! Neque modi quia at alias.</p>
