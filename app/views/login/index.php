@@ -4,17 +4,17 @@
         <div class="header item">
             <img class="logo" src="img/logo.png">
         </div>
-        <a class="active item inayah">Home</a>
+        <a class="active item inayah" href="login">Home</a>
         <a class="item inayah" href="pelayanan">Pelayanan</a>
         <a class="item inayah" href="data_teknis">Data Teknis</a>
         <a class="item inayah" href="organisasi">Organisasi</a>
         <a class="item inayah" href="anggaran">Anggaran</a>
-        <div class="right menu">
-            <div class="item">
-                <a class="ui button" name="modal">Log in</a>
-            </div>
-            <div class="item">
-                <a class="ui primary button" name="modal-register">Sign Up</a>
+
+        <div class="ui right top inverted dropdown item">
+            Login
+            <div class="menu">
+                <a class="item" name="modal"><i class="sign in alternate icon"></i>Log in</a>
+                <a class="item" name="modal-register"><i class="sign out alternate icon"></i>Sign Up</a>
             </div>
         </div>
     </div>
@@ -22,8 +22,8 @@
 
 <!-- Sidebar Menu -->
 <div class="ui inverted labeled icon left inline vertical sidebar menu">
-    
-    <a class="active item inayah"><i class="home icon"></i>Home</a>
+
+    <a class="active item inayah" href="login"><i class="home icon"></i>Home</a>
     <a class="item inayah" href="pelayanan"><i class="block layout icon"></i>Pelayanan</a>
     <a class="item inayah" href="data_teknis"><i class="smile icon"></i>Data Teknis</a>
     <a class="item inayah" href="organisasi"><i class="sitemap icon"></i>Organisasi</a>
@@ -36,16 +36,21 @@
     <div class="ui inverted vertical masthead center aligned segment">
         <div class="ui container">
             <div class="ui large secondary inverted pointing menu">
-               
                 <a class="toc item">
                     <i class="sidebar icon"></i>
                 </a>
-                <a class="active item inayah">Home</a>
+                <a class="active item inayah" href="login">Home</a>
                 <a class="item inayah" href="pelayanan">Pelayanan</a>
                 <a class="item inayah" href="data_teknis">Data Teknis</a>
                 <a class="item inayah" href="organisasi">Organisasi</a>
                 <a class="item inayah" href="anggaran">Anggaran</a>
-                
+                <div class="ui right top inverted dropdown item">
+                    Login
+                    <div class="menu">
+                        <a class="item" name="modal"><i class="sign in alternate icon"></i>Log in</a>
+                        <a class="item" name="modal-register"><i class="sign out alternate icon"></i>Sign Up</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="ui text container">

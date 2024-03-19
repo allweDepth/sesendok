@@ -35,6 +35,7 @@ $(document).ready(function () {
 	$(".ui.accordion.menu_utama").accordion({
 		exclusive: false
 	});
+	$(".ui.dropdown").dropdown();
 	//Sticking to Own Context
 	$('.ui.sticky')
 		.sticky({
