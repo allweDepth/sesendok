@@ -111,34 +111,45 @@ class MasterFungsi
                 break;
             case 'renstra':
                 $rowData['thead'] = '<tr class="center aligned">
-                <th rowspan="3">Kode</th>
-                <th rowspan="3" class="collapsing">Program dan Kegiatan</th>
-                <th rowspan="3">Satuan</th>
-                <th rowspan="3">Indikator Kinerja</th>
-                <th rowspan="3">Data Capaian Awal</th>
-                <th colspan="11">Target Kinerja Program dan Kerangka Pendanaan</th>
-                <th class="collapsing" rowspan="3">Jumlah</th>
-                <th class="collapsing" rowspan="3">AKSI</th>
-                </tr>
-                <tr class="center aligned">
-                    <th colspan="2">Tahun-1</th>
-                    <th colspan="2">Tahun-2</th>
-                    <th colspan="2">Tahun-3</th>
-                    <th colspan="2">Tahun-4</th>
-                    <th colspan="2">Tahun-5</th>
-                    <th rowspan="2">Kondisi Kinerja Akhir Renstra</th>
-                </tr>
-                <tr class="center aligned">
-                    <th>Target</th>
-                    <th>Rp.</th>
-                    <th>Target</th>
-                    <th>Rp.</th>
-                    <th>Target</th>
-                    <th>Rp.</th>
-                    <th>Target</th>
-                    <th>Rp.</th>
-                    <th>Target</th>
-                    <th>Rp.</th> </tr>';
+                <th>Kode</th>
+                <th>Program dan Kegiatan</th>
+                <th>Satuan</th>
+                <th>Indikator Kinerja</th>
+                <th>Data Capaian Awal</th>
+                <th class="collapsing">Jumlah</th>
+                <th>Kondisi Kinerja Akhir Renstra</th>
+                <th class="collapsing">AKSI</th>
+                </tr>';
+                // $rowData['thead'] = '<tr class="center aligned">
+                // <th rowspan="3">Kode</th>
+                // <th rowspan="3" class="collapsing">Program dan Kegiatan</th>
+                // <th rowspan="3">Satuan</th>
+                // <th rowspan="3">Indikator Kinerja</th>
+                // <th rowspan="3">Data Capaian Awal</th>
+                // <th colspan="11">Target Kinerja Program dan Kerangka Pendanaan</th>
+                // <th class="collapsing" rowspan="3">Jumlah</th>
+                // <th class="collapsing" rowspan="3">AKSI</th>
+                // </tr>
+                // <tr class="center aligned">
+                //     <th colspan="2">Tahun-1</th>
+                //     <th colspan="2">Tahun-2</th>
+                //     <th colspan="2">Tahun-3</th>
+                //     <th colspan="2">Tahun-4</th>
+                //     <th colspan="2">Tahun-5</th>
+                //     <th rowspan="2">Kondisi Kinerja Akhir Renstra</th>
+                // </tr>
+                // <tr class="center aligned">
+                //     <th>Target</th>
+                //     <th>Rp.</th>
+                //     <th>Target</th>
+                //     <th>Rp.</th>
+                //     <th>Target</th>
+                //     <th>Rp.</th>
+                //     <th>Target</th>
+                //     <th>Rp.</th>
+                //     <th>Target</th>
+                //     <th>Rp.</th> </tr>';
+
                 break;
             case 'tujuan_sasaran_renstra':
                 $rowData['thead'] = trim('<tr>
@@ -552,20 +563,30 @@ class MasterFungsi
                                     <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
                                     <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
                                     <td klm="data_capaian_awal">' . $divAwalAngka . number_format((float)$row->data_capaian_awal, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_1">' . $divAwalAngka . number_format((float)$row->target_thn_1, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_1">' . $divAwalAngka . number_format((float)$row->dana_thn_1, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_2">' . $divAwalAngka . number_format((float)$row->target_thn_2, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_2">' . $divAwalAngka . number_format((float)$row->dana_thn_2, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_3">' . $divAwalAngka . number_format((float)$row->target_thn_3, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_3">' . $divAwalAngka . number_format((float)$row->dana_thn_3, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_4">' . $divAwalAngka . number_format((float)$row->target_thn_4, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_4">' . $divAwalAngka . number_format((float)$row->dana_thn_4, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="target_thn_5">' . $divAwalAngka . number_format((float)$row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
-                                    <td klm="dana_thn_5">' . $divAwalAngka . number_format((float)$row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="kondisi_akhir">' .  number_format((float)$row->kondisi_akhir, 2, ',', '.') . '</td>
                                     <td klm="jumlah">' .  number_format((float)$row->jumlah, $desimal, ',', '.') . '</td>
                                     <td>' . $buttons . '</td>
                                 </tr>');
+                        // $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                        //             <td klm="kd_sub_keg">' .  $row->kd_sub_keg . '</td>
+                        //             <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
+                        //             <td klm="satuan">' . $divAwal . $row->satuan . $divAkhir . '</td>
+                        //             <td klm="indikator">' . $divAwal . $row->indikator . $divAkhir . '</td>
+                        //             <td klm="data_capaian_awal">' . $divAwalAngka . number_format((float)$row->data_capaian_awal, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="target_thn_1">' . $divAwalAngka . number_format((float)$row->target_thn_1, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="dana_thn_1">' . $divAwalAngka . number_format((float)$row->dana_thn_1, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="target_thn_2">' . $divAwalAngka . number_format((float)$row->target_thn_2, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="dana_thn_2">' . $divAwalAngka . number_format((float)$row->dana_thn_2, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="target_thn_3">' . $divAwalAngka . number_format((float)$row->target_thn_3, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="dana_thn_3">' . $divAwalAngka . number_format((float)$row->dana_thn_3, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="target_thn_4">' . $divAwalAngka . number_format((float)$row->target_thn_4, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="dana_thn_4">' . $divAwalAngka . number_format((float)$row->dana_thn_4, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="target_thn_5">' . $divAwalAngka . number_format((float)$row->target_thn_5, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="dana_thn_5">' . $divAwalAngka . number_format((float)$row->dana_thn_5, 2, ',', '.') . $divAkhir . '</td>
+                        //             <td klm="kondisi_akhir">' .  number_format((float)$row->kondisi_akhir, 2, ',', '.') . '</td>
+                        //             <td klm="jumlah">' .  number_format((float)$row->jumlah, $desimal, ',', '.') . '</td>
+                        //             <td>' . $buttons . '</td>
+                        //         </tr>');
                         break;
                     case 'tujuan_sasaran_renstra':
                         $buttons = '';

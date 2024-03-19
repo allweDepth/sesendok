@@ -33,8 +33,8 @@
 </div>
 <!-- Page Contents -->
 <div class="pusher">
-    <div class="ui inverted vertical masthead center aligned segment">
-        <div class="ui container">
+    <div class="ui inverted vertical masthead segment">
+        <div class="ui center aligned container">
             <div class="ui large secondary inverted pointing menu">
                 <a class="toc item">
                     <i class="sidebar icon"></i>
@@ -53,12 +53,126 @@
                 </div>
             </div>
         </div>
-        <div class="ui text container">
-            <h1 class="ui inverted header">
-                D P U P R
-            </h1>
-            <h2>kabupaten pasangkayu</h2>
-            <a class="ui huge primary button" href="data_teknis">Data Teknis <i class="right arrow icon"></i></a>
+        <div class="ui container">
+            <div class="ui hidden divider"></div>
+            <div class="ui hidden divider"></div>
+            <div class="ui centered inverted link cards">
+                <div class="card">
+                    <div class="image">
+                        <img src="img/avatar2/large/matthew.png">
+                    </div>
+                    <div class="content">
+                        <div class="header">Rekomendasi IMB</div>
+                        <div class="meta">
+                            <a>Friends</a>
+                        </div>
+                        <div class="description">
+                            Matthew is an interior designer living in New York.
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            Dibentuk tahun 2013
+                        </span>
+                        <span>
+                            <i class="user icon"></i>
+                            75 Friends
+                        </span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="img/avatar2/large/molly.png">
+                    </div>
+                    <div class="content">
+                        <div class="header">Pelayanan Air Minum</div>
+                        <div class="meta">
+                            <span class="date">Coworker</span>
+                        </div>
+                        <div class="description">
+                            Molly is a personal assistant living in Paris.
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            Dibentuk tahun 2013
+                        </span>
+                        <span>
+                            <i class="user icon"></i>
+                            35 Friends
+                        </span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="img/avatar2/large/elyse.png">
+                    </div>
+                    <div class="content">
+                        <div class="header">Pelayanan Sanitasi</div>
+                        <div class="meta">
+                            <a>Coworker</a>
+                        </div>
+                        <div class="description">
+                            Elyse is a copywriter working in New York.
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            Dibentuk tahun 2013
+                        </span>
+                        <span>
+                            <i class="user icon"></i>
+                            151 Friends
+                        </span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="img/avatar2/large/elyse.png">
+                    </div>
+                    <div class="content">
+                        <div class="header">Sewa Alat Berat</div>
+                        <div class="meta">
+                            <a>Coworker</a>
+                        </div>
+                        <div class="description">
+                            Elyse is a copywriter working in New York.
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            Joined in 2014
+                        </span>
+                        <span>
+                            <i class="user icon"></i>
+                            151 Friends
+                        </span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="img/avatar2/large/elyse.png">
+                    </div>
+                    <div class="content">
+                        <div class="header">Sewa Alat Laboratorium</div>
+                        <div class="meta">
+                            <a>Coworker</a>
+                        </div>
+                        <div class="description">
+                            Elyse is a copywriter working in New York.
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            Dibentuk tahun 2013
+                        </span>
+                        <span>
+                            <i class="user icon"></i>
+                            151 Friends
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="ui vertical stripe segment">

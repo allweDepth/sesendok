@@ -1600,7 +1600,7 @@ class get_data
                                                 }
                                                 // sumber_dana
 
-                                                
+
 
                                                 if ($tbl == 'dppa' || $tbl == 'renja_p') {
                                                     $cari_drop = $data['users']->sumber_dana_p;
@@ -1833,8 +1833,34 @@ class get_data
                                             switch ($tbl) {
                                                 case 'daftar_paket':
                                                     $kd_sub_dbkeg = explode(',', $row->kd_sub_keg);
+                                                    $id_uraian = $row->id_uraian;
+
+                                                    // tambahkan $data['users'][] count_uraian_belanja
+                                                    $send = json_decode($id_uraian);
+                                                    // atur kembali id uraian
+                                                    $pagu = 0;
+                                                    $jumlah = 0;
+                                                    $kd_sub_keg = [];
+                                                    $si = 0;
+                                                    foreach ($send as $key => $value) {
+                                                        $si++;
+                                                        $tabel_pakai = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
+                                                        $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                                                        if ($row_sub !== false) {
+                                                            $row_sub->dok=$value->dok_anggaran;
+                                                            $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+                                                            $pagu += $row_sub->$klm_jumlah;
+                                                            $jumlah += $value->val_kontrak;
+                                                            $kd_sub_keg[] = $row_sub;
+                                                        } else {
+                                                            //hapus key yang tidak mempunyai persyaratan
+                                                            unset($send[$key]);
+                                                        }
+                                                    }
+
                                                     $deskripsi = $row->nama_rekanan . ' (Pagu' . number_format((float)$row->pagu, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $row->id_uraian, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu];
+                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg];
                                                     break;
                                                 case 'hspk':
                                                 case 'asb':
@@ -1874,7 +1900,7 @@ class get_data
                                                     $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $row->id, 'AND'], ['dok', '=', $dok_anggaran, 'AND']];
                                                     $row_sub2 = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi1);
                                                     if ($row_sub2 === false) {
-                                                        $deskripsi = $row->kd_akun . ' (' . number_format((float)$row->$clmJumlah, 2, ',', '.') . ')';
+                                                        $deskripsi = $row->kd_akun . ', ' . $row->komponen . ' (' . number_format((float)$row->$clmJumlah, 2, ',', '.') . ')';
                                                         $dataJson['results'][] = ['category' => $row->kd_akun, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'jumlah' => $row->$clmJumlah, 'kd_sub_keg' => $row->kd_sub_keg, 'dok_anggaran' => $dok_anggaran, 'sat' => $row->$clmSat, 'vol' => $row->$clmVol];
                                                     }
                                                     break;

@@ -22,7 +22,6 @@
 
 <!-- Sidebar Menu -->
 <div class="ui inverted labeled icon left inline vertical sidebar menu">
-
     <a class="item inayah"><i class="home icon"></i>Home</a>
     <a class="item inayah" href="pelayanan"><i class="block layout icon"></i>Pelayanan</a>
     <a class="item inayah" href="data_teknis"><i class="smile icon"></i>Data Teknis</a>

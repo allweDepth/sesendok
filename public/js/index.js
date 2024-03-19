@@ -852,6 +852,18 @@ $(document).ready(function () {
 									label: "Gelar Depan Nama",
 									atribut: 'name="gelar_depan" placeholder="Gelar Depan Nama" non_data',
 								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Kelompok Jabatan",
+									atribut: 'name="kelompok"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["1", "Kepala OPD"],
+										["2", "Sekretaris"],
+										["3", "Kepala Bidang"],
+										["4", "ASN"],
+										["5", "non ASN"]
+									],
+								}) +
 								buatElemenHtml("fieldText", {
 									label: "Jabatan",
 									atribut: 'name="jabatan" placeholder="Jabatan..."',
@@ -973,18 +985,7 @@ $(document).ready(function () {
 										["janda-duda", "Duda-Janda"],
 										["lajang", "Lajang"]
 									],
-								}) + buatElemenHtml("fieldDropdown", {
-									label: "Kelompok Jabatan",
-									atribut: 'name="kelompok"',
-									kelas: "lainnya selection",
-									dataArray: [
-										["1", "I (Kepala OPD)"],
-										["2", "II (Sekretaris)"],
-										["3", "III (Kepala Bidang)"],
-										["4", "IV"],
-										["5", "V (non ASN)"]
-									],
-								}) +
+								}) + 
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="2" non_data',
@@ -3446,6 +3447,9 @@ $(document).ready(function () {
 							label: "Uraian Pengelompokan Belanja",
 							kelas: `sub_keg_dpa category`,
 							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
+						}) +buatElemenHtml("fieldTextarea", {
+							label: "Nama Paket",
+							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
 						}) +
 							buatElemenHtml("tabel", {
 								headerTable: [
@@ -4693,7 +4697,6 @@ $(document).ready(function () {
 						// UNTUK UPLOAD DIRECT FILE====
 						// =================
 						case "form_upload":
-							//@audit form sekarang upload file
 							if (id_row) {
 								let uploadedFile = document.getElementById('directupload1').files[0];
 								formData.append("dok", dok);
@@ -5162,31 +5165,60 @@ $(document).ready(function () {
 									cellKontrak = myForm.find(`table tfoot [name="kontrak"]`);
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									cek_id = myForm.find(`table tbody tr[id_row="${result.value}"]`);
-									if (cek_id.length <= 0) {
-										//vol
+									let dataRowsAnggaran =result.uraian_id_uraian
+									
+									let trElm ='';
+									myForm.form('set value','uraian',result.title)
+									dataRowsAnggaran.forEach((value, key) => {
 										let strvol = parseFloat(result.vol);
 										strvol = accounting.formatNumber(strvol, strvol.countDecimals(), ".", ",");
 
-										//jumlah
-										let strText = result.jumlah;
-										strText = parseFloat(strText);
+										letstrText = parseFloat(result.pagu);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
-										myForm.find(`table tbody`).append(trElm);
-										let pagu = 0;
-										let kontrak = 0;
-										$(`[name="form_modal"] table tbody tr`).each(function () {
-											let element = $(this);
-											pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
-											kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
-										});
-										strText = parseFloat(pagu);
-										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										cellJumlah.text(strText);
-										strText = parseFloat(kontrak);
-										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										cellKontrak.text(strText);
-									}
+
+										trElm += `<tr id_row="${value.id}" pagu="${value.jumlah}" dok_anggaran="${value.dok}">
+											<td klm="kd_sub_keg">${value.kd_sub_keg}</td>
+											<td klm="uraian">${value.title}</td>
+											<td klm="vol_kontrak">
+												<div contenteditable rms>${strvol}</div>
+											</td>
+											<td klm="sat_kontrak">
+												<div contenteditable>${value.sat}</div>
+											</td>
+											<td klm="pagu">${strText}</td>
+											<td klm="kontrak">
+												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div>
+											</td>
+											<td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian"
+													id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td>
+										</tr>`;
+									});
+									myForm.find(`table tbody`).append(trElm);
+									// if (cek_id.length <= 0) {
+									// 	//vol
+									// 	let strvol = parseFloat(result.vol);
+									// 	strvol = accounting.formatNumber(strvol, strvol.countDecimals(), ".", ",");
+
+									// 	//jumlah
+									// 	let strText = result.jumlah;
+									// 	strText = parseFloat(strText);
+									// 	strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+									// 	let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
+									// 	myForm.find(`table tbody`).append(trElm);
+									// 	let pagu = 0;
+									// 	let kontrak = 0;
+									// 	$(`[name="form_modal"] table tbody tr`).each(function () {
+									// 		let element = $(this);
+									// 		pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
+									// 		kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+									// 	});
+									// 	strText = parseFloat(pagu);
+									// 	strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+									// 	cellJumlah.text(strText);
+									// 	strText = parseFloat(kontrak);
+									// 	strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+									// 	cellKontrak.text(strText);
+									// }
 									$("[rms]").mathbiila();
 									break;
 								case 'value1':
