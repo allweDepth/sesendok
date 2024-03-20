@@ -1268,7 +1268,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 </div>
             </div>
             <!-- modal general -->
-            <div class="ui modal mdl_general" name="mdl_general">
+            <div class="ui modal couple mdl_general" name="mdl_general">
                 <h5 class="ui header dash_header">
                     <i class="big icons">
                         <i class="teal utensils icon"></i>
@@ -1293,9 +1293,9 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                 </div>
             </div>
             <!-- modal kedua -->
-            <div class="ui modal kedua" name="mdl_kedua">
+            <div class="ui kedua couple modal" name="mdl_kedua">
                 <h5 class="ui header dash_header"><i class="users cog icon"></i>
-                    <div class="content">AHSP <div class="sub header">Ubah Data</div>
+                    <div class="content">siSendok <div class="sub header">Komponen</div>
                     </div>
                 </h5>
                 <form class="ui form scrolling content" name="form_modal_kedua">

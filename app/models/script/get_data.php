@@ -1832,12 +1832,7 @@ class get_data
                                         case 'get_Search_Json':
                                             switch ($tbl) {
                                                 case 'daftar_paket':
-                                                    // ambil data di daftar_uraian_paket
-                                                    $kondisi = [['id_paket', '= ?', $row->id], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']];
-                                                    $daftar_uraian_pkt = $DB->getArrayLike('daftar_uraian_paket', $kondisi);
-                                                    $kd_sub_dbkeg = explode(',', $row->kd_sub_keg);
                                                     $id_uraian = $row->id_uraian;
-
                                                     // tambahkan $data['users'][] count_uraian_belanja
                                                     $send = json_decode($id_uraian);
                                                     // atur kembali id uraian
@@ -1899,7 +1894,7 @@ class get_data
                                                     }
 
                                                     $deskripsi = $row->nama_rekanan . ' (Pagu' . number_format((float)$row->pagu, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg, 'daftar_uraian_pkt' => $daftar_uraian_pkt];
+                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg];
                                                     break;
                                                 case 'hspk':
                                                 case 'asb':
