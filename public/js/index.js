@@ -3941,61 +3941,6 @@ $(document).ready(function () {
 		switch (jnsAttr) {
 			case 'edit':
 			case 'add':
-				switch (tblAttr) {
-					case 'realisasi':
-						var searchPaket = new SearchConstructor('form[name="form_modal"] .ui.search');
-						let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'daftar_paket', data_send: {} };
-						searchPaket.searchGlobal(allField);
-						break;
-				}
-				break;
-			case 'modal_show':
-				switch (tblAttr) {
-					case 'berita':
-						let komponen = $(`form[name="form_flyout"]`).form('get value', 'uraian_html');
-						$(`form[name="form_modal"]`).form('set value', 'uraian_html', komponen)
-						let elmTambahan = buatElemenHtml("ribbonLabel", {
-							label: "Result HTML",
-							posisi: "right",
-							kelas: "yellow",
-							atribut: 'name="uraian_html" placeholder="keterangan..."',
-						})
-						$(`form[name="form_modal"]`).find('.segment').html(elmTambahan + komponen);
-						break;
-				}
-				break;
-			case 'uraian_belanja':
-				switch (tblAttr) {
-					case 'daftar_paket':
-						var dropdown_ajx_sub_keg = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.kd_sub_keg.ajx.selection')
-						dropdown_ajx_sub_keg.returnList({ jenis: "get_row_json", tbl: "sub_keg_dpa" });
-						break;
-					default:
-						break;
-				}
-				break;
-			case 'search_field_json':
-				switch (tblAttr) {
-					case 'sbu':
-					case 'ssh':
-					case 'hspk':
-					case 'asb':
-						var searchHargaSat = new SearchConstructor('form[name="form_modal"] .ui.search');
-						let kd_akun = $(`form[name="form_flyout"]`).form('get value', 'kd_akun')
-						let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: tblAttr, data_send: { kd_akun: kd_akun } };
-						searchHargaSat.searchGlobal(allField);
-						let komponen = $(`form[name="form_flyout"]`).form('get value', 'komponen');
-						if (komponen > 0) {
-							jalankanAjax = true;
-							data.id_row = komponen;
-							data.jenis = 'get_row';
-						}
-						break;
-					default:
-						break;
-				}
-				break;
-			case 'xxx':
 				break;
 			default:
 				break;
@@ -4011,37 +3956,11 @@ $(document).ready(function () {
 								case 'ssh':
 								case 'hspk':
 								case 'asb':
-									let strText = parseFloat(result?.data?.users?.harga_satuan);
-									strText = accounting.formatNumber(result?.data?.users?.harga_satuan, strText.countDecimals(), ".", ",");
-									$(`form[name="form_modal"]`).form('set values', {
-										id: result?.data?.users?.id,
-										kd_aset: result?.data?.users?.kd_aset,
-										uraian_barang: result?.data?.users?.uraian_barang,
-										spesifikasi: result?.data?.users?.spesifikasi,
-										satuan: result?.data?.users?.satuan,
-										harga_satuan: strText,
-										tkdn: result?.data?.users?.tkdn,
-										kd_akun: result?.data?.users?.kd_akun,
-										keterangan: result?.data?.users?.keterangan,
-										disable: result?.data?.users?.disable
-									});
 									break;
 								default:
 									break;
 							}
 							break;
-						case 'uraian_belanja':
-							switch (tblAttr) {
-								case 'daftar_paket':
-									formIni.find(`table tbody`).html(result.data.users);
-									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });
-									break;
-
-								default:
-									break;
-							}
-							break;
-
 						default:
 							break;
 					}
@@ -5626,7 +5545,7 @@ $(document).ready(function () {
 										let realisasi_vol = parseFloat(value.realisasi_vol);
 										realisasi_vol = accounting.formatNumber(realisasi_vol, realisasi_vol.countDecimals(), ".", ",");
 
-										trElm += `<tr id_row="${value.id}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
+										trElm += `<tr id_row="${value.id_paket}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
 											<td klm="kd_sub_keg">${value.kd_sub_keg}</td>
 											<td klm="uraian">${value.uraian}</td>
 											<td klm="vol_kontrak">
@@ -5713,7 +5632,7 @@ $(document).ready(function () {
 				allowMultiple: true,
 				//observeChanges: true,
 				closable: false,
-				transition: "vertical flip", //slide down,'slide up','browse right','browse','swing up','vertical flip','fly down','drop','zoom','scale'
+				transition: "zoom", //slide down,'slide up','browse right','browse','swing up','vertical flip','fly down','drop','zoom','scale'
 				onDeny: function () {
 				},
 				onApprove: function () {
@@ -6462,7 +6381,7 @@ $(document).ready(function () {
 	}
 	function toggleDarkMode() {
 		// add fomantic's inverted class to all ui elements
-		$("body").find(".ui").addClass("inverted");
+		$("body").find(".ui:not(.hidden)").addClass("inverted");
 		// add custom inverted class to body
 		$("body").addClass("inverted");
 		// simple toggle icon change
@@ -6472,7 +6391,9 @@ $(document).ready(function () {
 	}
 	function toggleLightMode() {
 		// remove fomantic's inverted from all ui elements
-		$("body").find(".ui").removeClass("inverted");
+		
+		$("body").find(".ui:not(.hidden)").removeClass("inverted");
+		$("body").find(".ui.main.menu,.left.vertical.sidebar.menu").addClass("inverted");
 		// remove custom inverted class to body
 		$("body").removeClass("inverted");
 		// change button icon

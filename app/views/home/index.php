@@ -121,7 +121,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ut admin-->
             <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="tab_hargasat" tbl="berita"><i class="newspaper icon"></i>Halaman Berita</a><a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="atur_satu"><i class="toolbox icon"></i>Pengaturan</a>' : ''; ?>
             <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
-            <a class="item" href="#" data-tab="profil" tbl="list"><i class="user icon"></i>Profil</a>
+            <a class="item" href="#" data-tab="profil" tbl="user"><i class="user icon"></i>Profil</a>
         </div>
         <!-- flyout-->
         <div class="ui right flyout">
@@ -1220,38 +1220,84 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- profil -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="profil">
-                <div class="ui special centered card">
-                    <div class="content">
-                        <div class="right floated meta">14h</div>
-                        <img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Alwi Mansyur
-                    </div>
 
-                    <div class="blurring dimmable image">
-                        <div class="ui dimmer">
+                <div class="ui grid container">
+                    <div class="four wide column">
+                        <div class="ui special centered card">
                             <div class="content">
-                                <div class="center">
-                                    <div class="ui inverted button">Add Friend</div>
+                                <div class="right floated meta">14h</div>
+                                <img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Alwi Mansyur
+                            </div>
+
+                            <div class="blurring dimmable image">
+                                <div class="ui dimmer">
+                                    <div class="content">
+                                        <div class="center">
+                                            <div class="ui inverted button">Add Friend</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <img src="img/avatar/large/elliot.jpg">
+                            </div>
+
+                            <div class="content">
+                                <span class="right floated">
+                                    <i class="heart outline like icon"></i>
+                                    17 likes
+                                </span>
+                                <i class="comment icon"></i>
+                                3 comments
+                            </div>
+                            <div class="extra content">
+                                <div class="ui large transparent left icon input">
+                                    <i class="heart outline icon"></i>
+                                    <input type="text" placeholder="Add Comment...">
                                 </div>
                             </div>
                         </div>
-                        <img src="img/avatar/large/elliot.jpg">
                     </div>
-
-                    <div class="content">
-                        <span class="right floated">
-                            <i class="heart outline like icon"></i>
-                            17 likes
-                        </span>
-                        <i class="comment icon"></i>
-                        3 comments
-                    </div>
-                    <div class="extra content">
-                        <div class="ui large transparent left icon input">
-                            <i class="heart outline icon"></i>
-                            <input type="text" placeholder="Add Comment...">
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Nama Lengkap</label>
+                                    <input type="text" name="nama" placeholder="Some text">
+                                </div>
+                                <div class="field">
+                                    <label>NIP.</label>
+                                    <input type="text" name="nip" placeholder="NIP">
+                                </div>
+                            </div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>username</label>
+                                    <input type="text" name="username" placeholder="Some text" readonly>
+                                </div>
+                                <div class="field">
+                                    <label>email</label>
+                                    <input type="text" name="email" placeholder="Some text">
+                                </div>
+                            </div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Kontak Person</label>
+                                    <input type="text" name="kontak_person" placeholder="Some text">
+                                </div>
+                                <div class="field">
+                                    <label>Kode OPD</label>
+                                    <input type="text" name="kd_organisasi" placeholder="Some text" readonly>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Organisasi</label>
+                                <input type="text" name="nama_org" placeholder="Some text" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
             </div>
             <!-- =========================-->
             <!-- =========================-->

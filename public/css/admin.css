@@ -1,8 +1,8 @@
 /*agar border radius di tepi semua element = 0*/
 
-* :not(.label) {
+/* * :not(.label) {
     border-radius: 0px !important;
-}
+} */
 
 :root {
     --darkBG: #232B32;
