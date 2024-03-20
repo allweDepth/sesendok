@@ -8,12 +8,17 @@
     --darkBG: #232B32;
     --whiteBG: white;
 }
-.ui.tab.segment.active,.pusher{
+
+.ui.tab.segment.active,
+.pusher {
     background-color: var(--whiteBG);
 }
-.ui.tab.segment.active.inverted,.pusher.inverted{
+
+.ui.tab.segment.active.inverted,
+.pusher.inverted {
     background-color: var(--darkBG);
 }
+
 body.inverted {
     background-color: var(--darkBG) !important;
 }

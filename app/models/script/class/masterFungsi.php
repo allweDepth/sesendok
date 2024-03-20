@@ -2531,7 +2531,9 @@ class MasterFungsi
                 $path2 = 'daftar_paket';
                 break;
             case 'user':
+                $path1 = 'img';
                 $path2 = 'avatar';
+                $maxsize = 1024 * 5000;
                 break;
             default:
                 break;

@@ -1220,7 +1220,6 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- profil -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="profil">
-
                 <div class="ui grid container">
                     <div class="four wide column">
                         <div class="ui special centered card">
@@ -1239,7 +1238,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                         </div>
                                     </div>
                                 </div>
-                                <img src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)">
+                                <img class="ui medium rounded image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)">
                             </div>
 
                             <div class="content">
@@ -1274,32 +1273,34 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             <div class="two fields">
                                 <div class="field">
                                     <label>username</label>
-                                    <input type="text" name="username" placeholder="Some text" readonly>
+                                    <input type="text" name="username" placeholder="username" readonly>
                                 </div>
                                 <div class="field">
                                     <label>email</label>
-                                    <input type="text" name="email" placeholder="Some text">
+                                    <input type="text" name="email" placeholder="email">
                                 </div>
                             </div>
                             <div class="two fields">
                                 <div class="field">
                                     <label>Kontak Person</label>
-                                    <input type="text" name="kontak_person" placeholder="Some text">
+                                    <input type="text" name="kontak_person" placeholder="Kontak Person/HP">
                                 </div>
                                 <div class="field">
                                     <label>Kode OPD</label>
-                                    <input type="text" name="kd_organisasi" placeholder="Some text" readonly>
+                                    <input type="text" name="kd_organisasi" placeholder="Kode OPD" readonly>
                                 </div>
                             </div>
                             <div class="field">
                                 <label>Organisasi</label>
-                                <input type="text" name="nama_org" placeholder="Some text" readonly>
+                                <input type="text" name="nama_org" placeholder="Nama organisasi" readonly>
+                            </div>
+                            <div class="field">
+                                <label>Organisasi</label>
+                                <textarea type="text" name="ket" placeholder="Keterangan">
                             </div>
                         </form>
                     </div>
                 </div>
-
-
             </div>
             <!-- =========================-->
             <!-- =========================-->

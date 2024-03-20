@@ -1568,7 +1568,7 @@ class post_data
                                             $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
                                         }
                                         break;
-                                    case 'username':
+                                    case 'user':
                                         $uraian = "username({$row_sub->username})_dok({$dok})_wilayah({$kd_wilayah})";
                                         $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
                                         if (strlen($row_sub->$dok ?? '') > 2) {
@@ -1583,7 +1583,6 @@ class post_data
                                 if ($_FILES) {
                                     if (isset($_FILES[$dok])) {
                                         $file = $Fungsi->importFile($tbl, $set_file);
-                                        // var_dump($file);
                                         if ($file['result'] == 'ok') {
                                             $set[$dok] = $file[$dok];
                                         } else {
