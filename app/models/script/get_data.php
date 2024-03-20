@@ -337,7 +337,6 @@ class get_data
                 //==============================
                 if ($validate->passed()) {
                     $code = 55;
-
                     //tabel pakai
                     $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                     $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
@@ -356,6 +355,9 @@ class get_data
                                 case 'asb':
                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['peraturan', '=', ${"id_aturan_$tbl"}, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     break;
+                                case 'user':
+                                    $kondisi_result = [['username', '=', $username], ['id', '>', 0, 'AND']];
+                                    break;
                                 default:
                                     break;
                             }
@@ -366,6 +368,10 @@ class get_data
                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     $kodePosting = 'get_row';
                                     $DB->select("kd_sub_keg,uraian,$dok");
+                                    break;
+                                case 'user':
+                                    $kondisi_result = [['username', '=', $username], ['id', '>', 0, 'AND']];
+                                    $kodePosting = 'get_row';
                                     break;
                                 case 'value':
                                     # code...
@@ -1854,11 +1860,11 @@ class get_data
                                                                 $kolVol2 = 'vol_2';
                                                                 $kolVol3 = 'vol_3';
                                                                 $kolVol4 = 'vol_4';
-                                                                $sumberDan='sumber_dana';
-                                                                $volume='volume';
-                                                                $jumlah='jumlah';
+                                                                $sumberDan = 'sumber_dana';
+                                                                $volume = 'volume';
+                                                                $jumlah = 'jumlah';
                                                                 break;
-                        
+
                                                             case 'dppa':
                                                             case 'renja_p':
                                                                 $kolSat1 = 'sat_1_p';
@@ -1869,9 +1875,9 @@ class get_data
                                                                 $kolVol2 = 'vol_2_p';
                                                                 $kolVol3 = 'vol_3_p';
                                                                 $kolVol4 = 'vol_4_p';
-                                                                $sumberDan='sumber_dana_p';
-                                                                $volume='volume_p';
-                                                                $jumlah='jumlah_p';
+                                                                $sumberDan = 'sumber_dana_p';
+                                                                $volume = 'volume_p';
+                                                                $jumlah = 'jumlah_p';
                                                                 break;
                                                         };
 
@@ -1881,7 +1887,7 @@ class get_data
                                                         $row_sub = $DB->getWhereOnceCustom("$tabel_pakai, daftar_uraian_paket", $kondisi);
                                                         // var_dump($row_sub);
                                                         if ($row_sub !== false) {
-                                                            $row_sub->dok=$value->dok_anggaran;
+                                                            $row_sub->dok = $value->dok_anggaran;
                                                             $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
                                                             $pagu += $row_sub->$klm_jumlah;
                                                             $jumlahSum += $value->val_kontrak;
@@ -1890,7 +1896,6 @@ class get_data
                                                             //hapus key yang tidak mempunyai persyaratan
                                                             unset($send[$key]);
                                                         }
-                                                        
                                                     }
 
                                                     $deskripsi = $row->nama_rekanan . ' (Pagu' . number_format((float)$row->pagu, 2, ',', '.') . ')';

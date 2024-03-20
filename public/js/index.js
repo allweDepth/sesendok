@@ -416,7 +416,12 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 			case "tab_input_real":
 			case "atur":
+
 			case "users":
+				jalankanAjax = true;
+				break;
+			case "profil":
+				jenis = 'get_row'
 				jalankanAjax = true;
 				break;
 			case "renja":
@@ -617,6 +622,35 @@ $(document).ready(function () {
 										break;
 									case "xxx":
 										break;
+									default:
+										break;
+								}
+								break;
+							case "get_row":
+								switch (tbl) {
+									case 'user':
+										let myForm = $(`form.profil[name="profil"]`)
+										let card = $(`[data-tab="profil"] .ui.card`)
+										let elm = card.find(`[src]`)
+										$(`span[name="nama"]`).html(result.data.users.nama)
+										let imgeProfil = result.data.users.photo;
+										// console.log(namaku);
+										if (imgeProfil.length > 8) {
+											elm.attr('src', imgeProfil)
+
+										}
+										card.find(`button[for="directupload1"]`).attr('id_row',result.data.users.id)
+										let resultUser = result.data.users;
+										for (let key in resultUser) {
+											let value = resultUser[key];
+											let elmTxt = myForm.find(`[name="${key}"]`);
+											if (elmTxt.length > 0) {
+												myForm.form('set value', key, value);
+											}
+										}
+
+										break;
+
 									default:
 										break;
 								}
@@ -3055,7 +3089,14 @@ $(document).ready(function () {
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
 						$(`#directupload1,form[name="form_upload"]`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
-						$("#directupload1").click();
+						
+						break;
+					case 'user':
+						//upload langsung file
+						$("#directupload1").val("");
+						id_row = ini.attr('id_row')
+						$(`#directupload1,form[name="form_upload"]`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
+						
 						break;
 					default:
 						break;
@@ -3064,11 +3105,13 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+		$("#directupload1").click();
 	})
 	$("body").on("change", '#directupload1', function (e) {//@audit langsung upload file
 		e.preventDefault();
 		let ini = $(this);
 		let id_row = ini.attr('id_row');
+		
 		if (id_row) {
 			let myForm = new FormGlobal(`form[name="form_upload"]`);
 			myForm.run();
@@ -3220,9 +3263,9 @@ $(document).ready(function () {
 		var himp = $(this).closest(".action");
 		himp.find("input").val("");
 	});
-	$('.ui.couple.modal').modal({ allowMultiple: true});
+	$('.ui.couple.modal').modal({ allowMultiple: true });
 	// $('.kedua.modal').modal('attach events', '.mdl_general.modal .button')
-;
+	;
 	//=========================================
 	//===========jalankan modal================@audit-ok modal click
 	//=========================================
@@ -3457,13 +3500,15 @@ $(document).ready(function () {
 							buatElemenHtml("tabel2", {
 								kelas: `mini celled structured`,
 								headerTable: [[
-									{ attr:'rowspan="2"',class: 'collapsing', lbl: `SUB KEGIATAN` },
-									{ attr:'rowspan="2"', lbl: `URAIAN` }, { attr:'colspan="4"',lbl: `KONTRAK`,class: 'center aligned' }, {attr:'colspan="2"', lbl: `SUM REALISASI`,class: 'center aligned' }, { attr:'colspan="2"',lbl: `INPUT REALISASI`,class: 'center aligned' }, { class: 'center aligned collapsing',attr:'rowspan="2"', lbl: `AKSI`
+									{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
+									{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
+										class: 'center aligned collapsing', attr: 'rowspan="2"', lbl: `AKSI`
 									}],
-									[
-										{ class: 'center aligned collapsing',lbl: `VOL.` }, {class: 'center aligned collapsing', lbl: `SAT.` }, {class: 'center aligned collapsing', lbl: `PAGU` }, {class: 'center aligned collapsing',
-											lbl: `KONTRAK`
-										}, { class: 'center aligned collapsing',lbl: `VOL.` }, { class: 'center aligned collapsing',lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
+								[
+									{ class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `SAT.` }, { class: 'center aligned collapsing', lbl: `PAGU` }, {
+										class: 'center aligned collapsing',
+										lbl: `KONTRAK`
+									}, { class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
 								],
 								footerTable: [{
 									lbl: `jumlah`,
@@ -3480,7 +3525,7 @@ $(document).ready(function () {
 								}, {
 									lbl: '',
 									attr: `name="realisasi_jumlah"`
-								},{
+								}, {
 									lbl: 0,
 									attr: `name="vol"`
 								}, {
@@ -3885,13 +3930,15 @@ $(document).ready(function () {
 							buatElemenHtml("tabel2", {
 								kelas: `mini celled structured`,
 								headerTable: [[
-									{ attr:'rowspan="2"',class: 'collapsing', lbl: `SUB KEGIATAN` },
-									{ attr:'rowspan="2"', lbl: `URAIAN` }, { attr:'colspan="4"',lbl: `KONTRAK`,class: 'center aligned' }, {attr:'colspan="2"', lbl: `SUM REALISASI`,class: 'center aligned' }, { attr:'colspan="2"',lbl: `INPUT REALISASI`,class: 'center aligned' }, { class: 'center aligned collapsing',attr:'rowspan="2"', lbl: `AKSI`
+									{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
+									{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
+										class: 'center aligned collapsing', attr: 'rowspan="2"', lbl: `AKSI`
 									}],
-									[
-										{ class: 'center aligned collapsing',lbl: `VOL.` }, {class: 'center aligned collapsing', lbl: `SAT.` }, {class: 'center aligned collapsing', lbl: `PAGU` }, {class: 'center aligned collapsing',
-											lbl: `KONTRAK`
-										}, { class: 'center aligned collapsing',lbl: `VOL.` }, { class: 'center aligned collapsing',lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
+								[
+									{ class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `SAT.` }, { class: 'center aligned collapsing', lbl: `PAGU` }, {
+										class: 'center aligned collapsing',
+										lbl: `KONTRAK`
+									}, { class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
 								],
 								footerTable: [{
 									lbl: `jumlah`,
@@ -3908,7 +3955,7 @@ $(document).ready(function () {
 								}, {
 									lbl: '',
 									attr: `name="realisasi_jumlah"`
-								},{
+								}, {
 									lbl: 0,
 									attr: `name="vol"`
 								}, {
@@ -3998,8 +4045,8 @@ $(document).ready(function () {
 		}
 		$("[rms]").mathbiila();
 	});
-	
-;
+
+	;
 	//===================================
 	//=========== class dropdown ========
 	//===================================
@@ -6391,7 +6438,7 @@ $(document).ready(function () {
 	}
 	function toggleLightMode() {
 		// remove fomantic's inverted from all ui elements
-		
+
 		$("body").find(".ui:not(.hidden)").removeClass("inverted");
 		$("body").find(".ui.main.menu,.left.vertical.sidebar.menu").addClass("inverted");
 		// remove custom inverted class to body
@@ -6666,7 +6713,7 @@ function imgsrc(e) {
 			ini.attr('src', randomElement);
 			break;
 		default:
-			ini.attr('src', 'img/notfound.jpg');
+			ini.attr('src', randomElement);
 			break;
 	};
 }

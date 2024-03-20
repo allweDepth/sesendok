@@ -462,7 +462,7 @@ class MasterFungsi
                                 $kolomSat_3 = 'sat_3_p';
                                 $kolomSat_4 = 'sat_4_p';
                                 $kolomSat_5 = 'sat_5_p';
-                                if($row->id_dpa <= 0){
+                                if ($row->id_dpa <= 0) {
                                     $buttonDel = '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button></div>';
                                 }
                                 break;
@@ -489,9 +489,9 @@ class MasterFungsi
                                     <div class="item"><div class="ui red empty circular label"></div>Help</div>
                                 </div>
                             </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="edit outline blue icon"></i></button>';
-                            
-                            
-                            
+
+
+
                             $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . $buttonDel;
                         }
                         // var_dump($row->{$kolomVol_1});
@@ -1274,17 +1274,16 @@ class MasterFungsi
                     #code...
                     break;
             };
-            
+
             if ($i == 0) {
                 $DB->select("SUM(jumlah_rincian_p) AS jumlah_rincian_p,SUM(jumlah_rincian) AS jumlah_rincian");
                 $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'urusan', 'AND']];
-            }else{
+            } else {
                 $DB->select($column);
                 $kondisi = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_organisasi, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_kegOk, 'AND']];
-                
             }
             $Sumprogkeg[$kel_rek] = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
-            
+
             // $Sumprogkeg[$kel_rek] = $DB->getWhereCustom($tabel_pakai, $kondisi);
             // var_dump($Sumprogkeg);
         }
@@ -2530,6 +2529,9 @@ class MasterFungsi
                 break;
             case 'daftar_paket':
                 $path2 = 'daftar_paket';
+                break;
+            case 'user':
+                $path2 = 'avatar';
                 break;
             default:
                 break;

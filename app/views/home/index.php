@@ -1226,18 +1226,20 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         <div class="ui special centered card">
                             <div class="content">
                                 <div class="right floated meta">14h</div>
-                                <img class="ui avatar image" src="img/avatar/large/elliot.jpg"> Alwi Mansyur
+                                <img class="ui avatar image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)"><span name="nama">Alwi Mansyur</span>
                             </div>
 
                             <div class="blurring dimmable image">
                                 <div class="ui dimmer">
                                     <div class="content">
                                         <div class="center">
-                                            <div class="ui inverted button">Add Friend</div>
+                                        <button for="directupload1" name="direct" type="button" id_row="" jns="upload" tbl="user" dok="photo" class="ui inverted icon button" accept=".jpg,.png,.jpeg,.img">
+											<i class="file icon"></i>ganti profil
+										</button>
                                         </div>
                                     </div>
                                 </div>
-                                <img src="img/avatar/large/elliot.jpg">
+                                <img src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)">
                             </div>
 
                             <div class="content">
@@ -1257,7 +1259,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         </div>
                     </div>
                     <div class="twelve wide column">
-                        <div class="ui form">
+                        <form class="ui form profil" name="profil">
                             
                             <div class="two fields">
                                 <div class="field">
@@ -1293,7 +1295,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <label>Organisasi</label>
                                 <input type="text" name="nama_org" placeholder="Some text" readonly>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
 

@@ -81,6 +81,9 @@ class post_data
                             case 'asn':
                                 $val_in_array = ['file_akta_lahir', 'file_ktp', 'file_kk', 'file_npwp', 'file_buku_nikah', 'file_karpeg', 'file_karsi_karsu', 'file_photo', 'pend_file_sd', 'pend_file_smp', 'pend_file_smu', 'pend_file_s1', 'pend_file_s2', 'pend_file_s3'];
                                 break;
+                            case 'user':
+                                $val_in_array = ['photo'];
+                                break;
                             default:
                                 # code...
                                 break;
@@ -1166,7 +1169,7 @@ class post_data
                                         $kolVol2 = 'vol_2';
                                         $kolVol3 = 'vol_3';
                                         $kolVol4 = 'vol_4';
-                                        $sumberDan='sumber_dana';
+                                        $sumberDan = 'sumber_dana';
                                         break;
 
                                     case 'dppa':
@@ -1179,7 +1182,7 @@ class post_data
                                         $kolVol2 = 'vol_2_p';
                                         $kolVol3 = 'vol_3_p';
                                         $kolVol4 = 'vol_4_p';
-                                        $sumberDan='sumber_dana_p';
+                                        $sumberDan = 'sumber_dana_p';
                                         break;
                                 };
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
@@ -1536,6 +1539,11 @@ class post_data
                                     $kodePosting = 'cek_insert';
                                     $set = [];
                                     break;
+                                case 'user':
+                                    $kondisi = [['username', '=', $username], ['id', '=', $id_row, 'AND']];
+                                    $kodePosting = 'cek_insert';
+                                    $set = [];
+                                    break;
                                 default:
                                     # code...
                                     break;
@@ -1560,6 +1568,14 @@ class post_data
                                             $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
                                         }
                                         break;
+                                    case 'username':
+                                        $uraian = "username({$row_sub->username})_dok({$dok})_wilayah({$kd_wilayah})";
+                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                                        if (strlen($row_sub->$dok ?? '') > 2) {
+                                            $nameFileDel = $row_sub->$dok;
+                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                                        }
+                                        break;
                                     default:
                                         # code...
                                         break;
@@ -1567,6 +1583,7 @@ class post_data
                                 if ($_FILES) {
                                     if (isset($_FILES[$dok])) {
                                         $file = $Fungsi->importFile($tbl, $set_file);
+                                        // var_dump($file);
                                         if ($file['result'] == 'ok') {
                                             $set[$dok] = $file[$dok];
                                         } else {
