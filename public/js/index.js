@@ -527,14 +527,19 @@ $(document).ready(function () {
 						loaderHide();
 						switch (jenis) {
 							case "get_tbl":
+								
 								const elmTable = divTab.find("table.insert");
 								const elmtbody = elmTable.find(`tbody`);
 								const elmtfoot = elmTable.find(`tfoot`);
+								const elmthead = elmTable.find(`thead`);
 								elmtbody.html(result.data.tbody);
 								elmtfoot.html(result.data.tfoot);
 								if (result?.data?.thead) {
-									const elmthead = elmTable.find(`thead`);
+									
 									elmthead.html(result.data.thead);
+								}
+								if($(`a[name="change_themes"]`).attr("theme") === 'dark'){
+									elmTable.find(".ui:not(.hidden)").removeClass("inverted").addClass("inverted");
 								}
 								divTab.find(`.ui.dropdown`).dropdown({});
 								let dokumenAnggaran = '';
@@ -639,7 +644,7 @@ $(document).ready(function () {
 											elm.attr('src', imgeProfil)
 
 										}
-										card.find(`button[for="directupload1"]`).attr('id_row',result.data.users.id)
+										card.find(`button[for="directupload1"]`).attr('id_row', result.data.users.id)
 										let resultUser = result.data.users;
 										for (let key in resultUser) {
 											let value = resultUser[key];
@@ -3089,14 +3094,14 @@ $(document).ready(function () {
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
 						$(`#directupload1,form[name="form_upload"]`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
-						
+
 						break;
 					case 'user':
 						//upload langsung file
 						$("#directupload1").val("");
 						id_row = ini.attr('id_row')
 						$(`#directupload1,form[name="form_upload"]`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
-						
+
 						break;
 					default:
 						break;
@@ -3111,7 +3116,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		let ini = $(this);
 		let id_row = ini.attr('id_row');
-		
+
 		if (id_row) {
 			let myForm = new FormGlobal(`form[name="form_upload"]`);
 			myForm.run();
@@ -6427,11 +6432,13 @@ $(document).ready(function () {
 		});
 	}
 	function toggleDarkMode() {
+
 		// add fomantic's inverted class to all ui elements
 		$("body").find(".ui:not(.hidden)").addClass("inverted");
 		// add custom inverted class to body
 		$("body").addClass("inverted");
 		// simple toggle icon change
+		$(`a[name="change_themes"]`).attr("theme", 'dark');
 		$(`a[name="change_themes"] > i`).removeClass("moon");
 		$(`a[name="change_themes"] > i`).addClass("sun");
 		return;
@@ -6444,6 +6451,7 @@ $(document).ready(function () {
 		// remove custom inverted class to body
 		$("body").removeClass("inverted");
 		// change button icon
+		$(`a[name="change_themes"]`).attr("theme", 'light');
 		$(`a[name="change_themes"] > i`).removeClass("sun");
 		$(`a[name="change_themes"] > i`).addClass("moon");
 		return;
