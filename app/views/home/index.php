@@ -1232,9 +1232,9 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <div class="ui dimmer">
                                     <div class="content">
                                         <div class="center">
-                                        <button for="directupload1" name="direct" type="button" id_row="" jns="upload" tbl="user" dok="photo" class="ui inverted icon button" accept=".jpg,.png,.jpeg,.img">
-											<i class="file icon"></i>ganti profil
-										</button>
+                                            <button for="directupload1" name="direct" type="button" id_row="" jns="upload" tbl="user" dok="photo" class="ui inverted icon button" accept=".jpg,.png,.jpeg,.img">
+                                                <i class="file icon"></i>ganti profil
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -1259,7 +1259,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     </div>
                     <div class="twelve wide column">
                         <form class="ui form profil" name="profil">
-                            
+
                             <div class="two fields">
                                 <div class="field">
                                     <label>Nama Lengkap</label>
