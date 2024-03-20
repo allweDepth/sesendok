@@ -985,7 +985,7 @@ $(document).ready(function () {
 										["janda-duda", "Duda-Janda"],
 										["lajang", "Lajang"]
 									],
-								}) + 
+								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="2" non_data',
@@ -3447,25 +3447,27 @@ $(document).ready(function () {
 							label: "Uraian Pengelompokan Belanja",
 							kelas: `sub_keg_dpa category`,
 							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
-						}) +buatElemenHtml("fieldTextarea", {
+						}) + buatElemenHtml("fieldTextarea", {
 							label: "Nama Paket",
 							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
 						}) +
-							buatElemenHtml("tabel", {
-								headerTable: [
-									{ class: 'collapsing', lbl: `SUB KEGIATAN` },
-									{ lbl: `URAIAN` }, { lbl: `VOL.` }, { lbl: `SAT.` }, { lbl: `PAGU` }, {
-										lbl: `KONTRAK`
-									}, { lbl: `VOL.REALISASI` }, { lbl: `REALISASI` }, {
-										lbl: `AKSI`
-									},
+							buatElemenHtml("tabel2", {
+								kelas: `mini celled structured`,
+								headerTable: [[
+									{ attr:'rowspan="2"',class: 'collapsing', lbl: `SUB KEGIATAN` },
+									{ attr:'rowspan="2"', lbl: `URAIAN` }, { attr:'colspan="4"',lbl: `KONTRAK`,class: 'center aligned' }, {attr:'colspan="2"', lbl: `SUM REALISASI`,class: 'center aligned' }, { attr:'colspan="2"',lbl: `INPUT REALISASI`,class: 'center aligned' }, { class: 'center aligned collapsing',attr:'rowspan="2"', lbl: `AKSI`
+									}],
+									[
+										{ class: 'center aligned collapsing',lbl: `VOL.` }, {class: 'center aligned collapsing', lbl: `SAT.` }, {class: 'center aligned collapsing', lbl: `PAGU` }, {class: 'center aligned collapsing',
+											lbl: `KONTRAK`
+										}, { class: 'center aligned collapsing',lbl: `VOL.` }, { class: 'center aligned collapsing',lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
 								],
 								footerTable: [{
 									lbl: `jumlah`,
 									attr: `colspan="4"`
 								}, {
 									lbl: 0,
-									attr: `name="jumlah"`
+									attr: `name="pagu"`
 								}, {
 									lbl: 0,
 									attr: `name="kontrak"`
@@ -3475,6 +3477,12 @@ $(document).ready(function () {
 								}, {
 									lbl: '',
 									attr: `name="realisasi_jumlah"`
+								},{
+									lbl: 0,
+									attr: `name="vol"`
+								}, {
+									lbl: '',
+									attr: `name="jumlah"`
 								}, {
 									lbl: 0,
 									attr: ``
@@ -5165,35 +5173,50 @@ $(document).ready(function () {
 									cellKontrak = myForm.find(`table tfoot [name="kontrak"]`);
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									cek_id = myForm.find(`table tbody tr[id_row="${result.value}"]`);
-									let dataRowsAnggaran =result.uraian_id_uraian
-									
-									let trElm ='';
-									myForm.form('set value','uraian',result.title)
+									let dataRowsAnggaran = result.uraian_id_uraian
+
+									let trElm = '';
+									myForm.form('set value', 'uraian', result.title)
 									dataRowsAnggaran.forEach((value, key) => {
-										let strvol = parseFloat(result.vol);
-										strvol = accounting.formatNumber(strvol, strvol.countDecimals(), ".", ",");
+										let vol_kontrak = parseFloat(value.vol_kontrak);
+										vol_kontrak = accounting.formatNumber(vol_kontrak, vol_kontrak.countDecimals(), ".", ",");
 
-										letstrText = parseFloat(result.pagu);
-										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+										let jumlah_pagu = parseFloat(value.jumlah_pagu);
+										jumlah_pagu = accounting.formatNumber(jumlah_pagu, jumlah_pagu.countDecimals(), ".", ",");
 
-										trElm += `<tr id_row="${value.id}" pagu="${value.jumlah}" dok_anggaran="${value.dok}">
+										let jumlah_kontrak = parseFloat(value.jumlah_kontrak);
+										jumlah_kontrak = accounting.formatNumber(jumlah_kontrak, jumlah_kontrak.countDecimals(), ".", ",");
+
+										let realisasi_jumlah = parseFloat(value.realisasi_jumlah);
+										realisasi_jumlah = accounting.formatNumber(realisasi_jumlah, realisasi_jumlah.countDecimals(), ".", ",");
+
+										let realisasi_vol = parseFloat(value.realisasi_vol);
+										realisasi_vol = accounting.formatNumber(realisasi_vol, realisasi_vol.countDecimals(), ".", ",");
+
+										trElm += `<tr id_row="${value.id}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
 											<td klm="kd_sub_keg">${value.kd_sub_keg}</td>
-											<td klm="uraian">${value.title}</td>
+											<td klm="uraian">${value.uraian}</td>
 											<td klm="vol_kontrak">
-												<div contenteditable rms>${strvol}</div>
+												<div contenteditable rms>${vol_kontrak}</div>
 											</td>
 											<td klm="sat_kontrak">
-												<div contenteditable>${value.sat}</div>
+												<div>${value.sat_kontrak}</div>
 											</td>
-											<td klm="pagu">${strText}</td>
-											<td klm="kontrak">
-												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div>
+											<td klm="pagu">${jumlah_pagu}</td>
+											<td klm="jumlah_kontrak">${jumlah_kontrak}</td>
+											<td klm="jumlah_kontrak">${realisasi_vol}</td>
+											<td klm="jumlah_kontrak">${realisasi_jumlah}</td>
+											<td klm="vol">
+												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' });"></div>
 											</td>
-											<td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian"
-													id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td>
+											<td klm="jumlah">
+												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'renja_p' });"></div>
+											</td>
+											<td><button class="ui blue basic icon mini button" name="get_row" jns="direct" tbl="remove_uraian"
+													id_row="${result.value}"><i class="edit alternate outline icon"></i></button></td>
 										</tr>`;
 									});
-									myForm.find(`table tbody`).append(trElm);
+									myForm.find(`table tbody`).html(trElm);
 									// if (cek_id.length <= 0) {
 									// 	//vol
 									// 	let strvol = parseFloat(result.vol);
@@ -5566,9 +5589,9 @@ $(document).ready(function () {
 			  </div></div>`;
 				break;
 			case "tabel":
-				let head = (headerTable.length > 0) ? '<thead><tr>' : '';
-				let foot = (footerTable.length > 0) ? '<tfoot><tr>' : '';
-				let body = `<tbody>`;
+				var head = (headerTable.length > 0) ? '<thead><tr>' : '';
+				var foot = (footerTable.length > 0) ? '<tfoot><tr>' : '';
+				var body = `<tbody>`;
 				//buat header tabel
 				headerTable.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
@@ -5595,6 +5618,48 @@ $(document).ready(function () {
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
 					foot += `<td${classRow} ${attrRow}>${lblRow}</td$>`;
+				});
+				foot += (footerTable.length > 0) ? '</tfoot>' : '';
+
+				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
+				break;
+			case "tabel2"://untuk tabel header lebih 1
+				var head = (headerTable.length > 0) ? '<thead>' : '';
+				var foot = (footerTable.length > 0) ? '<tfoot><tr>' : '';
+				var body = `<tbody>`;
+				//buat header tabel
+				headerTable.forEach(function (val) {
+					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					head += `<tr${classRow} ${attrRow}>`;
+					val.forEach(function (val2) {
+						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+						classRow = (val2.class !== undefined) ? ` class="${val2.class}"` : '';
+						lblRow = (val2.lbl !== undefined) ? `${val2.lbl}` : '';
+						attrRow = (val2.attr !== undefined) ? ` ${val2.attr}` : '';
+						head += `<th${classRow} ${attrRow}>${lblRow}</th>`;
+					});
+					head += `</tr$>`;
+				});
+				head += (headerTable.length > 0) ? '</thead>' : '';
+				//buat body tabel
+				bodyTable.forEach(function (val) {
+					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					body += `<th${classRow} ${attrRow}>${lblRow}</th>`;
+
+				});
+				body += `</tbody>`;
+				//buat foot tabel
+				footerTable.forEach(function (val) {
+					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					foot += `<td${classRow} ${attrRow}>${lblRow}</td>`;
 				});
 				foot += (footerTable.length > 0) ? '</tfoot>' : '';
 

@@ -40,6 +40,18 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'realisasi':
+                $rowData['thead'] = trim('<tr>
+                <th>NAMA PAKET</th>
+                <th>URAIAN KOMPONEN</th>
+                <th>PAGU</th>
+                <th>KONTRAK</th>
+                <th>REALISASI</th>
+                <th>FILE</th>
+                <th>KETERANGAN</th>
+                <th class="collapsing">AKSI</th>
+            </tr>');
+                break;
             case 'berita':
                 $rowData['thead'] = trim('<tr>
                 <th>KELOMPOK</th>

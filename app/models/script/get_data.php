@@ -1832,6 +1832,9 @@ class get_data
                                         case 'get_Search_Json':
                                             switch ($tbl) {
                                                 case 'daftar_paket':
+                                                    // ambil data di daftar_uraian_paket
+                                                    $kondisi = [['id_paket', '= ?', $row->id], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']];
+                                                    $daftar_uraian_pkt = $DB->getArrayLike('daftar_uraian_paket', $kondisi);
                                                     $kd_sub_dbkeg = explode(',', $row->kd_sub_keg);
                                                     $id_uraian = $row->id_uraian;
 
@@ -1839,28 +1842,64 @@ class get_data
                                                     $send = json_decode($id_uraian);
                                                     // atur kembali id uraian
                                                     $pagu = 0;
-                                                    $jumlah = 0;
+                                                    $jumlahSum = 0;
                                                     $kd_sub_keg = [];
                                                     $si = 0;
                                                     foreach ($send as $key => $value) {
                                                         $si++;
                                                         $tabel_pakai = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
-                                                        $kondisi = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                                                        switch ($value->dok_anggaran) {
+                                                            case 'dpa':
+                                                            case 'renja':
+                                                                $kolSat1 = 'sat_1';
+                                                                $kolSat2 = 'sat_2';
+                                                                $kolSat3 = 'sat_3';
+                                                                $kolSat4 = 'sat_4';
+                                                                $kolVol1 = 'vol_1';
+                                                                $kolVol2 = 'vol_2';
+                                                                $kolVol3 = 'vol_3';
+                                                                $kolVol4 = 'vol_4';
+                                                                $sumberDan='sumber_dana';
+                                                                $volume='volume';
+                                                                $jumlah='jumlah';
+                                                                break;
+                        
+                                                            case 'dppa':
+                                                            case 'renja_p':
+                                                                $kolSat1 = 'sat_1_p';
+                                                                $kolSat2 = 'sat_2_p';
+                                                                $kolSat3 = 'sat_3_p';
+                                                                $kolSat4 = 'sat_4_p';
+                                                                $kolVol1 = 'vol_1_p';
+                                                                $kolVol2 = 'vol_2_p';
+                                                                $kolVol3 = 'vol_3_p';
+                                                                $kolVol4 = 'vol_4_p';
+                                                                $sumberDan='sumber_dana_p';
+                                                                $volume='volume_p';
+                                                                $jumlah='jumlah_p';
+                                                                break;
+                                                        };
+
+                                                        $kondisi = [["$tabel_pakai.id", '=', $value->id], ["daftar_uraian_paket.id_paket", '=', $row->id, 'AND'], ["daftar_uraian_paket.id_dok_anggaran", '=', $value->id, 'AND'], ["$tabel_pakai.kd_wilayah", '=', $kd_wilayah, 'AND'], ["$tabel_pakai.kd_opd", '=', $kd_opd, 'AND'], ["$tabel_pakai.tahun", '=', $tahun, 'AND'], ["$tabel_pakai.disable", '<=', 0, 'AND'], ["$tabel_pakai.kel_rek", '=', 'uraian', 'AND']];
+                                                        $DB->select("$tabel_pakai.id,$tabel_pakai.kd_wilayah,$tabel_pakai.kd_opd,$tabel_pakai.tahun,$tabel_pakai.kd_sub_keg,$tabel_pakai.kd_akun,$tabel_pakai.uraian,$tabel_pakai.jenis_standar_harga,$tabel_pakai.komponen,$tabel_pakai.harga_satuan,$tabel_pakai.$volume,$tabel_pakai.$jumlah,$tabel_pakai.$sumberDan, $tabel_pakai.id,daftar_uraian_paket.id_paket,daftar_uraian_paket.id_dok_anggaran,daftar_uraian_paket.dok,daftar_uraian_paket.jumlah_pagu,daftar_uraian_paket.jumlah_kontrak,daftar_uraian_paket.vol_kontrak,daftar_uraian_paket.sat_kontrak,daftar_uraian_paket.realisasi_vol,daftar_uraian_paket.realisasi_jumlah");
+                                                        // $tabel_pakai = "$tabel_pakai, daftar_uraian_paket";
+                                                        $row_sub = $DB->getWhereOnceCustom("$tabel_pakai, daftar_uraian_paket", $kondisi);
+                                                        // var_dump($row_sub);
                                                         if ($row_sub !== false) {
                                                             $row_sub->dok=$value->dok_anggaran;
                                                             $klm_jumlah = ($tabel_pakai == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
                                                             $pagu += $row_sub->$klm_jumlah;
-                                                            $jumlah += $value->val_kontrak;
+                                                            $jumlahSum += $value->val_kontrak;
                                                             $kd_sub_keg[] = $row_sub;
                                                         } else {
                                                             //hapus key yang tidak mempunyai persyaratan
                                                             unset($send[$key]);
                                                         }
+                                                        
                                                     }
 
                                                     $deskripsi = $row->nama_rekanan . ' (Pagu' . number_format((float)$row->pagu, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg];
+                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg, 'daftar_uraian_pkt' => $daftar_uraian_pkt];
                                                     break;
                                                 case 'hspk':
                                                 case 'asb':

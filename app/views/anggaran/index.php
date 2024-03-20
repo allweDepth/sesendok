@@ -4,7 +4,7 @@
         <div class="header item">
             <img class="logo" src="img/logo.png">
         </div>
-        <a class="item inayah">Home</a>
+        <a class="item inayah" href="login">Home</a>
         <a class="item inayah" href="pelayanan">Pelayanan</a>
         <a class="item inayah" href="data_teknis">Data Teknis</a>
         <a class="item inayah" href="organisasi">Organisasi</a>
@@ -22,7 +22,7 @@
 
 <!-- Sidebar Menu -->
 <div class="ui inverted labeled icon left inline vertical sidebar menu">
-    <a class="item inayah"><i class="home icon"></i>Home</a>
+    <a class="item inayah" href="login"><i class="home icon"></i>Home</a>
     <a class="item inayah" href="pelayanan"><i class="block layout icon"></i>Pelayanan</a>
     <a class="item inayah" href="data_teknis"><i class="smile icon"></i>Data Teknis</a>
     <a class="item inayah" href="organisasi"><i class="sitemap icon"></i>Organisasi</a>
@@ -38,7 +38,7 @@
                 <a class="toc item">
                     <i class="sidebar icon"></i>
                 </a>
-                <a class="item inayah">Home</a>
+                <a class="item inayah" href="login">Home</a>
                 <a class="item inayah" href="pelayanan">Pelayanan</a>
                 <a class="item inayah" href="data_teknis">Data Teknis</a>
                 <a class="item inayah" href="organisasi">Organisasi</a>
