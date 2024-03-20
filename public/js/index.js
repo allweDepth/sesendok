@@ -5,6 +5,9 @@ $(document).ready(function () {
 	//remove session storage
 	sessionStorage.clear();
 	var halaman = 1;
+	const kudarkMode = window.matchMedia("(prefers-color-scheme:dark)").matches;
+	console.log(kudarkMode);
+	
 	//sidebar toggle
 	$(".ui.sidebar")
 		.sidebar({
@@ -6432,9 +6435,9 @@ $(document).ready(function () {
 		});
 	}
 	function toggleDarkMode() {
-
 		// add fomantic's inverted class to all ui elements
 		$("body").find(".ui:not(.hidden)").addClass("inverted");
+		$("body").find(".ui.modal,.ui.form").addClass("inverted");
 		// add custom inverted class to body
 		$("body").addClass("inverted");
 		// simple toggle icon change
@@ -6447,6 +6450,7 @@ $(document).ready(function () {
 		// remove fomantic's inverted from all ui elements
 
 		$("body").find(".ui:not(.hidden)").removeClass("inverted");
+		$("body").find(".ui.modal,.ui.form").removeClass("inverted");
 		$("body").find(".ui.main.menu,.left.vertical.sidebar.menu").addClass("inverted");
 		// remove custom inverted class to body
 		$("body").removeClass("inverted");

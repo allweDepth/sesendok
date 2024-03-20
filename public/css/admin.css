@@ -5,6 +5,24 @@
 } */
 
 :root {
+    --google-grey-100-rgb: 241, 243, 244;
+    --google-grey-100: rgb(var(--google-grey-100-rgb));
+    --google-grey-200-rgb: 232, 234, 237;
+    --google-grey-200: rgb(var(--google-grey-200-rgb));
+    --google-grey-300-rgb: 218, 220, 224;
+    --google-grey-300: rgb(var(--google-grey-300-rgb));
+    --google-grey-400-rgb: 189, 193, 198;
+    --google-grey-400: rgb(var(--google-grey-400-rgb));
+    --google-grey-500-rgb: 154, 160, 166;
+    --google-grey-500: rgb(var(--google-grey-500-rgb));
+    --google-grey-600-rgb: 128, 134, 139;
+    --google-grey-600: rgb(var(--google-grey-600-rgb));
+    --google-grey-700-rgb: 95, 99, 104;
+    --google-grey-700: rgb(var(--google-grey-700-rgb));
+    --google-grey-800-rgb: 60, 64, 67;
+    --google-grey-800: rgb(var(--google-grey-800-rgb));
+    --google-grey-900-rgb: 32, 33, 36;
+    --google-grey-900: rgb(var(--google-grey-900-rgb));
     --darkBG: #232B32;
     --whiteBG: white;
 }
@@ -15,7 +33,7 @@
 }
 
 .ui.tab.segment.active.inverted, .pusher.inverted {
-    background-color: var(--darkBG);
+    background-color: var(--google-grey-900);
 }
 .form.inverted input,
 .form.inverted textarea {
@@ -26,7 +44,8 @@
 .form.inverted input:focus,
 .form.inverted textarea:focus {
     border: 1px solid rgba(255,255,255,.15) !important;
-    background: #3d3e3f !important;
+    background: var(--darkBG) !important;
+    /* background: #3d3e3f !important; */
     color: rgba(255,255,255,.8) !important;
 }
 
