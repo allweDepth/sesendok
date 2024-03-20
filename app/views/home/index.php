@@ -1296,7 +1296,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                             </div>
                             <div class="field">
                                 <label>Organisasi</label>
-                                <textarea type="text" name="ket" placeholder="Keterangan">
+                                <textarea name="ket" placeholder="Keterangan" rows="2"></textarea>
                             </div>
                         </form>
                     </div>

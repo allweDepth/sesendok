@@ -14,8 +14,7 @@
     background-color: var(--whiteBG);
 }
 
-.ui.tab.segment.active.inverted,
-.pusher.inverted {
+.ui.tab.segment.active.inverted, .pusher.inverted {
     background-color: var(--darkBG);
 }
 
