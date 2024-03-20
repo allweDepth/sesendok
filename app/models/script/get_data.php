@@ -1807,10 +1807,10 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->kode, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'tujuan_renstra':
-                                                    $dataJson['results'][] = ['text' => $row->text, 'name' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
+                                                    $dataJson['results'][] = ['text' => $row->text, 'name' => $row->text, 'value' => $row->id];
                                                     break;
                                                 case 'sasaran_renstra':
-                                                    $dataJson['results'][] = ['name' => $row->text, 'text' => $row->text, 'value' => $row->id, 'description' => $row->id_tujuan, "descriptionVertical" => true];
+                                                    $dataJson['results'][] = ['name' => $row->text, 'text' => $row->text, 'value' => $row->id];
                                                     break;
                                                 case 'sub_keg':
                                                     $dataJson['results'][] = ['name' => $row->nomenklatur_urusan, 'text' => $row->nomenklatur_urusan, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
