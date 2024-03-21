@@ -3472,6 +3472,7 @@ $(document).ready(function () {
 								label: "Volume",
 								atribut: `name="volume" placeholder="Volume" non_data readonly`,
 							}) + buatElemenHtml("fieldText", {
+								classField: "three wide",
 								label: "Satuan",
 								atribut: `name="satuan" placeholder="Satuan" non_data readonly`,
 							}) + buatElemenHtml("fieldText", {
@@ -5641,7 +5642,7 @@ $(document).ready(function () {
 													id_row="${value.id_uraian_paket}"><i class="edit alternate outline icon"></i></button></td>
 										</tr>`;
 									});
-									myForm.find(`table tbody`).html(trElm);
+									myForm.find(`table.tblUraian tbody`).html(trElm);
 									onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' }, this);
 									$("[rms]").mathbiila();
 									break;
@@ -6530,14 +6531,29 @@ $(document).ready(function () {
 			let non_data = $(iterator).attr("non_data");
 			if (typeof non_data === 'undefined' || non_data === false) {
 				// console.log('masuk addRulesForm');
-				formku.form("add rule", atribut, {
-					rules: [
-						{
-							type: "empty",
-							prompt: "Lengkapi Data " + lbl,
-						},
-					],
-				});
+				let attrRules = $(iterator).attr("rules");
+				if (typeof attrRules === 'undefined' || attrRules === false) {
+					//tanpa rule spesifik
+					formku.form("add rule", atribut, {
+						rules: [
+							{
+								type: "empty",
+								prompt: "Lengkapi Data " + lbl,
+							},
+						],
+					});
+				}else{
+					//dengan rules spesifik pisahkan rules dengan koma2x ",,", contoh rules="minLength[6],,regExp[/rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)/i]"
+					let rules=attrRules.split(',,')
+					let rulesku={}
+					rules.forEach((value, key) => {
+						rulesku.type=value
+					});
+					formku.form("add rule", atribut, {
+						rules: [rulesku],
+					});
+				}
+				
 			} else {
 				formku.form("remove field", atribut);
 			}
