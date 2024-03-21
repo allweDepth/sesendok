@@ -2972,7 +2972,7 @@ $(document).ready(function () {
 								obj.remove();
 								switch (tbl) {
 									case 'remove_uraian':
-										onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);
+										onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' }, this);
 										break;
 									default:
 										break;
@@ -3676,7 +3676,7 @@ $(document).ready(function () {
 							switch (tblAttr) {
 								case 'daftar_paket':
 									formIni.find(`table tbody`).html(result.data.users);
-									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);
+									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' }, this);
 									break;
 
 								default:
@@ -6642,13 +6642,16 @@ $(document).ready(function () {
 	};
 });
 // onkeypress="return rumus(event);"
-function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' },evt) {
+function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, evt) {
 	let ini = $(this);
+	let form = $(evt).closest(`form`);
+	let tr = $(evt).closest(`tbody`).find('tr');
+	const keyPressed = String.fromCharCode(evt.which);
 	switch (params.jns) {
 		case 'uraian_sub_keg':
 			switch (params.tbl) {
 				case 'renja_p':
-					let form = $(`form[name="form_modal"]`);
+					form = $(`form[name="form_modal"]`);
 					let cellJumlah = form.find(`table tfoot [name="jumlah"]`);
 					let cellKontrak = form.find(`table tfoot [name="kontrak"]`);
 					let pagu = 0;
@@ -6671,19 +6674,54 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' },evt
 			break;
 		case 'realisasi':
 			switch (params.tbl) {
-				case 'vol_realisasi':
+				case 'vol_realisasi'://@audit now
+					let strText;
 					console.log(evt);
+					console.log(tr);
+					let vol_kontrak = 0;
+					let pagu = 0;
+					let jumlah_kontrak = 0;
+					let realisasi_vol = 0;
+					let realisasi_jumlah = 0;
+					let vol = 0;
+					let jumlah = 0;
+					let cellvol = form.find(`table tfoot [klm="vol"] div`);
+					$(`[name="form_modal"] table tbody tr`).each(function () {
+						let element = $(this);
+						let vol_kontrakTemp = Number(accounting.unformat(element.find(`[klm="vol_kontrak"]`).text(), ","));
+						vol_kontrak += vol_kontrakTemp;
+						pagu += Number(accounting.unformat(element.find(`[klm="vol_kontrak"]`).text(), ","));
+						let jumlah_kontrakTemp = Number(accounting.unformat(element.find(`[klm="jumlah_kontrak"]`).text(), ","));
+						jumlah_kontrak += jumlah_kontrakTemp;
+						realisasi_vol += Number(accounting.unformat(element.find(`[klm="realisasi_vol"]`).text(), ","));
+						realisasi_jumlah += Number(accounting.unformat(element.find(`[klm="realisasi_jumlah"]`).text(), ","));
+						vol_temp = Number(accounting.unformat(element.find(`[klm="vol"] div`).text(), ","));
+						if (vol_temp + realisasi_vol > vol_kontrakTemp) {
+							vol_temp = vol_kontrak - realisasi_vol;
+							let strText = parseFloat(vol_temp);
+							strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+							// $(evt).html(`<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);">${strText}</div>`);
+						}
+						vol += vol_temp;
+						jumlah_temp = Number(accounting.unformat(element.find(`[klm="jumlah"] div`).text(), ","));
+						if (jumlah_temp + realisasi_jumlah > jumlah_kontrakTemp) {
+							jumlah_temp = jumlah_kontrak - realisasi_jumlah;
+							strText = parseFloat(jumlah_temp);
+							strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+							// $(evt).html(`<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);">${strText}</div>`);
+						}
+						jumlah += jumlah_temp;
+					});
 					
 					break;
 			}
+			
 		default:
 			break;
 	}
 }
 function rumus(evt) {
-	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(
-		String.fromCharCode(evt.which)
-	);
+	return /[0-9]|\=|\+|\-|\/|\*|\%|\[|\]|\,/.test(String.fromCharCode(evt.which));
 }
 // onkeypress="return ketikUbah(event);"
 function ketikUbah(evt) {
