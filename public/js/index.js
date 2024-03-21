@@ -7,7 +7,7 @@ $(document).ready(function () {
 	var halaman = 1;
 	const kudarkMode = window.matchMedia("(prefers-color-scheme:dark)").matches;
 	console.log(kudarkMode);
-	
+
 	//sidebar toggle
 	$(".ui.sidebar")
 		.sidebar({
@@ -530,7 +530,7 @@ $(document).ready(function () {
 						loaderHide();
 						switch (jenis) {
 							case "get_tbl":
-								
+
 								const elmTable = divTab.find("table.insert");
 								const elmtbody = elmTable.find(`tbody`);
 								const elmtfoot = elmTable.find(`tfoot`);
@@ -538,10 +538,10 @@ $(document).ready(function () {
 								elmtbody.html(result.data.tbody);
 								elmtfoot.html(result.data.tfoot);
 								if (result?.data?.thead) {
-									
+
 									elmthead.html(result.data.thead);
 								}
-								if($(`a[name="change_themes"]`).attr("theme") === 'dark'){
+								if ($(`a[name="change_themes"]`).attr("theme") === 'dark') {
 									elmTable.find(".ui:not(.hidden)").removeClass("inverted").addClass("inverted");
 								}
 								divTab.find(`.ui.dropdown`).dropdown({});
@@ -1375,7 +1375,7 @@ $(document).ready(function () {
 									label: "Tambahkan Pajak",
 									atribut: 'name="pajak" non_data',
 								}) +
-								buatElemenHtml("fields", {
+								buatElemenHtml("fields2", {
 									label: "Koefisien Perkalian",
 									kelas: "disabled",
 									kelas2: ["search sat_1 ajx selection", "search sat_2 ajx selection", "search sat_3 ajx selection", "search sat_4 ajx selection"],
@@ -3504,47 +3504,64 @@ $(document).ready(function () {
 						}) + buatElemenHtml("fieldTextarea", {
 							label: "Nama Paket",
 							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
-						}) +
-							buatElemenHtml("tabel2", {
-								kelas: `mini celled structured`,
-								headerTable: [[
-									{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
-									{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
-										class: 'center aligned collapsing', attr: 'rowspan="2"', lbl: `AKSI`
-									}],
-								[
-									{ class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `SAT.` }, { class: 'center aligned collapsing', lbl: `PAGU` }, {
-										class: 'center aligned collapsing',
-										lbl: `KONTRAK`
-									}, { class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
-								],
-								footerTable: [{
-									lbl: `jumlah`,
-									attr: `colspan="4"`
-								}, {
-									lbl: 0,
-									attr: `name="pagu"`
-								}, {
-									lbl: 0,
-									attr: `name="kontrak"`
-								}, {
-									lbl: 0,
-									attr: `name="realisasi_vol"`
-								}, {
-									lbl: '',
-									attr: `name="realisasi_jumlah"`
-								}, {
-									lbl: 0,
-									attr: `name="vol"`
-								}, {
-									lbl: '',
-									attr: `name="jumlah"`
-								}, {
-									lbl: 0,
-									attr: ``
+						}) + buatElemenHtml("fields", {
+							classField: "three",
+							label: "Jadwal Pengadaan",
+							content: buatElemenHtml("fieldText", {
+								label: "Volume",
+								atribut: `name="volume" placeholder="Volume" non_data readonly`,
+							}) + buatElemenHtml("fieldText", {
+								label: "Satuan",
+								atribut: `name="satuan" placeholder="Satuan" non_data readonly`,
+							}) + buatElemenHtml("fieldText", {
+								label: "Jumlah Kontrak",
+								atribut: `name="jumlah" placeholder="Jumlah Kontrak" non_data readonly`,
+							})
+						}) + buatElemenHtml("divider", {
+							header: "h5",
+							aligned: 'left aligned',
+							icon2: `<i class="feather alternate icon"></i>`,
+							label: `Rincian Paket`
+						}) + buatElemenHtml("tabel2", {
+							kelas: `mini celled structured`,
+							headerTable: [[
+								{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
+								{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
+									class: 'center aligned collapsing', attr: 'rowspan="2"', lbl: `AKSI`
 								}],
-								bodyTable: []
-							});
+							[
+								{ class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `SAT.` }, { class: 'center aligned collapsing', lbl: `PAGU` }, {
+									class: 'center aligned collapsing',
+									lbl: `KONTRAK`
+								}, { class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
+							],
+							footerTable: [{
+								lbl: `jumlah`,
+								attr: `colspan="4"`
+							}, {
+								lbl: 0,
+								attr: `name="pagu"`
+							}, {
+								lbl: 0,
+								attr: `name="kontrak"`
+							}, {
+								lbl: 0,
+								attr: `name="realisasi_vol"`
+							}, {
+								lbl: '',
+								attr: `name="realisasi_jumlah"`
+							}, {
+								lbl: 0,
+								attr: `name="vol"`
+							}, {
+								lbl: '',
+								attr: `name="jumlah"`
+							}, {
+								lbl: 0,
+								attr: ``
+							}],
+							bodyTable: []
+						});
 						break;
 				}
 				break;
@@ -5581,9 +5598,9 @@ $(document).ready(function () {
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									cek_id = myForm.find(`table tbody tr[id_row="${result.value}"]`);
 									let dataRowsAnggaran = result.uraian_id_uraian
-
+									myForm.attr('id_row', result.value)
 									let trElm = '';
-									myForm.form('set value', 'uraian', result.title)
+									myForm.form('set values', { 'uraian': result.title, 'volume': result.volume, 'satuan': result.satuan, 'jumlah': accounting.formatNumber(result.jumlah, 2, ".", ",") })
 									dataRowsAnggaran.forEach((value, key) => {
 										let vol_kontrak = parseFloat(value.vol_kontrak);
 										vol_kontrak = accounting.formatNumber(vol_kontrak, vol_kontrak.countDecimals(), ".", ",");
@@ -5600,55 +5617,26 @@ $(document).ready(function () {
 										let realisasi_vol = parseFloat(value.realisasi_vol);
 										realisasi_vol = accounting.formatNumber(realisasi_vol, realisasi_vol.countDecimals(), ".", ",");
 
-										trElm += `<tr id_row="${value.id_paket}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
+										trElm += `<tr id_row="${value.id_uraian_paket}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
 											<td klm="kd_sub_keg">${value.kd_sub_keg}</td>
 											<td klm="uraian">${value.uraian}</td>
-											<td klm="vol_kontrak">
-												<div contenteditable rms>${vol_kontrak}</div>
-											</td>
-											<td klm="sat_kontrak">
-												<div>${value.sat_kontrak}</div>
-											</td>
+											<td klm="vol_kontrak">${vol_kontrak}</td>
+											<td klm="sat_kontrak">${value.sat_kontrak}</td>
 											<td klm="pagu">${jumlah_pagu}</td>
 											<td klm="jumlah_kontrak">${jumlah_kontrak}</td>
-											<td klm="jumlah_kontrak">${realisasi_vol}</td>
-											<td klm="jumlah_kontrak">${realisasi_jumlah}</td>
-											<td klm="vol">
+											<td klm="realisasi_vol">${realisasi_vol}</td>
+											<td klm="realisasi_jumlah">${realisasi_jumlah}</td>
+											<td klm="vol" class="positive">
 												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' });"></div>
 											</td>
-											<td klm="jumlah">
+											<td klm="jumlah" class="positive">
 												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'renja_p' });"></div>
 											</td>
-											<td><button class="ui blue basic icon mini button" name="modal_second" jns="direct" tbl="remove_uraian"
-													id_row="${result.value}"><i class="edit alternate outline icon"></i></button></td>
+											<td><button class="ui blue basic icon mini button" name="modal_second" jns="direct" tbl="uraian_paket"
+													id_row="${value.id_uraian_paket}"><i class="edit alternate outline icon"></i></button></td>
 										</tr>`;
 									});
 									myForm.find(`table tbody`).html(trElm);
-									// if (cek_id.length <= 0) {
-									// 	//vol
-									// 	let strvol = parseFloat(result.vol);
-									// 	strvol = accounting.formatNumber(strvol, strvol.countDecimals(), ".", ",");
-
-									// 	//jumlah
-									// 	let strText = result.jumlah;
-									// 	strText = parseFloat(strText);
-									// 	strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-									// 	let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
-									// 	myForm.find(`table tbody`).append(trElm);
-									// 	let pagu = 0;
-									// 	let kontrak = 0;
-									// 	$(`[name="form_modal"] table tbody tr`).each(function () {
-									// 		let element = $(this);
-									// 		pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
-									// 		kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
-									// 	});
-									// 	strText = parseFloat(pagu);
-									// 	strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-									// 	cellJumlah.text(strText);
-									// 	strText = parseFloat(kontrak);
-									// 	strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-									// 	cellKontrak.text(strText);
-									// }
 									$("[rms]").mathbiila();
 									break;
 								case 'value1':
@@ -5990,10 +5978,7 @@ $(document).ready(function () {
 			case "fieldButtonAnimated":
 				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui animated fade button" tabindex="0">
 				<div class="visible content">Sign-up for a Pro account</div>
-				<div class="hidden content">
-				  $12.99 a month
-				</div>
-			  </div></div>`;
+				<div class="hidden content">${valueData}</div></div></div>`;
 				break;
 			case "tabel":
 				var head = (headerTable.length > 0) ? '<thead><tr>' : '';
@@ -6128,9 +6113,7 @@ $(document).ready(function () {
 				elemen = `<div class="ui hidden divider"></div>`;
 				break;
 			case "fieldLabel":
-				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><a class="ui fluid label ${kelasData}" href="${href}" ${atribut}>
-					<i class="${icon} icon"></i>${valueData}</a></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><a class="ui fluid label ${kelasData}" href="${href}" ${atribut}><i class="${icon} icon"></i>${valueData}</a></div>`;
 				break;
 			case "fieldSearchGrid"://untuk modal
 				elemen = `<div class="ui aligned grid ${kelas2}">
@@ -6194,8 +6177,7 @@ $(document).ready(function () {
 					'"></i></div>';
 				break;
 			case "fieldText2":
-				elemen =
-					`<div class="${classField}field" ${atributField}><label>` +
+				elemen = `<div class="${classField}field" ${atributField}><label>` +
 					labelData + labelTambahan +
 					"</label><input " +
 					placeholderData +
@@ -6250,7 +6232,7 @@ $(document).ready(function () {
 					</div>
 				</div>`;
 				break;
-			case "fields":
+			case "fields2":
 				let elm = '';
 				if ((typeof atribut) === "object") {
 					atribut.forEach(myFunction);
@@ -6267,6 +6249,9 @@ $(document).ready(function () {
 				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label>
 				${elm}
 				</div>`;
+				break;
+			case "fields":
+				elemen = `<div class="${classField}fields" ${atributField}>${content}</div>`;
 				break;
 			case "fieldDropdownLabel":
 				var elemen11 =
@@ -6657,7 +6642,7 @@ $(document).ready(function () {
 	};
 });
 // onkeypress="return rumus(event);"
-function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }) {
+function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' },evt=this) {
 	let ini = $(this);
 	switch (params.jns) {
 		case 'uraian_sub_keg':
@@ -6684,7 +6669,11 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }) {
 					break;
 			}
 			break;
-
+		case 'realisasi':
+			switch (params.tbl) {
+				case 'vol_realisasi':
+					break;
+			}
 		default:
 			break;
 	}
