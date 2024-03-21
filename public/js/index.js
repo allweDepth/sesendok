@@ -2972,7 +2972,7 @@ $(document).ready(function () {
 								obj.remove();
 								switch (tbl) {
 									case 'remove_uraian':
-										onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });
+										onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);
 										break;
 									default:
 										break;
@@ -3676,7 +3676,7 @@ $(document).ready(function () {
 							switch (tblAttr) {
 								case 'daftar_paket':
 									formIni.find(`table tbody`).html(result.data.users);
-									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });
+									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);
 									break;
 
 								default:
@@ -5573,7 +5573,7 @@ $(document).ready(function () {
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' });"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
+										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
 										MyForm.find(`table tbody`).append(trElm);
 										let pagu = 0;
 										let kontrak = 0;
@@ -5627,10 +5627,10 @@ $(document).ready(function () {
 											<td klm="realisasi_vol">${realisasi_vol}</td>
 											<td klm="realisasi_jumlah">${realisasi_jumlah}</td>
 											<td klm="vol" class="positive">
-												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' });"></div>
+												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
 											</td>
 											<td klm="jumlah" class="positive">
-												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'renja_p' });"></div>
+												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
 											</td>
 											<td><button class="ui blue basic icon mini button" name="modal_second" jns="direct" tbl="uraian_paket"
 													id_row="${value.id_uraian_paket}"><i class="edit alternate outline icon"></i></button></td>
@@ -6642,7 +6642,7 @@ $(document).ready(function () {
 	};
 });
 // onkeypress="return rumus(event);"
-function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' },evt=this) {
+function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' },evt) {
 	let ini = $(this);
 	switch (params.jns) {
 		case 'uraian_sub_keg':
@@ -6672,6 +6672,8 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' },evt
 		case 'realisasi':
 			switch (params.tbl) {
 				case 'vol_realisasi':
+					console.log(evt);
+					
 					break;
 			}
 		default:
