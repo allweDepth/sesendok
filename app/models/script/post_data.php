@@ -143,6 +143,10 @@ class post_data
                         ]);
                     case 'add':
                         switch ($tbl) {
+                            case 'realisasi':
+                                // $id_row adalah id paket
+                                
+                                break;
                             case 'berita':
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [
                                     'sanitize' => 'string',

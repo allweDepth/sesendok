@@ -7,7 +7,6 @@ $(document).ready(function () {
 	var halaman = 1;
 	const kudarkMode = window.matchMedia("(prefers-color-scheme:dark)").matches;
 	console.log(kudarkMode);
-
 	//sidebar toggle
 	$(".ui.sidebar")
 		.sidebar({
@@ -66,8 +65,6 @@ $(document).ready(function () {
 			darkmodeEnabled = true;
 		}
 	});
-
-
 	//============================
 	//=========CARI DATA======
 	//============================
@@ -315,7 +312,6 @@ $(document).ready(function () {
 		$(`div[data-tab=${tab}]`).attr("tbl", tbl);
 		let data = {};
 		console.log(tab);
-
 		switch (tab) {
 			case "tab_kontrak":
 				$('div[name="ketref"]').html(arrayDasboard[tbl][3]);
@@ -419,7 +415,6 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 			case "tab_input_real":
 			case "atur":
-
 			case "users":
 				jalankanAjax = true;
 				break;
@@ -488,7 +483,6 @@ $(document).ready(function () {
 					case "renja":
 					case "renja_p":
 						let elmk = divTab.find(`.secondary.menu [tbl="${tbl}"]`);
-
 						if (tbl !== 'sub_keg_renja' && tbl !== 'sub_keg_dpa' && data['id_sub_keg'] > 0) {
 							divTab.find('table.sub_keg').removeAttr('hidden')
 							// tambhalan atribut id sub kegiatan di button jns
@@ -530,7 +524,6 @@ $(document).ready(function () {
 						loaderHide();
 						switch (jenis) {
 							case "get_tbl":
-
 								const elmTable = divTab.find("table.insert");
 								const elmtbody = elmTable.find(`tbody`);
 								const elmtfoot = elmTable.find(`tfoot`);
@@ -538,7 +531,6 @@ $(document).ready(function () {
 								elmtbody.html(result.data.tbody);
 								elmtfoot.html(result.data.tfoot);
 								if (result?.data?.thead) {
-
 									elmthead.html(result.data.thead);
 								}
 								if ($(`a[name="change_themes"]`).attr("theme") === 'dark') {
@@ -645,7 +637,6 @@ $(document).ready(function () {
 										// console.log(namaku);
 										if (imgeProfil.length > 8) {
 											elm.attr('src', imgeProfil)
-
 										}
 										card.find(`button[for="directupload1"]`).attr('id_row', result.data.users.id)
 										let resultUser = result.data.users;
@@ -656,9 +647,7 @@ $(document).ready(function () {
 												myForm.form('set value', key, value);
 											}
 										}
-
 										break;
-
 									default:
 										break;
 								}
@@ -701,8 +690,6 @@ $(document).ready(function () {
 			);
 		}
 	});
-
-
 	//=====================================================
 	//===========button ambil data/get_data/ flyout =======@audit-ok flyout
 	//=====================================================
@@ -1306,7 +1293,6 @@ $(document).ready(function () {
 									atribut: 'name="kelompok" placeholder="pilih uraian kelompok..."',
 									kelas: "search kelompok ajx selection",
 									dataArray: [
-
 									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
@@ -1315,7 +1301,6 @@ $(document).ready(function () {
 									atribut: `name="${sumber_danaku}" placeholder="pilih sumber dana..."`,
 									kelas: "search clearable multiple sumber_dana ajx selection",
 									dataArray: [
-
 									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
@@ -2249,7 +2234,6 @@ $(document).ready(function () {
 							data.dok = ini.attr("dok");
 							jalankanAjax = true;
 							break;
-
 						default:
 							break;
 					}
@@ -2260,10 +2244,8 @@ $(document).ready(function () {
 						file: data.dok
 					}) + `<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img jns="img" onerror="imgsrc(this)"></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`; //non_data(artinya tidak di dicek form)
 					//dropdown
-
 					switch (tbl) {
 						case 'daftar_paket':
-
 							break;
 						case 'value1':
 							break;
@@ -2278,7 +2260,6 @@ $(document).ready(function () {
 			iconFlyout.attr("class", "").addClass(dataHtmlku.icon);
 			headerFlyout.text(dataHtmlku.header);
 			formIni.html(htmlForm);
-
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
 			calendarDate.runCalendar();
 			let calendarDateTime = new CalendarConstructor(".ui.calendar.datetime");
@@ -2314,7 +2295,6 @@ $(document).ready(function () {
 						case "asb":
 						case "ssh":
 						case "hspk":
-
 							// name="kd_aset"
 							var dropdownKdAset = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_aset"]');
 							dropdownKdAset.returnList({ jenis: "get_row_json", tbl: 'aset' });
@@ -2323,7 +2303,6 @@ $(document).ready(function () {
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 							var dropdownKdAkun = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.kd_akun.ajx.selection')
 							dropdownKdAkun.returnList({ jenis: "get_row_json", tbl: "akun_belanja_val" });
-
 							break;
 						case 'tujuan_sasaran_renstra':
 							// formIni.find(".ui.dropdown.tujuan_sasaran.selection").dropdown();
@@ -2524,7 +2503,6 @@ $(document).ready(function () {
 																				dropKdAkun.returnList({ jenis: "get_row_json", tbl: 'akun_belanja' });
 																				postDataField = false;
 																				break;
-
 																			default:
 																				break;
 																		}
@@ -2591,7 +2569,6 @@ $(document).ready(function () {
 																				}
 																				dropdownSumberDana.valuesDropdown(result.data?.values[sumber]);
 																				console.log(result.data?.values[sumber]);
-
 																				var allField = { klm: 'sumber_dana', id_sub_keg: $('form[name="form_flyout"]').attr('id_sub_keg'), jns_kel: 'sumber_dana' }
 																				dropdownSumberDana.returnList({ jenis: "getJsonRows", tbl: tabel_pakai_temporerSubkeg, set: allField });
 																				break;
@@ -2665,7 +2642,6 @@ $(document).ready(function () {
 																				dropdownSumberDana.returnList({ jenis: "get_row_json", tbl: "sumber_dana" });
 																				postDataField = false;
 																				break;
-
 																			default:
 																				break;
 																		}
@@ -2734,7 +2710,6 @@ $(document).ready(function () {
 															formIni.find('[href]').attr('href', namaFileLink);
 															// formIni.append(`<div class="ui fluid card"><a class="image"><img src="${namaFileLink}"></a><div class="content"><a class="header" href="${namaFileLink}" target="_blank">Dokumentasi</a></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`);
 															break;
-
 														default:
 															formIni.find('[href]').attr('href', namaFileLink);
 															break;
@@ -2742,7 +2717,6 @@ $(document).ready(function () {
 												} else {
 													formIni.find('.ribbon.label').text('Unggah File');
 												}
-
 												break;
 											default:
 												break;
@@ -2760,7 +2734,6 @@ $(document).ready(function () {
 								break;
 						};
 					} else {
-
 					}
 					loaderHide();
 				} else {
@@ -2768,12 +2741,10 @@ $(document).ready(function () {
 				}
 			};
 			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
-
 		}
 		if (attrName === "flyout" && jalankanAjax === false) {
 			// $(".ui.flyout").flyout("toggle");
 		}
-
 	});
 	$('.special.card .dimmable.image').dimmer({
 		// As hover is not working on mobile, you might use click on those devices as fallback
@@ -2850,7 +2821,6 @@ $(document).ready(function () {
 					'unsetujui': { 'icon': 'unlock alternate', 'header': `unlock kembali dokumen ${jns_dok[tbl]} ini`, 'paragraf': `ini akan membuat user dapat mengedit dokumen dan menghapus data yang sudah diposting...!` },
 					'kunci': { 'icon': 'lock alternate', 'header': `unlock dokumen ${jns_dok[tbl]} ini`, 'paragraf': `ini akan membuat user dapat mengedit dokumen...!` },
 					'setujui': { 'icon': 'trash alternate', 'header': `posting dokumen ${jns_dok[tbl]} ini`, 'paragraf': `ini akan membuat akan posting ke dokumen selajutnya...!` }
-
 				};
 				contentModal = [
 					`<i class="${jenis_eksekusi[jenis].icon} icon"></i>anda yakin akan ${jenis} dokumen ${tbl} ini?`,
@@ -2862,7 +2832,6 @@ $(document).ready(function () {
 					let tanggal = $(`form[name="form_pengaturan"] .ui.calendar.year[name="tahun_renstra"]`).calendar("get date");
 					if (tanggal) {
 						console.log(tanggal);
-
 						tanggal = `${tanggal.getFullYear()}`;
 						data.tahun_renstra = tanggal;
 					}
@@ -2977,14 +2946,12 @@ $(document).ready(function () {
 									default:
 										break;
 								};
-
 								if (typeof form !== "undefined") {
 									//console.log(form);
 									removeRulesForm(form);
 									let reinitForm = new FormGlobal(form);
 									reinitForm.run();
 									addRulesForm(form);
-
 								}
 							});
 							break;
@@ -2995,8 +2962,6 @@ $(document).ready(function () {
 			},
 		}).modal("show");
 	});
-
-
 	//==================================
 	// download dokumen ke xls/exel
 	//==================================
@@ -3079,7 +3044,6 @@ $(document).ready(function () {
 		let tbl = ini.attr("tbl");
 		let id_row = ini.attr('id_row');
 		let accept = ini.attr('accept');
-
 		const [node] = ini;
 		const attrs = {}
 		$.each(node.attributes, (index, attribute) => {
@@ -3097,14 +3061,12 @@ $(document).ready(function () {
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
 						$(`#directupload1,form[name="form_upload"]`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
-
 						break;
 					case 'user':
 						//upload langsung file
 						$("#directupload1").val("");
 						id_row = ini.attr('id_row')
 						$(`#directupload1,form[name="form_upload"]`).attr({ 'jns': jenis, 'tbl': tbl, 'id_row': id_row, 'dok': dok, 'accept': accept })
-
 						break;
 					default:
 						break;
@@ -3119,15 +3081,12 @@ $(document).ready(function () {
 		e.preventDefault();
 		let ini = $(this);
 		let id_row = ini.attr('id_row');
-
 		if (id_row) {
 			let myForm = new FormGlobal(`form[name="form_upload"]`);
 			myForm.run();
 			$(`form[name="form_upload"]`).form('submit');
-
 		}
 		// e.stopPropogation();
-
 	});
 	///=================================
 	///==== IMPOR FILE XLSX=============
@@ -3242,7 +3201,6 @@ $(document).ready(function () {
 				//$('#wrapper')[0].innerHTML += htmlstr;
 			};
 		}
-
 		let himp = ini.closest(".action");
 		let nama_file = e.target.files[0].name;
 		himp.find('input[name="dum_file"]').val(nama_file);
@@ -3319,7 +3277,6 @@ $(document).ready(function () {
 			case 'get_field_json':
 			case 'add_field_json':
 				switch (tblAttr) {
-
 					case 'sub_keg_dpa':
 					case 'sub_keg_renja':
 						mdl.addClass("tiny");
@@ -3402,7 +3359,6 @@ $(document).ready(function () {
 							}) +
 							buatElemenHtml("fieldText", {
 								label: "TKDN",
-
 								atribut: 'name="tkdn" placeholder="tkdn..." non_data readonly',
 							}) +
 							buatElemenHtml("fieldTextarea", {
@@ -3500,14 +3456,19 @@ $(document).ready(function () {
 						elementForm = buatElemenHtml("fieldSearchGrid", {
 							label: "Uraian Pengelompokan Belanja",
 							kelas: `sub_keg_dpa category`,
-							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
+							atribut: 'name="nama_paket_search" placeholder="Cari Nama Paket..."',
 						}) + buatElemenHtml("fieldTextarea", {
 							label: "Nama Paket",
 							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
 						}) + buatElemenHtml("fields", {
 							classField: "three",
 							label: "Jadwal Pengadaan",
-							content: buatElemenHtml("fieldText", {
+							content: buatElemenHtml("fieldCalendar", {
+								label: "Tanggal",
+								atribut:
+									'placeholder="Input Tanggal..." name="tanggal" readonly',
+								kelas: "datetime",
+							}) + buatElemenHtml("fieldText", {
 								label: "Volume",
 								atribut: `name="volume" placeholder="Volume" non_data readonly`,
 							}) + buatElemenHtml("fieldText", {
@@ -3523,7 +3484,7 @@ $(document).ready(function () {
 							icon2: `<i class="feather alternate icon"></i>`,
 							label: `Rincian Paket`
 						}) + buatElemenHtml("tabel2", {
-							kelas: `mini celled structured`,
+							kelas: `mini celled structured tblUraian`,
 							headerTable: [[
 								{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
 								{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
@@ -3537,27 +3498,33 @@ $(document).ready(function () {
 							],
 							footerTable: [{
 								lbl: `jumlah`,
-								attr: `colspan="4"`
+								attr: `colspan="2"`
+							}, {
+								lbl: 0,
+								attr: `name="vol_kontrak"`
+							}, {
+								lbl: '',
+								attr: ``
 							}, {
 								lbl: 0,
 								attr: `name="pagu"`
 							}, {
 								lbl: 0,
-								attr: `name="kontrak"`
+								attr: `name="jumlah_kontrak"`
 							}, {
 								lbl: 0,
 								attr: `name="realisasi_vol"`
 							}, {
-								lbl: '',
+								lbl: 0,
 								attr: `name="realisasi_jumlah"`
 							}, {
 								lbl: 0,
 								attr: `name="vol"`
 							}, {
-								lbl: '',
+								lbl: 0,
 								attr: `name="jumlah"`
 							}, {
-								lbl: 0,
+								lbl: '',
 								attr: ``
 							}],
 							bodyTable: []
@@ -3578,8 +3545,15 @@ $(document).ready(function () {
 		elementForm += buatElemenHtml("errorForm");
 		formIni.html(elementForm);
 		document.getElementById("header_mdl").textContent = headerModal;
+		let calendarDate = new CalendarConstructor(".ui.calendar.date");
+		calendarDate.runCalendar();
+		let calendarDateTime = new CalendarConstructor(".ui.calendar.datetime");
+		calendarDateTime.Type("datetime");
+		calendarDateTime.runCalendar();
+		let calendarYear = new CalendarConstructor(".ui.calendar.year");
+		calendarYear.Type("year");
+		calendarYear.runCalendar();
 		addRulesForm(formIni);
-
 		switch (jnsAttr) {
 			case 'edit':
 			case 'add':
@@ -3678,13 +3652,22 @@ $(document).ready(function () {
 									formIni.find(`table tbody`).html(result.data.users);
 									onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' }, this);
 									break;
-
 								default:
 									break;
 							}
 							break;
-
+						case 'edit':
+						case 'add':
+							switch (tblAttr) {
+								case 'realisasi':
+									onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' }, this);
+									break;
+								default:
+									break;
+							}
+							break;
 						default:
+							//onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);
 							break;
 					}
 					if (nameAttr === "modal_show") {
@@ -3714,7 +3697,6 @@ $(document).ready(function () {
 				// 	pushing: true
 				// });
 				// $('.ui.sticky').sticky('refresh');
-
 				break;
 			default:
 				break;
@@ -3766,7 +3748,6 @@ $(document).ready(function () {
 			case 'get_field_json':
 			case 'add_field_json':
 				switch (tblAttr) {
-
 					case 'sub_keg_dpa':
 					case 'sub_keg_renja':
 						mdl.addClass("tiny");
@@ -3849,7 +3830,6 @@ $(document).ready(function () {
 							}) +
 							buatElemenHtml("fieldText", {
 								label: "TKDN",
-
 								atribut: 'name="tkdn" placeholder="tkdn..." non_data readonly',
 							}) +
 							buatElemenHtml("fieldTextarea", {
@@ -4009,7 +3989,6 @@ $(document).ready(function () {
 		formIni.html(elementForm);
 		document.getElementById("header_mdl").textContent = headerModal;
 		addRulesForm(formIni);
-
 		switch (jnsAttr) {
 			case 'edit':
 			case 'add':
@@ -4063,14 +4042,12 @@ $(document).ready(function () {
 				// 	pushing: true
 				// });
 				// $('.ui.sticky').sticky('refresh');
-
 				break;
 			default:
 				break;
 		}
 		$("[rms]").mathbiila();
 	});
-
 	;
 	//===================================
 	//=========== class dropdown ========
@@ -4534,10 +4511,8 @@ $(document).ready(function () {
 																value: 'payung',
 																name: 'Kontrak Payung'
 															}
-
 														];
 														break;
-
 													default:
 														break;
 												}
@@ -4849,7 +4824,6 @@ $(document).ready(function () {
 					}
 					//tampilkan form data
 					formData.forEach((value, key) => {
-						// console.log(key + " " + value)
 					});
 					switch (jenis) {
 						case "import":
@@ -4955,7 +4929,6 @@ $(document).ready(function () {
 												let sat_kontrak = element.find(`[klm="sat_kontrak"] div`).text();
 												sumKontrak += kontrak;
 												dataUraian[`AL${sx}`] = { id: idUraian, val_kontrak: kontrak, dok_anggaran: dok_anggaran, vol_kontrak: vol_kontrak, sat_kontrak: sat_kontrak };
-
 											});
 											kd_akunsub_keg.toString();
 											if (sx > 1) {
@@ -4981,11 +4954,60 @@ $(document).ready(function () {
 										default:
 											break;
 									};
-
 									break;
 								case "add":
 								case "edit":
-									jalankanAjax = true;
+									switch (tbl) {
+										case 'realisasi':
+											let strText = '';
+											let myRows = [];
+											let $headers = ['kd_sub_keg', 'uraian', 'vol_kontrak', 'sat_kontrak', 'pagu', 'jumlah_kontrak', 'realisasi_vol', 'realisasi_jumlah', 'vol', 'jumlah', 'button'];
+											let $rows = ini.find("tbody tr").each(function (index, value) {
+												let cells = $(this).find("td");
+
+												myRows[index] = {};
+												console.log(value);
+
+												let id_row_uraian_paket = $(value).attr('id_row');
+												myRows[index]['id_row_uraian_paket'] = parseInt(id_row_uraian_paket);
+												cells.each(function (cellIndex) {
+													switch ($headers[cellIndex]) {
+														case 'vol_kontrak':
+														case 'pagu':
+														case 'jumlah_kontrak':
+														case 'realisasi_vol':
+														case 'realisasi_jumlah':
+															strText = $(this).html();
+															strText = accounting.unformat(strText, ",");
+															myRows[index][$headers[cellIndex]] = strText;
+															break;
+														case 'vol':
+														case 'jumlah'://@audit now
+															strText = $(this).find('div').html();
+															strText = Number(accounting.unformat(strText, ","));
+															myRows[index][$headers[cellIndex]] = strText;
+															break;
+														case 'button':
+															// myRows[index][$headers[cellIndex]] = '';
+															break;
+														default:
+															myRows[index][$headers[cellIndex]] = $(this).html();
+															break;
+													}
+
+												});
+											});
+											var myObj = {};
+											myObj.myrows = myRows;
+											formData.append("realisasi", JSON.stringify(myObj));
+											jalankanAjax = true;
+											break;
+										case 'value1':
+											break;
+										default:
+											break;
+									};
+
 									break;
 								case 'add_field_json':
 									jalankanAjax = true;
@@ -5013,7 +5035,6 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
-
 								case "daftar_paket":
 									switch (jenis) {
 										case "upload":
@@ -5124,7 +5145,6 @@ $(document).ready(function () {
 							formData.set("ket", $('textarea[name="ket"]').val());
 							jalankanAjax = true;
 							break;
-
 						// =================
 						// UNTUK UPLOAD DIRECT FILE====
 						// =================
@@ -5142,7 +5162,6 @@ $(document).ready(function () {
 						default:
 							break;
 					}
-
 					if (cryptos) {
 						let keyEncryption = halamanDefault;
 						let encryption = new Encryption();
@@ -5217,13 +5236,11 @@ $(document).ready(function () {
 										break;
 									case "monev[informasi]":
 										break;
-
 									// ==================
 									// =UNTUK FORM MODAL=
 									// ==================
 									case "form_modal":
 										switch (jenis) {
-
 											case "y":
 												break;
 											case "z":
@@ -5351,7 +5368,6 @@ $(document).ready(function () {
 					} else {
 						loaderHide();
 					}
-
 					switch (nama_form) {
 						case "form_modal":
 							MyForm.form('reset')
@@ -5365,7 +5381,6 @@ $(document).ready(function () {
 									}
 									break;
 							};
-
 							// $(".ui.modal.mdl_general").modal("hide");
 							break;
 						case "form_flyout":
@@ -5421,7 +5436,6 @@ $(document).ready(function () {
 		}
 		removeRulesForm(formku) {
 			let MyForm = this.form;
-
 			var attrName = MyForm.find($("input[name],textarea[name]"));
 			var i = 0;
 			for (i = 0; i < attrName.length; i++) {
@@ -5533,9 +5547,6 @@ $(document).ready(function () {
 				onSelect(result, response) {
 					let jenis = allField.jenis;
 					let tbl = allField.tbl;
-					console.log(jenis);
-					console.log(tbl);
-					console.log(result);
 					switch (jenis) {
 						case 'get_Search_Json':
 							switch (tbl) {
@@ -5568,12 +5579,11 @@ $(document).ready(function () {
 										//vol
 										let strvol = parseFloat(result.vol);
 										strvol = accounting.formatNumber(strvol, strvol.countDecimals(), ".", ",");
-
 										//jumlah
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
+										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms oninput="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
 										MyForm.find(`table tbody`).append(trElm);
 										let pagu = 0;
 										let kontrak = 0;
@@ -5598,25 +5608,20 @@ $(document).ready(function () {
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									cek_id = myForm.find(`table tbody tr[id_row="${result.value}"]`);
 									let dataRowsAnggaran = result.uraian_id_uraian
-									myForm.attr('id_row', result.value)
+									myForm.attr('id_row_paket', result.value)
 									let trElm = '';
 									myForm.form('set values', { 'uraian': result.title, 'volume': result.volume, 'satuan': result.satuan, 'jumlah': accounting.formatNumber(result.jumlah, 2, ".", ",") })
 									dataRowsAnggaran.forEach((value, key) => {
 										let vol_kontrak = parseFloat(value.vol_kontrak);
 										vol_kontrak = accounting.formatNumber(vol_kontrak, vol_kontrak.countDecimals(), ".", ",");
-
 										let jumlah_pagu = parseFloat(value.jumlah_pagu);
 										jumlah_pagu = accounting.formatNumber(jumlah_pagu, jumlah_pagu.countDecimals(), ".", ",");
-
 										let jumlah_kontrak = parseFloat(value.jumlah_kontrak);
 										jumlah_kontrak = accounting.formatNumber(jumlah_kontrak, jumlah_kontrak.countDecimals(), ".", ",");
-
 										let realisasi_jumlah = parseFloat(value.realisasi_jumlah);
 										realisasi_jumlah = accounting.formatNumber(realisasi_jumlah, realisasi_jumlah.countDecimals(), ".", ",");
-
 										let realisasi_vol = parseFloat(value.realisasi_vol);
 										realisasi_vol = accounting.formatNumber(realisasi_vol, realisasi_vol.countDecimals(), ".", ",");
-
 										trElm += `<tr id_row="${value.id_uraian_paket}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
 											<td klm="kd_sub_keg">${value.kd_sub_keg}</td>
 											<td klm="uraian">${value.uraian}</td>
@@ -5627,16 +5632,17 @@ $(document).ready(function () {
 											<td klm="realisasi_vol">${realisasi_vol}</td>
 											<td klm="realisasi_jumlah">${realisasi_jumlah}</td>
 											<td klm="vol" class="positive">
-												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
+												<div contenteditable rms oninput="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
 											</td>
 											<td klm="jumlah" class="positive">
-												<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
+												<div contenteditable rms oninput="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
 											</td>
 											<td><button class="ui blue basic icon mini button" name="modal_second" jns="direct" tbl="uraian_paket"
 													id_row="${value.id_uraian_paket}"><i class="edit alternate outline icon"></i></button></td>
 										</tr>`;
 									});
 									myForm.find(`table tbody`).html(trElm);
+									onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' }, this);
 									$("[rms]").mathbiila();
 									break;
 								case 'value1':
@@ -5647,7 +5653,6 @@ $(document).ready(function () {
 							break;
 						case 'search_field_json':
 							switch (tbl) {
-
 								default:
 									break;
 							}
@@ -5657,7 +5662,6 @@ $(document).ready(function () {
 						default:
 							break;
 					};
-
 				},
 			});
 		}
@@ -5744,14 +5748,8 @@ $(document).ready(function () {
 			})
 			.fail(function (jqXHR, textStatus, err) {
 				loaderHide();
-				//console.log(textStatus);
-				//console.log(jqXHR.responseText.split(','));
-				//console.log(JSON.parse(jqXHR.responseText));
 				try {
 					var resultObject = JSON.parse(jqXHR.responseText, reviver);
-					//console.log(jqXHR.responseText);
-					//console.log(jqXHR.responseText.split('"'));
-					//var resultObject = JSON.parse(jqXHR.responseText);
 					modal_notif(
 						'<i class="huge info circle icon"></i>' + textStatus,
 						jqXHR.responseText.split('"')[1]
@@ -5856,7 +5854,6 @@ $(document).ready(function () {
 	function buatElemenHtml(namaElemen = "", dataElemen = {}) {//@audit-ok create elm
 		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
 		let labelTambahan = "labelTambahan" in dataElemen ? dataElemen.labelTambahan : "";
-
 		let content = "content" in dataElemen ? dataElemen.content : "";
 		let atribut = "atribut" in dataElemen ? dataElemen.atribut : "";
 		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
@@ -6000,7 +5997,6 @@ $(document).ready(function () {
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
 					body += `<th${classRow} ${attrRow}>${lblRow}</th$>`;
-
 				});
 				body += `</tbody>`;
 				//buat foot tabel
@@ -6012,7 +6008,6 @@ $(document).ready(function () {
 					foot += `<td${classRow} ${attrRow}>${lblRow}</td$>`;
 				});
 				foot += (footerTable.length > 0) ? '</tfoot>' : '';
-
 				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
 				break;
 			case "tabel2"://untuk tabel header lebih 1
@@ -6042,7 +6037,6 @@ $(document).ready(function () {
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
 					body += `<th${classRow} ${attrRow}>${lblRow}</th>`;
-
 				});
 				body += `</tbody>`;
 				//buat foot tabel
@@ -6054,7 +6048,6 @@ $(document).ready(function () {
 					foot += `<td${classRow} ${attrRow}>${lblRow}</td>`;
 				});
 				foot += (footerTable.length > 0) ? '</tfoot>' : '';
-
 				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
 				break;
 			case "errorForm":
@@ -6119,7 +6112,7 @@ $(document).ready(function () {
 				elemen = `<div class="ui aligned grid ${kelas2}">
 					<div class="right floated right aligned column">
 						<div class="ui scrolling search ${kelasData} fluid category">
-							<div class="ui icon input"><input class="prompt" type="text" placeholder="Cari..." autocomplete="off" ${atribut}><i class="search icon"></i></div>
+							<div class="ui icon input"><input class="prompt" type="text" autocomplete="off" ${atribut}><i class="search icon"></i></div>
 							<div class="results"></div>
 						</div>
 					</div>
@@ -6433,7 +6426,6 @@ $(document).ready(function () {
 	}
 	function toggleLightMode() {
 		// remove fomantic's inverted from all ui elements
-
 		$("body").find(".ui:not(.hidden)").removeClass("inverted");
 		$("body").find(".ui.modal,.ui.form").removeClass("inverted");
 		$("body").find(".ui.main.menu,.left.vertical.sidebar.menu").addClass("inverted");
@@ -6636,9 +6628,25 @@ $(document).ready(function () {
 		}
 		return str.split("-")[1] || 0;
 	};
+	/*
+	Number.prototype.countDecimals = function () {
+	if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
+	var str = this.toString();
+	var decimalIndex = str.indexOf(".");
+	var decimalPart = decimalIndex !== -1 ? str.slice(decimalIndex + 1) : "";
+	if (decimalPart.length > 0 && str[0] === '-') {
+		return decimalPart.length;
+	} else if (decimalPart.length > 0) {
+		return decimalPart.length;
+	}
+	return 0;
+};
+	*/
 	//touppercase "pascal".toProperCase();
 	String.prototype.toProperCase = function () {
-		return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+		return this.replace(/\w\S*/g, function (txt) {
+			return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+		});
 	};
 });
 // onkeypress="return rumus(event);"
@@ -6647,10 +6655,12 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 	let form = $(evt).closest(`form`);
 	let tr = $(evt).closest(`tbody`).find('tr');
 	const keyPressed = String.fromCharCode(evt.which);
+	const currentFormula = $(evt.target).val(); // Get the current formula string
 	switch (params.jns) {
 		case 'uraian_sub_keg':
 			switch (params.tbl) {
 				case 'renja_p':
+					let strText
 					form = $(`form[name="form_modal"]`);
 					let cellJumlah = form.find(`table tfoot [name="jumlah"]`);
 					let cellKontrak = form.find(`table tfoot [name="kontrak"]`);
@@ -6658,10 +6668,20 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 					let kontrak = 0;
 					$(`[name="form_modal"] table tbody tr`).each(function () {
 						let element = $(this);
-						pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
-						kontrak += Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+						let paguTemp = Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
+
+						let kontrakTemp = Number(accounting.unformat(element.find(`[klm="kontrak"] div`).text(), ","));
+						if (kontrakTemp > paguTemp) {
+							kontrakTemp = paguTemp
+							strText = parseFloat(paguTemp);
+							strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+							// return false;
+							$(evt).text(strText);
+						}
+						pagu += paguTemp;
+						kontrak += kontrakTemp;
 					});
-					let strText = parseFloat(pagu);
+					strText = parseFloat(pagu);
 					strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
 					cellJumlah.text(strText);
 					strText = parseFloat(kontrak);
@@ -6674,10 +6694,7 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 			break;
 		case 'realisasi':
 			switch (params.tbl) {
-				case 'vol_realisasi'://@audit now
-					let strText;
-					console.log(evt);
-					console.log(tr);
+				case 'vol_realisasi':
 					let vol_kontrak = 0;
 					let pagu = 0;
 					let jumlah_kontrak = 0;
@@ -6685,37 +6702,44 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 					let realisasi_jumlah = 0;
 					let vol = 0;
 					let jumlah = 0;
-					let cellvol = form.find(`table tfoot [klm="vol"] div`);
 					$(`[name="form_modal"] table tbody tr`).each(function () {
 						let element = $(this);
 						let vol_kontrakTemp = Number(accounting.unformat(element.find(`[klm="vol_kontrak"]`).text(), ","));
 						vol_kontrak += vol_kontrakTemp;
-						pagu += Number(accounting.unformat(element.find(`[klm="vol_kontrak"]`).text(), ","));
+						pagu += Number(accounting.unformat(element.find(`[klm="pagu"]`).text(), ","));
 						let jumlah_kontrakTemp = Number(accounting.unformat(element.find(`[klm="jumlah_kontrak"]`).text(), ","));
 						jumlah_kontrak += jumlah_kontrakTemp;
-						realisasi_vol += Number(accounting.unformat(element.find(`[klm="realisasi_vol"]`).text(), ","));
-						realisasi_jumlah += Number(accounting.unformat(element.find(`[klm="realisasi_jumlah"]`).text(), ","));
+						let realisasi_volTemp = Number(accounting.unformat(element.find(`[klm="realisasi_vol"]`).text(), ","));
+						realisasi_vol += realisasi_volTemp;
+						let realisasi_jumlahTemp = Number(accounting.unformat(element.find(`[klm="realisasi_jumlah"]`).text(), ","));
+						realisasi_jumlah += realisasi_jumlahTemp;
 						vol_temp = Number(accounting.unformat(element.find(`[klm="vol"] div`).text(), ","));
-						if (vol_temp + realisasi_vol > vol_kontrakTemp) {
-							vol_temp = vol_kontrak - realisasi_vol;
+						if (vol_temp + realisasi_volTemp > vol_kontrakTemp) {
+							vol_temp = vol_kontrakTemp - realisasi_volTemp;
 							let strText = parseFloat(vol_temp);
 							strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-							// $(evt).html(`<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);">${strText}</div>`);
+							$(evt).text(strText);
 						}
 						vol += vol_temp;
 						jumlah_temp = Number(accounting.unformat(element.find(`[klm="jumlah"] div`).text(), ","));
-						if (jumlah_temp + realisasi_jumlah > jumlah_kontrakTemp) {
-							jumlah_temp = jumlah_kontrak - realisasi_jumlah;
+						if (jumlah_temp + realisasi_jumlahTemp > jumlah_kontrakTemp) {
+							jumlah_temp = jumlah_kontrakTemp - realisasi_jumlahTemp;
 							strText = parseFloat(jumlah_temp);
 							strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-							// $(evt).html(`<div contenteditable rms onkeypress="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);">${strText}</div>`);
+							// return false;
+							$(evt).text(strText);
 						}
 						jumlah += jumlah_temp;
 					});
-					
+					let cellIsi = { vol_kontrak: vol_kontrak, pagu: pagu, jumlah_kontrak: jumlah_kontrak, realisasi_vol: realisasi_vol, realisasi_jumlah: realisasi_jumlah, vol: vol, jumlah: jumlah }
+					Object.entries(cellIsi).forEach(entry => {
+						const [key, value] = entry;
+						strText = parseFloat(value);
+						strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
+						form.find(`table tfoot tr td[name="${key}"]`).text(strText);
+					});
 					break;
 			}
-			
 		default:
 			break;
 	}
