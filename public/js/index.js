@@ -3460,6 +3460,8 @@ $(document).ready(function () {
 						}) + buatElemenHtml("fieldTextarea", {
 							label: "Nama Paket",
 							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
+						}) + buatElemenHtml("text", {
+							atribut: 'name="jumlah_realisasi" placeholder="jumlah realisasi" rules="decimal" hidden',
 						}) + buatElemenHtml("fields", {
 							classField: "three",
 							label: "Jadwal Pengadaan",
@@ -5000,6 +5002,8 @@ $(document).ready(function () {
 											});
 											var myObj = {};
 											myObj.myrows = myRows;
+											
+											formData.append("id_row_paket", id_row_paketAttr);
 											formData.append("realisasi", JSON.stringify(myObj));
 											jalankanAjax = true;
 											break;
@@ -6547,7 +6551,7 @@ $(document).ready(function () {
 					let rules=attrRules.split(',,')
 					let rulesku={}
 					rules.forEach((value, key) => {
-						rulesku.type=value
+						rulesku.type=`${value}`
 					});
 					formku.form("add rule", atribut, {
 						rules: [rulesku],
@@ -6747,6 +6751,12 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 						}
 						jumlah += jumlah_temp;
 					});
+					if (jumlah > 0) {
+						form.form('set value','jumlah_realisasi',jumlah);
+					}else{
+						form.form('set value','jumlah_realisasi','hhh');
+					}
+					
 					let cellIsi = { vol_kontrak: vol_kontrak, pagu: pagu, jumlah_kontrak: jumlah_kontrak, realisasi_vol: realisasi_vol, realisasi_jumlah: realisasi_jumlah, vol: vol, jumlah: jumlah }
 					Object.entries(cellIsi).forEach(entry => {
 						const [key, value] = entry;
