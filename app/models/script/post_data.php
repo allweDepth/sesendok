@@ -144,8 +144,45 @@ class post_data
                     case 'add':
                         switch ($tbl) {
                             case 'realisasi':
-                                // $id_row adalah id paket
-                                
+                                $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $jumlah_realisasi = $validate->setRules('jumlah_realisasi', 'jumlah realisasi', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $tanggal = $validate->setRules('tanggal', 'tanggal dokumen SPJ', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $realisasi = $validate->setRules('realisasi', 'realisasi', [
+                                    'json_repair' => true,
+                                    'required' => true
+                                ]);
+                                $realisasi = $validate->setRules('realisasi', 'realisasi', [
+                                    'json_decode' => true
+                                ]);
+                                // realisasi harus di kontrol
+                                $realisasiObject = $realisasi->myrows;
+                                $sum = 0;
+                                foreach ($realisasiObject as $key => $value) {
+                                    $sum +=$value->jumlah;
+                                }
+                                if($jumlah_realisasi !=$sum){
+                                    $catchError = $validate->setRules('kesalahanformdanarraytdkcocok', 'terdapat kesalahan form', [
+                                        'error' => true//;catch/langsung error
+                                    ]);
+                                }
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'required' => true,
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
                                 break;
                             case 'berita':
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [

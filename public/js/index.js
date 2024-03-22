@@ -3465,16 +3465,11 @@ $(document).ready(function () {
 						}) + buatElemenHtml("fields", {
 							classField: "three",
 							label: "Jadwal Pengadaan",
-							content: buatElemenHtml("fieldCalendar", {
-								label: "Tanggal",
-								atribut:
-									'placeholder="Input Tanggal..." name="tanggal" readonly',
-								kelas: "datetime",
-							}) + buatElemenHtml("fieldText", {
+							content: buatElemenHtml("fieldText", {
 								label: "Volume",
 								atribut: `name="volume" placeholder="Volume" non_data readonly`,
 							}) + buatElemenHtml("fieldText", {
-								classField: "three wide",
+								classField: "",
 								label: "Satuan",
 								atribut: `name="satuan" placeholder="Satuan" non_data readonly`,
 							}) + buatElemenHtml("fieldText", {
@@ -3486,7 +3481,21 @@ $(document).ready(function () {
 							aligned: 'left aligned',
 							icon2: `<i class="feather alternate icon"></i>`,
 							label: `Rincian Paket`
-						}) + buatElemenHtml("tabel2", {
+						})+ buatElemenHtml("fields", {
+							classField: "two",
+							label: "Jadwal Pengadaan",
+							content: buatElemenHtml("fieldCalendar", {
+								label: "Tanggal",
+								atribut:
+									'placeholder="Input Tanggal SPJ..." name="tanggal" readonly',
+								kelas: "date",
+							}) + buatElemenHtml("fieldFileInput2", {
+								label: "Pilih File Dokumen",
+								placeholderData: "Pilih File...",
+								accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx",
+								atribut: 'non_data',
+							})
+						})  + buatElemenHtml("tabel2", {
 							kelas: `mini celled structured tblUraian`,
 							headerTable: [[
 								{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
@@ -3531,6 +3540,10 @@ $(document).ready(function () {
 								attr: ``
 							}],
 							bodyTable: []
+						}) +
+						buatElemenHtml("fieldTextarea", {
+							label: "Keterangan",
+							atribut: 'name="keterangan" placeholder="keterangan spj" rows="2"',
 						});
 						break;
 				}
@@ -4965,13 +4978,17 @@ $(document).ready(function () {
 											let strText = '';
 											let myRows = [];
 											let $headers = ['kd_sub_keg', 'uraian', 'vol_kontrak', 'sat_kontrak', 'pagu', 'jumlah_kontrak', 'realisasi_vol', 'realisasi_jumlah', 'vol', 'jumlah', 'button'];
-											let $rows = ini.find("tbody tr").each(function (index, value) {
+											let $rows = ini.find(".tblUraian tbody tr").each(function (index, value) {
 												let cells = $(this).find("td");
 
 												myRows[index] = {};
 												console.log(value);
 
-												let id_row_uraian_paket = $(value).attr('id_row');
+												let id_row_uraian_paket = $(value).attr('id_row_uraian_paket');
+												if (jenis ==='edit') {
+													let id_row = $(value).attr('id_row');
+													myRows[index]['id_row'] = parseInt(id_row);
+												}
 												myRows[index]['id_row_uraian_paket'] = parseInt(id_row_uraian_paket);
 												cells.each(function (cellIndex) {
 													switch ($headers[cellIndex]) {
@@ -5627,7 +5644,7 @@ $(document).ready(function () {
 										realisasi_jumlah = accounting.formatNumber(realisasi_jumlah, realisasi_jumlah.countDecimals(), ".", ",");
 										let realisasi_vol = parseFloat(value.realisasi_vol);
 										realisasi_vol = accounting.formatNumber(realisasi_vol, realisasi_vol.countDecimals(), ".", ",");
-										trElm += `<tr id_row="${value.id_uraian_paket}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
+										trElm += `<tr id_row_uraian_paket="${value.id_uraian_paket}" pagu="${value.jumlah_pagu}" dok_anggaran="${value.dok}">
 											<td klm="kd_sub_keg">${value.kd_sub_keg}</td>
 											<td klm="uraian">${value.uraian}</td>
 											<td klm="vol_kontrak">${vol_kontrak}</td>
