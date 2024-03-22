@@ -146,11 +146,37 @@ class Query
         }
         return $dataJson;
     }
-    public function key_encrypt(){
+    public function insertRow($set)
+    {
+        require_once 'class/DB.php';
+        $DB = DB::getInstance();
+        $tabel_pakai =  $this->_tabel_pakai;
+        $DB->insert($tabel_pakai, $set);
+        if ($DB->lastInsertId()) {
+            $code = 3;
+        } else {
+            $code = 47;
+        }
+        return ['add_row' => $DB->lastInsertId(), 'code' => $code];
+    }
+    public function updateRow($kondisi, $set)
+    {
+        require_once 'class/DB.php';
+        $DB = DB::getInstance();
+        $tabel_pakai =  $this->_tabel_pakai;
+        $DB->update_array($tabel_pakai, $set, $kondisi);
+        if ($DB->count()) {
+            $code = 3;
+        } else {
+            $code = 47;
+        }
+        return ['update' => $DB->count(), 'code' => $code];
+    }
+    public function key_encrypt()
+    {
         $msx = rand(32, 64);
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()<>?{}#$&=-*^@';
         $keyEnc = substr(str_shuffle($permitted_chars), 0, $msx);
         return $keyEnc;
     }
-    
 }

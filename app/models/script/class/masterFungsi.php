@@ -1047,6 +1047,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'uraian_paket':
+                $tabel_pakai = 'daftar_uraian_paket';
+                $jumlah_kolom = 9;
+                break;
             case 'realisasi':
                 $tabel_pakai = 'daftar_realisasi_neo';
                 $jumlah_kolom = 9;

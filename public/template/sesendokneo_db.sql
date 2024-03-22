@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 22 Mar 2024 pada 16.21
+-- Waktu pembuatan: 22 Mar 2024 pada 22.08
 -- Versi server: 11.3.2-MariaDB
 -- Versi PHP: 8.3.4
 
@@ -218,6 +218,8 @@ CREATE TABLE `daftar_realisasi_neo` (
   `ket_paket` text NOT NULL,
   `id_uraian_paket` int(11) NOT NULL,
   `ket_uraian_paket` varchar(400) NOT NULL,
+  `id_dok_anggaran` int(11) NOT NULL,
+  `dok` varchar(50) NOT NULL,
   `vol` decimal(36,12) NOT NULL,
   `jumlah` decimal(36,12) NOT NULL,
   `tanggal` date NOT NULL,
@@ -227,7 +229,7 @@ CREATE TABLE `daftar_realisasi_neo` (
   `tgl_insert` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
   `keterangan` varchar(400) NOT NULL,
-  `disable` tinyint(1) NOT NULL
+  `disable` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
