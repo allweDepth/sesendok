@@ -1048,7 +1048,7 @@ class MasterFungsi
         $jumlah_kolom = 11;
         switch ($tbl) {
             case 'realisasi':
-                $tabel_pakai = 'realisasi_neo';
+                $tabel_pakai = 'daftar_realisasi_neo';
                 $jumlah_kolom = 9;
                 break;
             case 'berita':
