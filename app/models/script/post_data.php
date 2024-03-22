@@ -1768,8 +1768,6 @@ class post_data
                                             $row_sub->vol_kontrak = $value->vol_kontrak;
                                             $row_sub->sat_kontrak = $value->sat_kontrak;
 
-
-
                                             $id_dok_anggaran = $value->id;
                                             $kumpulanRowSub[] = $row_sub;
 
@@ -1790,6 +1788,7 @@ class post_data
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     } else if ($jenis == 'edit') {
+                                        $kodePosting = 'cek_insert';
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['id', '=', $id_row, 'AND']];
                                     }
                                     if ($jumlah > $pagu) {
@@ -2589,21 +2588,15 @@ class post_data
                                 case 'edit':
                                     switch ($tbl) {
                                         case 'daftar_paket':
-                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
-                                            //ambil data ruas dengan id paket
-                                            $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
-                                            $item_data_decode = json_decode($row_sub2, true);
-                                            if ($row_sub2 !== false) {
-                                                // foreach ($row_sub2 as $key => $value) {
-                                                // }
-                                            }
+                                            
                                     }
                                 case 'add':
                                     switch ($tbl) {
                                         case 'daftar_paket': //@audit sekarang pemaketan
-                                            // $id_row_paket = $ListRow->id;
-                                            //data paket jika ada
-                                            //compare dengan $kumpulanRowSub[] 
+                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
+                                            //ambil data ruas dengan id paket
+                                            $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
+                                            $item_data_decode = $row_sub2;
                                             foreach ($kumpulanRowSub as $key => $value) {
                                                 $id_dok_anggaran = $value->id;
                                                 $dok = $value->dok;
@@ -2617,12 +2610,15 @@ class post_data
                                                 $sat_kontrak = $value->sat_kontrak;
                                                 $kondisi_cari = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $dok, 'AND']];
                                                 $row_cari = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi_cari);
-                                                // var_dump($row_cari);
-                                                //set value 
-                                                //cek data lama jika ada
                                                 //@audit error tambah paket
-                                                $id_dok_anggaran = $row_cari->id_dok_anggaran;
-                                                unset($item_data_decode[$id_dok_anggaran]);
+                                                if ($item_data_decode !== false) {
+                                                    // Loop through the array
+                                                    foreach ($item_data_decode as $key2 => $item) {
+                                                        if ($item->id_dok_anggaran == $id_dok_anggaran && $item->dok == $dok) {
+                                                            unset($item_data_decode[$key2]);
+                                                        }
+                                                    }
+                                                }
                                                 $set_insert = [
                                                     'id_paket' => $id_row_paket, // $id_row,
                                                     'id_dok_anggaran' => $id_dok_anggaran,
@@ -2647,10 +2643,11 @@ class post_data
                                                 } else {
                                                     $resul = $DB->update_array('daftar_uraian_paket', $set_insert, $kondisi_cari);
                                                 }
-                                                //cek $row_sub2/$item_data_decode jika idnya masih ada maka hapus
-                                                foreach ($item_data_decode as $key => $value) {
-                                                    $idRow = $value['id'];
-                                                    $kondisi = [['id','=',$idRow],['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                            }
+                                            if ($item_data_decode !== false) {
+                                                foreach ($item_data_decode as $key => $value2) {
+                                                    $idRow = $value2->id;
+                                                    $kondisi = [['id', '=', $idRow], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                     $DB->delete_array('daftar_uraian_paket', $kondisi);
                                                     if ($DB->count() > 0) {
                                                     }
