@@ -1498,7 +1498,6 @@ class get_data
                                                 if ($kode_drop) {
                                                     $data['values']['kd_akun'] = [];
                                                     $formValueExplode = explode(',', $kode_drop);
-
                                                     foreach ($formValueExplode as $key_row => $row) {
                                                         $kondisi_result = [['kode', '=', trim($row)]];
                                                         $row_sub = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);

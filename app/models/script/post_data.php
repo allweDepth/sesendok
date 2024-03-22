@@ -171,11 +171,11 @@ class post_data
                                 $realisasiObject = $realisasi->myrows;
                                 $sum = 0;
                                 foreach ($realisasiObject as $key => $value) {
-                                    $sum +=$value->jumlah;
+                                    $sum += $value->jumlah;
                                 }
-                                if($jumlah_realisasi !=$sum){
+                                if ($jumlah_realisasi != $sum) {
                                     $catchError = $validate->setRules('kesalahanformdanarraytdkcocok', 'terdapat kesalahan form', [
-                                        'error' => true//;catch/langsung error
+                                        'error' => true //;catch/langsung error
                                     ]);
                                 }
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
@@ -2592,6 +2592,7 @@ class post_data
                                             $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
                                             //ambil data ruas dengan id paket
                                             $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
+                                            $item_data_decode = json_decode($row_sub2, true);
                                             if ($row_sub2 !== false) {
                                                 // foreach ($row_sub2 as $key => $value) {
                                                 // }
@@ -2614,10 +2615,14 @@ class post_data
                                                 $jumlah_kontrak = $value->nilai_kont;
                                                 $vol_kontrak = $value->vol_kontrak;
                                                 $sat_kontrak = $value->sat_kontrak;
-                                                $kondisi_cari = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND']];
+                                                $kondisi_cari = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $dok, 'AND']];
                                                 $row_cari = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi_cari);
                                                 // var_dump($row_cari);
                                                 //set value 
+                                                //cek data lama jika ada
+                                                //@audit error tambah paket
+                                                $id_dok_anggaran = $row_cari->id_dok_anggaran;
+                                                unset($item_data_decode[$id_dok_anggaran]);
                                                 $set_insert = [
                                                     'id_paket' => $id_row_paket, // $id_row,
                                                     'id_dok_anggaran' => $id_dok_anggaran,
@@ -2641,6 +2646,14 @@ class post_data
                                                     $resul = $DB->insert('daftar_uraian_paket', $set_insert);
                                                 } else {
                                                     $resul = $DB->update_array('daftar_uraian_paket', $set_insert, $kondisi_cari);
+                                                }
+                                                //cek $row_sub2/$item_data_decode jika idnya masih ada maka hapus
+                                                foreach ($item_data_decode as $key => $value) {
+                                                    $idRow = $value['id'];
+                                                    $kondisi = [['id','=',$idRow],['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                    $DB->delete_array('daftar_uraian_paket', $kondisi);
+                                                    if ($DB->count() > 0) {
+                                                    }
                                                 }
                                             }
                                             break;
