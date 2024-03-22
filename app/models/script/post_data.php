@@ -158,6 +158,11 @@ class post_data
                                     'numeric' => true,
                                     'min_char' => 1
                                 ]);
+                                $uraian_paket= $validate->setRules('uraian', 'tanggal dokumen SPJ', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1
+                                ]);
                                 $tanggal = $validate->setRules('tanggal', 'tanggal dokumen SPJ', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1685,12 +1690,12 @@ class post_data
                                     // // realisasi harus di kontrol
                                     // $realisasiObject = $realisasi->myrows;
 
-
+                                    $disable =0;
                                     //ambil row paket
                                     $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
-                                    $kondisi = [['id', '=', $id_row_uraian_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    $kondisi = [['id', '=', $id_row_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                     $row_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-
+                                    $uraian_paket = $row_paket->uraian;
                                     foreach ($realisasiObject as $key => $value) {
                                         $jumlah = $value->jumlah;
                                         $vol = $value->vol;
@@ -1706,8 +1711,9 @@ class post_data
                                             $dok = $row_uraian_paket->dok;
                                             $jumlah_kontrak = $row_uraian_paket->jumlah_kontrak;
                                             $vol_kontrak = $row_uraian_paket->vol_kontrak;
+                                            
                                             //ambil tabel di dok anggaran
-                                            switch ($value->dok_anggaran) {
+                                            switch ($dok) {
                                                 case 'dpa':
                                                 case 'renja':
                                                     $sumberDan = 'sumber_dana';
@@ -1726,7 +1732,7 @@ class post_data
                                             $kondisi = [['id', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
                                             $row_dok_anggaran = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
                                             $batasAnggaran = $row_dok_anggaran->{$klmjumlah};
-
+                                            $ket_uraian_paket= $row_dok_anggaran->uraian;
                                             if ($jenis == 'edit') {
                                                 $id_row_realisasi = $value->id_row_realisasi;
                                                 $kondisi = [['id', '=', $id_row_realisasi], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
@@ -1736,7 +1742,7 @@ class post_data
                                             }
                                             $row = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
                                             if ($row !== false) {
-                                                $ket_paket = $uraian;
+                                                $ket_paket = $uraian_paket;
                                                 $id_paket = $id_row_paket;
                                                 //cek jumlah keseluruhan harus lebih kecil dari kontrak dan dokumen anggaran
                                                 $DB->select("SUM(jumlah) AS jumlah,SUM(vol) AS vol");
@@ -1791,25 +1797,25 @@ class post_data
                                                 $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
                                                 $kondisi = [['id_paket', '=', $id_paket], ['id_uraian_paket', '=', $id_row_uraian_paket, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['tanggal', '=', $tanggal, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                                 $row_inputRealisasi = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+
+                                                require_once 'query.php';
+                                                $queryInstance = Query::createInstance(['jns' => $jenis, 'tbl' => $tbl]);
+                                                // $Query = new Query(['jns' => $jenis, 'tbl' => $tbl]);
                                                 if ($row_inputRealisasi === false) {
                                                     // inser baru
-                                                    $set['tgl_insert']=date('Y-m-d H:i:s');
-                                                    $set['username']=$_SESSION["user"]["username"];
+                                                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                                    $set['username'] = $_SESSION["user"]["username"];
+
+                                                    $insert = $queryInstance->insertRow($set);
+                                                    $data['add_row'][] = $insert['add_row']; 
                                                 } else {
-                                                    # code...
-                                                }
-                                                
-                                                switch ($jenis) {
-                                                    case 'add':
-                                                        # code...
-                                                        break;
-                                                    case 'edit':
-                                                        # code...
-                                                        break;
+                                                    $update = $queryInstance->updateRow($kondisi,$set);
+                                                    $data['update'][] = $update['update']; 
                                                 }
                                             }
                                         }
                                     }
+                                    $kodePosting = '';
                                     break;
                                 case 'berita':
                                     $kondisi = [['judul', '=', $judul], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tanggal', '=', $tanggal, 'AND']];

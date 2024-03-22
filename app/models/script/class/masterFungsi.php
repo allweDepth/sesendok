@@ -2499,6 +2499,7 @@ class MasterFungsi
             'pdf' => 'application/pdf'
         );
         $path1 = 'upload';
+        $path2 = 'users';
         switch ($tbl) {
             case 'profil':
                 $path1 = 'img';

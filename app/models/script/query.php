@@ -40,6 +40,7 @@ class Query
     {
         return new self($data);
     }
+    
     public function encrypt($formValue)
     {
         if (isset($_SESSION["user"]["key_encrypt"])) {
