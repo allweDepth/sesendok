@@ -40,6 +40,7 @@ class get_data
     }
     public function get_data()
     {
+        // var_dump($_POST);
         require 'init.php';
         $user = new User();
         $user->cekUserSession();
