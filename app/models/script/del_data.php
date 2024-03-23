@@ -167,7 +167,10 @@ class del_data
                                 $resul = $DB->runQuery2("TRUNCATE TABLE $tabel_pakai");
                                 switch ($tbl) {
                                     case 'daftar_kontrak':
-                                        $DB->runQuery2("TRUNCATE TABLE daftar_uraian_paket");
+                                        $tabel_pakai = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
+                                        $DB->runQuery2("TRUNCATE TABLE $tabel_pakai");
+                                        $tabel_pakai = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                                        $DB->runQuery2("TRUNCATE TABLE $tabel_pakai");
                                         break;
                                     default:
                                         break;

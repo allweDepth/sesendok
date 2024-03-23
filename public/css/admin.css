@@ -32,21 +32,28 @@
     background-color: var(--whiteBG);
 }
 
-.ui.tab.segment.active.inverted, .pusher.inverted {
+.ui.tab.segment.active.inverted,
+.pusher.inverted {
     background-color: var(--google-grey-900);
 }
+
 .form.inverted input,
-.form.inverted textarea {
-    border: 1px solid rgba(255,255,255,.15) !important;
+.form.inverted textarea,
+.ui.input.inverted:not(.transparent) input,
+.ui.input.inverted:not(.transparent) textarea {
+    border: 1px solid rgba(255, 255, 255, .15) !important;
     background: #1b1c1d !important;
-    color: rgba(255,255,255,.8) !important;
+    color: rgba(255, 255, 255, .8) !important;
 }
+
 .form.inverted input:focus,
-.form.inverted textarea:focus {
-    border: 1px solid rgba(255,255,255,.15) !important;
+.form.inverted textarea:focus,
+.ui.input.inverted:not(.transparent) input:focus,
+.ui.input.inverted:not(.transparent) textarea:focus {
+    border: 1px solid rgba(255, 255, 255, .15) !important;
     background: var(--darkBG) !important;
     /* background: #3d3e3f !important; */
-    color: rgba(255,255,255,.8) !important;
+    color: rgba(255, 255, 255, .8) !important;
 }
 
 body.inverted {

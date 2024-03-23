@@ -1351,7 +1351,7 @@ class get_data
                                             $desimal2 = ($Fungsi->countDecimals($value->vol_kontrak) <= 2) ? 2 : $Fungsi->countDecimals($value->vol_kontrak);
                                             $vol = number_format((float)$value->vol_kontrak, $desimal2, ',', '.');
 
-                                            $elm .= '<tr id_row="' . $row_sub->id . '" pagu="' . $row_sub->$klm_jumlah . '" dok_anggaran="' . $value->dok_anggaran . '"><td klm="kd_sub_keg">' . $row_sub->kd_sub_keg . '</td><td klm="uraian">' . $row_sub->uraian . '</td><td klm="vol_kontrak"><div contenteditable rms>' . $vol . '</div></td><td klm="sat_kontrak"><div contenteditable>' . $value->sat_kontrak . '</div></td><td klm="pagu">' . $paguku . '</td><td klm="kontrak"><div contenteditable rms onkeypress="onkeypressGlobal({ jns: "uraian_sub_keg", tbl:"renja_p" });">' . $kontrak . '</div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="' . $value->id . '"><i class="trash alternate outline icon"></i></button></td></tr>';
+                                            $elm .= '<tr id_row="' . $row_sub->id . '" pagu="' . $row_sub->$klm_jumlah . '" dok_anggaran="' . $value->dok_anggaran . '"><td klm="kd_sub_keg">' . $row_sub->kd_sub_keg . '</td><td klm="uraian">' . $row_sub->uraian . '</td><td klm="vol_kontrak"><div contenteditable rms>' . $vol . '</div></td><td klm="sat_kontrak"><div contenteditable>' . $value->sat_kontrak . '</div></td><td klm="pagu">' . $paguku . '</td><td klm="kontrak"><div contenteditable rms oninput="onkeypressGlobal({ jns: \'uraian_sub_keg\', tbl:\'renja_p\'},this);">' . $kontrak . '</div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="' . $value->id . '"><i class="trash alternate outline icon"></i></button></td></tr>';
                                         }
                                     }
                                     $data['users'] = $elm;
@@ -1973,7 +1973,7 @@ class get_data
                                                 case 'ssh':
                                                 case 'sbu':
                                                     $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
+                                                    $dataJson['results'][] = ['category'=>$row->kd_aset,'name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
                                                     break;
                                                 case 'value1':
                                                     break;
@@ -2031,7 +2031,7 @@ class get_data
                                                     }
 
                                                     $deskripsi = $row->nama_rekanan . ' (Pagu' . number_format((float)$row->pagu, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'volume' => $row->volume, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg];
+                                                    $dataJson['results'][] = ['category'=>$row->metode_pengadaan,'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'volume' => $row->volume, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg];
                                                     break;
                                                 case 'hspk':
                                                 case 'asb':

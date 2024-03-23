@@ -3335,7 +3335,7 @@ $(document).ready(function () {
 						}) + buatElemenHtml("fieldSearchGrid", {
 							kelas2: '',
 							kelas: `${kelasSearch}`,
-							atribut: 'name="uraian"',
+							atribut: 'name="uraian" non_data',
 						}) +
 							buatElemenHtml("fieldText", {
 								label: "Kode Komponen",
@@ -3395,15 +3395,17 @@ $(document).ready(function () {
 						mdl.removeClass("tiny");
 						elementForm = buatElemenHtml("fieldSearchGrid", {
 							kelas: `uraian`,
-							atribut: 'name="uraian" placeholder="cari..."',
+							atribut: 'name="uraian" placeholder="cari..." non_data',
 						}) +
 							buatElemenHtml("fieldDropdown", {
 								label: "Sub Kegiatan",
-								atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
+								atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..." non_data',
 								kelas: "search clearable kd_sub_keg ajx selection",
 								dataArray: [
 								],
-							}) +
+							}) + buatElemenHtml("text", {
+								atribut: 'name="jumlah" placeholder="jumlah kontrak" rules="decimal" hidden',
+							})  +
 							buatElemenHtml("divider", {
 								header: "h5",
 								aligned: 'left aligned',
@@ -3457,7 +3459,7 @@ $(document).ready(function () {
 						if (jnsAttr === 'add') {
 							elementForm = buatElemenHtml("fieldSearchGrid", {
 								label: "Uraian Pengelompokan Belanja",
-								kelas: `sub_keg_dpa category`,
+								kelas: `sub_keg_dpa`,
 								atribut: 'name="nama_paket_search" placeholder="Cari Nama Paket..."',
 							})
 						}
@@ -5334,6 +5336,7 @@ $(document).ready(function () {
 			};
 			let url = this.url;
 			MyElmSearch.search({
+				// type: 'category',
 				cache: false,
 				minCharacters: allField.minCharacters,
 				maxResults: countRows(),
@@ -5356,12 +5359,10 @@ $(document).ready(function () {
 				ignoreDiacritics: true,
 				fullTextSearch: 'exact',
 				fields: {
+					category: 'category',
 					results: [0].results,
 					title: "title",
-					description: "description",
-					kode: "kode",
-					categories: 'category',
-					category: 'category',
+					description: "description"
 				},
 				onSelect(result, response) {
 					let jenis = allField.jenis;
@@ -5943,7 +5944,7 @@ $(document).ready(function () {
 				break;
 			case "fieldSearch":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid category scrolling search ${kelasData}"><div class="ui icon fluid input"><input class="prompt" type="text" ${atribut} placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid scrolling search ${kelasData}"><div class="ui icon fluid input"><input class="prompt" type="text" ${atribut} placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>`;
 				break;
 			case "calendar":
 				elemen = `<div class="${classField}field" ${atributField}><div class="ui calendar ${kelasData}"><div class="ui fluid input left icon"><i class="calendar icon"></i><input type="text" ${atribut}></div></div></div>`;
@@ -6527,6 +6528,11 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 					strText = parseFloat(kontrak);
 					strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
 					cellKontrak.text(strText);
+					if (kontrak > 0) {
+						form.form('set value', 'jumlah', kontrak);
+					} else {
+						form.form('set value', 'jumlah', 'hhh');
+					}
 					break;
 				default:
 					break;

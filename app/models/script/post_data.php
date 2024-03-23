@@ -1945,7 +1945,7 @@ class post_data
                                         $kodePosting = 'cek_insert';
                                     } else if ($jenis == 'edit') {
                                         $kodePosting = 'cek_insert';
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND'], ['id', '=', $id_row, 'AND']];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     }
                                     if ($jumlah > $pagu) {
                                         # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
@@ -2742,10 +2742,14 @@ class post_data
                                 case 'add':
                                     switch ($tbl) {
                                         case 'daftar_paket': //@audit sekarang pemaketan
-                                            $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
-                                            //ambil data ruas dengan id paket
-                                            $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
-                                            $item_data_decode = $row_sub2;
+                                            $item_data_decode =false;
+                                            if ($jenis == 'edit') {
+                                                $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
+                                                //ambil data ruas dengan id paket
+                                                $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
+                                                $item_data_decode = $row_sub2;
+                                            }
+
                                             foreach ($kumpulanRowSub as $key => $value) {
                                                 $id_dok_anggaran = $value->id;
                                                 $dok = $value->dok;

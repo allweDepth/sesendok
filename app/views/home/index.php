@@ -496,8 +496,8 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ============== -->
             <!-- tab_kontrak -->
             <!-- ============== -->
-            <div class="ui tab basic segment container" data-tab="tab_kontrak" tbl="daftar_paket">
-                <div class="ui container" style="position: fixed !important;">
+            <div class="ui tab basic segment" data-tab="tab_kontrak" tbl="daftar_paket">
+                <div class="ui container">
                     <div class="ui info message" name="ketref">Nabiilainayah</div>
                     <div class="ui hidden divider"></div>
                     <div class="ui right floated basic icon buttons">
@@ -508,7 +508,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                     <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                     <div class="ui hidden divider"></div>
                     <div class="ui hidden divider"></div>
-                    <table class="ui very basic table insert">
+                    <table class="ui celled striped table insert">
                         <thead>
                             <tr>
                                 <th>Uraian Komponen</th>
@@ -577,7 +577,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                         </div>
                         <div class="ui hidden divider"></div>
                         <div class="ui long scrolling fluid container">
-                            <table class="ui head foot stuck unstackable celled striped table insert">
+                            <table class="ui striped head foot stuck unstackable celled striped table insert">
                                 <thead>
                                 </thead>
                                 <tbody>
@@ -602,148 +602,155 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
             <!-- ============== -->
             <!-- tab_referensi -->
             <!-- ============== -->
-            <div class="ui tab basic segment container" data-tab="tab_ref" tbl="">
-                <div class="ui info message" name="ketref">Nabiilainayah</div>
-                <div class="ui hidden divider"></div>
-                <div class="ui right floated basic icon buttons">
-                    <?php
-                    if ($type_user == 'admin') {
-                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+            <div class="ui tab basic segment" data-tab="tab_ref" tbl="">
+                <div class="ui container">
+                    <div class="ui info message" name="ketref">Nabiilainayah</div>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <?php
+                        if ($type_user == 'admin') {
+                            echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-                    }
-                    ?>
-                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+                        }
+                        ?>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
+                    <table class="ui celled striped table insert">
+                        <thead>
+                            <tr>
+                                <th>Kode Komponen</th>
+                                <th>Uraian Komponen</th>
+                                <th>Spesifikasi</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>TKDN</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
                 </div>
-                <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
-                <div class="ui hidden divider"></div>
-                <div class="ui hidden divider"></div>
-                <table class="ui very basic table insert">
-                    <thead>
-                        <tr>
-                            <th>Kode Komponen</th>
-                            <th>Uraian Komponen</th>
-                            <th>Spesifikasi</th>
-                            <th>Satuan</th>
-                            <th>Harga Satuan</th>
-                            <th>TKDN</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
             </div>
             <!-- ============ -->
             <!-- tab_peraturan -->
             <!-- ============== -->
-            <div class="ui tab basic segment container" data-tab="tab_peraturan" tbl="peraturan">
-                <div class="ui hidden divider"></div>
-                <div class="ui right floated basic icon buttons">
-                    <?php
-                    if ($type_user == 'admin') {
-                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+            <div class="ui tab basic segment" data-tab="tab_peraturan" tbl="peraturan">
+                <div class="ui container">
+                    <div class="ui hidden divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <?php
+                        if ($type_user == 'admin') {
+                            echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-                    }
-                    ?>
-                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+                        }
+                        ?>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
+                    <table class="ui celled striped table insert">
+                        <thead>
+                            <tr>
+                                <th>Nomor</th>
+                                <th>Uraian</th>
+                                <th>Tanggal Pengundangan</th>
+                                <th>Keterangan</th>
+                                <th>Tautan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4">
+                                    <div class="ui right floated pagination menu">
+                                        <a class="icon item">
+                                            <i class="left chevron icon"></i>
+                                        </a>
+                                        <a class="item">1</a>
+                                        <a class="item">2</a>
+                                        <a class="item">3</a>
+                                        <a class="item">4</a>
+                                        <a class="icon item">
+                                            <i class="right chevron icon"></i>
+                                        </a>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-                <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
-                <div class="ui hidden divider"></div>
-                <div class="ui hidden divider"></div>
-                <table class="ui very basic table insert">
-                    <thead>
-                        <tr>
-                            <th>Nomor</th>
-                            <th>Uraian</th>
-                            <th>Tanggal Pengundangan</th>
-                            <th>Keterangan</th>
-                            <th>Tautan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="4">
-                                <div class="ui right floated pagination menu">
-                                    <a class="icon item">
-                                        <i class="left chevron icon"></i>
-                                    </a>
-                                    <a class="item">1</a>
-                                    <a class="item">2</a>
-                                    <a class="item">3</a>
-                                    <a class="item">4</a>
-                                    <a class="icon item">
-                                        <i class="right chevron icon"></i>
-                                    </a>
-                                </div>
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table>
+
             </div>
             <!-- ============== -->
             <!-- tab_hargasat -->
             <!-- ============== -->
-            <div class="ui tab basic segment container" data-tab="tab_hargasat">
-                <div class="ui info message" name="kethargasat">Nabiilainayah</div>
-                <div class="ui hidden divider"></div>
-                <div class="ui right floated basic icon buttons">
-                    <?php
-                    if ($type_user == 'admin') {
-                        echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+            <div class="ui tab basic segment" data-tab="tab_hargasat">
+                <div class="ui container">
+                    <div class="ui info message" name="kethargasat">Nabiilainayah</div>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <?php
+                        if ($type_user == 'admin') {
+                            echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-                    }
-                    ?>
-                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="asb" type="submit"><i class="alternate download icon"></i></button>
+                        }
+                        ?>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="asb" type="submit"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
+                    <table class="ui celled striped table insert">
+                        <thead>
+                            <tr>
+                                <th>Kode Komponen</th>
+                                <th>Uraian Komponen</th>
+                                <th>Spesifikasi</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>TKDN</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
                 </div>
-                <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
-                <div class="ui hidden divider"></div>
-                <div class="ui hidden divider"></div>
-                <table class="ui very basic table insert">
-                    <thead>
-                        <tr>
-                            <th>Kode Komponen</th>
-                            <th>Uraian Komponen</th>
-                            <th>Spesifikasi</th>
-                            <th>Satuan</th>
-                            <th>Harga Satuan</th>
-                            <th>TKDN</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
             </div>
             <!-- ============== -->
             <!-- reset -->
