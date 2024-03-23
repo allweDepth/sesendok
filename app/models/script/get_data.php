@@ -901,6 +901,51 @@ class get_data
                             $where_row = "id = ?";
                             $data_where_row =  [$id_row];
                             switch ($tbl) {
+                                case 'realisasi':
+                                    $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                                    $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                    $rowRealisasi = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                                    if ($rowRealisasi !== false) {
+                                        $id_paket = $rowRealisasi->id_paket;
+                                        $id_uraian_paket = $rowRealisasi->id_uraian_paket;
+                                        $id_dok_anggaran = $rowRealisasi->id_dok_anggaran;
+                                        $dok = $rowRealisasi->dok;
+                                        $tanggal = $rowRealisasi->tanggal;
+                                        //ambil row paket
+                                        $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
+                                        $kondisi = [['id', '=', $id_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $row_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                                        $uraian_paket = $row_paket->uraian;
+                                        //ambil row uraian paket
+                                        $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
+                                        $kondisi = [['id', '=', $id_row_uraian_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $row_uraian_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                                        $dok = $row_uraian_paket->dok;
+                                        //ambil row dok anggaran
+                                        switch ($dok) {
+                                            case 'dpa':
+                                            case 'renja':
+                                                $klmvolume = 'volume';
+                                                $klmjumlah = 'jumlah';
+                                                break;
+                                            case 'dppa':
+                                            case 'renja_p':
+                                                $klmvolume = 'volume_p';
+                                                $klmjumlah = 'jumlah_p';
+                                                break;
+                                        };
+                                        $tabel_get_row = $Fungsi->tabel_pakai($dok)['tabel_pakai'];
+                                        $kondisi = [['id', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                        $row_dok_anggaran = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                                        //ambil rows realisasi
+                                        $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
+                                        $kondisi = [['tanggal', '=', $tanggal], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $row_paket = $DB->getWhereArray($tabel_get_row, $kondisi);
+                                    } else {
+                                        $code = 404;
+                                    }
+                                    $kodePosting = '';
+                                    break;
                                 case 'renstra':
                                     $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
                                     if ($rowPengaturan !== false) {
@@ -2010,6 +2055,7 @@ class get_data
                                 case 'tujuan_renstra':
                                 case 'sasaran_renstra':
                                 case 'tujuan_sasaran_renstra':
+                                case 'realisasi':
                                     $set = [
                                         'kunci_renstra' => $kunci_renstra,
                                         'kunci_renja' => $kunci_renja,

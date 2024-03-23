@@ -42,15 +42,15 @@ class MasterFungsi
         switch ($tbl) {
             case 'realisasi':
                 $rowData['thead'] = trim('<tr>
-                <th>NAMA PAKET</th>
-                <th>URAIAN KOMPONEN</th>
-                <th>PAGU</th>
-                <th>KONTRAK</th>
-                <th>REALISASI</th>
-                <th>FILE</th>
-                <th>KETERANGAN</th>
-                <th class="collapsing">AKSI</th>
-            </tr>');
+                        <th>NAMA PAKET</th>
+                        <th>URAIAN KOMPONEN</th>
+                        <th>VOLUME</th>
+                        <th>REALISASI</th>
+                        <th>TANGGAL</th>
+                        <th>FILE</th>
+                        <th>KETERANGAN</th>
+                        <th class="collapsing">AKSI</th>
+                    </tr>');
                 break;
             case 'berita':
                 $rowData['thead'] = trim('<tr>
@@ -299,6 +299,7 @@ class MasterFungsi
                 case 'tujuan_renstra':
                 case 'sasaran_renstra':
                 case 'tujuan_sasaran_renstra':
+                case 'realisasi':
                     $kunci_renstra = $value_dinamic['kunci_renstra'];
                     $kunci_renja = $value_dinamic['kunci_renja'];
                     $kunci_dpa = $value_dinamic['kunci_dpa'];
@@ -321,6 +322,31 @@ class MasterFungsi
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
+                    case 'realisasi':
+
+                        $buttons = '';
+                        $buttonEdit = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        if ($kunci_realisasi <= 0) {
+                            $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
+                            $buttons = '<div class="ui icon basic mini buttons">
+                        <button class="ui button" name="modal_show" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                        <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        }
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="ket_paket">' . $row->ket_paket . '</td>
+                                    <td klm="ket_uraian_paket">'  . $row->ket_uraian_paket . '</td>
+                                    <td klm="vol">'  . number_format((float)$row->vol, 2, ',', '.') . '</td>
+                                    <td klm="jumlah">'  . number_format((float)$row->jumlah, 2, ',', '.') . '</td>
+                                    <td klm="tanggal">' . $row->tanggal . '</td>
+                                    <td klm="file">' . $row->file . '</td>
+                                    <td klm="keterangan">' . $row->keterangan . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'berita':
 
                         if ($type_user == 'admin') {

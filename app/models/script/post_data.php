@@ -158,7 +158,7 @@ class post_data
                                     'numeric' => true,
                                     'min_char' => 1
                                 ]);
-                                $uraian_paket= $validate->setRules('uraian', 'tanggal dokumen SPJ', [
+                                $uraian_paket = $validate->setRules('uraian', 'tanggal dokumen SPJ', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 1
@@ -1664,33 +1664,7 @@ class post_data
                         case 'add':
                             switch ($tbl) {
                                 case 'realisasi':
-                                    // $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
-                                    //     'required' => true,
-                                    //     'numeric' => true,
-                                    //     'min_char' => 1
-                                    // ]);
-                                    // $jumlah_realisasi = $validate->setRules('jumlah_realisasi', 'jumlah realisasi', [
-                                    //     'required' => true,
-                                    //     'numeric' => true,
-                                    //     'min_char' => 1
-                                    // ]);
-                                    // $tanggal = $validate->setRules('tanggal', 'tanggal dokumen SPJ', [
-                                    //     'sanitize' => 'string',
-                                    //     'required' => true,
-                                    //     'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    //     'min_char' => 8
-                                    // ]);
-                                    // $realisasi = $validate->setRules('realisasi', 'realisasi', [
-                                    //     'json_repair' => true,
-                                    //     'required' => true
-                                    // ]);
-                                    // $realisasi = $validate->setRules('realisasi', 'realisasi', [
-                                    //     'json_decode' => true
-                                    // ]);
-                                    // // realisasi harus di kontrol
-                                    // $realisasiObject = $realisasi->myrows;
-
-                                    $disable =0;
+                                    $disable = 0;
                                     //ambil row paket
                                     $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
                                     $kondisi = [['id', '=', $id_row_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
@@ -1707,11 +1681,12 @@ class post_data
                                             $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
                                             $kondisi = [['id', '=', $id_row_uraian_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                             $row_uraian_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+
                                             $id_dok_anggaran = $row_uraian_paket->id_dok_anggaran;
                                             $dok = $row_uraian_paket->dok;
                                             $jumlah_kontrak = $row_uraian_paket->jumlah_kontrak;
                                             $vol_kontrak = $row_uraian_paket->vol_kontrak;
-                                            
+
                                             //ambil tabel di dok anggaran
                                             switch ($dok) {
                                                 case 'dpa':
@@ -1732,7 +1707,7 @@ class post_data
                                             $kondisi = [['id', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
                                             $row_dok_anggaran = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
                                             $batasAnggaran = $row_dok_anggaran->{$klmjumlah};
-                                            $ket_uraian_paket= $row_dok_anggaran->uraian;
+                                            $ket_uraian_paket = $row_dok_anggaran->uraian;
                                             if ($jenis == 'edit') {
                                                 $id_row_realisasi = $value->id_row_realisasi;
                                                 $kondisi = [['id', '=', $id_row_realisasi], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
@@ -1807,11 +1782,29 @@ class post_data
                                                     $set['username'] = $_SESSION["user"]["username"];
 
                                                     $insert = $queryInstance->insertRow($set);
-                                                    $data['add_row'][] = $insert['add_row']; 
+                                                    $data['add_row'][] = $insert['add_row'];
                                                 } else {
-                                                    $update = $queryInstance->updateRow($kondisi,$set);
-                                                    $data['update'][] = $update['update']; 
+                                                    $update = $queryInstance->updateRow($kondisi, $set);
+                                                    $data['update'][] = $update['update'];
                                                 }
+                                                //update jumlah dan volume uraian paket 
+
+                                                //cek jumlah keseluruhan harus lebih kecil dari kontrak dan dokumen anggaran
+                                                $DB->select("SUM(jumlah) AS realisasi_jumlah,SUM(vol) AS realisasi_vol");
+                                                $kondisiSum = [['id_dok_anggaran', '=', $id_dok_anggaran], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                $tabel_get_sum = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                                                $row_sum = $DB->getWhereOnceCustom($tabel_get_sum, $kondisiSum);
+                                                $realisasi_jumlah = $row_sum->realisasi_jumlah;
+                                                $realisasi_vol = $row_sum->realisasi_vol;
+                                                $DB->select("*");
+                                                $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
+                                                $kondisi = [['id_paket', '=', $id_paket], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                $set = [
+                                                    'realisasi_jumlah' => $realisasi_jumlah,
+                                                    'realisasi_vol' => $realisasi_vol
+                                                ];
+                                                $queryInstance = Query::createInstance(['jns' => $jenis, 'tbl' => 'uraian_paket']);
+                                                $update = $queryInstance->updateRow($kondisi, $set);
                                             }
                                         }
                                     }

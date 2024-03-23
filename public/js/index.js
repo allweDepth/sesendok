@@ -3572,6 +3572,8 @@ $(document).ready(function () {
 		addRulesForm(formIni);
 		switch (jnsAttr) {
 			case 'edit':
+				jalankanAjax = true;
+				data.id_row = ini.attr('id_row');
 			case 'add':
 				switch (tblAttr) {
 					case 'realisasi':
