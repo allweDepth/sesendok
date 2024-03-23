@@ -3394,9 +3394,8 @@ $(document).ready(function () {
 						formIni.attr('jns', 'add_uraian').attr('tbl', tblAttr);
 						mdl.removeClass("tiny");
 						elementForm = buatElemenHtml("fieldSearchGrid", {
-							label: "Uraian Pengelompokan Belanja",
-							kelas: `sub_keg_dpa category`,
-							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
+							kelas: `uraian`,
+							atribut: 'name="uraian" placeholder="cari..."',
 						}) +
 							buatElemenHtml("fieldDropdown", {
 								label: "Sub Kegiatan",
@@ -3692,18 +3691,18 @@ $(document).ready(function () {
 						case 'add':
 							switch (tblAttr) {
 								case 'realisasi':
-									
+
 									formIni.find(`table.tblUraian tbody`).html(result.data.tbody);
 									onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' }, formIni);
 									let elmtInputTextarea = formIni.find($("input[name],textarea[name]"));
-									
+
 									for (const iterator of elmtInputTextarea) {
 										let atribut = $(iterator).attr("name");
 										formIni.form('set value', atribut, result.data.users[atribut])
 									};
 									//jika edit maka disabled tanggal
 									formIni.find(`.ui.calendar.date`).addClass('disabled');
-									
+
 									break;
 								default:
 									break;
@@ -3793,7 +3792,7 @@ $(document).ready(function () {
 							label: "Akun Belanja",
 							atribut: 'name="uraian" placeholder="uraian..." readonly',
 						})
-						data.id_row=id_rowAttr;
+						data.id_row = id_rowAttr;
 						jalankanAjax = true;
 						break;
 				}
@@ -3954,11 +3953,10 @@ $(document).ready(function () {
 									//buatkan konstruktor untuk search
 									MyForm = $(`form[name="form_modal"]`);
 									let kd_sub_keg = MyForm.find(`.ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
-									let searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.sub_keg_dpa');
+									var searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.uraian');
 									let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'dpa_dppa', data_send: { kd_sub_keg: kd_sub_keg } }
 									searchPrompt.searchGlobal(allField)
 									console.log(kd_sub_keg);
-									
 									if (kd_sub_keg.length <= 0) {
 										delete window.searchPrompt;//searchPrompt = null;or undefined; or delete window.searchPrompt;
 									}
@@ -5302,6 +5300,7 @@ $(document).ready(function () {
 		}
 		searchGlobal(allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'sbu', data_send: {} }) {
 			let MyElmSearch = this.elmSearch;
+			console.log(MyElmSearch);
 			this.jenis = allField.jenis;
 			this.tbl = allField.tbl;
 			switch (this.jenis) {
@@ -5314,6 +5313,8 @@ $(document).ready(function () {
 							// this.url = "script/get_data";
 							let kd_sub_keg = $(`form[name="form_modal"] .ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
 							allField.data_send.kd_sub_keg = kd_sub_keg;
+							console.log(allField);
+							
 							if (kd_sub_keg.length <= 0 || !allField.data_send.hasOwnProperty("kd_sub_keg")) {
 								// this.url = '';
 							}
@@ -5351,6 +5352,7 @@ $(document).ready(function () {
 						halaman: 1,
 					}, allField.data_send),
 				},
+				debug: true,
 				ignoreDiacritics: true,
 				fullTextSearch: 'exact',
 				fields: {
@@ -6489,7 +6491,7 @@ $(document).ready(function () {
 function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, evt) {
 	let ini = $(this);
 	console.log(evt);
-	
+
 	let form = $(evt).closest(`form`);
 	let tr = $(evt).closest(`tbody`).find('tr');
 	const keyPressed = String.fromCharCode(evt.which);
