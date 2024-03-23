@@ -13,7 +13,7 @@ class get_data
         }
         if (isset($this->_data['tbl'])) {
             $this->_tbl = trim($this->_data['tbl']);
-            require 'init_no_session.php';
+            require 'init.php';
             $Fungsi = new MasterFungsi();
             $this->_tabel_pakai = $Fungsi->tabel_pakai($this->_tbl)['tabel_pakai'];
         }
