@@ -3450,14 +3450,18 @@ $(document).ready(function () {
 				}
 				break;
 			case 'edit':
+				elementForm = '';
 			case 'add':
 				switch (tblAttr) {
 					case 'realisasi':
-						elementForm = buatElemenHtml("fieldSearchGrid", {
-							label: "Uraian Pengelompokan Belanja",
-							kelas: `sub_keg_dpa category`,
-							atribut: 'name="nama_paket_search" placeholder="Cari Nama Paket..."',
-						}) + buatElemenHtml("fieldTextarea", {
+						if (jnsAttr === 'add') {
+							elementForm = buatElemenHtml("fieldSearchGrid", {
+								label: "Uraian Pengelompokan Belanja",
+								kelas: `sub_keg_dpa category`,
+								atribut: 'name="nama_paket_search" placeholder="Cari Nama Paket..."',
+							})
+						}
+						elementForm += buatElemenHtml("fieldTextarea", {
 							label: "Nama Paket",
 							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
 						}) + buatElemenHtml("text", {
@@ -3481,7 +3485,7 @@ $(document).ready(function () {
 							aligned: 'left aligned',
 							icon2: `<i class="feather alternate icon"></i>`,
 							label: `Rincian Paket`
-						})+ buatElemenHtml("fields", {
+						}) + buatElemenHtml("fields", {
 							classField: "two",
 							label: "Jadwal Pengadaan",
 							content: buatElemenHtml("fieldCalendar", {
@@ -3495,56 +3499,65 @@ $(document).ready(function () {
 								accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx",
 								atribut: 'non_data',
 							})
-						})  + buatElemenHtml("tabel2", {
-							kelas: `mini celled structured tblUraian`,
-							headerTable: [[
-								{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
-								{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
-									class: 'center aligned collapsing', attr: 'rowspan="2"', lbl: `AKSI`
+						}) + buatElemenHtml("div", {
+							kelas: "ui scrolling container",
+							content: buatElemenHtml("tabel2", {
+								kelas: `head foot stuck unstackable celled mini structured tblUraian`,
+								headerTable: [[
+									{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
+									{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
+										class: 'center aligned collapsing', attr: 'rowspan="2"', lbl: `AKSI`
+									}],
+								[
+									{ class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `SAT.` }, { class: 'center aligned collapsing', lbl: `PAGU` }, {
+										class: 'center aligned collapsing',
+										lbl: `KONTRAK`
+									}, { class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
+								],
+								footerTable: [{
+									lbl: `jumlah`,
+									attr: `colspan="2"`
+								}, {
+									lbl: 0,
+									attr: `name="vol_kontrak"`
+								}, {
+									lbl: '',
+									attr: ``
+								}, {
+									lbl: 0,
+									attr: `name="pagu"`
+								}, {
+									lbl: 0,
+									attr: `name="jumlah_kontrak"`
+								}, {
+									lbl: 0,
+									attr: `name="realisasi_vol"`
+								}, {
+									lbl: 0,
+									attr: `name="realisasi_jumlah"`
+								}, {
+									lbl: 0,
+									attr: `name="vol"`
+								}, {
+									lbl: 0,
+									attr: `name="jumlah"`
+								}, {
+									lbl: '',
+									attr: ``
 								}],
-							[
-								{ class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `SAT.` }, { class: 'center aligned collapsing', lbl: `PAGU` }, {
-									class: 'center aligned collapsing',
-									lbl: `KONTRAK`
-								}, { class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
-							],
-							footerTable: [{
-								lbl: `jumlah`,
-								attr: `colspan="2"`
-							}, {
-								lbl: 0,
-								attr: `name="vol_kontrak"`
-							}, {
-								lbl: '',
-								attr: ``
-							}, {
-								lbl: 0,
-								attr: `name="pagu"`
-							}, {
-								lbl: 0,
-								attr: `name="jumlah_kontrak"`
-							}, {
-								lbl: 0,
-								attr: `name="realisasi_vol"`
-							}, {
-								lbl: 0,
-								attr: `name="realisasi_jumlah"`
-							}, {
-								lbl: 0,
-								attr: `name="vol"`
-							}, {
-								lbl: 0,
-								attr: `name="jumlah"`
-							}, {
-								lbl: '',
-								attr: ``
-							}],
-							bodyTable: []
-						}) +
-						buatElemenHtml("fieldTextarea", {
+								bodyTable: []
+							}),
+						}) + buatElemenHtml("fieldTextarea", {
 							label: "Keterangan",
 							atribut: 'name="keterangan" placeholder="keterangan spj" rows="2"',
 						});
+						break;
+				}
+				break;
+			case 'get_data':
+				switch (tblAttr) {
+					case 'realisasi':
+
 						break;
 				}
 				break;
@@ -3675,10 +3688,19 @@ $(document).ready(function () {
 							}
 							break;
 						case 'edit':
+
 						case 'add':
 							switch (tblAttr) {
 								case 'realisasi':
 									onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' }, this);
+									formIni.find(`table.tblUraian tbody`).html(result.data.tbody);
+									let elmtInputTextarea = formIni.find($("input[name],textarea[name]"));
+									for (const iterator of elmtInputTextarea) {
+										let atribut = $(iterator).attr("name");
+										formIni.form('set value', atribut, result.data.users[atribut])
+									};
+									//jika edit maka disabled tanggal
+									formIni.find(`.ui.calendar.date`).addClass('disabled');
 									break;
 								default:
 									break;
@@ -3753,243 +3775,23 @@ $(document).ready(function () {
 			tbl: tblAttr,
 			halaman: halaman
 		};
-		let elementForm = buatElemenHtml("fieldTextIcon", {
-			label: "Uraian Pengelompokan Belanja",
-			classField: `required`,
-			atribut: 'name="uraian" placeholder="pengelompokan belanja..."',
-			icon: "edit blue"
-		});
+		let elementForm = '';
 		let kelasToast = "warning";
 		let pesanToast = 'Koreksi Data kedua';
 		formIni.attr({ 'jns': jnsAttr, 'tbl': tblAttr });
 		switch (jnsAttr) {
-			case 'get_field_json':
-			case 'add_field_json':
-				switch (tblAttr) {
-					case 'sub_keg_dpa':
-					case 'sub_keg_renja':
-						mdl.addClass("tiny");
-						let id_sub_keg = ini.closest('.ui.form').attr('id_sub_keg');
-						data.id_sub_keg = id_sub_keg;
-						data.klm = klmAttr;
-						let jenis_kelompok = klmAttr;
-						switch (klmAttr) {
-							case 'kelompok_json':
-								jenis_kelompok = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_kelompok"').dropdown('get value');
-								break;
-							default:
-								jenis_kelompok = klmAttr;
-								break;
-						}
-						if (klmAttr == 'kelompok' || klmAttr == 'paket') {
-						}
-						switch (klmAttr) {
-							case 'kelompok_json':
-								switch (jenis_kelompok) {
-									case 'paket':
-										headerModal = 'Tambah Uraian Pemaketan Belanja';
-										break;
-									case 'kelompok':
-										headerModal = 'Tambah Uraian Pengelompokan Belanja';
-										break;
-									default:
-										nameAttr = '';
-										pesanToast = 'Pilih Pengelompokan Belanja';
-										break;
-								}
-								break;
-							case 'keterangan_json':
-								headerModal = 'Keterangan Uraian Belanja';
-								break;
-							default:
-								break;
-						};
-						data.jenis_kelompok = jenis_kelompok;
-						formIni.attr('jns', jnsAttr).attr('tbl', tblAttr).attr('klm', klmAttr).attr('id_sub_keg', id_sub_keg).attr('jns_kel', jenis_kelompok)
-						break;
-					default:
-						break;
-				}
-				break;
-			case 'search_field_json':
-				switch (tblAttr) {
-					case 'sbu':
-					case 'ssh':
-					case 'hspk':
-					case 'asb':
-						var kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_standar_harga"').dropdown('get value')
-						elementForm = buatElemenHtml("text", {
-							atribut: 'name="id" placeholder="Pilih komponen" readonly hidden',
-						}) + buatElemenHtml("fieldSearchGrid", {
-							kelas2: '',
-							kelas: `${kelasSearch}`,
-							atribut: 'name="uraian"',
-						}) +
-							buatElemenHtml("fieldText", {
-								label: "Kode Komponen",
-								atribut: 'name="kd_aset" placeholder="kode komponen..." non_data readonly',
-							}) +
-							buatElemenHtml("fieldTextarea", {
-								label: "Uraian",
-								atribut: 'name="uraian_barang" placeholder="uraian..." rows="2" readonly',
-							}) +
-							buatElemenHtml("fieldTextarea", {
-								label: "Spesifikasi",
-								atribut: 'name="spesifikasi" placeholder="spesifikasi..." rows="2" non_data readonly',
-							}) +
-							buatElemenHtml("fieldText", {
-								label: "Satuan",
-								kelas: "",
-								atribut: 'name="satuan" placeholder="satuan..."non_data readonly',
-							}) +
-							buatElemenHtml("fieldText", {
-								label: "Harga Satuan Komponen",
-								atribut: 'name="harga_satuan" placeholder="Harga Satuan Komponen" rms non_data readonly',
-							}) +
-							buatElemenHtml("fieldText", {
-								label: "TKDN",
-								atribut: 'name="tkdn" placeholder="tkdn..." non_data readonly',
-							}) +
-							buatElemenHtml("fieldTextarea", {
-								label: "Mapping Kode Akun",
-								atribut: 'name="kd_akun" placeholder="Mapping Kode Akun..." rows="2" readonly',
-							}) +
-							buatElemenHtml("fieldTextarea", {
-								label: "Keterangan",
-								atribut: 'name="keterangan" placeholder="keterangan..." rows="3" non_data readonly',
-							}) +
-							buatElemenHtml("fielToggleCheckbox", {
-								label: "",
-								atribut: 'name="disable" non_data readonly',
-								txtLabel: "Non Aktif",
-							});
-						break;
-					default:
-						break;
-				}
-				break;
-			case 'uraian_belanja':
-				switch (tblAttr) {
-					case 'daftar_paket':
-						let json_id_uraian = $(`form[name="form_flyout"]`).form('get value', 'id_uraian');
-						if (json_id_uraian.length > 2) {
-							json_id_uraian = JSON.parse($(`form[name="form_flyout"]`).form('get value', 'id_uraian'));
-							jalankanAjax = true;
-							data.jenis = 'get_rows';
-							data.tbl = 'dpa_and_dppa';//jenis tabel tergantung dari data dok_anggaran tiap baris
-							data.send = JSON.stringify(json_id_uraian);
-						}
-						formIni.attr('jns', 'add_uraian').attr('tbl', tblAttr);
-						mdl.removeClass("tiny");
-						elementForm = buatElemenHtml("fieldSearchGrid", {
-							label: "Uraian Pengelompokan Belanja",
-							kelas: `sub_keg_dpa category`,
-							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
-						}) +
-							buatElemenHtml("fieldDropdown", {
-								label: "Sub Kegiatan",
-								atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
-								kelas: "search clearable kd_sub_keg ajx selection",
-								dataArray: [
-								],
-							}) +
-							buatElemenHtml("divider", {
-								header: "h5",
-								aligned: 'left aligned',
-								icon2: `<i class="feather alternate icon"></i>`,
-								label: `Uraian`
-							}) +
-							buatElemenHtml("tabel", {
-								headerTable: [
-									{ class: 'collapsing', lbl: `SUB KEGIATAN` },
-									{ lbl: `URAIAN` }, { lbl: `VOL.` }, { lbl: `SAT.` }, { lbl: `PAGU` }, {
-										lbl: `KONTRAK`
-									}, {
-										lbl: `AKSI`
-									},
-								],
-								footerTable: [{
-									lbl: `jumlah`,
-									attr: `colspan="4"`
-								}, {
-									lbl: 0,
-									attr: `name="jumlah"`
-								}, {
-									lbl: 0,
-									attr: `colspan="2" name="kontrak"`
-								}],
-								bodyTable: []
-							});
-						break;
-					default:
-						break;
-				}
-				break;
-			case 'modal_show':
-				switch (tblAttr) {
-					case 'berita':
-						elementForm = buatElemenHtml("piledSegment", {
-							atribut: 'name="uraian_html" ',
-						}) +
-							buatElemenHtml("fieldTextarea", {
-								label: "Markup HTML",
-								atribut: 'name="uraian_html" placeholder="keterangan..." rows="5"',
-							})
-						break;
-				}
-				break;
-			case 'edit':
-			case 'add':
+			case 'get_data':
 				switch (tblAttr) {
 					case 'realisasi':
-						elementForm = buatElemenHtml("fieldSearchGrid", {
-							label: "Uraian Pengelompokan Belanja",
-							kelas: `sub_keg_dpa category`,
-							atribut: 'name="kd_sub_keg" placeholder="pengelompokan belanja..."',
-						}) + buatElemenHtml("fieldTextarea", {
-							label: "Nama Paket",
-							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
-						}) +
-							buatElemenHtml("tabel2", {
-								kelas: `mini celled structured`,
-								headerTable: [[
-									{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
-									{ attr: 'rowspan="2"', lbl: `URAIAN` }, { attr: 'colspan="4"', lbl: `KONTRAK`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `SUM REALISASI`, class: 'center aligned' }, { attr: 'colspan="2"', lbl: `INPUT REALISASI`, class: 'center aligned' }, {
-										class: 'center aligned collapsing', attr: 'rowspan="2"', lbl: `AKSI`
-									}],
-								[
-									{ class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `SAT.` }, { class: 'center aligned collapsing', lbl: `PAGU` }, {
-										class: 'center aligned collapsing',
-										lbl: `KONTRAK`
-									}, { class: 'center aligned collapsing', lbl: `VOL.` }, { class: 'center aligned collapsing', lbl: `JUMLAH` }, { lbl: `VOL.` }, { lbl: `JUMLAH` }]
-								],
-								footerTable: [{
-									lbl: `jumlah`,
-									attr: `colspan="4"`
-								}, {
-									lbl: 0,
-									attr: `name="pagu"`
-								}, {
-									lbl: 0,
-									attr: `name="kontrak"`
-								}, {
-									lbl: 0,
-									attr: `name="realisasi_vol"`
-								}, {
-									lbl: '',
-									attr: `name="realisasi_jumlah"`
-								}, {
-									lbl: 0,
-									attr: `name="vol"`
-								}, {
-									lbl: '',
-									attr: `name="jumlah"`
-								}, {
-									lbl: 0,
-									attr: ``
-								}],
-								bodyTable: []
-							});
+						elementForm += buatElemenHtml("fieldText", {
+							label: "Sub Kegiatan",
+							atribut: 'name="uraian" placeholder="uraian..." readonly',
+						}) + buatElemenHtml("fieldText", {
+							label: "Akun Belanja",
+							atribut: 'name="uraian" placeholder="uraian..." readonly',
+						})
+						data.id_row=id_rowAttr;
+						jalankanAjax = true;
 						break;
 				}
 				break;
@@ -4008,8 +3810,12 @@ $(document).ready(function () {
 		document.getElementById("header_mdl").textContent = headerModal;
 		addRulesForm(formIni);
 		switch (jnsAttr) {
-			case 'edit':
-			case 'add':
+			case 'get_data':
+				switch (tblAttr) {
+					case 'realisasi':
+
+						break;
+				}
 				break;
 			default:
 				break;
@@ -4019,14 +3825,10 @@ $(document).ready(function () {
 				if (result.success === true) {
 					loaderHide();
 					switch (jnsAttr) {
-						case 'search_field_json':
+						case 'get_data':
 							switch (tblAttr) {
-								case 'sbu':
-								case 'ssh':
-								case 'hspk':
-								case 'asb':
-									break;
-								default:
+								case 'realisasi':
+
 									break;
 							}
 							break;
@@ -4049,20 +3851,6 @@ $(document).ready(function () {
 					icon: "check circle icon",
 				});
 			}
-		}
-		switch (tblAttr) {
-			case 'sbu':
-			case 'ssh':
-			case 'hspk':
-			case 'asb':
-				// $('.ui.sticky.melayang').sticky({
-				// 	context: '.ui.form[name="form_modal"]',
-				// 	pushing: true
-				// });
-				// $('.ui.sticky').sticky('refresh');
-				break;
-			default:
-				break;
 		}
 		$("[rms]").mathbiila();
 	});
@@ -4987,7 +4775,7 @@ $(document).ready(function () {
 												console.log(value);
 
 												let id_row_uraian_paket = $(value).attr('id_row_uraian_paket');
-												if (jenis ==='edit') {
+												if (jenis === 'edit') {
 													let id_row = $(value).attr('id_row');
 													myRows[index]['id_row'] = parseInt(id_row);
 												}
@@ -5021,7 +4809,7 @@ $(document).ready(function () {
 											});
 											var myObj = {};
 											myObj.myrows = myRows;
-											
+
 											formData.append("id_row_paket", id_row_paketAttr);
 											formData.append("realisasi", JSON.stringify(myObj));
 											jalankanAjax = true;
@@ -5886,6 +5674,7 @@ $(document).ready(function () {
 		let atributField = "atributField" in dataElemen ? dataElemen.atributField : "";
 		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let classField = "classField" in dataElemen ? `${dataElemen.classField} ` : "";
+		let kelas = "kelas" in dataElemen ? dataElemen.kelas : "";
 		let kelasData = "kelas" in dataElemen ? dataElemen.kelas : "";
 		let kelas2 = "kelas2" in dataElemen ? dataElemen.kelas2 : "";
 		let labelData = "label" in dataElemen ? dataElemen.label : "";
@@ -5913,6 +5702,9 @@ $(document).ready(function () {
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		switch (namaElemen) {
+			case "div":
+				elemen = `<div class="${kelas}">${content}</div>`;
+				break;
 			case "card":
 				elemen = `<div class="ui fluid card">
 					<div class="image">
@@ -6565,18 +6357,18 @@ $(document).ready(function () {
 							},
 						],
 					});
-				}else{
+				} else {
 					//dengan rules spesifik pisahkan rules dengan koma2x ",,", contoh rules="minLength[6],,regExp[/rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)/i]"
-					let rules=attrRules.split(',,')
-					let rulesku={}
+					let rules = attrRules.split(',,')
+					let rulesku = {}
 					rules.forEach((value, key) => {
-						rulesku.type=`${value}`
+						rulesku.type = `${value}`
 					});
 					formku.form("add rule", atribut, {
 						rules: [rulesku],
 					});
 				}
-				
+
 			} else {
 				formku.form("remove field", atribut);
 			}
@@ -6771,11 +6563,11 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 						jumlah += jumlah_temp;
 					});
 					if (jumlah > 0) {
-						form.form('set value','jumlah_realisasi',jumlah);
-					}else{
-						form.form('set value','jumlah_realisasi','hhh');
+						form.form('set value', 'jumlah_realisasi', jumlah);
+					} else {
+						form.form('set value', 'jumlah_realisasi', 'hhh');
 					}
-					
+
 					let cellIsi = { vol_kontrak: vol_kontrak, pagu: pagu, jumlah_kontrak: jumlah_kontrak, realisasi_vol: realisasi_vol, realisasi_jumlah: realisasi_jumlah, vol: vol, jumlah: jumlah }
 					Object.entries(cellIsi).forEach(entry => {
 						const [key, value] = entry;

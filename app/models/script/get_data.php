@@ -1,6 +1,43 @@
 <?php
 class get_data
 {
+    private $_jenis = '';
+    private $_tbl = '';
+    private $_tabel_pakai = '';
+    private $_data = array();
+    private function __construct($data)
+    {
+        $this->_data = $data;
+        if (isset($this->_data['jns'])) {
+            $this->_jenis = trim($this->_data['jenis']);
+        }
+        if (isset($this->_data['tbl'])) {
+            $this->_tbl = trim($this->_data['tbl']);
+            require 'init_no_session.php';
+            $Fungsi = new MasterFungsi();
+            $this->_tabel_pakai = $Fungsi->tabel_pakai($this->_tbl)['tabel_pakai'];
+        }
+        if (array_key_exists('cry', $this->_data)) {
+            foreach ($this->_data as $key => $rowValue) {
+                switch ($key) {
+                    case 'tbl':
+                        $this->_tbl = $rowValue;
+                        break;
+                    case 'jns':
+                        $this->_jenis = $rowValue;
+                        break;
+                    default:
+                        $formValue = $this->encrypt($rowValue);
+                        $this->_data[$key] = $formValue;
+                        break;
+                }
+            }
+        }
+    }
+    public static function createInstance($data)
+    {
+        return new self($data);
+    }
     public function get_data()
     {
         require 'init.php';
@@ -136,12 +173,26 @@ class get_data
                         ]);
                         break;
                     case 'get_data':
-                        $text = $validate->setRules('text', 'text', [
-                            'required' => true,
-                            'sanitize' => 'string',
-                            'min_char' => 1,
-                            'max_char' => 255
-                        ]);
+                        switch ($tabl) {
+                            case 'realisasi':
+                                $id_row = $validate->setRules('id_row', 'id_row', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                break;
+
+                            default:
+                                $text = $validate->setRules('text', 'text', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
+                                break;
+                        }
+
                         break;
                     case 'edit':
                         $id_row = $validate->setRules('id_row', 'id_row', [
@@ -887,12 +938,20 @@ class get_data
                             }
                             break;
                         case 'get_data':
-                            $where1 = "nomor = ?";
-                            $data_where1 =  [$text];
-                            switch ($tbl) {
-                                case 'value':
+                            switch ($tabl) {
+                                case 'realisasi':
+                                    //get data dari modal second
+
                                     break;
                                 default:
+                                    $where1 = "nomor = ?";
+                                    $data_where1 =  [$text];
+                                    switch ($tbl) {
+                                        case 'value':
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                     break;
                             }
                             break;
@@ -916,31 +975,74 @@ class get_data
                                         $kondisi = [['id', '=', $id_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                         $row_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
                                         $uraian_paket = $row_paket->uraian;
-                                        //ambil row uraian paket
-                                        $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
-                                        $kondisi = [['id', '=', $id_row_uraian_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                        $row_uraian_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-                                        $dok = $row_uraian_paket->dok;
-                                        //ambil row dok anggaran
-                                        switch ($dok) {
-                                            case 'dpa':
-                                            case 'renja':
-                                                $klmvolume = 'volume';
-                                                $klmjumlah = 'jumlah';
-                                                break;
-                                            case 'dppa':
-                                            case 'renja_p':
-                                                $klmvolume = 'volume_p';
-                                                $klmjumlah = 'jumlah_p';
-                                                break;
-                                        };
-                                        $tabel_get_row = $Fungsi->tabel_pakai($dok)['tabel_pakai'];
-                                        $kondisi = [['id', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                        $row_dok_anggaran = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                                        $row_paket->ket_paket = $row_paket->keterangan;
+                                        $row_paket->tanggal_paket = $row_paket->tanggal;
+                                        $desimaljumlah = ($Fungsi->countDecimals($row_paket->jumlah) < 2) ? 2 : $Fungsi->countDecimals($row_paket->jumlah);
+                                        $row_paket->jumlah = number_format((float)$row_paket->jumlah, $desimaljumlah, ',', '.');
+                                        $row_paket->tanggal = $tanggal;
+                                        $row_paket->keterangan = $rowRealisasi->keterangan;
+                                        $data['users'] = $row_paket;
                                         //ambil rows realisasi
-                                        $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
-                                        $kondisi = [['tanggal', '=', $tanggal], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                        $row_paket = $DB->getWhereArray($tabel_get_row, $kondisi);
+                                        $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                                        $kondisi = [['tanggal', '=', $tanggal], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                        $rows_realisasi = $DB->getWhereArray($tabel_get_row, $kondisi);
+                                        $rowTBody = '';
+                                        if ($rows_realisasi !== false) {
+                                            foreach ($rows_realisasi as $key => $value) {
+                                                $id_uraian_paket = $value->id_uraian_paket;
+                                                //ambil row uraian paket
+                                                $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
+                                                $kondisi = [['id', '=', $id_uraian_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                                                $row_uraian_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                                                $dok = $row_uraian_paket->dok;
+                                                //ambil row dok anggaran
+                                                switch ($dok) {
+                                                    case 'dpa':
+                                                    case 'renja':
+                                                        $klmvolume = 'volume';
+                                                        $klmjumlah = 'jumlah';
+                                                        break;
+                                                    case 'dppa':
+                                                    case 'renja_p':
+                                                        $klmvolume = 'volume_p';
+                                                        $klmjumlah = 'jumlah_p';
+                                                        break;
+                                                };
+                                                $tabel_get_row = $Fungsi->tabel_pakai($dok)['tabel_pakai'];
+                                                $kondisi = [['id', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                                                $row_dok_anggaran = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                                                //buat rows tbody
+                                                $desimalvol_kontrak = ($Fungsi->countDecimals($row_uraian_paket->vol_kontrak) < 2) ? 2 : $Fungsi->countDecimals($row_uraian_paket->vol_kontrak);
+                                                $desimaljumlah_pagu = ($Fungsi->countDecimals($row_uraian_paket->jumlah_pagu) < 2) ? 2 : $Fungsi->countDecimals($row_uraian_paket->jumlah_pagu);
+                                                $desimaljumlah_kontrak = ($Fungsi->countDecimals($row_uraian_paket->jumlah_kontrak) < 2) ? 2 : $Fungsi->countDecimals($row_uraian_paket->jumlah_kontrak);
+                                                $desimalrealisasi_vol = ($Fungsi->countDecimals($row_uraian_paket->realisasi_vol) < 2) ? 2 : $Fungsi->countDecimals($row_uraian_paket->realisasi_vol);
+                                                $desimalrealisasi_jumlah = ($Fungsi->countDecimals($row_uraian_paket->realisasi_jumlah) < 2) ? 2 : $Fungsi->countDecimals($row_uraian_paket->realisasi_jumlah);
+                                                $desimalvol = ($Fungsi->countDecimals($value->vol) < 2) ? 2 : $Fungsi->countDecimals($row_uraian_paket->vol);
+                                                $desimaljumlah = ($Fungsi->countDecimals($value->jumlah) < 2) ? 2 : $Fungsi->countDecimals($row_uraian_paket->jumlah);
+                                                $realisasi_jumlah = $row_uraian_paket->realisasi_jumlah - $value->jumlah;
+                                                $realisasi_vol = $row_uraian_paket->realisasi_vol - $value->vol;
+                                                $rowTBody .= '<tr id_row="' . $value->id . '" id_row_uraian_paket="' . $row_uraian_paket->id . '" pagu="433200.000000000000" dok_anggaran="' . $dok . '">//@audit now
+                                                <td klm="kd_sub_keg">' . $row_uraian_paket->kd_sub_keg . '</td>
+                                                <td klm="uraian">' . $row_dok_anggaran->uraian . '</td>
+                                                <td klm="vol_kontrak">' . number_format((float)$row_uraian_paket->vol_kontrak, $desimalvol_kontrak, ',', '.') . '</td>
+                                                <td klm="sat_kontrak">' . $row_uraian_paket->sat_kontrak . '</td>
+                                                <td klm="pagu">' . number_format((float)$row_uraian_paket->jumlah_pagu, $desimaljumlah_pagu, ',', '.') . '</td>
+                                                <td klm="jumlah_kontrak">' . number_format((float)$row_uraian_paket->jumlah_kontrak, $desimaljumlah_kontrak, ',', '.') . '</td>
+                                                <td klm="realisasi_vol">' . number_format((float)$realisasi_vol, $desimalrealisasi_vol, ',', '.') . '</td>
+                                                <td klm="realisasi_jumlah">' . number_format((float)$realisasi_jumlah, $desimalrealisasi_jumlah, ',', '.') . '</td>
+                                                <td klm="vol" class="positive">
+                                                    <div contenteditable rms oninput="onkeypressGlobal({ jns: \'realisasi\', tbl: \'vol_realisasi\' },this);">' . number_format((float)$value->vol, $desimalvol, ',', '.') . '</div>
+                                                </td>
+                                                <td klm="jumlah" class="positive">
+                                                    <div contenteditable rms oninput="onkeypressGlobal({ jns: \'realisasi\', tbl: \'vol_realisasi\' },this);">' . number_format((float)$value->jumlah, $desimaljumlah, ',', '.') . '</div>
+                                                </td>
+                                                <td><button class="ui blue basic icon mini button" name="modal_second" jns="get_data" tbl="realisasi" id_row="' . $value->id . '"><i class="edit alternate outline icon"></i></button></td>
+                                            </tr>';
+                                            }
+                                        } else {
+                                            $rowTBody .= '<tr><td colspan="12"><div class="ui icon info message"><i class="yellow exclamation circle icon"></i><div class="content"><div class="header">Data Tidak ditemukan </div><p>input data baru atau hubungi administrator</p></div></div></td></tr>';
+                                        }
+                                        $data['tbody'] = $rowTBody;
                                     } else {
                                         $code = 404;
                                     }
@@ -2151,5 +2253,25 @@ class get_data
         }
         //var_dump($json);
         return json_encode($json, JSON_HEX_APOS);
+    }
+    public function encrypt($formValue)
+    {
+        if (isset($_SESSION["user"]["key_encrypt"])) {
+            $keyEncrypt = $_SESSION["user"]["key_encrypt"];
+        } else if (isset($_SESSION["key_encrypt"])) {
+            $keyEncrypt = $_SESSION["key_encrypt"];
+        } else {
+            $real_path = realpath(dirname(__FILE__));
+            if (strpos($real_path, 'script')) {
+                header("Location: login");
+            } else {
+                header("Location: login");
+            }
+        }
+        if ($formValue != null && $keyEncrypt) {
+            require_once 'class/CryptoUtils.php';
+            $crypto = new CryptoUtils();
+            return $crypto->decrypt($formValue, $keyEncrypt);
+        }
     }
 }

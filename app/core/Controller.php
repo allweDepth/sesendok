@@ -28,9 +28,18 @@ class Controller
             $script = $listScript[count($listScript) - 1];
         }
         // var_dump($script);
-        return new $script;
+        switch ($script) {
+            // class yang mempunyai __construct($data)
+            case 'get_data':
+                return get_data::createInstance($_POST);
+                break;
+
+            default:
+                return new $script;
+                break;
+        }
     }
-    public function scriptConstruct($script,$data= [])
+    public function scriptConstruct($script, $data = [])
     {
         set_include_path(implode(PATH_SEPARATOR, array(
             realpath(__DIR__ . '/'),
