@@ -8,7 +8,7 @@ class get_data
     private function __construct($data)
     {
         $this->_data = $data;
-        if (isset($this->_data['jns'])) {
+        if (isset($this->_data['jenis'])) {
             $this->_jenis = trim($this->_data['jenis']);
         }
         if (isset($this->_data['tbl'])) {
@@ -23,7 +23,7 @@ class get_data
                     case 'tbl':
                         $this->_tbl = $rowValue;
                         break;
-                    case 'jns':
+                    case 'jenis':
                         $this->_jenis = $rowValue;
                         break;
                     default:
@@ -173,7 +173,7 @@ class get_data
                         ]);
                         break;
                     case 'get_data':
-                        switch ($tabl) {
+                        switch ($tbl) {
                             case 'realisasi':
                                 $id_row = $validate->setRules('id_row', 'id_row', [
                                     'required' => true,
@@ -938,7 +938,7 @@ class get_data
                             }
                             break;
                         case 'get_data':
-                            switch ($tabl) {
+                            switch ($tbl) {
                                 case 'realisasi':
                                     //get data dari modal second
 

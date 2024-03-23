@@ -3835,7 +3835,7 @@ $(document).ready(function () {
 						default:
 							break;
 					}
-					if (nameAttr === "modal_show") {
+					if (nameAttr === "modal_second") {
 						mdl.modal("show");
 					}
 				}
