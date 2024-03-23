@@ -5352,7 +5352,7 @@ $(document).ready(function () {
 						halaman: 1,
 					}, allField.data_send),
 				},
-				debug: true,
+				// debug: true,
 				ignoreDiacritics: true,
 				fullTextSearch: 'exact',
 				fields: {
