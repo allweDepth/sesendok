@@ -7,6 +7,7 @@ $id_user = $_SESSION["user"]["id"];
 $classRow = '';
 $invertedColor = '';
 $keyEnc = $_SESSION["user"]["key_encrypt"];
+$theme = $_SESSION["user"]["theme"];
 ?>
 <!doctype html>
 <html>
@@ -1303,9 +1304,22 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
                                 <input type="text" name="nama_org" placeholder="Nama organisasi" readonly>
                             </div>
                             <div class="field">
-                                <label>Organisasi</label>
+                                <label>Thema</label>
+                                <div class="ui fluid search selection dropdown" name="theme">
+                                    <input type="hidden" name="theme" non_data>
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">theme</div>
+                                    <div class="menu">
+                                        <div class="item" value="auto">Auto</div>
+                                        <div class="item" value="custom">Custom</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Keterangan</label>
                                 <textarea name="ket" placeholder="Keterangan" rows="2"></textarea>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -1408,6 +1422,7 @@ $keyEnc = $_SESSION["user"]["key_encrypt"];
     <script src="<?= BASEURL; ?>vendor/node_modules/crypto-js/crypto-js.js"></script>
     <script src="<?= BASEURL; ?>js/Encryption.js"></script>
     <script type="text/javascript">
+        var theme = '<?= $theme; ?>';
         const halamanDefault = '<?= $keyEnc; ?>';
     </script>
     <script>

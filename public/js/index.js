@@ -7,8 +7,8 @@ $(document).ready(function () {
 	var halaman = 1;
 	const kudarkMode = window.matchMedia("(prefers-color-scheme:dark)").matches;
 	console.log(kudarkMode);
-	
-	
+
+
 	//sidebar toggle
 	$(".ui.sidebar")
 		.sidebar({
@@ -3407,7 +3407,7 @@ $(document).ready(function () {
 								],
 							}) + buatElemenHtml("text", {
 								atribut: 'name="jumlah" placeholder="jumlah kontrak" rules="decimal" hidden',
-							})  +
+							}) +
 							buatElemenHtml("divider", {
 								header: "h5",
 								aligned: 'left aligned',
@@ -5318,7 +5318,7 @@ $(document).ready(function () {
 							let kd_sub_keg = $(`form[name="form_modal"] .ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
 							allField.data_send.kd_sub_keg = kd_sub_keg;
 							console.log(allField);
-							
+
 							if (kd_sub_keg.length <= 0 || !allField.data_send.hasOwnProperty("kd_sub_keg")) {
 								// this.url = '';
 							}
@@ -6489,7 +6489,8 @@ $(document).ready(function () {
 			return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
 		});
 	};
-	if (kudarkMode ===true) {
+	//mode dark automatis
+	if (kudarkMode === true && theme === 'auto') {
 		$(`a[name="change_themes"]`).trigger('click');
 	}
 });
