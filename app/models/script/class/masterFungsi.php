@@ -207,6 +207,7 @@ class MasterFungsi
                             <th rowspan="2">Luas Wilayah (km2)</th>
                             <th rowspan="2">Jumlah Penduduk (jiwa)</th>
                             <th rowspan="2">keterangan</th>
+                            <th rowspan="2">File</th>
                             <th rowspan="2" class="collapsing">AKSI</th>
                         </tr>
                         <tr class="center aligned">
@@ -1202,7 +1203,7 @@ class MasterFungsi
                 break;
             case 'wilayah':
                 $tabel_pakai = 'wilayah_neo';
-                $jumlah_kolom = 10;
+                $jumlah_kolom = 11;
                 break;
             case 'satuan':
                 $tabel_pakai = 'satuan_neo';

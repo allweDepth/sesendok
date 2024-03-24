@@ -1815,7 +1815,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "TKDN",
 									atribut:
-										'name="tkdn" placeholder="tkdn..." rms',
+										'name="tkdn" placeholder="tkdn..." rms non_data',
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Mapping Kode Akun dan Belanja",
@@ -1827,7 +1827,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="3"',
+									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
@@ -1857,16 +1857,15 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Indikator",
-									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
+									atribut: 'name="indikator" rows="4" placeholder="indikator..." non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Satuan",
-									atribut:
-										'name="satuan" placeholder="satuan..."',
+									atribut: 'name="satuan" placeholder="satuan..."',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
@@ -1890,7 +1889,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
+									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
@@ -1913,7 +1912,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
@@ -1992,7 +1991,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Status Data",
@@ -2007,10 +2006,10 @@ $(document).ready(function () {
 								buatElemenHtml("fieldFileInput2", {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
+									atribut: 'non_data',
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
-									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
@@ -2157,6 +2156,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldFileInput2", {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
+									atribut: 'non_data',
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
@@ -2181,7 +2181,7 @@ $(document).ready(function () {
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
-									atribut: 'name="keterangan" rows="4"',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								buatElemenHtml("fielToggleCheckbox", {
 									label: "",
@@ -2451,20 +2451,7 @@ $(document).ready(function () {
 						let error_code = result.error.code;
 						let kelasToast = "success";
 						let iconToast = "check circle icon";
-						if (hasKey) {
-							switch (error_code) {
-								case 9:
-									kelasToast = "error";
-									iconToast = "exclamation triangle yellow icon";
-									break;
-								default:
-									break;
-							}
-							showToast(result.error.message, {
-								class: kelasToast,
-								icon: iconToast,
-							});
-						}
+						
 						switch (attrName) {
 							case 'flyout':
 								switch (jenis) {
@@ -2472,6 +2459,7 @@ $(document).ready(function () {
 										// set nilai form 
 										let elmAttrName = formIni.find('input[name],textarea[name]');
 										switch (tbl) {
+
 											case 'xcv':
 												break;
 											default://isi form dengan data
@@ -2744,17 +2732,50 @@ $(document).ready(function () {
 												break;
 										}
 										break;
+
 									default:
 										break;
 								}
 								addRulesForm(formIni);
 								$(".ui.flyout").flyout("toggle");
 								break;
-							case 'value1':
+							case 'get_data':
+								switch (jenis) {
+									case 'get_data':
+										switch (tbl) {
+											case "wilayah":
+												if (result.error.code === 404) {
+													result.error.message = 'kode wilayah dapat digunakan';
+												}else{
+													kelasToast = "warning";
+													result.error.message = 'kode wilayah sudah digunakan, update atau gunakan kode lain';
+												}
+												break;
+											default:
+												break;
+										}
+										break;
+									default:
+										break;
+								}
 								break;
 							default:
 								break;
 						};
+						if (hasKey) {
+							switch (error_code) {
+								case 9:
+									kelasToast = "error";
+									iconToast = "exclamation triangle yellow icon";
+									break;
+								default:
+									break;
+							}
+							showToast(result.error.message, {
+								class: kelasToast,
+								icon: iconToast,
+							});
+						}
 					} else {
 					}
 					loaderHide();
@@ -4910,6 +4931,7 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
+
 								case "daftar_paket":
 									switch (jenis) {
 										case "upload":
@@ -4964,6 +4986,11 @@ $(document).ready(function () {
 								case "sub_keg_renja":
 								case "berita":
 								case "sub_keg_dpa":
+								case "hspk":
+								case "ssh":
+								case "sbu":
+								case "asb":
+									case "wilayah":
 									jalankanAjax = true;
 									// 'id_sub_keg'
 									break;
@@ -5126,6 +5153,18 @@ $(document).ready(function () {
 									// UNTUK FORM FLYOUT
 									// =================
 									case "form_flyout":
+										switch (jenis) {
+											case "get_data":
+												switch (tbl) {
+													// cari data double
+
+													default:
+														break;
+												}
+												break;
+											case "z":
+												break;
+										}
 										switch (tbl) {
 											case "sub_keg_renja":
 											case "sub_keg_dpa":
@@ -5148,7 +5187,7 @@ $(document).ready(function () {
 											case "organisasi":
 											case "sumber_dana":
 											case "akun_belanja":
-											case "wilayah":
+
 											case "berita":
 											case "peraturan":
 											case "daftar_paket":

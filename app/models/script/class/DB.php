@@ -93,7 +93,7 @@ class DB
             $message = $this->_hasilServer[$code];
             $item = array('code' => $code, 'message' => $message);
             $json = array('success' => false, 'data' => $pesan, 'error' => $item);
-            
+
             echo json_encode($json);
         }
         return $stmt;
@@ -305,7 +305,7 @@ class DB
     // Method untuk mengambil isi tabel dengan pencarian (query LIKE) array columnLike multiple kolom
     public
     //[[ 'id' ],[ 'nama kolom', 'AND']]
-    function getLike_array($tableName, $search, $limit , $condition)
+    function getLike_array($tableName, $search, $limit, $condition)
     { //[]
         $queryLike = "WHERE ";
         $jumlahArray = count($condition);
@@ -321,7 +321,7 @@ class DB
         return $this->get($tableName, $queryLike, $dataValues, $limit);
     }
     // [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'],['tahun', '= ?', $tahun, 'AND']]
-    function getArrayLike($tableName, $condition )
+    function getArrayLike($tableName, $condition)
     {
         $queryArray = "WHERE ";
         $jumlahArray = count($condition);
@@ -338,7 +338,12 @@ class DB
         // var_dump($queryArray);
         // var_dump($dataValuesCheck);
         // return $this->runQuery($query, $dataValuesCheck);
-        return $this->get($tableName,$queryArray, $dataValuesCheck);
+        $result = $this->get($tableName, $queryArray, $dataValuesCheck);
+        if (!empty($result)) {
+            return $result;
+        } else {
+            return false;
+        }
     }
     public
     function getWhereOnceArrayLike($tableName, $condition = [])
@@ -500,7 +505,7 @@ class DB
             $query_where = " WHERE ";
             foreach ($condition as $key => $val) {
                 $dataValues[] = $val[2];
-                $query_where .= (count($val) == 4) ? "{$val[3]} {$val[0]} {$val[1]} " : "{$val[0]} {$val[1]} " ;
+                $query_where .= (count($val) == 4) ? "{$val[3]} {$val[0]} {$val[1]} " : "{$val[0]} {$val[1]} ";
             }
         }
 

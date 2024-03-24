@@ -24,6 +24,7 @@ class del_data
         $data = array();
         //ambil row user
         $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
+        $dataJson['results'] = [];
         if ($rowUsername != false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
@@ -33,17 +34,28 @@ class del_data
             $kd_opd = $rowUsername->kd_organisasi;
             $id_user = $rowUsername->id;
             $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-            if ($rowPengaturan != false) {
+            if ($rowPengaturan !== false) {
                 foreach ($rowPengaturan as $key => $value) {
                     ${$key} = $value;
                 }
             } else {
-                $id_user = 0;
-                $code = 407;
+                // $id_user = 0;
+                // $code = 407;
             }
         } else {
             $id_user = 0;
             $code = 407;
+        }
+        $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+        // var_dump($rowTahunAktif);
+        $group_by = "";
+        if ($rowTahunAktif !== false) {
+            foreach ($rowTahunAktif as $key => $value) {
+                ${$key} = $value;
+            }
+            $tahun_pengaturan = $rowTahunAktif->tahun;
+        } else {
+            $id_peraturan = 0;
         }
 
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
@@ -69,8 +81,19 @@ class del_data
                 switch ($jenis) {
                     case 'del_row':
                         switch ($tbl) {
-                            case 'rekanan':
+                            case "hspk":
+                            case "ssh":
+                            case "sbu":
+                            case "asb":
                             case 'peraturan':
+                            case 'wilayah':
+                                //must admin
+                                if ($type_user !== 'admin') {
+                                    $andabukanadmin = $validate->setRules('nabiilainayah_bilang_anda_bukan_admin', 'anda bukan admin', [
+                                        'error' => true
+                                    ]);
+                                }
+                            case 'rekanan':
                                 $id_row = $validate->setRules('id_row', 'id_row', [
                                     'required' => true,
                                     'numeric' => true,
@@ -86,15 +109,13 @@ class del_data
                     case 'del_all':
                         if ($type_user !== 'admin') {
                             $andabukanadmin = $validate->setRules('nabiilainayah_bilang_anda_bukan_admin', 'anda bukan admin', [
-                                'required' => true,
-                                'inArray' => ['andabukanadminbosku']
+                                'error' => true
                             ]);
                         }
                     default:
                         if ($type_user !== 'admin') {
-                            $andabukanadmin = $validate->setRules('bukantempatandadelete', 'periksa kembali perintahnya', [
-                                'required' => true,
-                                'inArray' => ['andabukanadminbosku']
+                            $andabukanadmin = $validate->setRules('bukantempatandadelete', 'anda tidak diijinkan melakukan hapus data', [
+                                'error' => true,
                             ]);
                         }
                         break;
@@ -118,6 +139,15 @@ class del_data
                             $kodePosting = 'del_row';
                             $kondisi = [['id', '=', $id_row]];
                             switch ($tbl) {
+                                case "hspk":
+                                case "ssh":
+                                case "sbu":
+                                case "asb":
+                                    $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND']];
+                                    break;
+                                case 'wilayah':
+                                    $kondisi = [['id', '=', $id_row]];
+                                    break;
                                 case 'wall':
                                 case 'chat':
                                     $kondisi = [['id', '=', $id_row], ['id_reply', '=', $id_row, 'OR']];
@@ -142,14 +172,16 @@ class del_data
                                 case 'ssh':
                                 case 'asb':
                                 case 'hspk':
+                                    case 'wilayah':
                                     //standar delete id
                                     $data_row = $DB->getWhereCustom($tabel_pakai, $kondisi);
                                     $data[$tbl] = $DB->delete_array($tabel_pakai, $kondisi);
                                     if ($DB->count() > 0) {
+                                        
                                         $code = 4;
                                         switch ($tbl) {
                                             case 'daftar_kontrak':
-                                                
+
                                                 break;
                                             default:
                                                 break;

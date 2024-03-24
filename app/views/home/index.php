@@ -873,7 +873,7 @@ $theme = $_SESSION["user"]["theme"];
                                     </div>
                                 </h2>
                             </div>
-                            <form class="ui form scrolling segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
+                            <form class="ui form long scrolling segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
                                 <div class="two fields">
                                     <div class="field">
                                         <label>Tahun</label>
@@ -1229,9 +1229,9 @@ $theme = $_SESSION["user"]["theme"];
             <!-- profil -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="profil">
-                <div class="ui grid container">
+                <div class="ui stackable grid container">
                     <div class="four wide column">
-                        <div class="ui special centered card">
+                        <div class="ui special centered fluid card">
                             <div class="content">
                                 <div class="right floated meta">14h</div>
                                 <img class="ui avatar image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)"><span name="nama">Alwi Mansyur</span>
@@ -1253,10 +1253,10 @@ $theme = $_SESSION["user"]["theme"];
                             <div class="content">
                                 <span class="right floated">
                                     <i class="heart outline like icon"></i>
-                                    17 likes
+                                     likes
                                 </span>
                                 <i class="comment icon"></i>
-                                3 comments
+                                 comments
                             </div>
                             <div class="extra content">
                                 <div class="ui large transparent left icon input">

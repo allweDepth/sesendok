@@ -197,10 +197,10 @@ class get_data
                         break;
                     case 'edit':
                         $id_row = $validate->setRules('id_row', 'id_row', [
+                            'numeric' => true,
                             'required' => true,
-                            'sanitize' => 'string',
                             'min_char' => 1,
-                            'max_char' => 100
+                            'max_char' => 11
                         ]);
                         switch ($tbl) {
                             case 'dppa':
@@ -939,14 +939,18 @@ class get_data
                             }
                             break;
                         case 'get_data':
+                            $kodePosting = 'get_data';
                             switch ($tbl) {
+                                case 'wilayah':
+                                    //get data dari modal second
+                                    $kondisi = [['kode', '= ?', $text]];
+                                    break;
                                 case 'realisasi':
                                     //get data dari modal second
 
                                     break;
                                 default:
-                                    $where1 = "nomor = ?";
-                                    $data_where1 =  [$text];
+                                    $kondisi = [['kode', '= ?', $text]];
                                     switch ($tbl) {
                                         case 'value':
                                             break;
@@ -958,9 +962,11 @@ class get_data
                             break;
                         case 'edit':
                             $kodePosting = 'get_data';
-                            $where_row = "id = ?";
-                            $data_where_row =  [$id_row];
+                            $kondisi = [['id', '= ?', $id_row]];
                             switch ($tbl) {
+                                case 'wilayah':
+                                    $kondisi = [['id', '= ?', $id_row]];
+                                    break;
                                 case 'realisasi':
                                     $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
                                     $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
@@ -1061,7 +1067,7 @@ class get_data
                                             $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                             // $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                             // $data_where_row =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
-                                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND']];
+                                            $kondisi = [['kd_wilayah', '= ?', $kd_wilayah], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun_renstra, 'AND'], ['disable', '<= ?', 0, 'AND']];
                                             //pilih kolom yang diambil
                                             // $DB->select('id, kelompok, id_tujuan, text, keterangan');
                                             $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
@@ -1556,10 +1562,11 @@ class get_data
                             }
                             break;
                         case 'get_data':
-                            $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where_row", $data_where_row);
+                            $resul = $DB->getArrayLike($tabel_pakai, $kondisi);
+                            // $resul = $DB->getQuery("SELECT $kolom FROM $tabel_pakai WHERE $where_row", $data_where_row);
                             // var_dump($resul);
-                            $jumlahArray = is_array($resul) ? count($resul) : 0;
-                            if ($jumlahArray > 0) {
+                            // $jumlahArray = is_array($resul) ? count($resul) : 0;
+                            if ($resul !== false) {
                                 $code = 202; //202
                                 $data['users'] = $resul[0];
                                 switch ($jenis) {
@@ -1880,12 +1887,24 @@ class get_data
                                                 break;
                                         };
                                         break;
+                                    case 'get_data':
+                                        switch ($tbl) {
+                                            case 'tujuan_renstra':
+                                                break;
+                                            case 'value1':
+                                                #code...
+                                                break;
+                                            default:
+                                                #code...
+                                                break;
+                                        };
+                                        break;
                                     default:
                                         #code...
                                         break;
                                 };
                             } else {
-                                $code = 41; //202
+                                $code = 404;
                             }
                             break;
                         case 'get_row_json': // ambil data > 1 baris 
@@ -1973,7 +1992,7 @@ class get_data
                                                 case 'ssh':
                                                 case 'sbu':
                                                     $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['category'=>$row->kd_aset,'name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
+                                                    $dataJson['results'][] = ['category' => $row->kd_aset, 'name' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn];
                                                     break;
                                                 case 'value1':
                                                     break;
@@ -2031,7 +2050,7 @@ class get_data
                                                     }
 
                                                     $deskripsi = $row->nama_rekanan . ' (Pagu' . number_format((float)$row->pagu, 2, ',', '.') . ')';
-                                                    $dataJson['results'][] = ['category'=>$row->metode_pengadaan,'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'volume' => $row->volume, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg];
+                                                    $dataJson['results'][] = ['category' => $row->metode_pengadaan, 'title' => $row->uraian, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'id_uraian' => $send, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'volume' => $row->volume, 'jumlah' => $row->jumlah, 'keterangan' => $row->keterangan, 'pagu' => $row->pagu, 'uraian_id_uraian' => $kd_sub_keg];
                                                     break;
                                                 case 'hspk':
                                                 case 'asb':

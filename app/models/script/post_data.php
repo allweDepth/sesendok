@@ -1399,11 +1399,68 @@ class post_data
                                     ]);
                                 }
                                 break;
-                            default:
-                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
+                            case 'wilayah':
+                                $kode = $validate->setRules('kode', 'Kode Wilayah', [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'min_char' => 200
+                                    'min_char' => 1
+                                ]);
+                                $uraian = $validate->setRules('uraian', 'Uraian Wilayah', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3
+                                ]);
+                                $status = $validate->setRules('status', 'Status Daerah', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'inArray' => ['prov', 'kota', 'kab', 'desa', 'dusun', 'kel', 'dusun', 'lain']
+                                ]);
+                                $jml_kec = $validate->setRules('jml_kec', 'Jumlah Kecamatan', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => 'true'
+
+                                ]);
+                                $jml_kec = $validate->setRules('jml_kec', 'Jumlah Kecamatan', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => 'true'
+
+                                ]);
+                                $jml_kel = $validate->setRules('jml_kel', 'Jumlah Kelurahan', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => 'true'
+
+                                ]);
+                                $jml_desa = $validate->setRules('jml_desa', 'Jumlah Desa', [
+                                    'sanitize' => 'string',
+                                    'numeric_zero' => 'true'
+
+                                ]);
+                                $luas = $validate->setRules('luas', 'Luas Daerah', [
+                                    'required' => true,
+                                    'numeric' => true
+
+                                ]);
+                                $penduduk = $validate->setRules('penduduk', 'Jumlah Penduduk(jiwa)', [
+                                    'required' => true,
+                                    'numeric' => true
+
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 3
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
+                            default:
+                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'terdapat kesalahan data yang dikirim', [
+                                    'error' => true
                                 ]);
                                 break;
                         }
@@ -1663,6 +1720,27 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'wilayah':
+                                    $kodePosting = 'cek_insert';
+                                    $kondisi = [['kode', '=', $kode]];
+                                    $set = [
+                                        'kode' => $kode,
+                                        'uraian' => $uraian,
+                                        'status' => $status,
+                                        'jml_kec' => (int)$jml_kec,
+                                        'jml_kel' => (int)$jml_kel,
+                                        'jml_desa' => (int)$jml_desa,
+                                        'luas' => (float)$luas,
+                                        'keterangan' => $keterangan,
+                                        'disable' => $disable,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                    }
+                                    break;
                                 case 'realisasi':
                                     $disable = 0;
                                     //ambil row paket
@@ -2742,7 +2820,7 @@ class post_data
                                 case 'add':
                                     switch ($tbl) {
                                         case 'daftar_paket': //@audit sekarang pemaketan
-                                            $item_data_decode =false;
+                                            $item_data_decode = false;
                                             if ($jenis == 'edit') {
                                                 $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
                                                 //ambil data ruas dengan id paket
