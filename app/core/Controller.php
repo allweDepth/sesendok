@@ -27,13 +27,10 @@ class Controller
         if (count($listScript) > 1) {
             $script = $listScript[count($listScript) - 1];
         }
-        // var_dump($script);
-        // echo 'disini';
         switch ($script) {
             // class yang mempunyai __construct($data)
             case 'get_data':
-                // var_dump('masuk');
-                return get_data::createInstance($_POST);
+                return $script::createInstance($_POST);
                 break;
             default:
                 return new $script;

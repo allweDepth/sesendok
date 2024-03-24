@@ -134,6 +134,18 @@ $(document).ready(function () {
 			sub_keg_renja: tab_renja,
 			sub_keg_dpa: tab_dpa,
 			dpa: tab_dpa,
+			dppa: [
+				"clipboard list icon",
+				"DPPA",
+				"Daftar PerubahanPelaksanaan Anggaran (DPPA)",
+				"Rencana Kerja dan Anggaran Perubahan Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
+			],
+			renja_p: [
+				"clipboard list icon",
+				"RENJA PEUBAHAN",
+				"Rencana Kerja dan Anggaran Perubahan SKPD",
+				"Rencana Kerja dan Anggaran PerubahanSatuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
+			],
 			asn: [
 				"clipboard list icon",
 				"Aparatur Sipil Negara",
@@ -707,6 +719,7 @@ $(document).ready(function () {
 		let ini = $(this);
 		const [node] = $(this);
 		const attrs = {}
+		let deactivate = ini.attr('deactivate');
 		$.each(node.attributes, (index, attribute) => {
 			attrs[attribute.name] = attribute.value;
 			let attrName = attribute.name;
@@ -2754,6 +2767,13 @@ $(document).ready(function () {
 		if (attrName === "flyout" && jalankanAjax === false) {
 			// $(".ui.flyout").flyout("toggle");
 		}
+		// disable submit jika deactivate
+		formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').removeClass('disabled');
+		if(deactivate){
+			formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').addClass('disabled');
+			formIni.find('.ui.button, .ui.dropdown').addClass('disabled');
+			formIni.find('input, textarea').attr('readonly',1);
+		}
 	});
 	$('.special.card .dimmable.image').dimmer({
 		// As hover is not working on mobile, you might use click on those devices as fallback
@@ -3250,6 +3270,7 @@ $(document).ready(function () {
 		const ini = $(this);
 		const [node] = $(this);
 		const attrs = {}
+		let deactivate = ini.attr('deactivate');
 		$.each(node.attributes, (index, attribute) => {
 			attrs[attribute.name] = attribute.value;
 			let attrName = attribute.name;
@@ -3754,6 +3775,13 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+		// disable submit jika deactivate
+		formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').removeClass('disabled');
+		if(deactivate){
+			formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').addClass('disabled');
+			formIni.find('.ui.button, .ui.dropdown').addClass('disabled');
+			formIni.find('input, textarea').attr('readonly',1);
+		}
 		$("[rms]").mathbiila();
 	});
 	//=========================================
@@ -3764,6 +3792,7 @@ $(document).ready(function () {
 		const ini = $(this);
 		const [node] = $(this);
 		const attrs = {}
+		let deactivate = ini.attr('deactivate');
 		$.each(node.attributes, (index, attribute) => {
 			attrs[attribute.name] = attribute.value;
 			let attrName = attribute.name;
@@ -3864,6 +3893,13 @@ $(document).ready(function () {
 					icon: "check circle icon",
 				});
 			}
+		}
+		// disable submit jika deactivate
+		formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').removeClass('disabled');
+		if(deactivate){
+			formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').addClass('disabled');
+			formIni.find('.ui.button, .ui.dropdown').addClass('disabled');
+			formIni.find('input, textarea').attr('readonly',1);
 		}
 		$("[rms]").mathbiila();
 	});

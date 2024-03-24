@@ -39,8 +39,6 @@ class App
                     }
                     break;
             }
-
-
             unset($url[0]);
         }
         require_once '../app/controllers/' . $this->controller . '.php';

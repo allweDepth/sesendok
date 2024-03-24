@@ -323,19 +323,22 @@ class MasterFungsi
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
                     case 'realisasi':
-
+                        // deactivate="1" maksudnya form disabled tidak bisa dirubah
                         $buttons = '';
                         $buttonEdit = '';
                         $divAwal = '';
                         $divAkhir = '';
+                        $deactivate = '';
                         if ($kunci_realisasi <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                        <button class="ui button" name="modal_show" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                        <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        } else {
+                            $deactivate = ' deactivate="1"';
                         }
+                        $buttons = '<div class="ui icon basic mini buttons">
+                        <button class="ui button" name="modal_show" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>
+                        <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="ket_paket">' . $row->ket_paket . '</td>
                                     <td klm="ket_uraian_paket">'  . $row->ket_uraian_paket . '</td>
@@ -417,31 +420,34 @@ class MasterFungsi
                         $buttonEdit = '';
                         $divAwal = '';
                         $divAkhir = '';
+                        $deactivate = '';
                         if ($kunci_realisasi <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttonEdit = '<div class="ui floating scrolling dropdown icon button lainnya">
+                            $buttonDel = '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="trash alternate outline red icon"></i></button>';
+                        } else {
+                            $buttonDel = '';
+                            $deactivate = ' deactivate="1"';
+                        }
+                        $buttonEdit = '<div class="ui floating scrolling dropdown icon button lainnya">
                             <i class="wrench icon"></i>
                                 <div class="menu">
-                                    <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
+                                    <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i>Edit</div>
                                     <div class="divider"></div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_kontrak"><i class="upload blue icon"></i>Unggah File Kontrak</div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_addendum"><i class="upload blue icon"></i>Unggah Addendum</div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_pho"><i class="upload blue icon"></i>Unggah PHO</div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_fho"><i class="upload blue icon"></i>Unggah FHO</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_kontrak"' . $deactivate . '><i class="upload blue icon"></i>Unggah File Kontrak</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_addendum"' . $deactivate . '><i class="upload blue icon"></i>Unggah Addendum</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_pho"' . $deactivate . '><i class="upload blue icon"></i>Unggah PHO</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_fho"' . $deactivate . '><i class="upload blue icon"></i>Unggah FHO</div>
                                     <div class="divider"></div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_laporan"><i class="upload blue icon"></i>Unggah Laporan</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_laporan"' . $deactivate . '><i class="upload blue icon"></i>Unggah Laporan</div>
                                     <div class="divider"></div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi0"><i class="upload blue icon"></i>Unggah Dokumentasi 0%</div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi50"><i class="upload blue icon"></i>Unggah Dokumentasi 50%</div>
-                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi100"><i class="upload blue icon"></i>Unggah Dokumentasi 100%</div>
-                                    
-                                    
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi0"' . $deactivate . '><i class="upload blue icon"></i>Unggah Dokumentasi 0%</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi50"' . $deactivate . '><i class="upload blue icon"></i>Unggah Dokumentasi 50%</div>
+                                    <div class="item" name="flyout" jns="upload" tbl="' . $tbl . '" dok="file_dokumentasi100"' . $deactivate . '><i class="upload blue icon"></i>Unggah Dokumentasi 100%</div>
                                 </div>
                             </div>';
-                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
-                        }
+                        $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . $buttonDel . '</div>';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="uraian">' . $row->uraian . '</td>
                                     <td klm="pagu">' . $divAwalAngka  . number_format((float)$row->pagu, 2, ',', '.') . $divAkhir .  '</td>
@@ -489,7 +495,7 @@ class MasterFungsi
                                 $kolomSat_4 = 'sat_4_p';
                                 $kolomSat_5 = 'sat_5_p';
                                 if ($row->id_dpa <= 0) {
-                                    $buttonDel = '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button></div>';
+                                    $buttonDel = '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="trash alternate outline red icon"></i></button>';
                                 }
                                 break;
                             default:
@@ -501,25 +507,26 @@ class MasterFungsi
                         $divAwal = '';
                         $divAwalAngka = '';
                         $divAkhir = '';
+                        $deactivate = '';
                         if (${"kunci_$tbl"} <= 0 && ${"setujui_$tbl"} <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
                             $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttonEdit = ($row->kel_rek != 'uraian') ? '<div class="ui floating dropdown icon button lainnya" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '">
+                        } else {
+                            $buttonDel = '';
+                            $deactivate = ' deactivate="1"';
+                        }
+                        $buttonEdit = ($row->kel_rek != 'uraian') ? '<div class="ui floating dropdown icon button lainnya" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '">
                             <i class="wrench icon"></i>
                                 <div class="menu">
-                                    <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i>Edit</div>
+                                    <div class="item" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i>Edit</div>
                                     <div class="divider"></div>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"><i class="pen square blue icon"></i>Rincian</a>
-                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><i class="pen square red icon"></i>Rincian Perubahan</a>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"' . $deactivate . '><i class="pen square blue icon"></i>Rincian</a>
+                                    <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"' . $deactivate . '><i class="pen square red icon"></i>Rincian Perubahan</a>
                                     <div class="item"><div class="ui red empty circular label"></div>Help</div>
                                 </div>
-                            </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"><i class="edit outline blue icon"></i></button>';
-
-
-
-                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . $buttonDel;
-                        }
+                            </div>' : '<button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '" id_sub_keg="' . $value_dinamic['id_sub_keg'] . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>';
+                        $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . $buttonDel . '</div>';
                         // var_dump($row->{$kolomVol_1});
                         $koefisien = number_format((float)$row->{$kolomVol_1}, 2, ',', '.');
                         $koefisien .= ($row->{$kolomVol_2} > 0) ? ' x ' . number_format((float)$row->{$kolomVol_2}, 2, ',', '.') : '';
@@ -529,7 +536,7 @@ class MasterFungsi
                                     <td klm="kd_akun">' . $row->kd_akun . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
                                     <td klm="komponen">' .  $row->komponen .  '</td>
-                                    <td >' . $koefisien .  '</td>
+                                    <td>' . $koefisien .  '</td>
                                     <td klm="' . $kolomHarga_satuan . '">' . $divAwalAngka  . number_format((float)$row->{$kolomHarga_satuan}, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="' . $kolomJumlah . '">' . $divAwalAngka  . number_format((float)$row->{$kolomJumlah}, 2, ',', '.') . $divAkhir .  '</td>
                                     <td klm="keterangan">' . $divAwal . $row->keterangan . $divAkhir . '</td>
@@ -587,14 +594,19 @@ class MasterFungsi
                         $divAwal = '';
                         $divAkhir = '';
                         $divAwalAngka = '';
-                        if ($type_user == 'admin') {
+                        $deactivate = '';
+                        if (${"kunci_$tbl"} <= 0 && ${"setujui_$tbl"} <= 0) {
                             $divAwal = '<div contenteditable>';
                             $divAkhir = '</div>';
-                            $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
-                            <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+
+                            $buttonDel = '<button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="trash alternate outline red icon"></i></button>';
+                        } else {
+                            $buttonDel = '';
+                            $deactivate = ' deactivate="1"';
                         };
+                        $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
+                        $buttons = '<div class="ui icon basic mini buttons">
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>'.$buttonDel.'</div>';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_sub_keg">' .  $row->kd_sub_keg . '</td>
                                     <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
@@ -2061,7 +2073,6 @@ class MasterFungsi
             array_splice($explode_kd_sub_keg, 3, 2, $kode_keg_gabung);
         }
         $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
-        
     }
     //CRUD kolom type json
     public function add_update_field_json($dinamic = [
