@@ -1413,8 +1413,8 @@ $theme = $_SESSION["user"]["theme"];
 
     <!-- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>-->
     <script src="<?= BASEURL; ?>vendor/jquery-3.7.1.min.js"></script>
-    <script src="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.js">
-    </script>
+    <script src="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/semantic.js"></script>
+    <script src="<?= BASEURL; ?>vendor/node_modules/fomantic-ui/dist/components/form.js"></script>
     <script src="<?= BASEURL; ?>js/accounting.js"></script>
     <script src="<?= BASEURL; ?>js/mathbiila.min.js"></script>
     <script src="<?= BASEURL; ?>js/jqmath-etc-0.4.6.min.js"></script>

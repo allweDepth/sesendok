@@ -2039,6 +2039,28 @@ class MasterFungsi
         'kd_sub_keg' => [], 'kd_akun' => [], 'tbl' => '', 'kd_wilayah' => '', 'kd_opd' => '', 'tahun' => 0, 'set' => []
     ])
     {
+        $tbl = $dinamic['tbl'];
+        $tahun = $dinamic['tahun'];
+        $kd_wilayah = $dinamic['kd_wilayah'];
+        $kd_opd = $dinamic['kd_opd'];
+        $kd_akun = $dinamic['kd_akun'];
+        $kd_sub_keg = $dinamic['kd_sub_keg'];
+        $sizeOfKd_akun = 0;
+        if (isset($dinamic['kd_akun'])) {
+            $kd_akun_data = $dinamic['kd_akun'];
+            $explode_kd_akun = explode('.', $kd_akun_data);
+            $sizeOfKd_akun = sizeof($explode_kd_akun);
+        }
+        $explode_kd_sub_keg = explode('.', $kd_sub_keg);
+        $tbl = $dinamic['tbl'];
+        $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
+        //jika ada kegiatan satukan array 4 dan 5
+        if ($sizeOfKd_sub_keg > 3) {
+            $kode_keg_gabung = [$explode_kd_sub_keg[3] . '.' . $explode_kd_sub_keg[4]];
+            //hapus larik 3 sebanyak 2 artinya larik 3 dan 4 di hapus dan masukkan larik baru $kode_keg_gabung
+            array_splice($explode_kd_sub_keg, 3, 2, $kode_keg_gabung);
+        }
+        $sizeOfKd_sub_keg = sizeof($explode_kd_sub_keg);
         
     }
     //CRUD kolom type json
