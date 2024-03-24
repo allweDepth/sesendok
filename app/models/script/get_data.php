@@ -183,7 +183,74 @@ class get_data
                                     'max_char' => 100
                                 ]);
                                 break;
+                            case 'urusan':
+                            case 'bidang':
+                            case 'program':
+                            case 'kegiatan':
+                            case 'sub_keg':
+                                $urusan = $validate->setRules('urusan', 'urusan', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
 
+                                if ($urusan !== 'x' || $urusan !== 'X') {
+                                    $urusan = $validate->setRules('urusan', 'urusan', [
+                                        'numeric' => true
+                                    ]);
+                                } else {
+                                    $urusan = $validate->setRules('urusan', 'urusan', [
+                                        'strtolower' => true,
+                                        'in_array' => ['x', 'X'],
+                                    ]);
+                                }
+                                $bidang = '';
+                                $prog = 0;
+                                $keg = '';
+                                $sub_keg = 0;
+                                $bidang = $validate->setRules('bidang', 'bidang', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 100
+                                ]);
+                                if (strlen($bidang)) {
+                                    if (strtolower($bidang) !== 'xx') {
+                                        $bidang = $validate->setRules('bidang', 'bidang', [
+                                            'numeric' => true
+                                        ]);
+                                    } else {
+                                        $bidang = $validate->setRules('bidang', 'bidang', [
+                                            'strtolower' => true,
+                                            'in_array' => ['xx', 'XX'],
+                                        ]);
+                                    }
+                                    //program
+                                    $prog = $validate->setRules('prog', 'program', [
+                                        'sanitize' => 'string',
+                                        'max_char' => 100
+                                    ]);
+                                    if (strlen($prog)) {
+                                        $prog = $validate->setRules('prog', 'program', [
+                                            'numeric' => true
+                                        ]);
+                                        $keg = $validate->setRules('keg', 'kegiatan', [
+                                            'sanitize' => 'string',
+                                            'max_char' => 100
+                                        ]);
+                                        if (strlen($keg)) {
+                                            $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                                                'sanitize' => 'string',
+                                                'max_char' => 100
+                                            ]);
+                                            if (strlen($sub_keg)) {
+                                                $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                                                    'numeric' => true
+                                                ]);
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
                             default:
                                 $text = $validate->setRules('text', 'text', [
                                     'required' => true,
@@ -941,6 +1008,10 @@ class get_data
                         case 'get_data':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
+                                case 'sub_keg':
+                                    //get data dari modal second
+                                    $kondisi = [['urusan', '= ?', $urusan], ['bidang', '= ?', $bidang, 'AND'], ['urusan', '= ?', $prog, 'AND'], ['keg', '= ?', $keg, 'AND'], ['sub_keg', '= ?', $sub_keg, 'AND']];
+                                    break;
                                 case 'wilayah':
                                     //get data dari modal second
                                     $kondisi = [['kode', '= ?', $text]];

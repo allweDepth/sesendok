@@ -2420,18 +2420,34 @@ $(document).ready(function () {
 		} else if (attrName === "get_data") {
 			switch (jenis) {
 				case "get_data":
-					data.text = ini.closest(".input").find('input[name="kode"]').val();
-					if (typeof data.text === "undefined") {
-						data.text = ini.closest(".input").find("input[name]").val();
+					switch (tbl) {
+						case 'sub_keg':
+							//cek rekening
+							let valForm = formIni.form('get values',['urusan','bidang','prog','keg','sub_keg']);
+							console.log(valForm);
+							// merger object
+							data = {
+								...data,
+								...valForm
+							};
+							jalankanAjax = true;
+							break;
+						default:
+							data.text = ini.closest(".input").find('input[name="kode"]').val();
+							if (typeof data.text === "undefined") {
+								data.text = ini.closest(".input").find("input[name]").val();
+							}
+							if (data.text.length > 1) {
+								jalankanAjax = true;
+							} else {
+								showToast("Input sebelum cek data", {
+									class: "warning",
+									icon: "check circle icon",
+								});
+							}
+							break;
 					}
-					if (data.text.length > 1) {
-						jalankanAjax = true;
-					} else {
-						showToast("Input sebelum cek data", {
-							class: "warning",
-							icon: "check circle icon",
-						});
-					}
+
 					break;
 				case "value1":
 					break;
@@ -2451,7 +2467,7 @@ $(document).ready(function () {
 						let error_code = result.error.code;
 						let kelasToast = "success";
 						let iconToast = "check circle icon";
-						
+
 						switch (attrName) {
 							case 'flyout':
 								switch (jenis) {
@@ -2746,7 +2762,7 @@ $(document).ready(function () {
 											case "wilayah":
 												if (result.error.code === 404) {
 													result.error.message = 'kode wilayah dapat digunakan';
-												}else{
+												} else {
 													kelasToast = "warning";
 													result.error.message = 'kode wilayah sudah digunakan, update atau gunakan kode lain';
 												}
@@ -4990,7 +5006,7 @@ $(document).ready(function () {
 								case "ssh":
 								case "sbu":
 								case "asb":
-									case "wilayah":
+								case "wilayah":
 									jalankanAjax = true;
 									// 'id_sub_keg'
 									break;

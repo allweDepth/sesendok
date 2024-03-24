@@ -49,7 +49,7 @@ class Validate
 		if (array_key_exists('del_2_spasi', $rules)) {
 			$formValue = preg_replace('/(\s\s+|\t|\n)/', ' ', $formValue);
 		}
-		// jalankan proses hilangkan duble spasi item (jika disyaratkan)
+		// jalankan proses hilangkan karakter tertentu item (jika disyaratkan)
 		if (array_key_exists('preg_replace', $rules)) {
 			$formValue = preg_replace($rules["preg_replace"][0], $rules["preg_replace"][1], $formValue);
 		}
