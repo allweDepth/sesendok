@@ -1291,6 +1291,21 @@ $theme = $_SESSION["user"]["theme"];
                             </div>
                             <div class="two fields">
                                 <div class="field">
+                                    <label>Tahun Anggaran Aktif</label>
+                                    <div class="ui calendar year" name="tahun">
+                                        <div class="ui fluid input left icon">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" name="tahun" placeholder="tahun anggaran">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Type User</label>
+                                    <input type="text" name="type_user" placeholder="Type user" readonly>
+                                </div>
+                            </div>
+                            <div class="two fields">
+                                <div class="field">
                                     <label>Kontak Person</label>
                                     <input type="text" name="kontak_person" placeholder="Kontak Person/HP">
                                 </div>
@@ -1303,15 +1318,43 @@ $theme = $_SESSION["user"]["theme"];
                                 <label>Organisasi</label>
                                 <input type="text" name="nama_org" placeholder="Nama organisasi" readonly>
                             </div>
-                            <div class="field">
-                                <label>Thema</label>
-                                <div class="ui fluid search selection dropdown" name="theme">
-                                    <input type="hidden" name="theme" non_data>
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">theme</div>
-                                    <div class="menu">
-                                        <div class="item" value="auto">Auto</div>
-                                        <div class="item" value="custom">Custom</div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Thema</label>
+                                    <div class="ui fluid selection dropdown" name="theme">
+                                        <input type="hidden" name="theme" non_data>
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">theme</div>
+                                        <div class="menu">
+                                            <div class="item" value="auto">Auto</div>
+                                            <div class="item" value="custom">Custom</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Warna Tabel</label>
+                                    <div class="ui fluid search selection dropdown" name="warna_tbl">
+                                        <input type="hidden" name="warna_tbl">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">warna Tabel</div>
+                                        <div class="menu">
+                                            <div class="item" value="non">Default</div>
+                                            <div class="divider"></div>
+                                            <div class="item" value="red">Merah</div>
+                                            <div class="item" value="orange">Orange</div>
+                                            <div class="item" value="yellow">Yellow</div>
+                                            <div class="item" value="#070706">olive</div>
+                                            <div class="item" value="green">Green</div>
+                                            <div class="item" value="teal">Teal</div>
+                                            <div class="item" value="blue">Biru</div>
+                                            <div class="item" value="violet">Violet</div>
+                                            <div class="item" value="purple">purple</div>
+                                            <div class="item" value="pink">Pink</div>
+                                            <div class="item" value="grey">grey</div>
+                                            <div class="item" value="black">Hitam</div>
+                                            <div class="item" value="purple">purple</div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1423,6 +1466,7 @@ $theme = $_SESSION["user"]["theme"];
     <script src="<?= BASEURL; ?>js/Encryption.js"></script>
     <script type="text/javascript">
         var theme = '<?= $theme; ?>';
+        var warna_tbl = '<?= $_SESSION["user"]["warna_tbl"]; ?>';
         const halamanDefault = '<?= $keyEnc; ?>';
     </script>
     <script>

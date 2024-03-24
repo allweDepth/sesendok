@@ -435,7 +435,7 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 			case "tab_input_real":
 			case "atur":
-				case "realisasi":
+			case "realisasi":
 			case "users":
 				jalankanAjax = true;
 				break;
@@ -663,7 +663,7 @@ $(document).ready(function () {
 										let resultUser = result.data.users;
 										for (let key in resultUser) {
 											let value = resultUser[key];
-											let elmTxt = myForm.find(`[name="${key}"]`);
+											let elmTxt = myForm.find(`input[name="${key}"], textarea[name="${key}"]`);
 											if (elmTxt.length > 0) {
 												myForm.form('set value', key, value);
 											}
@@ -2769,10 +2769,10 @@ $(document).ready(function () {
 		}
 		// disable submit jika deactivate
 		formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').removeClass('disabled');
-		if(deactivate){
+		if (deactivate) {
 			formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').addClass('disabled');
 			formIni.find('.ui.button, .ui.dropdown').addClass('disabled');
-			formIni.find('input, textarea').attr('readonly',1);
+			formIni.find('input, textarea').attr('readonly', 1);
 		}
 	});
 	$('.special.card .dimmable.image').dimmer({
@@ -3777,10 +3777,10 @@ $(document).ready(function () {
 		}
 		// disable submit jika deactivate
 		formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').removeClass('disabled');
-		if(deactivate){
+		if (deactivate) {
 			formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').addClass('disabled');
 			formIni.find('.ui.button, .ui.dropdown').addClass('disabled');
-			formIni.find('input, textarea').attr('readonly',1);
+			formIni.find('input, textarea').attr('readonly', 1);
 		}
 		$("[rms]").mathbiila();
 	});
@@ -3896,10 +3896,10 @@ $(document).ready(function () {
 		}
 		// disable submit jika deactivate
 		formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').removeClass('disabled');
-		if(deactivate){
+		if (deactivate) {
 			formIni.closest('.flyout').find('.ui.ok.button, .ui.dropdown').addClass('disabled');
 			formIni.find('.ui.button, .ui.dropdown').addClass('disabled');
-			formIni.find('input, textarea').attr('readonly',1);
+			formIni.find('input, textarea').attr('readonly', 1);
 		}
 		$("[rms]").mathbiila();
 	});
@@ -4387,6 +4387,19 @@ $(document).ready(function () {
 								default:
 									break;
 							};
+							break;
+						case 'direct':
+							switch (tbl) {
+								case 'warna':
+									warna_tbl = value;
+									let warna = ['red', 'orange', 'yellow', 'green', 'olive', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
+									$('body').find('.table.insert').removeClass('red orange yellow green olive teal blue violet purple pink brown grey black')
+									let warnapilih = (warna_tbl !== 'non') ? warna_tbl : '';
+									$('body').find('.table.insert').addClass(warnapilih);
+									break;
+								default:
+									break;
+							}
 							break;
 						case 'xxx':
 							break;
@@ -5332,6 +5345,9 @@ $(document).ready(function () {
 	let calendarDateTime = new CalendarConstructor(".ui.calendar.datetime");
 	calendarDateTime.Type("datetime");
 	calendarDateTime.runCalendar();
+
+	let dropdownWarna = new DropdownConstructor('form[name="profil"] .ui.dropdown[name="warna_tbl"]')
+	dropdownWarna.onChange({ jenis: "direct", tbl: "warna" });
 	//=======================================
 	//===============SEACH GLOBAL============@audit-ok SearchConstructor
 	//=======================================
