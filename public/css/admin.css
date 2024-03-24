@@ -80,7 +80,6 @@
 body.inverted {
     background-color: var(--darkBG) !important;
 }
-
 h1.spin {
     margin: 0;
     padding: 0;
