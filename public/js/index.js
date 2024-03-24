@@ -202,6 +202,12 @@ $(document).ready(function () {
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
 			],
+			realisasi: [
+				"money icon",
+				"Realisasi",
+				"Realisasi Fisik dan Keuangan",
+				"merupakan daftar realisasi uraian dan paket",
+			],
 			mapping: [
 				"clipboard list icon",
 				"Mapping",
@@ -417,6 +423,7 @@ $(document).ready(function () {
 			case "tujuan_sasaran":
 			case "tab_input_real":
 			case "atur":
+				case "realisasi":
 			case "users":
 				jalankanAjax = true;
 				break;

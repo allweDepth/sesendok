@@ -1543,6 +1543,7 @@ class MasterFungsi
             return ['kd_sub_keg' => 'NA'];
         }
     }
+    //update insert akun sampe urusan
     public function kelolaRekSubKegDanAkun($dinamic = [
         'kd_sub_keg' => [], 'kd_akun' => [], 'tbl' => '', 'kd_wilayah' => '', 'kd_opd' => '', 'tahun' => 0, 'set' => []
     ])
@@ -2032,6 +2033,13 @@ class MasterFungsi
             }
         }
         return $data;
+    }
+    //sum akun sampe kegiatan
+    public function sumAkunSubKeg($dinamic = [
+        'kd_sub_keg' => [], 'kd_akun' => [], 'tbl' => '', 'kd_wilayah' => '', 'kd_opd' => '', 'tahun' => 0, 'set' => []
+    ])
+    {
+        
     }
     //CRUD kolom type json
     public function add_update_field_json($dinamic = [
