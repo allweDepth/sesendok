@@ -873,7 +873,7 @@ $theme = $_SESSION["user"]["theme"];
                                     </div>
                                 </h2>
                             </div>
-                            <form class="ui form segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
+                            <form class="ui form scrolling segment attached" jns="add" tbl="pengaturan" name="form_pengaturan">
                                 <div class="two fields">
                                     <div class="field">
                                         <label>Tahun</label>
@@ -1189,7 +1189,7 @@ $theme = $_SESSION["user"]["theme"];
                                 <div class="ui error message"></div>
                                 <button style="display: none;" type="submit" id="form-atur"></button>
                             </form>
-                            <div class="ui yellow segment left actions bottom attached">
+                            <div class="ui segment left actions bottom attached">
                                 <label class="ui green button" for="form-atur" tabindex="0">Simpan</label>
                             </div>
                         </div>
