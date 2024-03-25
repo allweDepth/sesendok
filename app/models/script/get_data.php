@@ -2120,10 +2120,11 @@ class get_data
                                     $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $whereGet_row_json $order ", $data_hereGet_row_json);
                                 }
                             }
-                            // var_dump($get_data);
+                            
                             $dataJson['results'] = [];
                             $jumlahArray = is_array($get_data) ? count($get_data) : 0;
                             if ($jumlahArray > 0) {
+                                // var_dump($get_data);
                                 foreach ($get_data as $row) {
                                     switch ($jenis) {
                                         case 'get_row_json':
@@ -2229,7 +2230,7 @@ class get_data
                                                 case 'asb':
                                                 case 'ssh':
                                                 case 'sbu':
-                                                    $kd_akun_db = explode(',', $row->kd_akun);
+                                                    $kd_akun_db = explode(',', $row->kd_akun);//agar konek dengan kode akun yang dipilih
                                                     if (in_array($kd_akun, $kd_akun_db)) {
                                                         $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
                                                         $dataJson['results'][] = ['title' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'keterangan' => $row->keterangan, 'disable' => $row->disable, 'kd_aset' => $row->kd_aset, 'kd_akun' => $row->kd_akun];

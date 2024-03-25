@@ -2649,6 +2649,8 @@ $(document).ready(function () {
 																				let rekeningAkun = $('form[name="form_flyout"]').find('.ui.dropdown[name="kd_akun"]').dropdown('get value');
 																				let allFieldKomponen = { id_sub_keg: id_sub_keg, kd_akun: rekeningAkun };
 																				dropdownKomponen.returnList({ jenis: "get_row_json", tbl: jenisKomponen, set: allFieldKomponen });
+
+																				
 																				break;
 																			case 'uraian':
 																				dropdownKeterangan.valuesDropdown(result.data?.values?.uraian);
@@ -2676,6 +2678,12 @@ $(document).ready(function () {
 																				dropdownSatuanRenja4.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 																			default:
 																				break;
+																		}
+																		if (tbl === 'renja_p' || tbl === 'dppa') {
+																			let id_dpa = result.data?.users?.id_dpa;
+																			if (id_dpa > 0) {
+																				$('form[name="form_flyout"]').find('.ui.dropdown[name="komponen"],.ui.dropdown[name="jenis_standar_harga"],.ui.dropdown[name="uraian"],.ui.dropdown[name="kd_akun"],.ui.dropdown[name="objek_belanja"],.ui.dropdown[name="jenis_kelompok"],.ui.dropdown[name="kelompok"]').addClass('disabled')
+																			}
 																		}
 																		break;
 																	case 'renstra':
