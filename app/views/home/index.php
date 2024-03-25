@@ -44,7 +44,7 @@ $theme = $_SESSION["user"]["theme"];
                 </div>
             </div>
             <div class="item">
-                <div class="ui inverted transparent icon input">
+                <div class="ui cari_data inverted transparent icon input">
                     <input type="text" placeholder="Search..." name="cari_data" id="cari_data">
                     <i class="search link icon"></i>
                 </div>

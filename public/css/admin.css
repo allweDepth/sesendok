@@ -27,6 +27,13 @@
     --whiteBG: white;
 }
 
+@media screen and (max-width: 700px) {
+    .cari_data {
+        /* float: none; */
+        width: 70% !important;
+    }
+}
+
 .ui.tab.segment.active,
 .pusher {
     background-color: var(--whiteBG);
@@ -36,6 +43,7 @@
 .pusher.inverted {
     background-color: var(--google-grey-900);
 }
+
 /* Styling for inputs and textareas outside .ui.dropdown */
 .ui.form.inverted textarea,
 .ui.input.inverted.textarea {
@@ -75,9 +83,11 @@
     background: none !important;
     color: inherit !important;
 }
+
 body.inverted {
     background-color: var(--darkBG) !important;
 }
+
 h1.spin {
     margin: 0;
     padding: 0;
