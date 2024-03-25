@@ -175,6 +175,14 @@ class get_data
                         break;
                     case 'get_data':
                         switch ($tbl) {
+                            case 'satuan':
+                                $value = $validate->setRules('value', 'value pengenal', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 150
+                                ]);
+                                break;
                             case 'realisasi':
                                 $id_row = $validate->setRules('id_row', 'id_row', [
                                     'required' => true,
@@ -191,12 +199,18 @@ class get_data
                                     'min_char' => 1,
                                     'max_char' => 100
                                 ]);
+                                $kelompok = null;
+                                $jenis_akun = null;
+                                $objek = null;
+                                $rincian_objek = null;
+                                $sub_rincian_objek = null;
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [
                                     'nuneric' => true,
                                     'max_char' => 100
                                 ]);
+                                $kode = [(int)$akun];
                                 if ($kelompok > 0) {
-                                    $kode = [(int)$akun];
+                                    
                                     $jenis = $validate->setRules('jenis', 'jenis', [
                                         'nuneric' => true,
                                         'max_char' => 100
@@ -1064,6 +1078,13 @@ class get_data
                         case 'get_data':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
+                                case 'neraca':
+                                case 'akun_belanja':
+                                    $kondisi = [['kode', '= ?', $kode]];
+                                    break;
+                                case 'satuan':
+                                    $kondisi = [['value', '= ?', $value]];
+                                    break;
                                 case 'bidang_urusan':
                                     $kondisi = [['urusan', '= ?', $urusan], ['bidang', '= ?', $bidang, 'AND'], ['kode', '= ?', $kode, 'AND']];
                                     break;

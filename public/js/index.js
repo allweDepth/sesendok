@@ -2170,9 +2170,11 @@ $(document).ready(function () {
 							break;
 						case "satuan":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldText", {
-									label: "Kode",
-									atribut: 'name="value" rows="4" placeholder="Kode..."',
+								buatElemenHtml("fieldTextAction", {
+									label: "Kode Pengenal",
+									atribut: 'name="value" placeholder="Kode Pengenal..."',
+									txtLabel: "cek",
+									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian HTML",
@@ -2452,6 +2454,11 @@ $(document).ready(function () {
 								...data,
 								...valForm2
 							};
+							jalankanAjax = true;
+							break;
+						case 'satuan':
+							data.value = ini.closest(".input").find('input').val();
+
 							jalankanAjax = true;
 							break;
 						default:
@@ -2792,6 +2799,9 @@ $(document).ready(function () {
 								switch (jenis) {
 									case 'get_data':
 										switch (tbl) {
+											case 'neraca':
+											case 'akun_belanja':
+											case 'satuan':
 											case 'bidang_urusan':
 											case 'prog':
 											case 'keg':
