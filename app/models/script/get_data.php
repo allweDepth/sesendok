@@ -183,7 +183,7 @@ class get_data
                                     'max_char' => 100
                                 ]);
                                 break;
-                            case 'akun':
+                            case 'akun_belanja':
                             case 'neraca':
                                 $akun = $validate->setRules('akun', 'akun', [
                                     'required' => true,
@@ -198,7 +198,6 @@ class get_data
                                 if ($kelompok > 0) {
                                     $kode = [(int)$akun];
                                     $jenis = $validate->setRules('jenis', 'jenis', [
-
                                         'nuneric' => true,
                                         'max_char' => 100
                                     ]);

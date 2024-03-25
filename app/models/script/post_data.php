@@ -143,6 +143,180 @@ class post_data
                         ]);
                     case 'add':
                         switch ($tbl) {
+                            case 'akun_belanja':
+                            case 'neraca':
+                                $akun = $validate->setRules('akun', 'akun', [
+                                    'required' => true,
+                                    'nuneric' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                                    'nuneric' => true,
+                                    'max_char' => 100
+                                ]);
+                                if ($kelompok > 0) {
+                                    $kode = [(int)$akun];
+                                    $jenis = $validate->setRules('jenis', 'jenis', [
+
+                                        'nuneric' => true,
+                                        'max_char' => 100
+                                    ]);
+                                    if ($jenis > 0) {
+                                        $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2)]);
+                                        $objek = $validate->setRules('objek', 'objek', [
+                                            'nuneric' => true,
+                                            'max_char' => 100
+                                        ]);
+                                        if ($objek > 0) {
+                                            $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2)]);
+                                            $rincian_objek = $validate->setRules('rincian_objek', 'rincian objek', [
+                                                'nuneric' => true,
+                                                'max_char' => 100
+                                            ]);
+                                            if ($rincian_objek > 0) {
+                                                $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2)]);
+                                                $sub_rincian_objek = $validate->setRules('sub_rincian_objek', 'sub rincian objek', [
+                                                    'nuneric' => true,
+                                                    'max_char' => 100
+                                                ]);
+                                                if ((int)$sub_rincian_objek > 0) {
+                                                    $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2), $Fungsi->zero_pad((int)$sub_rincian_objek, 4)]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                $uraian = $validate->setRules('uraian', 'uraian', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'del_2_spasi' => true
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                // var_dump($kode);
+                                break;
+                            case 'bidang_urusan':
+                            case 'prog':
+                            case 'keg':
+                            case 'sub_keg':
+                                $urusan = $validate->setRules('urusan', 'urusan', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+
+                                if ($urusan !== 'x' || $urusan !== 'X') {
+                                    $urusan = $validate->setRules('urusan', 'urusan', [
+                                        'numeric' => true
+                                    ]);
+                                } else {
+                                    $urusan = $validate->setRules('urusan', 'urusan', [
+                                        'strtolower' => true,
+                                        'in_array' => ['x', 'X'],
+                                    ]);
+                                }
+                                $kode = implode('.', [$urusan]);
+                                $bidang = '';
+                                $prog = 0;
+                                $keg = '';
+                                $sub_keg = 0;
+                                $bidang = $validate->setRules('bidang', 'bidang', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 100
+                                ]);
+                                if (strlen($bidang)) {
+                                    if (strtolower($bidang) !== 'xx') {
+                                        $bidang = $validate->setRules('bidang', 'bidang', [
+                                            'numeric' => true
+                                        ]);
+                                    } else {
+                                        $bidang = $validate->setRules('bidang', 'bidang', [
+                                            'strtolower' => true,
+                                            'in_array' => ['xx', 'XX'],
+                                        ]);
+                                    }
+                                    $kode = implode('.', [$urusan, $bidang]);
+                                    //program
+                                    $prog = $validate->setRules('prog', 'program', [
+                                        'sanitize' => 'string',
+                                        'max_char' => 100
+                                    ]);
+                                    if (strlen($prog)) {
+                                        $prog = $validate->setRules('prog', 'program', [
+                                            'numeric' => true
+                                        ]);
+                                        if ($prog > 0) {
+                                            $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2)]);
+                                            $keg = $validate->setRules('keg', 'kegiatan', [
+                                                'sanitize' => 'string',
+                                                'max_char' => 100
+                                            ]);
+                                            $explode_keg = explode('.', $keg);
+                                            // var_dump($explode_keg);
+                                            if (strlen($keg) > 0 && (int)$explode_keg[0] > 0 && (int)$explode_keg[1] > 0) {
+                                                $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                                                    'sanitize' => 'string',
+                                                    'max_char' => 100
+                                                ]);
+                                                $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg]);
+                                                if (strlen($sub_keg)) {
+                                                    $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                                                        'numeric' => true
+                                                    ]);
+                                                    if ($sub_keg > 0) {
+                                                        $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg, $Fungsi->zero_pad($sub_keg, 4)]);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                $nomenklatur_urusan = $validate->setRules('nomenklatur_urusan', 'nomenklatur urusan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'del_2_spasi' => true
+                                ]);
+                                $kinerja = $validate->setRules('kinerja', 'kinerja', [
+                                    'sanitize' => 'string',
+                                    'del_2_spasi' => true
+                                ]);
+                                $indikator = $validate->setRules('indikator', 'indikator', [
+                                    'sanitize' => 'string',
+                                    'del_2_spasi' => true
+                                ]);
+                                $satuan = $validate->setRules('satuan', 'satuan', [
+                                    'sanitize' => 'string',
+                                    'del_2_spasi' => true
+                                ]);
+                                if (strlen($satuan)) {
+                                    $satuan = $validate->setRules('satuan', 'satuan', [
+                                        'required' => true,
+                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $satuan]]]
+                                    ]);
+                                }
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
                             case 'realisasi':
                                 $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
                                 $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
@@ -1720,6 +1894,34 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'bidang_urusan':
+                                case 'prog':
+                                case 'keg':
+                                case 'sub_keg':
+                                    $kodePosting = 'cek_insert';
+                                    $kondisi = [['kode', '=', $kode]];
+                                    $set = [
+                                        'urusan' => $urusan,
+                                        'bidang' => $bidang,
+                                        'prog' => $prog,
+                                        'keg' => $keg,
+                                        'sub_keg' => $sub_keg,
+                                        'kode' => $kode,
+                                        'nomenklatur_urusan' => $nomenklatur_urusan,
+                                        'kinerja' => $kinerja,
+                                        'indikator' => $indikator,
+                                        'satuan' => $satuan,
+                                        'peraturan' => $id_aturan_sub_kegiatan,
+                                        'keterangan' => $keterangan,
+                                        'disable' => $disable,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                    }
+                                    break;
                                 case 'wilayah':
                                     $kodePosting = 'cek_insert';
                                     $kondisi = [['kode', '=', $kode]];

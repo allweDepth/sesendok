@@ -1908,18 +1908,18 @@ class Impor_xlsx
                                                                 if ($kelompok) {
                                                                     $kode .= ".$kelompok";
                                                                 }
-                                                                $jenis = 0;
+                                                                $jenis_akun = 0;
                                                                 $objek = 0;
                                                                 $rincian_objek = 0;
                                                                 $sub_rincian_objek = 0;
                                                                 if ($kelompok) {
-                                                                    $jenis = $validateRow->setRules(2, 'jenis', [
+                                                                    $jenis_akun = $validateRow->setRules(2, 'jenis', [
                                                                         'numeric_zero' => true,
                                                                     ]);
-                                                                    if ($jenis) {
-                                                                        $kode .= ".$jenis";
+                                                                    if ($jenis_akun) {
+                                                                        $kode .= ".$jenis_akun";
                                                                     }
-                                                                    if ($jenis) {
+                                                                    if ($jenis_akun) {
                                                                         $objek = $validateRow->setRules(3, 'objek', [
                                                                             'numeric_zero' => true,
                                                                         ]);
@@ -1955,7 +1955,7 @@ class Impor_xlsx
                                                                 $arrayDataRows = [
                                                                     'sumber_dana' => (int)$sumber_dana,
                                                                     'kelompok' => (int)$kelompok,
-                                                                    'jenis' => (int)$jenis,
+                                                                    'jenis_akun' => (int)$jenis,
                                                                     'objek' => (int)$objek,
                                                                     'rincian_objek' => (int)$rincian_objek,
                                                                     'sub_rincian_objek' => (int)$sub_rincian_objek,
@@ -1987,16 +1987,16 @@ class Impor_xlsx
                                                                 if ($kelompok) {
                                                                     $kode .= ".$kelompok";
                                                                 }
-                                                                $jenis = 0;
+                                                                $jenis_akun = 0;
                                                                 $objek = 0;
                                                                 $rincian_objek = 0;
                                                                 $sub_rincian_objek = 0;
                                                                 if ($kelompok) {
-                                                                    $jenis = $validateRow->setRules(2, 'jenis', [
+                                                                    $jenis_akun = $validateRow->setRules(2, 'jenis', [
                                                                         'numeric_zero' => true,
                                                                     ]);
-                                                                    if ($jenis) {
-                                                                        $kode .= "." . $Fungsi->zero_pad($jenis, 2);
+                                                                    if ($jenis_akun) {
+                                                                        $kode .= "." . $Fungsi->zero_pad($jenis_akun, 2);
                                                                         $objek = $validateRow->setRules(3, 'objek', [
                                                                             'numeric_zero' => true,
                                                                         ]);
@@ -2028,7 +2028,7 @@ class Impor_xlsx
                                                                 $arrayDataRows = [
                                                                     'akun' => (int)$akun,
                                                                     'kelompok' => (int)$kelompok,
-                                                                    'jenis' => (int)$jenis,
+                                                                    'jenis_akun' => (int)$jenis_akun,
                                                                     'objek' => (int)$objek,
                                                                     'rincian_objek' => (int)$rincian_objek,
                                                                     'sub_rincian_objek' => (int)$sub_rincian_objek,
@@ -2122,8 +2122,10 @@ class Impor_xlsx
                                                                     'kode' => $kode,
                                                                     'disable' => 0,
                                                                     'keterangan' => $keterangan,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_update' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $update_arrayData = [['kode', '=', $kode]];
                                                                 $getWhereArrayData = [['kode', '=', $kode]];

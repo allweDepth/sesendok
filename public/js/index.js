@@ -1881,7 +1881,7 @@ $(document).ready(function () {
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
-									dataArray: ['name="akun"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
+									dataArray: ['name="akun"', 'name="kelompok"', 'name="jenis_akun"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
@@ -1904,7 +1904,7 @@ $(document).ready(function () {
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
-									dataArray: ['name="sumber_dana"', 'name="kelompok"', 'name="jenis"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
+									dataArray: ['name="sumber_dana"', 'name="kelompok"', 'name="jenis_akun"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Uraian",
@@ -2422,11 +2422,9 @@ $(document).ready(function () {
 				case "get_data":
 					switch (tbl) {
 						case 'neraca':
-						case 'akun':
+						case 'akun_belanja':
 							//cek rekening
-							let valForm = formIni.form('get values', ['akun', 'kelompok', 'jenis', 'objek', 'rincian_objek', 'sub_rincian_objek']);
-							console.log(valForm);
-							// merger object
+							let valForm = formIni.form('get values', ['akun', 'kelompok', 'jenis_akun', 'objek', 'rincian_objek', 'sub_rincian_objek']);
 							data = {
 								...data,
 								...valForm
@@ -2439,7 +2437,7 @@ $(document).ready(function () {
 						case 'sub_keg':
 							//cek rekening
 							let valForm2 = formIni.form('get values', ['urusan', 'bidang', 'prog', 'keg', 'sub_keg']);
-							
+
 							// merger object
 							data = {
 								...data,
@@ -4966,7 +4964,12 @@ $(document).ready(function () {
 						// =================
 						case "form_flyout":
 							switch (tbl) {
-
+								case 'akun_belanja':
+								case 'neraca':
+								case 'bidang_urusan':
+								case 'prog':
+								case 'keg':
+								case 'sub_keg':
 								case "daftar_paket":
 									switch (jenis) {
 										case "upload":
