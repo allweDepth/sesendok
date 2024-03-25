@@ -1106,7 +1106,7 @@ class get_data
                                     break;
                                 case 'realisasi':
                                     //get data dari modal second
-
+                                    $kondisi = [['id', '= ?', $id_row],['kd_wilayah', '= ?', $kd_wilayah, 'AND'],['kd_opd', '= ?', $kd_opd, 'AND'],['tahun', '= ?', $tahun, 'AND']];
                                     break;
                                 default:
                                     $kondisi = [['kode', '= ?', $text]];
