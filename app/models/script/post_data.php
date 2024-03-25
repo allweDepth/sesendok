@@ -1586,8 +1586,7 @@ class post_data
                                     'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
                                 ]);
                                 $vol_1 = $validate->setRules($kolVol1, 'koefisien perkalian 1', [
-                                    'required' => true,
-                                    'numeric' => true,
+                                    'numeric_zero' => true,
                                     'min_char' => 1
                                 ]);
                                 $sat_1 = $validate->setRules($kolSat1, 'satuan koefisien perkalian 1', [
