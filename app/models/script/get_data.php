@@ -210,30 +210,30 @@ class get_data
                                 ]);
                                 $kode = (int)$akun;
                                 if ($kelompok > 0) {
-                                    $jenis = $validate->setRules('jenis', 'jenis', [
+                                    $jenis_akun = $validate->setRules('jenis_akun', 'jenis', [
                                         'nuneric' => true,
                                         'max_char' => 100
                                     ]);
-                                    if ($jenis > 0) {
-                                        $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2)]);
+                                    if ($jenis_akun > 0) {
+                                        $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis_akun, 2)]);
                                         $objek = $validate->setRules('objek', 'objek', [
                                             'nuneric' => true,
                                             'max_char' => 100
                                         ]);
                                         if ($objek > 0) {
-                                            $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2)]);
+                                            $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis_akun, 2), $Fungsi->zero_pad((int)$objek, 2)]);
                                             $rincian_objek = $validate->setRules('rincian_objek', 'rincian objek', [
                                                 'nuneric' => true,
                                                 'max_char' => 100
                                             ]);
                                             if ($rincian_objek > 0) {
-                                                $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2)]);
+                                                $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis_akun, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2)]);
                                                 $sub_rincian_objek = $validate->setRules('sub_rincian_objek', 'sub rincian objek', [
                                                     'nuneric' => true,
                                                     'max_char' => 100
                                                 ]);
                                                 if ((int)$sub_rincian_objek > 0) {
-                                                    $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2), $Fungsi->zero_pad((int)$sub_rincian_objek, 4)]);
+                                                    $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis_akun, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2), $Fungsi->zero_pad((int)$sub_rincian_objek, 4)]);
                                                 }
                                             }
                                         }
