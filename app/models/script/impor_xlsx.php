@@ -2037,8 +2037,10 @@ class Impor_xlsx
                                                                     'kode' => $kode,
                                                                     'disable' => 0,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_update' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['kode', '=', $kode]];

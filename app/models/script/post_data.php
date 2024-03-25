@@ -151,14 +151,19 @@ class post_data
                                     'min_char' => 1,
                                     'max_char' => 100
                                 ]);
+                                $kode = [(int)$akun];
+                                $kelompok = null;
+                                $jenis_akun = null;
+                                $objek = null;
+                                $rincian_objek = null;
+                                $sub_rincian_objek = null;
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [
                                     'nuneric' => true,
                                     'max_char' => 100
                                 ]);
+                                
                                 if ($kelompok > 0) {
-                                    $kode = [(int)$akun];
                                     $jenis_akun = $validate->setRules('jenis_akun', 'jenis', [
-
                                         'nuneric' => true,
                                         'max_char' => 100
                                     ]);
