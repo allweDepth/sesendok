@@ -157,13 +157,13 @@ class post_data
                                 ]);
                                 if ($kelompok > 0) {
                                     $kode = [(int)$akun];
-                                    $jenis = $validate->setRules('jenis', 'jenis', [
+                                    $jenis_akun = $validate->setRules('jenis_akun', 'jenis', [
 
                                         'nuneric' => true,
                                         'max_char' => 100
                                     ]);
-                                    if ($jenis > 0) {
-                                        $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2)]);
+                                    if ($jenis_akun > 0) {
+                                        $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis_akun, 2)]);
                                         $objek = $validate->setRules('objek', 'objek', [
                                             'nuneric' => true,
                                             'max_char' => 100
@@ -1894,6 +1894,30 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'akun_belanja':
+                                case 'neraca':
+                                    $kodePosting = 'cek_insert';
+                                    $kondisi = [['kode', '=', $kode]];
+                                    $set = [
+                                        'akun' => $akun,
+                                        'kelompok' => $kelompok,
+                                        'jenis_akun' => $jenis_akun,
+                                        'objek' => $objek,
+                                        'rincian_objek' => $rincian_objek,
+                                        'sub_rincian_objek' => $sub_rincian_objek,
+                                        'kode' => $kode,
+                                        'uraian' => $uraian,
+                                        'peraturan' => $id_aturan_sub_kegiatan,
+                                        'keterangan' => $keterangan,
+                                        'disable' => $disable,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                    }
+                                    break;
                                 case 'bidang_urusan':
                                 case 'prog':
                                 case 'keg':

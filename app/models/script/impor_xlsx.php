@@ -194,13 +194,13 @@ class Impor_xlsx
                                             break;
                                         case 'renstra':
                                             $rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
-                                            
+
                                             $unit_kerja = ($rowOrganisasi) ? $rowOrganisasi->uraian : 'unit kerja tidak ditemukan';
                                             $RowHeaderValidate = ['SASARAN', 'KODE', 'PROGRAM DAN KEGIATAN', 'SATUAN', 'INDIKATOR', 'DATA CAPAIAN AWAL', 'TARGET TAHUN 1', 'DANA TAHUN 1', 'TARGET TAHUN 2', 'DANA TAHUN 2', 'TARGET TAHUN 3', 'DANA TAHUN 3', 'TARGET TAHUN 4', 'DANA TAHUN 4', 'TARGET TAHUN 5', 'DANA TAHUN 5', 'LOKASI', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
                                         case 'tujuan_sasaran_renstra':
-                                            
+
                                             $RowHeaderValidate = ['KELOMPOK', 'TUJUAN/SASARAN', 'INDIKATOR SASARAN', 'KETERANGAN'];
                                             $count_col_min = count($RowHeaderValidate);
                                             break;
@@ -638,7 +638,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $tgl_nikah = date("Y-m-d", strtotime(trim($tgl_nikah)));
                                                                 }
                                                                 $nama_anak = $validateRow->setRules(21, 'nama_anak', [
@@ -672,7 +672,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $tgl_karpeg = date("Y-m-d", strtotime(trim($tgl_karpeg)));
                                                                 }
                                                                 $no_taspen = $validateRow->setRules(28, 'no_taspen', [
@@ -687,7 +687,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $tgl_taspen = date("Y-m-d", strtotime(trim($tgl_taspen)));
                                                                 }
                                                                 $no_karsi_karsu = $validateRow->setRules(30, 'no_karsi_karsu', [
@@ -702,7 +702,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $tgl_karsi_karsu = date("Y-m-d", strtotime(trim($tgl_karsi_karsu)));
                                                                 }
                                                                 $nmr_sk_terakhir = $validateRow->setRules(32, 'nmr_sk_terakhir', [
@@ -717,7 +717,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $tgl_sk_terakhir = date("Y-m-d", strtotime(trim($tgl_sk_terakhir)));
                                                                 }
                                                                 $pj_sk_terakhir = $validateRow->setRules(34, 'pj_sk_terakhir', [
@@ -736,7 +736,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $tgl_sk_cpns = date("Y-m-d", strtotime(trim($tgl_sk_cpns)));
                                                                 }
                                                                 $pj_sk_cpns = $validateRow->setRules(37, 'pj_sk_cpns', [
@@ -755,7 +755,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $tgl_sk_pns = date("Y-m-d", strtotime(trim($tgl_sk_pns)));
                                                                 }
                                                                 $pj_sk_pns = $validateRow->setRules(40, 'pj_sk_pns', [
@@ -778,7 +778,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $pend_tgl_tmt_sd = date("Y-m-d", strtotime(trim($pend_tgl_tmt_sd)));
                                                                 }
                                                                 $pend_t4_sd = $validateRow->setRules(44, 'pend_t4_sd', [
@@ -800,7 +800,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $pend_tgl_tmt_smp = date("Y-m-d", strtotime(trim($pend_tgl_tmt_smp)));
                                                                 }
                                                                 $pend_t4_smp = $validateRow->setRules(48, 'pend_t4_smp', [
@@ -822,7 +822,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $pend_tgl_tmt_smu = date("Y-m-d", strtotime(trim($pend_tgl_tmt_smu)));
                                                                 }
                                                                 $pend_t4_smu = $validateRow->setRules(52, 'pend_t4_smu', [
@@ -844,7 +844,7 @@ class Impor_xlsx
                                                                         'regexp' => '/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/',
                                                                         'max_char' => 100
                                                                     ]);
-                                                                }else {
+                                                                } else {
                                                                     $pend_tgl_tmt_akhir = date("Y-m-d", strtotime(trim($pend_tgl_tmt_akhir)));
                                                                 }
                                                                 $pend_t4_akhir = $validateRow->setRules(56, 'no_karpeg', [
@@ -2103,8 +2103,16 @@ class Impor_xlsx
                                                                     'sanitize' => 'string',
                                                                 ]);
                                                                 $satuan = $validateRow->setRules(8, 'satuan', [
-                                                                    'sanitize' => 'string',
+                                                                    'sanitize' => 'string'
                                                                 ]);
+                                                                if (strlen($satuan) > 0) {
+                                                                    $satuan = strtolower(preg_replace('/\s+/', '', trim($satuan)));
+                                                                    $satuan = $validateRow->setRules(8, "satuan ($satuan)", [
+                                                                        'inLikeConcatDB' => ['satuan_neo', 'value', [['value', "= ?", $satuan]]]
+                                                                    ]);
+                                                                    $satuan = strtolower(preg_replace('/\s+/', '', trim($satuan)));
+                                                                }
+
                                                                 $keterangan = $validateRow->setRules(9, 'keterangan', [
                                                                     'sanitize' => 'string',
                                                                 ]);

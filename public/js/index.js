@@ -1859,9 +1859,12 @@ $(document).ready(function () {
 									label: "Indikator",
 									atribut: 'name="indikator" rows="4" placeholder="indikator..." non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								buatElemenHtml("fieldDropdown", {
 									label: "Satuan",
-									atribut: 'name="satuan" placeholder="satuan..."',
+									atribut: 'name="satuan"',
+									kelas: "search clearable satuan ajx selection",
+									dataArray: [
+									],
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -2298,6 +2301,13 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
+						case "bidang_urusan":
+						case "prog":
+						case "keg":
+						case "sub_keg":
+							var dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
+							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+							break;
 						case 'daftar_paket':
 							dropdown_ajx_satuan = new DropdownConstructor('.ui.dropdown.satuan.ajx.selection')
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
@@ -2321,7 +2331,7 @@ $(document).ready(function () {
 							var dropdownKdAset = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_aset"]');
 							dropdownKdAset.returnList({ jenis: "get_row_json", tbl: 'aset' });
 							//satuan
-							var dropdown_ajx_satuan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.ajx[name="satuan"]')
+							dropdown_ajx_satuan = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.ajx[name="satuan"]')
 							dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
 							var dropdownKdAkun = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown.kd_akun.ajx.selection')
 							dropdownKdAkun.returnList({ jenis: "get_row_json", tbl: "akun_belanja_val" });
@@ -2437,7 +2447,6 @@ $(document).ready(function () {
 						case 'sub_keg':
 							//cek rekening
 							let valForm2 = formIni.form('get values', ['urusan', 'bidang', 'prog', 'keg', 'sub_keg']);
-
 							// merger object
 							data = {
 								...data,
@@ -2516,6 +2525,17 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
+																	case "bidang_urusan":
+																	case "prog":
+																	case "keg":
+																	case "sub_keg":
+																		switch (attrElm) {
+																			case 'satuan':
+																				dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
+																				dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+																				break;
+																		}
+																		break;
 																	case 'daftar_paket':
 																		switch (attrElm) {
 																			case 'satuan':

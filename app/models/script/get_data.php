@@ -1708,6 +1708,20 @@ class get_data
                                 switch ($jenis) {
                                     case 'edit':
                                         switch ($tbl) {
+                                            case "bidang_urusan":
+                                            case "prog":
+                                            case "keg":
+                                            case "sub_keg":
+                                                $satuan_drop = $data['users']->satuan;
+                                                if ($satuan_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['value', '=', $satuan_drop, 'AND']];
+                                                    $row = $DB->getWhereOnceCustom('satuan_neo', $kondisi_result);
+                                                    // var_dump($row);
+                                                    if ($row !== false) {
+                                                        $data['values']['satuan'] = [['name' => $row->item, 'value' => $row->value, 'selected' => true]];
+                                                    }
+                                                }
+                                                break;
                                             case 'daftar_paket':
                                                 $data['values'] = [];
                                                 $satuan_drop = $data['users']->satuan;
