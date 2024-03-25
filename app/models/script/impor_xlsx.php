@@ -1655,8 +1655,10 @@ class Impor_xlsx
                                                                     'peraturan' => $id_aturan_anggaran,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_update' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['value', '=', $value]];

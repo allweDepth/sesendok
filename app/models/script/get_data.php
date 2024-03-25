@@ -208,9 +208,8 @@ class get_data
                                     'nuneric' => true,
                                     'max_char' => 100
                                 ]);
-                                $kode = [(int)$akun];
+                                $kode = (int)$akun;
                                 if ($kelompok > 0) {
-                                    
                                     $jenis = $validate->setRules('jenis', 'jenis', [
                                         'nuneric' => true,
                                         'max_char' => 100

@@ -143,6 +143,35 @@ class post_data
                         ]);
                     case 'add':
                         switch ($tbl) {
+                            case 'satuan':
+                                $value = $validate->setRules('value', 'value', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                $item = $validate->setRules('item', 'item', [
+                                    'del_2_spasi' => true,
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                $sebutan_lain = $validate->setRules('sebutan_lain', 'sebutan lain', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
                             case 'akun_belanja':
                             case 'neraca':
                                 $akun = $validate->setRules('akun', 'akun', [
@@ -151,7 +180,7 @@ class post_data
                                     'min_char' => 1,
                                     'max_char' => 100
                                 ]);
-                                $kode = [(int)$akun];
+                                $kode = (int)$akun;
                                 $kelompok = null;
                                 $jenis_akun = null;
                                 $objek = null;
@@ -1899,6 +1928,24 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'satuan':
+                                    $kodePosting = 'cek_insert';
+                                    $kondisi = [['value', '=', $value]];
+                                    $set = [
+                                        'value' => $value,
+                                        'item' => $item,
+                                        'sebutan_lain' => $sebutan_lain,
+                                        'peraturan' => $id_aturan_anggaran,
+                                        'keterangan' => $keterangan,
+                                        'disable' => $disable,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                    }
+                                    break;
                                 case 'akun_belanja':
                                 case 'neraca':
                                     $kodePosting = 'cek_insert';
