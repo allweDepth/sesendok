@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "apexcharts": "^3.43.0",
-    "crypto-js": "^4.1.1",
-    "fomantic-ui": "^2.9.2",
-    "leaflet": "^1.9.3",
+    "apexcharts": "^3.48.0",
+    "crypto-js": "^4.2.0",
+    "fomantic-ui": "^2.9.3",
+    "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4"
   }
 }
