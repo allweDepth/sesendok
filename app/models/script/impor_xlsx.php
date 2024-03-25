@@ -1800,12 +1800,14 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'peraturan' => $id_aturan_anggaran,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_update' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
-                                                                $update_arrayData = [['kd_aset', '=', $kd_aset]];
-                                                                $getWhereArrayData = [['kd_aset', '=', $kd_aset]];
+                                                                $update_arrayData = [['kd_aset', '=', $kd_aset],['kd_akun', '=', $kd_akun,'AND']];
+                                                                $getWhereArrayData = [['kd_aset', '=', $kd_aset],['kd_akun', '=', $kd_akun,'AND']];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'peraturan':
@@ -2280,8 +2282,8 @@ class Impor_xlsx
                                                                     $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
                                                                     $arrayDataRows['data_lain'] = json_encode($data_lain);
                                                                 }
-                                                                $update_arrayData = [['npwp', "=", $npwp]];
-                                                                $getWhereArrayData = [['npwp', "=", $npwp]];
+                                                                $update_arrayData =[['npwp', "=", $npwp],['kd_wilayah', "=", $kd_wilayah,'AND']];
+                                                                $getWhereArrayData = [['npwp', "=", $npwp],['kd_wilayah', "=", $kd_wilayah,'AND']];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'x':

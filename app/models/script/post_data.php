@@ -132,9 +132,6 @@ class post_data
                             case 'value':
                                 # code...
                                 break;
-                            default:
-                                # code...
-                                break;
                         }
                         $id_row = $validate->setRules('id_row', 'id', [
                             'required' => true,
@@ -143,6 +140,170 @@ class post_data
                         ]);
                     case 'add':
                         switch ($tbl) {
+                            case 'rekanan':
+                                $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama perusahaan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 5,
+                                    'max_char' => 255
+                                ]);
+                                $alamat = $validate->setRules('alamat', 'alamat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 255
+                                ]);
+                                $email = $validate->setRules('email', 'email', [
+                                    'sanitize' => 'string',
+                                ]);
+                                $npwp = $validate->setRules('npwp', 'npwp', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 16,
+                                    'max_char' => 21
+                                ]);
+                                $no_rekening = $validate->setRules('no_rekening', 'no_rekening', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $bank_rekening = $validate->setRules('bank_rekening', 'bank rekening', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $atas_nama_rekening = $validate->setRules('atas_nama_rekening', 'atas_nama_rekening', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $direktur = $validate->setRules('direktur', 'direktur', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $jabatan = $validate->setRules('jabatan', 'jabatan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3,
+                                    'max_char' => 255
+                                ]);
+                                $no_ktp = $validate->setRules('no_ktp', 'no_ktp', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]); //
+                                $alamat_dir = $validate->setRules('alamat_dir', 'alamat_dir', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $no_akta_pendirian = $validate->setRules('no_akta_pendirian', 'no_akta_pendirian', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $no_akta_perubahan = $validate->setRules('no_akta_perubahan', 'no_akta_perubahan', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $nama_pelaksana = $validate->setRules('nama_pelaksana', 'nama_pelaksana', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+
+                                // var_dump($getData[12]);
+                                // var_dump(preg_match('/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', $getData[12]));
+                                if (strlen($no_akta_pendirian) > 0) {
+                                    $tgl_akta_pendirian = $validate->setRules('tgl_akta_pendirian', 'tanggal akta pendirian ', [
+                                        'sanitize' => 'string',
+                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                        'min_char' => 8
+                                    ]);
+                                    $tgl_akta_pendirian = $Fungsi->tanggal($tgl_akta_pendirian)['tanggalMysql'];
+                                    $lokasi_notaris_pendirian = $validate->setRules('lokasi_notaris_pendirian', 'lokasi_notaris_pendirian', [
+                                        'sanitize' => 'string',
+                                        'max_char' => 255
+                                    ]);
+                                    $nama_notaris_pendirian = $validate->setRules('nama_notaris_pendirian', 'nama_notaris_pendirian', [
+                                        'sanitize' => 'string',
+                                        'max_char' => 255
+                                    ]);
+                                }
+                                if (strlen($no_akta_perubahan) > 0) {
+                                    $tgl_akta_perubahan = $validate->setRules('tgl_akta_perubahan', 'tgl_akta_perubahan', [
+                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                        'max_char' => 100
+                                    ]);
+                                    $tgl_akta_perubahan = $Fungsi->tanggal($tgl_akta_perubahan)['tanggalMysql'];
+                                    $lokasi_notaris_perubahan = $validate->setRules('lokasi_notaris_perubahan', 'lokasi_notaris_perubahan', [
+                                        'sanitize' => 'string',
+                                        'max_char' => 255
+                                    ]);
+                                    $nama_notaris_perubahan = $validate->setRules('nama_notaris_perubahan', 'nama_notaris_perubahan', [
+                                        'sanitize' => 'string',
+                                        'max_char' => 255
+                                    ]);
+                                    $notaris_perubahan = new stdClass;
+                                    $notaris_perubahan->{'nomor[1]'} = $no_akta_perubahan;
+                                    $notaris_perubahan->{'tanggal[1]'} = $tgl_akta_perubahan;
+                                    $notaris_perubahan->{'alamat_notaris[1]'} = $lokasi_notaris_perubahan;
+                                    $notaris_perubahan->{'notaris[1]'} = $nama_notaris_perubahan;
+                                }
+                                if (strlen($nama_pelaksana) > 0) {
+                                    $jabatan_pelaksana = $validate->setRules('jabatan_pelaksana', 'jabatan_pelaksana', [
+                                        'sanitize' => 'string',
+                                        'max_char' => 255
+                                    ]);
+                                    $data_lain = new stdClass;
+                                    $data_lain->{'pelaksana[nama][1]'} = $nama_pelaksana;
+                                    $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
+                                }
+
+                                break;
+                            case 'mapping':
+                                $kd_aset = $validate->setRules('kd_aset', 'kode aset/neraca', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $kd_aset = $validate->setRules('kd_aset', 'kode aset/neraca', [
+                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $kd_aset]]]
+                                ]);
+                                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_aset, 'AND']];
+                                $row_resul_cari = $DB->getWhereOnceCustom('aset_neo', $kondisi_row);
+                                $uraian_aset = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
+                                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4
+                                ]);
+                                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
+                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun]]]
+                                ]);
+                                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_akun, 'AND']];
+                                $row_resul_cari = $DB->getWhereOnceCustom('akun_neo', $kondisi_row);
+                                $uraian_akun = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
+                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3,
+                                    'in_array' => ['ssh', 'hspk', 'asb', 'sbu']
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
+                                break;
                             case 'satuan':
                                 $value = $validate->setRules('value', 'value', [
                                     'required' => true,
@@ -190,7 +351,7 @@ class post_data
                                     'nuneric' => true,
                                     'max_char' => 100
                                 ]);
-                                
+
                                 if ($kelompok > 0) {
                                     $jenis_akun = $validate->setRules('jenis_akun', 'jenis', [
                                         'nuneric' => true,
@@ -955,78 +1116,7 @@ class post_data
                                 ]);
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
-                            case 'rekanan':
-                                $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama_perusahaan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                //var_dump($_POST['alamat']);
-                                $alamat = $validate->setRules('alamat', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $npwp = $validate->setRules('npwp', 'npwp', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 16
-                                ]);
-                                $direktur = $validate->setRules('direktur', 'direktur', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $no_ktp = $validate->setRules('no_ktp', 'Nomor KTP Direktur', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $alamat_dir = $validate->setRules('alamat_dir', 'Alamat Direktur', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $no_akta_pendirian = $validate->setRules('no_akta_pendirian', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $tgl_akta_pendirian = $validate->setRules('tgl_akta_pendirian', 'Tanggal Akta Pendirian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $lokasi_notaris_pendirian = $validate->setRules('lokasi_notaris_pendirian', 'lokasi_notaris_pendirian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $nama_notaris_pendirian = $validate->setRules('nama_notaris_pendirian', 'nama_notaris_pendirian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                //perlu cara khusus JSON
-                                $notaris_perubahan = $validate->setRules('notaris_perubahan', 'Akta Perubahan', [
-                                    'json' => true,
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $data_lain = $validate->setRules('data_lain', 'Data lainnya', [
-                                    'json' => true,
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                //$dataArray = json_decode($dataArray);
-                                // $notaris_perubahan = '{}';
-                                // $data_lain = '{}';
-                                // $file = '';
-                                break;
+
                             case 'peraturan':
                                 $type_dok = $validate->setRules('type_dok', 'type', [
                                     'sanitize' => 'string',
@@ -1928,6 +2018,70 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'rekanan':
+                                    $kodePosting = 'cek_insert';
+                                    $kondisi = [['npwp', "=", $npwp], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
+                                    if ($jenis == 'edit') {
+                                        $kondisi = [['id', "=", $id_row], ['npwp', "=", $npwp, 'AND'], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
+                                    }
+                                    $set = [
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'nama_perusahaan' => $nama_perusahaan,
+                                        'alamat' => $alamat,
+                                        'email' => $email,
+                                        'npwp' => $npwp,
+                                        'no_rekening' => $no_rekening,
+                                        'bank_rekening' => $bank_rekening,
+                                        'atas_nama_rekening' => $atas_nama_rekening,
+                                        'direktur' => $direktur,
+                                        'jabatan' => $jabatan,
+                                        'no_ktp' => $no_ktp,
+                                        'alamat_dir' => $alamat_dir,
+                                        'keterangan' => $keterangan,
+                                        'tanggal' => date('Y-m-d H:i:s'),
+                                        'username' => $_SESSION["user"]["username"]
+                                    ];
+                                    if (strlen($no_akta_pendirian) > 0) {
+                                        $set['no_akta_pendirian'] = $no_akta_pendirian;
+                                        $set['tgl_akta_pendirian'] = $tgl_akta_pendirian;
+                                        $set['lokasi_notaris_pendirian'] = $lokasi_notaris_pendirian;
+                                        $set['nama_notaris_pendirian'] = $nama_notaris_pendirian;
+                                    }
+                                    if (strlen($no_akta_perubahan) > 0) {
+                                        $notaris_perubahan = new stdClass;
+                                        $notaris_perubahan->{'nomor[1]'} = $no_akta_perubahan;
+                                        $notaris_perubahan->{'tanggal[1]'} = $tgl_akta_perubahan;
+                                        $notaris_perubahan->{'alamat_notaris[1]'} = $lokasi_notaris_perubahan;
+                                        $notaris_perubahan->{'notaris[1]'} = $nama_notaris_perubahan;
+                                        $set['notaris_perubahan'] = json_encode($notaris_perubahan);
+                                    }
+                                    if (strlen($nama_pelaksana) > 0) {
+                                        $data_lain = new stdClass;
+                                        $data_lain->{'pelaksana[nama][1]'} = $nama_pelaksana;
+                                        $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
+                                        $set['data_lain'] = json_encode($data_lain);
+                                    }
+                                    break;
+                                case 'mapping':
+                                    $kodePosting = 'cek_insert';
+                                    $kondisi = [['kd_aset', '=', $kd_aset], ['kd_akun', '=', $kd_akun, 'AND']];
+                                    $set = [
+                                        'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
+                                        'uraian_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_aset),
+                                        'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
+                                        'uraian_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_akun),
+                                        'kelompok' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok),
+                                        'disable' => $disable,
+                                        'peraturan' => $id_aturan_anggaran,
+                                        'keterangan' => $keterangan,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                    }
+                                    break;
                                 case 'satuan':
                                     $kodePosting = 'cek_insert';
                                     $kondisi = [['value', '=', $value]];
@@ -2498,45 +2652,7 @@ class post_data
                                         // $set['']=1;
                                     }
                                     break;
-                                case 'rekanan':
-                                    switch ($jns) {
-                                        case 'edit':
-                                            $kondisi = [['id', '=', $id_row]];
-                                            $kodePosting = 'update_row';
-                                        case 'input':
-                                            if ($tbl == 'input') {
-                                                $kondisi = [['nama_perusahaan', '=', $nama_perusahaan]];
-                                                $kodePosting = 'cek_insert';
-                                            }
-                                            //var_dump($notaris_perubahan);
-                                            $set = [
-                                                'nama_perusahaan' => $nama_perusahaan,
-                                                'alamat' => $alamat,
-                                                'npwp' => $npwp,
-                                                'direktur' => $direktur,
-                                                'no_ktp' => $no_ktp,
-                                                'alamat_dir' => $alamat_dir,
-                                                'no_akta_pendirian' => $no_akta_pendirian,
-                                                'tgl_akta_pendirian' => $tgl_akta_pendirian,
-                                                'lokasi_notaris_pendirian' => $lokasi_notaris_pendirian,
-                                                'nama_notaris_pendirian' => $nama_notaris_pendirian,
-                                                'notaris_perubahan' => $notaris_perubahan,
-                                                'data_lain' => $data_lain,
-                                                'keterangan' => $keterangan
-                                            ];
-                                            //pengolahan file
-                                            if ($_FILES['file']) {
-                                                $file = $Fungsi->importFile($jenis, '');
-                                                //var_dump($file);
-                                                if ($file['result'] == 'ok') {
-                                                    $set['file'] = $file['file'];
-                                                }
-                                            }
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
+
                                 case 'renstra':
                                     $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
                                     if ($rowPengaturan !== false) {

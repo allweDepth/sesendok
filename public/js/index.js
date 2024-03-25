@@ -1697,7 +1697,7 @@ $(document).ready(function () {
 								label: "Nama Perusahaan",
 								txtLabel: `<i class="search icon"></i>`,
 								atribut: 'name="nama_perusahaan" placeholder="Nama Perusahaan..."',
-								atributLabel: `name="get_data" jns="${jenis}" tbl="cek_kode"`,
+								atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 							}) +
 								buatElemenHtml("fieldText", {
 									label: "Alamat",
@@ -1708,8 +1708,12 @@ $(document).ready(function () {
 									atribut: 'name="npwp" placeholder="NPWP..."',
 								}) +
 								buatElemenHtml("fieldText", {
-									label: "Nama Pemilik/Direktur",
+									label: "Nama Pemilik Penanda Tangan Perjanjian",
 									atribut: 'name="direktur" placeholder="Direktur..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Jabatan Penanda Tangan Perjanjian",
+									atribut: 'name="jabatan" placeholder="Jabatan Penanda Tangan Perjanjian..."',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "No. KTP Direktur",
@@ -2812,6 +2816,14 @@ $(document).ready(function () {
 												} else {
 													kelasToast = "warning";
 													result.error.message = 'kode sudah digunakan, update atau gunakan kode lain';
+												}
+												break;
+											case 'rekanan':
+												if (result.error.code === 404) {
+													result.error.message = 'nama perusahaan dapat digunakan';
+												} else {
+													kelasToast = "warning";
+													result.error.message = 'nama rekanan sudah digunakan, update atau gunakan nama rekanan lain';
 												}
 												break;
 											default:

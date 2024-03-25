@@ -1077,6 +1077,9 @@ class get_data
                         case 'get_data':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
+                                case 'rekanan':
+                                    $kondisi = [['kd_wilayah', '= ?', $kd_wilayah],['nama_perusahaan', '= ?', $text, 'AND']];
+                                    break;
                                 case 'neraca':
                                 case 'akun_belanja':
                                     $kondisi = [['kode', '= ?', $kode]];
