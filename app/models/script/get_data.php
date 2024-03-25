@@ -183,6 +183,52 @@ class get_data
                                     'max_char' => 100
                                 ]);
                                 break;
+                            case 'akun':
+                            case 'neraca':
+                                $akun = $validate->setRules('akun', 'akun', [
+                                    'required' => true,
+                                    'nuneric' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 100
+                                ]);
+                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                                    'nuneric' => true,
+                                    'max_char' => 100
+                                ]);
+                                if ($kelompok > 0) {
+                                    $kode = [(int)$akun];
+                                    $jenis = $validate->setRules('jenis', 'jenis', [
+
+                                        'nuneric' => true,
+                                        'max_char' => 100
+                                    ]);
+                                    if ($jenis > 0) {
+                                        $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2)]);
+                                        $objek = $validate->setRules('objek', 'objek', [
+                                            'nuneric' => true,
+                                            'max_char' => 100
+                                        ]);
+                                        if ($objek > 0) {
+                                            $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2)]);
+                                            $rincian_objek = $validate->setRules('rincian_objek', 'rincian objek', [
+                                                'nuneric' => true,
+                                                'max_char' => 100
+                                            ]);
+                                            if ($rincian_objek > 0) {
+                                                $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2)]);
+                                                $sub_rincian_objek = $validate->setRules('sub_rincian_objek', 'sub rincian objek', [
+                                                    'nuneric' => true,
+                                                    'max_char' => 100
+                                                ]);
+                                                if ((int)$sub_rincian_objek > 0) {
+                                                    $kode = implode('.', $akun, [(int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2), $Fungsi->zero_pad((int)$sub_rincian_objek, 4)]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                // var_dump($kode);
+                                break;
                             case 'bidang_urusan':
                             case 'prog':
                             case 'keg':
@@ -240,8 +286,9 @@ class get_data
                                                 'sanitize' => 'string',
                                                 'max_char' => 100
                                             ]);
-                                            $explode_keg = explode(',',$keg);
-                                            if (strlen($keg) && (int)$explode_keg[0] > 0 && (int)$explode_keg[1] > 0) {
+                                            $explode_keg = explode('.', $keg);
+                                            // var_dump($explode_keg);
+                                            if (strlen($keg) > 0 && (int)$explode_keg[0] > 0 && (int)$explode_keg[1] > 0) {
                                                 $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
                                                     'sanitize' => 'string',
                                                     'max_char' => 100
@@ -254,13 +301,12 @@ class get_data
                                                     if ($sub_keg > 0) {
                                                         $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg, $Fungsi->zero_pad($sub_keg, 4)]);
                                                     }
-                                                    
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                var_dump($kode);
+                                // var_dump($kode);
                                 break;
                             default:
                                 $text = $validate->setRules('text', 'text', [
@@ -1658,7 +1704,7 @@ class get_data
                             // var_dump($resul);
                             // $jumlahArray = is_array($resul) ? count($resul) : 0;
                             if ($resul !== false) {
-                                $code = 202; //202
+                                $code = 302; //202
                                 $data['users'] = $resul[0];
                                 switch ($jenis) {
                                     case 'edit':

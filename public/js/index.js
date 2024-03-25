@@ -2421,17 +2421,29 @@ $(document).ready(function () {
 			switch (jenis) {
 				case "get_data":
 					switch (tbl) {
-						case 'bidang_urusan':
-						case 'prog':
-						case 'keg':
-						case 'sub_keg':
+						case 'neraca':
+						case 'akun':
 							//cek rekening
-							let valForm = formIni.form('get values', ['urusan', 'bidang', 'prog', 'keg', 'sub_keg']);
+							let valForm = formIni.form('get values', ['akun', 'kelompok', 'jenis', 'objek', 'rincian_objek', 'sub_rincian_objek']);
 							console.log(valForm);
 							// merger object
 							data = {
 								...data,
 								...valForm
+							};
+							jalankanAjax = true;
+							break;
+						case 'bidang_urusan':
+						case 'prog':
+						case 'keg':
+						case 'sub_keg':
+							//cek rekening
+							let valForm2 = formIni.form('get values', ['urusan', 'bidang', 'prog', 'keg', 'sub_keg']);
+							
+							// merger object
+							data = {
+								...data,
+								...valForm2
 							};
 							jalankanAjax = true;
 							break;
