@@ -183,10 +183,9 @@ class get_data
                                     'max_char' => 100
                                 ]);
                                 break;
-                            case 'urusan':
-                            case 'bidang':
-                            case 'program':
-                            case 'kegiatan':
+                            case 'bidang_urusan':
+                            case 'prog':
+                            case 'keg':
                             case 'sub_keg':
                                 $urusan = $validate->setRules('urusan', 'urusan', [
                                     'required' => true,
@@ -205,6 +204,7 @@ class get_data
                                         'in_array' => ['x', 'X'],
                                     ]);
                                 }
+                                $kode = implode('.', [$urusan]);
                                 $bidang = '';
                                 $prog = 0;
                                 $keg = '';
@@ -224,6 +224,7 @@ class get_data
                                             'in_array' => ['xx', 'XX'],
                                         ]);
                                     }
+                                    $kode = implode('.', [$urusan, $bidang]);
                                     //program
                                     $prog = $validate->setRules('prog', 'program', [
                                         'sanitize' => 'string',
@@ -233,23 +234,33 @@ class get_data
                                         $prog = $validate->setRules('prog', 'program', [
                                             'numeric' => true
                                         ]);
-                                        $keg = $validate->setRules('keg', 'kegiatan', [
-                                            'sanitize' => 'string',
-                                            'max_char' => 100
-                                        ]);
-                                        if (strlen($keg)) {
-                                            $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                                        if ($prog > 0) {
+                                            $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2)]);
+                                            $keg = $validate->setRules('keg', 'kegiatan', [
                                                 'sanitize' => 'string',
                                                 'max_char' => 100
                                             ]);
-                                            if (strlen($sub_keg)) {
+                                            $explode_keg = explode(',',$keg);
+                                            if (strlen($keg) && (int)$explode_keg[0] > 0 && (int)$explode_keg[1] > 0) {
                                                 $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
-                                                    'numeric' => true
+                                                    'sanitize' => 'string',
+                                                    'max_char' => 100
                                                 ]);
+                                                $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg]);
+                                                if (strlen($sub_keg)) {
+                                                    $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                                                        'numeric' => true
+                                                    ]);
+                                                    if ($sub_keg > 0) {
+                                                        $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg, $Fungsi->zero_pad($sub_keg, 4)]);
+                                                    }
+                                                    
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                var_dump($kode);
                                 break;
                             default:
                                 $text = $validate->setRules('text', 'text', [
@@ -1008,9 +1019,18 @@ class get_data
                         case 'get_data':
                             $kodePosting = 'get_data';
                             switch ($tbl) {
+                                case 'bidang_urusan':
+                                    $kondisi = [['urusan', '= ?', $urusan], ['bidang', '= ?', $bidang, 'AND'], ['kode', '= ?', $kode, 'AND']];
+                                    break;
+                                case 'prog':
+                                    $kondisi = [['urusan', '= ?', $urusan], ['bidang', '= ?', $bidang, 'AND'], ['prog', '= ?', $prog, 'AND'], ['kode', '= ?', $kode, 'AND']];
+                                    break;
+                                case 'keg':
+                                    $kondisi = [['urusan', '= ?', $urusan], ['bidang', '= ?', $bidang, 'AND'], ['prog', '= ?', $prog, 'AND'], ['keg', '= ?', $keg, 'AND'], ['kode', '= ?', $kode, 'AND']];
+                                    break;
                                 case 'sub_keg':
                                     //get data dari modal second
-                                    $kondisi = [['urusan', '= ?', $urusan], ['bidang', '= ?', $bidang, 'AND'], ['urusan', '= ?', $prog, 'AND'], ['keg', '= ?', $keg, 'AND'], ['sub_keg', '= ?', $sub_keg, 'AND']];
+                                    $kondisi = [['urusan', '= ?', $urusan], ['bidang', '= ?', $bidang, 'AND'], ['prog', '= ?', $prog, 'AND'], ['keg', '= ?', $keg, 'AND'], ['sub_keg', '= ?', $sub_keg, 'AND'], ['kode', '= ?', $kode, 'AND']];
                                     break;
                                 case 'wilayah':
                                     //get data dari modal second

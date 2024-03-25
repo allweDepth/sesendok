@@ -2421,9 +2421,12 @@ $(document).ready(function () {
 			switch (jenis) {
 				case "get_data":
 					switch (tbl) {
+						case 'bidang_urusan':
+						case 'prog':
+						case 'keg':
 						case 'sub_keg':
 							//cek rekening
-							let valForm = formIni.form('get values',['urusan','bidang','prog','keg','sub_keg']);
+							let valForm = formIni.form('get values', ['urusan', 'bidang', 'prog', 'keg', 'sub_keg']);
 							console.log(valForm);
 							// merger object
 							data = {
@@ -2759,12 +2762,16 @@ $(document).ready(function () {
 								switch (jenis) {
 									case 'get_data':
 										switch (tbl) {
+											case 'bidang_urusan':
+											case 'prog':
+											case 'keg':
+											case 'sub_keg':
 											case "wilayah":
 												if (result.error.code === 404) {
-													result.error.message = 'kode wilayah dapat digunakan';
+													result.error.message = 'kode dapat digunakan';
 												} else {
 													kelasToast = "warning";
-													result.error.message = 'kode wilayah sudah digunakan, update atau gunakan kode lain';
+													result.error.message = 'kode sudah digunakan, update atau gunakan kode lain';
 												}
 												break;
 											default:
