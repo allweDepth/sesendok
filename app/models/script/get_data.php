@@ -1197,10 +1197,10 @@ class get_data
                                                 <td klm="realisasi_vol">' . number_format((float)$realisasi_vol, $desimalrealisasi_vol, ',', '.') . '</td>
                                                 <td klm="realisasi_jumlah">' . number_format((float)$realisasi_jumlah, $desimalrealisasi_jumlah, ',', '.') . '</td>
                                                 <td klm="vol" class="positive">
-                                                    <div contenteditable rms oninput="onkeypressGlobal({ jns: \'realisasi\', tbl: \'vol_realisasi\' },this);">' . number_format((float)$value->vol, $desimalvol, ',', '.') . '</div>
+                                                    <div contenteditable oninput="onkeypressGlobal({ jns: \'realisasi\', tbl: \'vol_realisasi\' },this);" rms>' . number_format((float)$value->vol, $desimalvol, ',', '.') . '</div>
                                                 </td>
                                                 <td klm="jumlah" class="positive">
-                                                    <div contenteditable rms oninput="onkeypressGlobal({ jns: \'realisasi\', tbl: \'vol_realisasi\' },this);">' . number_format((float)$value->jumlah, $desimaljumlah, ',', '.') . '</div>
+                                                    <div contenteditable oninput="onkeypressGlobal({ jns: \'realisasi\', tbl: \'vol_realisasi\' },this);" rms>' . number_format((float)$value->jumlah, $desimaljumlah, ',', '.') . '</div>
                                                 </td>
                                                 <td><button class="ui blue basic icon mini button" name="modal_second" jns="get_data" tbl="realisasi" id_row="' . $value->id . '"><i class="edit alternate outline icon"></i></button></td>
                                             </tr>';

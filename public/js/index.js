@@ -1408,7 +1408,7 @@ $(document).ready(function () {
 									atribut: `name="${jumlahku}" placeholder="jumlah..." rms non_data readonly`,
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									label: "Keterangan",
+									label: "Catatan",
 									atribut: 'name="keterangan" rows="2" non_data',
 								});
 							break;
@@ -5600,7 +5600,7 @@ $(document).ready(function () {
 										let strText = result.jumlah;
 										strText = parseFloat(strText);
 										strText = accounting.formatNumber(strText, strText.countDecimals(), ".", ",");
-										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable rms oninput="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);"></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
+										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable oninput="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);" rms></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
 										MyForm.find(`table tbody`).append(trElm);
 										let pagu = 0;
 										let kontrak = 0;
@@ -5649,10 +5649,10 @@ $(document).ready(function () {
 											<td klm="realisasi_vol">${realisasi_vol}</td>
 											<td klm="realisasi_jumlah">${realisasi_jumlah}</td>
 											<td klm="vol" class="positive">
-												<div contenteditable rms oninput="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
+												<div contenteditable oninput="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);" rms></div>
 											</td>
 											<td klm="jumlah" class="positive">
-												<div contenteditable rms oninput="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);"></div>
+												<div contenteditable oninput="onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' },this);" rms></div>
 											</td>
 											<td><button class="ui blue basic icon mini button" name="modal_second" jns="direct" tbl="uraian_paket"
 													id_row="${value.id_uraian_paket}"><i class="edit alternate outline icon"></i></button></td>

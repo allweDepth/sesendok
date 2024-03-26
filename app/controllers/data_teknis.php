@@ -14,7 +14,7 @@ class Data_Teknis extends Controller
         $dataHeader['css'] = 'css/login.css';
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
-        $dataFooter['tambahan_js'] = '';
+        $dataFooter['tambahan_js'] = ['js/sectiondev.js'];
         $dataFooter['dok'] = 'Data_Teknis';
         $dataFooter['key_encrypt'] = $key_encrypt;
         $this->view('templates/header_login', $dataHeader);
