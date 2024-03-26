@@ -14,7 +14,7 @@ class Data_Teknis extends Controller
         $dataHeader['css'] = 'css/login.css';
         $dataHeader['tambahan_css'] = '';
         $dataFooter['js'] = 'js/login.js';
-        $dataFooter['tambahan_js'] = ['js/sectiondev.js'];
+        $dataFooter['tambahan_js'] = '';//GET http://localhost/sesendokneo/public/js/login net::ERR_TOO_MANY_REDIRECTS
         $dataFooter['dok'] = 'Data_Teknis';
         $dataFooter['key_encrypt'] = $key_encrypt;
         $this->view('templates/header_login', $dataHeader);
@@ -30,7 +30,6 @@ class Data_Teknis extends Controller
     public function register()
     {
         $data = $this->script("register")->register();
-        // var_dump('masuksini');
         echo $data;
     }
     public function wilayah()

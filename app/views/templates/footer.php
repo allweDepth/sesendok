@@ -12,14 +12,15 @@
 <script>
     const BASEURL = '<?= BASEURL; ?>';
 </script>
-<?php if ($data['js'] != '') {
-    echo '<script src="' . BASEURL . $data['js'] . '">';
-} ?>
 
-</script>
-<?php foreach ($data['tambahan_js'] as $key => $value) {
-    echo '<script src="' . BASEURL . $value . '"></script>';
-} ?>
+<?php 
+if ($data['js'] != '') {
+    echo "<script src=" . BASEURL . $data['js'] . "></script>";
+}
+// if (!empty($data['tambahan_js'])) {
+//     echo "<script src=" . BASEURL . $data['tambahan_js'] . "></script>";
+// } 
+?>
 <script nomodule>
     console.info(`Your browser doesn't support native JavaScript modules.`);
 </script>

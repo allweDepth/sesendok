@@ -1,6 +1,32 @@
 var dok = '';
 $(document).ready(function () {
 	"use strict";
+	$('.ui.vertical.stripe.segment .ui.container').visibility({
+        once: false,
+        // update size when new content loads
+        observeChanges: true,
+        onTopVisible: function (calculations) {
+            // top is on screen
+            console.log(`onTopVisible = `);
+			console.log(calculations);
+        },
+        onTopPassed: function (calculations) {
+            // top of element passed
+            console.log(`onTopPassed =`);
+			console.log(calculations);
+        },
+        onUpdate: function (calculations) {
+            // do something whenever calculations adjust
+            // console.log(`onUpdate =`);
+			// console.log(calculations);
+
+        },
+        // load content on bottom edge visible
+        onBottomVisible: function (calculations) {
+            console.log(`onBottomVisible =`);
+			console.log(calculations);
+        }
+    });
 	// fix menu when passed
 	$('.masthead')
 		.visibility({
