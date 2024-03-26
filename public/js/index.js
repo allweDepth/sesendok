@@ -536,6 +536,7 @@ $(document).ready(function () {
 		data.jenis = jenis;
 		data.tbl = tbl;
 		data.halaman = halaman;
+
 		if (jalankanAjax) {
 			loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
@@ -555,7 +556,7 @@ $(document).ready(function () {
 									elmthead.html(result.data.thead);
 								}
 								if ($(`a[name="change_themes"]`).attr("theme") === 'dark') {
-									elmTable.find(".ui:not(.hidden)").removeClass("inverted").addClass("inverted");
+									elmTable.find(".ui:not(.hidden),.icon").removeClass("inverted").addClass("inverted");
 								}
 								divTab.find(`.ui.dropdown`).dropdown({});
 								let dokumenAnggaran = '';
@@ -2273,7 +2274,9 @@ $(document).ready(function () {
 						placeholderData: `Pilih File (${acceptFileExt})...`,
 						accept: acceptFileExt,
 						file: data.dok
-					}) + `<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img jns="img" onerror="imgsrc(this)"></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`; //non_data(artinya tidak di dicek form)
+					}) + buatElemenHtml("card4", {
+
+					}); //non_data(artinya tidak di dicek form)
 					//dropdown
 					switch (tbl) {
 						case 'daftar_paket':
@@ -2302,6 +2305,9 @@ $(document).ready(function () {
 			$('div[name="jml_header"]').dropdown("set selected", 1);
 			$(".ui.accordion").accordion();
 			formIni.find(".ui.dropdown.lainnya").dropdown();
+			if ($(`a[name="change_themes"]`).attr("theme") === 'dark') {
+				$(".form .icon").removeClass("inverted").addClass("inverted");
+			}
 			addRulesForm(formIni);
 			switch (jenis) {
 				case 'add':
@@ -2650,7 +2656,7 @@ $(document).ready(function () {
 																				let allFieldKomponen = { id_sub_keg: id_sub_keg, kd_akun: rekeningAkun };
 																				dropdownKomponen.returnList({ jenis: "get_row_json", tbl: jenisKomponen, set: allFieldKomponen });
 
-																				
+
 																				break;
 																			case 'uraian':
 																				dropdownKeterangan.valuesDropdown(result.data?.values?.uraian);
@@ -3718,6 +3724,9 @@ $(document).ready(function () {
 		let calendarYear = new CalendarConstructor(".ui.calendar.year");
 		calendarYear.Type("year");
 		calendarYear.runCalendar();
+		if ($(`a[name="change_themes"]`).attr("theme") === 'dark') {
+			$(".form .icon").removeClass("inverted").addClass("inverted");
+		}
 		addRulesForm(formIni);
 		switch (jnsAttr) {
 			case 'edit':
@@ -5889,7 +5898,7 @@ $(document).ready(function () {
 		let iconDataSeach = "icon" in dataElemen ? dataElemen.icon : "search icon";
 		let txtLabelData = "txtLabel" in dataElemen ? dataElemen.txtLabel : "";
 		let dataArray = "dataArray" in dataElemen ? dataElemen.dataArray : []; //contoh untuk dropdown
-		let typeText = "typeText" in dataElemen ? dataElemen.typeText : `type="text"`;
+		let typeText = "typeText" in dataElemen ? dataElemen.typeText : `text`;
 		let dataArray2 = "dataArray2" in dataElemen ? dataElemen.dataArray2 : [[]]; //contoh buat dropdown yang ada deskripsi
 		let jenisListDropdown = "jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : ""; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]
 		let headerTable = "headerTable" in dataElemen ? dataElemen.headerTable : "";
@@ -5897,6 +5906,7 @@ $(document).ready(function () {
 		let bodyTable = "bodyTable" in dataElemen ? dataElemen.bodyTable : "";
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
+		let elemen = '';
 		switch (namaElemen) {
 			case "div":
 				elemen = `<div class="${kelas}">${content}</div>`;
@@ -5977,6 +5987,9 @@ $(document).ready(function () {
 							3 comments
 						</div>
 					</div>`;
+				break;
+			case "card4":
+				elemen = `<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img jns="img" onerror="imgsrc(this)"></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`
 				break;
 			case "button":
 				elemen = `<button class="ui ${kelasData} button" ${atribut}>${valueData}</button>`;
@@ -6106,13 +6119,13 @@ $(document).ready(function () {
 				elemen = `<h3 class="ui dividing header">${labelData}</h3>`;
 				break;
 			case "dividerClearing":
-				var elemen = '<div class="ui clearing divider"></div>';
+				elemen = '<div class="ui clearing divider"></div>';
 				break;
 			case "dividerFitted":
-				var elemen = '<div class="ui fitted divider"></div>';
+				elemen = '<div class="ui fitted divider"></div>';
 				break;
 			case "dividerIcon":
-				var elemen = '<div class="ui horizontal divider"></div>';
+				elemen = '<div class="ui horizontal divider"></div>';
 				break;
 			case "dividerHidden":
 				elemen = `<div class="ui hidden divider"></div>`;
@@ -6412,7 +6425,12 @@ $(document).ready(function () {
 				break;
 		}
 		if (darkmodeEnabled === true) {
-			elemen = elemen.replace(/class="ui/g, `class="ui inverted`);
+			let $elemen = $(elemen);
+			if ($elemen.hasClass('ui')) {
+				$elemen.addClass('inverted');
+			}
+			$elemen.find('.ui, .icon').addClass('inverted');
+			elemen = $elemen.prop('outerHTML');
 		}
 		return elemen;
 	}
@@ -6426,7 +6444,7 @@ $(document).ready(function () {
 	}
 	function toggleDarkMode() {
 		// add fomantic's inverted class to all ui elements
-		$("body").find(".ui:not(.hidden)").addClass("inverted");
+		$("body").find(".ui:not(.hidden),.icon").addClass("inverted");
 		$("body").find(".ui.modal,.ui.form").addClass("inverted");
 		// add custom inverted class to body
 		$("body").addClass("inverted");
@@ -6438,7 +6456,7 @@ $(document).ready(function () {
 	}
 	function toggleLightMode() {
 		// remove fomantic's inverted from all ui elements
-		$("body").find(".ui:not(.hidden)").removeClass("inverted");
+		$("body").find(".ui:not(.hidden),.icon").removeClass("inverted");
 		$("body").find(".ui.modal,.ui.form").removeClass("inverted");
 		$("body").find(".ui.main.menu,.left.vertical.sidebar.menu").addClass("inverted");
 		// remove custom inverted class to body

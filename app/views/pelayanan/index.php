@@ -58,11 +58,11 @@
             <div class="ui hidden divider"></div>
             <div class="ui centered inverted link cards">
                 <div class="card">
-                    <div class="image">
+                    <a class="image" href="#bawah">
                         <img src="img/avatar2/large/matthew.png">
-                    </div>
+</a>
                     <div class="content">
-                        <div class="header">Rekomendasi IMB</div>
+                        <div class="header"><a href="#bawah">Rekomendasi IMB</a></div>
                         <div class="meta">
                             <a>Friends</a>
                         </div>
@@ -180,7 +180,8 @@
             <h2 class="ui dividing header">
                 Layanan
             </h2>
-            <div class="no example">
+            
+            <div class="no example" id="bawah">
                 <blockquote>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim ratione nesciunt qui a velit distinctio aliquam. Aliquid et velit debitis, voluptatum facilis ullam maiores quae inventore doloremque impedit vitae eligendi ipsa corporis quod eos, ea saepe perferendis sapiente, eveniet beatae facere unde. Veritatis, doloribus totam! Neque modi quia at alias.</p>
                     <p>...Starting with exemplars that themselves have consistency of style ensures that such consistency is the designer's to lose.</p>
