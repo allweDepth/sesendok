@@ -5344,6 +5344,22 @@ $(document).ready(function () {
 											elmRow.addClass(warna_tbl);
 											$("table").addClass("inverted");
 										}
+										switch (jenis) {
+											case 'edit':
+												switch (tbl) {
+													case 'profil':
+														$('#set_tahun_anggaran').text(result.data.users.tahun)
+														break;
+												
+													default:
+														break;
+												}
+												break;
+										
+											default:
+												break;
+										}
+										
 										break;
 									default:
 										break;

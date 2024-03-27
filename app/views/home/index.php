@@ -63,7 +63,7 @@ $theme = $_SESSION["user"]["theme"];
                 <h2 class="ui inverted center red aligned icon header dash_header"><i class="circular colored blue building icon"></i>
                     <div class="content">seSendok <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
                         <div class="sub header">pemerintahan</div>
-                        <a class="ui blue center basic label inverted"><?php echo $_SESSION["user"]["tahun"]; ?></a>
+                        <a class="ui blue center basic label inverted" id="set_tahun_anggaran"><?php echo $_SESSION["user"]["tahun"]; ?></a>
                     </div>
                 </h2>
             </div>

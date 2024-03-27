@@ -62,8 +62,10 @@ class get_data
         $dataJson = array();
         //ambil row user
         $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
+        // var_dump($_SESSION["user"]);
         $dataJson['results'] = [];
-        if ($rowUsername != false) {
+        $rowPengaturan =false;
+        if ($rowUsername !== false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
             }
@@ -84,26 +86,9 @@ class get_data
             $id_user = 0;
             $code = 407;
         }
-        $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
         // var_dump($rowTahunAktif);
         $group_by = "";
-        if ($rowTahunAktif !== false) {
-            foreach ($rowTahunAktif as $key => $value) {
-                ${$key} = $value;
-            }
-            $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
-            $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
-            $id_aturan_akun = $rowTahunAktif->aturan_akun;
-            $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
-            $id_aturan_asb = $rowTahunAktif->aturan_asb;
-            $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
-            $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
-            $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
-            $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
-            $tahun_pengaturan = $rowTahunAktif->tahun;
-        } else {
-            $id_peraturan = 0;
-        }
+        
         $jenis = '';
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
@@ -360,7 +345,7 @@ class get_data
                             case 'daftar_paket':
                             case 'sub_keg_dpa':
                             case 'sub_keg_renja':
-                                if ($rowTahunAktif === false) {
+                                if ($rowPengaturan === false) {
                                     $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
                                         'error' => true
                                     ]);
@@ -370,7 +355,7 @@ class get_data
                             case 'dppa':
                             case 'renja_p':
                             case 'renja':
-                                if ($rowTahunAktif === false) {
+                                if ($rowPengaturan === false) {
                                     $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
                                         'error' => true
                                     ]);

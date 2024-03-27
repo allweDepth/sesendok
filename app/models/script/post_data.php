@@ -28,8 +28,9 @@ class post_data
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
         //ambil row user
+        $rowPengaturan = false;
         $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
-        if ($rowUsername != false) {
+        if ($rowUsername !== false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
             }
@@ -38,7 +39,7 @@ class post_data
             $kd_opd = $rowUsername->kd_organisasi;
             $id_user = $rowUsername->id;
             $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-            if ($rowPengaturan != false) {
+            if ($rowPengaturan !== false) {
                 foreach ($rowPengaturan as $key => $value) {
                     ${$key} = $value;
                 }
@@ -47,26 +48,10 @@ class post_data
             $id_user = 0;
             $code = 407;
         }
-        $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+        // $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
         // var_dump($rowTahunAktif);
         $group_by = "";
-        if ($rowTahunAktif !== false) {
-            foreach ($rowTahunAktif as $key => $value) {
-                ${$key} = $value;
-            }
-            $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
-            $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
-            $id_aturan_akun = $rowTahunAktif->aturan_akun;
-            $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
-            $id_aturan_asb = $rowTahunAktif->aturan_asb;
-            $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
-            $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
-            $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
-            $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
-            $tahun_pengaturan = $rowTahunAktif->tahun;
-        } else {
-            $id_peraturan = 0;
-        }
+        
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             $code = 11;
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
@@ -528,7 +513,7 @@ class post_data
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'realisasi':
-                                if ($rowTahunAktif === false) {
+                                if ($rowPengaturan === false) {
                                     $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
                                         'error' => true
                                     ]);
@@ -726,7 +711,7 @@ class post_data
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'daftar_paket':
-                                if ($rowTahunAktif === false) {
+                                if ($rowPengaturan === false) {
                                     $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
                                         'error' => true
                                     ]);
@@ -1248,7 +1233,7 @@ class post_data
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'renstra':
-                                if ($rowTahunAktif === false) {
+                                if ($rowPengaturan === false) {
                                     $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
                                         'error' => true
                                     ]);
@@ -1329,6 +1314,11 @@ class post_data
                             case 'tujuan_sasaran_renstra':
                             case 'sasaran_renstra':
                             case 'tujuan_renstra':
+                                if ($rowPengaturan === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
                                 $kelompok = $validate->setRules('kelompok', 'kelompok', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1359,6 +1349,11 @@ class post_data
                                 break;
                             case 'sub_keg_dpa':
                             case 'sub_keg_renja':
+                                if ($rowPengaturan === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
                                 $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1513,7 +1508,7 @@ class post_data
                             case 'renja':
                             case 'dppa':
                             case 'renja_p':
-                                if ($rowTahunAktif === false) {
+                                if ($rowPengaturan === false) {
                                     $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
                                         'error' => true
                                     ]);
@@ -1956,19 +1951,18 @@ class post_data
                 $kodePosting = '';
                 if ($validate->passed()) {
                     $code = 55;
-                    $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
                     //var_dump($rowTahunAktif);
-                    if ($rowTahunAktif) {
-                        $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
-                        $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
-                        $id_aturan_akun = $rowTahunAktif->aturan_akun;
-                        $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
-                        $id_aturan_asb = $rowTahunAktif->aturan_asb;
-                        $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
-                        $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
-                        $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
-                        $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
-                        $tahun_pengaturan = $rowTahunAktif->tahun;
+                    if ($rowPengaturan !== false) {
+                        $id_aturan_anggaran = $rowPengaturan->aturan_anggaran;
+                        $id_aturan_pengadaan = $rowPengaturan->aturan_pengadaan;
+                        $id_aturan_akun = $rowPengaturan->aturan_akun;
+                        $id_aturan_sub_kegiatan = $rowPengaturan->aturan_sub_kegiatan;
+                        $id_aturan_asb = $rowPengaturan->aturan_asb;
+                        $id_aturan_sbu = $rowPengaturan->aturan_sbu;
+                        $id_aturan_ssh = $rowPengaturan->aturan_ssh;
+                        $id_aturan_hspk = $rowPengaturan->aturan_hspk;
+                        $id_aturan_sumber_dana = $rowPengaturan->aturan_sumber_dana;
+                        $tahun_pengaturan = $rowPengaturan->tahun;
                     } else {
                         $id_peraturan = 0;
                     }
@@ -2580,10 +2574,10 @@ class post_data
                                             $kondisi = [['id', '=', $id_row]];
                                             switch ($type_user) {
                                                 case 'admin':
-                                                    
+
                                                     break;
                                                 default:
-                                                    
+
                                                     break;
                                             }
                                             $set = [
@@ -3246,7 +3240,25 @@ class post_data
                                 if ($DB->count()) {
                                     $code = 3;
                                     $data['update'] = $DB->count(); //$DB->count();
+                                    switch ($jenis) {
+                                        case 'edit':
+                                            switch ($tbl) {
+                                                case 'profil':
+                                                    $_SESSION["user"]["tahun"]=$set['tahun'];
+                                                    # code...
+                                                    $data['users'] = $set;
+                                                    break;
 
+                                                default:
+                                                    # code...
+                                                    break;
+                                            }
+                                            break;
+
+                                        default:
+                                            # code...
+                                            break;
+                                    }
                                 } else {
                                     $code = 33;
                                 }
