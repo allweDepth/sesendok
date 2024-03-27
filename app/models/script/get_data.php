@@ -64,7 +64,7 @@ class get_data
         $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         // var_dump($_SESSION["user"]);
         $dataJson['results'] = [];
-        $rowPengaturan =false;
+        $rowPengaturan = false;
         if ($rowUsername !== false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
@@ -88,7 +88,7 @@ class get_data
         }
         // var_dump($rowTahunAktif);
         $group_by = "";
-        
+
         $jenis = '';
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
@@ -1294,13 +1294,13 @@ class get_data
                             switch ($tbl) {
                                 case 'asn':
                                     $like = "kd_wilayah = ? AND kd_opd = ? AND disable <= ? AND(nama LIKE CONCAT('%',?,'%') OR jabatan LIKE CONCAT('%',?,'%') OR npwp LIKE CONCAT('%',?,'%') OR nip LIKE CONCAT('%',?,'%') OR nama_anak LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah,$kd_opd, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $data_like = [$kd_wilayah, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY id_jabatan ASC";
                                     $posisi = " LIMIT ?, ?";
                                     $where1 = "kd_wilayah = ? AND kd_opd = ? AND disable <= ?";
-                                    $data_where1 = [$kd_wilayah,$kd_opd, 0];
+                                    $data_where1 = [$kd_wilayah, $kd_opd, 0];
                                     $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ? AND disable <= ?";
-                                    $data_hereGet_row_json = [$kd_wilayah,$kd_opd, 0];
+                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, 0];
                                     break;
                                 case 'organisasi':
                                     $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
@@ -1754,6 +1754,26 @@ class get_data
                                 switch ($jenis) {
                                     case 'edit':
                                         switch ($tbl) {
+                                            case 'sk_asn':
+                                                $cari_drop = $data['users']->pemberi_tgs;
+                                                if ($cari_drop) {
+                                                    $kondisi_result = [['disable', '<=', 0], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nip', '=', $cari_drop, 'AND']];
+                                                    $tabelCari = $Fungsi->tabel_pakai('asn')['tabel_pakai'];
+                                                    $row = $DB->getWhereOnceCustom($tabelCari, $kondisi_result);
+                                                    // var_dump($row);
+                                                    if ($row !== false) {
+                                                        $namaLengkap = ucwords($row->nama);
+                                                        if (strlen($row->gelar ?? '') > 0) {
+                                                            $namaLengkap .= ', ' . $row->gelar;
+                                                        }
+                                                        if (strlen($row->gelar_depan ?? '') > 0) {
+                                                            $namaLengkap = $row->gelar_depan . ' ' . $namaLengkap;
+                                                        }
+                                                        $deskripsi = $row->nip . ' (' . $row->jabatan . ')';
+                                                        $data['values']['pemberi_tgs'] = [['text' => $namaLengkap, 'category' => $row->jabatan, 'name' => $namaLengkap, 'value' => $row->nip, 'description' => $deskripsi, "descriptionVertical" => true, 'nama' => $row->nama, 'nip' => $row->nip, 'golongan' => $row->golongan, 'ruang' => $row->ruang, 'selected' => true]];
+                                                    }
+                                                }
+                                                break;
                                             case "bidang_urusan":
                                             case "prog":
                                             case "keg":
@@ -2154,14 +2174,14 @@ class get_data
                                             switch ($tbl) {
                                                 case 'asn':
                                                     $namaLengkap = ucwords($row->nama);
-                                                    if (strlen($row->gelar ?? '') >0) {
-                                                        $namaLengkap .= ', '.$row->gelar;
+                                                    if (strlen($row->gelar ?? '') > 0) {
+                                                        $namaLengkap .= ', ' . $row->gelar;
                                                     }
-                                                    if (strlen($row->gelar_depan ?? '') >0) {
-                                                        $namaLengkap = $row->gelar_depan.' '.$namaLengkap;
+                                                    if (strlen($row->gelar_depan ?? '') > 0) {
+                                                        $namaLengkap = $row->gelar_depan . ' ' . $namaLengkap;
                                                     }
                                                     $deskripsi = $row->nip . ' (' . $row->jabatan . ')';
-                                                    $dataJson['results'][] = ['text' => $namaLengkap,'category' => $row->jabatan, 'name' => $namaLengkap, 'value' => $row->nip, 'description' => $deskripsi, "descriptionVertical" => true, 'nama' => $row->nama, 'nip' => $row->nip, 'golongan' => $row->golongan, 'ruang' => $row->ruang];
+                                                    $dataJson['results'][] = ['text' => $namaLengkap, 'category' => $row->jabatan, 'name' => $namaLengkap, 'value' => $row->nip, 'description' => $deskripsi, "descriptionVertical" => true, 'nama' => $row->nama, 'nip' => $row->nip, 'golongan' => $row->golongan, 'ruang' => $row->ruang];
                                                     break;
                                                 case 'organisasi':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->id, 'description' => $row->kode . ' (' . $row->nama_kepala . ')', "descriptionVertical" => true];

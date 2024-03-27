@@ -3460,13 +3460,13 @@ $(document).ready(function () {
 								atribut: 'non_data',
 							})
 						}) +
-							buatElemenHtml("fieldText", {
+							buatElemenHtml("fieldTextarea", {
 								label: "Tentang",
 								classField: `required`,
-								atribut: `name="tentang" placeholder="tentang"`,
+								atribut: `name="tentang" placeholder="tentang" rows="2"`,
 							}) +
 							buatElemenHtml("fields", {
-								classField: "four",
+								classField: "three",
 								content: buatElemenHtml("fieldDropdown", {
 									label: "Pemberi Tugas",
 									classField: `seven wide required`,
@@ -3474,17 +3474,13 @@ $(document).ready(function () {
 									kelas: "search clearable pemberi_tgs ajx selection",
 									dataArray: []
 								}) + buatElemenHtml("fieldText", {
-									label: "NIP",
+									label: "Jabatan Pemberi Tugas",
 									classField: `three wide required`,
-									atribut: `name="nip_pemberi_tgs" placeholder="NIP"`,
+									atribut: `name="jbt_pemberi_tgs" placeholder="Jabatan Pemberi Tugas"`,
 								}) + buatElemenHtml("fieldText", {
-									label: "Pemberi Tugas",
+									label: "Pangkat Pemberi Tugas",
 									classField: `three wide required`,
-									atribut: `name="nomor" placeholder="Nomor Surat"`,
-								}) + buatElemenHtml("fieldText", {
-									label: "NIP",
-									classField: `three wide required`,
-									atribut: `name="nip_pemberi_tgs" placeholder="NIP"`,
+									atribut: `name="pangkat_pemberi_tgs" placeholder="Nomor Surat"`,
 								})
 							})
 						break;
@@ -3935,11 +3931,12 @@ $(document).ready(function () {
 												if (result.data?.values[attrElm]) {
 													postDataField = false;
 													switch (tblAttr) {
-														case "sk_asn":
+														case 'sk_asn':
 															switch (attrElm) {
-																case 'asn':
-																	dropdown_ajx_satuan.valuesDropdown(result.data?.values?.satuan);
-																	dropdown_ajx_satuan.returnList({ jenis: "get_row_json", tbl: "satuan", minCharacters: 1 });
+																case 'pemberi_tgs':
+																	dropdownASN.valuesDropdown(result.data?.values?.pemberi_tgs);
+																	dropdownASN.returnList({ jenis: "get_row_json", tbl: "asn" });
+						break;
 																	break;
 															}
 															break;
