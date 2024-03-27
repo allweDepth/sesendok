@@ -1673,7 +1673,6 @@ class post_data
                                         'email' => true,
                                         'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_row]]]
                                     ]);
-                                    
                                 }
 
                                 $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
@@ -2332,6 +2331,8 @@ class post_data
                                 case 'berita':
                                     $kondisi = [['judul', '=', $judul], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tanggal', '=', $tanggal, 'AND']];
                                     $kodePosting = 'cek_insert';
+                                    $length = 15;
+                                    $id_pengenal = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, $length);
                                     $set = [
                                         'kd_wilayah' => $kd_wilayah,
                                         'judul' => $judul,
@@ -2347,6 +2348,7 @@ class post_data
                                     if ($jenis === 'add') {
                                         $set['username'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                        $set['id_pengenal'] = $id_pengenal;// untuk link ketika anchor contoh <a href="#bawah">Rekomendasi IMB</a><div class="no example" id="bawah">
                                     }
                                     break;
                                 case 'asn':

@@ -1316,7 +1316,7 @@ $theme = $_SESSION["user"]["theme"];
                                 <label>Organisasi</label>
                                 <input type="text" name="nama_org" placeholder="Nama organisasi" readonly>
                             </div>
-                            <div class="two fields">
+                            <div class="three fields">
                                 <div class="field">
                                     <label>Thema</label>
                                     <div class="ui fluid selection dropdown" name="theme">
@@ -1355,12 +1355,24 @@ $theme = $_SESSION["user"]["theme"];
                                         </div>
                                     </div>
                                 </div>
+                                <div class="field">
+                                    <label>Font Size</label>
+                                    <div class="ui input">
+                                        <input type="text" name="font_size" disabled>
+                                    </div>
+                                </div>
                             </div>
                             <div class="field">
                                 <label>Keterangan</label>
                                 <textarea name="ket" placeholder="Keterangan" rows="2"></textarea>
                             </div>
-                            <div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>
+                            <div class="ui icon success message"><i class="check icon"></i>
+                                <div class="content">
+                                    <div class="header">Form sudah lengkap</div>
+                                    <p>anda bisa submit form</p>
+                                </div>
+                            </div>
+                            <div class="ui error message"></div>
                             <div class="ui hidden divider"></div>
                             <button class="ui positive button">
                                 Simpan

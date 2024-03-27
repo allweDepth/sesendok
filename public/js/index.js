@@ -416,7 +416,7 @@ $(document).ready(function () {
 			case "atur":
 			case "realisasi":
 			case "users":
-				
+
 				jalankanAjax = true;
 				break;
 			case "profil":
@@ -833,9 +833,14 @@ $(document).ready(function () {
 									atribut: 'name="judul" rows="2"',
 								}) +
 								buatElemenHtml("fieldTextarea", {
-									labelTambahan: ` <button class="ui circular right aligned blue horizontal label button" name="modal_show" tbl="berita" jns="modal_show"> tampilkan</button>`,
+									labelTambahan: ` <button class="ui circular right aligned blue horizontal label button" name="modal_show" tbl="berita" jns="modal_show" klm="uraian_html"> tampilkan</button>`,
 									label: "Markup HTML",
 									atribut: 'name="uraian_html" rows="20"',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									labelTambahan: ` <button class="ui circular right aligned blue horizontal label button" name="modal_show" tbl="berita" jns="modal_show" klm="uraian_singkat"> tampilkan</button>`,
+									label: "Uraian Singkat",
+									atribut: 'name="uraian_singkat" rows="4"',
 								}) +
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
@@ -3355,8 +3360,7 @@ $(document).ready(function () {
 		himp.find("input").val("");
 	});
 	$('.ui.couple.modal').modal({ allowMultiple: true });
-	// $('.kedua.modal').modal('attach events', '.mdl_general.modal .button')
-	;
+	// $('.kedua.modal').modal('attach events', '.mdl_general.modal .button');
 	//=========================================
 	//===========jalankan modal================@audit-ok modal click
 	//=========================================
@@ -3567,12 +3571,13 @@ $(document).ready(function () {
 			case 'modal_show':
 				switch (tblAttr) {
 					case 'berita':
+						
 						elementForm = buatElemenHtml("piledSegment", {
-							atribut: 'name="uraian_html" ',
+							atribut: `name="${klmAttr}" `,
 						}) +
 							buatElemenHtml("fieldTextarea", {
 								label: "Markup HTML",
-								atribut: 'name="uraian_html" placeholder="keterangan..." rows="5"',
+								atribut: `name="${klmAttr}" placeholder="keterangan..." rows="5"`,
 							})
 						break;
 				}
@@ -3730,13 +3735,13 @@ $(document).ready(function () {
 			case 'modal_show':
 				switch (tblAttr) {
 					case 'berita':
-						let komponen = $(`form[name="form_flyout"]`).form('get value', 'uraian_html');
-						$(`form[name="form_modal"]`).form('set value', 'uraian_html', komponen)
+						let komponen = $(`form[name="form_flyout"]`).form('get value', klmAttr);
+						$(`form[name="form_modal"]`).form('set value', klmAttr, komponen)
 						let elmTambahan = buatElemenHtml("ribbonLabel", {
 							label: "Result HTML",
 							posisi: "right",
 							kelas: "yellow",
-							atribut: 'name="uraian_html" placeholder="keterangan..."',
+							atribut: `name="${klmAttr}" placeholder="keterangan..."`,
 						})
 						$(`form[name="form_modal"]`).find('.segment').html(elmTambahan + komponen);
 						break;
@@ -5698,6 +5703,41 @@ $(document).ready(function () {
 				}
 			});
 		}
+	}
+	class VisibilityConstructor {//@audit-ok VisibilityConstructor
+		constructor(visibilityElemen) {
+			this.visibility = $(visibilityElemen); //element;
+		}
+		visibility() {
+			let elmVisibility = this.visibility;
+			elmVisibility.visibility({
+				once: false,
+				// update size when new content loads
+				observeChanges: true,
+				onTopVisible: function (calculations) {
+					// top is on screen
+					console.log(`onTopVisible = `);
+					console.log(calculations);
+				},
+				onTopPassed: function (calculations) {
+					// top of element passed
+					console.log(`onTopPassed =`);
+					console.log(calculations);
+				},
+				onUpdate: function (calculations) {
+					// do something whenever calculations adjust
+					// console.log(`onUpdate =`);
+					// console.log(calculations);
+		
+				},
+				// load content on bottom edge visible
+				onBottomVisible: function (calculations) {
+					console.log(`onBottomVisible =`);
+					console.log(calculations);
+				}
+			});
+		}
+
 	}
 	function tok(elm) {
 		$(".ui.sidebar").sidebar("hide");
