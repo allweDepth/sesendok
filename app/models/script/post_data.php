@@ -47,7 +47,26 @@ class post_data
             $id_user = 0;
             $code = 407;
         }
-
+        $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+        // var_dump($rowTahunAktif);
+        $group_by = "";
+        if ($rowTahunAktif !== false) {
+            foreach ($rowTahunAktif as $key => $value) {
+                ${$key} = $value;
+            }
+            $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
+            $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
+            $id_aturan_akun = $rowTahunAktif->aturan_akun;
+            $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
+            $id_aturan_asb = $rowTahunAktif->aturan_asb;
+            $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
+            $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
+            $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
+            $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
+            $tahun_pengaturan = $rowTahunAktif->tahun;
+        } else {
+            $id_peraturan = 0;
+        }
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             $code = 11;
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
@@ -509,6 +528,11 @@ class post_data
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'realisasi':
+                                if ($rowTahunAktif === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
                                 $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
                                 $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
                                     'required' => true,
@@ -702,6 +726,11 @@ class post_data
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'daftar_paket':
+                                if ($rowTahunAktif === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
                                 $id_uraian = $validate->setRules('id_uraian', 'uraian paket', [
                                     'min_char' => 8,
                                     'required' => true,
@@ -1219,6 +1248,11 @@ class post_data
                                 $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'renstra':
+                                if ($rowTahunAktif === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
                                 $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
                                 if ($rowPengaturan !== false) {
                                     $tahun_renstra = $rowPengaturan->tahun_renstra;
@@ -1479,6 +1513,11 @@ class post_data
                             case 'renja':
                             case 'dppa':
                             case 'renja_p':
+                                if ($rowTahunAktif === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
                                 $objek_belanja = $validate->setRules('objek_belanja', 'objek belanja', [
                                     'sanitize' => 'string',
                                     'in_array' => ['gaji', 'barang_jasa_modal', 'bunga', 'subsidi', 'hibah_barang_jasa', 'hibah_uang', 'sosial_barang_jasa', 'sosial_uang', 'keuangan_umum', 'keuangan_khusus', 'btt', 'bos_pusat', 'blud', 'lahan'],
@@ -1651,6 +1690,12 @@ class post_data
                                     'required' => true,
                                     'min_char' => 6
                                 ]);
+                                $nip = $validate->setRules('nip', 'NIP', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'max_char' => 18,
+                                    'min_char' => 18
+                                ]);
                                 if ($type_user == 'admin') {
                                     $type_user_profil = $validate->setRules('type_user', 'type user', [
                                         'sanitize' => 'string',
@@ -1674,7 +1719,6 @@ class post_data
                                         'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_row]]]
                                     ]);
                                 }
-
                                 $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -1694,7 +1738,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 if ($tbl == 'profil') {
-                                    $font = $validate->setRules('font', 'font', [
+                                    $font_size = $validate->setRules('font_size', 'font', [
                                         'required' => true,
                                         'numeric' => true
                                     ]);
@@ -2348,7 +2392,7 @@ class post_data
                                     if ($jenis === 'add') {
                                         $set['username'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                        $set['id_pengenal'] = $id_pengenal;// untuk link ketika anchor contoh <a href="#bawah">Rekomendasi IMB</a><div class="no example" id="bawah">
+                                        $set['id_pengenal'] = $id_pengenal; // untuk link ketika anchor contoh <a href="#bawah">Rekomendasi IMB</a><div class="no example" id="bawah">
                                     }
                                     break;
                                 case 'asn':
@@ -2533,35 +2577,48 @@ class post_data
                                 case 'profil':
                                     switch ($jenis) {
                                         case 'edit':
-                                            $kondisi = [['id', '=', $id_user]];
+                                            $kondisi = [['id', '=', $id_row]];
+                                            switch ($type_user) {
+                                                case 'admin':
+                                                    
+                                                    break;
+                                                default:
+                                                    
+                                                    break;
+                                            }
+                                            $set = [
+                                                'nama' => $nama,
+                                                'nip' => $nip,
+                                                'kontak_person' => $kontak_person,
+                                                'nama_org' => $nama_org,
+                                                'tahun' => $tahun,
+                                                'ket' => $ket
+                                            ];
+                                            if (isset($_FILES['file'])) {
+                                                $file = $Fungsi->importFile($jenis, $kd_proyek = '');
+                                                if ($file['result'] == 'ok') {
+                                                    $set['photo'] = $file['file'];
+                                                }
+                                            }
+                                            $kodePosting = 'cek_insert';
+                                            break;
+                                        case 'profil':
+                                            $kondisi = [['id', '=', $id_row], ['type_user', '=', $type_user, 'AND']];
                                             $set = [
                                                 'username' => $username,
                                                 'email' => $email,
                                                 'nama' => $nama,
                                                 'kontak_person' => $kontak_person,
                                                 'nama_org' => $nama_org,
-                                                'type_user' => $type_user,
+                                                'disable_login' => $disable_login,
+                                                'disable_anggaran' => $disable_anggaran,
+                                                'disable_kontrak' => $disable_kontrak,
+                                                'disable_realisasi' => $disable_realisasi,
+                                                'disable_chat' => $disable_chat,
                                                 'ket' => $ket
                                             ];
-                                            $kodePosting = 'cek_insert';
-                                            break;
-                                        case 'profil':
-                                            $kondisi = [['id', '=', $id_user], ['type_user', '=', $type_user, 'AND']];
-                                            $set = [
-                                                'nama' => $nama,
-                                                'nama_org' => $nama_org,
-                                                //'photo'=>$nama,
-                                                'ket' => $ket,
-                                                'kontak_person' => $kontak_person,
-                                                'font_size' => $font,
-                                                'warna_tbl' => $warna_tbl,
-                                            ];
-                                            if ($_FILES['file']) {
-                                                $file = $Fungsi->importFile($jenis, $kd_proyek = '');
-                                                if ($file['result'] == 'ok') {
-                                                    $set['photo'] = $file['file'];
-                                                }
-                                            }
+
+
                                             $kodePosting = 'cek_insert';
                                             //var_dump($file);
                                             break;
@@ -2614,7 +2671,7 @@ class post_data
                                     ];
                                     //var_dump($set);
                                     //pengolahan file
-                                    if ($_FILES['file']) {
+                                    if (isset($_FILES['file'])) {
                                         $file = $Fungsi->importFile($tbl, '');
                                         //var_dump($file);
                                         if ($file['result'] == 'ok') {

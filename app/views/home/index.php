@@ -1357,9 +1357,7 @@ $theme = $_SESSION["user"]["theme"];
                                 </div>
                                 <div class="field">
                                     <label>Font Size</label>
-                                    <div class="ui input">
-                                        <input type="text" name="font_size" disabled>
-                                    </div>
+                                    <input type="text" name="font_size" readonly>
                                 </div>
                             </div>
                             <div class="field">

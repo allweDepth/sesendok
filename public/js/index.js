@@ -525,6 +525,9 @@ $(document).ready(function () {
 		if (jalankanAjax) {
 			loaderShow();
 			suksesAjax["ajaxku"] = function (result) {
+				let error_code = result.error.code;
+				let kelasToast = "success";
+				let iconToast = "check circle icon";
 				if (result.success === true) {
 					let hasKey = result.hasOwnProperty("error");
 					if (hasKey) {
@@ -664,9 +667,7 @@ $(document).ready(function () {
 								break;
 						}
 						hasKey = result.error.hasOwnProperty("message");
-						let error_code = result.error.code;
-						let kelasToast = "success";
-						let iconToast = "check circle icon";
+
 						if (hasKey) {
 							switch (error_code) {
 								case 9:
@@ -676,15 +677,21 @@ $(document).ready(function () {
 								default:
 									break;
 							}
-							showToast(result.error.message, {
-								class: kelasToast,
-								icon: iconToast,
-							});
+
 						}
 					} else {
 						loaderHide();
 					}
+					
+				} else {
+					loaderHide();
+					kelasToast = "error";
+					iconToast = "exclamation triangle yellow icon";
 				}
+				showToast(result.error.message, {
+					class: kelasToast,
+					icon: iconToast,
+				});
 			};
 			runAjax(
 				url,
@@ -3571,7 +3578,7 @@ $(document).ready(function () {
 			case 'modal_show':
 				switch (tblAttr) {
 					case 'berita':
-						
+
 						elementForm = buatElemenHtml("piledSegment", {
 							atribut: `name="${klmAttr}" `,
 						}) +
@@ -5728,7 +5735,7 @@ $(document).ready(function () {
 					// do something whenever calculations adjust
 					// console.log(`onUpdate =`);
 					// console.log(calculations);
-		
+
 				},
 				// load content on bottom edge visible
 				onBottomVisible: function (calculations) {

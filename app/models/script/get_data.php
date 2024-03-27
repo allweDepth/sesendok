@@ -355,10 +355,26 @@ class get_data
                         break;
                     case 'get_tbl':
                         switch ($tbl) {
+                            case 'renstra':
+                            case 'realisasi':
+                            case 'daftar_paket':
+                            case 'sub_keg_dpa':
+                            case 'sub_keg_renja':
+                                if ($rowTahunAktif === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
+                                break;
                             case 'dpa':
                             case 'dppa':
                             case 'renja_p':
                             case 'renja':
+                                if ($rowTahunAktif === false) {
+                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                        'error' => true
+                                    ]);
+                                }
                                 $id_sub_keg = $validate->setRules('id_sub_keg', 'nomor sub kegiatan', [
                                     'numeric' => true,
                                     'required' => true,
@@ -1078,7 +1094,7 @@ class get_data
                             $kodePosting = 'get_data';
                             switch ($tbl) {
                                 case 'rekanan':
-                                    $kondisi = [['kd_wilayah', '= ?', $kd_wilayah],['nama_perusahaan', '= ?', $text, 'AND']];
+                                    $kondisi = [['kd_wilayah', '= ?', $kd_wilayah], ['nama_perusahaan', '= ?', $text, 'AND']];
                                     break;
                                 case 'neraca':
                                 case 'akun_belanja':
@@ -1106,7 +1122,7 @@ class get_data
                                     break;
                                 case 'realisasi':
                                     //get data dari modal second
-                                    $kondisi = [['id', '= ?', $id_row],['kd_wilayah', '= ?', $kd_wilayah, 'AND'],['kd_opd', '= ?', $kd_opd, 'AND'],['tahun', '= ?', $tahun, 'AND']];
+                                    $kondisi = [['id', '= ?', $id_row], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']];
                                     break;
                                 default:
                                     $kondisi = [['kode', '= ?', $text]];
@@ -2120,7 +2136,7 @@ class get_data
                                     $get_data = $DB->getQuery("SELECT * FROM $tabel_pakai WHERE $whereGet_row_json $order ", $data_hereGet_row_json);
                                 }
                             }
-                            
+
                             $dataJson['results'] = [];
                             $jumlahArray = is_array($get_data) ? count($get_data) : 0;
                             if ($jumlahArray > 0) {
@@ -2230,7 +2246,7 @@ class get_data
                                                 case 'asb':
                                                 case 'ssh':
                                                 case 'sbu':
-                                                    $kd_akun_db = explode(',', $row->kd_akun);//agar konek dengan kode akun yang dipilih
+                                                    $kd_akun_db = explode(',', $row->kd_akun); //agar konek dengan kode akun yang dipilih
                                                     if (in_array($kd_akun, $kd_akun_db)) {
                                                         $deskripsi = $row->kd_aset . ' (' . number_format((float)$row->harga_satuan, 2, ',', '.') . ')';
                                                         $dataJson['results'][] = ['title' => $row->uraian_barang, 'value' => $row->id, 'description' => $deskripsi, "descriptionVertical" => true, 'satuan' => $row->satuan, 'harga_satuan' => $row->harga_satuan, 'spesifikasi' => $row->spesifikasi, 'tkdn' => $row->tkdn, 'keterangan' => $row->keterangan, 'disable' => $row->disable, 'kd_aset' => $row->kd_aset, 'kd_akun' => $row->kd_akun];
@@ -2393,6 +2409,7 @@ class get_data
                         $keterangan .= '<li class="item">' . $value . '</li>';
                     }
                     $keterangan .= '</ol>';
+                    $message_tambah = $keterangan;
                 }
             } else {
                 $pesan = 'tidak didefinisikan';

@@ -1103,6 +1103,7 @@ class MasterFungsi
                 $tabel_pakai = 'berita_neo';
                 $jumlah_kolom = 9;
                 break;
+                case 'profil':
             case 'users':
                 $tabel_pakai = 'user_sesendok_biila';
                 $jumlah_kolom = 9;
@@ -1260,6 +1261,8 @@ class MasterFungsi
                 $tabel_pakai = 'ruang_chat';
                 break;
             default:
+            $tabel_pakai = '';
+            break;
         }
         return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
     }
