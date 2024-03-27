@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 27 Mar 2024 pada 12.27
+-- Waktu pembuatan: 27 Mar 2024 pada 16.15
 -- Versi server: 11.3.2-MariaDB
 -- Versi PHP: 8.3.4
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `sesendokneo_db`
 --
+CREATE DATABASE IF NOT EXISTS `sesendokneo_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `sesendokneo_db`;
 
 -- --------------------------------------------------------
 
@@ -27,6 +29,7 @@ SET time_zone = "+00:00";
 -- Struktur dari tabel `akun_neo`
 --
 
+DROP TABLE IF EXISTS `akun_neo`;
 CREATE TABLE `akun_neo` (
   `id` int(8) NOT NULL,
   `akun` int(11) NOT NULL,
@@ -55,6 +58,7 @@ CREATE TABLE `akun_neo` (
 -- Struktur dari tabel `asb_neo`
 --
 
+DROP TABLE IF EXISTS `asb_neo`;
 CREATE TABLE `asb_neo` (
   `id` int(8) NOT NULL,
   `kd_wilayah` varchar(25) NOT NULL,
@@ -81,6 +85,7 @@ CREATE TABLE `asb_neo` (
 -- Struktur dari tabel `aset_neo`
 --
 
+DROP TABLE IF EXISTS `aset_neo`;
 CREATE TABLE `aset_neo` (
   `id` int(8) NOT NULL,
   `akun` int(11) NOT NULL,
@@ -107,6 +112,7 @@ CREATE TABLE `aset_neo` (
 -- Struktur dari tabel `berita_neo`
 --
 
+DROP TABLE IF EXISTS `berita_neo`;
 CREATE TABLE `berita_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -131,6 +137,7 @@ CREATE TABLE `berita_neo` (
 -- Struktur dari tabel `daftar_paket_neo`
 --
 
+DROP TABLE IF EXISTS `daftar_paket_neo`;
 CREATE TABLE `daftar_paket_neo` (
   `id` int(11) NOT NULL,
   `kd_rup` varchar(25) DEFAULT NULL,
@@ -202,6 +209,7 @@ CREATE TABLE `daftar_paket_neo` (
 -- Struktur dari tabel `daftar_realisasi_neo`
 --
 
+DROP TABLE IF EXISTS `daftar_realisasi_neo`;
 CREATE TABLE `daftar_realisasi_neo` (
   `id` int(11) NOT NULL,
   `tahun` year(4) NOT NULL,
@@ -233,6 +241,7 @@ CREATE TABLE `daftar_realisasi_neo` (
 -- Struktur dari tabel `daftar_uraian_paket`
 --
 
+DROP TABLE IF EXISTS `daftar_uraian_paket`;
 CREATE TABLE `daftar_uraian_paket` (
   `id` int(11) NOT NULL,
   `id_paket` int(11) NOT NULL,
@@ -259,6 +268,7 @@ CREATE TABLE `daftar_uraian_paket` (
 -- Struktur dari tabel `db_asn_pemda_neo`
 --
 
+DROP TABLE IF EXISTS `db_asn_pemda_neo`;
 CREATE TABLE `db_asn_pemda_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -375,6 +385,7 @@ CREATE TABLE `db_asn_pemda_neo` (
 -- Struktur dari tabel `dpa_neo`
 --
 
+DROP TABLE IF EXISTS `dpa_neo`;
 CREATE TABLE `dpa_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -424,6 +435,7 @@ CREATE TABLE `dpa_neo` (
 -- Struktur dari tabel `dppa_neo`
 --
 
+DROP TABLE IF EXISTS `dppa_neo`;
 CREATE TABLE `dppa_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -487,6 +499,7 @@ CREATE TABLE `dppa_neo` (
 -- Struktur dari tabel `hspk_neo`
 --
 
+DROP TABLE IF EXISTS `hspk_neo`;
 CREATE TABLE `hspk_neo` (
   `id` int(8) NOT NULL,
   `kd_wilayah` varchar(25) NOT NULL,
@@ -513,6 +526,7 @@ CREATE TABLE `hspk_neo` (
 -- Struktur dari tabel `kd_wilayah_neo`
 --
 
+DROP TABLE IF EXISTS `kd_wilayah_neo`;
 CREATE TABLE `kd_wilayah_neo` (
   `id` int(11) NOT NULL,
   `kode` int(11) NOT NULL,
@@ -529,6 +543,7 @@ CREATE TABLE `kd_wilayah_neo` (
 -- Struktur dari tabel `mapping_aset_akun`
 --
 
+DROP TABLE IF EXISTS `mapping_aset_akun`;
 CREATE TABLE `mapping_aset_akun` (
   `id` int(11) NOT NULL,
   `kd_aset` varchar(25) NOT NULL,
@@ -552,6 +567,7 @@ CREATE TABLE `mapping_aset_akun` (
 -- Struktur dari tabel `organisasi_neo`
 --
 
+DROP TABLE IF EXISTS `organisasi_neo`;
 CREATE TABLE `organisasi_neo` (
   `id` int(8) NOT NULL,
   `kd_wilayah` varchar(25) NOT NULL,
@@ -576,6 +592,7 @@ CREATE TABLE `organisasi_neo` (
 -- Struktur dari tabel `pengaturan_neo`
 --
 
+DROP TABLE IF EXISTS `pengaturan_neo`;
 CREATE TABLE `pengaturan_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -631,6 +648,7 @@ CREATE TABLE `pengaturan_neo` (
 -- Struktur dari tabel `peraturan_neo`
 --
 
+DROP TABLE IF EXISTS `peraturan_neo`;
 CREATE TABLE `peraturan_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(25) NOT NULL,
@@ -659,6 +677,7 @@ CREATE TABLE `peraturan_neo` (
 -- Struktur dari tabel `rab_paket_neo`
 --
 
+DROP TABLE IF EXISTS `rab_paket_neo`;
 CREATE TABLE `rab_paket_neo` (
   `id` int(11) NOT NULL,
   `tahun` year(4) NOT NULL,
@@ -693,6 +712,7 @@ CREATE TABLE `rab_paket_neo` (
 -- Struktur dari tabel `rekanan_neo`
 --
 
+DROP TABLE IF EXISTS `rekanan_neo`;
 CREATE TABLE `rekanan_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(25) NOT NULL,
@@ -727,6 +747,7 @@ CREATE TABLE `rekanan_neo` (
 -- Struktur dari tabel `renja_neo`
 --
 
+DROP TABLE IF EXISTS `renja_neo`;
 CREATE TABLE `renja_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -775,6 +796,7 @@ CREATE TABLE `renja_neo` (
 -- Struktur dari tabel `renja_p_neo`
 --
 
+DROP TABLE IF EXISTS `renja_p_neo`;
 CREATE TABLE `renja_p_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -837,6 +859,7 @@ CREATE TABLE `renja_p_neo` (
 -- Struktur dari tabel `renstra_skpd_neo`
 --
 
+DROP TABLE IF EXISTS `renstra_skpd_neo`;
 CREATE TABLE `renstra_skpd_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(15) NOT NULL,
@@ -881,6 +904,7 @@ CREATE TABLE `renstra_skpd_neo` (
 -- Struktur dari tabel `satuan_neo`
 --
 
+DROP TABLE IF EXISTS `satuan_neo`;
 CREATE TABLE `satuan_neo` (
   `id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL,
@@ -902,6 +926,7 @@ CREATE TABLE `satuan_neo` (
 -- Struktur dari tabel `sbu_neo`
 --
 
+DROP TABLE IF EXISTS `sbu_neo`;
 CREATE TABLE `sbu_neo` (
   `id` int(8) NOT NULL,
   `kd_wilayah` varchar(25) NOT NULL,
@@ -925,9 +950,44 @@ CREATE TABLE `sbu_neo` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `sk_asn_neo`
+--
+
+DROP TABLE IF EXISTS `sk_asn_neo`;
+CREATE TABLE `sk_asn_neo` (
+  `id` int(11) NOT NULL,
+  `kd_wilayah` varchar(150) NOT NULL,
+  `kd_opd` varchar(50) NOT NULL,
+  `nomor` varchar(255) NOT NULL,
+  `tgl_surat_dibuat` date NOT NULL,
+  `tentang` varchar(400) NOT NULL,
+  `pemberi_tgs` varchar(18) NOT NULL,
+  `jbt_pemberi_tgs` varchar(150) DEFAULT NULL,
+  `pangkat_pemberi_tgs` varchar(150) DEFAULT NULL,
+  `nama_pemberi_tgs` varchar(255) NOT NULL,
+  `nama_ditugaskan` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `menimbang` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `mengingat` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `menetapkan_1` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `menetapkan_2` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `menetapkan_3` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `menetapkan_4` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `tembusan` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `file` varchar(255) DEFAULT NULL,
+  `ket` varchar(255) DEFAULT NULL,
+  `tgl_insert` datetime NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username_update` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `ssh_neo`
 --
 
+DROP TABLE IF EXISTS `ssh_neo`;
 CREATE TABLE `ssh_neo` (
   `id` int(8) NOT NULL,
   `kd_wilayah` varchar(25) NOT NULL,
@@ -954,6 +1014,7 @@ CREATE TABLE `ssh_neo` (
 -- Struktur dari tabel `sub_kegiatan_neo`
 --
 
+DROP TABLE IF EXISTS `sub_kegiatan_neo`;
 CREATE TABLE `sub_kegiatan_neo` (
   `id` int(8) NOT NULL,
   `urusan` varchar(2) NOT NULL,
@@ -982,6 +1043,7 @@ CREATE TABLE `sub_kegiatan_neo` (
 -- Struktur dari tabel `sub_keg_dpa_neo`
 --
 
+DROP TABLE IF EXISTS `sub_keg_dpa_neo`;
 CREATE TABLE `sub_keg_dpa_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -1032,6 +1094,7 @@ CREATE TABLE `sub_keg_dpa_neo` (
 -- Struktur dari tabel `sub_keg_renja_neo`
 --
 
+DROP TABLE IF EXISTS `sub_keg_renja_neo`;
 CREATE TABLE `sub_keg_renja_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
@@ -1082,6 +1145,7 @@ CREATE TABLE `sub_keg_renja_neo` (
 -- Struktur dari tabel `sumber_dana_neo`
 --
 
+DROP TABLE IF EXISTS `sumber_dana_neo`;
 CREATE TABLE `sumber_dana_neo` (
   `id` int(8) NOT NULL,
   `sumber_dana` int(11) NOT NULL,
@@ -1106,6 +1170,7 @@ CREATE TABLE `sumber_dana_neo` (
 -- Struktur dari tabel `tujuan_sasaran_renstra_neo`
 --
 
+DROP TABLE IF EXISTS `tujuan_sasaran_renstra_neo`;
 CREATE TABLE `tujuan_sasaran_renstra_neo` (
   `id` int(11) NOT NULL,
   `kd_wilayah` varchar(15) NOT NULL,
@@ -1130,6 +1195,7 @@ CREATE TABLE `tujuan_sasaran_renstra_neo` (
 -- Struktur dari tabel `user_sesendok_biila`
 --
 
+DROP TABLE IF EXISTS `user_sesendok_biila`;
 CREATE TABLE `user_sesendok_biila` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -1177,6 +1243,7 @@ INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `nip`, `pa
 -- Struktur dari tabel `wilayah_neo`
 --
 
+DROP TABLE IF EXISTS `wilayah_neo`;
 CREATE TABLE `wilayah_neo` (
   `id` int(11) NOT NULL,
   `kode` varchar(255) NOT NULL,
@@ -1337,6 +1404,12 @@ ALTER TABLE `satuan_neo`
 ALTER TABLE `sbu_neo`
   ADD PRIMARY KEY (`id`);
 ALTER TABLE `sbu_neo` ADD FULLTEXT KEY `uraian_barang` (`uraian_barang`);
+
+--
+-- Indeks untuk tabel `sk_asn_neo`
+--
+ALTER TABLE `sk_asn_neo`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `ssh_neo`
@@ -1532,6 +1605,12 @@ ALTER TABLE `satuan_neo`
 --
 ALTER TABLE `sbu_neo`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `sk_asn_neo`
+--
+ALTER TABLE `sk_asn_neo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `ssh_neo`
