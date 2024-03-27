@@ -122,6 +122,7 @@ $theme = $_SESSION["user"]["theme"];
                 <div class="title item"><i class="dropdown icon"></i>Kepegawaian</div>
                 <div class="content">
                     <a class="item" href="#" data-tab="tab_ref" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>ASN</a>
+                    <a class="item" href="#" data-tab="tab_ref" tbl="sk_asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat Keputusan (SK)</a>
                 </div>
             </div>
 

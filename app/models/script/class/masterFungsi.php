@@ -40,6 +40,17 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'sk_asn':
+                $rowData['thead'] = trim('<tr>
+                        <th>SURAT KEPUTUSAN</th>
+                        <th>NOMOR</th>
+                        <th>TANGGAL</th>
+                        <th>PEMBERI TUGAS</th>
+                        <th>FILE</th>
+                        <th>KETERANGAN</th>
+                        <th class="collapsing">AKSI</th>
+                    </tr>');
+                break;
             case 'realisasi':
                 $rowData['thead'] = trim('<tr>
                         <th>NAMA PAKET</th>
@@ -323,6 +334,35 @@ class MasterFungsi
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
+                    case 'sk_asn':
+                            $buttons = '';
+                        $buttonEdit = '';
+                        $divAwal = '';
+                        $divAkhir = '';
+                        $deactivate = '';
+                        $divAwal = '<div contenteditable>';
+                            $divAkhir = '</div>';
+                            $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
+                            $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file ?? '')) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        
+                        $buttons = '<div class="ui icon basic mini buttons">
+                        <button class="ui button" name="modal_show" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>
+                        <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="tentang">' . $row->tentang . '</td>
+                                    <td klm="nomor">'  . $row->nomor . '</td>
+                                    <td klm="tgl_surat_dibuat">'  . $row->tgl_surat_dibuat . '</td>
+                                    <td klm="nama_pemberi_tgs">'  . $row->nama_pemberi_tgs . '</td>
+                                    <td klm="file">' . $fileTag . '</td>
+                                    <td klm="keterangan">' . $row->keterangan . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
+
                     case 'realisasi':
                         // deactivate="1" maksudnya form disabled tidak bisa dirubah
                         $buttons = '';
@@ -1091,6 +1131,10 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'sk_asn':
+                $tabel_pakai = 'sk_asn_neo';
+                $jumlah_kolom = 9;
+                break;
             case 'uraian_paket':
                 $tabel_pakai = 'daftar_uraian_paket';
                 $jumlah_kolom = 9;

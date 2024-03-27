@@ -127,6 +127,7 @@ $(document).ready(function () {
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
 		]
 		let arrayDasboard = {
+			sk_asn: ["Surat Keputusan", "Surat Keputusan", "Surat Keputusan", "Surat Keputusan"],
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			renstra: tab_renstra,
 			renstra: tab_renstra,

@@ -340,6 +340,8 @@ class get_data
                         break;
                     case 'get_tbl':
                         switch ($tbl) {
+                            case 'sk_asn':
+                                break;
                             case 'renstra':
                             case 'realisasi':
                             case 'daftar_paket':
@@ -628,8 +630,18 @@ class get_data
                         case 'get_tbl':
                             $kodePosting = 'get_tbl';
                             switch ($tbl) {
+                                case 'sk_asn':
+                                    $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ? AND(nomor LIKE CONCAT('%',?,'%') OR tgl_surat_dibuat LIKE CONCAT('%',?,'%') OR tentang LIKE CONCAT('%',?,'%') OR nama_ditugaskan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $tahun, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY tgl_surat_dibuat ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? kd_opd = ? AND tahun = ? AND disable <= ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    break;
                                 case 'realisasi':
-                                    $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ? AND(ket_paket LIKE CONCAT('%',?,'%') OR 	ket_uraian_paket LIKE CONCAT('%',?,'%') OR 	tanggal LIKE CONCAT('%',?,'%') OR jumlah LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ? AND(ket_paket LIKE CONCAT('%',?,'%') OR ket_uraian_paket LIKE CONCAT('%',?,'%') OR tanggal LIKE CONCAT('%',?,'%') OR jumlah LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $tahun, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY id_paket ASC";
                                     $posisi = " LIMIT ?, ?";
