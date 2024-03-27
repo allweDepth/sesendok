@@ -378,7 +378,7 @@ span.spin:before {
 }
 
 .pusher .ui.tab.basic.segment {
-    margin-top: 0px !important;
+    margin: 0px !important;
     height: calc(100vh - 45px - 90px) !important;
     overflow-y: auto;
 }
@@ -389,7 +389,7 @@ span.spin:before {
 }
 
 .ui.visible.overlay.flyout .form.scrolling {
-    height: calc(100vh - 45px - 175px - 14px) !important;
+    height: calc(100vh - 45px - 175px) !important;
     overflow-y: auto;
 }
 

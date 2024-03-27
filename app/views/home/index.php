@@ -118,7 +118,13 @@ $theme = $_SESSION["user"]["theme"];
                     <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file outline icon"></i>SBU</a>
                 </div>
             </div>
-            <a class="item" href="#" data-tab="tab_ref" tbl="asn"><i class="users icon"></i>ASN</a>
+            <div class="ui accordion inverted item">
+                <div class="title item"><i class="dropdown icon"></i>Kepegawaian</div>
+                <div class="content">
+                    <a class="item" href="#" data-tab="tab_ref" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>ASN</a>
+                </div>
+            </div>
+
             <!-- ut admin-->
             <?php echo $retVal = ($type_user == 'admin') ? '<a class="item" href="#" data-tab="tab_hargasat" tbl="berita"><i class="newspaper icon"></i>Halaman Berita</a><a class="item" href="#" data-tab="reset"><i class="erase icon"></i>Reset Tabel</a><a class="item" href="#" data-tab="atur_satu"><i class="toolbox icon"></i>Pengaturan</a>' : ''; ?>
             <a class="item" href="#" data-tab="wallchat"><i class="comments outline icon"></i>Pesan</a>
@@ -1270,7 +1276,7 @@ $theme = $_SESSION["user"]["theme"];
                             <div class="two fields">
                                 <div class="field">
                                     <label>Nama Lengkap</label>
-                                    <input type="text" name="nama" placeholder="Some text">
+                                    <input type="text" name="nama" placeholder="Nama Lengkap">
                                 </div>
                                 <div class="field">
                                     <label>NIP.</label>
