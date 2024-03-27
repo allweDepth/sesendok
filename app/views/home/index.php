@@ -121,8 +121,8 @@ $theme = $_SESSION["user"]["theme"];
             <div class="ui accordion inverted item">
                 <div class="title item"><i class="dropdown icon"></i>Kepegawaian</div>
                 <div class="content">
-                    <a class="item" href="#" data-tab="tab_ref" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>ASN</a>
-                    <a class="item" href="#" data-tab="tab_ref" tbl="sk_asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat Keputusan (SK)</a>
+                    <a class="item" href="#" data-tab="tab_all" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>ASN</a>
+                    <a class="item" href="#" data-tab="tab_all" tbl="sk_asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat Keputusan (SK)</a>
                 </div>
             </div>
 
@@ -606,6 +606,49 @@ $theme = $_SESSION["user"]["theme"];
             <!-- tab_lap -->
             <!-- ============== -->
             <div class="ui tab basic segment" data-tab="tab_lap">
+            </div>
+            <!-- ============== -->
+            <!-- tab_all -->
+            <!-- ============== -->
+            <div class="ui tab basic segment" data-tab="tab_all">
+                <div class="ui container">
+                    <div class="ui info message" name="ketref">Nabiilainayah</div>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui right floated basic icon buttons">
+                        <button class="ui button" name="" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+                        <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                        <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+                    </div>
+                    <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui hidden divider"></div>
+                    <table class="ui celled striped table insert">
+                        <thead>
+                            <tr>
+                                <th>Kode Komponen</th>
+                                <th>Uraian Komponen</th>
+                                <th>Spesifikasi</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>TKDN</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
             <!-- ============== -->
             <!-- tab_referensi -->

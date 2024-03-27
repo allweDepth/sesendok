@@ -65,7 +65,7 @@ class PrintPdf
         $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
         // var_dump($_SESSION["user"]);
         $dataJson['results'] = [];
-        $rowPengaturan =false;
+        $rowPengaturan = false;
         if ($rowUsername !== false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
@@ -107,7 +107,51 @@ class PrintPdf
                 //================
                 //PROSES VALIDASI
                 //================
-                
+                switch ($jenis) {
+                    case 'cetak_pdf':
+                        switch ($tbl) {
+                            case 'sk_asn':
+                                $page_size = $validate->setRules('id_sub_keg', 'nomor sub kegiatan', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 100,
+                                    'in_array' => ['custom', 'F4', 'A3', 'A4', 'LETTER', 'LEGAL'],
+                                ]);
+                                $PDF_MARGIN_LEFT = $validate->setRules('margin_left', 'margin kanan', [
+                                    'numeric' => true,
+                                    'required' => true
+                                ]);
+                                $PDF_MARGIN_RIGHT = $validate->setRules('margin_right', 'margin kiri', [
+                                    'numeric' => true,
+                                    'required' => true
+                                ]);
+                                $PDF_MARGIN_TOP = $validate->setRules('margin_top', 'margin atas', [
+                                    'numeric' => true,
+                                    'required' => true
+                                ]);
+                                $PDF_MARGIN_BOTTOM = $validate->setRules('margin_bottom', 'margin bawah', [
+                                    'numeric' => true,
+                                    'required' => true
+                                ]);
+                                // $PDF_MARGIN_LEFT = (float)$_POST['mk'];
+                                // $PDF_MARGIN_TOP = (float)$_POST['mt'];
+                                // $PDF_MARGIN_RIGHT = (float)$_POST['mka'];
+                                // $PDF_MARGIN_BOTTOM = (float)$_POST['mb'];
+                                break;
+                            default:
+
+                                break;
+                        }
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                if ($validate->passed()) {
+                    $code = 55;
+                    require_once('../TCPDF-main/tcpdf.php');
+                }
             } else {
                 $pesan = 'tidak didefinisikan';
                 $code = 39;
@@ -115,6 +159,5 @@ class PrintPdf
         } else {
             $code = 407;
         }
-        require_once('../TCPDF-main/tcpdf.php');
     }
 }
