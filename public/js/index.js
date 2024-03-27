@@ -3469,7 +3469,7 @@ $(document).ready(function () {
 								classField: "three",
 								content: buatElemenHtml("fieldDropdown", {
 									label: "Pemberi Tugas",
-									classField: `seven wide required`,
+									classField: `ten wide required`,
 									atribut: 'name="pemberi_tgs" placeholder="Pemberi Tugas..."',
 									kelas: "search clearable pemberi_tgs ajx selection",
 									dataArray: []
