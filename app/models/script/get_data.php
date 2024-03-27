@@ -346,7 +346,7 @@ class get_data
                             case 'sub_keg_dpa':
                             case 'sub_keg_renja':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }
@@ -356,7 +356,7 @@ class get_data
                             case 'renja_p':
                             case 'renja':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }

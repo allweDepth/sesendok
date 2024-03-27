@@ -514,7 +514,7 @@ class post_data
                                 break;
                             case 'realisasi':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }
@@ -712,7 +712,7 @@ class post_data
                                 break;
                             case 'daftar_paket':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }
@@ -1234,7 +1234,7 @@ class post_data
                                 break;
                             case 'renstra':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }
@@ -1315,7 +1315,7 @@ class post_data
                             case 'sasaran_renstra':
                             case 'tujuan_renstra':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }
@@ -1350,7 +1350,7 @@ class post_data
                             case 'sub_keg_dpa':
                             case 'sub_keg_renja':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }
@@ -1509,7 +1509,7 @@ class post_data
                             case 'dppa':
                             case 'renja_p':
                                 if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', 'Pengaturan Tahun Anggran belum di buat, hubungi administrator', [
+                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
                                         'error' => true
                                     ]);
                                 }
