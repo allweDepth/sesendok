@@ -1236,7 +1236,6 @@ $theme = $_SESSION["user"]["theme"];
                                 <div class="right floated meta">14h</div>
                                 <img class="ui avatar image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)"><span name="nama">Alwi Mansyur</span>
                             </div>
-
                             <div class="blurring dimmable image">
                                 <div class="ui dimmer">
                                     <div class="content">
@@ -1253,10 +1252,10 @@ $theme = $_SESSION["user"]["theme"];
                             <div class="content">
                                 <span class="right floated">
                                     <i class="heart outline like icon"></i>
-                                     likes
+                                    likes
                                 </span>
                                 <i class="comment icon"></i>
-                                 comments
+                                comments
                             </div>
                             <div class="extra content">
                                 <div class="ui large transparent left icon input">
@@ -1267,8 +1266,7 @@ $theme = $_SESSION["user"]["theme"];
                         </div>
                     </div>
                     <div class="twelve wide column">
-                        <form class="ui form profil" name="profil">
-
+                        <form class="ui form profil" name="profil" jns="edit" tbl="profil">
                             <div class="two fields">
                                 <div class="field">
                                     <label>Nama Lengkap</label>
@@ -1333,17 +1331,17 @@ $theme = $_SESSION["user"]["theme"];
                                 </div>
                                 <div class="field">
                                     <label>Warna Tabel</label>
-                                    <div class="ui fluid search selection dropdown" name="warna_tbl">
+                                    <div class="ui fluid search selection dropdown lainnya" name="warna_tbl">
                                         <input type="hidden" name="warna_tbl">
-                                        <i class="dropdown icon"></i>
                                         <div class="default text">warna Tabel</div>
+                                        <i class="dropdown icon"></i>
                                         <div class="menu">
                                             <div class="item" value="non">Default</div>
                                             <div class="divider"></div>
                                             <div class="item" value="red">Merah</div>
                                             <div class="item" value="orange">Orange</div>
                                             <div class="item" value="yellow">Yellow</div>
-                                            <div class="item" value="#070706">olive</div>
+                                            <div class="item" value="olive">olive</div>
                                             <div class="item" value="green">Green</div>
                                             <div class="item" value="teal">Teal</div>
                                             <div class="item" value="blue">Biru</div>
@@ -1362,8 +1360,13 @@ $theme = $_SESSION["user"]["theme"];
                                 <label>Keterangan</label>
                                 <textarea name="ket" placeholder="Keterangan" rows="2"></textarea>
                             </div>
-
+                            <div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>
+                            <div class="ui hidden divider"></div>
+                            <button class="ui positive button">
+                                Simpan
+                            </button>
                         </form>
+
                     </div>
                 </div>
             </div>

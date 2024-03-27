@@ -123,11 +123,7 @@ class post_data
                     case 'edit':
                         switch ($tbl) {
                             case 'profil':
-                                $type_user = $validate->setRules('type_user', 'type user', [
-                                    'sanitize' => 'string',
-                                    'min_char' => 2, //on-off
-                                    'in_array' => ['user', 'admin', 'super']
-                                ]);
+
                                 break;
                             case 'value':
                                 # code...
@@ -1655,26 +1651,40 @@ class post_data
                                     'required' => true,
                                     'min_char' => 6
                                 ]);
-                                $username = $validate->setRules('username', 'username', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6,
-                                    'max_char' => 100,
-                                    'regexp' => "/^[A-Za-z_]{6,}$/",
-                                    'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '!=', $id_user]]]
-                                ]);
-                                $email = $validate->setRules('email', 'email', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6,
-                                    'max_char' => 255,
-                                    'email' => true,
-                                    'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_user]]]
-                                ]);
+                                if ($type_user == 'admin') {
+                                    $type_user_profil = $validate->setRules('type_user', 'type user', [
+                                        'sanitize' => 'string',
+                                        'min_char' => 2, //on-off
+                                        'in_array' => ['user', 'admin', 'super']
+                                    ]);
+                                    $username = $validate->setRules('username', 'username', [
+                                        'sanitize' => 'string',
+                                        'required' => true,
+                                        'min_char' => 6,
+                                        'max_char' => 100,
+                                        'regexp' => "/^[A-Za-z_]{6,}$/",
+                                        'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '!=', $id_row]]]
+                                    ]);
+                                    $email = $validate->setRules('email', 'email', [
+                                        'sanitize' => 'string',
+                                        'required' => true,
+                                        'min_char' => 6,
+                                        'max_char' => 255,
+                                        'email' => true,
+                                        'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_row]]]
+                                    ]);
+                                    
+                                }
+
                                 $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 6
+                                ]);
+                                $tahun = $validate->setRules('tahun', 'tahun aktif anggaran', [
+                                    'numeric' => true,
+                                    'required' => true,
+                                    'min_char' => 4
                                 ]);
                                 $nama_org = $validate->setRules('nama_org', 'Nama Organisasi', [
                                     'sanitize' => 'string',
@@ -1685,7 +1695,7 @@ class post_data
                                     'sanitize' => 'string'
                                 ]);
                                 if ($tbl == 'profil') {
-                                    $font = $validate->setRules('font', 'uraian', [
+                                    $font = $validate->setRules('font', 'font', [
                                         'required' => true,
                                         'numeric' => true
                                     ]);

@@ -348,8 +348,6 @@ $(document).ready(function () {
 					case "sbu":
 						divTab.find('[tbl]').attr('tbl', tbl);
 						break;
-					default:
-						break;
 				}
 				break;
 			case "tab_ref":
@@ -357,24 +355,7 @@ $(document).ready(function () {
 				$('div[name="ketref"]').html(arrayDasboard[tbl][3]);
 				jalankanAjax = true;
 				divTab.find('[tbl]').attr('tbl', tbl);
-				switch (tbl) {
-					case "bidang_urusan":
-						break;
-					case "prog":
-						break;
-					case "keg":
-						break;
-					case "sub_keg":
-						break;
-					case "akun_belanja":
-						break;
-					case "sumber_dana":
-						break;
-					case "rekanan":
-						break;
-					default:
-						break;
-				}
+
 				break;
 			case "tab_peraturan":
 				jalankanAjax = true;
@@ -399,8 +380,6 @@ $(document).ready(function () {
 								dynamic[namaAttr].runCalendar();
 							}
 						});
-						break;
-					default:
 						break;
 				}
 				jenis = "get_pengaturan";
@@ -437,9 +416,15 @@ $(document).ready(function () {
 			case "atur":
 			case "realisasi":
 			case "users":
+				
 				jalankanAjax = true;
 				break;
 			case "profil":
+				let formIni = $(`form[name="profil"]`)
+				let calendarYear = new CalendarConstructor(".ui.calendar.year");
+				calendarYear.Type("year");
+				calendarYear.runCalendar();
+				addRulesForm(formIni);
 				jenis = 'get_row'
 				jalankanAjax = true;
 				break;
@@ -660,6 +645,7 @@ $(document).ready(function () {
 										if (imgeProfil.length > 8) {
 											elm.attr('src', imgeProfil)
 										}
+										myForm.attr('id_row', result.data.users.id)
 										card.find(`button[for="directupload1"]`).attr('id_row', result.data.users.id)
 										let resultUser = result.data.users;
 										for (let key in resultUser) {
