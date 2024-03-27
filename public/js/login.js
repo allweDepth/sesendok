@@ -2,31 +2,31 @@ var dok = '';
 $(document).ready(function () {
 	"use strict";
 	$('.ui.vertical.stripe.segment .ui.container').visibility({
-        once: false,
-        // update size when new content loads
-        observeChanges: true,
-        onTopVisible: function (calculations) {
-            // top is on screen
-            console.log(`onTopVisible = `);
+		once: false,
+		// update size when new content loads
+		observeChanges: true,
+		onTopVisible: function (calculations) {
+			// top is on screen
+			console.log(`onTopVisible = `);
 			console.log(calculations);
-        },
-        onTopPassed: function (calculations) {
-            // top of element passed
-            console.log(`onTopPassed =`);
+		},
+		onTopPassed: function (calculations) {
+			// top of element passed
+			console.log(`onTopPassed =`);
 			console.log(calculations);
-        },
-        onUpdate: function (calculations) {
-            // do something whenever calculations adjust
-            // console.log(`onUpdate =`);
+		},
+		onUpdate: function (calculations) {
+			// do something whenever calculations adjust
+			// console.log(`onUpdate =`);
 			// console.log(calculations);
 
-        },
-        // load content on bottom edge visible
-        onBottomVisible: function (calculations) {
-            console.log(`onBottomVisible =`);
+		},
+		// load content on bottom edge visible
+		onBottomVisible: function (calculations) {
+			console.log(`onBottomVisible =`);
 			console.log(calculations);
-        }
-    });
+		}
+	});
 	// fix menu when passed
 	$('.masthead')
 		.visibility({
@@ -93,9 +93,8 @@ $(document).ready(function () {
 		let modalGeneral = new ModalConstructor(`.ui.modal.register`);
 		modalGeneral.globalModal();
 		let form = new FormGlobal(`.ui.form[name="form_modal"]`);
-		form.addRulesForm();
 		form.run();
-
+		form.addRulesForm();
 	})
 	$(document).on('click', "button[name='login']", function (event) {
 		event.preventDefault();
@@ -131,8 +130,6 @@ $(document).ready(function () {
 			password = encryption.encrypt(password, keyEncryption);
 
 			const url = BASEURL + halamandok + "/masuk";
-			console.log(url);
-			console.log('disini js key=' + keyEncryption);
 			let data = {
 				username: username,
 				password: password,
@@ -146,8 +143,6 @@ $(document).ready(function () {
 				url: url,
 				dataType: 'JSon',
 				success: function (result) {
-					console.log("result = " + result);
-					//$(this).reset(); alert result;
 					if (parseInt(result) == 1) {
 						window.location.href = BASEURL + "home"; //admin
 					} else if (parseInt(result) == 2) {
@@ -165,10 +160,6 @@ $(document).ready(function () {
 					}
 				},
 				error: function (jqXHR, status, err) {
-					//loaderHide();
-					// console.log(jqXHR);
-					// console.log(status);
-					// modal_notif('<i class="info icon"></i>' + status, jqXHR);
 				}
 			});
 			(async () => {
@@ -198,7 +189,6 @@ $(document).ready(function () {
 						let myVariable = attrName + 'Attr';
 						window[myVariable] = attribute.value;
 					});
-					console.log(attrs);
 					let jalankanAjax = false;
 					let ini = $(this);
 					let tbl = ini.attr("tbl");
@@ -232,11 +222,6 @@ $(document).ready(function () {
 					if (typeof id_row !== "undefined") {
 						formData.set("id_row", id_row);
 					}
-					//tampilkan form data
-					formData.forEach((value, key) => {
-						// console.log(key + " " + value)
-					});
-
 					// global mencari element date dan checkbox
 					let property = ini.find(`.ui.toggle.checkbox input[name]`);
 					if (property.length > 0) {
@@ -260,7 +245,6 @@ $(document).ready(function () {
 						}
 					}
 					property = ini.find(".ui.calendar.year");
-					console.log(property);
 					if (property.length > 0) {
 						for (const key of property) {
 							let nameAttr = $(key).find("[name]").attr("name");
@@ -272,7 +256,6 @@ $(document).ready(function () {
 						}
 					}
 					property = ini.find(".ui.calendar.datetime");
-					// console.log(property);
 					if (property.length > 0) {
 						for (const key of property) {
 							let nameAttr = $(key).find("[name]").attr("name");
@@ -314,32 +297,7 @@ $(document).ready(function () {
 						case "form_flyout":
 
 							break;
-						// ====================
-						// UNTUK PENGATURAN====
-						// ====================
-						case "form_pengaturan":
-							break;
-						// =================
-						// UNTUK MODAL 2====
-						// =================
-						case "form_modal_kedua":
-							break;
-						// =================
-						// UNTUK PROFIL====
-						// =================
-						case "profil":
-							break;
-						default:
-							break;
 					}
-					switch (tbl) {
-						case 'value':
-							break;
-						case 'value1':
-							break;
-						default:
-							break;
-					};
 					if (cryptos) {
 						let keyEncryption = halamanDefault;
 						let encryption = new Encryption();
@@ -354,16 +312,26 @@ $(document).ready(function () {
 							}
 						});
 						formData.set('cry', true);
-						console.log(keyEncryption);
-						
+
 					}
 					if (jalankanAjax) {
 						suksesAjax["ajaxku"] = function (result) {
 							let kelasToast = "success";
+							let list = '';
 							if (result.success === true) {
 
 							} else {
 								kelasToast = "warning"; //'success'
+								let dataresul = result.data;
+								if (Object.keys(dataresul).length > 0) {
+
+									let liOl = '';
+									for (let x in dataresul) {
+										liOl += `<li>${dataresul[x]}</li>`;
+									}
+									list = `<ul class="ui list">${liOl}</ul>`;
+									result.error.message = result.error.message + list
+								}
 							}
 							showToast(result.error.message, {
 								class: kelasToast,
@@ -428,7 +396,6 @@ $(document).ready(function () {
 				}
 				let non_data = $(iterator).attr("non_data");
 				if (typeof non_data === 'undefined' || non_data === false) {
-					console.log('masuk addRulesForm');
 					MyForm.form("add rule", atribut, {
 						rules: [
 							{
@@ -447,7 +414,6 @@ $(document).ready(function () {
 
 			var attrName = MyForm.find($("input[name],textarea[name]"));
 			var i = 0;
-			//console.log(MyForm)
 			for (i = 0; i < attrName.length; i++) {
 				var atribut = MyForm.find(attrName[i]).attr("name");
 				var lbl = MyForm.find(attrName[i]).attr("placeholder");
@@ -463,9 +429,7 @@ $(document).ready(function () {
 				var non_data = formku.find(attrName[i]).attr("non_data");
 				if (typeof non_data === "undefined" || non_data === false) {
 					if (atribut) {
-						//formku.form("remove rule", atribut);
 						MyForm.form("remove field", atribut);
-						//console.log('atribut remove rule: ' + atribut)
 					}
 				}
 			}
@@ -488,9 +452,8 @@ $(document).ready(function () {
 				allowMultiple: true,
 				//observeChanges: true,
 				closable: false,
-				transition: "vertical flip", //slide down,'slide up','browse right','browse','swing up','vertical flip','fly down','drop','zoom','scale'
+				transition: "zoom", //slide down,'slide up','browse right','browse','swing up','vertical flip','fly down','drop','zoom','scale'
 				onDeny: function () {
-					//return false;//console.log('saya menekan tombol cancel');
 				},
 				onApprove: function () {
 					// jika di tekan yes
@@ -796,20 +759,11 @@ $(document).ready(function () {
 			processData: params.processData,
 		})
 			.done(function (data) {
-				//console.log(suksesAjax);
-				//console.log('sukses ajax : '+params.callback);
 				var callback = suksesAjax[params.callback](data);
 			})
 			.fail(function (jqXHR, textStatus, err) {
-
-				//console.log(textStatus);
-				//console.log(jqXHR.responseText.split(','));
-				//console.log(JSON.parse(jqXHR.responseText));
 				try {
 					var resultObject = JSON.parse(jqXHR.responseText, reviver);
-					//console.log(jqXHR.responseText);
-					//console.log(jqXHR.responseText.split('"'));
-					//var resultObject = JSON.parse(jqXHR.responseText);
 					modal_notif(
 						'<i class="huge info circle icon"></i>' + textStatus,
 						jqXHR.responseText.split('"')[1]
@@ -842,14 +796,10 @@ $(document).ready(function () {
 			processData = true;
 		}
 		if (dataType === "Json" || dataType === "json") {
-			//console.log(formData);
 			const start = new Date().getTime();
 			if (cryptos) {
 				Object.keys(formData).forEach((key) => {
-					// console.log(key)
-					// console.log(formData[key])
 					const value = formData[key].toString();
-					// console.log(value.toString().length)
 					if (value.toString().length > 0) {
 						formData[key] = enc.encrypt(value, halAwal);
 					}
@@ -860,7 +810,6 @@ $(document).ready(function () {
 			const end = new Date().getTime();
 			const diff = end - start;
 			const seconds = diff / 1000; //Math.floor(diff / 1000 % 60);
-			// console.log(`selisih ecrypt (s) : ${seconds}`);
 		}
 
 		var params = new ajaxParams(

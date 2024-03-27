@@ -58,7 +58,14 @@ class Register
 				'inDB' => ['organisasi_neo', 'kode', [['kode', '=', $kd_organisasi],['kd_wilayah', '=', $kd_wilayah,'AND']]]
 			]);
 			$rowOrganisasi = $DB->getWhereOnceCustom('organisasi_neo', [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']]);
-			$nama_org = $rowOrganisasi->uraian;
+			if ($rowOrganisasi !== false) {
+				$nama_org = $rowOrganisasi->uraian;
+			}else{
+				$kd_organisasi = $validate->setRules('organisasi', 'Anda Belum Memilih Oragnisasi', [
+					'error' => true
+				]);
+			}
+			
 			$kontak = $validate->setRules('kontak_person', 'Kontak Person', [
 				'sanitize' => 'string',
 				'required' => true,

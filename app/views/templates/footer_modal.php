@@ -33,7 +33,7 @@
     </div>
     <div class="content">
         <div class="ui center aligned stackable container grid" id="conten_notifikasi">
-            <p>ini di isi oleh ajax</p>
+            <p></p>
         </div>
     </div>
     <div class="actions">
@@ -121,6 +121,11 @@
                     <div class="field">
                         <div class="ui left icon input"> <i class="fax icon"></i>
                             <input type="text" name="kontak_person" placeholder="kontak person">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input"> <i class="home icon"></i>
+                            <input type="text" name="alamat" placeholder="alamat">
                         </div>
                     </div>
                     <div class="field">
