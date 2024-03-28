@@ -335,20 +335,20 @@ class MasterFungsi
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
                     case 'sk_asn':
-                            $buttons = '';
+                        $buttons = '';
                         $buttonEdit = '';
                         $divAwal = '';
                         $divAkhir = '';
                         $deactivate = '';
                         $divAwal = '<div contenteditable>';
-                            $divAkhir = '</div>';
-                            $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                            $file = $row->file;
+                        $divAkhir = '</div>';
+                        $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
+                        $file = $row->file;
                         $fileTag = '';
                         if (strlen($file ?? '')) {
                             $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
                         }
-                        
+
                         $buttons = '<div class="ui icon basic mini buttons">
                         <button class="ui button" name="modal_show" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>
                         <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
@@ -617,13 +617,13 @@ class MasterFungsi
                         $buttonEdit = ($row->kel_rek == 'sub_keg') ? '<div class="ui floating dropdown icon button lainnya">
                         <i class="wrench icon"></i>
                             <div class="menu">
-                                '.$btnDivEdit.'<div class="divider"></div>
+                                ' . $btnDivEdit . '<div class="divider"></div>
                                 <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_pokok" tbl="' . $tbl_button . '"><i class="pen square blue icon"></i>Rincian</a>
                                 <a class="item" data-tab="tab_renja" name="get_tbl" jns="rincian_perubahan" tbl="' . $tbl_button_p . '"><i class="pen square red icon"></i>Rincian Perubahan</a>
                                 <div class="item"><div class="ui red empty circular label"></div>Help</div>
                             </div>
                         </div>' : $buttonEditFlyout;
-                        $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit .$buttonDel. '</div>';
+                        $buttons = '<div class="ui icon basic mini buttons">' . $buttonEdit . $buttonDel . '</div>';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_sub_keg">' . $row->kd_sub_keg . '</td>
                                     <td klm="uraian">' .  $row->uraian .  '</td>
@@ -652,7 +652,7 @@ class MasterFungsi
                         };
                         $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                         $buttons = '<div class="ui icon basic mini buttons">
-                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>'.$buttonDel.'</div>';
+                            <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>' . $buttonDel . '</div>';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_sub_keg">' .  $row->kd_sub_keg . '</td>
                                     <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
@@ -1147,7 +1147,7 @@ class MasterFungsi
                 $tabel_pakai = 'berita_neo';
                 $jumlah_kolom = 9;
                 break;
-                case 'profil':
+            case 'profil':
             case 'users':
                 $tabel_pakai = 'user_sesendok_biila';
                 $jumlah_kolom = 9;
@@ -1305,8 +1305,8 @@ class MasterFungsi
                 $tabel_pakai = 'ruang_chat';
                 break;
             default:
-            $tabel_pakai = '';
-            break;
+                $tabel_pakai = '';
+                break;
         }
         return ['tabel_pakai' => $tabel_pakai, 'jumlah_kolom' => $jumlah_kolom];
     }
@@ -2170,7 +2170,78 @@ class MasterFungsi
             $code = 37;
         }
     }
-
+    //pangkat golongan asn
+    public function pgolongan_ruang($dinamic = [
+        'golongan' => 1, 'ruang' => 'a'
+    ])
+    {
+        $golongan = $dinamic['golongan'];
+        $ruang = strtolower($dinamic['ruang']);
+        $pangkat = '';
+        switch ($golongan) {
+            case 1:
+                $pangkat = 'juru';
+                break;
+            case 2:
+                $pangkat = 'pengatur';
+                break;
+            case 3:
+                $pangkat = 'penata';
+                break;
+            case 4:
+                $pangkat = 'pembina';
+                break;
+            default:
+                # code...
+                break;
+        }
+        switch ($golongan) {
+            case 1:
+            case 2:
+            case 3:
+                switch ($ruang) {
+                    case 'a':
+                        $pangkat .= 'muda';
+                        break;
+                    case 'b':
+                        $pangkat .= 'muda tingkat I';
+                        break;
+                    case 'c':
+                        $pangkat .= '';
+                        break;
+                    case 'd':
+                        $pangkat .= 'tingkat I';
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                break;
+            case 4:
+                switch ($ruang) {
+                    case 'a':
+                        $pangkat .= '';
+                        break;
+                    case 'b':
+                        $pangkat .= 'tingkat I';
+                        break;
+                    case 'c':
+                        $pangkat .= 'muda';
+                        break;
+                    case 'd':
+                        $pangkat .= 'madya';
+                        break;
+                    case 'e':
+                        $pangkat .= 'utama';
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                break;
+        }
+        return $pangkat;
+    }
     // mencari file di folder dan sub folder
     public function cariFile($f, $p = null, $l = 1000)
     { // Recursively find a file $f in directory $p (compare up to $l files)

@@ -51,7 +51,7 @@ class post_data
         // $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
         // var_dump($rowTahunAktif);
         $group_by = "";
-        
+
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             $code = 11;
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
@@ -138,8 +138,37 @@ class post_data
                             'numeric' => true,
                             'min_char' => 1
                         ]);
+
+
                     case 'add':
                         switch ($tbl) {
+                            case 'sk_asn':
+                                $nomor = $validate->setRules('nomor', 'nomor', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
+                                $tgl_surat_dibuat = $validate->setRules('tgl_surat_dibuat', 'tgl surat dibuat', [
+                                    'sanitize' => 'string',
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $tentang = $validate->setRules('tentang', 'tentang', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 400
+                                ]);
+                                $tabel_pakai_temporer = $Fungsi->tabel_pakai('asn')['tabel_pakai'];
+                                $pemberi_tgs = $validate->setRules('pemberi_tgs', 'Pemberi Tugas', [
+                                    'sanitize' => 'string',
+                                    'required' => true
+                                ]);
+                                $pemberi_tgs = $validate->setRules('pemberi_tgs', 'Pemberi Tugas', [
+                                    'inDB' => [$tabel_pakai_temporer, 'nip', [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND']]]
+                                ]);
+                                break;
                             case 'rekanan':
                                 $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama perusahaan', [
                                     'sanitize' => 'string',
@@ -3244,7 +3273,7 @@ class post_data
                                         case 'edit':
                                             switch ($tbl) {
                                                 case 'profil':
-                                                    $_SESSION["user"]["tahun"]=$set['tahun'];
+                                                    $_SESSION["user"]["tahun"] = $set['tahun'];
                                                     # code...
                                                     $data['users'] = $set;
                                                     break;

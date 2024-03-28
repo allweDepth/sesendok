@@ -3239,10 +3239,10 @@ $(document).ready(function () {
 					case 'menimbang':
 					case 'mengingat':
 					case 'menetapkan':
-					case 'kesatu':
-					case 'kedua':
-					case 'ketiga':
-					case 'keempat':
+					case 'menetapkan_1':
+					case 'menetapkan_2':
+					case 'menetapkan_3':
+					case 'menetapkan_4':
 					case 'tembusan':
 						let Tbody = ini.closest('table').find('tbody');
 						Tbody.append(`<tr><td><div contenteditable=""></div></td><td><button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`)
@@ -3569,43 +3569,35 @@ $(document).ready(function () {
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `MENETAPKAN`
 							}) + buatElemenHtml("tabel2", {
-								atribut: `name="menetapkan"`,
-								kelas: `celled mini structured`,
-								headerTable: [[{ attr: '', lbl: `MENETAPKAN` },
-								{ attr: '', class: 'collapsing', lbl: `JENIS` },
-								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
-								footerTable: [],
-								bodyTable: []
-							}) + buatElemenHtml("tabel2", {
-								atribut: `name="kesatu"`,
+								atribut: `name="menetapkan_1"`,
 								kelas: `stackable celled mini structured`,
 								headerTable: [[{ attr: '', lbl: `KESATU` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
-								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="kesatu"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_1"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
 							}) + buatElemenHtml("tabel2", {
-								atribut: `name="kedua"`,
+								atribut: `name="menetapkan_2"`,
 								kelas: `stackable celled mini structured`,
 								headerTable: [[{ attr: '', lbl: `KEDUA` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
-								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="kedua"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_2"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
 							}) + buatElemenHtml("tabel2", {
-								atribut: `name="ketiga"`,
+								atribut: `name="menetapkan_3"`,
 								kelas: `stackable celled mini structured`,
 								headerTable: [[{ attr: '', lbl: `KETIGA` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
-								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="ketiga"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_3"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
 							}) + buatElemenHtml("tabel2", {
-								atribut: `name="keempat"`,
+								atribut: `name="menetapkan_4"`,
 								kelas: `stackable celled mini structured`,
 								headerTable: [[{ attr: '', lbl: `KEEMPAT` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
-								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="keempat"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_4"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
 							}) + buatElemenHtml("divider", {
@@ -3624,15 +3616,15 @@ $(document).ready(function () {
 								headerTable: [[{ attr: '', lbl: `NAMA` },
 								{ attr: '', class: 'collapsing', lbl: `PANGKAT/GOLONGAN` },
 								{ attr: '', class: 'collapsing', lbl: `NIP` },
-								{ attr: '', class: 'collapsing', lbl: `JABATAN` },
-								{ attr: '', class: 'collapsing', lbl: `JABATAN SK` },
+								{ attr: '', lbl: `JABATAN` },
+								{ attr: '', lbl: `JABATAN SK` },
 								{ attr: '', lbl: ``, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
 							}) +
 							buatElemenHtml("fielToggleCheckbox", {
 								label: "",
-								atribut: 'name="bentuk_lampiran" non_data readonly',
+								atribut: 'name="bentuk_lampiran" non_data',
 								txtLabel: "Lampiran SK bentuk Tabel",
 							}) + buatElemenHtml("divider", {
 								header: "h5",
@@ -4077,7 +4069,6 @@ $(document).ready(function () {
 							// set nilai form 
 							let elmAttrName = formIni.find('input[name],textarea[name]');
 							switch (tblAttr) {
-
 								case 'xcv':
 									break;
 								default://isi form dengan data
@@ -4109,7 +4100,6 @@ $(document).ready(function () {
 																	dropdownASN.valuesDropdown(result.data?.values?.pemberi_tgs);
 																	dropdownASN.returnList({ jenis: "get_row_json", tbl: "asn" });
 																	break;
-																	break;
 															}
 															break;
 														default:
@@ -4122,6 +4112,42 @@ $(document).ready(function () {
 											}
 										}
 									}
+									switch (tblAttr) {
+										case 'sk_asn'://@audit isi tabel sk
+											formIni.attr('id_row', result.data?.users.id);
+											//insert semua data di tabel fom
+											let allTable = $(`form[name="form_modal"] table[name]`);
+											allTable.each(function (index, element) {
+												// element == this
+												let tbodyElemen = $(this).find('tbody');
+												let attrTable = $(this).attr('name');
+												// console.log(attrTable);
+												if (result.data?.users.hasOwnProperty(attrTable) !== false) {
+													let dataResult = JSON.parse(result.data?.users[attrTable]);
+													Object.keys(dataResult).forEach(key => {
+														// console.log(key, dataResult[key]);
+														let p_l = (dataResult[key].hasOwnProperty('p_l')) ? dataResult[key]['p_l'] : 'L';
+														let tooltip = (p_l === 'P') ? 'Paragraf' : 'List';
+														let keyObject = Object.keys(dataResult[key])
+														switch (attrTable) {
+															case 'nama_ditugaskan':
+																tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key]['nama']}</div></td><td><div contenteditable="">${dataResult[key]['pangkat']}</div></td><td><div contenteditable="">${dataResult[key]['nip']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan_sk']}</div></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
+																break;
+															default:
+																tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key][keyObject[0]]}</div></td><td><button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
+																break;
+														}
+
+													});
+												}
+											});
+											break;
+										case 'value1':
+											break;
+										default:
+											break;
+									};
+
 									break;
 							}
 
@@ -4276,19 +4302,64 @@ $(document).ready(function () {
 								classField: `twelve wide required`,
 								atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
 								kelas: "selection lainnya",
-								dataArray: [['header','<i class="tags icon"></i>Pilih Ukuran Kertas'], ['letter', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['legal', 'Legal ( 216 x 356 ) mm = ( 8.50 x 14.00 ) in'], ['divider'], ['A4', 'A4 ( 210 x 297 ) mm = ( 8,27 x 11,69 ) in'], ['A3', 'A3 ( 297 × 420 ) mm = ( 11,69 x 16,54 ) in'], ['divider'], ['F4', 'F4 ( 215 × 330 ) mm = ( 11,69 x 16,54 ) in', 'active'], ['custom', 'Custom']]//Kertas Seri A merupakan serangkaian kertas yang ukurannya diatur oleh ISO 216. Rasio tinggi dan lebar setiap kertas sama, yaitu 1:1,41.A0: 841 x 1.189 mm atau 33,11 x 46,81 inci.
+								dataArray: [['header', '<i class="tags icon"></i>Pilih Ukuran Kertas'], ['letter', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['legal', 'Legal ( 216 x 356 ) mm = ( 8.50 x 14.00 ) in'], ['divider'], ['A4', 'A4 ( 210 x 297 ) mm = ( 8,27 x 11,69 ) in'], ['A3', 'A3 ( 297 × 420 ) mm = ( 11,69 x 16,54 ) in'], ['divider'], ['F4', 'F4 ( 215 × 330 ) mm = ( 11,69 x 16,54 ) in', 'active'], ['custom', 'Custom']]//Kertas Seri A merupakan serangkaian kertas yang ukurannya diatur oleh ISO 216. Rasio tinggi dan lebar setiap kertas sama, yaitu 1:1,41.A0: 841 x 1.189 mm atau 33,11 x 46,81 inci.
 							}) + buatElemenHtml("fieldText", {
 								classField: `four wide required`,
 								kelas: "date",
 								label: "Ukuran Huruf (%)",
 								atribut: `name="ukuran_huruf" placeholder="Ukuran Huruf (%)" rms value="100"`,
 							})
-						}) + buatElemenHtml("icon_menu", {
+						}) + buatElemenHtml("icon_menu", {//case "header":elemen = `<${header} class="ui header${kelas}">${content}</${header}>`
 							label: "Orientasi",
 							atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
 							kelas: "search clearable asn ajx selection",
 							dataArray: [{ class: 'active', lbl: '<i class="id badge icon"></i>Portrait', attr: 'value="portrait"' }, { class: '', lbl: '<i class="id card icon"></i>Lanscape', attr: 'value="lanscape"' }]
-						})
+						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Margin Halaman (mm)' }) + buatElemenHtml("fields", {
+							classField: "two",
+							content: buatElemenHtml("fieldText", {
+								label: "Atas",
+								classField: `required`,
+								atribut: `name="margin_top" placeholder="Margin Atas" rms value="20"`,
+							}) + buatElemenHtml("fieldText", {
+								label: "Bawah",
+								classField: `required`,
+								atribut: `name="margin_bottom" placeholder="Margin Bawah" rms value="20"`,
+							})
+						}) + buatElemenHtml("fields", {
+							classField: "two",
+							content: buatElemenHtml("fieldText", {
+								label: "Kiri",
+								classField: `required`,
+								atribut: `name="margin_kiri" placeholder="Margin Kiri" rms value="20"`,
+							}) + buatElemenHtml("fieldText", {
+								label: "Kanan",
+								classField: `required`,
+								atribut: `name="margin_kanan" placeholder="Margin Kanan" rms value="20"`,
+							})
+						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("fields", {
+							classField: "two",
+							content: buatElemenHtml("fielToggleCheckbox", {
+								label: "",
+								atribut: 'name="header" non_data readonly',
+								txtLabel: "Aktifkan Header",
+							}) +
+								buatElemenHtml("fielToggleCheckbox", {
+									label: "",
+									atribut: 'name="footer" non_data readonly',
+									txtLabel: "Aktifkan Footer",
+								})
+						}) + buatElemenHtml("fields", {
+							classField: "two",
+							content: buatElemenHtml("fieldText", {
+								label: "Header",
+								classField: `required`,
+								atribut: `name="margin_header" placeholder="Margin Atas" rms value="10"`,
+							}) + buatElemenHtml("fieldText", {
+								label: "Footer",
+								classField: `required`,
+								atribut: `name="margin_footer" placeholder="Margin Bawah" rms value="10"`,
+							})
+						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Kop Surat' })
 						break;
 				}
 				break;
@@ -5286,6 +5357,68 @@ $(document).ready(function () {
 								case "add":
 								case "edit":
 									switch (tbl) {
+										case 'sk_asn'://@audit isi tabel sk
+											ini.attr('id_row', id_row);
+											//insert semua data di tabel fom
+											let allTable = $(`form[name="form_modal"] table[name]`);
+											allTable.each(function (index, element) {
+												// element == this
+												let tbodyElemen = $(this).find('tbody');
+												let attrTable = $(this).attr('name');
+												// console.log(attrTable);
+												let $headers = ['isi', 'p_l', 'button'];
+												switch (attrTable) {
+													case 'nama_ditugaskan':
+														$headers = ['nama', 'pangkat', 'nip', 'jabatan', 'jabatan_sk', 'button'];
+														break;
+
+													default:
+														break;
+												}
+												let strText = '';
+												let myRows = {};
+
+												let $rows = tbodyElemen.find("tr").each(function (index, value) {
+													let cells = $(this).find("td");
+													myRows[index] = {};
+													if (jenis === 'edit') {
+														// let id_row = $(value).attr('id_row');
+														// myRows[index]['id_row'] = parseInt(id_row);
+													}
+													// myRows[index]['id_row_uraian_paket'] = parseInt(id_row_uraian_paket);
+													cells.each(function (cellIndex) {
+														switch ($headers[cellIndex]) {
+															case 'angka':
+																strText = $(this).html();
+																strText = accounting.unformat(strText, ",");
+																myRows[index][$headers[cellIndex]] = strText;
+																break;
+															case 'angka_div':
+																strText = $(this).find('div').html();
+																strText = Number(accounting.unformat(strText, ","));
+																myRows[index][$headers[cellIndex]] = strText;
+																break;
+															case 'p_l':
+																strText = $(this).find('button').text();
+																myRows[index][$headers[cellIndex]] = strText.replace(/\s+/g, '').trim();
+																break;
+															case 'button':
+																// myRows[index][$headers[cellIndex]] = '';
+																break;
+															default:
+																strText = $(this).find('div').html();
+																//Remove Extra Spaces From a String menggunakan .replace(/\s+/g, ' ').trim();
+																myRows[index][$headers[cellIndex]] = strText.replace(/\s+/g, ' ').trim();
+																break;
+														}
+
+													});
+												});
+												// var myObj = {};
+												// myObj = myRows;
+												formData.append(attrTable, JSON.stringify(myRows));
+											});
+											break;
 										case 'realisasi':
 											let strText = '';
 											let myRows = [];
@@ -6305,6 +6438,9 @@ $(document).ready(function () {
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		let elemen = '';
 		switch (namaElemen) {
+			case "header":
+				elemen = `<${header} class="ui header${kelas}">${content}</${header}>`
+				break;
 			case "icon_menu":
 				let menu = '';
 				dataArray.forEach(function (val) {
@@ -6770,11 +6906,11 @@ $(document).ready(function () {
 					let classItem = 'item';
 					switch (dataValue) {
 						case 'divider':
-							elemen22 +=`<div class="divider"></div>`;
+							elemen22 += `<div class="divider"></div>`;
 							break;
 						case 'header':
 							elemen22 +=
-							`<div class="header">${rowsData[1]}</div>`;
+								`<div class="header">${rowsData[1]}</div>`;
 							break;
 						default:
 							if (rowsData.length === 1) {
