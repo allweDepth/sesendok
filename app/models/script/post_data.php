@@ -166,7 +166,70 @@ class post_data
                                     'required' => true
                                 ]);
                                 $pemberi_tgs = $validate->setRules('pemberi_tgs', 'Pemberi Tugas', [
-                                    'inDB' => [$tabel_pakai_temporer, 'nip', [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND']]]
+                                    'inDB' => [$tabel_pakai_temporer, 'nip', [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']]]
+                                ]);
+                                $jbt_pemberi_tgs = $validate->setRules('jbt_pemberi_tgs', 'jbt pemberi tugas', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
+                                $pangkat_pemberi_tgs = $validate->setRules('pangkat_pemberi_tgs', 'pangkat pemberi tugas', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
+                                $kondisi_row = [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                                $row_resul_cari = $DB->getWhereOnceCustom($tabel_pakai_temporer, $kondisi_row);
+                                if ($row_resul_cari !== false) {
+                                    $pangkat_pemberi_tgs = $Fungsi->golongan_ruang($dinamic = ['golongan' => $row_resul_cari->golongan, 'ruang' => $row_resul_cari->ruang]);
+                                }
+                                $bentuk_lampiran = $validate->setRules('bentuk_lampiran', 'bentuk lampiran', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $bentuk_lampiran = ($bentuk_lampiran == 'on') ? 1 : 0;
+                                $menimbang = $validate->setRules('menimbang', 'menimbang', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
+                                ]);
+                                $mengingat = $validate->setRules('mengingat', 'mengingat', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
+                                ]);
+                                $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
+                                ]);
+                                $menetapkan_2 = $validate->setRules('menetapkan_1', 'menetapkan kedua', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
+                                ]);
+                                $menetapkan_3 = $validate->setRules('menetapkan_1', 'menetapkan ketiga', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
+                                ]);
+                                $menetapkan_4 = $validate->setRules('menetapkan_1', 'menetapkan keempat', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
+                                ]);
+                                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
+                                ]);
+                                $tembusan = $validate->setRules('tembusan', 'tembusan', [
+                                    'json_repair' => true,
+                                    'required' => true,
+                                    'json_decode' => true
                                 ]);
                                 break;
                             case 'rekanan':
@@ -2093,6 +2156,39 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'sk_asn':
+                                    $kodePosting = 'cek_insert';
+                                    $kondisi = [['id', '=', $id_row, 'AND'],['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                                    $set = [
+                                        'tahun' => $tahun,
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kd_opd' => $kd_opd,
+                                        'nomor' => $nomor,
+                                        'tgl_surat_dibuat' => $tgl_surat_dibuat,
+                                        'tentang' => $tentang,
+                                        'pemberi_tgs' => $pemberi_tgs,
+                                        'jbt_pemberi_tgs' => $jbt_pemberi_tgs,
+                                        'pangkat_pemberi_tgs' => $pangkat_pemberi_tgs,
+                                        'nama_pemberi_tgs' => $nama_pemberi_tgs,
+                                        'nama_ditugaskan' => $nama_ditugaskan,
+                                        'menimbang' => $menimbang,
+                                        'mengingat' => $mengingat,
+                                        'menetapkan_1' => $menetapkan_1,
+                                        'menetapkan_2' => $menetapkan_2,
+                                        'menetapkan_3' => $menetapkan_3,
+                                        'menetapkan_4' => $menetapkan_4,
+                                        'tembusan' => $tembusan,
+                                        'disable' => $disable,
+                                        'keterangan' => $keterangan,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
+                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                    }
+                                    break;
                                 case 'rekanan':
                                     $kodePosting = 'cek_insert';
                                     $kondisi = [['npwp', "=", $npwp], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
@@ -3322,6 +3418,8 @@ class post_data
                                     }
                                 case 'add':
                                     switch ($tbl) {
+                                        case 'sk_asn':
+                                            break;
                                         case 'daftar_paket': //@audit sekarang pemaketan
                                             $item_data_decode = false;
                                             if ($jenis == 'edit') {

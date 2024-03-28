@@ -3639,6 +3639,9 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
+							})+ buatElemenHtml("fieldTextarea", {
+								label: "Keterangan",
+								atribut: 'name="keterangan" placeholder="keterangan" rows="2" non_data',
 							}) + buatElemenHtml("dividerHidden", {
 							}) + buatElemenHtml("button", {//elemen = `<button class="ui ${kelasData} button" ${atribut}>${valueData}</button>`;
 								atribut: 'name="modal_second" jns="cetak" tbl="sk_asn"',

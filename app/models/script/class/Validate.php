@@ -240,7 +240,6 @@ class Validate
 					*/
 					break;
 				case 'json_repair':
-					
 					json_decode($formValue);
 					if (json_last_error()) {
 						$this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";

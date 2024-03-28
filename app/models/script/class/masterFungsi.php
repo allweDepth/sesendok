@@ -2171,9 +2171,7 @@ class MasterFungsi
         }
     }
     //pangkat golongan asn
-    public function pgolongan_ruang($dinamic = [
-        'golongan' => 1, 'ruang' => 'a'
-    ])
+    public function golongan_ruang($dinamic = ['golongan' => 1, 'ruang' => 'a'])
     {
         $golongan = $dinamic['golongan'];
         $ruang = strtolower($dinamic['ruang']);
