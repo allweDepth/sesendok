@@ -29,7 +29,7 @@ $(document).ready(function () {
 			}
 		},
 		menuorientasi: function () {
-			let ini=$(this);
+			let ini = $(this);
 			ini
 				.addClass('active')
 				.siblings()
@@ -38,7 +38,7 @@ $(document).ready(function () {
 			let jenis = ini.attr('jns');
 			switch (jenis) {
 				case 'orientasi':
-					$('form[name="form_modal_kedua"]').form('set value','orientasi',ini.attr('value'))
+					$('form[name="form_modal_kedua"]').form('set value', 'orientasi', ini.attr('value'))
 					break;
 				default:
 					break;
@@ -46,7 +46,7 @@ $(document).ready(function () {
 		}
 
 	}
-	$("body").on('click',".menu .item.aksi", handler.menuorientasi);
+	$("body").on('click', ".menu .item.aksi", handler.menuorientasi);
 	$(".menu .item.inayah").on('click', handler.activate);
 	$(".ui.dropdown").dropdown();
 	$(".menu .item").tab();
@@ -4369,12 +4369,10 @@ $(document).ready(function () {
 								label: "",
 								atribut: 'name="header" non_data readonly',
 								txtLabel: "Aktifkan Header",
-							}) +
-								buatElemenHtml("fielToggleCheckbox", {
-									label: "",
-									atribut: 'name="footer" non_data readonly',
-									txtLabel: "Aktifkan Footer",
-								})
+							}) + buatElemenHtml("fielToggleCheckbox", {
+								atribut: 'name="footer" non_data readonly',
+								txtLabel: "Aktifkan Footer",
+							})
 						}) + buatElemenHtml("fields", {
 							classField: "two",
 							content: buatElemenHtml("fieldText", {
@@ -4386,7 +4384,23 @@ $(document).ready(function () {
 								classField: `required`,
 								atribut: `name="margin_footer" placeholder="Margin Bawah" rms value="10"`,
 							})
-						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Kop Surat' })
+						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Kop Surat' }) + buatElemenHtml("fielToggleCheckbox", {
+							atribut: 'name="cetak_kop" checked="checked" non_data readonly',
+							txtLabel: "Aktifkan Footer",
+						}) + buatElemenHtml("fields", {
+							label: "Kop standar dinas",
+							classField: "grouped",
+							atribut: 'name="ceklist_kop"',
+							content: buatElemenHtml("label", {
+								label: "Jenis Kop Cetak"
+							}) + buatElemenHtml("fieldRadioCheckbox", {
+								label: "Kop standar dinas",
+								atribut: `name="kop_dns" checked="checked" value="standar"`,
+							}) + buatElemenHtml("fieldRadioCheckbox", {
+								label: "Kop gambar (custom)",
+								atribut: `name="kop_dns" value="custom"`,
+							})
+						})
 						break;
 				}
 				break;
@@ -6462,10 +6476,12 @@ $(document).ready(function () {
 		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let classField = "classField" in dataElemen ? `${dataElemen.classField} ` : "";
 		let kelas = "kelas" in dataElemen ? dataElemen.kelas : "";
-		let kelasData = "kelas" in dataElemen ? dataElemen.kelas : "";
+
 		let kelas2 = "kelas2" in dataElemen ? dataElemen.kelas2 : "";
-		let labelData = "label" in dataElemen ? dataElemen.label : "";
+
+		let txtLabel = "txtLabel" in dataElemen ? dataElemen.txtLabel : "";
 		let label = "label" in dataElemen ? dataElemen.label : "";
+
 		let href = "href" in dataElemen ? dataElemen.href : "";//file
 		let file = "file" in dataElemen ? dataElemen.file : "file";//file
 		let textDrpdown = "textDrpdown" in dataElemen ? dataElemen.textDrpdown : "";
@@ -6478,11 +6494,10 @@ $(document).ready(function () {
 		let colorData = "color" in dataElemen ? dataElemen.color : "positive";
 		let valueData = "value" in dataElemen ? dataElemen.value : "";
 		let iconDataSeach = "icon" in dataElemen ? dataElemen.icon : "search icon";
-		let txtLabelData = "txtLabel" in dataElemen ? dataElemen.txtLabel : "";
+
 		let dataArray = "dataArray" in dataElemen ? dataElemen.dataArray : []; //contoh untuk dropdown
 		let typeText = "typeText" in dataElemen ? dataElemen.typeText : `text`;
-		let dataArray2 = "dataArray2" in dataElemen ? dataElemen.dataArray2 : [[]]; //contoh buat dropdown yang ada deskripsi
-		let jenisListDropdown = "jenisListDropdown" in dataElemen ? dataElemen.jenisListDropdown : ""; //jenis dropdown[Selection,Search Selection,Clearable Selection,Multiple Selection,Multiple Search Selection,Description,Image,Actionable ,Columnar Menu]
+
 		let headerTable = "headerTable" in dataElemen ? dataElemen.headerTable : "";
 		let footerTable = "footerTable" in dataElemen ? dataElemen.footerTable : "";
 		let bodyTable = "bodyTable" in dataElemen ? dataElemen.bodyTable : "";
@@ -6505,7 +6520,7 @@ $(document).ready(function () {
 				// <a class="item aksi active" jns="orientasi_print" sub="P"><i class="id badge icon"></i>Portrait</a>
 				//     <a class="item aksi" jns="orientasi_print" sub="L"><i class="id card icon"></i>Lanscape</a>
 				elemen = `<div class="${classField}field"${atributField}>
-                <label>${labelData}</label>
+                <label>${label}</label>
                 <input type="hidden" ${atribut}>
                 <div class="ui compact labeled icon menu">${menu}</div></div>`
 				break;
@@ -6593,13 +6608,13 @@ $(document).ready(function () {
 				elemen = `<div class="ui fluid card" hidden><div class="ui fluid image"><a class="ui teal right ribbon label" href="" target="_blank">Download</a><img jns="img" onerror="imgsrc(this)"></div><div class="content"><div class="header">Dokumentasi</div></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`
 				break;
 			case "button":
-				elemen = `<button class="ui ${kelasData} button" ${atribut}>${valueData}</button>`;
+				elemen = `<button class="ui ${kelas} button" ${atribut}>${valueData}</button>`;
 				break;
 			case "fieldButton":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><button class="ui ${kelasData} button" ${atribut}>${valueData}</button></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${label}</label><button class="ui ${kelas} button" ${atribut}>${valueData}</button></div>`;
 				break;
 			case "fieldButtonAnimated":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui animated fade button" tabindex="0">
+				elemen = `<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui animated fade button" tabindex="0">
 				<div class="visible content">Sign-up for a Pro account</div>
 				<div class="hidden content">${valueData}</div></div></div>`;
 				break;
@@ -6634,7 +6649,7 @@ $(document).ready(function () {
 					foot += `<td${classRow} ${attrRow}>${lblRow}</td>`;
 				});
 				foot += (footerTable.length > 0) ? '</tfoot>' : '';
-				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
+				elemen = `<table class="ui ${kelas} table" ${atribut}>${head}${body}${foot}</table>`;
 				break;
 			case "tabel2"://untuk tabel header lebih 1
 				var head = (headerTable.length > 0) ? '<thead>' : '';
@@ -6674,7 +6689,7 @@ $(document).ready(function () {
 					foot += `<td${classRow} ${attrRow}>${lblRow}</td>`;
 				});
 				foot += (footerTable.length > 0) ? '</tfoot>' : '';
-				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
+				elemen = `<table class="ui ${kelas} table" ${atribut}>${head}${body}${foot}</table>`;
 				break;
 			case "tr_tabel":
 				bodyTable.forEach(function (val) {
@@ -6692,22 +6707,22 @@ $(document).ready(function () {
 				elemen = `<div class="${classField}field" ${atributField}><input type="text" ${atribut}></div>`;
 				break;
 			case "accordionField":
-				elemen = `<div class="ui accordion${classField} field" ${atribut} ${atributField}><div class="title"><i class="icon dropdown"></i>${labelData} </div><div class="content field">${content} </div></div>`;
+				elemen = `<div class="ui accordion${classField} field" ${atribut} ${atributField}><div class="title"><i class="icon dropdown"></i>${label} </div><div class="content field">${content} </div></div>`;
 				break;
 			case "fieldTextAccordion":
-				elemen = `<div><label class="visible" style="display: block !important;">${labelData}</label><input ${atribut} type="text" class="visible" style="display: inline-block !important;"></div>`;
+				elemen = `<div><label class="visible" style="display: block !important;">${label}</label><input ${atribut} type="text" class="visible" style="display: inline-block !important;"></div>`;
 				break;
 			case "ribbonLabel":
-				elemen = `<a class="ui ${posisi} ribbon label ${kelasData}">${labelData}</a>`;
+				elemen = `<a class="ui ${posisi} ribbon label ${kelas}">${label}</a>`;
 				break;
 			case "piledSegment":
-				elemen = `<div class="ui piled segment ${kelasData}"></div>`;
+				elemen = `<div class="ui piled segment ${kelas}"></div>`;
 				break;
 			case "segment":
-				elemen = `<div class="ui segment ${kelasData}"></div>`;
+				elemen = `<div class="ui segment ${kelas}"></div>`;
 				break;
 			case "segments":
-				elemen = `<div class="ui piled segments ${kelasData}">
+				elemen = `<div class="ui piled segments ${kelas}">
 				<div class="ui segment">
 					<p>Top</p>
 					</div>
@@ -6720,13 +6735,13 @@ $(document).ready(function () {
 					</div>`;
 				break;
 			case "messageLink":
-				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${labelData} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
+				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
 				break;
 			case "divider"://left aligned
 				elemen = `<${header} class="ui horizontal ${aligned} divider header">${icon2}${label}</${header}>`;
 				break;
 			case "dividerHeader":
-				elemen = `<h3 class="ui dividing header">${labelData}</h3>`;
+				elemen = `<h3 class="ui dividing header">${label}</h3>`;
 				break;
 			case "dividerClearing":
 				elemen = '<div class="ui clearing divider"></div>';
@@ -6741,12 +6756,12 @@ $(document).ready(function () {
 				elemen = `<div class="ui hidden divider"></div>`;
 				break;
 			case "fieldLabel":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label><a class="ui fluid label ${kelasData}" href="${href}" ${atribut}><i class="${icon} icon"></i>${valueData}</a></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${label}</label><a class="ui fluid label ${kelas}" href="${href}" ${atribut}><i class="${icon} icon"></i>${valueData}</a></div>`;
 				break;
 			case "fieldSearchGrid"://untuk modal
 				elemen = `<div class="ui aligned grid ${kelas2}">
 					<div class="right floated right aligned column">
-						<div class="ui scrolling search ${kelasData} fluid category">
+						<div class="ui scrolling search ${kelas} fluid category">
 							<div class="ui icon input"><input class="prompt" type="text" autocomplete="off" ${atribut}><i class="search icon"></i></div>
 							<div class="results"></div>
 						</div>
@@ -6755,20 +6770,20 @@ $(document).ready(function () {
 				break;
 			case "fieldSearch":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui fluid scrolling search ${kelasData}"><div class="ui icon fluid input"><input class="prompt" type="text" ${atribut} placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui fluid scrolling search ${kelas}"><div class="ui icon fluid input"><input class="prompt" type="text" ${atribut} placeholder="Search..."><i class="search icon"></i></div><div class="results"></div></div></div>`;
 				break;
 			case "calendar":
-				elemen = `<div class="${classField}field" ${atributField}><div class="ui calendar ${kelasData}"><div class="ui fluid input left icon"><i class="calendar icon"></i><input type="text" ${atribut}></div></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><div class="ui calendar ${kelas}"><div class="ui fluid input left icon"><i class="calendar icon"></i><input type="text" ${atribut}></div></div></div>`;
 				break;
 			case "fieldCalendar":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui calendar ${kelasData}"  ${atribut2}><div class="ui input left icon"><i class="calendar icon"></i><input type="text" ${atribut}></div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui calendar ${kelas}"  ${atribut2}><div class="ui input left icon"><i class="calendar icon"></i><input type="text" ${atribut}></div></div></div>`;
 				break;
 			case "fieldAndLabel":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData} ${labelTambahan}</label> ${elemen1Data}</div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${label} ${labelTambahan}</label> ${elemen1Data}</div>`;
 				break;
 			case "fieldText":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData} ${labelTambahan}</label><div class="ui ${kelasData} input"><input type="${typeText}" ${atribut} ></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${label} ${labelTambahan}</label><div class="ui ${kelas} input"><input type="${typeText}" ${atribut} ></div></div>`;
 				break;
 			case "multiFieldTextAction":
 				let inputElm = '';
@@ -6778,21 +6793,21 @@ $(document).ready(function () {
 				}
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>
-					${labelData}${labelTambahan}
+					${label}${labelTambahan}
 					</label><div class="ui action fluid input multi">
 					${inputElm}
-					<button class="ui teal button" ${atributLabel}>${txtLabelData}</button> </div></div>`;
+					<button class="ui teal button" ${atributLabel}>${txtLabel}</button> </div></div>`;
 				break;
 			case "fieldTextAction":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui action input"><input type="${typeText}" ${atribut}><button class="ui teal button icon"  ${atributLabel}>${txtLabelData}</button></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui action input"><input type="${typeText}" ${atribut}><button class="ui teal button icon"  ${atributLabel}>${txtLabel}</button></div></div>`;
 				break;
 			case "fieldTextLabelKanan":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData} ${labelTambahan}</label><div class="ui fluid right labeled input"><input type="${typeText}" ${placeholderData} ${atribut}><div class="ui basic label" ${atributLabel}>" ${txtLabelData}</div></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${label} ${labelTambahan}</label><div class="ui fluid right labeled input"><input type="${typeText}" ${placeholderData} ${atribut}><div class="ui basic label" ${atributLabel}>" ${txtLabel}</div></div></div>`;
 				break;
 			case "fieldTextIcon":
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}${labelTambahan}</label><div class="ui fluid ${posisi} icon input"><input type="${typeText}" ${atribut}><i class="${icon} icon"></i></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${label}${labelTambahan}</label><div class="ui fluid ${posisi} icon input"><input type="${typeText}" ${atribut}><i class="${icon} icon"></i></div></div>`;
 				break;
 			case "textIcon":
 				elemen =
@@ -6806,7 +6821,7 @@ $(document).ready(function () {
 				break;
 			case "fieldText2":
 				elemen = `<div class="${classField}field" ${atributField}><label>` +
-					labelData + labelTambahan +
+					label + labelTambahan +
 					"</label><input " +
 					placeholderData +
 					' name="username" type="text" ' +
@@ -6816,7 +6831,7 @@ $(document).ready(function () {
 			case "fieldFileInput":
 				elemen =
 					`<div class="${classField}field" ${atributField}><label>` +
-					labelData + labelTambahan +
+					label + labelTambahan +
 					'</label><div class="ui file input"><input type="file" ' +
 					atribut +
 					"></div></div>";
@@ -6824,28 +6839,34 @@ $(document).ready(function () {
 			case "fieldFileInput2":
 				//atribut file hanya placeholder
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}${labelTambahan}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly name_bayang="${file}" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" ${atribut2} non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
+					`<div class="${classField}field" ${atributField}><label>${label}${labelTambahan}</label><div class="ui fluid right action left icon input"><i class="folder open yellow icon"></i><input type="text" placeholder="${placeholderData}" readonly name_bayang="${file}" name="dum_file" ${atribut}><input hidden type="file" nama="file" name="${file}" accept="${accept}" ${atribut2} non_data><button class="ui red icon button" name="del_file" type="button"><i class="erase icon"></i></button></div></div>`;
 				break;
 			case "segment":
-				elemen = `<div class="ui segment ${kelasData}" ${atribut}>${labelData}</div>`;
+				elemen = `<div class="ui segment ${kelas}" ${atribut}>${label}</div>`;
 				break;
 			case "fieldTextarea":
 				elemen =
-					`<div class="${classField}field" ${atributField}><label>${labelData}${labelTambahan}</label><textarea 
+					`<div class="${classField}field" ${atributField}><label>${label}${labelTambahan}</label><textarea 
 					${atribut}></textarea></div>`;
 				break;
+			case "label":
+				elemen = `<label>${label}</label>`;
+				break;
+			case "fieldRadioCheckbox":
+				elemen = `<div class="inline${classField} field" ${atributField}><div class="ui radio checkbox"><input type="radio" tabindex="0" class="hidden" ${atribut}><label>${label}</label></div></div>`;
+				break;
 			case "fieldCheckbox":
-				elemen = `<div class="inline${classField} field" ${atributField}><div class="ui checkbox"><input type="checkbox" tabindex="0" class="hidden" ${atribut}><label>${labelData}</label></div></div>`;
+				elemen = `<div class="inline${classField} field" ${atributField}><div class="ui checkbox"><input type="checkbox" tabindex="0" class="hidden" ${atribut}><label>${label}</label></div></div>`;
 				break;
 			case "fielToggleCheckbox":
-				elemen = `<div class="${classField}field" ${atributField}><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabelData}</label></div></div>`;
-				// `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabelData}</label></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabel}</label></div></div>`;
+				// `<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabel}</label></div></div>`;
 				break;
 			case "fieldTxtDropdownLabel":
 				elemen = `<div class="${classField}field" ${atributField}>
 					<div class="ui right labeled input fluid">
 						<input type="text" placeholder="Koefisien" ${atribut2}>
-						<div class="ui basic  dropdown label ${kelasData}" placeholder="satuan">
+						<div class="ui basic  dropdown label ${kelas}" placeholder="satuan">
 							<input type="hidden" ${atribut}><i class="dropdown icon"></i>
 							<div class="default text">${textDrpdown}</div>
 							<div class="menu">
@@ -6868,7 +6889,7 @@ $(document).ready(function () {
 						});
 					}
 				}
-				elemen = `<div class="${classField}field" ${atributField}><label>${labelData}</label>
+				elemen = `<div class="${classField}field" ${atributField}><label>${label}</label>
 				${elm}
 				</div>`;
 				break;
@@ -6877,9 +6898,9 @@ $(document).ready(function () {
 				break;
 			case "fieldDropdownLabel":
 				var elemen11 =
-					`<div class="${classField}field" ${atributField}><label> ${labelData}
+					`<div class="${classField}field" ${atributField}><label> ${label}
 					</label><div class="ui right labeled input"><div class="ui dropdown fluid 
-					${kelasData}" ${atribut}><input type="hidden" ${atribut}><i class="dropdown icon"></i><div class="default text">${textDrpdown}</div><div class="menu">`;
+					${kelas}" ${atribut}><input type="hidden" ${atribut}><i class="dropdown icon"></i><div class="default text">${textDrpdown}</div><div class="menu">`;
 				///Memisahkan array
 				var elemen22 = "";
 				for (let x in dataArray) {
@@ -6936,7 +6957,7 @@ $(document).ready(function () {
 						}
 					}
 				}
-				var elemen33 = `</div></div><button class="ui teal label icon button" ${atributLabel}>${txtLabelData}</button>
+				var elemen33 = `</div></div><button class="ui teal label icon button" ${atributLabel}>${txtLabel}</button>
 				</div></div>`;
 				elemen = elemen11 + elemen22 + elemen33;
 				break;
@@ -7024,9 +7045,9 @@ $(document).ready(function () {
 				}
 				elemen11 =
 					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +
+					label +
 					'</label><div class="ui dropdown ' +
-					kelasData +
+					kelas +
 					'" ' +
 					atribut +
 					'><input type="hidden" ' +

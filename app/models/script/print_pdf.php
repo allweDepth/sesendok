@@ -164,7 +164,6 @@ class print_pdf
         
         $item = array('code' => $code, 'message' => hasilServer[$code]);
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
-        // return json_encode($json);
         return json_encode($json, JSON_HEX_APOS);
     }
 }
