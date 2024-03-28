@@ -4262,7 +4262,7 @@ $(document).ready(function () {
 							content: buatElemenHtml("fieldText", {
 								label: "Dokumen",
 								classField: `required`,
-								atribut: `name="nomor" placeholder="Nomor Surat"`,
+								atribut: `name="dokumen" placeholder="Dokumen" readonly`,
 							}) + buatElemenHtml("fieldCalendar", {
 								classField: `required`,
 								kelas: "date",
@@ -4276,7 +4276,7 @@ $(document).ready(function () {
 								classField: `twelve wide required`,
 								atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
 								kelas: "selection lainnya",
-								dataArray: [['letter', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['legal', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['A4', 'A4 ( 210 x 280 ) mm = ( 8.27 x 11.02 ) in']]
+								dataArray: [['header','<i class="tags icon"></i>Pilih Ukuran Kertas'], ['letter', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['legal', 'Legal ( 216 x 356 ) mm = ( 8.50 x 14.00 ) in'], ['divider'], ['A4', 'A4 ( 210 x 297 ) mm = ( 8,27 x 11,69 ) in'], ['A3', 'A3 ( 297 × 420 ) mm = ( 11,69 x 16,54 ) in'], ['divider'], ['F4', 'F4 ( 215 × 330 ) mm = ( 11,69 x 16,54 ) in', 'active'], ['custom', 'Custom']]//Kertas Seri A merupakan serangkaian kertas yang ukurannya diatur oleh ISO 216. Rasio tinggi dan lebar setiap kertas sama, yaitu 1:1,41.A0: 841 x 1.189 mm atau 33,11 x 46,81 inci.
 							}) + buatElemenHtml("fieldText", {
 								classField: `four wide required`,
 								kelas: "date",
@@ -4287,7 +4287,7 @@ $(document).ready(function () {
 							label: "Orientasi",
 							atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
 							kelas: "search clearable asn ajx selection",
-							dataArray: [{class:'active',lbl:'<i class="id badge icon"></i>Portrait',attr:'value="portrait"'},{class:'',lbl:'<i class="id card icon"></i>Lanscape',attr:'value="lanscape"'}]
+							dataArray: [{ class: 'active', lbl: '<i class="id badge icon"></i>Portrait', attr: 'value="portrait"' }, { class: '', lbl: '<i class="id card icon"></i>Lanscape', attr: 'value="lanscape"' }]
 						})
 						break;
 				}
@@ -6306,7 +6306,7 @@ $(document).ready(function () {
 		let elemen = '';
 		switch (namaElemen) {
 			case "icon_menu":
-				let menu='';
+				let menu = '';
 				dataArray.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
 					let classRow = (val.class !== undefined) ? ` ${val.class}` : '';
@@ -6315,7 +6315,7 @@ $(document).ready(function () {
 					menu += `<a class="item${classRow}" ${attrRow}>${lblRow}</a>`;
 				});
 				// <a class="item aksi active" jns="orientasi_print" sub="P"><i class="id badge icon"></i>Portrait</a>
-                //     <a class="item aksi" jns="orientasi_print" sub="L"><i class="id card icon"></i>Lanscape</a>
+				//     <a class="item aksi" jns="orientasi_print" sub="L"><i class="id card icon"></i>Lanscape</a>
 				elemen = `<div class="${classField}field"${atributField}>
                 <label>${labelData}</label>
                 <input type="hidden" ${atribut}>
@@ -6768,61 +6768,73 @@ $(document).ready(function () {
 					let dataValue = rowsData[0];
 					// active selected
 					let classItem = 'item';
-					if (rowsData.length === 1) {
-						let txt = dataValue;
-						if (rowsData[2]) {
-							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
-								classItem = 'item active selected';
-								disableatributActive = true;
-								txtSelectedActive = ` value="${dataValue}"`;
-							}
-						}
-						elemen22 +=
-							`<div class="${classItem}" data-value="` +
-							dataValue +
-							'">' +
-							txt +
-							"</div>";
-					} else if (rowsData.length === 2) {
-						let txt = rowsData[1];
-						if (rowsData[2] === 'active' || rowsData[3] === 'active') {
-							classItem = 'item active selected';
-							disableatributActive = true;
-							txtSelectedActive = ` value="${dataValue}"`;
-						}
-						elemen22 +=
-							`<div class="${classItem}" data-value="` +
-							dataValue +
-							'">' +
-							txt +
-							"</div>";
-					} else if (rowsData.length >= 3) {
-						//mempunyai deskripsi
-						let txt = rowsData[1];
-						deskripsi = rowsData[2];
-						if (deskripsi !== 'active') {
+					switch (dataValue) {
+						case 'divider':
+							elemen22 +=`<div class="divider"></div>`;
+							break;
+						case 'header':
 							elemen22 +=
-								`<div class="${classItem}" data-value="` +
-								dataValue +
-								'"><span class="description">' +
-								deskripsi +
-								'</span><span class="text">' +
-								txt +
-								"</span></div>";
-						} else {
-							if (rowsData[2] === 'active' || rowsData[3] === 'active') {
-								classItem = 'item active selected';
-								disableatributActive = true;
-								txtSelectedActive = ` value="${dataValue}"`;
+							`<div class="header">${rowsData[1]}</div>`;
+							break;
+						default:
+							if (rowsData.length === 1) {
+								let txt = dataValue;
+								if (rowsData[2]) {
+									if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+										classItem = 'item active selected';
+										disableatributActive = true;
+										txtSelectedActive = ` value="${dataValue}"`;
+									}
+								}
+								elemen22 +=
+									`<div class="${classItem}" data-value="` +
+									dataValue +
+									'">' +
+									txt +
+									"</div>";
+							} else if (rowsData.length === 2) {
+								let txt = rowsData[1];
+								if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+									classItem = 'item active selected';
+									disableatributActive = true;
+									txtSelectedActive = ` value="${dataValue}"`;
+								}
+								elemen22 +=
+									`<div class="${classItem}" data-value="` +
+									dataValue +
+									'">' +
+									txt +
+									"</div>";
+							} else if (rowsData.length >= 3) {
+								//mempunyai deskripsi
+								let txt = rowsData[1];
+								deskripsi = rowsData[2];
+								if (deskripsi !== 'active') {
+									elemen22 +=
+										`<div class="${classItem}" data-value="` +
+										dataValue +
+										'"><span class="description">' +
+										deskripsi +
+										'</span><span class="text">' +
+										txt +
+										"</span></div>";
+								} else {
+									if (rowsData[2] === 'active' || rowsData[3] === 'active') {
+										classItem = 'item active selected';
+										disableatributActive = true;
+										txtSelectedActive = ` value="${dataValue}"`;
+									}
+									elemen22 +=
+										`<div class="${classItem}" data-value="` +
+										dataValue +
+										'">' +
+										txt +
+										"</div>";
+								}
 							}
-							elemen22 +=
-								`<div class="${classItem}" data-value="` +
-								dataValue +
-								'">' +
-								txt +
-								"</div>";
-						}
+							break;
 					}
+
 				}
 				var atributActive = atribut;
 				if (disableatributActive) {
