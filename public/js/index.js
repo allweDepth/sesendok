@@ -3014,7 +3014,7 @@ $(document).ready(function () {
 				//data.tbl = "reset";
 				break;
 			case "del_row":
-				if (id_row && jenis !== 'direct') {
+				if (id_row > 0 && jenis !== 'direct') {
 					data.id_row = id_row;
 					jalankanAjax = true;
 				}
@@ -3234,10 +3234,47 @@ $(document).ready(function () {
 						break;
 				}
 				break;
+			case 'add_row':
+				switch (tbl) {
+					case 'menimbang':
+					case 'mengingat':
+					case 'menetapkan':
+					case 'kesatu':
+					case 'kedua':
+					case 'ketiga':
+					case 'keempat':
+					case 'tembusan':
+						let Tbody = ini.closest('table').find('tbody');
+						Tbody.append(`<tr><td><div contenteditable=""></div></td><td><button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`)
+						break;
+					default:
+						break;
+				}
+				break;
+			case 'P'://paragraf
+			case 'L'://list
+				let bentuk = (jenis === 'P') ? 'L' : 'P';
+				let tooltip = (jenis === 'P') ? 'List' : 'paragraf';
+				ini.attr({ jns: bentuk, 'data-tooltip': tooltip }).text(bentuk);
+				break;
 			default:
 				break;
 		}
-		$("#directupload1").click();
+		switch (jenis) {
+			case 'upload':
+				switch (tbl) {
+					case 'asn':
+					case 'user':
+						$("#directupload1").click();
+						break;
+					default:
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+
 	})
 	$("body").on("change", '#directupload1', function (e) {//@audit langsung upload file
 		e.preventDefault();
@@ -3482,7 +3519,140 @@ $(document).ready(function () {
 									classField: `three wide required`,
 									atribut: `name="pangkat_pemberi_tgs" placeholder="Nomor Surat"`,
 								})
-							})
+							}) + buatElemenHtml("divider", {
+								header: "h5",
+								aligned: 'left aligned',
+								icon2: `<i class="feather alternate icon"></i>`,
+								label: `MENIMBANG`
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="menimbang"`,
+								kelas: `celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `MENIMBANG` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menimbang"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [{
+									lbl: ``,
+
+								}, {
+									lbl: '',
+									attr: ``
+								}, {
+									lbl: '',
+									attr: ``
+								}],
+								bodyTable: []
+							}) + buatElemenHtml("divider", {
+								header: "h5",
+								aligned: 'left aligned',
+								icon2: `<i class="feather alternate icon"></i>`,
+								label: `MENGINGAT`
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="mengingat"`,
+								kelas: `celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `MENGINGAT` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="mengingat"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [{
+									lbl: ``,
+
+								}, {
+									lbl: '',
+									attr: ``
+								}, {
+									lbl: '',
+									attr: ``
+								}],
+								bodyTable: []
+							}) + buatElemenHtml("divider", {
+								header: "h5",
+								aligned: 'left aligned',
+								icon2: `<i class="feather alternate icon"></i>`,
+								label: `MENETAPKAN`
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="menetapkan"`,
+								kelas: `celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `MENETAPKAN` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [],
+								bodyTable: []
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="kesatu"`,
+								kelas: `stackable celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `KESATU` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="kesatu"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [],
+								bodyTable: []
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="kedua"`,
+								kelas: `stackable celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `KEDUA` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="kedua"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [],
+								bodyTable: []
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="ketiga"`,
+								kelas: `stackable celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `KETIGA` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="ketiga"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [],
+								bodyTable: []
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="keempat"`,
+								kelas: `stackable celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `KEEMPAT` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="keempat"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [],
+								bodyTable: []
+							}) + buatElemenHtml("divider", {
+								header: "h5",
+								aligned: 'left aligned',
+								icon2: `<i class="users icon"></i>`,
+								label: `ASN YANG DITUGASKAN`//@audit cetak sk
+							}) + buatElemenHtml("fieldDropdown", {
+								label: "Nama ASN ditugaskan",
+								atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
+								kelas: "search clearable asn ajx selection",
+								dataArray: []
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="nama_ditugaskan"`,
+								kelas: `stackable celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `NAMA` },
+								{ attr: '', class: 'collapsing', lbl: `PANGKAT/GOLONGAN` },
+								{ attr: '', class: 'collapsing', lbl: `NIP` },
+								{ attr: '', class: 'collapsing', lbl: `JABATAN` },
+								{ attr: '', class: 'collapsing', lbl: `JABATAN SK` },
+								{ attr: '', lbl: ``, class: 'collapsing' }]],
+								footerTable: [],
+								bodyTable: []
+							}) +
+							buatElemenHtml("fielToggleCheckbox", {
+								label: "",
+								atribut: 'name="bentuk_lampiran" non_data readonly',
+								txtLabel: "Lampiran SK bentuk Tabel",
+							}) + buatElemenHtml("divider", {
+								header: "h5",
+								aligned: 'left aligned',
+								icon2: `<i class="feather alternate icon"></i>`,
+								label: `TEMBUSAN`
+							}) + buatElemenHtml("tabel2", {
+								atribut: `name="tembusan"`,
+								kelas: `celled mini structured`,
+								headerTable: [[{ attr: '', lbl: `TEMBUSAN` },
+								{ attr: '', class: 'collapsing', lbl: `JENIS` },
+								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+								footerTable: [],
+								bodyTable: []
+							}) + buatElemenHtml("dividerHidden", {
+							}) + buatElemenHtml("button", {//elemen = `<button class="ui ${kelasData} button" ${atribut}>${valueData}</button>`;
+								atribut: 'name="modal_second" jns="cetak" tbl="sk_asn"',
+								kelas: `primary icon`,
+								value: `<i class="print icon"></i>`
+							});
 						break;
 					case 'realisasi':
 						if (jnsAttr === 'add') {
@@ -3807,6 +3977,8 @@ $(document).ready(function () {
 					case 'sk_asn':
 						var dropdownASN = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.pemberi_tgs.ajx');
 						dropdownASN.returnList({ jenis: "get_row_json", tbl: "asn" });
+						var dropdownASNTugas = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.asn.ajx');
+						dropdownASNTugas.returnList({ jenis: "get_row_json", tbl: "asn" });
 						break;
 				}
 				break;
@@ -3936,7 +4108,7 @@ $(document).ready(function () {
 																case 'pemberi_tgs':
 																	dropdownASN.valuesDropdown(result.data?.values?.pemberi_tgs);
 																	dropdownASN.returnList({ jenis: "get_row_json", tbl: "asn" });
-						break;
+																	break;
 																	break;
 															}
 															break;
@@ -3952,7 +4124,7 @@ $(document).ready(function () {
 									}
 									break;
 							}
-							
+
 							break;
 						case 'add':
 							switch (tblAttr) {
@@ -4081,6 +4253,44 @@ $(document).ready(function () {
 						jalankanAjax = true;
 						break;
 				}
+				break;//'name="modal_second" jns="cetak" tbl="sk_asn',
+			case 'cetak':
+				switch (tblAttr) {
+					case 'sk_asn'://@audit cetak sk
+						elementForm = buatElemenHtml("fields", {
+							classField: "two",
+							content: buatElemenHtml("fieldText", {
+								label: "Dokumen",
+								classField: `required`,
+								atribut: `name="nomor" placeholder="Nomor Surat"`,
+							}) + buatElemenHtml("fieldCalendar", {
+								classField: `required`,
+								kelas: "date",
+								label: "Tanggal Surat",
+								atribut: `name="tgl_surat_dibuat" placeholder="tanggal" readonly disabled`,
+							})
+						}) + buatElemenHtml("fields", {
+							classField: "two",
+							content: buatElemenHtml("fieldDropdown", {
+								label: "Ukuran Kertas",
+								classField: `twelve wide required`,
+								atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
+								kelas: "selection lainnya",
+								dataArray: [['letter', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['legal', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['A4', 'A4 ( 210 x 280 ) mm = ( 8.27 x 11.02 ) in']]
+							}) + buatElemenHtml("fieldText", {
+								classField: `four wide required`,
+								kelas: "date",
+								label: "Ukuran Huruf (%)",
+								atribut: `name="ukuran_huruf" placeholder="Ukuran Huruf (%)" rms value="100"`,
+							})
+						}) + buatElemenHtml("icon_menu", {
+							label: "Orientasi",
+							atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
+							kelas: "search clearable asn ajx selection",
+							dataArray: [{class:'active',lbl:'<i class="id badge icon"></i>Portrait',attr:'value="portrait"'},{class:'',lbl:'<i class="id card icon"></i>Lanscape',attr:'value="lanscape"'}]
+						})
+						break;
+				}
 				break;
 			case 'xxx':
 				break;
@@ -4095,6 +4305,10 @@ $(document).ready(function () {
 		elementForm += buatElemenHtml("errorForm");
 		formIni.html(elementForm);
 		document.getElementById("header_mdl").textContent = headerModal;
+		formIni.find(".ui.dropdown.lainnya").dropdown();
+		if ($(`a[name="change_themes"]`).attr("theme") === 'dark') {
+			$(".form .icon").removeClass("inverted").addClass("inverted");
+		}
 		addRulesForm(formIni);
 		switch (jnsAttr) {
 			case 'get_data':
@@ -6057,7 +6271,7 @@ $(document).ready(function () {
 		let content = "content" in dataElemen ? dataElemen.content : "";
 		let atribut = "atribut" in dataElemen ? dataElemen.atribut : "";
 		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
-		let aligned = "aligned" in dataElemen ? dataElemen.align : "";
+		let aligned = "aligned" in dataElemen ? dataElemen.aligned : "";
 		let header = "header" in dataElemen ? dataElemen.header : "h4";
 		let atributField = "atributField" in dataElemen ? dataElemen.atributField : "";
 		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
@@ -6091,6 +6305,22 @@ $(document).ready(function () {
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		let elemen = '';
 		switch (namaElemen) {
+			case "icon_menu":
+				let menu='';
+				dataArray.forEach(function (val) {
+					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					let classRow = (val.class !== undefined) ? ` ${val.class}` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					menu += `<a class="item${classRow}" ${attrRow}>${lblRow}</a>`;
+				});
+				// <a class="item aksi active" jns="orientasi_print" sub="P"><i class="id badge icon"></i>Portrait</a>
+                //     <a class="item aksi" jns="orientasi_print" sub="L"><i class="id card icon"></i>Lanscape</a>
+				elemen = `<div class="${classField}field"${atributField}>
+                <label>${labelData}</label>
+                <input type="hidden" ${atribut}>
+                <div class="ui compact labeled icon menu">${menu}</div></div>`
+				break;
 			case "div":
 				elemen = `<div class="${kelas}">${content}</div>`;
 				break;
@@ -6204,7 +6434,7 @@ $(document).ready(function () {
 					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
-					body += `<th${classRow} ${attrRow}>${lblRow}</th$>`;
+					body += `<td${classRow} ${attrRow}>${lblRow}</td>`;
 				});
 				body += `</tbody>`;
 				//buat foot tabel
@@ -6213,7 +6443,7 @@ $(document).ready(function () {
 					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
-					foot += `<td${classRow} ${attrRow}>${lblRow}</td$>`;
+					foot += `<td${classRow} ${attrRow}>${lblRow}</td>`;
 				});
 				foot += (footerTable.length > 0) ? '</tfoot>' : '';
 				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
@@ -6235,7 +6465,7 @@ $(document).ready(function () {
 						attrRow = (val2.attr !== undefined) ? ` ${val2.attr}` : '';
 						head += `<th${classRow} ${attrRow}>${lblRow}</th>`;
 					});
-					head += `</tr$>`;
+					head += `</tr>`;
 				});
 				head += (headerTable.length > 0) ? '</thead>' : '';
 				//buat body tabel
@@ -6257,6 +6487,15 @@ $(document).ready(function () {
 				});
 				foot += (footerTable.length > 0) ? '</tfoot>' : '';
 				elemen = `<table class="ui ${kelasData} table" ${atribut}>${head}${body}${foot}</table>`;
+				break;
+			case "tr_tabel":
+				bodyTable.forEach(function (val) {
+					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
+					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
+					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
+					body += `<th${classRow} ${attrRow}>${lblRow}</th>`;
+				});
 				break;
 			case "errorForm":
 				elemen = `<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
