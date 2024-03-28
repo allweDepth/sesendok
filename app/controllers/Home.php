@@ -21,6 +21,11 @@ class home extends Controller
         $data = $this->script("del_data")->del_data();
         echo $data;
     }
+    public function cetak_pdf()
+    {
+        $data = $this->script("print_pdf")->print_pdf();
+        echo $data;
+    }
     public function post_data()
     {
         $data = $this->script("post_data")->post_data();

@@ -1,5 +1,5 @@
 <?php
-class PrintPdf
+class print_pdf
 {
     private $_jenis = '';
     private $_tbl = '';
@@ -40,8 +40,9 @@ class PrintPdf
     {
         return new self($data);
     }
-    public static function cetak_pdf($data)
+    public static function print_pdf()
     {
+        // var_dump($_POST);
         require 'init.php';
         $user = new User();
         $user->cekUserSession();
@@ -71,7 +72,7 @@ class PrintPdf
                 ${$key} = $value;
             }
             $tahun = (int) $rowUsername->tahun;
-            $kd_wilayah = $rowUsername->kd_wilayah;
+            
             $kd_opd = $rowUsername->kd_organisasi;
             $id_user = $rowUsername->id;
             $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
@@ -109,35 +110,36 @@ class PrintPdf
                 //================
                 switch ($jenis) {
                     case 'cetak_pdf':
+                        $page_size = $validate->setRules('ukuran_kertas', 'ukuran kertas', [
+                            'required' => true,
+                            'sanitize' => 'string',
+                            'min_char' => 1,
+                            'max_char' => 100,
+                            'in_array' => ['custom', 'F4', 'A3', 'A4', 'LETTER', 'LEGAL'],
+                        ]);
+                        $PDF_MARGIN_LEFT = $validate->setRules('margin_left', 'margin kanan', [
+                            'numeric' => true,
+                            'required' => true
+                        ]);
+                        $PDF_MARGIN_RIGHT = $validate->setRules('margin_right', 'margin kiri', [
+                            'numeric' => true,
+                            'required' => true
+                        ]);
+                        $PDF_MARGIN_TOP = $validate->setRules('margin_top', 'margin atas', [
+                            'numeric' => true,
+                            'required' => true
+                        ]);
+                        $PDF_MARGIN_BOTTOM = $validate->setRules('margin_bottom', 'margin bawah', [
+                            'numeric' => true,
+                            'required' => true
+                        ]);
+                        $orientasi = $validate->setRules('margin_bottom', 'margin bawah', [
+                            'sanitize' => 'string',
+                            'required' => true,
+                            'in_array' => ['portrait', 'lanscape'],
+                        ]);
                         switch ($tbl) {
                             case 'sk_asn':
-                                $page_size = $validate->setRules('id_sub_keg', 'nomor sub kegiatan', [
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 1,
-                                    'max_char' => 100,
-                                    'in_array' => ['custom', 'F4', 'A3', 'A4', 'LETTER', 'LEGAL'],
-                                ]);
-                                $PDF_MARGIN_LEFT = $validate->setRules('margin_left', 'margin kanan', [
-                                    'numeric' => true,
-                                    'required' => true
-                                ]);
-                                $PDF_MARGIN_RIGHT = $validate->setRules('margin_right', 'margin kiri', [
-                                    'numeric' => true,
-                                    'required' => true
-                                ]);
-                                $PDF_MARGIN_TOP = $validate->setRules('margin_top', 'margin atas', [
-                                    'numeric' => true,
-                                    'required' => true
-                                ]);
-                                $PDF_MARGIN_BOTTOM = $validate->setRules('margin_bottom', 'margin bawah', [
-                                    'numeric' => true,
-                                    'required' => true
-                                ]);
-                                // $PDF_MARGIN_LEFT = (float)$_POST['mk'];
-                                // $PDF_MARGIN_TOP = (float)$_POST['mt'];
-                                // $PDF_MARGIN_RIGHT = (float)$_POST['mka'];
-                                // $PDF_MARGIN_BOTTOM = (float)$_POST['mb'];
                                 break;
                             default:
 
@@ -150,7 +152,7 @@ class PrintPdf
                 }
                 if ($validate->passed()) {
                     $code = 55;
-                    require_once('../TCPDF-main/tcpdf.php');
+                    require_once('class/TCPDF-main/tcpdf.php');
                 }
             } else {
                 $pesan = 'tidak didefinisikan';
@@ -159,5 +161,10 @@ class PrintPdf
         } else {
             $code = 407;
         }
+        
+        $item = array('code' => $code, 'message' => hasilServer[$code]);
+        $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
+        // return json_encode($json);
+        return json_encode($json, JSON_HEX_APOS);
     }
 }

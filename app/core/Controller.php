@@ -29,6 +29,7 @@ class Controller
         }
         switch ($script) {
             // class yang mempunyai __construct($data)
+            case 'print_pdf':
             case 'get_data':
                 return $script::createInstance($_POST);
                 break;

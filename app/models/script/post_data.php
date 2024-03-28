@@ -184,6 +184,11 @@ class post_data
                                 $row_resul_cari = $DB->getWhereOnceCustom($tabel_pakai_temporer, $kondisi_row);
                                 if ($row_resul_cari !== false) {
                                     $pangkat_pemberi_tgs = $Fungsi->golongan_ruang($dinamic = ['golongan' => $row_resul_cari->golongan, 'ruang' => $row_resul_cari->ruang]);
+                                    $nama_pemberi_tgs = $row_resul_cari->nama;
+                                }else{
+                                    $bentuk_lampiran = $validate->setRules('get', 'Pejabat Pemberi Tugas tidak dikenali', [
+                                        'error' =>  true
+                                    ]);
                                 }
                                 $bentuk_lampiran = $validate->setRules('bentuk_lampiran', 'bentuk lampiran', [
                                     'sanitize' => 'string',
@@ -191,46 +196,73 @@ class post_data
                                     'in_array' => ['off', 'on']
                                 ]);
                                 $bentuk_lampiran = ($bentuk_lampiran == 'on') ? 1 : 0;
+                                // var_dump(gettype($_POST['menimbang']));
                                 $menimbang = $validate->setRules('menimbang', 'menimbang', [
                                     'json_repair' => true,
-                                    'required' => true,
+                                    'required' => true
+                                ]);
+                                $menimbang = $validate->setRules('menimbang', 'menimbang', [
                                     'json_decode' => true
                                 ]);
                                 $mengingat = $validate->setRules('mengingat', 'mengingat', [
                                     'json_repair' => true,
-                                    'required' => true,
+                                    'required' => true
+                                ]);
+                                $mengingat = $validate->setRules('mengingat', 'mengingat', [
                                     'json_decode' => true
                                 ]);
                                 $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
                                     'json_repair' => true,
-                                    'required' => true,
+                                    'required' => true
+                                ]);
+                                $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
                                     'json_decode' => true
                                 ]);
                                 $menetapkan_2 = $validate->setRules('menetapkan_1', 'menetapkan kedua', [
                                     'json_repair' => true,
-                                    'required' => true,
-                                    'json_decode' => true
+                                    'required' => true
                                 ]);
                                 $menetapkan_3 = $validate->setRules('menetapkan_1', 'menetapkan ketiga', [
                                     'json_repair' => true,
-                                    'required' => true,
-                                    'json_decode' => true
+                                    'required' => true
                                 ]);
                                 $menetapkan_4 = $validate->setRules('menetapkan_1', 'menetapkan keempat', [
                                     'json_repair' => true,
-                                    'required' => true,
+                                    'required' => true
+                                ]);
+                                
+                                $menetapkan_2 = $validate->setRules('menetapkan_1', 'menetapkan kedua', [
+                                    'json_decode' => true
+                                ]);
+                                $menetapkan_3 = $validate->setRules('menetapkan_1', 'menetapkan ketiga', [
+                                    'json_decode' => true
+                                ]);
+                                $menetapkan_4 = $validate->setRules('menetapkan_1', 'menetapkan keempat', [
                                     'json_decode' => true
                                 ]);
                                 $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
                                     'json_repair' => true,
-                                    'required' => true,
+                                    'required' => true
+                                ]);
+                                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
                                     'json_decode' => true
                                 ]);
                                 $tembusan = $validate->setRules('tembusan', 'tembusan', [
                                     'json_repair' => true,
-                                    'required' => true,
+                                    'required' => true
+                                ]);
+                                $tembusan = $validate->setRules('tembusan', 'tembusan', [
                                     'json_decode' => true
                                 ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string'
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'rekanan':
                                 $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama perusahaan', [
@@ -2158,7 +2190,7 @@ class post_data
                             switch ($tbl) {
                                 case 'sk_asn':
                                     $kodePosting = 'cek_insert';
-                                    $kondisi = [['id', '=', $id_row, 'AND'],['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                                    $kondisi = [['id', '=', $id_row],['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
                                     $set = [
                                         'tahun' => $tahun,
                                         'kd_wilayah' => $kd_wilayah,
@@ -2170,21 +2202,21 @@ class post_data
                                         'jbt_pemberi_tgs' => $jbt_pemberi_tgs,
                                         'pangkat_pemberi_tgs' => $pangkat_pemberi_tgs,
                                         'nama_pemberi_tgs' => $nama_pemberi_tgs,
-                                        'nama_ditugaskan' => $nama_ditugaskan,
-                                        'menimbang' => $menimbang,
-                                        'mengingat' => $mengingat,
-                                        'menetapkan_1' => $menetapkan_1,
-                                        'menetapkan_2' => $menetapkan_2,
-                                        'menetapkan_3' => $menetapkan_3,
-                                        'menetapkan_4' => $menetapkan_4,
-                                        'tembusan' => $tembusan,
+                                        'nama_ditugaskan' => json_encode($nama_ditugaskan),
+                                        'menimbang' => json_encode($menimbang),
+                                        'mengingat' => json_encode($mengingat),
+                                        'menetapkan_1' => json_encode($menetapkan_1),
+                                        'menetapkan_2' => json_encode($menetapkan_2),
+                                        'menetapkan_3' => json_encode($menetapkan_3),
+                                        'menetapkan_4' => json_encode($menetapkan_4),
+                                        'tembusan' => json_encode($tembusan),
                                         'disable' => $disable,
                                         'keterangan' => $keterangan,
                                         'tgl_update' => date('Y-m-d H:i:s'),
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
                                         $set['username'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }

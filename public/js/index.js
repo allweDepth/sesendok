@@ -27,8 +27,26 @@ $(document).ready(function () {
 					.removeClass('active')
 					;
 			}
+		},
+		menuorientasi: function () {
+			let ini=$(this);
+			ini
+				.addClass('active')
+				.siblings()
+				.removeClass('active');
+			;
+			let jenis = ini.attr('jns');
+			switch (jenis) {
+				case 'orientasi':
+					$('form[name="form_modal_kedua"]').form('set value','orientasi',ini.attr('value'))
+					break;
+				default:
+					break;
+			}
 		}
+
 	}
+	$("body").on('click',".menu .item.aksi", handler.menuorientasi);
 	$(".menu .item.inayah").on('click', handler.activate);
 	$(".ui.dropdown").dropdown();
 	$(".menu .item").tab();
@@ -3639,11 +3657,15 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
-							})+ buatElemenHtml("fieldTextarea", {
+							}) + buatElemenHtml("fieldTextarea", {
 								label: "Keterangan",
 								atribut: 'name="keterangan" placeholder="keterangan" rows="2" non_data',
+							}) + buatElemenHtml("fielToggleCheckbox", {
+								label: "",
+								atribut: 'name="disable" non_data',
+								txtLabel: "Non Aktif",
 							}) + buatElemenHtml("dividerHidden", {
-							}) + buatElemenHtml("button", {//elemen = `<button class="ui ${kelasData} button" ${atribut}>${valueData}</button>`;
+							}) + buatElemenHtml("button", {
 								atribut: 'name="modal_second" jns="cetak" tbl="sk_asn"',
 								kelas: `primary icon`,
 								value: `<i class="print icon"></i>`
@@ -3938,13 +3960,14 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+		elementForm += buatElemenHtml("errorForm");
+		formIni.html(elementForm);
 		$('.ui.sticky').sticky('refresh');
 		let modalGeneral = new ModalConstructor(mdl);
 		modalGeneral.globalModal();
 		let InitializeForm = new FormGlobal(formIni);
 		InitializeForm.run();
-		elementForm += buatElemenHtml("errorForm");
-		formIni.html(elementForm);
+
 		document.getElementById("header_mdl").textContent = headerModal;
 		let calendarDate = new CalendarConstructor(".ui.calendar.date");
 		calendarDate.runCalendar();
@@ -4286,6 +4309,7 @@ $(document).ready(function () {
 			case 'cetak':
 				switch (tblAttr) {
 					case 'sk_asn'://@audit cetak sk
+
 						elementForm = buatElemenHtml("fields", {
 							classField: "two",
 							content: buatElemenHtml("fieldText", {
@@ -4303,7 +4327,7 @@ $(document).ready(function () {
 							content: buatElemenHtml("fieldDropdown", {
 								label: "Ukuran Kertas",
 								classField: `twelve wide required`,
-								atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
+								atribut: 'name="ukuran_kertas" placeholder="Ukuran Kertas..."',
 								kelas: "selection lainnya",
 								dataArray: [['header', '<i class="tags icon"></i>Pilih Ukuran Kertas'], ['letter', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['legal', 'Legal ( 216 x 356 ) mm = ( 8.50 x 14.00 ) in'], ['divider'], ['A4', 'A4 ( 210 x 297 ) mm = ( 8,27 x 11,69 ) in'], ['A3', 'A3 ( 297 × 420 ) mm = ( 11,69 x 16,54 ) in'], ['divider'], ['F4', 'F4 ( 215 × 330 ) mm = ( 11,69 x 16,54 ) in', 'active'], ['custom', 'Custom']]//Kertas Seri A merupakan serangkaian kertas yang ukurannya diatur oleh ISO 216. Rasio tinggi dan lebar setiap kertas sama, yaitu 1:1,41.A0: 841 x 1.189 mm atau 33,11 x 46,81 inci.
 							}) + buatElemenHtml("fieldText", {
@@ -4312,11 +4336,11 @@ $(document).ready(function () {
 								label: "Ukuran Huruf (%)",
 								atribut: `name="ukuran_huruf" placeholder="Ukuran Huruf (%)" rms value="100"`,
 							})
-						}) + buatElemenHtml("icon_menu", {//case "header":elemen = `<${header} class="ui header${kelas}">${content}</${header}>`
+						}) + buatElemenHtml("icon_menu", {
 							label: "Orientasi",
-							atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
-							kelas: "search clearable asn ajx selection",
-							dataArray: [{ class: 'active', lbl: '<i class="id badge icon"></i>Portrait', attr: 'value="portrait"' }, { class: '', lbl: '<i class="id card icon"></i>Lanscape', attr: 'value="lanscape"' }]
+							atribut: 'name="orientasi" value="portrait"',
+							kelas: "",
+							dataArray: [{ class: 'aksi active', lbl: '<i class="id badge icon"></i>Portrait', attr: 'value="portrait" jns="orientasi"' }, { class: 'aksi', lbl: '<i class="id card icon"></i>Lanscape', attr: 'value="lanscape" jns="orientasi"' }]
 						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Margin Halaman (mm)' }) + buatElemenHtml("fields", {
 							classField: "two",
 							content: buatElemenHtml("fieldText", {
@@ -4371,13 +4395,14 @@ $(document).ready(function () {
 			default:
 				break;
 		}
+
+		elementForm += buatElemenHtml("errorForm");
+		formIni.html(elementForm);
 		$('.ui.sticky').sticky('refresh');
 		let modalsecond = new ModalConstructor(mdl);
 		modalsecond.globalModal();
 		let InitializeForm = new FormGlobal(formIni);
 		InitializeForm.run();
-		elementForm += buatElemenHtml("errorForm");
-		formIni.html(elementForm);
 		document.getElementById("header_mdl").textContent = headerModal;
 		formIni.find(".ui.dropdown.lainnya").dropdown();
 		if ($(`a[name="change_themes"]`).attr("theme") === 'dark') {
@@ -4385,6 +4410,13 @@ $(document).ready(function () {
 		}
 		addRulesForm(formIni);
 		switch (jnsAttr) {
+			case 'cetak':
+				switch (tblAttr) {
+					case 'sk_asn':
+						formIni.form('set value', 'dokumen', tblAttr);
+						break;
+				}
+				break;
 			case 'get_data':
 				switch (tblAttr) {
 					case 'realisasi':
@@ -4392,6 +4424,7 @@ $(document).ready(function () {
 						break;
 				}
 				break;
+
 			default:
 				break;
 		}
@@ -5597,26 +5630,42 @@ $(document).ready(function () {
 						// UNTUK MODAL 2====
 						// =================
 						case "form_modal_kedua":
-							var atributFormAwal = ini.attr("nama_modal_awal");
-							var mdlTujuan = $('div[name="' + atributFormAwal + '"]');
-							var formTujuan = mdlTujuan.find("form");
-							var dataForm = ini.form("get values");
-							var tbodyFormAwal = formTujuan.find("table tbody");
-							var indexTr = ini.attr("indextr");
-							var trTable = tbodyFormAwal.children();
-							var tdEdit = trTable.eq(indexTr).find("td");
-							Object.keys(tdEdit).forEach((key) => {
-								var element = $(tdEdit[key]);
-								var nama_kolom = element.attr("klm");
-								if (typeof dataForm[nama_kolom] !== "undefined") {
-									var elemenku = element.children();
-									if (elemenku.length > 0) {
-										element.children().text(dataForm[nama_kolom]); // jika ada div contenteditable
-									} else {
-										element.text(dataForm[nama_kolom]);
+							switch (jenis) {
+								case 'cetak':
+									switch (tbl) {
+										case 'sk_asn'://@audit cetak pdf
+											// formData.set(id_row, tanggal);
+											url = "script/cetak_pdf";
+											jalankanAjax = true;
+											break;
 									}
-								}
-							});
+									break;
+								case 'edit':
+									break;
+								default:
+									break;
+							}
+
+							// var atributFormAwal = ini.attr("nama_modal_awal");
+							// var mdlTujuan = $('div[name="' + atributFormAwal + '"]');
+							// var formTujuan = mdlTujuan.find("form");
+							// var dataForm = ini.form("get values");
+							// var tbodyFormAwal = formTujuan.find("table tbody");
+							// var indexTr = ini.attr("indextr");
+							// var trTable = tbodyFormAwal.children();
+							// var tdEdit = trTable.eq(indexTr).find("td");
+							// Object.keys(tdEdit).forEach((key) => {
+							// 	var element = $(tdEdit[key]);
+							// 	var nama_kolom = element.attr("klm");
+							// 	if (typeof dataForm[nama_kolom] !== "undefined") {
+							// 		var elemenku = element.children();
+							// 		if (elemenku.length > 0) {
+							// 			element.children().text(dataForm[nama_kolom]); // jika ada div contenteditable
+							// 		} else {
+							// 			element.text(dataForm[nama_kolom]);
+							// 		}
+							// 	}
+							// });
 							break;
 						// =================
 						// UNTUK PROFIL====
@@ -6637,7 +6686,7 @@ $(document).ready(function () {
 				});
 				break;
 			case "errorForm":
-				elemen = `<div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div><div class="ui error message"></div>`;
+				elemen = `<div class="ui error message"></div><div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div>`;
 				break;
 			case "text":
 				elemen = `<div class="${classField}field" ${atributField}><input type="text" ${atribut}></div>`;
@@ -6789,14 +6838,8 @@ $(document).ready(function () {
 				elemen = `<div class="inline${classField} field" ${atributField}><div class="ui checkbox"><input type="checkbox" tabindex="0" class="hidden" ${atribut}><label>${labelData}</label></div></div>`;
 				break;
 			case "fielToggleCheckbox":
-				elemen =
-					`<div class="${classField}field" ${atributField}><label>` +
-					labelData +
-					'</label><div class="ui toggle checkbox"><input type="checkbox" ' +
-					atribut +
-					"><label>" +
-					txtLabelData +
-					"</label></div></div>";
+				elemen = `<div class="${classField}field" ${atributField}><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabelData}</label></div></div>`;
+				// `<div class="${classField}field" ${atributField}><label>${labelData}</label><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabelData}</label></div></div>`;
 				break;
 			case "fieldTxtDropdownLabel":
 				elemen = `<div class="${classField}field" ${atributField}>
