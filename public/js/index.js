@@ -3577,8 +3577,7 @@ $(document).ready(function () {
 									atribut: `name="pangkat_pemberi_tgs" placeholder="Nomor Surat"`,
 								})
 							}) + buatElemenHtml("divider", {
-								header: "h5",
-								aligned: 'left aligned',
+								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `MENIMBANG`
 							}) + buatElemenHtml("tabel2", {
@@ -3599,8 +3598,7 @@ $(document).ready(function () {
 								}],
 								bodyTable: []
 							}) + buatElemenHtml("divider", {
-								header: "h5",
-								aligned: 'left aligned',
+								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `MENGINGAT`
 							}) + buatElemenHtml("tabel2", {
@@ -3621,8 +3619,7 @@ $(document).ready(function () {
 								}],
 								bodyTable: []
 							}) + buatElemenHtml("divider", {
-								header: "h5",
-								aligned: 'left aligned',
+								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `MENETAPKAN`
 							}) + buatElemenHtml("tabel2", {
@@ -3658,8 +3655,7 @@ $(document).ready(function () {
 								footerTable: [],
 								bodyTable: []
 							}) + buatElemenHtml("divider", {
-								header: "h5",
-								aligned: 'left aligned',
+								header: "h4",
 								icon2: `<i class="users icon"></i>`,
 								label: `ASN YANG DITUGASKAN`//@audit cetak sk
 							}) + buatElemenHtml("fieldDropdown", {
@@ -3684,8 +3680,7 @@ $(document).ready(function () {
 								atribut: 'name="bentuk_lampiran" non_data',
 								txtLabel: "Lampiran SK bentuk Tabel",
 							}) + buatElemenHtml("divider", {
-								header: "h5",
-								aligned: 'left aligned',
+								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `TEMBUSAN`
 							}) + buatElemenHtml("tabel2", {
