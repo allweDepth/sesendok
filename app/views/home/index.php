@@ -897,6 +897,7 @@ $theme = $_SESSION["user"]["theme"];
                     </div>
                 </div>
             </div>
+
             <!-- ============== -->
             <!-- tab_pengaturan -->
             <!-- ============== -->
@@ -909,9 +910,6 @@ $theme = $_SESSION["user"]["theme"];
                             </a>
                             <a class="item inayah" data-tab="atur" tbl="users">
                                 Users
-                            </a>
-                            <a class="item inayah" data-tab="kosong" tbl="logo">
-                               Logo Daerah
                             </a>
                         </div>
                     </div>

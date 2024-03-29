@@ -88,6 +88,9 @@ class post_data
                             case 'user':
                                 $val_in_array = ['photo'];
                                 break;
+                            case 'wilayah_logo'://upload logo wilayah
+                                $val_in_array = ['logo'];
+                                break;
                             default:
                                 # code...
                                 break;
@@ -185,7 +188,7 @@ class post_data
                                 if ($row_resul_cari !== false) {
                                     $pangkat_pemberi_tgs = $Fungsi->golongan_ruang($dinamic = ['golongan' => $row_resul_cari->golongan, 'ruang' => $row_resul_cari->ruang]);
                                     $nama_pemberi_tgs = $row_resul_cari->nama;
-                                }else{
+                                } else {
                                     $bentuk_lampiran = $validate->setRules('get', 'Pejabat Pemberi Tugas tidak dikenali', [
                                         'error' =>  true
                                     ]);
@@ -230,7 +233,7 @@ class post_data
                                     'json_repair' => true,
                                     'required' => true
                                 ]);
-                                
+
                                 $menetapkan_2 = $validate->setRules('menetapkan_1', 'menetapkan kedua', [
                                     'json_decode' => true
                                 ]);
@@ -2104,6 +2107,11 @@ class post_data
                         case 'upload':
                             $set_file = [];
                             switch ($tbl) {
+                                case 'wilayah_logo':
+                                    $kondisi = [['kode', '=', $kd_wilayah], ['id', '=', $id_row, 'AND']];
+                                    $kodePosting = 'cek_insert';
+                                    $set = [];
+                                    break;
                                 case 'daftar_paket':
                                     $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     $kodePosting = 'cek_insert';
@@ -2126,6 +2134,14 @@ class post_data
                             $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
                             if ($row_sub) {
                                 switch ($tbl) {
+                                    case 'wilayah_logo'://upload logo di tabel wilayah
+                                        $uraian = "logo_wilayah({$kd_wilayah})";
+                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                                        if (strlen($row_sub->$dok ?? '') > 2) {
+                                            $nameFileDel = $row_sub->$dok;
+                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                                        }
+                                        break;
                                     case 'daftar_paket':
                                         $uraian = "kd_paket({$row_sub->id})_dok({$dok})_wilayah({$kd_wilayah})";
                                         $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
@@ -2190,7 +2206,7 @@ class post_data
                             switch ($tbl) {
                                 case 'sk_asn':
                                     $kodePosting = 'cek_insert';
-                                    $kondisi = [['id', '=', $id_row],['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                                    $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
                                     $set = [
                                         'tahun' => $tahun,
                                         'kd_wilayah' => $kd_wilayah,

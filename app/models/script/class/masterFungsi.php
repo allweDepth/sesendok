@@ -1131,6 +1131,9 @@ class MasterFungsi
         $tabel_pakai = '';
         $jumlah_kolom = 11;
         switch ($tbl) {
+            case 'logo':
+                $tabel_pakai = 'wilayah_neo';
+                break;
             case 'sk_asn':
                 $tabel_pakai = 'sk_asn_neo';
                 $jumlah_kolom = 9;
@@ -1251,6 +1254,7 @@ class MasterFungsi
                 $tabel_pakai = 'mapping_aset_akun';
                 $jumlah_kolom = 10;
                 break;
+            case 'wilayah_logo':
             case 'wilayah':
                 $tabel_pakai = 'wilayah_neo';
                 $jumlah_kolom = 11;
@@ -2310,236 +2314,236 @@ class MasterFungsi
     4. %o = Octal.
     5. %f = Float.
     */
-    // impor file ke folder
-public function impor_file($jenis)
-{ // contoh $ok =impor_file( array('jenis'=>'umum','tahun'=>$tahun_sk) );
-    global $koneksi;
-    //var_dump( $_FILES );
-    if (isset($_POST[ 'jenis' ])) {
-        $maxsize = 1024 * 8000; // maksimal 2000 KB (1KB = 1024 Byte)
-        // tentukan key $_FILES default jika hanya 1 file per form
-        switch ($jenis[ 'jenis' ]) {
-            case "ktp":
-                $key_files = "file_ktp";
-                break;
-            case "npwp":
-                $key_files = "file_npwp";
-                break;
-            case "akta_lahir":
-                $key_files = "file_akta";
-                break;
-            case "buku_nikah":
-                $key_files = "file_buku_nikah";
-                break;
-            case "karpeg":
-                $key_files = "file_karpeg";
-                break;
-            case "karsi_karsu":
-                $key_files = "file_karsi";
-                break;
-            case "kk":
-                $key_files = "file_kk";
-                break;
-            default:
-                $key_files = array_keys($_FILES)[ 0 ]; // mengambil key associate array jika cuman 1 file yang dikirim
-                // jika 2 file maka jgn default
-        }
-        //var_dump( $key_files );
-        if ($_FILES[ $key_files ][ 'size' ] <= $maxsize) {
-            if (!empty($_FILES[ $key_files ][ 'name' ]) && !empty($_FILES[ $key_files ][ "type" ])) {
-                $uploadedFile  = '';
-                $valid_extensi = array( "pdf", "PDF", "jpeg", "jpg", "png", "JPEG", "JPG", "PNG" );
-                $temporary = explode(".", $_FILES[ $key_files ][ "name" ]);
-                $file_extensi = strtolower(end($temporary));
-                //$fileHapus = "realin_" . $id_kont . "_";
-                //$fileName = "realin_" . $id_kont . "_" . time() . "." . $file_extensi;
-                $folder_target = 'images';
-                $inser_db = 0; // jika 0 maka tdk perlu inser
-                //var_dump( realpath( dirname( __FILE__ ) ) ); // mendapatkan path file
-                $real_path = realpath(dirname(__FILE__));
+    // impor file ke folder dari spa
+    public function impor_file($jenis)
+    { // contoh $ok =impor_file( array('jenis'=>'umum','tahun'=>$tahun_sk) );
+        global $koneksi;
+        //var_dump( $_FILES );
+        if (isset($_POST['jenis'])) {
+            $maxsize = 1024 * 8000; // maksimal 2000 KB (1KB = 1024 Byte)
+            // tentukan key $_FILES default jika hanya 1 file per form
+            switch ($jenis['jenis']) {
+                case "ktp":
+                    $key_files = "file_ktp";
+                    break;
+                case "npwp":
+                    $key_files = "file_npwp";
+                    break;
+                case "akta_lahir":
+                    $key_files = "file_akta";
+                    break;
+                case "buku_nikah":
+                    $key_files = "file_buku_nikah";
+                    break;
+                case "karpeg":
+                    $key_files = "file_karpeg";
+                    break;
+                case "karsi_karsu":
+                    $key_files = "file_karsi";
+                    break;
+                case "kk":
+                    $key_files = "file_kk";
+                    break;
+                default:
+                    $key_files = array_keys($_FILES)[0]; // mengambil key associate array jika cuman 1 file yang dikirim
+                    // jika 2 file maka jgn default
+            }
+            //var_dump( $key_files );
+            if ($_FILES[$key_files]['size'] <= $maxsize) {
+                if (!empty($_FILES[$key_files]['name']) && !empty($_FILES[$key_files]["type"])) {
+                    $uploadedFile  = '';
+                    $valid_extensi = array("pdf", "PDF", "jpeg", "jpg", "png", "JPEG", "JPG", "PNG");
+                    $temporary = explode(".", $_FILES[$key_files]["name"]);
+                    $file_extensi = strtolower(end($temporary));
+                    //$fileHapus = "realin_" . $id_kont . "_";
+                    //$fileName = "realin_" . $id_kont . "_" . time() . "." . $file_extensi;
+                    $folder_target = 'images';
+                    $inser_db = 0; // jika 0 maka tdk perlu inser
+                    //var_dump( realpath( dirname( __FILE__ ) ) ); // mendapatkan path file
+                    $real_path = realpath(dirname(__FILE__));
 
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || strtoupper(substr(PHP_OS, 0, 3)) === 'WINNT') {
-                    $os_c = 'windows';
-                    $fileee = str_replace("\\script", '', $real_path); //untuk windows
-                } else {
-                    $os_c = 'os_xx';
-                    $fileee = str_replace("/script", '', $real_path); // akali ut linux osx
-                }
-                $jenis_file = $jenis[ 'jenis' ];
-                switch ($jenis_file) {
-                    case "logo":
-                        $valid_extensi = array( "png", "PNG" );
-                        $fileName = "logo." . $file_extensi;
-                        $folder_target = 'images';
-                        break;
-                    case "umum":
-                        $fileName = "sk_opd_" . $jenis[ 'tahun' ] . "." . $file_extensi;
-                        $folder_target = 'dokumen';
-                        break;
-                    case "photo_user":
-                        $fileName = "photo_profil_" . $jenis[ 'nip' ] . "." . $file_extensi;
-                        break;
-                    case "sk_pejabat":
-                        $folder_target = 'dokumen';
-                        $fileName = "sk_jabatan_id_" . $jenis[ 'id' ] . "." . $file_extensi;
-                        break;
-                    case "sk":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "sk_id_" . $jenis[ 'id' ] . "." . $file_extensi;
-                        break;
-                    case "pend":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "pend_id_" . $jenis[ 'id' ] . "." . $file_extensi;
-                        break;
-                    case "kel":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "kel_id_" . $jenis[ 'id' ] . "." . $file_extensi;
-                        break;
-                    case "lain":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "lain_id_" . $jenis[ 'id' ] . "." . $file_extensi;
-                        break;
-                    case "temporer":
-                        $folder_web='images/' . $jenis[ 'nip' ];
-                        $folder_target = 'images';
-                        if ($os_c == 'windows') {
-                            $folder_target = 'images\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "temporer." . $file_extensi;
-                        break;
-                    case "akta_lahir":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "akta_lahir." . $file_extensi;
-                        break;
-                    case "ktp":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "ktp." . $file_extensi;
-                        break;
-                    case "npwp":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "npwp." . $file_extensi;
-                        break;
-                    case "buku_nikah":
-                        $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "buku_nikah." . $file_extensi;
-                        break;
-                    case "srt_keluar":
-                    case "srt_masuk":
-                        $folder_web='dokumen/' . $jenis[ 'nip' ];
-                        $folder_target = 'dokumen/' . $jenis[ 'jenis' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'jenis' ];
-                        }
-                        $fileName = $jenis[ 'jenis' ] . '_' . $jenis[ 'id' ] . "." . $file_extensi;
-                        break;
-                    default:
-                    $folder_web='dok/' . $jenis[ 'nip' ];
-                        $folder_target = 'dok/' . $jenis[ 'nip' ];
-                        if ($os_c == 'windows') {
-                            $folder_target = 'dok\\' . $jenis[ 'nip' ];
-                        }
-                        $fileName = "$jenis_file." . $file_extensi;
-                }
-
-                //var_dump( $fileee );
-                //var_dump( $_FILES[ "file" ][ "type" ] == "image/jpeg" );
-                if (in_array($file_extensi, $valid_extensi)) {
-                    $sourcePath = $_FILES[ $key_files ][ 'tmp_name' ];
-                    $path_web = $folder_web . '/' . $fileName;
-                    if ($os_c == 'windows') {
-                        //$fileee = str_replace( "...win", '', $fileee );
-                        //$path_web = $folder_target . '\\' . $fileName;
-                        
-                        $targetPath = $fileee . '\\' . $folder_target . '\\' . $fileName;
+                    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || strtoupper(substr(PHP_OS, 0, 3)) === 'WINNT') {
+                        $os_c = 'windows';
+                        $fileee = str_replace("\\script", '', $real_path); //untuk windows
                     } else {
-                        $targetPath = $fileee . '/' . $folder_target . '/' . $fileName;
+                        $os_c = 'os_xx';
+                        $fileee = str_replace("/script", '', $real_path); // akali ut linux osx
                     }
-                    $filename = $sourcePath;
-                    /*
+                    $jenis_file = $jenis['jenis'];
+                    switch ($jenis_file) {
+                        case "logo":
+                            $valid_extensi = array("png", "PNG");
+                            $fileName = "logo." . $file_extensi;
+                            $folder_target = 'images';
+                            break;
+                        case "umum":
+                            $fileName = "sk_opd_" . $jenis['tahun'] . "." . $file_extensi;
+                            $folder_target = 'dokumen';
+                            break;
+                        case "photo_user":
+                            $fileName = "photo_profil_" . $jenis['nip'] . "." . $file_extensi;
+                            break;
+                        case "sk_pejabat":
+                            $folder_target = 'dokumen';
+                            $fileName = "sk_jabatan_id_" . $jenis['id'] . "." . $file_extensi;
+                            break;
+                        case "sk":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "sk_id_" . $jenis['id'] . "." . $file_extensi;
+                            break;
+                        case "pend":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "pend_id_" . $jenis['id'] . "." . $file_extensi;
+                            break;
+                        case "kel":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "kel_id_" . $jenis['id'] . "." . $file_extensi;
+                            break;
+                        case "lain":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "lain_id_" . $jenis['id'] . "." . $file_extensi;
+                            break;
+                        case "temporer":
+                            $folder_web = 'images/' . $jenis['nip'];
+                            $folder_target = 'images';
+                            if ($os_c == 'windows') {
+                                $folder_target = 'images\\' . $jenis['nip'];
+                            }
+                            $fileName = "temporer." . $file_extensi;
+                            break;
+                        case "akta_lahir":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "akta_lahir." . $file_extensi;
+                            break;
+                        case "ktp":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "ktp." . $file_extensi;
+                            break;
+                        case "npwp":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "npwp." . $file_extensi;
+                            break;
+                        case "buku_nikah":
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "buku_nikah." . $file_extensi;
+                            break;
+                        case "srt_keluar":
+                        case "srt_masuk":
+                            $folder_web = 'dokumen/' . $jenis['nip'];
+                            $folder_target = 'dokumen/' . $jenis['jenis'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['jenis'];
+                            }
+                            $fileName = $jenis['jenis'] . '_' . $jenis['id'] . "." . $file_extensi;
+                            break;
+                        default:
+                            $folder_web = 'dok/' . $jenis['nip'];
+                            $folder_target = 'dok/' . $jenis['nip'];
+                            if ($os_c == 'windows') {
+                                $folder_target = 'dok\\' . $jenis['nip'];
+                            }
+                            $fileName = "$jenis_file." . $file_extensi;
+                    }
+
+                    //var_dump( $fileee );
+                    //var_dump( $_FILES[ "file" ][ "type" ] == "image/jpeg" );
+                    if (in_array($file_extensi, $valid_extensi)) {
+                        $sourcePath = $_FILES[$key_files]['tmp_name'];
+                        $path_web = $folder_web . '/' . $fileName;
+                        if ($os_c == 'windows') {
+                            //$fileee = str_replace( "...win", '', $fileee );
+                            //$path_web = $folder_target . '\\' . $fileName;
+
+                            $targetPath = $fileee . '\\' . $folder_target . '\\' . $fileName;
+                        } else {
+                            $targetPath = $fileee . '/' . $folder_target . '/' . $fileName;
+                        }
+                        $filename = $sourcePath;
+                        /*
                     if ($file_extensi == 'jpg' || $file_extensi == 'jpeg') {
                         imagejpeg($thumb, $filename, 100); // 100 persen bagus khusus jpg klo png hilangkan
                     }
                     if ($file_extensi == 'png') {
                         imagepng($thumb, $filename);
                     }*/
-                    //var_dump( "target path = " . $targetPath );
-                    //var_dump( "web path = " . $path_web );
-                    if (isset($jenis[ 'nip' ])) {
-                        $nip = $jenis[ 'nip' ];
-                        $folder = realpath(dirname(__FILE__));
+                        //var_dump( "target path = " . $targetPath );
+                        //var_dump( "web path = " . $path_web );
+                        if (isset($jenis['nip'])) {
+                            $nip = $jenis['nip'];
+                            $folder = realpath(dirname(__FILE__));
 
-                        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || strtoupper(substr(PHP_OS, 0, 3)) === 'WINNT') {
-                            $os_c = 'windows';
-                            $folder = str_replace("\\script", '', $folder); //untuk windows
-                            $nama_folder = $folder . '\\dok\\' . $nip;
+                            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || strtoupper(substr(PHP_OS, 0, 3)) === 'WINNT') {
+                                $os_c = 'windows';
+                                $folder = str_replace("\\script", '', $folder); //untuk windows
+                                $nama_folder = $folder . '\\dok\\' . $nip;
+                            } else {
+                                $os_c = 'os_xx';
+                                $folder = str_replace("/script", '', $folder); // akali ut linux osx
+                                $nama_folder = $folder . '/dok/' . $nip;
+                            }
+                            if (!file_exists($nama_folder)) {
+                                mkdir($nama_folder, 0777, true);
+                            }
+                        }
+
+
+
+                        if (move_uploaded_file($sourcePath, $targetPath)) {
+                            $uploadedFile = $fileName;
+                            $data = array('name' => $fileName, 'path' => $path_web);
+                            $item = array('code' => "0", 'message' => 'file berhasil di impor');
+                            $json = array('success' => true, 'data' => $data, 'error' => $item);
                         } else {
-                            $os_c = 'os_xx';
-                            $folder = str_replace("/script", '', $folder); // akali ut linux osx
-                            $nama_folder = $folder . '/dok/' . $nip;
+                            $item = array('code' => "111", 'message' => 'folder tujuan tidak ditemukan');
+                            $json = array('success' => false, 'error' => $item);
                         }
-                        if (!file_exists($nama_folder)) {
-                            mkdir($nama_folder, 0777, true);
-                        }
-                    }
-
-
-
-                    if (move_uploaded_file($sourcePath, $targetPath)) {
-                        $uploadedFile = $fileName;
-                        $data = array( 'name' => $fileName, 'path' => $path_web );
-                        $item = array( 'code' => "0", 'message' => 'file berhasil di impor' );
-                        $json = array( 'success' => true, 'data' => $data, 'error' => $item );
                     } else {
-                        $item = array( 'code' => "111", 'message' => 'folder tujuan tidak ditemukan' );
-                        $json = array( 'success' => false, 'error' => $item );
+                        $item = array('code' => "5", 'message' => 'periksa type file');
+                        $json = array('success' => false, 'error' => $item);
                     }
                 } else {
-                    $item = array( 'code' => "5", 'message' => 'periksa type file' );
-                    $json = array( 'success' => false, 'error' => $item );
+                    $item = array('code' => "3", 'message' => 'file tidak ditemukan');
+                    $json = array('success' => false, 'error' => $item);
                 }
             } else {
-                $item = array( 'code' => "3", 'message' => 'file tidak ditemukan' );
-                $json = array( 'success' => false, 'error' => $item );
+                $item = array('code' => "2", 'message' => 'ukuran file harus < ' . $maxsize / 1000 . ' MB');
+                $json = array('success' => false, 'error' => $item);
             }
-        } else {
-            $item = array( 'code' => "2", 'message' => 'ukuran file harus < ' . $maxsize / 1000 . ' MB' );
-            $json = array( 'success' => false, 'error' => $item );
         }
+        return $json;
     }
-    return $json;
-}
     public function zero_pad($angka, $jumlahChar)
     {
         $fzeropadded = sprintf('%0' . $jumlahChar . 'd', $angka);
@@ -2946,6 +2950,10 @@ public function impor_file($jenis)
             case 'asn':
                 $path1 = 'upload';
                 $path2 = 'asn';
+                break;
+            case 'wilayah_logo':
+                $path1 = 'img'; //upload logo wilayah
+                $path2 = 'logo'; //upload logo wilayah
                 break;
             case 'organisasi':
                 $path1 = 'upload';

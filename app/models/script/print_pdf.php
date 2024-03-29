@@ -406,11 +406,10 @@ class print_pdf
             //var_dump($ok);
             $file_path = $ok['data']['path'];
             $l = $lebar_net * 2.8346456693;
-            header_customk($pdf, $file_path, $l, $SetY);
         } else {
             //headerku($pdf, $lebar_net, $status_pemerintah, $nama_pemerintah, $nama_opd, $alamat_opd, $PDF_MARGIN_TOP+5);
             $lebar_image = 0.12 / 10 * $lebar_net;
-            $image_file = '<img src="../images/logo.jpg" style="display:block;align:center;" width="50" height="50"/>';
+            $image_file = '<img src="img/logo.jpg" style="display:block;align:center;" width="50" height="50"/>';
             //hilangkan sesendok $pdf->SetY($SetY);
             $isi_header = '<table>
                     <tbody>

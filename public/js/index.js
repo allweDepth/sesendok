@@ -8,9 +8,9 @@ $(document).ready(function () {
 	const kudarkMode = window.matchMedia("(prefers-color-scheme:dark)").matches;
 	console.log(kudarkMode);
 
-	$(document).on('click', '.ui.radio.checkbox', function() {
-        $(this).checkbox(); // Inisialisasi checkbox pada elemen yang diklik
-    });
+	$(document).on('click', '.ui.radio.checkbox', function () {
+		$(this).checkbox(); // Inisialisasi checkbox pada elemen yang diklik
+	});
 	//sidebar toggle
 	$(".ui.sidebar")
 		.sidebar({
@@ -846,8 +846,8 @@ $(document).ready(function () {
 						case 'asn':
 							dataHtmlku.konten =
 								buatElemenHtml("card3", {
-									label: "Nama Lengkap",
-									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
+									label: "Aparatur Sipil Negara (ASN)",
+									atribut: `for="directupload1" name="direct" type="button" id_row="${id_row}" jns="upload" tbl="asn" dok="file_photo" accept=".jpg,.png,.jpeg,.img"`,
 								})
 							break;
 						default:
@@ -2213,6 +2213,12 @@ $(document).ready(function () {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
+							if (jenis === 'edit') {
+								dataHtmlku.konten += buatElemenHtml("card3", {
+									label: "Logo Daerah",
+									atribut: `for="directupload1" id_row="${id_row}" name="direct" type="button" jns="upload" tbl="wilayah_logo" dok="logo" accept=".jpg,.png,.jpeg,.img"`,
+								})
+							}
 							break;
 						case "satuan":
 							dataHtmlku.konten +=
@@ -2305,6 +2311,9 @@ $(document).ready(function () {
 							formIni.attr("id_row", ini.closest("tr").attr("id_row"));
 							formIni.attr("dok", ini.attr("dok"));
 							data.dok = ini.attr("dok");
+							jalankanAjax = true;
+							break;
+						case 'logo':
 							jalankanAjax = true;
 							break;
 						default:
@@ -2555,7 +2564,6 @@ $(document).ready(function () {
 										// set nilai form 
 										let elmAttrName = formIni.find('input[name],textarea[name]');
 										switch (tbl) {
-
 											case 'xcv':
 												break;
 											default://isi form dengan data
@@ -2792,10 +2800,21 @@ $(document).ready(function () {
 														}
 													}
 												}
+
 												break;
 										}
 										switch (tbl) {
+											case 'wilayah'://upload direct logo wilayah
 											case 'asn':
+												let fileUnggah = result?.data?.users?.file_photo;
+												let hasUnggah = 'file_photo';
+												switch (tbl) {
+													case 'wilayah':
+														fileUnggah = result?.data?.users?.logo;
+														hasUnggah = 'logo';
+														break;
+												}
+
 												$('form[name="form_flyout"] .special.card .dimmable.image').dimmer({
 													on: 'ontouchstart' in document.documentElement ? 'click' : 'hover'
 												});
@@ -2804,10 +2823,10 @@ $(document).ready(function () {
 													// let card = document.querySelector('.ui.special.fluid.card');
 													// let NameElement = card.querySelector('.content');
 													// NameElement.textContent = result?.data?.users.nama.toProperCase();
-													if (result?.data?.users.hasOwnProperty('file_photo')) {
-														let angka = result?.data?.users?.file_photo
+													if (result?.data?.users.hasOwnProperty(hasUnggah)) {
+														let angka = fileUnggah
 														if (angka) {
-															formIni.find('.ui.card img').attr('src', result?.data?.users?.file_photo)
+															formIni.find('.ui.card img').attr('src', fileUnggah)
 														}
 													}
 												}
@@ -2833,7 +2852,6 @@ $(document).ready(function () {
 														case 'jpeg':
 															formIni.find('img').attr('src', namaFileLink);
 															formIni.find('[href]').attr('href', namaFileLink);
-															// formIni.append(`<div class="ui fluid card"><a class="image"><img src="${namaFileLink}"></a><div class="content"><a class="header" href="${namaFileLink}" target="_blank">Dokumentasi</a></div><div class="extra content"><span class="left floated like"><i class="like icon"></i>Like</span><span class="right floated star"><i class="star icon"></i>Favorite</span></div></div>`);
 															break;
 														default:
 															formIni.find('[href]').attr('href', namaFileLink);
@@ -2842,6 +2860,9 @@ $(document).ready(function () {
 												} else {
 													formIni.find('.ribbon.label').text('Unggah File');
 												}
+												break;
+											case 'logo':
+												formIni.find('[href]').attr('href', result.data.users.logo);
 												break;
 											default:
 												break;
@@ -2909,6 +2930,7 @@ $(document).ready(function () {
 					} else {
 					}
 					loaderHide();
+
 				} else {
 					loaderHide();
 				}
@@ -3238,7 +3260,10 @@ $(document).ready(function () {
 		switch (jenis) {
 			case 'upload':
 				switch (tbl) {
+					case 'wilayah_logo':
 					case 'asn':
+						
+						
 						//upload langsung file
 						$("#directupload1").val("");
 						id_row = ini.closest('form').attr('id_row')
@@ -3283,6 +3308,7 @@ $(document).ready(function () {
 		switch (jenis) {
 			case 'upload':
 				switch (tbl) {
+					case 'wilayah_logo':
 					case 'asn':
 					case 'user':
 						$("#directupload1").click();
@@ -6646,13 +6672,13 @@ $(document).ready(function () {
 					`<div class="ui special fluid card">
 						<div class="content">
 							<div class="right floated meta">14h</div>
-							<img class="ui avatar image" src="img/avatar/default.jpeg" onerror="imgsrc(this)"> Aparatur Sipil Negara (ASN)
+							<img class="ui avatar image" src="img/avatar/default.jpeg" onerror="imgsrc(this)">${label}
 						</div>
 						<div class="blurring dimmable image">
 							<div class="ui dimmer">
 								<div class="content">
 									<div class="center">
-										<button for="directupload1" name="direct" type="button" id_row="" jns="upload" tbl="asn" dok="file_photo" class="ui inverted icon button" accept=".jpg,.png,.jpeg,.img">
+										<button class="ui inverted icon button" ${atribut} >
 											<i class="file icon"></i>Upload File
 										</button>
 									</div>
@@ -6663,10 +6689,10 @@ $(document).ready(function () {
 						<div class="content">
 							<span class="right floated">
 								<i class="heart outline like icon"></i>
-								17 likes
+								likes
 							</span>
 							<i class="comment icon"></i>
-							3 comments
+							comments
 						</div>
 					</div>`;
 				break;

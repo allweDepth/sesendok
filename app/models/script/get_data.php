@@ -146,17 +146,25 @@ class get_data
                                 # code...
                                 break;
                         }
-                        $id_row = $validate->setRules('id_row', 'dokumen', [
-                            'required' => true,
-                            'numeric' => true,
-                            'min_char' => 1
-                        ]);
-                        $dok = $validate->setRules('dok', 'jenis dokumen', [
-                            'required' => true,
-                            'sanitize' => 'string',
-                            'min_char' => 1,
-                            'in_array' => $val_in_array
-                        ]);
+                        switch ($tbl) {
+                            case 'daftar_paket':
+                                $id_row = $validate->setRules('id_row', 'dokumen', [
+                                    'required' => true,
+                                    'numeric' => true,
+                                    'min_char' => 1
+                                ]);
+                                $dok = $validate->setRules('dok', 'jenis dokumen', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'in_array' => $val_in_array
+                                ]);
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        
                         break;
                     case 'get_data':
                         switch ($tbl) {
@@ -555,6 +563,11 @@ class get_data
                             break;
                         case 'upload':
                             switch ($tbl) {
+                                case 'logo':
+                                    $kondisi_result = [['kode', '=', $kd_wilayah]];
+                                    $kodePosting = 'get_row';
+                                    $DB->select("kode,logo");
+                                    break;
                                 case 'daftar_paket':
                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     $kodePosting = 'get_row';
