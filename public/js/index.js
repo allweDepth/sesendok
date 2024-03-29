@@ -3469,12 +3469,14 @@ $(document).ready(function () {
 		let jalankanAjax = false;
 		let mdl = $('.ui.modal[name="mdl_general"]');
 		mdl.removeClass(`big tiny`);
+
 		// mdl.addClass("large");
 		//ubah kop header modal
 		let elmIkonModal = $(mdl.find(".big.icons i")[0]); //ganti class icon
 		let elmIkonModal2 = $(mdl.find(".big.icons i")[1]); //ganti class icon
 		let elmKontenModal = mdl.find("h5 .content");
 		let formIni = $('form[name="form_modal"]');
+		formIni.removeAttr('id_row');
 		let headerModal = 'Catatan';
 		let data = {
 			cari: cari(jnsAttr),
@@ -3493,7 +3495,7 @@ $(document).ready(function () {
 		let pesanToast = 'Koreksi Data';
 		formIni.attr({ 'jns': jnsAttr, 'tbl': tblAttr });
 		console.log(mdl.find('.actions [name="modal_second"]').length)
-		if(mdl.find('.actions [name="modal_second"]').length)(
+		if (mdl.find('.actions [name="modal_second"]').length) (
 			mdl.find('.actions [name="modal_second"]').remove(`[name="modal_second"]`)
 		)
 		switch (jnsAttr) {
@@ -3503,7 +3505,7 @@ $(document).ready(function () {
 				switch (tblAttr) {
 					case 'sk_asn':
 						mdl.addClass("big");
-						if(mdl.find('.actions [name="modal_second"]').length <=0)(
+						if (mdl.find('.actions [name="modal_second"]').length <= 0) (
 							mdl.find('.actions').append(`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`)
 						)
 						elementForm = buatElemenHtml("fields", {
@@ -4298,6 +4300,7 @@ $(document).ready(function () {
 		let elementForm = '';
 		let kelasToast = "warning";
 		let pesanToast = 'Koreksi Data kedua';
+		let iconToast = "check circle icon";
 		formIni.attr({ 'jns': jnsAttr, 'tbl': tblAttr });
 		switch (jnsAttr) {
 			case 'get_data':
@@ -4318,8 +4321,10 @@ $(document).ready(function () {
 			case 'cetak':
 				switch (tblAttr) {
 					case 'sk_asn'://@audit cetak sk
-						
-						elementForm = buatElemenHtml("fields", {
+						var id_row_form_modal = $('form[name="form_modal"]').attr('id_row');
+						elementForm = buatElemenHtml("text", {
+							atribut: 'name="id_row" placeholder="surat keputusan" rules="decimal" hidden',
+						}) + buatElemenHtml("fields", {
 							classField: "two",
 							content: buatElemenHtml("fieldDropdown", {
 								label: "Dokumen",
@@ -4389,11 +4394,11 @@ $(document).ready(function () {
 							content: buatElemenHtml("fieldText", {
 								label: "Header",
 								classField: `required`,
-								atribut: `name="margin_header" placeholder="Margin Atas" rms value="10"`,
+								atribut: `name="margin_header" placeholder="Margin Header" rms value="10"`,
 							}) + buatElemenHtml("fieldText", {
 								label: "Footer",
 								classField: `required`,
-								atribut: `name="margin_footer" placeholder="Margin Bawah" rms value="10"`,
+								atribut: `name="margin_footer" placeholder="Margin Footer" rms value="10"`,
 							})
 						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Kop Surat' }) + buatElemenHtml("fielToggleCheckbox", {
 							atribut: 'name="cetak_kop" checked="checked" non_data readonly',
@@ -4420,7 +4425,7 @@ $(document).ready(function () {
 			default:
 				break;
 		}
-
+		let tampilkan_toast = false;
 		elementForm += buatElemenHtml("errorForm");
 		formIni.html(elementForm);
 		$('.ui.sticky').sticky('refresh');
@@ -4438,7 +4443,14 @@ $(document).ready(function () {
 			case 'cetak':
 				switch (tblAttr) {
 					case 'sk_asn':
-						formIni.form('set value', 'dokumen', tblAttr);
+						formIni.form('set values', { dokumen: tblAttr, id_row: id_row_form_modal });
+						console.log(id_row_form_modal);
+						if (id_row_form_modal <= 0 || typeof id_row_form_modal === 'undefined') {
+							pesanToast = 'surat keputusan belum di simpan, simpan sebelum cetak';
+							kelasToast = 'warning';
+							iconToast = "exclamation circle icon";
+							tampilkan_toast = true;
+						}
 						break;
 				}
 				break;
@@ -4475,13 +4487,13 @@ $(document).ready(function () {
 			};
 			runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
 		} else {
-			if (nameAttr === "modal_second") {
+			if (nameAttr === "modal_second" && tampilkan_toast !== true) {
 				mdl.modal("show");
 				kelasToast = "success";
 			} else {
 				showToast(pesanToast, {
 					class: kelasToast,
-					icon: "check circle icon",
+					icon: iconToast,
 				});
 			}
 		}
@@ -4493,6 +4505,9 @@ $(document).ready(function () {
 			formIni.find('input, textarea').attr('readonly', 1);
 		}
 		$("[rms]").mathbiila();
+		if (tampilkan_toast) {
+
+		}
 	});
 	;
 	//===================================
@@ -5755,6 +5770,7 @@ $(document).ready(function () {
 									}
 								}
 								let jenisTrigger = ""; //jenisTrigger = jenis;
+								console.log(nama_form);
 								switch (nama_form) {
 									// ===========================
 									// UNTUK FORM form_chat
@@ -5870,6 +5886,47 @@ $(document).ready(function () {
 											default:
 												break;
 										}
+										break;
+									// =================
+									// UNTUK FORM MODAL SECOND====
+									// =================
+									case "form_modal_kedua":
+										console.log(jenis);
+										switch (jenis) {
+											case 'cetak':
+												switch (tbl) {
+													case 'sk_asn':
+														//=======================================================================
+														//============fungsi tampilkan pdf fari php tcpdf =======================
+														//== $data['pdf'] = base64_encode( $pdf->Output( 'file_name', 'S' ) ); ==
+														//=======================================================================
+														function printPreviewBase64(base64String) {
+															// Buat URL data untuk PDF
+															var pdfDataUri = 'data:application/pdf;base64,' + base64String;
+															// Buat sebuah elemen <a> untuk membuka PDF dalam tab baru
+															var link = document.createElement('a');
+															link.href = pdfDataUri;
+															link.target = '_blank';
+															// Klik pada link secara otomatis
+															link.click();
+														}
+
+														console.log(result.data.pdf);
+														printPreviewBase64(result.data.pdf);
+														break;
+													case 'value1':
+														break;
+													default:
+														break;
+												};
+												break;
+											case 'value1':
+												break;
+											default:
+												break;
+										};
+
+
 										break;
 									// =================
 									// UNTUK TAB PROFIL====
@@ -7452,6 +7509,20 @@ function onkeypressGlobal(params = { jns: 'uraian_sub_keg', tbl: 'renja_p' }, ev
 			}
 		default:
 			break;
+	}
+	//=======================================================================
+	//============fungsi tampilkan pdf dari php tcpdf =======================
+	//== $data['pdf'] = base64_encode( $pdf->Output( 'file_name', 'S' ) ); ==
+	//=======================================================================
+	function printPreviewBase64(base64String) {
+		// Buat URL data untuk PDF
+		var pdfDataUri = 'data:application/pdf;base64,' + base64String;
+		// Buat sebuah elemen <a> untuk membuka PDF dalam tab baru
+		var link = document.createElement('a');
+		link.href = pdfDataUri;
+		link.target = '_blank';
+		// Klik pada link secara otomatis
+		link.click();
 	}
 }
 function rumus(evt) {
