@@ -4402,7 +4402,7 @@ $(document).ready(function () {
 							})
 						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Kop Surat' }) + buatElemenHtml("fielToggleCheckbox", {
 							atribut: 'name="cetak_kop" checked="checked" non_data readonly',
-							txtLabel: "Aktifkan Footer",
+							txtLabel: "Cetak Kop Surat",
 						}) + buatElemenHtml("fields", {
 							label: "Kop standar dinas",
 							classField: "grouped",
