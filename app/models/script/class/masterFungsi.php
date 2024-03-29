@@ -2199,16 +2199,16 @@ class MasterFungsi
             case 3:
                 switch ($ruang) {
                     case 'a':
-                        $pangkat .= 'muda';
+                        $pangkat .= ' muda';
                         break;
                     case 'b':
-                        $pangkat .= 'muda tingkat I';
+                        $pangkat .= ' muda tingkat I';
                         break;
                     case 'c':
                         $pangkat .= '';
                         break;
                     case 'd':
-                        $pangkat .= 'tingkat I';
+                        $pangkat .= ' tingkat I';
                         break;
                     default:
                         # code...
@@ -2221,16 +2221,16 @@ class MasterFungsi
                         $pangkat .= '';
                         break;
                     case 'b':
-                        $pangkat .= 'tingkat I';
+                        $pangkat .= ' tingkat I';
                         break;
                     case 'c':
-                        $pangkat .= 'muda';
+                        $pangkat .= ' muda';
                         break;
                     case 'd':
-                        $pangkat .= 'madya';
+                        $pangkat .= ' madya';
                         break;
                     case 'e':
-                        $pangkat .= 'utama';
+                        $pangkat .= ' utama';
                         break;
                     default:
                         # code...

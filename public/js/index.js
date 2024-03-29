@@ -4312,10 +4312,12 @@ $(document).ready(function () {
 
 						elementForm = buatElemenHtml("fields", {
 							classField: "two",
-							content: buatElemenHtml("fieldText", {
+							content: buatElemenHtml("fieldDropdown", {
 								label: "Dokumen",
 								classField: `required`,
-								atribut: `name="dokumen" placeholder="Dokumen" readonly`,
+								atribut: 'name="dokumen" placeholder="Jenis Dokumen..." disabled',
+								kelas: "disabled selection lainnya",
+								dataArray: [['sk_asn', 'Surat Keputusan'],['kontrak', 'Kontrak']]
 							}) + buatElemenHtml("fieldCalendar", {
 								classField: `required`,
 								kelas: "date",
