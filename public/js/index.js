@@ -3468,7 +3468,7 @@ $(document).ready(function () {
 		let url = 'script/get_data'
 		let jalankanAjax = false;
 		let mdl = $('.ui.modal[name="mdl_general"]');
-		mdl.removeClass(`big,tiny`);
+		mdl.removeClass(`big tiny`);
 		// mdl.addClass("large");
 		//ubah kop header modal
 		let elmIkonModal = $(mdl.find(".big.icons i")[0]); //ganti class icon
@@ -3492,6 +3492,10 @@ $(document).ready(function () {
 		let kelasToast = "warning";
 		let pesanToast = 'Koreksi Data';
 		formIni.attr({ 'jns': jnsAttr, 'tbl': tblAttr });
+		console.log(mdl.find('.actions [name="modal_second"]').length)
+		if(mdl.find('.actions [name="modal_second"]').length)(
+			mdl.find('.actions [name="modal_second"]').remove(`[name="modal_second"]`)
+		)
 		switch (jnsAttr) {
 			case 'edit':
 				elementForm = '';
@@ -3499,6 +3503,9 @@ $(document).ready(function () {
 				switch (tblAttr) {
 					case 'sk_asn':
 						mdl.addClass("big");
+						if(mdl.find('.actions [name="modal_second"]').length <=0)(
+							mdl.find('.actions').append(`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`)
+						)
 						elementForm = buatElemenHtml("fields", {
 							classField: "three",
 							content: buatElemenHtml("fieldText", {
@@ -3547,7 +3554,7 @@ $(document).ready(function () {
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="menimbang"`,
 								kelas: `celled structured`,
-								headerTable: [[{ attr: '', lbl: `MENIMBANG` },
+								headerTable: [[{ attr: '', lbl: `URAIAN` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menimbang"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [{
@@ -3569,7 +3576,7 @@ $(document).ready(function () {
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="mengingat"`,
 								kelas: `celled structured`,
-								headerTable: [[{ attr: '', lbl: `MENGINGAT` },
+								headerTable: [[{ attr: '', lbl: `URAIAN` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="mengingat"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [{
@@ -3654,7 +3661,7 @@ $(document).ready(function () {
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="tembusan"`,
 								kelas: `celled structured`,
-								headerTable: [[{ attr: '', lbl: `TEMBUSAN` },
+								headerTable: [[{ attr: '', lbl: `URAIAN` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
