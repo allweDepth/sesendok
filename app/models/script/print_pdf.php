@@ -203,8 +203,6 @@ class print_pdf
                         }
                         // var_dump($lebar);
                         $lebar_net = $lebar / 2.8346456693 - floatval($PDF_MARGIN_LEFT) - floatval($PDF_MARGIN_RIGHT);
-
-
                         switch ($tbl) {
                             case 'sk_asn':
                                 $tabel_pakai_temporer = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
@@ -309,6 +307,13 @@ class print_pdf
                                     $html = '<h1>Welcome to Pasangkayu</h1><p>hubungi administrator </p>';
                                     break;
                                 default:
+                                    $pdf->SetFillColor(255, 255, 255);
+                                    $pdf->setListIndentWidth(5);
+                                    $pdf->setFontSubsetting(true);
+                                    $pdf->SetFont('dejavusans', '', 14, '', true);
+                                    $pdf->AddPage();
+                                    $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
+                                    $html = '<h1>Welcome to Pasangkayu</h1><p>hubungi administrator </p>';
                                     break;
                             }
                             break;
