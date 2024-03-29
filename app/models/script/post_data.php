@@ -88,7 +88,7 @@ class post_data
                             case 'user':
                                 $val_in_array = ['photo'];
                                 break;
-                            case 'wilayah_logo'://upload logo wilayah
+                            case 'wilayah_logo': //upload logo wilayah
                                 $val_in_array = ['logo'];
                                 break;
                             default:
@@ -2134,7 +2134,7 @@ class post_data
                             $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
                             if ($row_sub) {
                                 switch ($tbl) {
-                                    case 'wilayah_logo'://upload logo di tabel wilayah
+                                    case 'wilayah_logo': //upload logo di tabel wilayah
                                         $uraian = "logo_wilayah({$kd_wilayah})";
                                         $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
                                         if (strlen($row_sub->$dok ?? '') > 2) {
@@ -2206,7 +2206,7 @@ class post_data
                             switch ($tbl) {
                                 case 'sk_asn':
                                     $kodePosting = 'cek_insert';
-                                    $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                                    $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
                                     $set = [
                                         'tahun' => $tahun,
                                         'kd_wilayah' => $kd_wilayah,
@@ -3446,6 +3446,16 @@ class post_data
                                                 $set['kunci_dpa'] = 1;
                                                 $set['kunci_renja_p'] = 1;
                                                 $set['kunci_dppa'] = 1;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    case 'edit':
+                                        switch ($tbl) {
+                                            case 'sk_asn'://jika ingin clone sk maka ganti nomornya
+                                                $set['username'] = $_SESSION["user"]["username"];
+                                                $set['tgl_insert'] = date('Y-m-d H:i:s');
                                                 break;
                                             default:
                                                 break;
