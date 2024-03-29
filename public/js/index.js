@@ -3468,6 +3468,7 @@ $(document).ready(function () {
 		let url = 'script/get_data'
 		let jalankanAjax = false;
 		let mdl = $('.ui.modal[name="mdl_general"]');
+		mdl.removeClass(`big,tiny`);
 		// mdl.addClass("large");
 		//ubah kop header modal
 		let elmIkonModal = $(mdl.find(".big.icons i")[0]); //ganti class icon
@@ -3497,6 +3498,7 @@ $(document).ready(function () {
 			case 'add':
 				switch (tblAttr) {
 					case 'sk_asn':
+						mdl.addClass("big");
 						elementForm = buatElemenHtml("fields", {
 							classField: "three",
 							content: buatElemenHtml("fieldText", {
@@ -3544,7 +3546,7 @@ $(document).ready(function () {
 								label: `MENIMBANG`
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="menimbang"`,
-								kelas: `celled mini structured`,
+								kelas: `celled structured`,
 								headerTable: [[{ attr: '', lbl: `MENIMBANG` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menimbang"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
@@ -3566,7 +3568,7 @@ $(document).ready(function () {
 								label: `MENGINGAT`
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="mengingat"`,
-								kelas: `celled mini structured`,
+								kelas: `celled structured`,
 								headerTable: [[{ attr: '', lbl: `MENGINGAT` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="mengingat"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
@@ -3588,7 +3590,7 @@ $(document).ready(function () {
 								label: `MENETAPKAN`
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="menetapkan_1"`,
-								kelas: `stackable celled mini structured`,
+								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KESATU` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_1"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
@@ -3596,7 +3598,7 @@ $(document).ready(function () {
 								bodyTable: []
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="menetapkan_2"`,
-								kelas: `stackable celled mini structured`,
+								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KEDUA` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_2"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
@@ -3604,7 +3606,7 @@ $(document).ready(function () {
 								bodyTable: []
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="menetapkan_3"`,
-								kelas: `stackable celled mini structured`,
+								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KETIGA` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_3"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
@@ -3612,7 +3614,7 @@ $(document).ready(function () {
 								bodyTable: []
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="menetapkan_4"`,
-								kelas: `stackable celled mini structured`,
+								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KEEMPAT` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_4"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
@@ -3630,7 +3632,7 @@ $(document).ready(function () {
 								dataArray: []
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="nama_ditugaskan"`,
-								kelas: `stackable celled mini structured`,
+								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `NAMA` },
 								{ attr: '', class: 'collapsing', lbl: `PANGKAT/GOLONGAN` },
 								{ attr: '', class: 'collapsing', lbl: `NIP` },
@@ -3651,7 +3653,7 @@ $(document).ready(function () {
 								label: `TEMBUSAN`
 							}) + buatElemenHtml("tabel2", {
 								atribut: `name="tembusan"`,
-								kelas: `celled mini structured`,
+								kelas: `celled structured`,
 								headerTable: [[{ attr: '', lbl: `TEMBUSAN` },
 								{ attr: '', class: 'collapsing', lbl: `JENIS` },
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
@@ -4309,7 +4311,7 @@ $(document).ready(function () {
 			case 'cetak':
 				switch (tblAttr) {
 					case 'sk_asn'://@audit cetak sk
-
+						
 						elementForm = buatElemenHtml("fields", {
 							classField: "two",
 							content: buatElemenHtml("fieldDropdown", {
@@ -4317,7 +4319,7 @@ $(document).ready(function () {
 								classField: `required`,
 								atribut: 'name="dokumen" placeholder="Jenis Dokumen..." disabled',
 								kelas: "disabled selection lainnya",
-								dataArray: [['sk_asn', 'Surat Keputusan'],['kontrak', 'Kontrak']]
+								dataArray: [['sk_asn', 'Surat Keputusan'], ['kontrak', 'Kontrak']]
 							}) + buatElemenHtml("fieldCalendar", {
 								classField: `required`,
 								kelas: "date",
