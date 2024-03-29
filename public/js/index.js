@@ -8,7 +8,9 @@ $(document).ready(function () {
 	const kudarkMode = window.matchMedia("(prefers-color-scheme:dark)").matches;
 	console.log(kudarkMode);
 
-
+	$(document).on('click', '.ui.radio.checkbox', function() {
+        $(this).checkbox(); // Inisialisasi checkbox pada elemen yang diklik
+    });
 	//sidebar toggle
 	$(".ui.sidebar")
 		.sidebar({
@@ -3676,10 +3678,6 @@ $(document).ready(function () {
 								atribut: 'name="disable" non_data',
 								txtLabel: "Non Aktif",
 							}) + buatElemenHtml("dividerHidden", {
-							}) + buatElemenHtml("button", {
-								atribut: 'name="modal_second" jns="cetak" tbl="sk_asn"',
-								kelas: `primary icon`,
-								value: `<i class="print icon"></i>`
 							});
 						break;
 					case 'realisasi':
