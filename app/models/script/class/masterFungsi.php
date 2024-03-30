@@ -2180,17 +2180,22 @@ class MasterFungsi
         $golongan = $dinamic['golongan'];
         $ruang = strtolower($dinamic['ruang']);
         $pangkat = '';
+        $pangkat2 = '';
         switch ($golongan) {
             case 1:
                 $pangkat = 'juru';
+                $pangkat2 = 'I';
                 break;
             case 2:
+                $pangkat2 = 'II';
                 $pangkat = 'pengatur';
                 break;
             case 3:
+                $pangkat2 = 'III';
                 $pangkat = 'penata';
                 break;
             case 4:
+                $pangkat2 = 'IV';
                 $pangkat = 'pembina';
                 break;
             default:
@@ -2242,7 +2247,8 @@ class MasterFungsi
                 }
                 break;
         }
-        return $pangkat;
+        $pangkat2 .= "/$ruang";
+        return ['pangkat'=>$pangkat,'singkat'=>$pangkat2];
     }
     // mencari file di folder dan sub folder
     public function cariFile($f, $p = null, $l = 1000)

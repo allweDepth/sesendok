@@ -164,7 +164,7 @@ class get_data
                                 # code...
                                 break;
                         }
-                        
+
                         break;
                     case 'get_data':
                         switch ($tbl) {
@@ -2186,7 +2186,8 @@ class get_data
                                         case 'get_row_json':
                                             switch ($tbl) {
                                                 case 'asn':
-                                                    $pangkat=$Fungsi->golongan_ruang(['golongan' => $row->golongan, 'ruang' => $row->ruang]);
+                                                    $pangkat = $Fungsi->golongan_ruang(['golongan' => $row->golongan, 'ruang' => $row->ruang]);
+                                                    $pangkat = ucfirst($pangkat['pangkat']).', '.$pangkat['singkat'];
                                                     $namaLengkap = ucwords($row->nama);
                                                     if (strlen($row->gelar ?? '') > 0) {
                                                         $namaLengkap .= ', ' . $row->gelar;
@@ -2194,7 +2195,7 @@ class get_data
                                                     if (strlen($row->gelar_depan ?? '') > 0) {
                                                         $namaLengkap = $row->gelar_depan . ' ' . $namaLengkap;
                                                     }
-                                                    $deskripsi = 'Nip: ' .$row->nip . '; Jabatan: ' . $row->jabatan . '; Pangkat: '.$pangkat;
+                                                    $deskripsi = 'Nip: ' . $row->nip . '; Jabatan: ' . $row->jabatan . '; Pangkat: ' . $pangkat;
                                                     $dataJson['results'][] = ['text' => $namaLengkap, 'category' => $row->jabatan, 'name' => $namaLengkap, 'value' => $row->nip, 'description' => $deskripsi, "descriptionVertical" => true, 'golongan' => $row->golongan, 'ruang' => $row->ruang];
                                                     break;
                                                 case 'organisasi':

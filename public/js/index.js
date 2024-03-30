@@ -4628,10 +4628,16 @@ $(document).ready(function () {
 											});
 											let nameAttr = elm.attr('name');
 											switch (nameAttr) {
-												case 'asn':
+												case 'asn'://wait
 													if (typeof elm.closest('form[tbl="sk_asn"]') !== 'undefined') {
 														let elmTabelAsnSK = elm.closest('form').find('table[name="nama_ditugaskan"] tbody');
-														elmTabelAsnSK.append(`<tr><td><div contenteditable>${text}</div></td><td><div contenteditable>${dataObj.Pangkat}</div></td><td><div contenteditable="">${value}</div></td><td><div contenteditable="">${dataObj.Jabatan}</div></td><td><div contenteditable=""></div></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
+														let trRow = buatElemenHtml("tr_tabel", {
+																bodyTable: [[
+																	{ lbl: `<div contenteditable>${text}</div>` },
+																	{ lbl: `<div contenteditable>${dataObj.Pangkat}</div>` }, { lbl: `<div contenteditable>${value}</div>` }, { lbl: `<div contenteditable="">${dataObj.Jabatan}</div>`}, {lbl: `<div contenteditable></div>`}, {class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`}]
+																]
+														})
+														elmTabelAsnSK.append(trRow);
 													}
 													break;
 												case 'pemberi_tgs':
@@ -6816,7 +6822,15 @@ $(document).ready(function () {
 					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
-					body += `<th${classRow} ${attrRow}>${lblRow}</th>`;
+					body += `<tr${classRow} ${attrRow}>`;
+					val.forEach(function (val2) {
+						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+						classRow = (val2.class !== undefined) ? ` class="${val2.class}"` : '';
+						lblRow = (val2.lbl !== undefined) ? `${val2.lbl}` : '';
+						attrRow = (val2.attr !== undefined) ? ` ${val2.attr}` : '';
+						head += `<td${classRow} ${attrRow}>${lblRow}</td>`;
+					});
+					body += `</tr>`;
 				});
 				body += `</tbody>`;
 				//buat foot tabel
@@ -6831,13 +6845,24 @@ $(document).ready(function () {
 				elemen = `<table class="ui ${kelas} table" ${atribut}>${head}${body}${foot}</table>`;
 				break;
 			case "tr_tabel":
+				body = ``;
 				bodyTable.forEach(function (val) {
-					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+					console.log(val);
 					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
-					body += `<th${classRow} ${attrRow}>${lblRow}</th>`;
+					body += `<tr${classRow} ${attrRow}>`;
+					
+					val.forEach(function (val2) {
+						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+						classRow = (val2.class !== undefined) ? ` class="${val2.class}"` : '';
+						lblRow = (val2.lbl !== undefined) ? `${val2.lbl}` : '';
+						attrRow = (val2.attr !== undefined) ? ` ${val2.attr}` : '';
+						body += `<td${classRow}${attrRow}>${lblRow}</td>`;
+					});
+					body += `</tr>`;
 				});
+				elemen = body;
 				break;
 			case "errorForm":
 				elemen = `<div class="ui error message"></div><div class="ui icon success message"><i class="check icon"></i><div class="content"><div class="header">Form sudah lengkap</div><p>anda bisa submit form</p></div></div>`;
