@@ -4198,6 +4198,9 @@ $(document).ready(function () {
 												}
 											});
 											break;
+										case 'realisasi':
+											formIni.find(`table.tblUraian tbody`).html(result.data.tbody);
+											onkeypressGlobal({ jns: 'realisasi', tbl: 'vol_realisasi' }, formIni);
 										case 'value1':
 											break;
 										default:
@@ -4632,10 +4635,10 @@ $(document).ready(function () {
 													if (typeof elm.closest('form[tbl="sk_asn"]') !== 'undefined') {
 														let elmTabelAsnSK = elm.closest('form').find('table[name="nama_ditugaskan"] tbody');
 														let trRow = buatElemenHtml("tr_tabel", {
-																bodyTable: [[
-																	{ lbl: `<div contenteditable>${text}</div>` },
-																	{ lbl: `<div contenteditable>${dataObj.Pangkat}</div>` }, { lbl: `<div contenteditable>${value}</div>` }, { lbl: `<div contenteditable="">${dataObj.Jabatan}</div>`}, {lbl: `<div contenteditable></div>`}, {class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`}]
-																]
+															bodyTable: [[
+																{ lbl: `<div contenteditable>${text}</div>` },
+																{ lbl: `<div contenteditable>${dataObj.Pangkat}</div>` }, { lbl: `<div contenteditable>${value}</div>` }, { lbl: `<div contenteditable="">${dataObj.Jabatan}</div>` }, { lbl: `<div contenteditable></div>` }, { class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
+															]
 														})
 														elmTabelAsnSK.append(trRow);
 													}
@@ -6852,7 +6855,7 @@ $(document).ready(function () {
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
 					body += `<tr${classRow} ${attrRow}>`;
-					
+
 					val.forEach(function (val2) {
 						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
 						classRow = (val2.class !== undefined) ? ` class="${val2.class}"` : '';
