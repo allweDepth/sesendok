@@ -2248,7 +2248,89 @@ class MasterFungsi
                 break;
         }
         $pangkat2 .= "/$ruang";
-        return ['pangkat'=>$pangkat,'singkat'=>$pangkat2];
+        return ['pangkat' => $pangkat, 'singkat' => $pangkat2];
+    }
+    //ukuran kertas dalam mm untuk tcpdf
+    public function kertas($kertas = 'A4')
+    {
+        $ukuran = [210, 297];
+        switch (strtolower($kertas)) {
+            case 'a0':
+                $ukuran = [841, 1189];
+                break;
+            case 'a4':
+                break;
+            case 'a3':
+                $ukuran = [297, 420];
+                break;
+            case 'a1':
+                $ukuran = [594, 841];
+                break;
+            case 'b0':
+                $ukuran = [1000, 1414];
+                break;
+            case 'b3':
+                $ukuran = [353, 500];
+                break;
+            case 'b4':
+                $ukuran = [250, 353];
+                break;
+            case 'b0':
+                $ukuran = [1000, 1414];
+                break;
+            case 'c0':
+                $ukuran = [917, 1297];
+                break;
+            case 'c4':
+                $ukuran = [229, 324];
+                break;
+            case '2r':
+                $ukuran = [63.5, 88.9];
+                break;
+            case '3r':
+                $ukuran = [88.9, 127];
+                break;
+            case '4r':
+                $ukuran = [102, 152];
+                break;
+            case 'f4':
+                $ukuran = [210, 330];
+                break;
+            case 'legal':
+                $ukuran = [216, 356];
+                break;
+            case 'letter':
+                $ukuran = [216, 279];
+                break;
+            case 'ledger':
+                $ukuran = [432, 279];
+                break;
+            case 'tabloid':
+                $ukuran = [279, 432];
+                break;
+            case 'ansi a':
+                $ukuran = [216, 279];
+                break;
+            case 'ansi b':
+                $ukuran = [432, 279]; //432 × 279,279 × 432
+                break;
+            case 'ansi c':
+                $ukuran = [432, 559];
+                break;
+            case 'ansi d':
+                $ukuran = [559, 864];
+                break;
+            case 'ansi e':
+                $ukuran = [864, 1118];
+                break;
+            case 'arch a':
+                $ukuran = [229, 305];
+                break;
+            default:
+
+                break;
+        }
+        return $ukuran;
     }
     // mencari file di folder dan sub folder
     public function cariFile($f, $p = null, $l = 1000)
