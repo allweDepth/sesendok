@@ -215,12 +215,7 @@ $theme = $_SESSION["user"]["theme"];
                             </div>
                         </h3>
                     </div>
-                    <div class="ui action input multi">
-                        <input type="text" placeholder="Search...">
-                        <input type="text" placeholder="Search...">
-                        <input type="text" placeholder="Search...">
-                        <button class="ui button">Search</button>
-                    </div>
+                    
                     <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
                     <div class="ui relaxed divided list">
                         <div class="item">

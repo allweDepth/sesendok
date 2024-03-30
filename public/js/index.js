@@ -4024,9 +4024,9 @@ $(document).ready(function () {
 						break;
 					case 'sk_asn':
 						var dropdownASN = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.pemberi_tgs.ajx');
-						dropdownASN.returnList({ jenis: "get_row_json", tbl: "asn", attrresponserver: { nip: 'nip' } });
+						dropdownASN.returnList({ jenis: "get_row_json", tbl: "asn", attrresponserver: { golongan: 'golongan', ruang: 'ruang' } });
 						var dropdownASNTugas = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.asn.ajx');
-						dropdownASNTugas.returnList({ jenis: "get_row_json", tbl: "asn", attrresponserver: { nip: 'nip' } });
+						dropdownASNTugas.returnList({ jenis: "get_row_json", tbl: "asn", attrresponserver: { golongan: 'golongan', ruang: 'ruang' } });
 						break;
 				}
 				break;
@@ -4581,12 +4581,7 @@ $(document).ready(function () {
 						},
 						rows: countRows(), //"all",
 						halaman: 1,
-					}, allField.set), fields: Object.assign({
-						remoteValues: 'results',
-						name: 'name',
-						value: 'value',
-						attribute: 'attribute',
-					}, allField.attrresponserver), onSuccess: function (response, element, xhr) {
+					}, allField.set), fields: Object.assign({ results: "results" }, allField.attrresponserver), onSuccess: function (response, element, xhr) {
 						// valid response and response.success = true
 						this.result_ajax = response.results;
 					},
@@ -4608,51 +4603,89 @@ $(document).ready(function () {
 					let Results_ajax = this.result_ajax;
 					let objekArray;
 					let ajaxSend = false
-					switch (jenis) {
-						case 'get_row_json':
-							switch (tbl) {
-								case 'sbu':
-								case 'asb':
-								case 'ssh':
-								case 'hspk':
-									Results_ajax.some(function (el) {
-										// console.log(el);
-										objekArray = el;
-										return el.value == value;
-									});
-									var MyForm = $(`form[name="form_flyout"]`);
-									MyForm.form('set values', {
-										tkdn: objekArray.tkdn,
-										satuan: objekArray.satuan,
-										spesifikasi: objekArray.spesifikasi,
-										harga_satuan: accounting.formatNumber(
-											objekArray.harga_satuan,
-											parseFloat(objekArray.harga_satuan).countDecimals(),
-											".",
-											","
-										)
-									})
-									break;
-								case 'sub_keg_dpa':
-									//buatkan konstruktor untuk search
-									MyForm = $(`form[name="form_modal"]`);
-									let kd_sub_keg = MyForm.find(`.ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
-									var searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.uraian');
-									let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'dpa_dppa', data_send: { kd_sub_keg: kd_sub_keg } }
-									searchPrompt.searchGlobal(allField)
-									console.log(kd_sub_keg);
-									if (kd_sub_keg.length <= 0) {
-										delete window.searchPrompt;//searchPrompt = null;or undefined; or delete window.searchPrompt;
-									}
-									break;
-								case 'value1':
-									break;
-								default:
-									break;
-							};
-							break;
-						default:
-							break;
+					if (value.length > 0 && typeof $choice !== 'undefined') {
+						switch (jenis) {
+							case 'get_row_json':
+								switch (tbl) {
+									case 'asn':
+										//merubah pilihan di sk_asn
+										// String yang akan diubah menjadi objek
+										if (value.length > 0 && typeof $choice !== 'undefined') {
+											let dataString = dataChoice;
+											// Membagi string menjadi bagian-bagian berdasarkan tanda titik koma dan spasi
+											let parts = dataString.split("; ");
+											// Objek kosong untuk menampung data
+											let dataObj = {};
+											// Mengonversi setiap bagian menjadi properti objek
+											parts.forEach(function (part) {
+												// Memisahkan setiap bagian menjadi kunci dan nilai
+												var keyValue = part.split(": ");
+												// Menghapus spasi ekstra dari kunci dan nilai
+												var key = keyValue[0].trim();
+												var value = keyValue[1].trim();
+												// Menambahkan properti ke objek
+												dataObj[key] = value;
+											});
+											let nameAttr = elm.attr('name');
+											switch (nameAttr) {
+												case 'asn':
+													if (typeof elm.closest('form[tbl="sk_asn"]') !== 'undefined') {
+														let elmTabelAsnSK = elm.closest('form').find('table[name="nama_ditugaskan"] tbody');
+														elmTabelAsnSK.append(`<tr><td><div contenteditable>${text}</div></td><td><div contenteditable>${dataObj.Pangkat}</div></td><td><div contenteditable="">${value}</div></td><td><div contenteditable="">${dataObj.Jabatan}</div></td><td><div contenteditable=""></div></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
+													}
+													break;
+												case 'pemberi_tgs':
+													elm.closest('form').form('set values', { jbt_pemberi_tgs: dataObj.Jabatan, pangkat_pemberi_tgs: dataObj.Pangkat })
+													break;
+												default:
+													break;
+											}
+										}
+
+										break;
+									case 'sbu':
+									case 'asb':
+									case 'ssh':
+									case 'hspk':
+										Results_ajax.some(function (el) {
+											// console.log(el);
+											objekArray = el;
+											return el.value == value;
+										});
+										var MyForm = $(`form[name="form_flyout"]`);
+										MyForm.form('set values', {
+											tkdn: objekArray.tkdn,
+											satuan: objekArray.satuan,
+											spesifikasi: objekArray.spesifikasi,
+											harga_satuan: accounting.formatNumber(
+												objekArray.harga_satuan,
+												parseFloat(objekArray.harga_satuan).countDecimals(),
+												".",
+												","
+											)
+										})
+										break;
+									case 'sub_keg_dpa':
+										//buatkan konstruktor untuk search
+										MyForm = $(`form[name="form_modal"]`);
+										let kd_sub_keg = MyForm.find(`.ui.dropdown[name="kd_sub_keg"]`).dropdown('get value');
+										var searchPrompt = new SearchConstructor('form[name="form_modal"] .ui.search.uraian');
+										let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'dpa_dppa', data_send: { kd_sub_keg: kd_sub_keg } }
+										searchPrompt.searchGlobal(allField)
+										console.log(kd_sub_keg);
+										if (kd_sub_keg.length <= 0) {
+											delete window.searchPrompt;//searchPrompt = null;or undefined; or delete window.searchPrompt;
+										}
+										break;
+									case 'value1':
+										break;
+									default:
+										break;
+								};
+								break;
+							default:
+								break;
+						}
 					}
 					if (ajaxSend == true) {
 						let data = {

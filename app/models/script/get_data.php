@@ -2186,6 +2186,7 @@ class get_data
                                         case 'get_row_json':
                                             switch ($tbl) {
                                                 case 'asn':
+                                                    $pangkat=$Fungsi->golongan_ruang(['golongan' => $row->golongan, 'ruang' => $row->ruang]);
                                                     $namaLengkap = ucwords($row->nama);
                                                     if (strlen($row->gelar ?? '') > 0) {
                                                         $namaLengkap .= ', ' . $row->gelar;
@@ -2193,8 +2194,8 @@ class get_data
                                                     if (strlen($row->gelar_depan ?? '') > 0) {
                                                         $namaLengkap = $row->gelar_depan . ' ' . $namaLengkap;
                                                     }
-                                                    $deskripsi = $row->nip . ' (' . $row->jabatan . ')';
-                                                    $dataJson['results'][] = ['text' => $namaLengkap, 'category' => $row->jabatan, 'name' => $namaLengkap, 'value' => $row->nip, 'description' => $deskripsi, "descriptionVertical" => true, 'nama' => $row->nama, 'nip' => $row->nip, 'golongan' => $row->golongan, 'ruang' => $row->ruang];
+                                                    $deskripsi = 'Nip: ' .$row->nip . '; Jabatan: ' . $row->jabatan . '; Pangkat: '.$pangkat;
+                                                    $dataJson['results'][] = ['text' => $namaLengkap, 'category' => $row->jabatan, 'name' => $namaLengkap, 'value' => $row->nip, 'description' => $deskripsi, "descriptionVertical" => true, 'golongan' => $row->golongan, 'ruang' => $row->ruang];
                                                     break;
                                                 case 'organisasi':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->id, 'description' => $row->kode . ' (' . $row->nama_kepala . ')', "descriptionVertical" => true];

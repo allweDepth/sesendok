@@ -87,9 +87,11 @@
 body.inverted {
     background-color: var(--darkBG) !important;
 }
+
 .ui.input.multi input[type="text"]:not(:first-child) {
     border-radius: 0 !important;
 }
+
 h1.spin {
     margin: 0;
     padding: 0;
@@ -98,6 +100,7 @@ h1.spin {
     font-size: 1.6em;
     color: #a3e1f0;
 }
+
 span.spin {
     position: relative;
     top: 0.63em;
@@ -548,3 +551,5 @@ div.menu.transition.visible {
     background-color: rgba(0, 0, 0, 0.771) !important;
     color: #ffffff;
 }
+
+/* quote */
