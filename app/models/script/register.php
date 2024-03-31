@@ -40,6 +40,14 @@ class Register
 				'required' => true,
 				'min_char' => 8
 			]);
+			/* The code snippet you provided is setting rules for validating the 'alamat' field. Here is a
+			breakdown of what each rule does: */
+			$alamat = $validate->setRules('alamat', 'alamat', [
+				'sanitize' => 'string',
+				'regexp' => '/^[a-zA-Z\s,.]+$/',
+				'required' => true,
+				'min_char' => 8
+			]);
 			$kd_wilayah = $validate->setRules('kd_wilayah', 'kode wilayah', [
 				'sanitize' => 'string',
 				'required' => true,
@@ -102,6 +110,7 @@ class Register
 					'nama_org' => $nama_org,
 					'type_user' => $type_user,
 					'photo' => $photo,
+					'alamat' => $alamat,
 					'tgl_daftar' => date('Y-m-d H:i:s'),
 					'tgl_login' => date('Y-m-d H:i:s'),
 					'tahun' => date('Y'),

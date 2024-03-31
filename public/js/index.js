@@ -923,6 +923,54 @@ $(document).ready(function () {
 								buatElemenHtml("fieldText", {
 									label: "email",
 									atribut: 'name="email" placeholder="Nama Lengkap (tanpa gelar)" readonly',
+								}) +
+								buatElemenHtml("fieldDropdown", {
+									label: "Type User",
+									atribut: 'name="type_user"',
+									kelas: "lainnya selection",
+									dataArray: [
+										["user", "User"],
+										["admin", "Admin"],
+										["pa", "Pengguna Anggaran"],
+										["super", "Super Administrator"]
+									],
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kontak Person",
+									atribut: 'name="kontak_person" placeholder="Kontak Person"',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Alamat",
+									atribut: 'name="alamat" placeholder="Alamat..."',
+								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode Wilayah",
+									atribut: 'name="kd_wilayah" placeholder="Kode Wilayah..." readonly',
+								}) +
+								buatElemenHtml("labelToggleCheckbox", {
+									label: "Non Aktifkan User Login",
+									atribut: 'name="disable_login" non_data',
+									txtLabel: "Disable",
+								}) +
+								buatElemenHtml("labelToggleCheckbox", {
+									label: "Non Aktifkan User Input/Edit Anggaran",
+									atribut: 'name="disable_anggaran" non_data',
+									txtLabel: "Disable",
+								}) +
+								buatElemenHtml("labelToggleCheckbox", {
+									label: "Non Aktifkan User Input/Edit Kontrak",
+									atribut: 'name="disable_kontrak" non_data',
+									txtLabel: "Disable",
+								}) +
+								buatElemenHtml("labelToggleCheckbox", {
+									label: "Non Aktifkan User Input/Edit Realisasi",
+									atribut: 'name="disable_realisasi" non_data',
+									txtLabel: "Disable",
+								}) +
+								buatElemenHtml("labelToggleCheckbox", {
+									label: "Non Aktifkan User Untuk Chat",
+									atribut: 'name="disable_chat" non_data',
+									txtLabel: "Disable",
 								})
 							break;
 						case 'asn':
@@ -7035,6 +7083,10 @@ $(document).ready(function () {
 				break;
 			case "fielToggleCheckbox":
 				elemen = `<div class="${classField}field" ${atributField}><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabel}</label></div></div>`;
+				// `<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabel}</label></div></div>`;
+				break;
+			case "labelToggleCheckbox"://dengan label
+				elemen = `<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabel}</label></div></div>`;
 				// `<div class="${classField}field" ${atributField}><label>${label}</label><div class="ui toggle checkbox"><input type="checkbox" ${atribut}><label>${txtLabel}</label></div></div>`;
 				break;
 			case "fieldTxtDropdownLabel":

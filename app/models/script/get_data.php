@@ -63,16 +63,12 @@ class get_data
         $dataJson = array();
         //ambil row user
         $rowUsername = $DB->getWhereOnceCustom('user_sesendok_biila', [['username', '=', $username],['nip', '=', $nip,'AND']]);
-        var_dump($username);
-        // var_dump($_SESSION);
-        // var_dump($_SESSION["user"]);
         $dataJson['results'] = [];
         $rowPengaturan = false;
         if ($rowUsername !== false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
             }
-            var_dump($username);
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
             $kd_opd = $rowUsername->kd_organisasi;
@@ -92,7 +88,6 @@ class get_data
         }
         // var_dump($rowTahunAktif);
         $group_by = "";
-        var_dump($username);
         $jenis = '';
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
