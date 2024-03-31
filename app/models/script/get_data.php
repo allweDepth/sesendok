@@ -47,6 +47,7 @@ class get_data
         $type_user = $_SESSION["user"]["type_user"];
         $username = $_SESSION["user"]["username"];
         $id_user = $_SESSION["user"]["id"];
+        $nip = $_SESSION["user"]["nip"];
         $keyEncrypt = $_SESSION["user"]["key_encrypt"];
         $kd_opd = $_SESSION["user"]["kd_organisasi"];
         //var_dump($keyEncrypt);
@@ -61,7 +62,9 @@ class get_data
         $data = array();
         $dataJson = array();
         //ambil row user
-        $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
+        $rowUsername = $DB->getWhereOnceCustom('user_sesendok_biila', [['username', '=', $username],['nip', '=', $nip,'AND']]);
+        var_dump($username);
+        // var_dump($_SESSION);
         // var_dump($_SESSION["user"]);
         $dataJson['results'] = [];
         $rowPengaturan = false;
@@ -69,6 +72,7 @@ class get_data
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
             }
+            var_dump($username);
             $tahun = (int) $rowUsername->tahun;
             $kd_wilayah = $rowUsername->kd_wilayah;
             $kd_opd = $rowUsername->kd_organisasi;
@@ -88,7 +92,7 @@ class get_data
         }
         // var_dump($rowTahunAktif);
         $group_by = "";
-
+        var_dump($username);
         $jenis = '';
         if (!empty($_POST) && $id_user > 0 && $code != 407) {
             if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
@@ -544,6 +548,7 @@ class get_data
                     $dataJson = [];
                     $kodePosting = '';
                     $value_dinamic = [];
+                    
                     switch ($jenis) {
                         case 'get_row':
                             $kodePosting = 'get_row';
@@ -555,7 +560,8 @@ class get_data
                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['peraturan', '=', ${"id_aturan_$tbl"}, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     break;
                                 case 'user':
-                                    $kondisi_result = [['username', '=', $username], ['id', '>', 0, 'AND']];
+                                    $kondisi_result = [['username', '=', $username], ['nip', '=', $nip, 'AND']];
+                                    $kodePosting = 'get_row';
                                     break;
                                 default:
                                     break;
@@ -1742,6 +1748,8 @@ class get_data
                             break;
                         case 'get_row': //  ambil data 1 baris 
                             $row_result = $DB->getWhereOnceCustom($tabel_pakai, $kondisi_result);
+                            // var_dump($tabel_pakai);
+                            // var_dump($kondisi_result);
                             if ($row_result !== false) {
                                 $data['users'] = $row_result;
                                 switch ($tbl) {

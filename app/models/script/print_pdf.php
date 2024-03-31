@@ -566,7 +566,7 @@ class print_pdf
                                         $html .= '<table><tbody>
                                             <tr nobr="true">
                                                 <td style="border: none;width:' . (6 / 10 * $lebar_net) . 'mm;"></td>
-                                                <td style="line-height: 14em;width:' . (4 / 10 * $lebar_net) . 'mm;border: none;">Ditetapkan di ' . ucwords($nama_wilayah) . '<br><span style="text-decoration: underline;">pada Tanggal ' . $tgl_surat_dibuat . '</span><br><span style="font-weight:bold;border: none;">' . ucwords($jbt_pemberi_tgs . ' ' . $nama_opd) . '<br>Selaku pengguna anggaran</span><br><br><br><br><br><span style="text-decoration: underline;font-weight:bold;">' . $nama_pemberi_tgs . '</span><br>' . $pangkat_pemberi_tgs . '<br>' . $isi_nip . '</td>
+                                                <td style="line-height: 14em;width:' . (4 / 10 * $lebar_net) . 'mm;border: none;">Ditetapkan di ' . ucfirst(strtolower($nama_wilayah)). '<br><span style="text-decoration: underline;">pada Tanggal ' . $tgl_surat_dibuat . '</span><br><span style="font-weight:bold;border: none;">' . ucwords($jbt_pemberi_tgs . ' ' . $nama_opd) . '<br>Selaku pengguna anggaran</span><br><br><br><br><br><span style="text-decoration: underline;font-weight:bold;">' . $nama_pemberi_tgs . '</span><br>' . $pangkat_pemberi_tgs . '<br>' . $isi_nip . '</td>
                                             </tr>';
                                         $html .= '</tbody></table><p><i>Tembusan : Kepada Yth.</i></p>' . $hasil_decode['tembusan'];
                                     } else {
@@ -604,7 +604,7 @@ class print_pdf
                                     $html .= '<table><tbody>
                                             <tr nobr="true">
                                                 <td style="border: none;width:' . (6 / 10 * $lebar_net) . 'mm;"></td>
-                                                <td style="line-height: 14em;width:' . (4 / 10 * $lebar_net) . 'mm;border: none;">Ditetapkan di ' . ucwords($nama_wilayah) . '<br><span style="text-decoration: underline;">pada Tanggal ' . $tgl_surat_dibuat . '</span><br><span style="font-weight:bold;border: none;">' . ucwords($jbt_pemberi_tgs . ' ' . $nama_opd) . '<br>Selaku pengguna anggaran</span><br><br><br><br><br><span style="text-decoration: underline;font-weight:bold;">' . $nama_pemberi_tgs . '</span><br>' . $pangkat_pemberi_tgs . '<br>' . $isi_nip . '</td>
+                                                <td style="line-height: 14em;width:' . (4 / 10 * $lebar_net) . 'mm;border: none;">Ditetapkan di ' . ucfirst(strtolower($nama_wilayah)) . '<br><span style="text-decoration: underline;">pada Tanggal ' . $tgl_surat_dibuat . '</span><br><span style="font-weight:bold;border: none;">' . ucwords($jbt_pemberi_tgs . ' ' . $nama_opd) . '<br>Selaku pengguna anggaran</span><br><br><br><br><br><span style="text-decoration: underline;font-weight:bold;">' . $nama_pemberi_tgs . '</span><br>' . $pangkat_pemberi_tgs . '<br>' . $isi_nip . '</td>
                                             </tr>';
                                     $html .= '</tbody></table>';
                                     // var_dump($html);

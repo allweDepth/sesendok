@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 31 Mar 2024 pada 18.27
+-- Waktu pembuatan: 31 Mar 2024 pada 19.43
 -- Versi server: 11.3.2-MariaDB
 -- Versi PHP: 8.3.4
 
@@ -47,7 +47,7 @@ CREATE TABLE `akun_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `tgl_insert` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_update` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -76,7 +76,7 @@ CREATE TABLE `asb_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username_insert` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -103,7 +103,7 @@ CREATE TABLE `aset_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `tanggal` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username_insert` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -124,7 +124,7 @@ CREATE TABLE `berita_neo` (
   `tanggal` date NOT NULL,
   `tgl_insert` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(50) NOT NULL,
+  `username_insert` varchar(50) NOT NULL,
   `username_update` varchar(50) NOT NULL,
   `keterangan` varchar(255) NOT NULL,
   `urutan` int(11) DEFAULT NULL,
@@ -186,7 +186,7 @@ CREATE TABLE `daftar_paket_neo` (
   `no_pho` varchar(255) DEFAULT NULL,
   `tgl_fho` datetime DEFAULT NULL,
   `no_fho` varchar(255) DEFAULT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL,
   `keterangan` varchar(400) DEFAULT NULL,
   `file_kontrak` varchar(255) DEFAULT NULL,
@@ -227,7 +227,7 @@ CREATE TABLE `daftar_realisasi_neo` (
   `jumlah` decimal(36,12) NOT NULL,
   `tanggal` date NOT NULL,
   `file` varchar(400) DEFAULT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `user_update` varchar(255) NOT NULL,
   `tgl_insert` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
@@ -376,7 +376,7 @@ CREATE TABLE `db_asn_pemda_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(256) NOT NULL
+  `username_insert` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -422,7 +422,7 @@ CREATE TABLE `dpa_neo` (
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username_input` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `username_update` varchar(255) NOT NULL,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0,
@@ -485,7 +485,7 @@ CREATE TABLE `dppa_neo` (
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username_input` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `username_update` varchar(255) NOT NULL,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0,
@@ -517,7 +517,7 @@ CREATE TABLE `hspk_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username_insert` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -556,7 +556,7 @@ CREATE TABLE `mapping_aset_akun` (
   `keterangan` varchar(255) DEFAULT NULL,
   `peraturan` varchar(255) NOT NULL,
   `tgl_insert` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_update` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -583,7 +583,7 @@ CREATE TABLE `organisasi_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username_insert` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -621,7 +621,7 @@ CREATE TABLE `pengaturan_neo` (
   `akhir_renstra` datetime DEFAULT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `tanggal` datetime NOT NULL,
-  `username` varchar(266) NOT NULL,
+  `username_insert` varchar(266) NOT NULL,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci_renstra` tinyint(1) DEFAULT NULL,
@@ -666,7 +666,7 @@ CREATE TABLE `peraturan_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `aksi` varchar(50) DEFAULT NULL,
   `file` varchar(400) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
+  `username_insert` varchar(255) DEFAULT NULL,
   `tanggal` date NOT NULL,
   `keterangan` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -702,7 +702,7 @@ CREATE TABLE `rab_paket_neo` (
   `jumlah_negoisasi` decimal(36,12) DEFAULT NULL,
   `KBBI` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
@@ -737,7 +737,7 @@ CREATE TABLE `rekanan_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `no_sortir` int(11) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
@@ -784,7 +784,7 @@ CREATE TABLE `renja_neo` (
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username_input` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `username_update` varchar(255) NOT NULL,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0
@@ -846,7 +846,7 @@ CREATE TABLE `renja_p_neo` (
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username_input` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `username_update` varchar(255) NOT NULL,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui` tinyint(1) DEFAULT 0,
@@ -893,7 +893,7 @@ CREATE TABLE `renstra_skpd_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -915,7 +915,7 @@ CREATE TABLE `satuan_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `peraturan` varchar(255) NOT NULL,
   `tgl_insert` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_update` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -944,7 +944,7 @@ CREATE TABLE `sbu_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username_insert` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -978,7 +978,7 @@ CREATE TABLE `sk_asn_neo` (
   `file` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tgl_insert` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_update` varchar(255) NOT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0
@@ -1008,7 +1008,7 @@ CREATE TABLE `ssh_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tanggal` datetime NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username_insert` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
@@ -1035,7 +1035,7 @@ CREATE TABLE `sub_kegiatan_neo` (
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `tgl_insert` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tgl_update` datetime NOT NULL,
   `username_update` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -1084,7 +1084,7 @@ CREATE TABLE `sub_keg_dpa_neo` (
   `keterangan_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '{}' CHECK (json_valid(`keterangan_json`)),
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui_p` tinyint(1) DEFAULT 0,
@@ -1135,7 +1135,7 @@ CREATE TABLE `sub_keg_renja_neo` (
   `keterangan_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '{}' CHECK (json_valid(`keterangan_json`)),
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci` tinyint(1) DEFAULT 0,
   `setujui_p` tinyint(1) DEFAULT 0,
@@ -1163,7 +1163,7 @@ CREATE TABLE `sumber_dana_neo` (
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `aksi` varchar(255) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `tanggal` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
@@ -1187,7 +1187,7 @@ CREATE TABLE `tujuan_sasaran_renstra_neo` (
   `disable` tinyint(1) NOT NULL,
   `tanggal` datetime NOT NULL,
   `tgl_update` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `setujui` tinyint(1) DEFAULT 0,
   `kunci` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -1238,7 +1238,8 @@ INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `nip`, `pa
 (2, 'nabiila', 'nabiila@gmail.com', 'Najwan Nabiila', '123456789012345678', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'DINAS PEKERJAAN UMUM DAN PENATAAN RUANG', '76.01', 'admin', 'img/avatar/username(nabiila)_dok(photo)_wilayah(76.01)_2305070e99916190687b3774c0d56f134b954d74_2.jpg', '2018-06-09 15:54:29', '2024-03-31 23:33:28', '2024', '08128888', NULL, 80.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu', 0),
 (3, 'inayah', 'inayah@gmail.com', 'Inayah Nadhilah', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'DINAS PEKERJAAN UMUM DAN PENATAAN RUANG', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', NULL, 80.00, 'auto', NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke', 0),
 (4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', NULL, 80.00, 'auto', NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.', 0),
-(5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', NULL, 80.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu', 0);
+(5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', NULL, 80.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu', 0),
+(6, '198006152006041018', 'anchupumatra@gmail.com', 'Sumarlin, ST.M.AP', '198006152006041018', '$2y$10$s8JBOU5K6vZWLaE1SUMGcO52jcWU.OO5KFY.d77g7QQ.tzzjyqp8a', '1.03.0.00.0.00.01.0000', 'Dinas Pekerjaan Umum dan Penataan Ruang', '76.01', 'admin', 'images/avatar/default.jpeg', '2024-03-31 19:10:19', '2024-04-01 03:12:17', '2024', '081389000181', NULL, 80.00, 'auto', 'non', 'short', 0, 0, 0, 0, 0, 'Jika kamu ingin sukses sebanyak yang kamu inginkan, maka kamu akan sukses. - Eric Thomas', 0);
 
 -- --------------------------------------------------------
 
@@ -1262,7 +1263,7 @@ CREATE TABLE `wilayah_neo` (
   `keterangan` varchar(255) DEFAULT NULL,
   `disable` tinyint(1) NOT NULL DEFAULT 0,
   `tanggal` datetime NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
   `file` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
@@ -1657,7 +1658,7 @@ ALTER TABLE `tujuan_sasaran_renstra_neo`
 -- AUTO_INCREMENT untuk tabel `user_sesendok_biila`
 --
 ALTER TABLE `user_sesendok_biila`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `wilayah_neo`

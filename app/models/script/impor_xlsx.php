@@ -940,7 +940,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $update_arrayData = [['nip', '=', $nip]];
                                                                 $getWhereArrayData = [['nip', '=', $nip]];
@@ -1224,7 +1224,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'username_input' => $_SESSION["user"]["username"],
+                                                                    'username_insert' => $_SESSION["user"]["username"],
                                                                     'username_update' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $arrayDataRows, 'kd_akun' => $kd_akun, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
@@ -1346,7 +1346,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $arrayDataRows_nonSubKeg = [
                                                                     'kd_wilayah' => $kd_wilayah,
@@ -1359,7 +1359,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
@@ -1502,7 +1502,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kd_sub_keg', '=', $kd_sub_keg, 'AND']];
@@ -1544,7 +1544,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['kelompok', '=', $kelompok], ['text', '=', $text, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
@@ -1625,7 +1625,7 @@ class Impor_xlsx
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['uraian_barang', '=', $uraian_barang], ['kd_aset', '=', $kd_aset, 'AND'], ['harga_satuan', '=', $harga_satuan, 'AND']];
@@ -1656,7 +1656,7 @@ class Impor_xlsx
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
                                                                     'tgl_insert' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'username_insert' => $_SESSION["user"]["username"],
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'username_update' => $_SESSION["user"]["username"]
                                                                 ];
@@ -1712,7 +1712,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['kode', '=', $kode]];
@@ -1741,7 +1741,7 @@ class Impor_xlsx
                                                                     'peraturan' => $id_aturan_organisasi,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
                                                                 $update_arrayData = [['kode', '=', $kode]];
@@ -1801,7 +1801,7 @@ class Impor_xlsx
                                                                     'peraturan' => $id_aturan_anggaran,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'tgl_insert' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'username_insert' => $_SESSION["user"]["username"],
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'username_update' => $_SESSION["user"]["username"]
                                                                 ];
@@ -1893,7 +1893,7 @@ class Impor_xlsx
                                                                     'keterangan' => $keterangan,
                                                                     'status' => $status,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $update_arrayData = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND'], ['tgl_pengundangan', '=', $tgl_pengundangan, 'AND']];
                                                                 $getWhereArrayData = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND'], ['tgl_pengundangan', '=', $tgl_pengundangan, 'AND']];
@@ -1969,7 +1969,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 // var_dump($arrayDataRows);
                                                                 $update_arrayData = [['kode', '=', $kode]];
@@ -2042,7 +2042,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'tgl_insert' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'username_insert' => $_SESSION["user"]["username"],
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'username_update' => $_SESSION["user"]["username"]
                                                                 ];
@@ -2137,7 +2137,7 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'keterangan' => $keterangan,
                                                                     'tgl_insert' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"],
+                                                                    'username_insert' => $_SESSION["user"]["username"],
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'username_update' => $_SESSION["user"]["username"]
                                                                 ];
@@ -2228,7 +2228,7 @@ class Impor_xlsx
                                                                     'alamat_dir' => $alamat_dir,
                                                                     'keterangan' => $keterangan,
                                                                     'tanggal' => date('Y-m-d H:i:s'),
-                                                                    'username' => $_SESSION["user"]["username"]
+                                                                    'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 // var_dump($getData[12]);
                                                                 // var_dump(preg_match('/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', $getData[12]));

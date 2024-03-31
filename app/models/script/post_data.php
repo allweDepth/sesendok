@@ -2241,7 +2241,7 @@ class post_data
                                     ];
                                     if ($jenis === 'add') {
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }
                                     break;
@@ -2266,7 +2266,7 @@ class post_data
                                         'alamat_dir' => $alamat_dir,
                                         'keterangan' => $keterangan,
                                         'tanggal' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
+                                        'username_insert' => $_SESSION["user"]["username"]
                                     ];
                                     if (strlen($no_akta_pendirian) > 0) {
                                         $set['no_akta_pendirian'] = $no_akta_pendirian;
@@ -2305,7 +2305,7 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }
                                     break;
@@ -2323,7 +2323,7 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }
                                     break;
@@ -2347,7 +2347,7 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }
                                     break;
@@ -2375,7 +2375,7 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }
                                     break;
@@ -2396,7 +2396,7 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                     }
                                     break;
@@ -2565,7 +2565,7 @@ class post_data
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis === 'add') {
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $set['tgl_insert'] = date('Y-m-d H:i:s');
                                         $set['id_pengenal'] = $id_pengenal; // untuk link ketika anchor contoh <a href="#bawah">Rekomendasi IMB</a><div class="no example" id="bawah">
                                     }
@@ -2639,7 +2639,7 @@ class post_data
                                         'disable' => $disable,
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
+                                        'username_insert' => $_SESSION["user"]["username"]
                                     ];
                                     break;
                                 case 'daftar_paket':
@@ -2742,9 +2742,8 @@ class post_data
                                             'no_fho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_fho),
                                             'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                             'disable' => $disable,
-                                            'username' => $username,
                                             'tanggal' => date('Y-m-d H:i:s'),
-                                            'username' => $_SESSION["user"]["username"]
+                                            'username_insert' => $_SESSION["user"]["username"]
                                         ];
                                     }
 
@@ -2818,7 +2817,7 @@ class post_data
                                         'disable' => $disable,
                                         'keterangan' => $keterangan,
                                         'tanggal' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
+                                        'username_insert' => $_SESSION["user"]["username"]
                                     ];
                                     break;
                                 case 'peraturan':
@@ -2842,7 +2841,7 @@ class post_data
                                         'keterangan' => $keterangan,
                                         'status' => $status,
                                         'tanggal' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
+                                        'username_insert' => $_SESSION["user"]["username"]
                                     ];
                                     //var_dump($set);
                                     //pengolahan file
@@ -2889,7 +2888,7 @@ class post_data
                                         'keterangan' => $keterangan,
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'id_opd_tampilkan' => $id_opd_tampilkan,
-                                        'username' => $_SESSION["user"]["username"]
+                                        'username_insert' => $_SESSION["user"]["username"]
                                     ];
                                     if ($jenis == 'add') {
                                         // $set['']=1;
@@ -2952,7 +2951,7 @@ class post_data
                                                 'disable' => $disable,
                                                 'tanggal' => date('Y-m-d H:i:s'),
                                                 'tgl_update' => date('Y-m-d H:i:s'),
-                                                'username' => $_SESSION["user"]["username"]
+                                                'username_insert' => $_SESSION["user"]["username"]
                                             ];
                                             $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
                                             $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
@@ -2993,7 +2992,7 @@ class post_data
                                                 'keterangan' => $keterangan,
                                                 'tanggal' => date('Y-m-d H:i:s'),
                                                 'tgl_update' => date('Y-m-d H:i:s'),
-                                                'username' => $_SESSION["user"]["username"]
+                                                'username_insert' => $_SESSION["user"]["username"]
                                             ];
                                         } else {
                                             $message_tambah = ' (atur tahun renstra OPD)';
@@ -3044,7 +3043,7 @@ class post_data
                                         'disable' => $disable,
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username' => $_SESSION["user"]["username"]
+                                        'username_insert' => $_SESSION["user"]["username"]
                                     ];
                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
                                     $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
@@ -3134,7 +3133,7 @@ class post_data
                                         'disable' => 0,
                                         'tanggal' => date('Y-m-d H:i:s'),
                                         'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_input' => $_SESSION["user"]["username"],
+                                        'username_insert' => $_SESSION["user"]["username"],
                                         'username_update' => $_SESSION["user"]["username"]
                                     ];
                                     $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_akun' => $kd_akun, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
@@ -3166,7 +3165,7 @@ class post_data
                                     ];
                                     if ($jenis == 'add') {
                                         $set['tanggal'] = date('Y-m-d H:i:s');
-                                        $set['username'] = $_SESSION["user"]["username"];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
                                         $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
                                         $kodePosting = 'cek_insert';
                                     }

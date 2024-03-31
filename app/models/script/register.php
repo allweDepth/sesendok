@@ -36,7 +36,7 @@ class Register
 			]);
 			$nama = $validate->setRules('nama', 'Nama Lengkap', [
 				'sanitize' => 'string',
-				'regexp' => '/^[a-zA-Z\s]*$/',
+				'regexp' => '/^[a-zA-Z\s,.]+$/',
 				'required' => true,
 				'min_char' => 8
 			]);
