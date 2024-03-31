@@ -1,3 +1,16 @@
+<table >
+	<tbody>
+		<tr>
+			<td data-label="Name">James</td>
+		</tr>
+		<tr>
+			<td data-label="Name">Jill</td>
+		</tr>
+		<tr>
+			<td data-label="Name">Elyse</td>
+		</tr>
+	</tbody>
+</table>
 <?php
 /*
 Pada Kodefikasi Sub Kegiatan, ditambahkan Metadata Sub Kegiatan. Metadata Sub Kegiatan adalah sekumpulan atribut informasi yang memberikan gambaran/dokumentasi dari penyelenggaraan sub kegiatan. Atribut informasi yang ditambahkan pada Metadata Sub Kegiatan terdiri atas kinerja, indikator dan satuan. Definisi dari kinerja, indikator dan satuan sebagai berikut:

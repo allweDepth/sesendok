@@ -179,3 +179,207 @@ div.test {
 .w-100 {
     width: ' . ($lebar_net) . '
 }
+
+
+
+
+.border {
+    border: 1rem solid #000000;
+}
+
+.borderCenter {
+    border: 1rem solid #000000;
+    text-align: center;
+}
+
+.borderBoldCenter {
+    border: 1rem solid #000000;
+    text-align: center;
+    font-weight: bold;
+}
+
+.borderJustify {
+    border: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderNone {
+    text-align: justify;
+}
+
+.borderCenter {
+    border: 1rem solid #000000;
+    text-align: center;
+}
+
+.borderLRJustify {
+    border-left: 1rem solid #000000;
+    border-right: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderLJustify {
+    border-left: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderRJustify {
+    border-right: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderLBJustify {
+    border-left: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderRBJustify {
+    border-right: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderRTJustify {
+    border-right: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderLTJustify {
+    border-left: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderTJustify {
+    border-top: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderBJustify {
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderRBJustify {
+    border-right: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderLRBotJustify {
+    border-left: 1rem solid #000000;
+    border-right: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderTBLJustify {
+    border-left: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderTBRJustify {
+    border-right: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderTBJustify {
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    text-align: justify;
+}
+
+.borderLRTJustify {
+    border-top: 1rem solid #000000;
+    border-left: 1rem solid #000000;
+    border-right: 1rem solid #000000;
+    text-align: justify;
+}
+
+.bordertbgray {
+    border-top: 0.5rem solid lightgray;
+    border-bottom: 1rem solid lightgray;
+    text-align: justify;
+}
+
+.bordergray {
+    border: 0.5rem solid lightgray;
+    text-align: justify;
+}
+
+.kop {
+    font-family: helvetica;
+    font-size: 12pt;
+    border-left: 1px solid red;
+    border-right: 1px solid #FF00FF;
+    border-top: 1px solid green;
+    border-bottom: 1px solid blue;
+    background-color: #ccffcc;
+    vertical-align: middle;
+}
+
+.kopkiri {
+    font-family: helvetica;
+    font-size: 12pt;
+    border-left: none;
+    border-right: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    background-color: #ccffcc;
+    vertical-align: middle;
+}
+
+.kopmid {
+    font-family: helvetica;
+    font-size: 12pt;
+    border-left: 1rem solid #000000;
+    border-right: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    background-color: #ccffcc;
+    vertical-align: middle;
+}
+
+.kopkanan {
+    font-family: helvetica;
+    font-size: 12pt;
+    border-left: 1rem solid #000000;
+    border-right: none;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+    background-color: #ccffcc;
+    vertical-align: middle;
+}
+
+.nonekiri {
+    font-family: helvetica;
+    font-size: 12pt;
+    border-left: none;
+    border-right: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+}
+
+.nonemid {
+    font-family: helvetica;
+    font-size: 12pt;
+    border-left: 1rem solid #000000;
+    border-right: 1rem solid #000000;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+}
+
+.nonekanan {
+    font-family: helvetica;
+    font-size: 12pt;
+    border-left: 1rem solid #000000;
+    border-right: none;
+    border-top: 1rem solid #000000;
+    border-bottom: 1rem solid #000000;
+}

@@ -204,6 +204,7 @@ $theme = $_SESSION["user"]["theme"];
                             </div>
                         </h2>
                     </div>
+                    
                     <div class="ui info message">
                         <h3 class="ui header dash_header"><i class="upload icon"></i>
                             <div class="content">menginpor file pada aplikasi ? <div class="sub header">
@@ -215,7 +216,7 @@ $theme = $_SESSION["user"]["theme"];
                             </div>
                         </h3>
                     </div>
-                    
+
                     <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
                     <div class="ui relaxed divided list">
                         <div class="item">

@@ -42,7 +42,6 @@ class print_pdf
     }
     public static function print_pdf()
     {
-        // var_dump($_POST);
         require 'init.php';
         $user = new User();
         $Fungsi = new MasterFungsi();
@@ -69,6 +68,11 @@ class print_pdf
         $dataJson['results'] = [];
         $rowPengaturan = false;
         $tambahan_pesan = [];
+        $nama_wilayah = '';
+        $status_wilayah = '';
+        $nama_opd = '';
+        $alamat_opd = '';
+        $file_logo_daerah = 'img/avatar/logo.png';
         if ($rowUsername !== false) {
             foreach ($rowUsername as $key => $value) {
                 ${$key} = $value;
@@ -84,6 +88,33 @@ class print_pdf
             } else {
                 // $id_user = 0;
                 // $code = 407;
+            }
+            //wilayah
+            $nama_wilayah = '';
+            $tabel_get_row = $Fungsi->tabel_pakai('wilayah')['tabel_pakai'];
+            $rowWilayah = $DB->getWhereOnce($tabel_get_row, ['kode', '=', $kd_wilayah]);
+            if ($rowWilayah !== false) {
+                $nama_wilayah = $rowWilayah->uraian;
+                $status = $rowWilayah->status;
+                $file_logo_daerah = $rowWilayah->logo;
+                switch ($status) {
+                    case 'prov':
+                        $status_wilayah = 'provinsi';
+                        break;
+                    case 'kab':
+                        $status_wilayah = 'kabupaten';
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                //ambil data opd
+                $tabel_get_row = $Fungsi->tabel_pakai('organisasi')['tabel_pakai'];
+                $rowOrganisasi = $DB->getWhereOnceCustom($tabel_get_row, [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_opd, 'AND']]);
+                if ($rowOrganisasi !== false) {
+                    $nama_opd = $rowOrganisasi->uraian;
+                    $alamat_opd = $rowOrganisasi->alamat;
+                }
             }
         } else {
             $id_user = 0;
@@ -183,15 +214,7 @@ class print_pdf
                             'in_array' => ['off', 'on']
                         ]);
 
-                        if ($header === 'on') {
-                            $PDF_MARGIN_HEADER = $validate->setRules('margin_header', 'margin header', [
-                                'numeric' => true,
-                                'required' => true
-                            ]);
-                        } else {
-                            $PDF_MARGIN_HEADER = 20;
-                            $pdf->setPrintHeader(false);
-                        }
+
                         $footer = $validate->setRules('footer', 'footer', [
                             'sanitize' => 'string',
                             'numeric' => true,
@@ -206,6 +229,16 @@ class print_pdf
                             $pdf->setPrintFooter(false);
                             $PDF_MARGIN_FOOTER = 20;
                         }
+                        $cetak_kop = $validate->setRules('cetak_kop', 'cetak kop', [
+                            'sanitize' => 'string',
+                            'numeric' => true,
+                            'in_array' => ['off', 'on']
+                        ]);
+                        $kop_dns = $validate->setRules('kop_dns', 'kop OPD', [
+                            'sanitize' => 'string',
+                            'numeric' => true,
+                            'in_array' => ['standar', 'custom']
+                        ]);
 
                         // var_dump($lebar);
                         $lebar_net = $lebar - floatval($PDF_MARGIN_LEFT) - floatval($PDF_MARGIN_RIGHT);
@@ -229,13 +262,22 @@ class print_pdf
                         break;
                 }
                 if ($validate->passed()) {
-                    // set margins
                     // set document information
-                    // $pdf->SetCreator('PDF_CREATOR');
-                    // $pdf->SetAuthor('Nicola Asuni');
-                    // $pdf->SetTitle('TCPDF Example 007');
-                    // $pdf->SetSubject('TCPDF Tutorial');
-                    // $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+                    $pdf->SetCreator('allwe');
+                    $pdf->SetAuthor('Alwi Mansyur');
+                    $pdf->SetTitle('dokumen');
+                    $pdf->SetSubject('dokumen siSendok');
+                    $pdf->SetKeywords('dokumen siSendok');
+                    if ($header === 'on') {
+                        $PDF_MARGIN_HEADER = $validate->setRules('margin_header', 'margin header', [
+                            'numeric' => true,
+                            'required' => true
+                        ]);
+                    } else {
+                        $PDF_MARGIN_HEADER = 20;
+                        $pdf->setPrintHeader(false);
+                    }
+                    // set margins
                     $pdf->SetMargins($PDF_MARGIN_LEFT, $PDF_MARGIN_TOP, $PDF_MARGIN_RIGHT);
                     $pdf->SetHeaderMargin($PDF_MARGIN_HEADER);
                     $pdf->SetFooterMargin($PDF_MARGIN_FOOTER);
@@ -243,51 +285,29 @@ class print_pdf
                     $pdf->SetAutoPageBreak(true, $PDF_MARGIN_BOTTOM);
                     // kop surat
                     //dd content
-                    $html = '<style>h1.color{ color: navy; font-family: times; font-size: 24pt;}h1.color{ color: navy; font-family: times; font-size: 24pt; text-decoration: underline}p.first{ color: #003300; font-family: helvetica; font-size: 12pt}p.first span{ color: #006600; font-style: italic}p#second{ color: rgb(00,63,127); font-family: times; font-size: 12pt; text-align: justify}p#second >span{ background-color: #FFFFAA}table.first{ color: #003300; font-family: helvetica; font-size: 8pt; border-left: 3px solid red; border-right: 3px solid #FF00FF; border-top: 3px solid green; border-bottom: 3px solid blue; background-color: #ccffcc; vertical-align: middle}th{ border: 0.5px solid black; font-family: helvetica}.thback{ border: 0.5px solid black; background-color: grey; font-family: helvetica}td{ border: 0.5px solid black; height: 20px; line-height:10px}.tdback{ border: 0.5px solid grey; background-color: #ffffee; height: 20px; line-height:10px}td.second{ border: 2px dashed green}div.test{ color: #CC0000; background-color: #FFFF66; font-family: helvetica; font-size: 10pt; border-style: solid solid solid solid; border-width: 2px 2px 2px 2px; border-color: green #FF00FF blue red; text-align: center}.lowercase{ text-transform: lowercase}.uppercase{ text-transform: uppercase}.capitalize{ text-transform: capitalize}.w-2{width:' . (0.2 / 10 * $lebar_net) . '}.w-5{width:' . (0.5 / 10 * $lebar_net) . '}.w-7{width:' . (0.75 / 10 * $lebar_net) . '}.w-10{width:' . (1 / 10 * $lebar_net) . '}.w-15{width:' . (1.5 / 10 * $lebar_net) . '}.w-20{width:' . (2 / 10 * $lebar_net) . '}.w-25{width:' . (2.5 / 10 * $lebar_net) . '}.w-30{width:' . (3 / 10 * $lebar_net) . '}.w-35{width:' . (3.5 / 10 * $lebar_net) . '}.w-40{width:' . (4 / 10 * $lebar_net) . '}.w-45{width:' . (4.5 / 10 * $lebar_net) . '}.w-50{width:' . (5 / 10 * $lebar_net) . '}.w-60{width:' . (6 / 10 * $lebar_net) . '}.w-65{width:' . (6.5 / 10 * $lebar_net) . '}.w-70{width:' . (7 / 10 * $lebar_net) . '}.w-75{width:' . (7.5 / 10 * $lebar_net) . '}.w-80{width:' . (8 / 10 * $lebar_net) . '}.w-85{width:' . (8.5 / 10 * $lebar_net) . '}.w-90{width:' . (9 / 10 * $lebar_net) . '}.w-95{width:' . (9.5 / 10 * $lebar_net) . '}.w-100{width:' . ($lebar_net) . '}</style>';
-                    $tujuh = 0.75 / 10 * $lebar_net;
-                    $dua = 0.2 / 10 * $lebar_net;
-                    $tiga = 0.3 / 10 * $lebar_net;
-                    $empat = 0.4 / 10 * $lebar_net;
-                    $lima = 0.5 / 10 * $lebar_net;
-                    $tujuh = 0.7 / 10 * $lebar_net;
-                    $sepuluh = 1 / 10 * $lebar_net;
-                    $lima_belas = 1.5 / 10 * $lebar_net;
-                    $dua_puluh = 2 / 10 * $lebar_net;
-                    $dua_lima = 2.5 / 10 * $lebar_net;
-                    $tiga_puluh = 3 / 10 * $lebar_net;
-                    $tiga_lima = 3.5 / 10 * $lebar_net;
-                    $empat_puluh = 4 / 10 * $lebar_net;
-                    $empat_lima = 4.5 / 10 * $lebar_net;
-                    $lima_puluh = 5 / 10 * $lebar_net;
-                    $lima_lima = 5.5 / 10 * $lebar_net;
-                    $enam_puluh = 6 / 10 * $lebar_net;
-                    $enam_lima = 6.5 / 10 * $lebar_net;
-                    $tujuh_puluh = 7 / 10 * $lebar_net;
-                    $tujuh_lima = 7.5 / 10 * $lebar_net;
-                    $delapan_puluh = 8 / 10 * $lebar_net;
-                    $delapan_lima = 8.5 / 10 * $lebar_net;
-                    $sembilan_puluh = 9 / 10 * $lebar_net;
-                    $sembilan_lima = 9.5 / 10 * $lebar_net;
-                    $seratus = $lebar_net;
-                    $style_css = "<style>.w-2{ width: $dua;} .w-3{ width: $dua;} .w-4{ width: $empat;} .w-5{ width: $lima;} .w-7{ width: $tujuh;} .w-10{ width: $sepuluh;} .w-15{ width: $lima_belas;} .w-20{ width: $dua_puluh;} .w-25{ width: $dua_lima;} .w-30{ width: $tiga_puluh;} .w-35{ width: $tiga_lima;} .w-40{ width: $empat_puluh;} .w-45{ width: $empat_lima;} .w-50{ width: $lima_puluh;} .w-60{ width: $enam_puluh;} .w-65{ width: $enam_lima;} .w-70{ width: $tujuh_puluh;} .w-75{ width: $tujuh_lima;} .w-80{ width: $delapan_puluh;} .w-85{ width: $delapan_lima ;} .w-90{ width: $sembilan_puluh;} .w-95{ width: $sembilan_lima;} .w-100{ width: $seratus;}</style>";
-                    $style_table = "<style>.border{ border: 1rem solid #000000;} .borderCenter{ border: 1rem solid #000000; text-align: center;} .borderBoldCenter{ border: 1rem solid #000000; text-align: center; font-weight: bold;} .borderJustify{ border: 1rem solid #000000; text-align: justify;} .borderNone{ text-align: justify;} .borderCenter{ border: 1rem solid #000000; text-align: center;} .borderLRJustify{ border-left: 1rem solid #000000; border-right: 1rem solid #000000; text-align: justify;} .borderLJustify{ border-left: 1rem solid #000000; text-align: justify;} .borderRJustify{ border-right: 1rem solid #000000; text-align: justify;} .borderLBJustify{ border-leff: 1rem solid #000000; border-bottom: 1rem solid #000000; text-align: justify;} .borderRBJustify{ border-right: 1rem solid #000000; border-bottom: 1rem solid #000000; text-align: justify;} .borderRTJustify{ border-right: 1rem solid #000000; border-top: 1rem solid #000000; text-align: justify;} .borderLTJustify{ border-left: 1rem solid #000000; border-top: 1rem solid #000000; text-align: justify;} .borderTJustify{ border-top: 1rem solid #000000; text-align: justify;} .borderBJustify{ border-bottom: 1rem solid #000000; text-align: justify;} .borderRBJustify{ border-right: 1rem solid #000000; border-bottom: 1rem solid #000000; text-align: justify;} .borderLRBotJustify{ border-left: 1rem solid #000000; border-right: 1rem solid #000000; border-bottom: 1rem solid #000000; text-align: justify;} .borderTBLJustify{ border-left: 1rem solid #000000; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000; text-align: justify;} .borderTBRJustify{ border-right: 1rem solid #000000; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000; text-align: justify;} .borderTBJustify{ border-top: 1rem solid #000000; border-bottom: 1rem solid #000000; text-align: justify;} .borderLRTJustify{ border-top: 1rem solid #000000; border-left: 1rem solid #000000; border-right: 1rem solid #000000; text-align: justify;} .bordertbgray{ border-top: 0.5rem solid lightgray; border-bottom: 1rem solid lightgray; text-align: justify;} .bordergray{ border: 0.5rem solid lightgray; text-align: justify;} .kop{ font-family: helvetica; font-size: 12pt; border-left: 1px solid red; border-right: 1px solid #FF00FF; border-top: 1px solid green; border-bottom: 1px solid blue; background-color: #ccffcc; vertical-align: middle;} .kopkiri{ font-family: helvetica; font-size: 12pt; border-left: none; border-right: 1rem solid #000000; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000; background-color: #ccffcc; vertical-align: middle;} .kopmid{ font-family: helvetica; font-size: 12pt; border-left: 1rem solid #000000; border-right: 1rem solid #000000; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000; background-color: #ccffcc; vertical-align: middle;} .kopkanan{ font-family: helvetica; font-size: 12pt; border-left: 1rem solid #000000; border-right: none; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000; background-color: #ccffcc; vertical-align: middle;} .nonekiri{ font-family: helvetica; font-size: 12pt; border-left: none; border-right: 1rem solid #000000; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000;} .nonemid{ font-family: helvetica; font-size: 12pt; border-left: 1rem solid #000000; border-right: 1rem solid #000000; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000;} .nonekanan{ font-family: helvetica; font-size: 12pt; border-left: 1rem solid #000000; border-right: none; border-top: 1rem solid #000000; border-bottom: 1rem solid #000000;}</style>";
-                    $code = 55;
-                    $pdf->SetFont('helvetica', '', 11 * $font_size);
-                    $pdf->setListIndentWidth(5);
-                    // set document information
-                    $pdf->SetCreator('allwe');
-                    $pdf->SetAuthor('Alwi Mansyur');
-                    $pdf->SetTitle('dokumen');
-                    $pdf->SetSubject('dokumen siSendok');
-                    $pdf->SetKeywords('dokumen siSendok');
 
+                    $code = 55;
+                    $pdf->SetFont('helvetica', '', 11);
+                    $pdf->setListIndentWidth(5);
+                    $html = '';
+                    // $html = '<style>' . file_get_contents(pathURL . '/vendor/node_modules/fomantic-ui/dist/semantic.min.css') . '</style>';
+                    //cetak kop dinas
+                    $pdf->AddPage();
+                    if ($kop_dns == 'standar' && $cetak_kop == 'on') {
+                        $pdf->SetY(5);
+                        //gunakan self
+                        $kop_dinas = self::kop_dinas($status_wilayah, $nama_wilayah, $nama_opd, $alamat_opd, $file_logo_daerah);
+                        // var_dump($kop_dinas);
+                        $pdf->writeHTML($kop_dinas, true, false, false, false, '');
+                    } else {
+                    }
                     switch ($jenis) {
                         case 'cetak':
                             switch ($tbl) {
                                 case 'sk_asn':
-                                    $pdf->SetFont('helvetica', '', 11 * $font_size);
+                                    $pdf->SetFont('helvetica', '', 11);
                                     $pdf->SetFillColor(255, 255, 255);
-                                    $pdf->setListIndentWidth(5);
+                                    // $pdf->setListIndentWidth(5);
                                     // create new PDF document
                                     // Add a page
                                     // This method has several options, check the source code documentation for more information.
@@ -305,7 +325,7 @@ class print_pdf
 
                                     // Add a page
                                     // This method has several options, check the source code documentation for more information.
-                                    $pdf->AddPage();
+
 
                                     // set text shadow effect
                                     // $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
@@ -361,79 +381,418 @@ class print_pdf
         $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
         return json_encode($json, JSON_HEX_APOS);
     }
-    public function headerku($pdf, $lebar_net, $status_pemerintah, $nama_pemerintah, $nama_opd, $alamat)
+    //kop dinas
+    public static function kop_dinas($status_wilayah, $nama_wilayah, $nama_opd, $alamat_opd, $file_logo_daerah)
     {
-        $lebar_image = 0.12 / 10 * $lebar_net;
-        $image_file = '<img src="../images/logo.png" style="display:block;" width="50" height="50"/>';
-        $pdf->SetY(5);
-        $isi_header = '<table>
+        $image_file = '<img src="' . $file_logo_daerah . '" style="display:block;" width="50" height="50"/>';
+        return '<table>
                 <tbody>
 					<tr nobr="true">
 						<td rowspan="4" width="12%" style="border-bottom: 1rem double #000000;">' . $image_file . '</td>
-                        <td height="10" width="88%" align="center" style="font-family: Arial; font-size: 12px; width:100%;font-weight:bold;">PEMERINTAH ' . strtoupper($status_pemerintah) . ' ' . strtoupper($nama_pemerintah) . '</td>
+                        <td height="10" width="88%" align="center" style="font-family: Arial; font-size: 12px; width:100%;font-weight:bold;">PEMERINTAH ' . strtoupper($status_wilayah) . ' ' . strtoupper($nama_wilayah) . '</td>
 					</tr>
                     <tr nobr="true">
                         <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 16px; width:100%;font-weight:bold">' . strtoupper($nama_opd) . '</td>
 					</tr>
                     <tr nobr="true">
-                        <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 8px; width:100%;border-bottom: 1rem double #000000;padding: 0px 0px 0px 9px;">' . ucwords($alamat) . '</td>
+                        <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 8px; width:100%;border-bottom: 1rem double #000000;padding: 0px 0px 0px 9px;">' . ucwords($alamat_opd) . '</td>
 					</tr>
                 </tbody>
             </table>';
-        $pdf->writeHTML($isi_header, true, false, false, false, '');
+        // $pdf->writeHTML($isi_header, true, false, false, false, '');
     }
+    public static function style($lebar_net)
+    {
+        $style_table = "<style>
+            .border{
+                border:1rem solid #000000;
+                }
+            .borderCenter{
+                border:1rem solid #000000;
+                text-align: center;
+            }
+            .borderBoldCenter{
+                border:1rem solid #000000;
+                text-align: center;
+                font-weight:bold;
+            }
+            .borderJustify{
+                border:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderNone{
+                text-align: justify;
+            }
+            .borderCenter{
+                border:1rem solid #000000;
+                text-align: center;
+            }
+            .borderLRJustify{
+                border-left:1rem solid #000000;
+                border-right:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderLJustify{
+                border-left:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderRJustify{
+                border-right:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderLBJustify{
+                border-leff:1rem solid #000000;
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderRBJustify{
+                border-right:1rem solid #000000;
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderRTJustify{
+                border-right:1rem solid #000000;
+                border-top:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderLTJustify{
+                border-left:1rem solid #000000;
+                border-top:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderTJustify{
+                border-top:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderBJustify{
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderRBJustify{
+                border-right:1rem solid #000000;
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderLRBotJustify{
+                border-left:1rem solid #000000;
+                border-right:1rem solid #000000;
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderTBLJustify{
+                border-left:1rem solid #000000;
+                border-top:1rem solid #000000;
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderTBRJustify{
+                border-right:1rem solid #000000;
+                border-top:1rem solid #000000;
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderTBJustify{
+                border-top:1rem solid #000000;
+                border-bottom:1rem solid #000000;
+                text-align: justify;
+            }
+            .borderLRTJustify{
+                border-top:1rem solid #000000;
+                border-left:1rem solid #000000;
+                border-right:1rem solid #000000;
+                text-align: justify;
+            }
+            .bordertbgray{
+                border-top:0.5rem solid lightgray;
+                border-bottom:1rem solid lightgray;
+                text-align: justify;
+            }
+            .bordergray{
+                border:0.5rem solid lightgray;
+                text-align: justify;
+            }
+            .kop {
+                
+                font-family: helvetica;
+                font-size: 12pt;
+                border-left: 1px solid red;
+                border-right: 1px solid #FF00FF;
+                border-top: 1px solid green;
+                border-bottom: 1px solid blue;
+                background-color: #ccffcc;
+                vertical-align: middle;
+            }
+            .kopkiri {
+                font-family: helvetica;
+                font-size: 12pt;
+                border-left: none;
+                border-right: 1rem solid #000000;
+                border-top: 1rem solid #000000;
+                border-bottom: 1rem solid #000000;
+                background-color: #ccffcc;
+                vertical-align: middle;
+            }
+            .kopmid {
+                font-family: helvetica;
+                font-size: 12pt;
+                border-left: 1rem solid #000000;
+                border-right: 1rem solid #000000;
+                border-top: 1rem solid #000000;
+                border-bottom: 1rem solid #000000;
+                background-color: #ccffcc;
+                vertical-align: middle;
+            }
+            .kopkanan {
+                
+                font-family: helvetica;
+                font-size: 12pt;
+                border-left: 1rem solid #000000;
+                border-right: none;
+                border-top: 1rem solid #000000;
+                border-bottom: 1rem solid #000000;
+                background-color: #ccffcc;
+                vertical-align: middle;
+            }
+            .nonekiri {
+                
+                font-family: helvetica;
+                font-size: 12pt;
+                border-left: none;
+                border-right: 1rem solid #000000;
+                border-top: 1rem solid #000000;
+                border-bottom: 1rem solid #000000;
+                
+            }
+            .nonemid {
+                
+                font-family: helvetica;
+                font-size: 12pt;
+                border-left: 1rem solid #000000;
+                border-right: 1rem solid #000000;
+                border-top: 1rem solid #000000;
+                border-bottom: 1rem solid #000000;
+                
+            }
+            .nonekanan {
+                
+                font-family: helvetica;
+                font-size: 12pt;
+                border-left: 1rem solid #000000;
+                border-right: none;
+                border-top: 1rem solid #000000;
+                border-bottom: 1rem solid #000000;
+            }
+            </style>";
+        $html = '<style>
+            h1.color {
+                color: navy;
+                font-family: times;
+                font-size: 24pt;
+            }
 
-    public function header_customk($pdf, $path_files, $lebar_net_px)
-    {
-        $image_file = '<img src="../' . $path_files . '" style="display:block;" height="70"/>';
-        //$image_file = '<img src="../' . $path_files . '" style="display:block;" width="' . $lebar_net_px . '" height="50"/>';
-        $pdf->SetY(10);
-        $isi_header = '<table>
-                <tbody>
-					<tr nobr="true">
-						<td align="center" width="100%">' . $image_file . '</td>
-                        
-					</tr>
-                    
-                </tbody>
-            </table>';
-        $pdf->writeHTML($isi_header, true, false, false, false, '');
-    }
-    //FUNGSI KOP SURAT
-    public function kop_suratku($jenis_kop_surat, $lebar_net, $PDF_MARGIN_TOP, $SetY, $status_pemerintah, $nama_pemerintah, $nama_opd, $alamat, $pdf = '')
-    {
-        require_once('class/TCPDF-main/tcpdf.php');
-        require 'init.php';
-        $user = new User();
-        $Fungsi = new MasterFungsi();
-        if ($jenis_kop_surat == 'custom' && !empty($_FILES['file']['name'])) {
-            $sourcePath = $_FILES['file']['tmp_name'];
-            //impor_file( array( 'jenis' => 'temporer' ) );
-            $ok = $Fungsi->impor_file(array('jenis' => 'temporer'));
-            //var_dump($ok);
-            $file_path = $ok['data']['path'];
-            $l = $lebar_net;
-        } else {
-            //headerku($pdf, $lebar_net, $status_pemerintah, $nama_pemerintah, $nama_opd, $alamat_opd, $PDF_MARGIN_TOP+5);
-            $lebar_image = 0.12 / 10 * $lebar_net;
-            $image_file = '<img src="img/logo.jpg" style="display:block;align:center;" width="50" height="50"/>';
-            //hilangkan sesendok $pdf->SetY($SetY);
-            $isi_header = '<table>
-                    <tbody>
-                        <tr nobr="true">
-                            <td rowspan="4" width="12%" style="border-bottom: 1rem double #000000;text-align: center;"><div style="margin-right:auto;margin-left:auto;"> ' . $image_file . '</div></td>
-                            <td height="10" width="88%" align="center" style="font-family: Arial; font-size: 12px; width:100%;font-weight:bold;">PEMERINTAH ' . strtoupper($status_pemerintah) . ' ' . strtoupper($nama_pemerintah) . '</td>
-                        </tr>
-                        <tr nobr="true">
-                            <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 16px; width:100%;font-weight:bold">' . strtoupper($nama_opd) . '</td>
-                        </tr>
-                        <tr nobr="true">
-                            <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 8px; width:100%;border-bottom: 1rem double #000000;padding: 0px 0px 0px 9px;">' . ucwords($alamat) . '</td>
-                        </tr>
-                    </tbody>
-                </table>';
-            //hilangkan sesendok $pdf->writeHTML($isi_header, true, false, false, false, '');
-            return $isi_header;
-        }
+            h1.color {
+                color: navy;
+                font-family: times;
+                font-size: 24pt;
+                text-decoration: underline
+            }
+
+            p.first {
+                color: #003300;
+                font-family: helvetica;
+                font-size: 12pt
+            }
+
+            p.first span {
+                color: #006600;
+                font-style: italic
+            }
+
+            p#second {
+                color: rgb(00, 63, 127);
+                font-family: times;
+                font-size: 12pt;
+                text-align: justify
+            }
+
+            p#second>span {
+                background-color: #FFFFAA
+            }
+
+            table.first {
+                color: #003300;
+                font-family: helvetica;
+                font-size: 8pt;
+                border-left: 3px solid red;
+                border-right: 3px solid #FF00FF;
+                border-top: 3px solid green;
+                border-bottom: 3px solid blue;
+                background-color: #ccffcc;
+                vertical-align: middle
+            }
+
+            th {
+                border: 0.5px solid black;
+                font-family: helvetica
+            }
+
+            .thback {
+                border: 0.5px solid black;
+                background-color: grey;
+                font-family: helvetica
+            }
+
+            td {
+                border: 0.5px solid black;
+                height: 20px;
+                line-height: 10px
+            }
+
+            .tdback {
+                border: 0.5px solid grey;
+                background-color: #ffffee;
+                height: 20px;
+                line-height: 10px
+            }
+
+            td.second {
+                border: 2px dashed green
+            }
+
+            div.test {
+                color: #CC0000;
+                background-color: #FFFF66;
+                font-family: helvetica;
+                font-size: 10pt;
+                border-style: solid solid solid solid;
+                border-width: 2px 2px 2px 2px;
+                border-color: green #FF00FF blue red;
+                text-align: center
+            }
+
+            .lowercase {
+                text-transform: lowercase
+            }
+
+            .uppercase {
+                text-transform: uppercase
+            }
+
+            .capitalize {
+                text-transform: capitalize
+            }
+
+            .w-2 {
+                width: ' . (0.2 / 10 * $lebar_net) . '
+            }
+
+            .w-5 {
+                width: ' . (0.5 / 10 * $lebar_net) . '
+            }
+
+            .w-7 {
+                width: ' . (0.75 / 10 * $lebar_net) . '
+            }
+
+            .w-10 {
+                width: ' . (1 / 10 * $lebar_net) . '
+            }
+
+            .w-15 {
+                width: ' . (1.5 / 10 * $lebar_net) . '
+            }
+
+            .w-20 {
+                width: ' . (2 / 10 * $lebar_net) . '
+            }
+
+            .w-25 {
+                width: ' . (2.5 / 10 * $lebar_net) . '
+            }
+
+            .w-30 {
+                width: ' . (3 / 10 * $lebar_net) . '
+            }
+
+            .w-35 {
+                width: ' . (3.5 / 10 * $lebar_net) . '
+            }
+
+            .w-40 {
+                width: ' . (4 / 10 * $lebar_net) . '
+            }
+
+            .w-45 {
+                width: ' . (4.5 / 10 * $lebar_net) . '
+            }
+
+            .w-50 {
+                width: ' . (5 / 10 * $lebar_net) . '
+            }
+
+            .w-60 {
+                width: ' . (6 / 10 * $lebar_net) . '
+            }
+
+            .w-65 {
+                width: ' . (6.5 / 10 * $lebar_net) . '
+            }
+
+            .w-70 {
+                width: ' . (7 / 10 * $lebar_net) . '
+            }
+
+            .w-75 {
+                width: ' . (7.5 / 10 * $lebar_net) . '
+            }
+
+            .w-80 {
+                width: ' . (8 / 10 * $lebar_net) . '
+            }
+
+            .w-85 {
+                width: ' . (8.5 / 10 * $lebar_net) . '
+            }
+
+            .w-90 {
+                width: ' . (9 / 10 * $lebar_net) . '
+            }
+
+            .w-95 {
+                width: ' . (9.5 / 10 * $lebar_net) . '
+            }
+
+            .w-100 {
+                width: ' . ($lebar_net) . '
+            }
+        </style>';
+        $tujuh = 0.75 / 10 * $lebar_net;
+        $dua = 0.2 / 10 * $lebar_net;
+        $tiga = 0.3 / 10 * $lebar_net;
+        $empat = 0.4 / 10 * $lebar_net;
+        $lima = 0.5 / 10 * $lebar_net;
+        $tujuh = 0.7 / 10 * $lebar_net;
+        $sepuluh = 1 / 10 * $lebar_net;
+        $lima_belas = 1.5 / 10 * $lebar_net;
+        $dua_puluh = 2 / 10 * $lebar_net;
+        $dua_lima = 2.5 / 10 * $lebar_net;
+        $tiga_puluh = 3 / 10 * $lebar_net;
+        $tiga_lima = 3.5 / 10 * $lebar_net;
+        $empat_puluh = 4 / 10 * $lebar_net;
+        $empat_lima = 4.5 / 10 * $lebar_net;
+        $lima_puluh = 5 / 10 * $lebar_net;
+        $lima_lima = 5.5 / 10 * $lebar_net;
+        $enam_puluh = 6 / 10 * $lebar_net;
+        $enam_lima = 6.5 / 10 * $lebar_net;
+        $tujuh_puluh = 7 / 10 * $lebar_net;
+        $tujuh_lima = 7.5 / 10 * $lebar_net;
+        $delapan_puluh = 8 / 10 * $lebar_net;
+        $delapan_lima = 8.5 / 10 * $lebar_net;
+        $sembilan_puluh = 9 / 10 * $lebar_net;
+        $sembilan_lima = 9.5 / 10 * $lebar_net;
+        $seratus = $lebar_net;
+        $style_css = "<style>.w-2{ width: $dua;} .w-3{ width: $dua;} .w-4{ width: $empat;} .w-5{ width: $lima;} .w-7{ width: $tujuh;} .w-10{ width: $sepuluh;} .w-15{ width: $lima_belas;} .w-20{ width: $dua_puluh;} .w-25{ width: $dua_lima;} .w-30{ width: $tiga_puluh;} .w-35{ width: $tiga_lima;} .w-40{ width: $empat_puluh;} .w-45{ width: $empat_lima;} .w-50{ width: $lima_puluh;} .w-60{ width: $enam_puluh;} .w-65{ width: $enam_lima;} .w-70{ width: $tujuh_puluh;} .w-75{ width: $tujuh_lima;} .w-80{ width: $delapan_puluh;} .w-85{ width: $delapan_lima ;} .w-90{ width: $sembilan_puluh;} .w-95{ width: $sembilan_lima;} .w-100{ width: $seratus;}</style>";
+        $style_table = "<style></style>";
+        return ['style_umum' => $html, 'style_css' => $style_css,'style_tabel' =>$style_table];
     }
 }
