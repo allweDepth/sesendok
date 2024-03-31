@@ -151,6 +151,11 @@ class print_pdf
                             'max_char' => 100,
                             'in_array' => ['F4', 'custom', 'A3', 'A4', 'LETTER', 'LEGAL', 'f4', 'CUSTOM', 'a3', 'a4', 'letter', 'legal']
                         ]);
+                        $ukuran_huruf = $validate->setRules('ukuran_huruf', 'ukuran huruf', [
+                            'numeric' => true,
+                            'required' => true
+                        ]);
+                        $ukuran_huruf = $ukuran_huruf / 100;
                         $PDF_MARGIN_LEFT = $validate->setRules('margin_kanan', 'margin kanan', [
                             'numeric' => true,
                             'required' => true
@@ -172,7 +177,8 @@ class print_pdf
                             'required' => true,
                             'in_array' => ['portrait', 'lanscape'],
                         ]);
-                        $orientasi = ($orientasi == 'portrait') ? 'p' : 'l';
+                        // var_dump($page_size);
+                        $orientasi = ($orientasi == 'portrait') ? 'P' : 'L';
                         if ($page_size == 'CUSTOM') {
                             //$lebar = ( float )$_POST[ 'tinggi' ]; // lebar kertas
                             $tinggi = $validate->setRules('tinggi', 'tinggi custom page size', [
@@ -190,19 +196,26 @@ class print_pdf
                             if ($lebar <= 0) {
                                 $lebar = 215;
                             }
-                            $pf = $page_size;
                         } else {
-                            $pf = TCPDF_STATIC::getPageSizeFromFormat($page_size);
-                            $lebar = $Fungsi->kertas($page_size)[0];
-                            $tinggi = $Fungsi->kertas($page_size)[1];
+                            if ($orientasi == 'P') {
+                                $lebar = $Fungsi->kertas($page_size)[0];
+                                $tinggi = $Fungsi->kertas($page_size)[1];
+                            } else {
+                                $lebar = $Fungsi->kertas($page_size)[1];
+                                $tinggi = $Fungsi->kertas($page_size)[0];
+                            }
                         }
-                        if ($orientasi == 'portrait') {
-                            $lebar = $pf[0]; // lebar kertas
-                        } else {
-                            $lebar = $pf[1]; // tinggi kertas
-                        }
+                        // if ($orientasi == 'portrait') {
+                        //     $lebar = $pf[0]; // lebar kertas
+                        // } else {
+                        //     $lebar = $pf[1]; // tinggi kertas
+                        // }
+                        // var_dump($lebar);
+                        $ukuran_kertas = ($page_size == 'custom') ? array($lebar, $tinggi) : [$lebar, $tinggi];
+                        // var_dump($ukuran_kertas);
+                        // $lebar = $Fungsi->kertas($page_size)[0];
+                        // $tinggi = $Fungsi->kertas($page_size)[1];
 
-                        $ukuran_kertas = ($page_size == 'custom') ? array($lebar, $tinggi) : $Fungsi->kertas($page_size);
                         //========================
                         // create a PDF object
                         //========================
@@ -242,6 +255,7 @@ class print_pdf
 
                         // var_dump($lebar);
                         $lebar_net = $lebar - floatval($PDF_MARGIN_LEFT) - floatval($PDF_MARGIN_RIGHT);
+                        // var_dump($lebar_net);
                         switch ($tbl) {
                             case 'sk_asn':
                                 $tabel_pakai_temporer = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
@@ -297,7 +311,7 @@ class print_pdf
                     $pdf->AddPage();
                     if ($kop_dns == 'standar' && $cetak_kop == 'on') {
                         $pdf->SetY(5);
-                        //gunakan self
+                        //gunakan self memanggil methode didalam kelas
                         $kop_dinas = self::kop_dinas($status_wilayah, $nama_wilayah, $nama_opd, $alamat_opd, $file_logo_daerah);
                         // var_dump($kop_dinas);
                         $pdf->writeHTML($kop_dinas, true, false, false, false, '');
@@ -309,7 +323,7 @@ class print_pdf
                                 case 'sk_asn':
                                     //ambil data
                                     $row_sk_asn = $DB->getWhereOnceCustom($tabel_pakai, [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
-                                    $pdf->SetFont('helvetica', '', 11);
+                                    $pdf->SetFont('helvetica', '', 11 * $ukuran_huruf);
                                     $pdf->SetFillColor(255, 255, 255);
                                     // $pdf->setListIndentWidth(5);
                                     // create new PDF document
@@ -325,7 +339,7 @@ class print_pdf
                                     // dejavusans is a UTF-8 Unicode font, if you only need to
                                     // print standard ASCII chars, you can use core fonts like
                                     // helvetica or times to reduce file size.
-                                    $pdf->SetFont('helvetica', '', 12, '', true);
+                                    $pdf->SetFont('helvetica', '', 12 * $ukuran_huruf, '', true);
 
                                     // Add a page
                                     // This method has several options, check the source code documentation for more information.
@@ -340,7 +354,7 @@ class print_pdf
                                         foreach ($row_sk_asn as $key => $value) {
                                             ${$key} = $value;
                                         }
-                                        $bentuk_lampiran = $row_sk_asn->menimbang;
+                                        $bentuk_lampiran = $row_sk_asn->bentuk_lampiran;
                                         $menimbang = json_decode($row_sk_asn->menimbang, true);
                                         $mengingat = json_decode($row_sk_asn->mengingat, true);
                                         $menetapkan_1 = json_decode($row_sk_asn->menetapkan_1, true);
@@ -357,18 +371,69 @@ class print_pdf
                                             $p_l_awal = 'P'; //paragraf or list
                                             $hasil_decode[$key_decode] = '';
                                             // var_dump($key_decode);
-                                            // var_dump($value_decode);
+
                                             if ($count > 0) {
+                                                $jumlah = 0;
+                                                switch ($key_decode) {
+                                                    case 'nama_ditugaskan':
+                                                        $hasil_decode[$key_decode] = '<hr><br><table cellpadding="3">';
+                                                        $border = 'border: 0.5px solid black;';
+                                                        if ($bentuk_lampiran > 0) {
+                                                            $hasil_decode[$key_decode] .= '<thead><tr style="text-align:center;line-height:11px;font-weight:bold;"><th style="width: ' . (0.7 / 10 * $lebar_net) . 'mm;' . $border . '">&nbsp;<br/>NO.&nbsp;<br/></th>
+                                                                <th style="width: ' . (3.5 / 10 * $lebar_net) . 'mm;' . $border . '">&nbsp;<br/>NAMA&nbsp;<br/></th>
+                                                                <th style="width: ' . (2.3 / 10 * $lebar_net) . 'mm;' . $border . '">&nbsp;<br/>JABATAN&nbsp;<br/></th>
+                                                                <th style="width: ' . (3.5 / 10 * $lebar_net) . 'mm;' . $border . '">&nbsp;<br/>KETERANGAN&nbsp;<br/></th>
+                                                                </tr></thead>';
+                                                        }
+                                                        break;
+                                                }
                                                 foreach ($value_decode as $key => $value) {
                                                     // var_dump($value);
                                                     switch ($key_decode) {
                                                         case 'nama_ditugaskan':
-                                                            if ($bentuk_lampiran <= 0) {
-                                                                //bentuk list
+                                                            // var_dump($value_decode);
+                                                            $hasil_decode[$key_decode] .= '<tbody>';
+                                                            $jumlah++;
+                                                            $jabatan_post = $value["jabatan"];
+                                                            if ($bentuk_lampiran > 0) {
+                                                                switch ($jabatan_post) {
+                                                                    case 'honorer':
+                                                                    case 'honor':
+                                                                        $hasil_decode[$key_decode] .= '<tr nobr="true">
+                                                                                <td style="line-height: 15em;width:' . (0.7 / 10 * $lebar_net) . 'mm;' . $border . '">' . $jumlah . '.</td>
+                                                                                <td style="line-height: 15em;width:' . (3.5 / 10 * $lebar_net) . 'mm;' . $border . '"><span style="font-weight:bold;">' . $value["nama"] . '</span><br>NIP. -(Non ASN)</td>
+                                                                                <td style="line-height: 15em;width:' . (2.3 / 10 * $lebar_net) . 'mm;' . $border . '">Non ASN</td>
+                                                                                <td style="line-height: 15em;width:' . (3.5 / 10 * $lebar_net) . 'mm;' . $border . '">' . ucwords($value["jabatan_sk"]) . '</td>
+                                                                            </tr>';
+                                                                        break;
+                                                                    default:
+                                                                        $hasil_decode[$key_decode] .= '<tr nobr="true">
+                                                                                <td style="line-height: 15em;width:' . (0.7 / 10 * $lebar_net) . 'mm;' . $border . '">' . $jumlah . '.</td>
+                                                                                <td style="line-height: 15em;width:' . (3.5 / 10 * $lebar_net) . 'mm;' . $border . '"><span style="font-weight:bold;">' . $value["nama"] . '</span><br>' . $value["pangkat"] . '<br>NIP. ' . $value["nip"] . '</td>
+                                                                                <td style="line-height: 15em;width:' . (2.3 / 10 * $lebar_net) . 'mm;' . $border . '">' . ucwords($value["jabatan"]) . '</td>
+                                                                                <td style="line-height: 15em;width:' . (3.5 / 10 * $lebar_net) . 'mm;' . $border . '">' . ucwords($value["jabatan_sk"]) . '</td>
+                                                                            </tr>';
+                                                                };
                                                             } else {
-                                                                # bentuk tabel
+                                                                switch ($jabatan_post) {
+                                                                    case 'honorer':
+                                                                    case 'honor':
+                                                                        $hasil_decode[$key_decode] .= '<tr nobr="true">
+                                                                        <td style="line-height: 20em;width:' . (0.5 / 10 * $lebar_net) . 'mm;">' . $jumlah . '.</td>
+                                                                        <td style="line-height: 20em;width:' . (2 / 10 * $lebar_net) . 'mm;">Nama<br>Pangkat/Gol<br>NIP<br>Jabatan<br>Keterangan</td>
+                                                                        <td style="line-height: 20em;width:' . (0.5 / 10 * $lebar_net) . 'mm;">:<br>:<br>:<br>:<br>:</td>
+                                                                        <td style="line-height: 20em;width:' . (7 / 10 * $lebar_net) . 'mm; text-align: justify;"><span style="font-weight:bold;">' . $value["nama"] . '</span><br>' . $value["pangkat"] . '<br>' . $value["nip"] . '<br>' . ucwords($value["jabatan"]) . '<br>' . ucwords($value["jabatan_sk"]) . '</td>
+                                                                    </tr>';
+                                                                        break;
+                                                                    default:
+                                                                        $hasil_decode[$key_decode] .= '<tr nobr="true">
+                                                                        <td style="line-height: 20em;width:' . (0.5 / 10 * $lebar_net) . 'mm;">' . $jumlah . '.</td>
+                                                                        <td style="line-height: 20em;width:' . (2 / 10 * $lebar_net) . 'mm;">Nama<br>Pangkat/Gol<br>NIP<br>Jabatan<br>Keterangan</td>
+                                                                        <td style="line-height: 20em;width:' . (0.5 / 10 * $lebar_net) . 'mm;">:<br>:<br>:<br>:<br>:</td>
+                                                                        <td style="line-height: 20em;width:' . (7 / 10 * $lebar_net) . 'mm; text-align: justify;"><span style="font-weight:bold;">' . $value["nama"] . '</span><br>' . $value["pangkat"] . '<br>' . $value["nip"] . '<br>' . ucwords($value["jabatan"]) . '<br>' . ucwords($value["jabatan_sk"]) . '</td>
+                                                                    </tr>';
+                                                                };
                                                             }
-
                                                             break;
                                                         default:
                                                             if (array_key_exists("isi", $value)) {
@@ -382,6 +447,7 @@ class print_pdf
                                                                 if ($p_l == 'L') {
                                                                     if ($p_l_awal == 'P') {
                                                                         $hasil_decode[$key_decode] .= '<ol>';
+                                                                        //Tembusan : Kepada Yth.
                                                                     }
                                                                     $hasil_decode[$key_decode] .= '<li style="text-align:justify;">' . $isi . '</li>';
                                                                 } else {
@@ -399,13 +465,19 @@ class print_pdf
                                                 }
                                                 switch ($key_decode) {
                                                     case 'nama_ditugaskan':
+                                                        $hasil_decode[$key_decode] .= '</tbody></table><br><br>';
                                                         //untuk tabel yang ditugaskan
                                                         break;
                                                     default:
                                                         if (array_key_exists("p_l", $value) && $p_l_awal == 'L') {
                                                             $hasil_decode[$key_decode] .= '</ol>';
                                                         } else {
-                                                            $hasil_decode[$key_decode]  = '<ol>' . $hasil_decode[$key_decode] . '</ol>';
+                                                            // var_dump('masuk sini');
+                                                            // var_dump(strpos('</li>', $hasil_decode[$key_decode]));
+                                                            // var_dump($hasil_decode[$key_decode]);
+                                                            if (strpos('</li>', $hasil_decode[$key_decode]) !== false) {
+                                                                $hasil_decode[$key_decode]  = '<ol>' . $hasil_decode[$key_decode] . '</ol>';
+                                                            }
                                                         }
                                                         break;
                                                 }
@@ -413,14 +485,17 @@ class print_pdf
                                         }
                                         // CUSTOM PADDING
                                         // set color for background
-                                        $pdf->SetFillColor(255, 255, 255);
-
-                                        // set font
-                                        $pdf->SetFont('helvetica', 'B', 11 * $font_size);
+                                        // $pdf->SetFillColor(255, 255, 255);
+                                        foreach ($hasil_decode as $key => $value) {
+                                            $hasil_decode[$key] = trim(preg_replace('/(\s\s+|\t|\n)/', ' ', $value));
+                                        }
+                                        // var_dump($hasil_decode );
+                                        // // set font
+                                        $pdf->SetFont('helvetica', 'B', 11 * $ukuran_huruf);
 
                                         // set cell padding
                                         $pdf->setCellPaddings(0, 0, 0, 0);
-                                        
+
                                         $pdf->MultiCell($lebar_net, 0, "KEPUTUSAN " . strtoupper($jbt_pemberi_tgs . ' ' . $nama_opd), 0, 'C', 1, 1, '', '', true);
                                         $pdf->MultiCell($lebar_net, 0, "Nomor : " . $nomor, 0, 'C', 1, 1, '', '', true);
 
@@ -434,7 +509,7 @@ class print_pdf
                                         $pdf->setCellPaddings(0, 1, 1, 1);
                                         $pdf->MultiCell($lebar_net, 0, strtoupper($nama_opd), 0, 'C', 1, 1, '', '', true);
                                         $pdf->setListIndentWidth(5);
-                                        $pdf->SetFont('helvetica', '', 11 * $font_size);
+                                        $pdf->SetFont('helvetica', '', 11 * $ukuran_huruf);
                                         $pdf->Ln(4);
                                         $pdf->MultiCell($lebar_net / 7, 0, 'Menimbang', 0, 'J', 1, 0, '', '', true);
                                         $pdf->MultiCell($lebar_net * 3 / 100, 1, ':', 0, 'C', 1, 0, '', '', true);
@@ -444,71 +519,101 @@ class print_pdf
                                         $pdf->MultiCell($lebar_net * 3 / 100, 1, ':', 0, 'C', 1, 0, '', '', true);
                                         $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', $hasil_decode['mengingat'], 0, 1, 0, true, 'J', true);
                                         //$pdf->MultiCell( $lebar_net * 7 / 8, 1, $tabel_menimbang[ 0 ][ "isi" ], 0, 'J', 1, 1, '', '', true, 1 );
-                                        $pdf->SetFont('helvetica', 'B', 11 * $font_size);
+                                        $pdf->SetFont('helvetica', 'B', 11 * $ukuran_huruf);
                                         $pdf->Ln(4);
                                         $pdf->Write(0, "MEMUTUSKAN", '', 0, 'C', true, 0, false, false, 0);
-                                        $pdf->SetFont('helvetica', '', 11 * $font_size);
+                                        $pdf->SetFont('helvetica', '', 11 * $ukuran_huruf);
                                         $pdf->MultiCell($lebar_net / 7, 1, 'Menetapkan', 0, 'J', 1, 0, '', '', true);
                                         $pdf->MultiCell($lebar_net * 3 / 100, 1, ':', 0, 'C', 1, 0, '', '', true);
                                         $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', "KEPUTUSAN " . strtoupper($jbt_pemberi_tgs . ' ' . $nama_opd . ' tentang ' . $tentang), 0, 1, 0, true, 'J', true);
                                         //kesatu
-                                        if ($hasil_decode['$menetapkan_1'] != '') {
+                                        if ($hasil_decode['menetapkan_1'] != '') {
                                             $pdf->MultiCell($lebar_net / 7, 1, 'KESATU', 0, 'J', 1, 0, '', '', true);
                                             $pdf->MultiCell($lebar_net * 3 / 100, 1, ':', 0, 'C', 1, 0, '', '', true);
                                             $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', $hasil_decode['menetapkan_1'], 0, 1, 0, true, 'J', true);
                                         }
 
                                         //kedua
-                                        if (strlen($hasil_decode['$menetapkan_2']) > 5) {
+                                        if (strlen($hasil_decode['menetapkan_2']) > 5) {
                                             $pdf->MultiCell($lebar_net / 7, 1, 'KEDUA', 0, 'J', 1, 0, '', '', true);
                                             $pdf->MultiCell($lebar_net * 3 / 100, 1, ':', 0, 'C', 1, 0, '', '', true);
-                                            $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', $hasil_decode['$menetapkan_2'], 0, 1, 0, true, 'J', true);
+                                            $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', trim($hasil_decode['menetapkan_2']), 0, 1, 0, true, 'J', true);
                                         }
 
-                                        //keketiga
-                                        if ($hasil_decode['$menetapkan_3'] != '') {
+                                        //ketiga
+                                        if ($hasil_decode['menetapkan_3'] != '') {
                                             $pdf->MultiCell($lebar_net / 7, 1, 'KETIGA', 0, 'J', 1, 0, '', '', true);
                                             $pdf->MultiCell($lebar_net * 3 / 100, 1, ':', 0, 'C', 1, 0, '', '', true);
-                                            $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', $hasil_decode['$menetapkan_3'], 0, 1, 0, true, 'J', true);
+                                            $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', $hasil_decode['menetapkan_3'], 0, 1, 0, true, 'J', true);
                                         }
 
                                         //keempat
-                                        if ($hasil_decode['$menetapkan_4'] != '') {
+                                        if ($hasil_decode['menetapkan_4'] != '') {
                                             $pdf->MultiCell($lebar_net / 7, 1, 'KEEMPAT', 0, 'J', 1, 0, '', '', true);
                                             $pdf->MultiCell($lebar_net * 3 / 100, 1, ':', 0, 'C', 1, 0, '', '', true);
-                                            $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', $hasil_decode['$menetapkan_4'], 0, 1, 0, true, 'J', true);
+                                            $pdf->writeHTMLCell($lebar_net * 6 / 7, 1, '', '', $hasil_decode['menetapkan_4'], 0, 1, 0, true, 'J', true);
                                         }
 
                                         $tgl_surat_dibuat = $Fungsi->tanggal($tgl_surat_dibuat)['tgl_plus_add'];;
-                                        $int_nip = (int)$pemberi_tgs;
+                                        $int_nip = $pemberi_tgs;
                                         $isi_nip = 'NIP. ' . $pemberi_tgs;
                                         if ($int_nip <= 0) {
                                             $isi_nip = '';
                                         }
-                                        //$pdf->setCellPaddings( 0, 0, 0, 0 );
-                                        //$pdf->MultiCell( $lebar_net / 3, 0, 'Di tetapkan di '.ucfirst($lokasi), 0, 'L', 1, 1, $lebar_net *3/ 4, '', true );
-                                        //$pdf->MultiCell( $lebar_net / 3, 0, 'pada tanggal '.$tgl_surat_dibuat, 0, 'L', 1, 1, $lebar_net *3/ 4, '', true );
                                         // set_time_limit(0);
                                         // ini_set('memory_limit', '-1');
+
                                         $html .= '<table><tbody>
                                             <tr nobr="true">
-                                                <td class="w-60" style="border: none;"></td>
-                                                <td style="line-height: 14em;width:' . (4 / 10 * $lebar_net) . ';border: none;">Ditetapkan di ' . ucwords($lokasi) . '<br><span style="text-decoration: underline;">pada Tanggal ' . $tgl_surat_dibuat . '</span><br><span style="font-weight:bold;border: none;">' . ucwords($data['jbt_pemberi_tgs'] . ' ' . $nama_opd) . '<br>Selaku pengguna anggaran</span><br><br><br><br><br><span style="text-decoration: underline;font-weight:bold;">' . $data['nama_pemberi_tgs'] . '</span><br>' . $pangkat_pemberi_tgs . '<br>' . $isi_nip . '</td>
+                                                <td style="border: none;width:' . (6 / 10 * $lebar_net) . 'mm;"></td>
+                                                <td style="line-height: 14em;width:' . (4 / 10 * $lebar_net) . 'mm;border: none;">Ditetapkan di ' . ucwords($nama_wilayah) . '<br><span style="text-decoration: underline;">pada Tanggal ' . $tgl_surat_dibuat . '</span><br><span style="font-weight:bold;border: none;">' . ucwords($jbt_pemberi_tgs . ' ' . $nama_opd) . '<br>Selaku pengguna anggaran</span><br><br><br><br><br><span style="text-decoration: underline;font-weight:bold;">' . $nama_pemberi_tgs . '</span><br>' . $pangkat_pemberi_tgs . '<br>' . $isi_nip . '</td>
                                             </tr>';
-
-                                        $html .= '</tbody></table>' . $tembusan;
-                                        $html .= '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p><table  width="100%" cellpadding="0" border="0"><thead><tr><th>Name</th><th>Age</th><th>Job</th></tr></thead><tbody><tr><td data-label="Name">James</td><td data-label="Age">24</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Jill</td><td data-label="Age">26</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Elyse</td><td data-label="Age">24</td><td data-label="Job">Designer</td></tr></tbody></table>';
+                                        $html .= '</tbody></table><p><i>Tembusan : Kepada Yth.</i></p>' . $hasil_decode['tembusan'];
                                     } else {
                                         $html .= '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p>';
                                     }
+                                    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+                                    //lembar lampiran
+                                    // Start First Page Group
+                                    $pdf->startPageGroup();
 
+                                    // add a page
+                                    $pdf->AddPage();
+                                    // $pdf->SetCellPadding(0);
+                                    $pdf->SetFont('helvetica', '', 11 * $ukuran_huruf);
+                                    $pdf->MultiCell($lebar_net / 8, 0, 'Lampiran', 0, 'J', 1, 0, '', '', true);
+                                    $pdf->MultiCell($lebar_net * 3 / 100, 0, ':', 0, 'C', 1, 0, '', '', true);
+                                    $pdf->writeHTMLCell($lebar_net * 6.7 / 8, 0, '', '', "Keputusan " . ucwords($jbt_pemberi_tgs . ' ' . $nama_opd . ' ' . $status_wilayah . ' ' . $nama_wilayah), 0, 1, 0, true, 'J', true);
+                                    $pdf->MultiCell($lebar_net / 8, 0, 'Nomor', 0, 'J', 1, 0, '', '', true);
+                                    $pdf->MultiCell($lebar_net * 3 / 100, 0, ':', 0, 'C', 1, 0, '', '', true);
+                                    $pdf->writeHTMLCell($lebar_net * 7 / 8, 0, '', '', $nomor, 0, 1, 0, true, 'J', true);
+                                    $pdf->MultiCell($lebar_net / 8, 0, 'Tanggal', 0, 'J', 1, 0, '', '', true);
+                                    $pdf->MultiCell($lebar_net * 3 / 100, 0, ':', 0, 'C', 1, 0, '', '', true);
+                                    $pdf->writeHTMLCell($lebar_net * 7 / 8, 0, '', '', $tgl_surat_dibuat, 0, 1, 0, true, 'J', true);
+
+                                    $pdf->MultiCell($lebar_net / 8, 0, 'Tentang', 0, 'J', 1, 0, '', '', true);
+                                    $pdf->MultiCell($lebar_net * 3 / 100, 0, ':', 0, 'C', 1, 0, '', '', true);
+                                    $pdf->writeHTMLCell($lebar_net * 6.7 / 8, 0, '', '', ucwords($tentang), 0, 1, 0, true, 'J', true);
+
+                                    // asn
+                                    //$pdf->MultiCell( $lebar_net, 1, $_POST[ 'serialized' ], 0, 'J', 1, 0, '', '', true );
+                                    //$pdf->SetFont( 'helvetica', '', 10 );
+
+                                    $html = $hasil_decode['nama_ditugaskan'];
+
+                                    $html .= '<table><tbody>
+                                            <tr nobr="true">
+                                                <td style="border: none;width:' . (6 / 10 * $lebar_net) . 'mm;"></td>
+                                                <td style="line-height: 14em;width:' . (4 / 10 * $lebar_net) . 'mm;border: none;">Ditetapkan di ' . ucwords($nama_wilayah) . '<br><span style="text-decoration: underline;">pada Tanggal ' . $tgl_surat_dibuat . '</span><br><span style="font-weight:bold;border: none;">' . ucwords($jbt_pemberi_tgs . ' ' . $nama_opd) . '<br>Selaku pengguna anggaran</span><br><br><br><br><br><span style="text-decoration: underline;font-weight:bold;">' . $nama_pemberi_tgs . '</span><br>' . $pangkat_pemberi_tgs . '<br>' . $isi_nip . '</td>
+                                            </tr>';
+                                    $html .= '</tbody></table>';
                                     // var_dump($html);
                                     break;
                                 default:
                                     $pdf->SetFillColor(255, 255, 255);
                                     $pdf->setListIndentWidth(5);
                                     $pdf->setFontSubsetting(true);
-                                    $pdf->SetFont('dejavusans', '', 14, '', true);
+                                    $pdf->SetFont('dejavusans', '', 14 * $ukuran_huruf, '', true);
                                     $pdf->AddPage();
                                     $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
                                     $html = '<h1>Welcome to Pasangkayu</h1><p>hubungi administrator </p>';
@@ -572,7 +677,7 @@ class print_pdf
             </table>';
         // $pdf->writeHTML($isi_header, true, false, false, false, '');
     }
-    public static function style($lebar_net)
+    public static function style_css($lebar_net)
     {
         $style_table = "<style>
             .border{

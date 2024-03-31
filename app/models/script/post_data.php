@@ -187,8 +187,14 @@ class post_data
                                 $row_resul_cari = $DB->getWhereOnceCustom($tabel_pakai_temporer, $kondisi_row);
                                 if ($row_resul_cari !== false) {
                                     $pangkat_pemberi_tgs = $Fungsi->golongan_ruang($dinamic = ['golongan' => $row_resul_cari->golongan, 'ruang' => $row_resul_cari->ruang]);
-                                    $pangkat_pemberi_tgs = $pangkat = ucfirst($pangkat_pemberi_tgs['pangkat']).', '.$pangkat_pemberi_tgs['singkat']; ;
-                                    $nama_pemberi_tgs = $row_resul_cari->nama;
+                                    $pangkat_pemberi_tgs = $pangkat = ucfirst($pangkat_pemberi_tgs['pangkat']).', '.$pangkat_pemberi_tgs['singkat'];
+                                    $nama_pemberi_tgs = ucwords($row_resul_cari->nama);
+                                    if (strlen($row_resul_cari->gelar ?? '') > 0) {
+                                        $nama_pemberi_tgs .= ', ' . $row_resul_cari->gelar;
+                                    }
+                                    if (strlen($row_resul_cari->gelar_depan ?? '') > 0) {
+                                        $nama_pemberi_tgs = $row_resul_cari->gelar_depan . ' ' . $namaLengkap;
+                                    }
                                 } else {
                                     $bentuk_lampiran = $validate->setRules('get', 'Pejabat Pemberi Tugas tidak dikenali', [
                                         'error' =>  true
