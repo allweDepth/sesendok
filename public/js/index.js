@@ -3536,7 +3536,14 @@ $(document).ready(function () {
 						if (mdl.find('.actions [name="modal_second"]').length <= 0) (
 							mdl.find('.actions').append(`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`)
 						)
-						elementForm = buatElemenHtml("fields", {
+						// 		case "messageLink":
+						// elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
+						elementForm = buatElemenHtml("message", {
+							color: "pink",
+							icon: `exclamation icon`,
+							label: `Perhatian`,
+							value: `<ul class="list"><li>jika mengedit data dan merubah "Nomor Surat" maka akan dianggap data baru jika di simpan;</li><li>simpan terlebih dahulu sebelum cetak dokumen.</li></ul>`,
+						}) + buatElemenHtml("fields", {
 							classField: "three",
 							content: buatElemenHtml("fieldText", {
 								label: "Nomor Surat",
@@ -6900,7 +6907,10 @@ $(document).ready(function () {
 					</div>`;
 				break;
 			case "messageLink":
-				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
+				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div><a ${atribut} target="_blank">${valueData}</a></div></div>`;
+				break;
+			case "message":
+				elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div>${valueData}</div></div>`;
 				break;
 			case "divider"://left aligned
 				elemen = `<${header} class="ui horizontal ${aligned} divider header">${icon2}${label}</${header}>`;
