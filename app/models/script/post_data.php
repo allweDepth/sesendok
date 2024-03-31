@@ -194,6 +194,7 @@ class post_data
                                         'error' =>  true
                                     ]);
                                 }
+                                //$bentuk_lampiran 0 = bentuk list ol , 1= bentuk tabel
                                 $bentuk_lampiran = $validate->setRules('bentuk_lampiran', 'bentuk lampiran', [
                                     'sanitize' => 'string',
                                     'numeric' => true,
@@ -2219,6 +2220,7 @@ class post_data
                                         'pangkat_pemberi_tgs' => $pangkat_pemberi_tgs,
                                         'nama_pemberi_tgs' => $nama_pemberi_tgs,
                                         'nama_ditugaskan' => json_encode($nama_ditugaskan),
+                                        'bentuk_lampiran' => $bentuk_lampiran,//$bentuk_lampiran 0 = bentuk list ol , 1= bentuk tabel
                                         'menimbang' => json_encode($menimbang),
                                         'mengingat' => json_encode($mengingat),
                                         'menetapkan_1' => json_encode($menetapkan_1),

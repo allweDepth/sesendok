@@ -337,7 +337,6 @@ class print_pdf
                                     // Set some content to print
                                     if ($row_sk_asn !== false) {
                                         //menimbang
-                                        var_dump($row_sk_asn);
                                         $menimbang = json_decode($row_sk_asn->menimbang, true);
                                         $mengingat = json_decode($row_sk_asn->mengingat, true);
                                         $menetapkan_1 = json_decode($row_sk_asn->menetapkan_1, true);
@@ -404,13 +403,6 @@ class print_pdf
                                             }
                                         }
 
-                                        // var_dump($hasil_decode);
-                                        $html2 = '';
-                                        foreach ($hasil_decode as $key2 => $value2) {
-                                            // var_dump($key2);
-                                            // var_dump($value2);
-                                            $html2 .= $value2;
-                                        }
                                         // var_dump($html2);
                                         $html .= $html2 . '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p><table  width="100%" cellpadding="0" border="0"><thead><tr><th>Name</th><th>Age</th><th>Job</th></tr></thead><tbody><tr><td data-label="Name">James</td><td data-label="Age">24</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Jill</td><td data-label="Age">26</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Elyse</td><td data-label="Age">24</td><td data-label="Job">Designer</td></tr></tbody></table>';
                                     } else {
