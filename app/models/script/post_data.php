@@ -187,6 +187,7 @@ class post_data
                                 $row_resul_cari = $DB->getWhereOnceCustom($tabel_pakai_temporer, $kondisi_row);
                                 if ($row_resul_cari !== false) {
                                     $pangkat_pemberi_tgs = $Fungsi->golongan_ruang($dinamic = ['golongan' => $row_resul_cari->golongan, 'ruang' => $row_resul_cari->ruang]);
+                                    $pangkat_pemberi_tgs = $pangkat = ucfirst($pangkat_pemberi_tgs['pangkat']).', '.$pangkat_pemberi_tgs['singkat']; ;
                                     $nama_pemberi_tgs = $row_resul_cari->nama;
                                 } else {
                                     $bentuk_lampiran = $validate->setRules('get', 'Pejabat Pemberi Tugas tidak dikenali', [
@@ -218,29 +219,28 @@ class post_data
                                     'json_repair' => true,
                                     'required' => true
                                 ]);
+                                $menetapkan_2 = $validate->setRules('menetapkan_2', 'menetapkan kedua', [
+                                    'json_repair' => true,
+                                    'required' => true
+                                ]);
+                                $menetapkan_3 = $validate->setRules('menetapkan_3', 'menetapkan ketiga', [
+                                    'json_repair' => true,
+                                    'required' => true
+                                ]);
+                                $menetapkan_4 = $validate->setRules('menetapkan_4', 'menetapkan keempat', [
+                                    'json_repair' => true,
+                                    'required' => true
+                                ]);
                                 $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
                                     'json_decode' => true
                                 ]);
-                                $menetapkan_2 = $validate->setRules('menetapkan_1', 'menetapkan kedua', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $menetapkan_3 = $validate->setRules('menetapkan_1', 'menetapkan ketiga', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $menetapkan_4 = $validate->setRules('menetapkan_1', 'menetapkan keempat', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-
-                                $menetapkan_2 = $validate->setRules('menetapkan_1', 'menetapkan kedua', [
+                                $menetapkan_2 = $validate->setRules('menetapkan_2', 'menetapkan kedua', [
                                     'json_decode' => true
                                 ]);
-                                $menetapkan_3 = $validate->setRules('menetapkan_1', 'menetapkan ketiga', [
+                                $menetapkan_3 = $validate->setRules('menetapkan_3', 'menetapkan ketiga', [
                                     'json_decode' => true
                                 ]);
-                                $menetapkan_4 = $validate->setRules('menetapkan_1', 'menetapkan keempat', [
+                                $menetapkan_4 = $validate->setRules('menetapkan_4', 'menetapkan keempat', [
                                     'json_decode' => true
                                 ]);
                                 $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [

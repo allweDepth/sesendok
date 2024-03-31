@@ -337,6 +337,7 @@ class print_pdf
                                     // Set some content to print
                                     if ($row_sk_asn !== false) {
                                         //menimbang
+                                        var_dump($row_sk_asn);
                                         $menimbang = json_decode($row_sk_asn->menimbang, true);
                                         $mengingat = json_decode($row_sk_asn->mengingat, true);
                                         $menetapkan_1 = json_decode($row_sk_asn->menetapkan_1, true);
@@ -347,11 +348,13 @@ class print_pdf
                                         $nama_ditugaskan = json_decode($row_sk_asn->nama_ditugaskan, true);
                                         $array_json_decod = ['menimbang' => $menimbang, 'mengingat' => $mengingat, 'menetapkan_1' => $menetapkan_1, 'menetapkan_2' => $menetapkan_2, 'menetapkan_3' => $menetapkan_3, 'menetapkan_4' => $menetapkan_4, 'tembusan' => $tembusan, 'nama_ditugaskan' => $nama_ditugaskan];
                                         $hasil_decode = [];
+                                        // var_dump($array_json_decod);
                                         foreach ($array_json_decod as $key_decode => $value_decode) {
                                             $count = count($value_decode);
                                             $p_l_awal = 'P'; //paragraf or list
                                             $hasil_decode[$key_decode] = '';
-                                            var_dump($value_decode);
+                                            // var_dump($key_decode);
+                                            // var_dump($value_decode);
                                             if ($count > 0) {
                                                 foreach ($value_decode as $key => $value) {
                                                     // var_dump($value);

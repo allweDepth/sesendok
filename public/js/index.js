@@ -5581,10 +5581,8 @@ $(document).ready(function () {
 											let $headers = ['kd_sub_keg', 'uraian', 'vol_kontrak', 'sat_kontrak', 'pagu', 'jumlah_kontrak', 'realisasi_vol', 'realisasi_jumlah', 'vol', 'jumlah', 'button'];
 											let $rows = ini.find(".tblUraian tbody tr").each(function (index, value) {
 												let cells = $(this).find("td");
-
 												myRows[index] = {};
 												console.log(value);
-
 												let id_row_uraian_paket = $(value).attr('id_row_uraian_paket');
 												if (jenis === 'edit') {
 													let id_row = $(value).attr('id_row');
