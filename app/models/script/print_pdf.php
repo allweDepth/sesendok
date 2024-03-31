@@ -262,6 +262,8 @@ class print_pdf
                         break;
                 }
                 if ($validate->passed()) {
+                    //tentukan tabel yang digunakan
+                    $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
                     // set document information
                     $pdf->SetCreator('allwe');
                     $pdf->SetAuthor('Alwi Mansyur');
@@ -305,6 +307,8 @@ class print_pdf
                         case 'cetak':
                             switch ($tbl) {
                                 case 'sk_asn':
+                                    //ambil data
+                                    $rowSkAsn = $DB->getWhereOnceCustom($tabel_pakai, [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kode', '=', $kd_opd, 'AND']]);
                                     $pdf->SetFont('helvetica', '', 11);
                                     $pdf->SetFillColor(255, 255, 255);
                                     // $pdf->setListIndentWidth(5);
@@ -331,7 +335,13 @@ class print_pdf
                                     // $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
 
                                     // Set some content to print
-                                    $html .= '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p><table  width="100%" cellpadding="0" border="0"><thead><tr><th>Name</th><th>Age</th><th>Job</th></tr></thead><tbody><tr><td data-label="Name">James</td><td data-label="Age">24</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Jill</td><td data-label="Age">26</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Elyse</td><td data-label="Age">24</td><td data-label="Job">Designer</td></tr></tbody></table>';
+                                    if ($rowSkAsn !== false) {
+                                        $html .= '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p><table  width="100%" cellpadding="0" border="0"><thead><tr><th>Name</th><th>Age</th><th>Job</th></tr></thead><tbody><tr><td data-label="Name">James</td><td data-label="Age">24</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Jill</td><td data-label="Age">26</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Elyse</td><td data-label="Age">24</td><td data-label="Job">Designer</td></tr></tbody></table>';
+                                    }else{
+                                        $html .= '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p>';
+                                    }
+                                    
+                                    // var_dump($html);
                                     break;
                                 default:
                                     $pdf->SetFillColor(255, 255, 255);
