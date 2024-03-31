@@ -685,45 +685,45 @@ class get_data
                                     $data_hereGet_row_json = [0];
                                     break;
                                 case 'asn':
-                                    $like = "kd_wilayah = ? AND kd_opd = ? AND disable <= ? AND(nama LIKE CONCAT('%',?,'%') OR 	nip LIKE CONCAT('%',?,'%') OR t4_lahir LIKE CONCAT('%',?,'%') OR tgl_lahir LIKE CONCAT('%',?,'%') OR jabatan LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR npwp LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR nama_anak LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND kd_opd = ? AND(nama LIKE CONCAT('%',?,'%') OR 	nip LIKE CONCAT('%',?,'%') OR t4_lahir LIKE CONCAT('%',?,'%') OR tgl_lahir LIKE CONCAT('%',?,'%') OR jabatan LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR npwp LIKE CONCAT('%',?,'%') OR no_ktp LIKE CONCAT('%',?,'%') OR alamat LIKE CONCAT('%',?,'%') OR nama_anak LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $kd_opd, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kelompok, urutan, id ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND disable <= ?";
-                                    $data_where1 =  [$kd_wilayah, $kd_opd, 0];
-                                    $whereGet_row_json = "kd_wilayah = ? kd_opd = ? AND disable <= ?";
-                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, 0];
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd];
+                                    $whereGet_row_json = "kd_wilayah = ? kd_opd = ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd];
                                     break;
                                 case 'daftar_paket':
-                                    $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ? AND(uraian LIKE CONCAT('%',?,'%') OR 	metode_pengadaan LIKE CONCAT('%',?,'%') OR metode_pemilihan LIKE CONCAT('%',?,'%') OR pengadaan_penyedia LIKE CONCAT('%',?,'%') OR jns_kontrak LIKE CONCAT('%',?,'%') OR nama_rekanan LIKE CONCAT('%',?,'%') OR nama_ppk LIKE CONCAT('%',?,'%') OR tgl_kontrak LIKE CONCAT('%',?,'%') OR no_kontrak LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $tahun, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND(uraian LIKE CONCAT('%',?,'%') OR 	metode_pengadaan LIKE CONCAT('%',?,'%') OR metode_pemilihan LIKE CONCAT('%',?,'%') OR pengadaan_penyedia LIKE CONCAT('%',?,'%') OR jns_kontrak LIKE CONCAT('%',?,'%') OR nama_rekanan LIKE CONCAT('%',?,'%') OR nama_ppk LIKE CONCAT('%',?,'%') OR tgl_kontrak LIKE CONCAT('%',?,'%') OR no_kontrak LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $tahun, $kd_opd, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY uraian ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ?";
-                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
-                                    $whereGet_row_json = "kd_wilayah = ? kd_opd = ? AND tahun = ? AND disable <= ?";
-                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun];
+                                    $whereGet_row_json = "kd_wilayah = ? kd_opd = ? AND tahun = ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, $tahun];
                                     break;
                                 case 'hspk':
                                 case 'sbu':
                                 case 'ssh':
                                 case 'asb':
-                                    $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND tahun = ? AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $tahun, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kd_aset ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
-                                    $data_where1 =  [$kd_wilayah, $tahun, 0];
-                                    $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ?";
-                                    $data_hereGet_row_json = [$kd_wilayah, $tahun, 0];
+                                    $where1 = "kd_wilayah = ? AND tahun = ?";
+                                    $data_where1 =  [$kd_wilayah, $tahun];
+                                    $whereGet_row_json = "kd_wilayah = ? AND tahun = ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $tahun];
                                     //untuk input dan edit renja dpa dkk
                                     if (isset($kd_sub_keg)) {
-                                        $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_akun  LIKE CONCAT('%',?,'%') AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
-                                        $data_like = [$kd_wilayah, $tahun, 0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
-                                        $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_akun  LIKE CONCAT('%',?,'%')";
-                                        $data_hereGet_row_json = [$kd_wilayah, $tahun, 0, $kd_sub_keg];
-                                        $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND kd_akun  LIKE CONCAT('%',?,'%')";
-                                        $data_where1 =  [$kd_wilayah, $tahun, 0, $kd_sub_keg];
+                                        $like = "kd_wilayah = ? AND tahun = ? AND kd_akun  LIKE CONCAT('%',?,'%') AND(kd_aset LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
+                                        $data_like = [$kd_wilayah, $tahun, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                        $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND kd_akun  LIKE CONCAT('%',?,'%')";
+                                        $data_hereGet_row_json = [$kd_wilayah, $tahun, $kd_sub_keg];
+                                        $where1 = "kd_wilayah = ? AND tahun = ? AND kd_akun  LIKE CONCAT('%',?,'%')";
+                                        $data_where1 =  [$kd_wilayah, $tahun, $kd_sub_keg];
                                     }
                                     // $where = "nomor = ?";
                                     // $data_where =  [$text];
@@ -742,14 +742,14 @@ class get_data
                                     break;
                                 case 'sub_keg':
                                     // $kondisi = [['kode', '=', $kd_wilayah], ['nomenklatur_urusan', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND'], ['kelompok', '=', 'tujuan', 'AND']];
-                                    $like = "sub_keg > ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [0, 0, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $like = "sub_keg > ? AND(kode LIKE CONCAT('%',?,'%') OR nomenklatur_urusan LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kinerja LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kode ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "disable <= ? AND sub_keg > ?";
-                                    $data_where1 =  [0, 0];
-                                    $whereGet_row_json = "disable <= ? AND sub_keg > ?";
-                                    $data_hereGet_row_json =  [0, 0];
+                                    $where1 = "sub_keg > ?";
+                                    $data_where1 =  [0];
+                                    $whereGet_row_json = "sub_keg > ?";
+                                    $data_hereGet_row_json =  [0];
                                     // $where = "nomor = ?";
                                     // $data_where =  [$text];
                                     break;
@@ -789,50 +789,50 @@ class get_data
                                 case 'aset':
                                 case 'akun_belanja':
                                 case 'akun_belanja_val':
-                                    $like = "disable <= ? AND sub_rincian_objek > ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [0, 0, $cari, $cari, $cari];
-                                    $order = "ORDER BY kode ASC";
-                                    $posisi = " LIMIT ?, ?";
-                                    $where1 = "disable <= ?";
-                                    $data_where1 =  [0];
-                                    $whereGet_row_json = "disable <= ? AND sub_rincian_objek > ?";
-                                    $data_hereGet_row_json =  [0, 0];
-                                    // $where = "nomor = ?";
-                                    // $data_where =  [$text];
-                                    break;
-                                case 'sumber_dana':
-                                    $like = "disable <= ? AND(uraian LIKE CONCAT('%',?,'%') OR kode LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $like = "sub_rincian_objek > ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [0, $cari, $cari, $cari];
                                     $order = "ORDER BY kode ASC";
                                     $posisi = " LIMIT ?, ?";
                                     $where1 = "disable <= ?";
                                     $data_where1 =  [0];
-                                    $whereGet_row_json = "disable <= ?";
+                                    $whereGet_row_json = "sub_rincian_objek > ?";
+                                    $data_hereGet_row_json =  [0];
+                                    // $where = "nomor = ?";
+                                    // $data_where =  [$text];
+                                    break;
+                                case 'sumber_dana':
+                                    $like = "id > ? AND(uraian LIKE CONCAT('%',?,'%') OR kode LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [0, $cari, $cari, $cari];
+                                    $order = "ORDER BY kode ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "disable <= ?";
+                                    $data_where1 =  [0];
+                                    $whereGet_row_json = "id > ?";
                                     $data_hereGet_row_json =  [0];
                                     // $where = "nomor = ?";
                                     // $data_where =  [$text];
                                     $jumlah_kolom = 9;
                                     break;
                                 case 'peraturan':
-                                    $like = "kd_wilayah = ? AND disable <= ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND(judul LIKE CONCAT('%',?,'%') OR bentuk_singkat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nomor LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY tgl_pengundangan ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "kd_wilayah = ? AND disable <= ?";
-                                    $data_where1 = [$kd_wilayah, 0];
+                                    $where1 = "kd_wilayah = ?";
+                                    $data_where1 = [$kd_wilayah];
                                     // $where = "nomor = ?";
                                     // $data_where =  [$text];
                                     $jumlah_kolom = 6;
                                     break;
                                 case 'organisasi':
-                                    $like = "kd_wilayah = ? AND disable <= ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, 0, $cari, $cari, $cari, $cari];
+                                    $like = "kd_wilayah = ? AND(kode LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR nama_kepala LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kode ASC";
                                     $posisi = " LIMIT ?, ?";
-                                    $where1 = "kd_wilayah = ? AND disable <= ?";
+                                    $where1 = "kd_wilayah = ?";
                                     $data_where1 = [$kd_wilayah, 0];
-                                    $whereGet_row_json = "kd_wilayah = ? AND disable <= ?";
-                                    $data_hereGet_row_json = [$kd_wilayah, 0];
+                                    $whereGet_row_json = "kd_wilayah = ?";
+                                    $data_hereGet_row_json = [$kd_wilayah];
                                     // $where = "nomor = ?";
                                     // $data_where =  [$text];
                                     $jumlah_kolom = 7;
