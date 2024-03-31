@@ -675,7 +675,7 @@ class get_data
                                     $data_hereGet_row_json = [$kd_wilayah, 0];
                                     break;
                                 case 'users':
-                                    $like = "id > ? AND(nama LIKE CONCAT('%',?,'%') OR username LIKE CONCAT('%',?,'%') OR email LIKE CONCAT('%',?,'%') OR kd_organisasi LIKE CONCAT('%',?,'%') OR nama_org LIKE CONCAT('%',?,'%') OR kd_wilayah LIKE CONCAT('%',?,'%') OR tgl_daftar LIKE CONCAT('%',?,'%') OR tahun LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $like = "id > ? AND(nama LIKE CONCAT('%',?,'%') OR username LIKE CONCAT('%',?,'%') OR email LIKE CONCAT('%',?,'%') OR kd_organisasi LIKE CONCAT('%',?,'%') OR nama_org LIKE CONCAT('%',?,'%') OR kd_wilayah LIKE CONCAT('%',?,'%') OR tgl_daftar LIKE CONCAT('%',?,'%') OR tahun LIKE CONCAT('%',?,'%') OR ket LIKE CONCAT('%',?,'%'))";
                                     $data_like = [0, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY nama ASC";
                                     $posisi = " LIMIT ?, ?";

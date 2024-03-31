@@ -947,6 +947,15 @@ $(document).ready(function () {
 									label: "Kode Wilayah",
 									atribut: 'name="kd_wilayah" placeholder="Kode Wilayah..." readonly',
 								}) +
+								buatElemenHtml("fieldCalendar", {
+									label: "Tahun Anggaran Aktif",
+									kelas: "year",
+									atribut: 'placeholder="Tanggal.." name="tahun" readonly',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="ket" rows="2" non_data',
+								})  +
 								buatElemenHtml("labelToggleCheckbox", {
 									label: "Non Aktifkan User Login",
 									atribut: 'name="disable_login" non_data',
