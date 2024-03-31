@@ -308,7 +308,7 @@ class print_pdf
                             switch ($tbl) {
                                 case 'sk_asn':
                                     //ambil data
-                                    $rowSkAsn = $DB->getWhereOnceCustom($tabel_pakai, [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kode', '=', $kd_opd, 'AND']]);
+                                    $row_sk_asn = $DB->getWhereOnceCustom($tabel_pakai, [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
                                     $pdf->SetFont('helvetica', '', 11);
                                     $pdf->SetFillColor(255, 255, 255);
                                     // $pdf->setListIndentWidth(5);
@@ -335,12 +335,85 @@ class print_pdf
                                     // $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
 
                                     // Set some content to print
-                                    if ($rowSkAsn !== false) {
-                                        $html .= '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p><table  width="100%" cellpadding="0" border="0"><thead><tr><th>Name</th><th>Age</th><th>Job</th></tr></thead><tbody><tr><td data-label="Name">James</td><td data-label="Age">24</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Jill</td><td data-label="Age">26</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Elyse</td><td data-label="Age">24</td><td data-label="Job">Designer</td></tr></tbody></table>';
-                                    }else{
+                                    if ($row_sk_asn !== false) {
+                                        //menimbang
+                                        $menimbang = json_decode($row_sk_asn->menimbang, true);
+                                        $mengingat = json_decode($row_sk_asn->mengingat, true);
+                                        $menetapkan_1 = json_decode($row_sk_asn->menetapkan_1, true);
+                                        $menetapkan_2 = json_decode($row_sk_asn->menetapkan_2, true);
+                                        $menetapkan_3 = json_decode($row_sk_asn->menetapkan_3, true);
+                                        $menetapkan_4 = json_decode($row_sk_asn->menetapkan_4, true);
+                                        $tembusan = json_decode($row_sk_asn->tembusan, true);
+                                        $nama_ditugaskan = json_decode($row_sk_asn->nama_ditugaskan, true);
+                                        $array_json_decod = ['menimbang' => $menimbang, 'mengingat' => $mengingat, 'menetapkan_1' => $menetapkan_1, 'menetapkan_2' => $menetapkan_2, 'menetapkan_3' => $menetapkan_3, 'menetapkan_4' => $menetapkan_4, 'tembusan' => $tembusan, 'nama_ditugaskan' => $nama_ditugaskan];
+                                        $hasil_decode = [];
+                                        foreach ($array_json_decod as $key_decode => $value_decode) {
+                                            $count = count($value_decode);
+                                            $p_l_awal = 'P'; //paragraf or list
+                                            $hasil_decode[$key_decode] = '';
+                                            var_dump($value_decode);
+                                            if ($count > 0) {
+                                                foreach ($value_decode as $key => $value) {
+                                                    // var_dump($value);
+                                                    switch ($key_decode) {
+                                                        case 'nama_ditugaskan':
+                                                            # code...
+                                                            break;
+                                                        default:
+                                                            if (array_key_exists("isi", $value)) {
+                                                                $isi = $value['isi'];
+                                                            } else {
+                                                                $isi = $value['tembusan'];
+                                                            }
+                                                            if (array_key_exists("p_l", $value)) {
+                                                                $p_l = $value['p_l'];
+
+                                                                if ($p_l == 'L') {
+                                                                    if ($p_l_awal == 'P') {
+                                                                        $hasil_decode[$key_decode] .= '<ol>';
+                                                                    }
+                                                                    $hasil_decode[$key_decode] .= '<li style="text-align:justify;">' . $isi . '</li>';
+                                                                } else {
+                                                                    if ($p_l_awal == 'L') {
+                                                                        $hasil_decode[$key_decode] .= '</ol>';
+                                                                    }
+                                                                    $hasil_decode[$key_decode] .= '<p>' . $isi . '</p>';
+                                                                }
+                                                                $p_l_awal = $p_l;
+                                                            } else {
+                                                                $hasil_decode[$key_decode]  .= '<li style="text-align:justify;">' . $isi . '</li>';
+                                                            }
+                                                            break;
+                                                    }
+                                                }
+                                                switch ($key_decode) {
+                                                    case 'nama_ditugaskan':
+                                                        //untuk tabel yang ditugaskan
+                                                        break;
+                                                    default:
+                                                        if (array_key_exists("p_l", $value) && $p_l_awal == 'L') {
+                                                            $hasil_decode[$key_decode] .= '</ol>';
+                                                        }else{
+                                                            $hasil_decode[$key_decode]  = '<ol>' . $hasil_decode[$key_decode] . '</ol>';
+                                                        }
+                                                        break;
+                                                }
+                                            }
+                                        }
+
+                                        // var_dump($hasil_decode);
+                                        $html2 = '';
+                                        foreach ($hasil_decode as $key2 => $value2) {
+                                            // var_dump($key2);
+                                            // var_dump($value2);
+                                            $html2 .= $value2;
+                                        }
+                                        // var_dump($html2);
+                                        $html .= $html2 . '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p><table  width="100%" cellpadding="0" border="0"><thead><tr><th>Name</th><th>Age</th><th>Job</th></tr></thead><tbody><tr><td data-label="Name">James</td><td data-label="Age">24</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Jill</td><td data-label="Age">26</td><td data-label="Job">Engineer</td></tr><tr><td data-label="Name">Elyse</td><td data-label="Age">24</td><td data-label="Job">Designer</td></tr></tbody></table>';
+                                    } else {
                                         $html .= '<h1 class="color">Welcome to Pasangkayu</h1><p>hubungi administrator </p>';
                                     }
-                                    
+
                                     // var_dump($html);
                                     break;
                                 default:
@@ -803,6 +876,6 @@ class print_pdf
         $seratus = $lebar_net;
         $style_css = "<style>.w-2{ width: $dua;} .w-3{ width: $dua;} .w-4{ width: $empat;} .w-5{ width: $lima;} .w-7{ width: $tujuh;} .w-10{ width: $sepuluh;} .w-15{ width: $lima_belas;} .w-20{ width: $dua_puluh;} .w-25{ width: $dua_lima;} .w-30{ width: $tiga_puluh;} .w-35{ width: $tiga_lima;} .w-40{ width: $empat_puluh;} .w-45{ width: $empat_lima;} .w-50{ width: $lima_puluh;} .w-60{ width: $enam_puluh;} .w-65{ width: $enam_lima;} .w-70{ width: $tujuh_puluh;} .w-75{ width: $tujuh_lima;} .w-80{ width: $delapan_puluh;} .w-85{ width: $delapan_lima ;} .w-90{ width: $sembilan_puluh;} .w-95{ width: $sembilan_lima;} .w-100{ width: $seratus;}</style>";
         $style_table = "<style></style>";
-        return ['style_umum' => $html, 'style_css' => $style_css,'style_tabel' =>$style_table];
+        return ['style_umum' => $html, 'style_css' => $style_css, 'style_tabel' => $style_table];
     }
 }
