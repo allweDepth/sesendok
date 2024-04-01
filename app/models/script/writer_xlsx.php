@@ -104,12 +104,12 @@ class writer_xlsx
                                 '2' => 'string', //
                                 '3' => 'string', //
                                 '4' => 'string', //
-                                '5' => 'string', //
-                                '6' => '#,##0.####0',
-                                '7' => '#,##0.####0', //'D/MM/YYYY',
+                                '5' => '#####', //
+                                '6' => '#####',
+                                '7' => 'string', //'D/MM/YYYY',
                                 '8' => 'string'
                             );
-                            $row_header = ['NO.', 'AKUN', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
+                            $row_header = ['No.', 'NAMA', 'GELAR', 'JABATAN', 'NIP', 'GOL.', 'RUANG', 'TEMPAT LAHIR', 'TANGGAL LAHIR', 'AGAMA', 'JENIS KELAMIN', 'JENIS KEPEGAWAIAN', 'STATUS KEPEGAWAIAN', 'No. KTP', 'NPWP', 'ALAMAT', 'NO. HP', 'EMAIL', 'STATUS', 'NO. BUKU NIKAH', 'TANGGAL NIKAH', 'NAMA ANAK', 'NIK ANAK', 'NAMA AYAH', 'NAMA IBU', 'NAMA PASANGAN', 'NO. KARPEG', 'TGL. KARPEG', 'NO. TASPEN', 'TGL. TASPEN', 'NO.KARSI KARSU', 'TGL KARSI KARSU', 'NO.SK TERKHIR', 'TGL.SK TERKHIR', 'Pj.TTD SK TERAKHIR', 'NO.SK CPNS', 'TGL.SK CPNS', 'Pj.TTD SK CPNS', 'NO.SK PNS', 'TGL.SK PNS', 'Pj.TTD SK PNS', 'NAMA SD', 'IJASAH SD', 'TGL IJASAH SD', 'LOKASI SD', 'NAMA SMP', 'IJASAH SMP', 'TGL IJASAH SMP', 'LOKASI SSMP', 'NAMA SMU', 'IJASAH SMU', 'TGL IJASAH SMU', 'LOKASI SMU', 'NAMA PEND. TERAKHIR', 'IJASAH PEND. TERAKHIR', 'TGL IJASAH PEND. TERAKHIR', 'LOKASI PEND. TERAKHIR', 'SK PANGKAT TERAKHIR', 'TGL.SK TERAKHIR', 'KETERANGAN', 'KELOMPOK'];
                             break;
                         default:
                             # code...
@@ -335,9 +335,9 @@ class writer_xlsx
                             $nama_sheet = 'ASN';
                             switch ($jenis) {
                                 case 'dok':
-                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [5, 30,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [5, 30,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 2, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
-                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('SKPD', ': ' . "($kd_opd) $nama_opd"), ['font-style' => 'bold', 'font-size' => 12]);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('SKPD','', ": ($kd_opd) $nama_opd"), ['font-style' => 'bold', 'font-size' => 12]);
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';
                                     }
@@ -741,8 +741,8 @@ class writer_xlsx
                                             $row['jenis_kepeg'],
                                             $row['status_kepeg'],
                                             $row['no_ktp'],
-                                            $row['ruang'],
-                                            $row['ruang'],
+                                            $row['npwp'],
+                                            $row['alamat'],
                                             $row['ruang'],
                                             $row['ruang'],
                                             $row['ruang'],

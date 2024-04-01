@@ -6947,7 +6947,6 @@ $(document).ready(function () {
 			case "tr_tabel":
 				body = ``;
 				bodyTable.forEach(function (val) {
-					console.log(val);
 					let classRow = (val.class !== undefined) ? ` class="${val.class}"` : '';
 					let lblRow = (val.lbl !== undefined) ? `${val.lbl}` : '';
 					let attrRow = (val.attr !== undefined) ? ` ${val.attr}` : '';
