@@ -2516,7 +2516,7 @@ class post_data
                                                 if ($row_inputRealisasi === false) {
                                                     // inser baru
                                                     $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                                    $set['username'] = $_SESSION["user"]["username"];
+                                                    $set['username_insert'] = $_SESSION["user"]["username"];
 
                                                     $insert = $queryInstance->insertRow($set);
                                                     $data['add_row'][] = $insert['add_row'];
@@ -3461,7 +3461,7 @@ class post_data
                                     case 'edit':
                                         switch ($tbl) {
                                             case 'sk_asn'://jika ingin clone sk maka ganti nomornya
-                                                $set['username'] = $_SESSION["user"]["username"];
+                                                $set['username_insert'] = $_SESSION["user"]["username"];
                                                 $set['tgl_insert'] = date('Y-m-d H:i:s');
                                                 break;
                                             default:
