@@ -2264,7 +2264,8 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'wilayah':
-                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->status, "descriptionVertical" => true];
+                                                    $deskripsi=$row->status ." ( {$row->kode} )";
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $deskripsi, "descriptionVertical" => true];
                                                     break;
                                                 case 'satuan':
                                                     $dataJson['results'][] = ['name' => $row->item, 'value' => $row->value];

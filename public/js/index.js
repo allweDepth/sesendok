@@ -944,14 +944,14 @@ $(document).ready(function () {
 									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
 								buatElemenHtml("fieldDropdown", {
-									label: "Kode Wilayah",
+									label: "Nama Wilayah",
 									atribut: 'name="kd_wilayah"',
 									kelas: "search ajx selection",
 									dataArray: [
 									],
 								}) +
 								buatElemenHtml("fieldDropdown", {
-									label: "Kode OPD",
+									label: "Organisasi Perangkat Daerah",
 									atribut: 'name="kd_organisasi"',
 									kelas: "search ajx selection",
 									dataArray: [
