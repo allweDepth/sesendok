@@ -4281,10 +4281,28 @@ $(document).ready(function () {
 														let keyObject = Object.keys(dataResult[key])
 														switch (attrTable) {
 															case 'nama_ditugaskan':
-																tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key]['nama']}</div></td><td><div contenteditable="">${dataResult[key]['pangkat']}</div></td><td><div contenteditable="">${dataResult[key]['nip']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan_sk']}</div></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
+																let elmTrName = buatElemenHtml("tr_tabel", {
+																	bodyTable: [[
+																		{ lbl: `<div contenteditable="">${dataResult[key]['nama']}</div>` }, 
+																		{ lbl: `<div contenteditable="">${dataResult[key]['pangkat']}</div></td>` }, 
+																		{ lbl: `<div contenteditable="">${dataResult[key]['nip']}</div>`}, 
+																		{ lbl: `<div contenteditable="">${dataResult[key]['jabatan']}</div>`}, 
+																		{ lbl: `<div contenteditable="">${dataResult[key]['jabatan_sk']}</div>`}, 
+																		{ class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
+																	]
+																})
+																tbodyElemen.append(elmTrName );
+																// tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key]['nama']}</div></td><td><div contenteditable="">${dataResult[key]['pangkat']}</div></td><td><div contenteditable="">${dataResult[key]['nip']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan_sk']}</div></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
 																break;
 															default:
-																tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key][keyObject[0]]}</div></td><td><button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
+																let elmTr = buatElemenHtml("tr_tabel", {
+																	bodyTable: [[
+																		{ lbl: `<div contenteditable="">${dataResult[key][keyObject[0]]}</div>` },
+																		{ lbl: `<button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button>` }, { class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
+																	]
+																})
+																tbodyElemen.append(elmTr);
+																// tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key][keyObject[0]]}</div></td><td><button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
 																break;
 														}
 
