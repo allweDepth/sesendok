@@ -217,7 +217,8 @@ class post_data
                                 ]);
                                 // var_dump( $menimbang );
                                 $sanitizeRules = [
-                                    'strip_tags' => true
+                                    'strip_tags'=> true,
+                                    'htmlspecialchars'=> true
                                 ];
                                 $menimbang = $validate->setRules('menimbang', 'menimbang', [
                                     'sanitizeJSON' => $sanitizeRules
@@ -264,6 +265,9 @@ class post_data
                                 ]);
                                 $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
                                     'json_decode' => true
+                                ]);
+                                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
+                                    'sanitizeJSON' => $sanitizeRules
                                 ]);
                                 $tembusan = $validate->setRules('tembusan', 'tembusan', [
                                     'json_repair' => true,
