@@ -947,6 +947,14 @@ $(document).ready(function () {
 									label: "Kode Wilayah",
 									atribut: 'name="kd_wilayah" placeholder="Kode Wilayah..." readonly',
 								}) +
+								buatElemenHtml("fieldText", {
+									label: "Kode OPD",
+									atribut: 'name="kd_organisasi" placeholder="Kode OPD..." readonly',
+								}) +
+								buatElemenHtml("fieldTextarea", {
+									label: "Nama OPD",
+									atribut: 'name="nama_org" placeholder="Organisasi" rows="2" readonly',
+								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tahun Anggaran Aktif",
 									kelas: "year",

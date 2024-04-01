@@ -26,14 +26,25 @@ class writer_xlsx
             'max_char' => 100
         ]);
         $id_user = $_SESSION["user"]["id"];
-        $userAktif = $DB->getWhereCustom('user_sesendok_biila', [['id', '=', $id_user], ['username', '=', $username, 'AND']]);
+        $tabel_get_row = $Fungsi->tabel_pakai('user')['tabel_pakai'];
+        $userAktif = $DB->getWhereCustom($tabel_get_row, [['id', '=', $id_user], ['username', '=', $username, 'AND']]);
         $jumlahArray = is_array($userAktif) ? count($userAktif) : 0;
         if ($jumlahArray > 0) {
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;
             }
+            $nama_opd=$nama_org;
             $id_user = $id;
             $kd_opd = $kd_organisasi;
+            $tabel_get_row = $Fungsi->tabel_pakai('organisasi')['tabel_pakai'];
+            $row_organisasi = $DB->getWhereCustom($tabel_get_row, [['kode', '=', $kd_opd], ['kd_wilayah', '=', $kd_wilayah, 'AND']]);
+            if($row_organisasi !== false){
+                foreach ($row_organisasi[0] as $key => $value) {
+                    ${$key} = $value;
+                }
+                $nama_opd=$uraian;
+            }
+            
         } else {
             $id_user = 0;
             $code = 407;
@@ -57,10 +68,6 @@ class writer_xlsx
         $kolom = '*';
         $nama_sheet = 'Inayah';
         if ($validate->passed()) {
-            $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
-            $tahun = (int) $rowUsername->tahun;
-            $kd_wilayah = $rowUsername->kd_wilayah;
-            $kd_skpd = $rowUsername->kd_organisasi;
             $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
             //var_dump($rowTahunAktif);
             if ($rowTahunAktif) {
@@ -82,6 +89,33 @@ class writer_xlsx
             $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
             $query = '';
             switch ($tbl) {
+                case 'asn':
+                    $filename = "ASN $nama_opd.xlsx";
+                    $nama_sheet = 'ASN';
+                    switch ($jenis) {
+                        case 'dok':
+                            $where1 = "kd_wilayah = ? AND kd_opd = ?";
+                            $order = "ORDER BY kelompok ASC";
+                            $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
+                            $data_where1 =  [$kd_wilayah, $kd_opd];
+                            $jmlKolom=61;
+                            $headerSet = array(
+                                "OPD" => 'string', //
+                                '2' => 'string', //
+                                '3' => 'string', //
+                                '4' => 'string', //
+                                '5' => 'string', //
+                                '6' => '#,##0.####0',
+                                '7' => '#,##0.####0', //'D/MM/YYYY',
+                                '8' => 'string'
+                            );
+                            $row_header = ['NO.', 'AKUN', 'KELOMPOK', 'JENIS', 'OBJEK', 'RICIAN OBJEK', 'SUB RICIAN OBJEK', 'URAIAN', 'KETERANGAN'];
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    break;
                 case 'dpa':
                 case 'renja':
                     $filename = "$tbl.xlsx";
@@ -296,6 +330,25 @@ class writer_xlsx
                     #==== HEADER KOP TABEL =======
                     #=============================
                     switch ($tbl) {
+                        case 'asn':
+                            $filename = "ASN $nama_opd.xlsx";
+                            $nama_sheet = 'ASN';
+                            switch ($jenis) {
+                                case 'dok':
+                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [5, 30,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 1, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('SKPD', ': ' . "($kd_opd) $nama_opd"), ['font-style' => 'bold', 'font-size' => 12]);
+                                    for ($x = 1; $x <= $jmlKolom; ++$x) {
+                                        $colHeader[] = '="(' . $x . ')"';
+                                    }
+                                    $writer->writeSheetRow($nama_sheet, $row_header, ['height' => 40, 'border' => 'left,right,top,bottom', 'border-style' => 'thin', 'halign' => 'center', 'valign' => 'center', 'font-style' => 'bold', 'fill' => '#d76e6e', 'wrap_text' => true, 'freeze_rows' => 1]);
+                                    $writer->writeSheetRow($nama_sheet, $colHeader, $LTRB_hc);
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+                            break;
                         case 'dpa':
                         case 'renja':
                             switch ($jenis) {
@@ -670,6 +723,78 @@ class writer_xlsx
                         $myrow++;
                         //var_dump($row);
                         switch ($tbl) {
+                            case 'asn':
+                                switch ($jenis) {
+                                    case 'dok': //mengambil seluruh data harga satuan sesuai proyek
+                                        $rowdata = array(
+                                            $myrow,
+                                            $row['nama'],
+                                            $row['gelar'],
+                                            $row['jabatan'],
+                                            $row['nip'],
+                                            $row['golongan'],
+                                            $row['ruang'],
+                                            $row['t4_lahir'],
+                                            $row['tgl_lahir'],
+                                            $row['agama'],
+                                            $row['kelamin'],
+                                            $row['jenis_kepeg'],
+                                            $row['status_kepeg'],
+                                            $row['no_ktp'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['ruang'],
+                                            $row['keterangan']
+                                        );
+                                        $writer->writeSheetRow($nama_sheet, $rowdata, $LTRB_vt);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
                             case 'dpa':
                             case 'renja':
                                 switch ($jenis) {
