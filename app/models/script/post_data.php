@@ -215,6 +215,14 @@ class post_data
                                 $menimbang = $validate->setRules('menimbang', 'menimbang', [
                                     'json_decode' => true
                                 ]);
+                                // var_dump( $menimbang );
+                                $sanitizeRules = [
+                                    'strip_tags' => true
+                                ];
+                                $menimbang = $validate->setRules('menimbang', 'menimbang', [
+                                    'sanitizeJSON' => $sanitizeRules
+                                ]);
+                                // var_dump( $menimbang );
                                 $mengingat = $validate->setRules('mengingat', 'mengingat', [
                                     'json_repair' => true,
                                     'required' => true

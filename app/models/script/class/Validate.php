@@ -79,8 +79,47 @@ class Validate
 			// var_dump($rule);
 			// var_dump($ruleValue);
 			switch ($rule) {
+				case 'sanitizeJSON':
+					$formValue = $this->sanitizeJSON($formValue, $ruleValue);
+					break;
+				case 'sanitizeArray':
+					$formValue = $this->sanitizeArray($formValue, $ruleValue);
+					break;
+				case 'sanitizeValue':
+					$formValue = $this->sanitizeValue($formValue, $ruleValue);
+					break;
 				case 'error': //langsung error
 					$this->_errors[$item] = "$itemLabel";
+					break;
+					//tambahan alwi buat validasi json
+				case 'json_enc':
+					$formValue = $this->encrypt($formValue);
+					if (!@json_decode($formValue)) {
+						$this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
+					}
+					break;
+				case 'json':
+					if (!@json_decode($formValue)) {
+						$this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
+					}
+					/*
+					The above outputs :
+					0 JSON_ERROR_NONE
+					1 JSON_ERROR_DEPTH
+					2 JSON_ERROR_STATE_MISMATCH
+					3 JSON_ERROR_CTRL_CHAR
+					4 JSON_ERROR_SYNTAX
+					5 JSON_ERROR_UTF8
+					6 JSON_ERROR_RECURSION
+					7 JSON_ERROR_INF_OR_NAN
+					8 JSON_ERROR_UNSUPPORTED_TYPE
+					*/
+					break;
+				case 'json_repair':
+					json_decode($formValue);
+					if (json_last_error()) {
+						$this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
+					}
 					break;
 				case 'required':
 					if ($ruleValue === TRUE && empty($formValue)) {
@@ -215,36 +254,7 @@ class Validate
 						$this->_errors[$item] = "Periksa baris $itemLabel";
 					}
 					break;
-					//tambahan alwi buat validasi json
-				case 'json_enc':
-					$formValue = $this->encrypt($formValue);
-					if (!@json_decode($formValue)) {
-						$this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
-					}
-					break;
-				case 'json':
-					if (!@json_decode($formValue)) {
-						$this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
-					}
-					/*
-					The above outputs :
-					0 JSON_ERROR_NONE
-					1 JSON_ERROR_DEPTH
-					2 JSON_ERROR_STATE_MISMATCH
-					3 JSON_ERROR_CTRL_CHAR
-					4 JSON_ERROR_SYNTAX
-					5 JSON_ERROR_UTF8
-					6 JSON_ERROR_RECURSION
-					7 JSON_ERROR_INF_OR_NAN
-					8 JSON_ERROR_UNSUPPORTED_TYPE
-					*/
-					break;
-				case 'json_repair':
-					json_decode($formValue);
-					if (json_last_error()) {
-						$this->_errors[$item] = (json_last_error() === JSON_ERROR_NONE) . " Pola $itemLabel format json tidak sesuai";
-					}
-					break;
+
 				case 'regexp_enc':
 					$formValue = $this->encrypt($formValue);
 					if (!preg_match($ruleValue, $formValue)) {
@@ -359,5 +369,50 @@ class Validate
 	public function passed()
 	{
 		return empty($this->_errors) ? true : false;
+	}
+	//tambahan allwe
+	// Implementasi metode sanitizeJSON, sanitizeArray, dan sanitizeValue
+	public function sanitizeJSON($json, $rules)
+	{
+		$decodedJSON = json_decode($json, true);
+
+		if ($decodedJSON === null && json_last_error() !== JSON_ERROR_NONE) {
+			throw new Exception('JSON tidak valid: ' . json_last_error_msg());
+		}
+
+		return $this->sanitizeArray($decodedJSON, $rules);
+	}
+
+	private function sanitizeArray($data, $rules)
+	{
+		foreach ($data as $key => $value) {
+			if (isset($rules[$key])) {
+				$data[$key] = $this->sanitizeValue($value, $rules[$key]);
+			} elseif (is_array($value)) {
+				$data[$key] = $this->sanitizeArray($value, $rules);
+			}
+		}
+		return $data;
+	}
+
+	private function sanitizeValue($value, $rules)
+	{
+		foreach ($rules as $rule => $ruleValue) {
+			// Implementasi sanitasi sesuai aturan yang diberikan
+			// Contoh:
+			switch ($rule) {
+				case 'strip_tags':
+					$value = strip_tags($value);
+					break;
+				case 'trim':
+					$value = trim($value);
+					break;
+				case 'htmlspecialchars':
+					$value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+					break;
+					// Tambahkan aturan sanitasi lain sesuai kebutuhan
+			}
+		}
+		return $value;
 	}
 }
