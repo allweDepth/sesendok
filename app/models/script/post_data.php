@@ -2214,8 +2214,12 @@ class post_data
                                 case 'sk_asn':
                                     $kodePosting = 'cek_insert';
                                     $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
+                                    $tahun_sk=$tahun;
+                                    if ($type_user == 'admin') {
+                                        $tahun_sk=date('Y',strtotime($tgl_surat_dibuat));
+                                    }
                                     $set = [
-                                        'tahun' => $tahun,
+                                        'tahun' => $tahun_sk,
                                         'kd_wilayah' => $kd_wilayah,
                                         'kd_opd' => $kd_opd,
                                         'nomor' => $nomor,
