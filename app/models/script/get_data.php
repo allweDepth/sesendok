@@ -62,7 +62,7 @@ class get_data
         $data = array();
         $dataJson = array();
         //ambil row user
-        $rowUsername = $DB->getWhereOnceCustom('user_sesendok_biila', [['username', '=', $username],['nip', '=', $nip,'AND']]);
+        $rowUsername = $DB->getWhereOnceCustom('user_sesendok_biila', [['username', '=', $username], ['nip', '=', $nip, 'AND']]);
         $dataJson['results'] = [];
         $rowPengaturan = false;
         if ($rowUsername !== false) {
@@ -543,7 +543,7 @@ class get_data
                     $dataJson = [];
                     $kodePosting = '';
                     $value_dinamic = [];
-                    
+
                     switch ($jenis) {
                         case 'get_row':
                             $kodePosting = 'get_row';
@@ -1480,6 +1480,19 @@ class get_data
                                     // $data_where =  [$text];
                                     $jumlah_kolom = 7;
                                     break;
+                                case 'wilayah':
+                                    $like = "disable <= ? AND(uraian LIKE CONCAT('%',?,'%') OR status LIKE CONCAT('%',?,'%') OR kode LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [0, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY kode ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "disable <= ?";
+                                    $data_where1 =  [0];
+                                    $whereGet_row_json = "disable <= ?";
+                                    $data_hereGet_row_json =  [0];
+                                    // $where = "nomor = ?";
+                                    // $data_where =  [$text];
+                                    $jumlah_kolom = 9;
+                                    break;
                                 case 'value':
                                     break;
                                 default:
@@ -1770,6 +1783,26 @@ class get_data
                                 switch ($jenis) {
                                     case 'edit':
                                         switch ($tbl) {
+                                            case 'users':
+                                                $cari_drop = $data['users']->kd_organisasi;
+                                                if ($cari_drop) {
+                                                    $kondisi_result = [['kode', '=', $cari_drop], ['kd_wilayah', '=', $kd_wilayah, 'AND']];
+                                                    $tabel_pakai_temp = $Fungsi->tabel_pakai('organisasi')['tabel_pakai'];
+                                                    $row = $DB->getWhereOnceCustom($tabel_pakai_temp, $kondisi_result);
+                                                    if ($row !== false) {
+                                                        $data['values']['kd_organisasi'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                                    }
+                                                }
+                                                $cari_drop = $data['users']->kd_wilayah;
+                                                if ($cari_drop) {
+                                                    $kondisi_result = [['kode', '=', $cari_drop]];
+                                                    $tabel_pakai_temp = $Fungsi->tabel_pakai('wilayah')['tabel_pakai'];
+                                                    $row = $DB->getWhereOnceCustom($tabel_pakai_temp, $kondisi_result);
+                                                    if ($row !== false) {
+                                                        $data['values']['kd_wilayah'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                                    }
+                                                }
+                                                break;
                                             case 'sk_asn':
                                                 $cari_drop = $data['users']->pemberi_tgs;
                                                 if ($cari_drop) {
@@ -2190,7 +2223,7 @@ class get_data
                                             switch ($tbl) {
                                                 case 'asn':
                                                     $pangkat = $Fungsi->golongan_ruang(['golongan' => $row->golongan, 'ruang' => $row->ruang]);
-                                                    $pangkat = ucfirst($pangkat['pangkat']).', '.$pangkat['singkat'];
+                                                    $pangkat = ucfirst($pangkat['pangkat']) . ', ' . $pangkat['singkat'];
                                                     $namaLengkap = ucwords($row->nama);
                                                     if (strlen($row->gelar ?? '') > 0) {
                                                         $namaLengkap .= ', ' . $row->gelar;
@@ -2229,6 +2262,9 @@ class get_data
                                                     break;
                                                 case 'sumber_dana':
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
+                                                    break;
+                                                case 'wilayah':
+                                                    $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->status, "descriptionVertical" => true];
                                                     break;
                                                 case 'satuan':
                                                     $dataJson['results'][] = ['name' => $row->item, 'value' => $row->value];
@@ -2482,6 +2518,7 @@ class get_data
             case 'get_users_list':
             case 'getJsonRows':
                 switch ($tbl) {
+                    case 'wilayah':
                     case 'asn':
                     case 'daftar_paket':
                     case 'organisasi':

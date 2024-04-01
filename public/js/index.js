@@ -147,7 +147,7 @@ $(document).ready(function () {
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
 		]
 		let arrayDasboard = {
-			sk_asn: ["Surat Keputusan", "Surat Keputusan", "Surat Keputusan", "Surat Keputusan"],
+			sk_asn: ["home icon", "Surat Keputusan", "Surat Keputusan", "Surat Keputusan"],
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			renstra: tab_renstra,
 			renstra: tab_renstra,
@@ -943,17 +943,19 @@ $(document).ready(function () {
 									label: "Alamat",
 									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								buatElemenHtml("fieldDropdown", {
 									label: "Kode Wilayah",
-									atribut: 'name="kd_wilayah" placeholder="Kode Wilayah..." readonly',
+									atribut: 'name="kd_wilayah"',
+									kelas: "search ajx selection",
+									dataArray: [
+									],
 								}) +
-								buatElemenHtml("fieldText", {
+								buatElemenHtml("fieldDropdown", {
 									label: "Kode OPD",
-									atribut: 'name="kd_organisasi" placeholder="Kode OPD..." readonly',
-								}) +
-								buatElemenHtml("fieldTextarea", {
-									label: "Nama OPD",
-									atribut: 'name="nama_org" placeholder="Organisasi" rows="2" readonly',
+									atribut: 'name="kd_organisasi"',
+									kelas: "search ajx selection",
+									dataArray: [
+									],
 								}) +
 								buatElemenHtml("fieldCalendar", {
 									label: "Tahun Anggaran Aktif",
@@ -963,7 +965,7 @@ $(document).ready(function () {
 								buatElemenHtml("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="ket" rows="2" non_data',
-								})  +
+								}) +
 								buatElemenHtml("labelToggleCheckbox", {
 									label: "Non Aktifkan User Login",
 									atribut: 'name="disable_login" non_data',
@@ -2428,6 +2430,12 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
+						case 'users':
+							var dropdown_ajx_organisasi = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_organisasi"]');
+							dropdown_ajx_organisasi.returnList({ jenis: "get_row_json", tbl: "organisasi", minCharacters: 1 });
+							var dropdown_ajx_wilayah = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_wilayah"]');
+							dropdown_ajx_wilayah.returnList({ jenis: "get_row_json", tbl: "wilayah", minCharacters: 1 });
+							break;
 						case "bidang_urusan":
 						case "prog":
 						case "keg":
@@ -2656,6 +2664,20 @@ $(document).ready(function () {
 															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
+																	case 'users':
+																		switch (attrElm) {
+																			case 'kd_organisasi':
+																				var dropdown_ajx_organisasi = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_organisasi"]');
+																				dropdown_ajx_organisasi.valuesDropdown(result.data?.values?.kd_organisasi);
+																				dropdown_ajx_organisasi.returnList({ jenis: "get_row_json", tbl: "organisasi", minCharacters: 1 });
+																				break;
+																			case 'kd_wilayah':
+																				var dropdown_ajx_wilayah = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_wilayah"]');
+																				dropdown_ajx_wilayah.valuesDropdown(result.data?.values?.kd_wilayah);
+																				dropdown_ajx_wilayah.returnList({ jenis: "get_row_json", tbl: "wilayah", minCharacters: 1 });
+																				break;
+																		}
+																		break;
 																	case "bidang_urusan":
 																	case "prog":
 																	case "keg":
