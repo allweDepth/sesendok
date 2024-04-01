@@ -87,7 +87,10 @@
 body.inverted {
     background-color: var(--darkBG) !important;
 }
-
+/* untuk label fields di form inverted */
+.ui.form.inverted .grouped.fields>label {
+    color: rgb(255, 255, 255) !important;
+}
 .ui.input.multi input[type="text"]:not(:first-child) {
     border-radius: 0 !important;
 }

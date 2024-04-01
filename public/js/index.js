@@ -3377,7 +3377,13 @@ $(document).ready(function () {
 					case 'menetapkan_4':
 					case 'tembusan':
 						let Tbody = ini.closest('table').find('tbody');
-						Tbody.append(`<tr><td><div contenteditable=""></div></td><td><button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`)
+						let elmTr = buatElemenHtml("tr_tabel", {
+							bodyTable: [[
+								{ lbl: `<div contenteditable=""></div>` },
+								{ lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>` }, { class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
+							]
+						})
+						Tbody.append(elmTr);
 						break;
 					default:
 						break;
@@ -4292,7 +4298,6 @@ $(document).ready(function () {
 																	]
 																})
 																tbodyElemen.append(elmTrName );
-																// tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key]['nama']}</div></td><td><div contenteditable="">${dataResult[key]['pangkat']}</div></td><td><div contenteditable="">${dataResult[key]['nip']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan']}</div></td><td><div contenteditable="">${dataResult[key]['jabatan_sk']}</div></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
 																break;
 															default:
 																let elmTr = buatElemenHtml("tr_tabel", {
@@ -4302,7 +4307,6 @@ $(document).ready(function () {
 																	]
 																})
 																tbodyElemen.append(elmTr);
-																// tbodyElemen.append(`<tr><td><div contenteditable="">${dataResult[key][keyObject[0]]}</div></td><td><button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button></td><td class="collapsing"><button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button></td></tr>`);
 																break;
 														}
 
@@ -6086,10 +6090,6 @@ $(document).ready(function () {
 											case 'cetak':
 												switch (tbl) {
 													case 'sk_asn':
-														//=======================================================================
-														//============fungsi tampilkan pdf fari php tcpdf =======================
-														//== $data['pdf'] = base64_encode( $pdf->Output( 'file_name', 'S' ) ); ==
-														//=======================================================================
 														function printPreviewBase64(base64String) {
 															// Buat URL data untuk PDF
 															var pdfDataUri = 'data:application/pdf;base64,' + base64String;
@@ -6100,8 +6100,6 @@ $(document).ready(function () {
 															// Klik pada link secara otomatis
 															link.click();
 														}
-
-														console.log(result.data.pdf);
 														printPreviewBase64(result.data.pdf);
 														break;
 													case 'value1':
@@ -6115,8 +6113,6 @@ $(document).ready(function () {
 											default:
 												break;
 										};
-
-
 										break;
 									// =================
 									// UNTUK TAB PROFIL====
@@ -6155,18 +6151,9 @@ $(document).ready(function () {
 													case 'profil':
 														$('#set_tahun_anggaran').text(result.data.users.tahun)
 														break;
-
-													default:
-														break;
 												}
 												break;
-
-											default:
-												break;
 										}
-
-										break;
-									default:
 										break;
 								}
 								if (jenisTrigger.length > 0) {
@@ -6217,7 +6204,7 @@ $(document).ready(function () {
 							//$('.ui.flyout').flyout('hide');
 							break;
 						case "form_modal_kedua":
-							$('div[name="mdl_kedua"]').modal("hide");
+							// $('div[name="mdl_kedua"]').modal("hide");
 							break;
 						default:
 							break;
