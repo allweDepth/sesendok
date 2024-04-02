@@ -912,17 +912,17 @@ $(document).ready(function () {
 									label: "Nomor Induk Pegawai",
 									atribut: 'name="nip" placeholder="NIP"',
 									txtLabel: `<i class="search icon"></i>`,
-									atributLabel: `name="cek" type="button" jns="cek_nip" tbl="asn"`,
+									atributLabel: `name="get_data" type="button" jns="get_data" tbl="user" klm="nip"`,
 								}) +
 								buatElemenHtml("fieldTextAction", {
 									label: "username",
 									atribut: 'name="username" placeholder="username"',
 									txtLabel: `<i class="search icon"></i>`,
-									atributLabel: `name="cek" type="button" jns="cek" tbl="users" klm="username"`,
+									atributLabel: `name="get_data" type="button" jns="get_data" tbl="user" klm="username"`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "email",
-									atribut: 'name="email" placeholder="Nama Lengkap (tanpa gelar)" readonly',
+									atribut: 'name="email" placeholder="email" readonly',
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Type User",
@@ -995,22 +995,22 @@ $(document).ready(function () {
 						case 'asn':
 							dataHtmlku.konten +=
 								buatElemenHtml("fieldText", {
-									label: "Nama Lengkap",
+									label: "Nama Lengkap (tanpa gelar)",
 									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
 								}) +
 								buatElemenHtml("fieldTextAction", {
 									label: "Nomor Induk Pegawai",
 									atribut: 'name="nip" placeholder="NIP"',
 									txtLabel: `<i class="search icon"></i>`,
-									atributLabel: `name="cek" type="button" jns="cek_nip" tbl="asn"`,
+									atributLabel: `name="get_data" type="button" jns="get_data" tbl="asn" klm="nip"`,
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Gelar",
-									atribut: 'name="gelar" placeholder="Gelar belakang nama" non_data',
+									atribut: 'name="gelar" placeholder="Gelar di belakang nama" non_data',
 								}) +
 								buatElemenHtml("fieldText", {
 									label: "Gelar Depan Nama",
-									atribut: 'name="gelar_depan" placeholder="Gelar Depan Nama" non_data',
+									atribut: 'name="gelar_depan" placeholder="Gelar di depan nama" non_data',
 								}) +
 								buatElemenHtml("fieldDropdown", {
 									label: "Kelompok Jabatan",
@@ -2566,6 +2566,12 @@ $(document).ready(function () {
 			switch (jenis) {
 				case "get_data":
 					switch (tbl) {
+						case 'user':
+						case 'asn':
+							data.text = ini.closest(".input").find('input').val();
+							data.klm = ini.attr('klm');
+							jalankanAjax = true;
+							break;
 						case 'neraca':
 						case 'akun_belanja':
 							//cek rekening
@@ -2591,7 +2597,6 @@ $(document).ready(function () {
 							break;
 						case 'satuan':
 							data.value = ini.closest(".input").find('input').val();
-
 							jalankanAjax = true;
 							break;
 						default:
@@ -2963,6 +2968,7 @@ $(document).ready(function () {
 								$(".ui.flyout").flyout("toggle");
 								break;
 							case 'get_data':
+								let pengenal = { rekanan: { 404: 'nama perusahaan dapat digunakan', 302: 'nama rekanan sudah digunakan, update atau gunakan nama rekanan lain' },asn: { 404: 'nip dapat digunakan', 302: 'nip sudah digunakan, update atau gunakan nip lain' } }
 								switch (jenis) {
 									case 'get_data':
 										switch (tbl) {
@@ -2981,15 +2987,23 @@ $(document).ready(function () {
 													result.error.message = 'kode sudah digunakan, update atau gunakan kode lain';
 												}
 												break;
-											case 'rekanan':
-												if (result.error.code === 404) {
-													result.error.message = 'nama perusahaan dapat digunakan';
-												} else {
-													kelasToast = "warning";
-													result.error.message = 'nama rekanan sudah digunakan, update atau gunakan nama rekanan lain';
-												}
-												break;
 											default:
+												if(pengenal.hasOwnProperty(tbl)){
+													if (result.error.code === 404) {
+														result.error.message = pengenal[tbl]['404'];
+													} else {
+														kelasToast = "warning";
+														result.error.message = pengenal[tbl]['302'];
+													}
+												}else{
+													if (result.error.code === 404) {
+														result.error.message = 'value dapat digunakan';
+													} else {
+														kelasToast = "warning";
+														result.error.message = 'value sudah digunakan, update data atau gunakan value lain';
+													}
+												}
+												
 												break;
 										}
 										break;
@@ -4289,15 +4303,15 @@ $(document).ready(function () {
 															case 'nama_ditugaskan':
 																let elmTrName = buatElemenHtml("tr_tabel", {
 																	bodyTable: [[
-																		{ lbl: `<div contenteditable="">${dataResult[key]['nama']}</div>` }, 
-																		{ lbl: `<div contenteditable="">${dataResult[key]['pangkat']}</div></td>` }, 
-																		{ lbl: `<div contenteditable="">${dataResult[key]['nip']}</div>`}, 
-																		{ lbl: `<div contenteditable="">${dataResult[key]['jabatan']}</div>`}, 
-																		{ lbl: `<div contenteditable="">${dataResult[key]['jabatan_sk']}</div>`}, 
+																		{ lbl: `<div contenteditable="">${dataResult[key]['nama']}</div>` },
+																		{ lbl: `<div contenteditable="">${dataResult[key]['pangkat']}</div></td>` },
+																		{ lbl: `<div contenteditable="">${dataResult[key]['nip']}</div>` },
+																		{ lbl: `<div contenteditable="">${dataResult[key]['jabatan']}</div>` },
+																		{ lbl: `<div contenteditable="">${dataResult[key]['jabatan_sk']}</div>` },
 																		{ class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
 																	]
 																})
-																tbodyElemen.append(elmTrName );
+																tbodyElemen.append(elmTrName);
 																break;
 															default:
 																let elmTr = buatElemenHtml("tr_tabel", {

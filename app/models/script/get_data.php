@@ -313,6 +313,20 @@ class get_data
                                 // var_dump($kode);
                                 break;
                             default:
+                                switch ($tbl) {
+                                    case 'user':
+                                    case 'asn':
+                                        $klm = $validate->setRules('klm', 'kolom', [
+                                            'numeric' => true,
+                                            'required' => true,
+                                            'min_char' => 1,
+                                            'max_char' => 11
+                                        ]);
+                                        break;
+                                    default:
+                                        $kondisi = [['kode', '= ?', $text]];
+                                        break;
+                                }
                                 $text = $validate->setRules('text', 'text', [
                                     'required' => true,
                                     'sanitize' => 'string',
@@ -1136,11 +1150,15 @@ class get_data
                                     $kondisi = [['id', '= ?', $id_row], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']];
                                     break;
                                 default:
-                                    $kondisi = [['kode', '= ?', $text]];
                                     switch ($tbl) {
-                                        case 'value':
+                                        case 'asn':
+                                            $kondisi = [[$klm, '= ?', $text], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND']];
+                                            break;
+                                        case 'user':
+                                            $kondisi = [[$klm, '= ?', $text]];
                                             break;
                                         default:
+                                            $kondisi = [['kode', '= ?', $text]];
                                             break;
                                     }
                                     break;
@@ -2264,7 +2282,7 @@ class get_data
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true];
                                                     break;
                                                 case 'wilayah':
-                                                    $deskripsi=$row->status ." ( {$row->kode} )";
+                                                    $deskripsi = $row->status . " ( {$row->kode} )";
                                                     $dataJson['results'][] = ['name' => $row->uraian, 'value' => $row->kode, 'description' => $deskripsi, "descriptionVertical" => true];
                                                     break;
                                                 case 'satuan':
