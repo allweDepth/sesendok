@@ -101,7 +101,9 @@ class del_data
                                 ]);
                                 break;
                             default:
-                                # code...
+                                $adaerror = $validate->setRules('bbbb', 'anda tidak diijinkan melakukan hapus data', [
+                                    'error' => true,
+                                ]);
                                 break;
                         }
                         break;
@@ -172,12 +174,12 @@ class del_data
                                 case 'ssh':
                                 case 'asb':
                                 case 'hspk':
-                                    case 'wilayah':
+                                case 'wilayah':
                                     //standar delete id
                                     $data_row = $DB->getWhereCustom($tabel_pakai, $kondisi);
                                     $data[$tbl] = $DB->delete_array($tabel_pakai, $kondisi);
                                     if ($DB->count() > 0) {
-                                        
+
                                         $code = 4;
                                         switch ($tbl) {
                                             case 'daftar_kontrak':
