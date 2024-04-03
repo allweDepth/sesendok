@@ -1906,7 +1906,7 @@ class get_data
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $kode_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('aset_neo', $kondisi_result);
                                                     if ($row !== false) {
-                                                        $data['values']['kd_aset'] = [['name' => $row->uraian, 'value' => $row->kode, 'selected' => true]];
+                                                        $data['values']['kd_aset'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'selected' => true, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true]];
                                                     }
                                                 }
                                                 $cari_drop = $data['users']->kd_akun;
@@ -1914,7 +1914,7 @@ class get_data
                                                     $kondisi_result = [['disable', '<=', 0], ['kode', '=', $cari_drop, 'AND']];
                                                     $row = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
                                                     if ($row !== false) {
-                                                        $data['values']['kd_akun'] = [['name' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
+                                                        $data['values']['kd_akun'] = [['name' => $row->uraian, 'text' => $row->uraian, 'value' => $row->kode, 'description' => $row->kode, "descriptionVertical" => true, 'selected' => true]];
                                                     }
                                                 }
                                                 break;
