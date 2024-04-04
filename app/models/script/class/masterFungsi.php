@@ -2237,29 +2237,6 @@ class MasterFungsi
                     };
                     // var_dump($kondisi);
                     $row_result = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
-                    // var_dump($row_result->id);
-                    // var_dump($row_result);
-                    //
-                    if ($row_result === false && !isset($dinamic['id_row'])) {
-                        # insert baru
-                        $DB->insert($tabel_pakai, $set);
-                        $data['note']['add row'][] = $DB->lastInsertId();
-                    } else {
-                        # update jumlah
-                        // var_dump($set);
-                        $id_sdh_ada = (isset($dinamic['id_row'])) ? $dinamic['id_row'] : $row_result->id;
-                        $kondisi = [['kd_sub_keg', '=', $set['kd_sub_keg']], ['kd_akun', '=', $set['kd_akun'], 'AND'], ['kel_rek', '=',  $set['kel_rek'], 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_sdh_ada, 'AND']];
-                        $row_result = $DB->update_array($tabel_pakai, $set, $kondisi);
-                        // var_dump($row_result);
-                        if ($DB->count()) {
-                            $code = 3;
-                            $data['note']['update'][] = $id_sdh_ada;
-                            // $data['update'] = $DB->count(); //$DB->count();
-                            // var_dump( $data['update']);
-                        } else {
-                            $code = 33;
-                        }
-                    }
                 }
                 $i = 0;
                 //=========================
@@ -2275,12 +2252,6 @@ class MasterFungsi
                     //satukan rekening
                     $sizeOfRekening = sizeof($kd_akun_olah);
                     $rekening_gabung = implode('.', $kd_akun_olah);
-                    // $akun = $kd_akun_olah[0];
-                    // $kelompok = isset($kd_akun_olah[1]) ? $kd_akun_olah[1] : null;
-                    // $jenis = isset($kd_akun_olah[2]) ? $kd_akun_olah[2] : null;
-                    // $objek = isset($kd_akun_olah[3]) ? $kd_akun_olah[3] : null;
-                    // $rincian_objek = isset($kd_akun_olah[4]) ? $kd_akun_olah[4] : null;
-                    // $sub_rincian = isset($kd_akun_olah[5]) ? $kd_akun_olah[5] : null;
                     switch ($sizeOfRekening) {
                         case 6:
                             $kel_rekening = 'sub_rincian';
@@ -2317,9 +2288,6 @@ class MasterFungsi
                     switch ($tabel_pakai) {
                         case 'dpa_neo':
                         case 'renja_neo':
-                            $arraySum = [
-                                $kolomJumlah => (float)$jumlah,
-                            ];
                         case 'dppa_neo':
                         case 'renja_p_neo':
                             $row_progkeg = $DB->getWhereOnceCustom('akun_neo', [['kode', '=', $rekening_gabung]]);
@@ -2344,11 +2312,11 @@ class MasterFungsi
                                 'vol_4' => 0,
                                 'sat_1' => '',
                                 $kolomJumlah => (float)$jumlah,
-                                'disable' => 0,
-                                'tanggal' => date('Y-m-d H:i:s'),
-                                'tgl_update' => date('Y-m-d H:i:s'),
-                                'username_input' => $_SESSION["user"]["username"],
-                                'username_update' => $_SESSION["user"]["username"]
+                                // 'disable' => 0,
+                                // 'tanggal' => date('Y-m-d H:i:s'),
+                                // 'tgl_update' => date('Y-m-d H:i:s'),
+                                // 'username_input' => $_SESSION["user"]["username"],
+                                // 'username_update' => $_SESSION["user"]["username"]
                             ];
                             $kondisi = [['kd_sub_keg', '=', $rekening_gabung_sub_keg], ['kd_akun', '=',  $rekening_gabung, 'AND'], ['kel_rek', '=',  $kel_rekening, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                             // select sum
@@ -2359,21 +2327,21 @@ class MasterFungsi
                         default:
                             break;
                     };
-                    $row_uraian = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
-                    if ($row_uraian === false) {
-                        # insert baru
-                        $DB->insert($tabel_pakai, $set_insert);
-                        $data['note']['add row'][] = $DB->lastInsertId();
-                    } else {
-                        # update jumlah
-                        $DB->update_array($tabel_pakai, $set_insert, $kondisi);
-                        if ($DB->count()) {
-                            $code = 3;
-                            $data['update'] = $DB->count(); //$DB->count();
-                        } else {
-                            $code = 33;
-                        }
-                    }
+                    // $row_uraian = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+                    // if ($row_uraian === false) {
+                    //     # insert baru
+                    //     $DB->insert($tabel_pakai, $set_insert);
+                    //     $data['note']['add row'][] = $DB->lastInsertId();
+                    // } else {
+                    //     # update jumlah
+                    //     $DB->update_array($tabel_pakai, $set_insert, $kondisi);
+                    //     if ($DB->count()) {
+                    //         $code = 3;
+                    //         $data['update'] = $DB->count(); //$DB->count();
+                    //     } else {
+                    //         $code = 33;
+                    //     }
+                    // }
                     // var_dump($row_sum);
                     $i++;
                 }
