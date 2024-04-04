@@ -3646,7 +3646,7 @@ $(document).ready(function () {
 						// 		case "messageLink":
 						// elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
 						elementForm = buatElemenHtml("message", {
-							color: "yellow",
+							color: "positive",
 							icon: `exclamation icon`,
 							label: `Perhatian`,
 							value: `<ul class="list"><li>jika mengedit data dan merubah "Nomor Surat" maka akan dianggap tambah data baru jika di simpan;</li><li>simpan terlebih dahulu sebelum cetak dokumen.</li></ul>`,

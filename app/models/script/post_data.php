@@ -2912,14 +2912,16 @@ class post_data
                                     break;
 
                                 case 'renstra':
+                                    
                                     $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
                                     if ($rowPengaturan !== false) {
                                         $tahun_renstra = $rowPengaturan->tahun_renstra;
-                                        $unit_kerja = $rowOrganisasi->uraian;
                                         if ($tahun_renstra > 2000) {
                                             if ($jenis == 'add') {
                                                 $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
                                                 $kodePosting = 'cek_insert';
+                                            }else{
+                                                $kondisi = [['id', '=', $id_row],['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
                                             }
                                             // id tujuan
                                             $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
@@ -3366,6 +3368,8 @@ class post_data
                             }
                             break;
                         case 'update_row': //untuk 1 row
+                            var_dump($set);
+                            var_dump($kondisi);
                             $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
                             $jumlahArray = is_array($resul) ? count($resul) : 0;
                             // var_dump($kondisi);

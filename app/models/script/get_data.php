@@ -1264,18 +1264,18 @@ class get_data
                                     if ($rowPengaturan !== false) {
                                         $tahun_renstra = $rowPengaturan->tahun_renstra;
                                         if ($tahun_renstra > 2000) {
-                                            $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
-                                            $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
-                                            $order = "ORDER BY kd_sub_keg, tujuan, sasaran ASC";
-                                            $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                                            $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                                            // $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (kd_sub_keg LIKE CONCAT('%',?,'%') OR uraian_prog_keg LIKE CONCAT('%',?,'%') OR indikator LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR data_capaian_awal LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                            // $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari, $cari, $cari, $cari];
+                                            // $order = "ORDER BY kd_sub_keg, tujuan, sasaran ASC";
+                                            // $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                            // $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                             // $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                             // $data_where_row =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
-                                            $kondisi = [['kd_wilayah', '= ?', $kd_wilayah], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun_renstra, 'AND'], ['disable', '<= ?', 0, 'AND']];
+                                            $kondisi = [['id', '= ?', $id_row], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun_renstra, 'AND'], ['disable', '<= ?', 0, 'AND']];
                                             //pilih kolom yang diambil
                                             // $DB->select('id, kelompok, id_tujuan, text, keterangan');
-                                            $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
-                                            $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
+                                            // $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
+                                            // $data_hereGet_row_json =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                         } else {
                                             $message_tambah = ' (atur tahun renstra OPD)';
                                             $code = 70;
