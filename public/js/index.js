@@ -845,7 +845,7 @@ $(document).ready(function () {
 					switch (tbl) {
 						case 'asn':
 							dataHtmlku.konten =
-								buatElemenHtml("card3", {
+								createHTML("card3", {
 									label: "Aparatur Sipil Negara (ASN)",
 									atribut: `for="directupload1" name="direct" type="button" id_row="${id_row}" jns="upload" tbl="asn" dok="file_photo" accept=".jpg,.png,.jpeg,.img"`,
 								})
@@ -857,7 +857,7 @@ $(document).ready(function () {
 					switch (tbl) {
 						case 'berita':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Kelompok Berita",
 									atribut: 'name="kelompok"',
 									kelas: "lainnya selection",
@@ -869,34 +869,34 @@ $(document).ready(function () {
 										["anggaran", "Anggaran"]
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nomor Urut",
 									atribut: 'name="urutan" placeholder="Nomor Urutan Berita(101..)" rms',
 								}) +
-								buatElemenHtml("fieldCalendar", {
+								createHTML("fieldCalendar", {
 									label: "Tanggal",
 									atribut: 'placeholder="Input tanggal Berita.." name="tanggal" readonly',
 									kelas: "date",
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Judul Berita",
 									atribut: 'name="judul" rows="2"',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									labelTambahan: ` <button class="ui circular right aligned blue horizontal label button" name="modal_show" tbl="berita" jns="modal_show" klm="uraian_html"> tampilkan</button>`,
 									label: "Markup HTML",
 									atribut: 'name="uraian_html" rows="20"',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									labelTambahan: ` <button class="ui circular right aligned blue horizontal label button" name="modal_show" tbl="berita" jns="modal_show" klm="uraian_singkat"> tampilkan</button>`,
 									label: "Uraian Singkat",
 									atribut: 'name="uraian_singkat" rows="4"',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -904,27 +904,27 @@ $(document).ready(function () {
 							break;
 						case 'users':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nama Lengkap",
 									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
 								}) +
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "Nomor Induk Pegawai",
 									atribut: 'name="nip" placeholder="NIP"',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="get_data" type="button" jns="get_data" tbl="user" klm="nip"`,
 								}) +
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "username",
 									atribut: 'name="username" placeholder="username"',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="get_data" type="button" jns="get_data" tbl="user" klm="username"`,
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "email",
 									atribut: 'name="email" placeholder="email" readonly',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Type User",
 									atribut: 'name="type_user"',
 									kelas: "lainnya selection",
@@ -935,58 +935,58 @@ $(document).ready(function () {
 										["super", "Super Administrator"]
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Kontak Person",
 									atribut: 'name="kontak_person" placeholder="Kontak Person"',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Alamat",
 									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Nama Wilayah",
 									atribut: 'name="kd_wilayah"',
 									kelas: "search ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Organisasi Perangkat Daerah",
 									atribut: 'name="kd_organisasi"',
 									kelas: "search ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldCalendar", {
+								createHTML("fieldCalendar", {
 									label: "Tahun Anggaran Aktif",
 									kelas: "year",
 									atribut: 'placeholder="Tanggal.." name="tahun" readonly',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="ket" rows="2" non_data',
 								}) +
-								buatElemenHtml("labelToggleCheckbox", {
+								createHTML("labelToggleCheckbox", {
 									label: "Non Aktifkan User Login",
 									atribut: 'name="disable_login" non_data',
 									txtLabel: "Disable",
 								}) +
-								buatElemenHtml("labelToggleCheckbox", {
+								createHTML("labelToggleCheckbox", {
 									label: "Non Aktifkan User Input/Edit Anggaran",
 									atribut: 'name="disable_anggaran" non_data',
 									txtLabel: "Disable",
 								}) +
-								buatElemenHtml("labelToggleCheckbox", {
+								createHTML("labelToggleCheckbox", {
 									label: "Non Aktifkan User Input/Edit Kontrak",
 									atribut: 'name="disable_kontrak" non_data',
 									txtLabel: "Disable",
 								}) +
-								buatElemenHtml("labelToggleCheckbox", {
+								createHTML("labelToggleCheckbox", {
 									label: "Non Aktifkan User Input/Edit Realisasi",
 									atribut: 'name="disable_realisasi" non_data',
 									txtLabel: "Disable",
 								}) +
-								buatElemenHtml("labelToggleCheckbox", {
+								createHTML("labelToggleCheckbox", {
 									label: "Non Aktifkan User Untuk Chat",
 									atribut: 'name="disable_chat" non_data',
 									txtLabel: "Disable",
@@ -994,25 +994,25 @@ $(document).ready(function () {
 							break;
 						case 'asn':
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nama Lengkap (tanpa gelar)",
 									atribut: 'name="nama" placeholder="Nama Lengkap (tanpa gelar)"',
 								}) +
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "Nomor Induk Pegawai",
 									atribut: 'name="nip" placeholder="NIP"',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="get_data" type="button" jns="get_data" tbl="asn" klm="nip"`,
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Gelar",
 									atribut: 'name="gelar" placeholder="Gelar di belakang nama" non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Gelar Depan Nama",
 									atribut: 'name="gelar_depan" placeholder="Gelar di depan nama" non_data',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Kelompok Jabatan",
 									atribut: 'name="kelompok"',
 									kelas: "lainnya selection",
@@ -1024,20 +1024,20 @@ $(document).ready(function () {
 										["5", "non ASN"]
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jabatan",
 									atribut: 'name="jabatan" placeholder="Jabatan..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Tempat Lahir",
 									atribut: 'name="t4_lahir" placeholder="tempat lahir" non_data',
 								}) +
-								buatElemenHtml("fieldCalendar", {
+								createHTML("fieldCalendar", {
 									label: "Tanggal Lahir",
 									atribut: 'placeholder="Input tanggal lahir.." name="tgl_lahir" readonly',
 									kelas: "date",
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Golongan",
 									atribut: 'name="golongan"',
 									kelas: "lainnya selection",
@@ -1048,7 +1048,7 @@ $(document).ready(function () {
 										["4", "IV"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Ruang",
 									atribut: 'name="ruang"',
 									kelas: "lainnya selection",
@@ -1060,7 +1060,7 @@ $(document).ready(function () {
 										["e", "e"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Jenis Kepegawaian",
 									atribut: 'name="jenis_kepeg"',
 									kelas: "lainnya selection",
@@ -1077,7 +1077,7 @@ $(document).ready(function () {
 										["swasta", "Swasta"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Status Kepegawaian",
 									atribut: 'name="status_kepeg"',
 									kelas: "lainnya selection",
@@ -1092,27 +1092,27 @@ $(document).ready(function () {
 										["peg_bulanan", "Pegawai Bulanan"]
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nomor KTP",
 									atribut: 'name="no_ktp" placeholder="Nomor ktp..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "NPWP",
 									atribut: 'name="npwp" placeholder="NPWP..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Alamat",
 									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Kontak Person",
 									atribut: 'name="kontak_person" placeholder="Kontak Person..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "email",
 									atribut: 'name="email" placeholder="email..."',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Agama",
 									atribut: 'name="agama"',
 									kelas: "lainnya selection",
@@ -1128,7 +1128,7 @@ $(document).ready(function () {
 										["kepercayaan", "Kepercayaan Tuhan YME."]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Kelamin",
 									atribut: 'name="kelamin"',
 									kelas: "lainnya selection",
@@ -1136,7 +1136,7 @@ $(document).ready(function () {
 										["pria", "Pria"],
 										["wanita", "Wanita"]
 									],
-								}) + buatElemenHtml("fieldDropdown", {
+								}) + createHTML("fieldDropdown", {
 									label: "Status",
 									atribut: 'name="status"',
 									kelas: "lainnya selection",
@@ -1146,11 +1146,11 @@ $(document).ready(function () {
 										["lajang", "Lajang"]
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1158,73 +1158,73 @@ $(document).ready(function () {
 							break;
 						case 'daftar_paket':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "Uraian Belanja",
 									atribut: 'name="count_uraian_belanja" placeholder="Nama Paket..." readonly',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="modal_show" jns="uraian_belanja" tbl="${tbl}"`,
 								}) +
 								//text ini di hilangkan untuk menampung id yang dipilih di form_modal
-								buatElemenHtml("text", {
+								createHTML("text", {
 									atributField: 'name="id_uraian" hidden',
 									atribut: 'name="id_uraian" placeholder="Pilih Uraian Belanja"',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Nama Paket",
 									atribut: 'name="uraian" rows="2" placeholder="Uraian Barang/Jasa..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Volume",
 									atribut: 'name="volume" placeholder="volume output..." rms',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan"',
 									kelas: "search clearable satuan ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nilai Pagu",
 									atribut: 'name="pagu" placeholder="Nilai Pagu..." rms readonly',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nilai Kontrak",
 									atribut:
 										'name="jumlah" placeholder="Nilai Kontrak..." rms readonly',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Output Rencana",
 									atribut: 'name="renc_output" rows="2" placeholder="Output Rencana"',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Output",
 									atribut: 'name="output" rows="2" placeholder="output..." non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nama PPK",
 									atribut: 'name="nama_ppk" placeholder="Nama Lengkap PPK..." non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "NIP. PPK",
 									atribut: 'name="nip_ppk" placeholder="NIP. PPK..." non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nama PPTK",
 									atribut: 'name="nama_pptk" placeholder="Nama Lengkap PPTK..." non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "NIP. PPTK",
 									atribut: 'name="nip_pptk" placeholder="NIP. PPTK..." non_data',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Rekanan",
 									atribut: 'name="id_rekanan" non_data',
 									kelas: "search clearable rekanan ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Metode Pengadaan",
 									atribut: 'name="metode_pengadaan"',
 									kelas: "selection",
@@ -1233,7 +1233,7 @@ $(document).ready(function () {
 										["penyedia", "Penyedia"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Metode Pemilihan",
 									atribut: 'name="metode_pemilihan"',
 									kelas: "lainnya selection",
@@ -1245,7 +1245,7 @@ $(document).ready(function () {
 										["tender", "tender"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Pengadaan Barang Jasa",
 									atribut: 'name="pengadaan_penyedia"',
 									kelas: "lainnya selection",
@@ -1257,84 +1257,84 @@ $(document).ready(function () {
 										["jasa_lainnya", "Jasa Lainnya"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Jenis Kontrak",
 									atribut: 'name="jns_kontrak"',
 									kelas: "lainnya selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Waktu Pelaksanaan",
 									atribut:
 										'name="waktu_pelaksanaan" placeholder="Waktu Pelaksanaan..." rms non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Waktu Pemeliharaan (jika dibutuhkan)",
 									atribut:
 										'name="waktu_pemeliharaan" placeholder="Pemeliharaan jika diperlukan..." rms non_data',
 								}) +
-								buatElemenHtml("accordionField", {
+								createHTML("accordionField", {
 									label: "Jadwal Pengadaan",
-									content: buatElemenHtml("text", {
+									content: createHTML("text", {
 										atribut: `name="kd_rup" placeholder="Kode RUP" non_data`,
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="kd_paket" placeholder="Kode Paket" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_kontrak" placeholder="Tanggal Kontrak" non_data`, kelas: "date"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_kontrak" placeholder="Nomor Kontrak" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_persiapan_kont" placeholder="Tanggal Persiapan Kontrak" non_data`, kelas: "datetime"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_persiapan_kont" placeholder="Nomor Persiapan Kontrak" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_spmk" placeholder="Tanggal SPMK" non_data`, kelas: "datetime"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_spmk" placeholder="Nomor Persiapan Kontrak" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_undangan" placeholder="Tanggal Undangan/Pengumuman" non_data`, kelas: "datetime"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_undangan" placeholder="Nomor Undangan/Pengumuman" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_penawaran" placeholder="Tanggal Penawaran" non_data`, kelas: "datetime"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_penawaran" placeholder="Nomor Penawaran" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_nego" placeholder="Tanggal Negoisasi" non_data`, kelas: "datetime"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_nego" placeholder="Nomor Negoisasi" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_sppbj" placeholder="Tanggal SPPBJ" non_data`, kelas: "date"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_sppbj" placeholder="Nomor SPPBJ" non_data`,
 									})
 								}) +
-								buatElemenHtml("accordionField", {
+								createHTML("accordionField", {
 									label: "Serah Terima Pengadaan",
-									content: buatElemenHtml("calendar", {
+									content: createHTML("calendar", {
 										atribut: `name="tgl_pho" placeholder="Tanggal PHO" non_data`, kelas: "datetime"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_pho" placeholder="Nomor PHO" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tgl_fho" placeholder="Tanggal FHO" non_data`, kelas: "datetime"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="no_fho" placeholder="Nomor FHO" non_data`,
 									})
 								}) +
-								buatElemenHtml("accordionField", {
+								createHTML("accordionField", {
 									label: "Tambah Kontrak Addendum",
-									content: buatElemenHtml("button", {
+									content: createHTML("button", {
 										kelas: `fluid animated fade`,
 										atribut: `name="add" jns="direct" tbl="addendum"`,
 										value: `<div class="visible content">Tambah</div><div class="hidden content">Addendum Kontrak</div>`,
 									})
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1376,7 +1376,7 @@ $(document).ready(function () {
 								data.id_sub_keg = id_sub_kegAttr;
 							}
 							formIni.attr("id_sub_keg", ini.attr("id_sub_keg"));
-							dataHtmlku.konten = buatElemenHtml("fieldDropdown", {
+							dataHtmlku.konten = createHTML("fieldDropdown", {
 								label: "Objek Belanja",
 								classField: `required`,
 								atribut: 'name="objek_belanja" placeholder="pilih objek belanja..."',
@@ -1398,7 +1398,7 @@ $(document).ready(function () {
 									["lahan", "Pembebasan Tanah/ Lahan"]
 								],
 							}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Rekening / Akun",
 									classField: `required`,
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
@@ -1406,7 +1406,7 @@ $(document).ready(function () {
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Pengelompokan Belanja",
 									classField: `required`,
 									atribut: 'name="jenis_kelompok" placeholder="pilih pengelompokan..."',
@@ -1416,7 +1416,7 @@ $(document).ready(function () {
 										["kelompok", "Pengelompokan Belanja"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdownLabel", {
+								createHTML("fieldDropdownLabel", {
 									label: "Uraian Pengelompokan Belanja",
 									txtLabel: '<i class="plus icon"></i>',
 									classField: `required`,
@@ -1426,7 +1426,7 @@ $(document).ready(function () {
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Sumber Dana",
 									classField: `required`,
 									atribut: `name="${sumber_danaku}" placeholder="pilih sumber dana..."`,
@@ -1434,7 +1434,7 @@ $(document).ready(function () {
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Jenis Standar Harga",
 									classField: `required`,
 									atribut: 'name="jenis_standar_harga" placeholder="jenis standar harga..."',
@@ -1446,7 +1446,7 @@ $(document).ready(function () {
 										["asb", "ASB"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdownLabel", {
+								createHTML("fieldDropdownLabel", {
 									label: "Komponen",
 									txtLabel: '<i class="search icon"></i>',
 									classField: `required`,
@@ -1456,27 +1456,27 @@ $(document).ready(function () {
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "TKDN",
 									kelas: "",
 									atribut: 'name="tkdn" placeholder="tkdn..." rms non_data readonly',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Spesifikasi Komponen",
 									kelas: "",
 									atribut: 'name="spesifikasi" placeholder="spesifikasi..." non_data readonly',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Satuan Komponen",
 									kelas: "",
 									atribut: 'name="satuan" placeholder="satuan komponen..." non_data readonly',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Harga Satuan Komponen",
 									kelas: "",
 									atribut: 'name="harga_satuan" placeholder="harga satuan..." rms non_data readonly',
 								}) +
-								buatElemenHtml("fieldDropdownLabel", {
+								createHTML("fieldDropdownLabel", {
 									label: "Keterangan",
 									txtLabel: '<i class="plus icon"></i>',
 									classField: `required`,
@@ -1487,11 +1487,11 @@ $(document).ready(function () {
 										["", ""]
 									],
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "Tambahkan Pajak",
 									atribut: 'name="pajak" non_data',
 								}) +
-								buatElemenHtml("fields2", {
+								createHTML("fields2", {
 									label: "Koefisien Perkalian",
 									kelas: "disabled",
 									kelas2: ["search sat_1 ajx selection", "search sat_2 ajx selection", "search sat_3 ajx selection", "search sat_4 ajx selection"],
@@ -1499,23 +1499,23 @@ $(document).ready(function () {
 									atribut: [`name="${sat_1}" placeholder="satuan..."`, `name="${sat_2}" placeholder="satuan..." non_data`, `name="${sat_3}" placeholder="satuan..." non_data`, `name="${sat_4}" placeholder="satuan..." non_data`],
 									atribut2: [`name="${vol_1}" placeholder="Koefisien..." rms onkeypress="ketikUbah(event);"`, `name="${vol_2}" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"`, `name="${vol_3}" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"`, `name="${vol_4}" placeholder="Koefisien..." non_data rms onkeypress="ketikUbah(event);"`]
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Volume",
 									classField: `required`,
 									kelas: "",
 									atribut: `name="${volumeku}" placeholder="volume..." rms readonly`,
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Koefisien (Keterangan Jumlah)",
 									kelas: "",
 									atribut: 'name="koef_ket" placeholder="keterangan jumlah..." non_data readonly',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Total Belanja",
 									kelas: "",
 									atribut: `name="${jumlahku}" placeholder="jumlah..." rms non_data readonly`,
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Catatan",
 									atribut: 'name="keterangan" rows="2" non_data',
 								});
@@ -1523,99 +1523,99 @@ $(document).ready(function () {
 						case 'sub_keg_dpa':
 						case 'sub_keg_renja':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Sub Kegiatan",
 									atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
 									kelas: "search clearable kd_sub_keg ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("accordionField", {
+								createHTML("accordionField", {
 									label: "Indikator dan Tolok Ukur Kinerja Kegiatan",
-									content: buatElemenHtml("fieldTextarea", {
+									content: createHTML("fieldTextarea", {
 										label: "Tolak Ukur Kinerja Capaian Kegiatan",
 										atribut: 'name="tolak_ukur_capaian_keg" rows="2" placeholder="tolak ukur capaian kegiatan..." non_data',
 									}) +
-										buatElemenHtml("fieldText", {
+										createHTML("fieldText", {
 											label: "Target Kinerja Capaian Kegiatan",
 											atribut: 'name="target_kinerja_capaian_keg" placeholder="target kinerja capaian keg..." non_data',
 										}) +
-										buatElemenHtml("fieldTextarea", {
+										createHTML("fieldTextarea", {
 											label: "Tolak Ukur Kinerja Keluaran",
 											atribut: 'name="tolak_ukur_keluaran" rows="2" placeholder="tolak ukur keluaran..." non_data',
 										}) +
-										buatElemenHtml("fieldText", {
+										createHTML("fieldText", {
 											label: "Target Kinerja Keluaran",
 											atribut: 'name="target_kinerja_capaian_keg" placeholder="target kinerja keluaran..." non_data',
 										}) +
-										buatElemenHtml("fieldTextarea", {
+										createHTML("fieldTextarea", {
 											label: "Tolak Ukur Kinerja Hasil",
 											atribut: 'name="tolak_ukur_hasil" rows="2" placeholder="tolak ukur hasil..." non_data',
 										}) +
-										buatElemenHtml("fieldText", {
+										createHTML("fieldText", {
 											label: "Target Kinerja Hasil",
 											atribut: 'name="target_kinerja_hasil" placeholder="target kinerja hasil..." non_data',
 										}) +
-										buatElemenHtml("fieldTextarea", {
+										createHTML("fieldTextarea", {
 											label: "Keluaran Sub Kegiatan",
 											atribut: 'name="keluaran_sub_keg" rows="2" placeholder="keluaran sub keg..." non_data',
 										})
 								}) +
-								buatElemenHtml("accordionField", {
+								createHTML("accordionField", {
 									label: "Indikator dan Tolok Ukur Kinerja Kegiatan Perubahan",
-									content: buatElemenHtml("fieldTextarea", {
+									content: createHTML("fieldTextarea", {
 										label: "Tolak Ukur Kinerja Capaian Kegiatan",
 										atribut: 'name="tolak_ukur_capaian_keg_p" rows="2" placeholder="tolak ukur capaian kegiatan..." non_data',
 									}) +
-										buatElemenHtml("fieldText", {
+										createHTML("fieldText", {
 											label: "Target Kinerja Capaian Kegiatan",
 											atribut: 'name="target_kinerja_capaian_keg_p" placeholder="target kinerja capaian keg..." non_data',
 										}) +
-										buatElemenHtml("fieldTextarea", {
+										createHTML("fieldTextarea", {
 											label: "Tolak Ukur Kinerja Keluaran",
 											atribut: 'name="tolak_ukur_keluaran_p" rows="2" placeholder="tolak ukur keluaran..." non_data',
 										}) +
-										buatElemenHtml("fieldText", {
+										createHTML("fieldText", {
 											label: "Target Kinerja Keluaran",
 											atribut: 'name="target_kinerja_capaian_keg_p" placeholder="target kinerja keluaran..." non_data',
 										}) +
-										buatElemenHtml("fieldTextarea", {
+										createHTML("fieldTextarea", {
 											label: "Tolak Ukur Kinerja Hasil",
 											atribut: 'name="tolak_ukur_hasil_p" rows="2" placeholder="tolak ukur hasil..." non_data',
 										}) +
-										buatElemenHtml("fieldText", {
+										createHTML("fieldText", {
 											label: "Target Kinerja Hasil",
 											atribut: 'name="target_kinerja_hasil_p" placeholder="target kinerja hasil..." non_data',
 										}) +
-										buatElemenHtml("fieldTextarea", {
+										createHTML("fieldTextarea", {
 											label: "Keluaran Sub Kegiatan",
 											atribut: 'name="keluaran_sub_keg_p" rows="2" placeholder="keluaran sub keg..." non_data',
 										})
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Sumber Dana",
 									atribut: 'name="sumber_dana" placeholder="pilih sumber dana..."',
 									kelas: "search clearable multiple sumber_dana ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jumlah Pagu",
 									atribut: 'name="jumlah_pagu" placeholder="jumlah (perencanaan)..." rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jumlah Pagu Perubahan",
 									atribut: 'name="jumlah_pagu_p" placeholder="jumlah (perencanaan)..." rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Lokasi",
 									atribut: 'name="lokasi" placeholder="lokasi..." non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1624,23 +1624,23 @@ $(document).ready(function () {
 						case 'tujuan_renstra':
 							let kelompok = (tbl = 'tujuan_renstra') ? 'tujuan' : 'sasaran';
 							dataHtmlku.konten =
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Kelompok",
 									atribut: `name="kelompok" placeholder="Kelompok..." value="${kelompok}" disabled`,
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: `Uraian ${kelompok}`,
 									atribut: 'name="text" rows="4" placeholder="uraian..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: `Indikator`,
 									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1649,27 +1649,27 @@ $(document).ready(function () {
 						case 'sasaran_renstra':
 							kelompok = (tbl = 'tujuan_renstra') ? 'tujuan' : 'sasaran';
 							dataHtmlku.konten =
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Kelompok",
 									atribut: `name="kelompok" placeholder="Kelompok..." value="${kelompok}" disabled`,
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: `Tujuan ${kelompok}`,
 									atribut: 'name="tujuan" rows="4" placeholder="Tujuan..." disabled',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: `Uraian ${kelompok}`,
 									atribut: 'name="text" rows="4" placeholder="uraian..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: `Indikator`,
 									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1677,7 +1677,7 @@ $(document).ready(function () {
 							break;
 						case 'tujuan_sasaran_renstra':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Kelompok",
 									atribut: 'name="kelompok"',
 									kelas: "tujuan_sasaran selection",
@@ -1686,7 +1686,7 @@ $(document).ready(function () {
 										["sasaran", "Sasaran"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Tujuan",
 									atributField: 'hidden',
 									atribut: 'name="id_tujuan" non_data',
@@ -1696,19 +1696,19 @@ $(document).ready(function () {
 										["", ""]
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="text" rows="4" placeholder="uraian..." autofocus',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: `Indikator`,
 									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1716,7 +1716,7 @@ $(document).ready(function () {
 							break;
 						case 'renstra':
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Sasaran",
 									atribut: 'name="sasaran"',
 									kelas: "search clearable sasaran_renstra ajx selection",
@@ -1724,165 +1724,165 @@ $(document).ready(function () {
 										["", ""]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Sub Kegiatan",
 									atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..."',
 									kelas: "search clearable kode ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Indikator",
 									atribut: 'name="indikator" rows="4" placeholder="indikator..."',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan" placeholder="pilih satuan..."',
 									kelas: "search clearable satuan ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									// typeText: 'number',
 									label: "Data Capaian Awal",
 									atribut: 'name="data_capaian_awal" placeholder="data capaian awal..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Target tahun 1",
 									atribut: 'name="target_thn_1" placeholder="target tahun I..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Dana tahun 1",
 									atribut: 'name="dana_thn_1" placeholder="Dana tahun I..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Target tahun 2",
 									atribut: 'name="target_thn_2" placeholder="target tahun II..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Dana tahun 2",
 									atribut: 'name="dana_thn_2" placeholder="Dana tahun II..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Target tahun 3",
 									atribut: 'name="target_thn_3" placeholder="target tahun III..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Dana tahun 3",
 									atribut: 'name="dana_thn_3" placeholder="Dana tahun III..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Target tahun 4",
 									atribut: 'name="target_thn_4" placeholder="target tahun IV..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Dana tahun 4",
 									atribut: 'name="dana_thn_4" placeholder="Dana tahun IV..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Target tahun 5",
 									atribut: 'name="target_thn_5" placeholder="target tahun V..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Dana tahun 5",
 									atribut: 'name="dana_thn_5" placeholder="Dana tahun V..." non_data rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Lokasi",
 									atribut: 'name="lokasi" placeholder="lokasi..." non_data',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
 							break;
 						case 'rekanan':
-							dataHtmlku.konten = buatElemenHtml("fieldTextAction", {
+							dataHtmlku.konten = createHTML("fieldTextAction", {
 								label: "Nama Perusahaan",
 								txtLabel: `<i class="search icon"></i>`,
 								atribut: 'name="nama_perusahaan" placeholder="Nama Perusahaan..."',
 								atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 							}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Alamat",
 									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "NPWP",
 									atribut: 'name="npwp" placeholder="NPWP..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nama Pemilik Penanda Tangan Perjanjian",
 									atribut: 'name="direktur" placeholder="Direktur..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jabatan Penanda Tangan Perjanjian",
 									atribut: 'name="jabatan" placeholder="Jabatan Penanda Tangan Perjanjian..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "No. KTP Direktur",
 									atribut: 'name="no_ktp" placeholder="KTP Direktur..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Alamat Pemilik",
 									atribut: 'name="alamat_dir" placeholder="Alamat Pemilik..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "No. Akta Pendirian",
 									atribut: 'name="no_akta_pendirian" placeholder="No. Akta pendirian..."',
 								}) +
-								buatElemenHtml("fieldCalendar", {
+								createHTML("fieldCalendar", {
 									label: "Tanggal Notaris Pendirian",
 									kelas: "date",
 									atribut:
 										'placeholder="Tanggal.." name="tgl_akta_pendirian" readonly',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Alamat Notaris",
 									atribut: 'name="lokasi_notaris_pendirian" placeholder="Alamat Notaris pendirian..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Notaris",
 									atribut: 'name="nama_notaris_pendirian" placeholder="Nama Notaris pendirian..."',
 								}) +
-								buatElemenHtml("fieldFileInput2", {
+								createHTML("fieldFileInput2", {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 									atribut: 'non_data name="file"',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" placeholder="Keterangan..." non_data',
 								}) +
-								buatElemenHtml("accordionField", {
+								createHTML("accordionField", {
 									label: "Akta Notaris Perubahan",
-									content: buatElemenHtml("text", {
+									content: createHTML("text", {
 										atribut: `name="nomor[1]" placeholder="Nomor" non_data`,
-									}) + buatElemenHtml("calendar", {
+									}) + createHTML("calendar", {
 										atribut: `name="tanggal[1]" placeholder="Tanggal" non_data`, kelas: "date"//atribut: `data-name='["satu", "tanggal"]' placeholder="Tanggal" non_data`, kelas: "date"
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="alamat_notaris[1]" placeholder="Alamat" non_data`,
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="notaris[1]" placeholder="Notaris" non_data`,
 									}),
 									atribut: 'name="notaris_perubahan"',
 								}) +
-								buatElemenHtml("accordionField", {
+								createHTML("accordionField", {
 									label: "Pelaksana",
-									content: buatElemenHtml("text", {
+									content: createHTML("text", {
 										atribut: `name="pelaksana[nama][1]" placeholder="Nama" non_data`,//gunakan object $(elm).data('name') jquery
-									}) + buatElemenHtml("text", {
+									}) + createHTML("text", {
 										atribut: `name="pelaksana[jabatan][1]" placeholder="Jabatan" non_data`,
 									}),
 									atribut: 'name="data_lain"',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1897,7 +1897,7 @@ $(document).ready(function () {
 						case "sbu":
 						case "asb":
 							dataHtmlku.konten =
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Kode Kelompok Barang/Jasa",
 									atribut: 'name="kd_aset"',
 									kelas: "search clearable aset ajx selection",
@@ -1905,32 +1905,32 @@ $(document).ready(function () {
 										["1.1.12.01.01.0010", "Isi Tabung Gas"]
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Uraian Barang/Jasa",
 									atribut: 'name="uraian_barang" rows="2" placeholder="Uraian Barang/Jasa..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Spesifikasi",
 									atribut: 'name="spesifikasi" rows="2" placeholder="Spesifikasi..."',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan"',
 									kelas: "search clearable ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Harga Satuan",
 									atribut:
 										'name="harga_satuan" placeholder="harga satuan..." rms',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "TKDN",
 									atribut:
 										'name="tkdn" placeholder="tkdn..." rms non_data',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Mapping Kode Akun dan Belanja",
 									classField: `required`,
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
@@ -1938,11 +1938,11 @@ $(document).ready(function () {
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1953,37 +1953,37 @@ $(document).ready(function () {
 						case "keg":
 						case "sub_keg":
 							dataHtmlku.konten =
-								buatElemenHtml("multiFieldTextAction", {
+								createHTML("multiFieldTextAction", {
 									label: "Kode",
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 									dataArray: ['name="urusan"', 'name="bidang"', 'name="prog"', 'name="keg"', 'name="sub_keg"']
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Nomenklatur Urusan",
 									atribut: 'name="nomenklatur_urusan" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Kinerja",
 									atribut: 'name="kinerja" rows="4" placeholder="kinerja..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Indikator",
 									atribut: 'name="indikator" rows="4" placeholder="indikator..." non_data',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Satuan",
 									atribut: 'name="satuan"',
 									kelas: "search clearable satuan ajx selection",
 									dataArray: [
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -1992,22 +1992,22 @@ $(document).ready(function () {
 						case "aset":
 						case "akun_belanja":
 							dataHtmlku.konten =
-								buatElemenHtml("multiFieldTextAction", {
+								createHTML("multiFieldTextAction", {
 									label: "Kode",
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 									dataArray: ['name="akun"', 'name="kelompok"', 'name="jenis_akun"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -2015,22 +2015,22 @@ $(document).ready(function () {
 							break;
 						case "sumber_dana":
 							dataHtmlku.konten =
-								buatElemenHtml("multiFieldTextAction", {
+								createHTML("multiFieldTextAction", {
 									label: "Kode",
 									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 									dataArray: ['name="sumber_dana"', 'name="kelompok"', 'name="jenis_akun"', 'name="objek"', 'name="rincian_objek"', 'name="sub_rincian_objek"']
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -2045,7 +2045,7 @@ $(document).ready(function () {
 							break;
 						case "peraturan":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Type Dok",
 									atribut: 'name="type_dok"',
 									kelas: "lainnya selection",
@@ -2065,51 +2065,51 @@ $(document).ready(function () {
 										["kegiatan", "File Kegiatan"],
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Judul",
 									atribut: 'name="judul" rows="3" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Uraian Singkat Peraturan",
 									atribut: 'name="judul_singkat" rows="3" placeholder="Uraian Singkat..."',
 								}) +
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "Nomor",
 									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Bentuk",
 									atribut:
 										'name="bentuk" placeholder="Bentuk(Peraturan Menteri Dalam Negeri...)"',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Bentuk Singkat",
 									atribut:
 										'name="bentuk_singkat" placeholder="bentuk singkat(permendagri)..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Tempat Penetapan",
 									atribut: 'name="t4_penetapan" placeholder="tempat penetapan..."',
 								}) +
-								buatElemenHtml("fieldCalendar", {
+								createHTML("fieldCalendar", {
 									label: "Tanggal Penetapan",
 									atribut:
 										'placeholder="Input tanggal penetapan.." name="tgl_penetapan" readonly',
 									kelas: "date",
 								}) +
-								buatElemenHtml("fieldCalendar", {
+								createHTML("fieldCalendar", {
 									label: "Tanggal Pengundangan",
 									atribut:
 										'placeholder="Input Tanggal pengundangan.." name="tgl_pengundangan" readonly',
 									kelas: "date",
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Status Data",
 									atribut: 'name="status"',
 									kelas: "lainnya selection",
@@ -2119,20 +2119,20 @@ $(document).ready(function () {
 										["kegiatan", "Dokumen kegiatan"],
 									],
 								}) +
-								buatElemenHtml("fieldFileInput2", {
+								createHTML("fieldFileInput2", {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
 									atribut: 'non_data',
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
 							break;
 						case "mapping":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Kode Kelompok Barang/Jasa",
 									atribut: 'name="kd_aset"',
 									kelas: "search clearable aset ajx selection",
@@ -2140,7 +2140,7 @@ $(document).ready(function () {
 										["1.1.12.01.01.0010", "Isi Tabung Gas"]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Rekening / Akun",
 									classField: `required`,
 									atribut: 'name="kd_akun" placeholder="pilih rekening/akun..."',
@@ -2149,7 +2149,7 @@ $(document).ready(function () {
 										["", ""]
 									],
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Jenis Standar Harga",
 									classField: `required`,
 									atribut: 'name="kelompok" placeholder="jenis standar harga..."',
@@ -2161,11 +2161,11 @@ $(document).ready(function () {
 										["asb", "ASB"]
 									],
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -2173,42 +2173,42 @@ $(document).ready(function () {
 							break;
 						case "organisasi":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "Kode",
 									atribut: 'name="kode" placeholder="Nomor Peraturan..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Nama SKPD",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Alamat",
 									atribut:
 										'name="alamat" placeholder="Alamat OPD..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Kepala OPD",
 									atribut:
 										'name="nama_kepala" placeholder="Nama Kepala SKPD..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Nip. Kepala OPD",
 									atribut:
 										'name="nip_kepala" placeholder="Nip. Kepala SKPD..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4"',
 								}) +
-								buatElemenHtml("fieldFileInput2", {
+								createHTML("fieldFileInput2", {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 									atribut: 'non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -2216,17 +2216,17 @@ $(document).ready(function () {
 							break;
 						case "wilayah":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "Kode Wilayah",
 									atribut: 'name="kode" placeholder="Kode Wilayah..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Nama Wilayah",
 									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
-								buatElemenHtml("fieldDropdown", {
+								createHTML("fieldDropdown", {
 									label: "Status Wilayah",
 									atribut: 'name="status"',
 									kelas: "lainnya selection",
@@ -2240,48 +2240,48 @@ $(document).ready(function () {
 										["lain", "Lainnya"],
 									],
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jumlah Kecamatan",
 									atribut:
 										'name="jml_kec" placeholder="Jumlah Kecamatan..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jumlah Keluarahan",
 									atribut:
 										'name="jml_kel" placeholder="Jumlah Keluarahan..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jumlah Desa",
 									atribut:
 										'name="jml_desa" placeholder="Jumlah Desa..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Luas Wilayah (km2)",
 									atribut:
 										'name="luas" placeholder="Luas Wilayah (km2)..."',
 								}) +
-								buatElemenHtml("fieldText", {
+								createHTML("fieldText", {
 									label: "Jumlah Penduduk (jiwa)",
 									atribut:
 										'name="penduduk" placeholder="Jumlah penduduk (jiwa)..."',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4"',
 								}) +
-								buatElemenHtml("fieldFileInput2", {
+								createHTML("fieldFileInput2", {
 									label: "Pilih File Dokumen",
 									placeholderData: "Pilih File...",
 									atribut: 'non_data',
 									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx,.mp4",
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
 								});
 							if (jenis === 'edit') {
-								dataHtmlku.konten += buatElemenHtml("card3", {
+								dataHtmlku.konten += createHTML("card3", {
 									label: "Logo Daerah",
 									atribut: `for="directupload1" id_row="${id_row}" name="direct" type="button" jns="upload" tbl="wilayah_logo" dok="logo" accept=".jpg,.png,.jpeg,.img"`,
 								})
@@ -2289,25 +2289,25 @@ $(document).ready(function () {
 							break;
 						case "satuan":
 							dataHtmlku.konten +=
-								buatElemenHtml("fieldTextAction", {
+								createHTML("fieldTextAction", {
 									label: "Kode Pengenal",
 									atribut: 'name="value" placeholder="Kode Pengenal..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Uraian HTML",
 									atribut: 'name="item" rows="2"',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Sebutan Lain",
 									atribut: 'name="sebutan_lain" rows="4"',
 								}) +
-								buatElemenHtml("fieldTextarea", {
+								createHTML("fieldTextarea", {
 									label: "Keterangan",
 									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
-								buatElemenHtml("fielToggleCheckbox", {
+								createHTML("fielToggleCheckbox", {
 									label: "",
 									atribut: 'name="disable" non_data',
 									txtLabel: "Non Aktif",
@@ -2322,7 +2322,7 @@ $(document).ready(function () {
 				case "import":
 					let templateXlsx = linkTemplate[tbl];
 					if (templateXlsx) {
-						dataHtmlku.konten = buatElemenHtml("fieldLabel", {
+						dataHtmlku.konten = createHTML("fieldLabel", {
 							label: "Download Template",
 							icon: "download green",
 							value: "Download Template",
@@ -2335,13 +2335,13 @@ $(document).ready(function () {
 					dataHtmlku.icon = "file excel icon green";
 					dataHtmlku.header = "Import data dari file Excel";
 					//file
-					dataHtmlku.konten += buatElemenHtml("fieldFileInput2", {
+					dataHtmlku.konten += createHTML("fieldFileInput2", {
 						label: "Pilih File Dokumen",
 						placeholderData: "Pilih File (*.xlsx)...",
 						accept: ".xlsx",
 					}); //non_data(artinya tidak di dicek form)
 					//dropdown
-					dataHtmlku.konten += buatElemenHtml("fieldDropdown", {
+					dataHtmlku.konten += createHTML("fieldDropdown", {
 						label: "Jumlah Header Tabel",
 						atribut: 'name="jml_header"',
 						kelas: "lainnya selection",
@@ -2386,12 +2386,12 @@ $(document).ready(function () {
 						default:
 							break;
 					}
-					dataHtmlku.konten += buatElemenHtml("fieldFileInput2", {
+					dataHtmlku.konten += createHTML("fieldFileInput2", {
 						label: "Pilih File Dokumen",
 						placeholderData: `Pilih File (${acceptFileExt})...`,
 						accept: acceptFileExt,
 						file: data.dok
-					}) + buatElemenHtml("card4", {
+					}) + createHTML("card4", {
 
 					}); //non_data(artinya tidak di dicek form)
 					//dropdown
@@ -3391,7 +3391,7 @@ $(document).ready(function () {
 					case 'menetapkan_4':
 					case 'tembusan':
 						let Tbody = ini.closest('table').find('tbody');
-						let elmTr = buatElemenHtml("tr_tabel", {
+						let elmTr = createHTML("tr_tabel", {
 							bodyTable: [[
 								{ lbl: `<div contenteditable=""></div>` },
 								{ lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>` }, { class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
@@ -3620,7 +3620,7 @@ $(document).ready(function () {
 			tbl: tblAttr,
 			halaman: halaman
 		};
-		let elementForm = buatElemenHtml("fieldTextIcon", {
+		let elementForm = createHTML("fieldTextIcon", {
 			label: "Uraian Pengelompokan Belanja",
 			classField: `required`,
 			atribut: 'name="uraian" placeholder="pengelompokan belanja..."',
@@ -3645,56 +3645,56 @@ $(document).ready(function () {
 						)
 						// 		case "messageLink":
 						// elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
-						elementForm = buatElemenHtml("message", {
+						elementForm = createHTML("message", {
 							color: "positive",
 							icon: `exclamation icon`,
 							label: `Perhatian`,
 							value: `<ul class="list"><li>jika mengedit data dan merubah "Nomor Surat" maka akan dianggap tambah data baru jika di simpan;</li><li>simpan terlebih dahulu sebelum cetak dokumen.</li></ul>`,
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							classField: "three",
-							content: buatElemenHtml("fieldText", {
+							content: createHTML("fieldText", {
 								label: "Nomor Surat",
 								classField: `required`,
 								atribut: `name="nomor" placeholder="Nomor Surat"`,
-							}) + buatElemenHtml("fieldCalendar", {
+							}) + createHTML("fieldCalendar", {
 								classField: `required`,
 								kelas: "date",
 								label: "Tanggal Surat",
 								atribut: `name="tgl_surat_dibuat" placeholder="tanggal" readonly`,
-							}) + buatElemenHtml("fieldFileInput2", {
+							}) + createHTML("fieldFileInput2", {
 								label: "Pilih File Dokumen",
 								placeholderData: "Pilih File...",
 								accept: ".jpg,.jpeg,.png,.pdf,.docx",
 								atribut: 'non_data',
 							})
 						}) +
-							buatElemenHtml("fieldTextarea", {
+							createHTML("fieldTextarea", {
 								label: "Tentang",
 								classField: `required`,
 								atribut: `name="tentang" placeholder="tentang" rows="2"`,
 							}) +
-							buatElemenHtml("fields", {
+							createHTML("fields", {
 								classField: "three",
-								content: buatElemenHtml("fieldDropdown", {
+								content: createHTML("fieldDropdown", {
 									label: "Pemberi Tugas",
 									classField: `ten wide required`,
 									atribut: 'name="pemberi_tgs" placeholder="Pemberi Tugas..."',
 									kelas: "search clearable pemberi_tgs ajx selection",
 									dataArray: []
-								}) + buatElemenHtml("fieldText", {
+								}) + createHTML("fieldText", {
 									label: "Jabatan Pemberi Tugas",
 									classField: `three wide required`,
 									atribut: `name="jbt_pemberi_tgs" placeholder="Jabatan Pemberi Tugas"`,
-								}) + buatElemenHtml("fieldText", {
+								}) + createHTML("fieldText", {
 									label: "Pangkat Pemberi Tugas",
 									classField: `three wide required`,
 									atribut: `name="pangkat_pemberi_tgs" placeholder="Nomor Surat"`,
 								})
-							}) + buatElemenHtml("divider", {
+							}) + createHTML("divider", {
 								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `MENIMBANG`
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="menimbang"`,
 								kelas: `celled structured`,
 								headerTable: [[{ attr: '', lbl: `URAIAN` },
@@ -3711,11 +3711,11 @@ $(document).ready(function () {
 									attr: ``
 								}],
 								bodyTable: []
-							}) + buatElemenHtml("divider", {
+							}) + createHTML("divider", {
 								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `MENGINGAT`
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="mengingat"`,
 								kelas: `celled structured`,
 								headerTable: [[{ attr: '', lbl: `URAIAN` },
@@ -3732,11 +3732,11 @@ $(document).ready(function () {
 									attr: ``
 								}],
 								bodyTable: []
-							}) + buatElemenHtml("divider", {
+							}) + createHTML("divider", {
 								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `MENETAPKAN`
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="menetapkan_1"`,
 								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KESATU` },
@@ -3744,7 +3744,7 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_1"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="menetapkan_2"`,
 								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KEDUA` },
@@ -3752,7 +3752,7 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_2"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="menetapkan_3"`,
 								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KETIGA` },
@@ -3760,7 +3760,7 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_3"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="menetapkan_4"`,
 								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `KEEMPAT` },
@@ -3768,16 +3768,16 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan_4"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
-							}) + buatElemenHtml("divider", {
+							}) + createHTML("divider", {
 								header: "h4",
 								icon2: `<i class="users icon"></i>`,
 								label: `ASN YANG DITUGASKAN`//@audit cetak sk
-							}) + buatElemenHtml("fieldDropdown", {
+							}) + createHTML("fieldDropdown", {
 								label: "Nama ASN ditugaskan",
 								atribut: 'name="asn" placeholder="Nama ASN ditugaskan..." non_data',
 								kelas: "search clearable asn ajx selection",
 								dataArray: []
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="nama_ditugaskan"`,
 								kelas: `stackable celled structured`,
 								headerTable: [[{ attr: '', lbl: `NAMA` },
@@ -3789,15 +3789,15 @@ $(document).ready(function () {
 								footerTable: [],
 								bodyTable: []
 							}) +
-							buatElemenHtml("fielToggleCheckbox", {
+							createHTML("fielToggleCheckbox", {
 								label: "",
 								atribut: 'name="bentuk_lampiran" non_data',
 								txtLabel: "Lampiran SK bentuk Tabel",
-							}) + buatElemenHtml("divider", {
+							}) + createHTML("divider", {
 								header: "h4",
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `TEMBUSAN`
-							}) + buatElemenHtml("tabel2", {
+							}) + createHTML("tabel2", {
 								atribut: `name="tembusan"`,
 								kelas: `celled structured`,
 								headerTable: [[{ attr: '', lbl: `URAIAN` },
@@ -3805,65 +3805,65 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menetapkan"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [],
 								bodyTable: []
-							}) + buatElemenHtml("fieldTextarea", {
+							}) + createHTML("fieldTextarea", {
 								label: "Keterangan",
 								atribut: 'name="keterangan" placeholder="keterangan" rows="2" non_data',
-							}) + buatElemenHtml("fielToggleCheckbox", {
+							}) + createHTML("fielToggleCheckbox", {
 								label: "",
 								atribut: 'name="disable" non_data',
 								txtLabel: "Non Aktif",
-							}) + buatElemenHtml("dividerHidden", {
+							}) + createHTML("dividerHidden", {
 							});
 						break;
 					case 'realisasi':
 						if (jnsAttr === 'add') {
-							elementForm = buatElemenHtml("fieldSearchGrid", {
+							elementForm = createHTML("fieldSearchGrid", {
 								label: "Uraian Pengelompokan Belanja",
 								kelas: `sub_keg_dpa`,
 								atribut: 'name="nama_paket_search" placeholder="Cari Nama Paket..."',
 							})
 						}
-						elementForm += buatElemenHtml("fieldTextarea", {
+						elementForm += createHTML("fieldTextarea", {
 							label: "Nama Paket",
 							atribut: 'name="uraian" placeholder="uraian..." rows="3" readonly',
-						}) + buatElemenHtml("text", {
+						}) + createHTML("text", {
 							atribut: 'name="jumlah_realisasi" placeholder="jumlah realisasi" rules="decimal" hidden',
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							classField: "three",
 							label: "Jadwal Pengadaan",
-							content: buatElemenHtml("fieldText", {
+							content: createHTML("fieldText", {
 								label: "Volume",
 								atribut: `name="volume" placeholder="Volume" non_data readonly`,
-							}) + buatElemenHtml("fieldText", {
+							}) + createHTML("fieldText", {
 								classField: "",
 								label: "Satuan",
 								atribut: `name="satuan" placeholder="Satuan" non_data readonly`,
-							}) + buatElemenHtml("fieldText", {
+							}) + createHTML("fieldText", {
 								label: "Jumlah Kontrak",
 								atribut: `name="jumlah" placeholder="Jumlah Kontrak" non_data readonly`,
 							})
-						}) + buatElemenHtml("divider", {
+						}) + createHTML("divider", {
 							header: "h5",
 							aligned: 'left aligned',
 							icon2: `<i class="feather alternate icon"></i>`,
 							label: `Rincian Paket`
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							classField: "two",
 							label: "Jadwal Pengadaan",
-							content: buatElemenHtml("fieldCalendar", {
+							content: createHTML("fieldCalendar", {
 								label: "Tanggal",
 								atribut:
 									'placeholder="Input Tanggal SPJ..." name="tanggal" readonly',
 								kelas: "date",
-							}) + buatElemenHtml("fieldFileInput2", {
+							}) + createHTML("fieldFileInput2", {
 								label: "Pilih File Dokumen",
 								placeholderData: "Pilih File...",
 								accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx",
 								atribut: 'non_data',
 							})
-						}) + buatElemenHtml("div", {
+						}) + createHTML("div", {
 							kelas: "ui scrolling container",
-							content: buatElemenHtml("tabel2", {
+							content: createHTML("tabel2", {
 								kelas: `head foot stuck unstackable celled mini structured tblUraian`,
 								headerTable: [[
 									{ attr: 'rowspan="2"', class: 'collapsing', lbl: `SUB KEGIATAN` },
@@ -3909,7 +3909,7 @@ $(document).ready(function () {
 								}],
 								bodyTable: []
 							}),
-						}) + buatElemenHtml("fieldTextarea", {
+						}) + createHTML("fieldTextarea", {
 							label: "Keterangan",
 							atribut: 'name="keterangan" placeholder="keterangan spj" rows="2"',
 						});
@@ -3971,47 +3971,47 @@ $(document).ready(function () {
 					case 'hspk':
 					case 'asb':
 						var kelasSearch = ini.closest('.ui.form').find('.ui.dropdown[name="jenis_standar_harga"').dropdown('get value')
-						elementForm = buatElemenHtml("text", {
+						elementForm = createHTML("text", {
 							atribut: 'name="id" placeholder="Pilih komponen" readonly hidden',
-						}) + buatElemenHtml("fieldSearchGrid", {
+						}) + createHTML("fieldSearchGrid", {
 							kelas2: '',
 							kelas: `${kelasSearch}`,
 							atribut: 'name="uraian" non_data',
 						}) +
-							buatElemenHtml("fieldText", {
+							createHTML("fieldText", {
 								label: "Kode Komponen",
 								atribut: 'name="kd_aset" placeholder="kode komponen..." non_data readonly',
 							}) +
-							buatElemenHtml("fieldTextarea", {
+							createHTML("fieldTextarea", {
 								label: "Uraian",
 								atribut: 'name="uraian_barang" placeholder="uraian..." rows="2" readonly',
 							}) +
-							buatElemenHtml("fieldTextarea", {
+							createHTML("fieldTextarea", {
 								label: "Spesifikasi",
 								atribut: 'name="spesifikasi" placeholder="spesifikasi..." rows="2" non_data readonly',
 							}) +
-							buatElemenHtml("fieldText", {
+							createHTML("fieldText", {
 								label: "Satuan",
 								kelas: "",
 								atribut: 'name="satuan" placeholder="satuan..."non_data readonly',
 							}) +
-							buatElemenHtml("fieldText", {
+							createHTML("fieldText", {
 								label: "Harga Satuan Komponen",
 								atribut: 'name="harga_satuan" placeholder="Harga Satuan Komponen" rms non_data readonly',
 							}) +
-							buatElemenHtml("fieldText", {
+							createHTML("fieldText", {
 								label: "TKDN",
 								atribut: 'name="tkdn" placeholder="tkdn..." non_data readonly',
 							}) +
-							buatElemenHtml("fieldTextarea", {
+							createHTML("fieldTextarea", {
 								label: "Mapping Kode Akun",
 								atribut: 'name="kd_akun" placeholder="Mapping Kode Akun..." rows="2" readonly',
 							}) +
-							buatElemenHtml("fieldTextarea", {
+							createHTML("fieldTextarea", {
 								label: "Keterangan",
 								atribut: 'name="keterangan" placeholder="keterangan..." rows="3" non_data readonly',
 							}) +
-							buatElemenHtml("fielToggleCheckbox", {
+							createHTML("fielToggleCheckbox", {
 								label: "",
 								atribut: 'name="disable" non_data readonly',
 								txtLabel: "Non Aktif",
@@ -4034,25 +4034,25 @@ $(document).ready(function () {
 						}
 						formIni.attr('jns', 'add_uraian').attr('tbl', tblAttr);
 						mdl.removeClass("tiny");
-						elementForm = buatElemenHtml("fieldSearchGrid", {
+						elementForm = createHTML("fieldSearchGrid", {
 							kelas: `uraian`,
 							atribut: 'name="uraian" placeholder="cari..." non_data',
 						}) +
-							buatElemenHtml("fieldDropdown", {
+							createHTML("fieldDropdown", {
 								label: "Sub Kegiatan",
 								atribut: 'name="kd_sub_keg" placeholder="pilih sub kegiatan..." non_data',
 								kelas: "search clearable kd_sub_keg ajx selection",
 								dataArray: []
-							}) + buatElemenHtml("text", {
+							}) + createHTML("text", {
 								atribut: 'name="jumlah" placeholder="jumlah kontrak" rules="decimal" hidden',
 							}) +
-							buatElemenHtml("divider", {
+							createHTML("divider", {
 								header: "h5",
 								aligned: 'left aligned',
 								icon2: `<i class="feather alternate icon"></i>`,
 								label: `Uraian`
 							}) +
-							buatElemenHtml("tabel", {
+							createHTML("tabel", {
 								headerTable: [
 									{ class: 'collapsing', lbl: `SUB KEGIATAN` },
 									{ lbl: `URAIAN` }, { lbl: `VOL.` }, { lbl: `SAT.` }, { lbl: `PAGU` }, {
@@ -4082,10 +4082,10 @@ $(document).ready(function () {
 				switch (tblAttr) {
 					case 'berita':
 
-						elementForm = buatElemenHtml("piledSegment", {
+						elementForm = createHTML("piledSegment", {
 							atribut: `name="${klmAttr}" `,
 						}) +
-							buatElemenHtml("fieldTextarea", {
+							createHTML("fieldTextarea", {
 								label: "Markup HTML",
 								atribut: `name="${klmAttr}" placeholder="keterangan..." rows="5"`,
 							})
@@ -4104,7 +4104,7 @@ $(document).ready(function () {
 			default:
 				break;
 		}
-		elementForm += buatElemenHtml("errorForm");
+		elementForm += createHTML("errorForm");
 		formIni.html(elementForm);
 		$('.ui.sticky').sticky('refresh');
 		let modalGeneral = new ModalConstructor(mdl);
@@ -4149,7 +4149,7 @@ $(document).ready(function () {
 					case 'berita':
 						let komponen = $(`form[name="form_flyout"]`).form('get value', klmAttr);
 						$(`form[name="form_modal"]`).form('set value', klmAttr, komponen)
-						let elmTambahan = buatElemenHtml("ribbonLabel", {
+						let elmTambahan = createHTML("ribbonLabel", {
 							label: "Result HTML",
 							posisi: "right",
 							kelas: "yellow",
@@ -4301,7 +4301,7 @@ $(document).ready(function () {
 														let keyObject = Object.keys(dataResult[key])
 														switch (attrTable) {
 															case 'nama_ditugaskan':
-																let elmTrName = buatElemenHtml("tr_tabel", {
+																let elmTrName = createHTML("tr_tabel", {
 																	bodyTable: [[
 																		{ lbl: `<div contenteditable="">${dataResult[key]['nama']}</div>` },
 																		{ lbl: `<div contenteditable="">${dataResult[key]['pangkat']}</div></td>` },
@@ -4314,7 +4314,7 @@ $(document).ready(function () {
 																tbodyElemen.append(elmTrName);
 																break;
 															default:
-																let elmTr = buatElemenHtml("tr_tabel", {
+																let elmTr = createHTML("tr_tabel", {
 																	bodyTable: [[
 																		{ lbl: `<div contenteditable="">${dataResult[key][keyObject[0]]}</div>` },
 																		{ lbl: `<button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button>` }, { class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
@@ -4458,10 +4458,10 @@ $(document).ready(function () {
 			case 'get_data':
 				switch (tblAttr) {
 					case 'realisasi':
-						elementForm += buatElemenHtml("fieldText", {
+						elementForm += createHTML("fieldText", {
 							label: "Sub Kegiatan",
 							atribut: 'name="uraian" placeholder="uraian..." readonly',
-						}) + buatElemenHtml("fieldText", {
+						}) + createHTML("fieldText", {
 							label: "Akun Belanja",
 							atribut: 'name="uraian" placeholder="uraian..." readonly',
 						})
@@ -4474,97 +4474,97 @@ $(document).ready(function () {
 				switch (tblAttr) {
 					case 'sk_asn'://@audit cetak sk
 						var id_row_form_modal = $('form[name="form_modal"]').attr('id_row');
-						elementForm = buatElemenHtml("text", {
+						elementForm = createHTML("text", {
 							atribut: 'name="id_row" placeholder="surat keputusan" rules="decimal" hidden',
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							classField: "two",
-							content: buatElemenHtml("fieldDropdown", {
+							content: createHTML("fieldDropdown", {
 								label: "Dokumen",
 								classField: `required`,
 								atribut: 'name="dokumen" placeholder="Jenis Dokumen..."',
 								kelas: "read-only selection lainnya",
 								dataArray: [['sk_asn', 'Surat Keputusan'], ['kontrak', 'Kontrak']]
-							}) + buatElemenHtml("fieldCalendar", {
+							}) + createHTML("fieldCalendar", {
 								classField: `required`,
 								kelas: "date",
 								label: "Tanggal Surat",
 								atribut: `name="tgl_surat_dibuat" placeholder="tanggal" disabled`,
 							})
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							classField: "two",
-							content: buatElemenHtml("fieldDropdown", {
+							content: createHTML("fieldDropdown", {
 								label: "Ukuran Kertas",
 								classField: `twelve wide required`,
 								atribut: 'name="ukuran_kertas" placeholder="Ukuran Kertas..."',
 								kelas: "selection lainnya",
 								dataArray: [['header', '<i class="tags icon"></i>Pilih Ukuran Kertas'], ['letter', 'Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in'], ['legal', 'Legal ( 216 x 356 ) mm = ( 8.50 x 14.00 ) in'], ['divider'], ['A4', 'A4 ( 210 x 297 ) mm = ( 8,27 x 11,69 ) in'], ['A3', 'A3 ( 297 × 420 ) mm = ( 11,69 x 16,54 ) in'], ['divider'], ['F4', 'F4 ( 215 × 330 ) mm = ( 11,69 x 16,54 ) in', 'active'], ['custom', 'Custom']]//Kertas Seri A merupakan serangkaian kertas yang ukurannya diatur oleh ISO 216. Rasio tinggi dan lebar setiap kertas sama, yaitu 1:1,41.A0: 841 x 1.189 mm atau 33,11 x 46,81 inci.
-							}) + buatElemenHtml("fieldText", {
+							}) + createHTML("fieldText", {
 								classField: `four wide required`,
 								kelas: "date",
 								label: "Ukuran Huruf (%)",
 								atribut: `name="ukuran_huruf" placeholder="Ukuran Huruf (%)" rms value="100"`,
 							})
-						}) + buatElemenHtml("icon_menu", {
+						}) + createHTML("icon_menu", {
 							label: "Orientasi",
 							atribut: 'name="orientasi" value="portrait"',
 							kelas: "",
 							dataArray: [{ class: 'aksi active', lbl: '<i class="id badge icon"></i>Portrait', attr: 'value="portrait" jns="orientasi"' }, { class: 'aksi', lbl: '<i class="id card icon"></i>Lanscape', attr: 'value="lanscape" jns="orientasi"' }]
-						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Margin Halaman (mm)' }) + buatElemenHtml("fields", {
+						}) + createHTML("dividerClearing") + createHTML("header", { header: 'h3', content: 'Margin Halaman (mm)' }) + createHTML("fields", {
 							classField: "two",
-							content: buatElemenHtml("fieldText", {
+							content: createHTML("fieldText", {
 								label: "Atas",
 								classField: `required`,
 								atribut: `name="margin_top" placeholder="Margin Atas" rms value="20"`,
-							}) + buatElemenHtml("fieldText", {
+							}) + createHTML("fieldText", {
 								label: "Bawah",
 								classField: `required`,
 								atribut: `name="margin_bottom" placeholder="Margin Bawah" rms value="20"`,
 							})
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							classField: "two",
-							content: buatElemenHtml("fieldText", {
+							content: createHTML("fieldText", {
 								label: "Kiri",
 								classField: `required`,
 								atribut: `name="margin_kiri" placeholder="Margin Kiri" rms value="20"`,
-							}) + buatElemenHtml("fieldText", {
+							}) + createHTML("fieldText", {
 								label: "Kanan",
 								classField: `required`,
 								atribut: `name="margin_kanan" placeholder="Margin Kanan" rms value="20"`,
 							})
-						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("fields", {
+						}) + createHTML("dividerClearing") + createHTML("fields", {
 							classField: "two",
-							content: buatElemenHtml("fielToggleCheckbox", {
+							content: createHTML("fielToggleCheckbox", {
 								label: "",
 								atribut: 'name="header" non_data readonly',
 								txtLabel: "Aktifkan Header",
-							}) + buatElemenHtml("fielToggleCheckbox", {
+							}) + createHTML("fielToggleCheckbox", {
 								atribut: 'name="footer" non_data readonly',
 								txtLabel: "Aktifkan Footer",
 							})
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							classField: "two",
-							content: buatElemenHtml("fieldText", {
+							content: createHTML("fieldText", {
 								label: "Header",
 								classField: `required`,
 								atribut: `name="margin_header" placeholder="Margin Header" rms value="10"`,
-							}) + buatElemenHtml("fieldText", {
+							}) + createHTML("fieldText", {
 								label: "Footer",
 								classField: `required`,
 								atribut: `name="margin_footer" placeholder="Margin Footer" rms value="10"`,
 							})
-						}) + buatElemenHtml("dividerClearing") + buatElemenHtml("header", { header: 'h3', content: 'Kop Surat' }) + buatElemenHtml("fielToggleCheckbox", {
+						}) + createHTML("dividerClearing") + createHTML("header", { header: 'h3', content: 'Kop Surat' }) + createHTML("fielToggleCheckbox", {
 							atribut: 'name="cetak_kop" checked="checked" non_data readonly',
 							txtLabel: "Cetak Kop Surat",
-						}) + buatElemenHtml("fields", {
+						}) + createHTML("fields", {
 							label: "Kop standar dinas",
 							classField: "grouped",
 							atribut: 'name="ceklist_kop"',
-							content: buatElemenHtml("label", {
+							content: createHTML("label", {
 								label: "Jenis Kop Cetak"
-							}) + buatElemenHtml("fieldRadioCheckbox", {
+							}) + createHTML("fieldRadioCheckbox", {
 								label: "Kop standar dinas",
 								atribut: `name="kop_dns" checked="checked" value="standar"`,
-							}) + buatElemenHtml("fieldRadioCheckbox", {
+							}) + createHTML("fieldRadioCheckbox", {
 								label: "Kop gambar (custom)",
 								atribut: `name="kop_dns" value="custom"`,
 							})
@@ -4578,7 +4578,7 @@ $(document).ready(function () {
 				break;
 		}
 		let tampilkan_toast = false;
-		elementForm += buatElemenHtml("errorForm");
+		elementForm += createHTML("errorForm");
 		formIni.html(elementForm);
 		$('.ui.sticky').sticky('refresh');
 		let modalsecond = new ModalConstructor(mdl);
@@ -4764,7 +4764,7 @@ $(document).ready(function () {
 												case 'asn'://wait
 													if (typeof elm.closest('form[tbl="sk_asn"]') !== 'undefined') {
 														let elmTabelAsnSK = elm.closest('form').find('table[name="nama_ditugaskan"] tbody');
-														let trRow = buatElemenHtml("tr_tabel", {
+														let trRow = createHTML("tr_tabel", {
 															bodyTable: [[
 																{ lbl: `<div contenteditable>${text}</div>` },
 																{ lbl: `<div contenteditable>${dataObj.Pangkat}</div>` }, { lbl: `<div contenteditable>${value}</div>` }, { lbl: `<div contenteditable="">${dataObj.Jabatan}</div>` }, { lbl: `<div contenteditable></div>` }, { class: 'collapsing', lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>` }]
@@ -6723,7 +6723,7 @@ $(document).ready(function () {
 	//====MEMBUAT ELEMEN HTML================
 	//====contohdataElemen={atribut:'name="tambah" jns="harga_satuan" tbl="input"'}
 	//================================
-	function buatElemenHtml(namaElemen = "", dataElemen = {}) {//@audit-ok create elm
+	function createHTML(namaElemen = "", dataElemen = {}) {//@audit-ok createHTML
 		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
 		let labelTambahan = "labelTambahan" in dataElemen ? dataElemen.labelTambahan : "";
 		let content = "content" in dataElemen ? dataElemen.content : "";
@@ -7164,7 +7164,7 @@ $(document).ready(function () {
 				if ((typeof atribut) === "object") {
 					atribut.forEach(myFunction);
 					function myFunction(item, index, arr) {
-						elm += buatElemenHtml("fieldTxtDropdownLabel", {
+						elm += createHTML("fieldTxtDropdownLabel", {
 							label: "Koefisien Perkalian",
 							kelas: kelas2[index],
 							textDrpdown: 'sat.',
