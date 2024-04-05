@@ -2968,7 +2968,7 @@ $(document).ready(function () {
 								$(".ui.flyout").flyout("toggle");
 								break;
 							case 'get_data':
-								let pengenal = { rekanan: { 404: 'nama perusahaan dapat digunakan', 302: 'nama rekanan sudah digunakan, update atau gunakan nama rekanan lain' },asn: { 404: 'nip dapat digunakan', 302: 'nip sudah digunakan, update atau gunakan nip lain' } }
+								let pengenal = { rekanan: { 404: 'nama perusahaan dapat digunakan', 302: 'nama rekanan sudah digunakan, update atau gunakan nama rekanan lain' }, asn: { 404: 'nip dapat digunakan', 302: 'nip sudah digunakan, update atau gunakan nip lain' } }
 								switch (jenis) {
 									case 'get_data':
 										switch (tbl) {
@@ -2988,14 +2988,14 @@ $(document).ready(function () {
 												}
 												break;
 											default:
-												if(pengenal.hasOwnProperty(tbl)){
+												if (pengenal.hasOwnProperty(tbl)) {
 													if (result.error.code === 404) {
 														result.error.message = pengenal[tbl]['404'];
 													} else {
 														kelasToast = "warning";
 														result.error.message = pengenal[tbl]['302'];
 													}
-												}else{
+												} else {
 													if (result.error.code === 404) {
 														result.error.message = 'value dapat digunakan';
 													} else {
@@ -3003,7 +3003,7 @@ $(document).ready(function () {
 														result.error.message = 'value sudah digunakan, update data atau gunakan value lain';
 													}
 												}
-												
+
 												break;
 										}
 										break;
