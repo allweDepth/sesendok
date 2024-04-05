@@ -63,6 +63,29 @@
     </div>
     <div class="ui vertical stripe segment">
         <div class="ui middle aligned stackable grid container">
+        <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
+            <div class="ui items">
+                <div class="item">
+                    <div class="image"><img src="img/bps.png"></div>
+                    <div class="content"><a class="header" href="https://mamujuutarakab.bps.go.id" target="_blank">Pasangkayu dalam angka</a>
+                        <div class="meta"><span>Description</span></div>
+                        <div class="description">
+                            <p>Badan Pusat Statistik adalah Lembaga Pemerintah Non Kementerian yang bertanggung jawab langsung kepada Presiden. Sebelumnya, BPS merupakan Biro Pusat Statistik, yang dibentuk berdasarkan UU Nomor 6 Tahun 1960 tentang Sensus dan UU Nomer 7 Tahun 1960 tentang Statistik. Sebagai pengganti kedua UU tersebut ditetapkan UU Nomor 16 Tahun 1997 tentang Statistik. Berdasarkan UU ini yang ditindaklanjuti dengan peraturan perundangan dibawahnya, secara formal nama Biro Pusat Statistik diganti menjadi Badan Pusat Statistik.</p>
+                        </div>
+                        <div class="extra">Additional Details </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="image"><img src="img/logo_garuda.png"></div>
+                    <div class="content"><a class="header" href="http://lpse.pasangkayukab.go.id" target="_blank">LPSE Kabupaten Pasangkayu</a>
+                        <div class="meta"><span>Description</span></div>
+                        <div class="description">
+                            <p>Layanan Pengadaan Secara Elektronik adalah layanan pengelolaan teknologi informasi untuk memfasilitasi pelaksanaan Pengadaan Barang/Jasa secara elektronik. UKPBJ/Pejabat Pengadaan pada Kementerian/Lembaga/Perangkat Daerah yang tidak memiliki Layanan Pengadaan Secara Elektronik dapat menggunakan fasilitas Layanan Pengadaan Secara Elektronik yang terdekat dengan tempat kedudukannya untuk melaksanakan pengadaan secara elektronik. Selain memfasilitasi UKPBJ/Pejabat Pengadaan dalam melaksanakan pengadaan barang/jasa secara elektronik Layanan Pengadaan Secara Elektronik juga melayani registrasi penyedia barang dan jasa yang berdomisili di wilayah kerja Layanan Pengadaan Secara Elektronik yang bersangkutan.. </p>
+                        </div>
+                        <div class="extra">Additional Details </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="eight wide column">
                     <h3 class="ui header">Kami Membantu Membangun Infrastruktur</h3>
@@ -108,5 +131,6 @@
             <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
             <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
             <a class="ui large button">I'm Still Quite Interested</a>
+            
         </div>
     </div>

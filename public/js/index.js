@@ -3816,6 +3816,7 @@ $(document).ready(function () {
 							});
 						break;
 					case 'realisasi':
+						mdl.addClass("big");
 						if (jnsAttr === 'add') {
 							elementForm = createHTML("fieldSearchGrid", {
 								label: "Uraian Pengelompokan Belanja",
@@ -3862,7 +3863,7 @@ $(document).ready(function () {
 								atribut: 'non_data',
 							})
 						}) + createHTML("div", {
-							kelas: "ui scrolling container",
+							kelas: "ui scrolling",
 							content: createHTML("tabel2", {
 								kelas: `head foot stuck unstackable celled mini structured tblUraian`,
 								headerTable: [[
