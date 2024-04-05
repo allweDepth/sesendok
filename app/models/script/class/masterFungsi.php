@@ -3912,54 +3912,54 @@ class MasterFungsi
         return $data;
     }
     public function tanggal($tanggal, $add = 0)
-{
-    $nama_hari = ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"];
-    $nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    {
+        $nama_hari = ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"];
+        $nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-    // Ubah tanggal MySQL menjadi timestamp
-    $phpdate = strtotime($tanggal);
+        // Ubah tanggal MySQL menjadi timestamp
+        $phpdate = strtotime($tanggal);
 
-    // Ambil informasi tanggal dasar
-    $hari = date("w", $phpdate);
-    $tanggal_output = date("j", $phpdate);
-    $bulan = date("n", $phpdate);
-    $tahun = date("Y", $phpdate);
-    $jam = date("h:i:s A", $phpdate);
+        // Ambil informasi tanggal dasar
+        $hari = date("w", $phpdate);
+        $tanggal_output = date("j", $phpdate);
+        $bulan = date("n", $phpdate);
+        $tahun = date("Y", $phpdate);
+        $jam = date("h:i:s A", $phpdate);
 
-    // Tentukan tanggal dalam format MySQL
-    $mysqldate = date('Y-m-d', $phpdate);
+        // Tentukan tanggal dalam format MySQL
+        $mysqldate = date('Y-m-d', $phpdate);
 
-    // Hitung tanggal dengan penambahan jumlah hari
-    $tanggal_add = strtotime("$tanggal + $add days");
-    
-    // Jika penambahan tanggal berhasil
-    if ($tanggal_add !== false) {
-        // Ambil informasi tanggal setelah penambahan
-        $hari_add = date("w", $tanggal_add);
-        $tanggal_add2 = date('Y-m-d', $tanggal_add);
-        $bulan_add = date("n", $tanggal_add);
-        $tahun_add = date("Y", $tanggal_add);
-    } else {
-        // Jika penambahan tanggal gagal, berikan nilai null pada variabel terkait
-        $hari_add = null;
-        $tanggal_add2 = null;
-        $bulan_add = null;
-        $tahun_add = null;
+        // Hitung tanggal dengan penambahan jumlah hari
+        $tanggal_add = strtotime("$tanggal + $add days");
+
+        // Jika penambahan tanggal berhasil
+        if ($tanggal_add !== false) {
+            // Ambil informasi tanggal setelah penambahan
+            $hari_add = date("w", $tanggal_add);
+            $tanggal_add2 = date('Y-m-d', $tanggal_add);
+            $bulan_add = date("n", $tanggal_add);
+            $tahun_add = date("Y", $tanggal_add);
+        } else {
+            // Jika penambahan tanggal gagal, berikan nilai null pada variabel terkait
+            $hari_add = null;
+            $tanggal_add2 = null;
+            $bulan_add = null;
+            $tahun_add = null;
+        }
+
+        // Kembalikan informasi tanggal dalam format yang diinginkan
+        return [
+            'hari' => $nama_hari[$hari],
+            'tanggal' => $tanggal_output,
+            'bulan' => $nama_bulan[$bulan - 1],
+            'tahun' => $tahun,
+            'jam' => $jam,
+            'tanggalMysql' => $mysqldate,
+            'tgl' => "$nama_hari[$hari], $tanggal_output {$nama_bulan[$bulan - 1]} $tahun",
+            'tanggal_plus_add' => $tanggal_add2,
+            'tgl_plus_add' => $tanggal_add2 ? "$nama_hari[$hari_add], $tanggal_output {$nama_bulan[$bulan_add - 1]} $tahun_add" : null
+        ];
     }
-
-    // Kembalikan informasi tanggal dalam format yang diinginkan
-    return [
-        'hari' => $nama_hari[$hari], 
-        'tanggal' => $tanggal_output, 
-        'bulan' => $nama_bulan[$bulan - 1], 
-        'tahun' => $tahun, 
-        'jam' => $jam, 
-        'tanggalMysql' => $mysqldate, 
-        'tgl' => "$nama_hari[$hari], $tanggal_output {$nama_bulan[$bulan - 1]} $tahun", 
-        'tanggal_plus_add' => $tanggal_add2, 
-        'tgl_plus_add' => $tanggal_add2 ? "$nama_hari[$hari_add], $tanggal_output {$nama_bulan[$bulan_add - 1]} $tahun_add" : null
-    ];
-}
     public function selisihTanggal($tanggal1, $tanggal2) //$tanggal1 = '2000-01-25';$tanggal2 = '2010-02-20';
     {
         $ts1 = strtotime($tanggal1);
