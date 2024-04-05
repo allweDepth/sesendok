@@ -4025,6 +4025,7 @@ $(document).ready(function () {
 			case 'uraian_belanja':
 				switch (tblAttr) {
 					case 'daftar_paket':
+						mdl.addClass("big");
 						let json_id_uraian = $(`form[name="form_flyout"]`).form('get value', 'id_uraian');
 						if (json_id_uraian.length > 2) {
 							json_id_uraian = JSON.parse($(`form[name="form_flyout"]`).form('get value', 'id_uraian'));

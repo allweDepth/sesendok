@@ -459,7 +459,7 @@ class get_data
                                 $kd_akun = $validate->setRules('kd_akun', "kode akun", [
                                     'sanitize' => 'string',
                                     'required' => true,
-                                    'inDB' => ['akun_neo', 'kode', [['disable', '<=', 0], ['peraturan', '=', ${"id_aturan_$tbl"}, 'AND']]],
+                                    'inDB' => ['akun_neo', 'kode', [['disable', '<=', 0], ['peraturan', '=', ${"aturan_$tbl"}, 'AND']]],
                                     'min_char' => 1
                                 ]);
                                 break;
@@ -566,7 +566,7 @@ class get_data
                                 case 'ssh':
                                 case 'hspk':
                                 case 'asb':
-                                    $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['peraturan', '=', ${"id_aturan_$tbl"}, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
+                                    $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['peraturan', '=', ${"aturan_$tbl"}, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     break;
                                 case 'user':
                                     $kondisi_result = [['username', '=', $username], ['nip', '=', $nip, 'AND']];
@@ -1613,13 +1613,13 @@ class get_data
                                 case 'ssh':
                                 case 'asb':
                                     $like = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND peraturan = ? AND (kd_aset LIKE CONCAT('%',?,'%') OR uraian_barang LIKE CONCAT('%',?,'%') OR spesifikasi LIKE CONCAT('%',?,'%') OR satuan LIKE CONCAT('%',?,'%') OR harga_satuan LIKE CONCAT('%',?,'%') OR merek LIKE CONCAT('%',?,'%') OR kd_akun LIKE CONCAT('%',?,'%'))";
-                                    $data_like = [$kd_wilayah, $tahun, 0, ${"id_aturan_$tbl"}, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
+                                    $data_like = [$kd_wilayah, $tahun, 0, ${"aturan_$tbl"}, $cari, $cari, $cari, $cari, $cari, $cari, $cari];
                                     $order = "ORDER BY kd_aset ASC";
                                     $posisi = " LIMIT ?, ?";
                                     $where1 = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND peraturan = ?";
-                                    $data_where1 =  [$kd_wilayah, $tahun, 0, ${"id_aturan_$tbl"}];
+                                    $data_where1 =  [$kd_wilayah, $tahun, 0, ${"aturan_$tbl"}];
                                     $whereGet_row_json = "kd_wilayah = ? AND tahun = ? AND disable <= ? AND peraturan = ?";
-                                    $data_hereGet_row_json = [$kd_wilayah, $tahun, 0, ${"id_aturan_$tbl"}];
+                                    $data_hereGet_row_json = [$kd_wilayah, $tahun, 0, ${"aturan_$tbl"}];
                                     break;
                                 case 'renja':
                                 case 'dpa':

@@ -256,29 +256,6 @@ $theme = $_SESSION["user"]["theme"];
                         </div>
                     </div>
                     <p>Tutorial cara menggunakan aplikasi seSendok untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
-                    <h2 class="ui dividing header">Editorial<a class="anchor"></a></h2>
-                    <div class="ui items">
-                        <div class="item">
-                            <div class="image"><img src="img/bps.png"></div>
-                            <div class="content"><a class="header" href="https://mamujuutarakab.bps.go.id" target="_blank">Pasangkayu dalam angka</a>
-                                <div class="meta"><span>Description</span></div>
-                                <div class="description">
-                                    <p>Badan Pusat Statistik adalah Lembaga Pemerintah Non Kementerian yang bertanggung jawab langsung kepada Presiden. Sebelumnya, BPS merupakan Biro Pusat Statistik, yang dibentuk berdasarkan UU Nomor 6 Tahun 1960 tentang Sensus dan UU Nomer 7 Tahun 1960 tentang Statistik. Sebagai pengganti kedua UU tersebut ditetapkan UU Nomor 16 Tahun 1997 tentang Statistik. Berdasarkan UU ini yang ditindaklanjuti dengan peraturan perundangan dibawahnya, secara formal nama Biro Pusat Statistik diganti menjadi Badan Pusat Statistik.</p>
-                                </div>
-                                <div class="extra">Additional Details </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="image"><img src="img/logo_garuda.png"></div>
-                            <div class="content"><a class="header" href="http://lpse.pasangkayukab.go.id" target="_blank">LPSE Kabupaten Pasangkayu</a>
-                                <div class="meta"><span>Description</span></div>
-                                <div class="description">
-                                    <p>Layanan Pengadaan Secara Elektronik adalah layanan pengelolaan teknologi informasi untuk memfasilitasi pelaksanaan Pengadaan Barang/Jasa secara elektronik. UKPBJ/Pejabat Pengadaan pada Kementerian/Lembaga/Perangkat Daerah yang tidak memiliki Layanan Pengadaan Secara Elektronik dapat menggunakan fasilitas Layanan Pengadaan Secara Elektronik yang terdekat dengan tempat kedudukannya untuk melaksanakan pengadaan secara elektronik. Selain memfasilitasi UKPBJ/Pejabat Pengadaan dalam melaksanakan pengadaan barang/jasa secara elektronik Layanan Pengadaan Secara Elektronik juga melayani registrasi penyedia barang dan jasa yang berdomisili di wilayah kerja Layanan Pengadaan Secara Elektronik yang bersangkutan.. </p>
-                                </div>
-                                <div class="extra">Additional Details </div>
-                            </div>
-                        </div>
-                    </div>
                     <p></p>
                     <p></p>
                 </div>
