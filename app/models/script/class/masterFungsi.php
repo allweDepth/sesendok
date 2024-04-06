@@ -1852,9 +1852,9 @@ class MasterFungsi
                                 'sat_1' => '',
                                 $kolomJumlah => (float)$jumlah,
                                 'disable' => 0,
-                                'tanggal' => date('Y-m-d H:i:s'),
+                                'tgl_insert' => date('Y-m-d H:i:s'),
                                 'tgl_update' => date('Y-m-d H:i:s'),
-                                'username_input' => $_SESSION["user"]["username"],
+                                'username_insert' => $_SESSION["user"]["username"],
                                 'username_update' => $_SESSION["user"]["username"]
                             ];
                             $kondisi = [['kd_sub_keg', '=', $rekening_gabung_sub_keg], ['kd_akun', '=',  $rekening_gabung, 'AND'], ['kel_rek', '=',  $kel_rekening, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
@@ -2003,7 +2003,7 @@ class MasterFungsi
                             'sat_1' => '',
                             $kolomJumlah => (float)$jumlah,
                             'disable' => 0,
-                            'tanggal' => date('Y-m-d H:i:s'),
+                            'tgl_insert' => date('Y-m-d H:i:s'),
                             'tgl_update' => date('Y-m-d H:i:s'),
                             'username_insert' => $_SESSION["user"]["username"],
                             'username_update' => $_SESSION["user"]["username"]
@@ -2040,8 +2040,9 @@ class MasterFungsi
                                 'kel_rek' => $kel_rekening, //kd
                                 $kolomJumlah => (float)$jumlah,
                                 'disable' => 0,
-                                'tanggal' => date('Y-m-d H:i:s'),
+                                'tgl_insert' => date('Y-m-d H:i:s'),
                                 'tgl_update' => date('Y-m-d H:i:s'),
+                                'username_update' => $_SESSION["user"]["username"],
                                 'username_insert' => $_SESSION["user"]["username"]
                             ];
                         }
@@ -2311,12 +2312,7 @@ class MasterFungsi
                                 'vol_3' => 0,
                                 'vol_4' => 0,
                                 'sat_1' => '',
-                                $kolomJumlah => (float)$jumlah,
-                                // 'disable' => 0,
-                                // 'tanggal' => date('Y-m-d H:i:s'),
-                                // 'tgl_update' => date('Y-m-d H:i:s'),
-                                // 'username_input' => $_SESSION["user"]["username"],
-                                // 'username_update' => $_SESSION["user"]["username"]
+                                $kolomJumlah => (float)$jumlah
                             ];
                             $kondisi = [['kd_sub_keg', '=', $rekening_gabung_sub_keg], ['kd_akun', '=',  $rekening_gabung, 'AND'], ['kel_rek', '=',  $kel_rekening, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
                             // select sum
@@ -2464,7 +2460,7 @@ class MasterFungsi
                             'sat_1' => '',
                             $kolomJumlah => (float)$jumlah,
                             'disable' => 0,
-                            'tanggal' => date('Y-m-d H:i:s'),
+                            'tgl_insert' => date('Y-m-d H:i:s'),
                             'tgl_update' => date('Y-m-d H:i:s'),
                             'username_insert' => $_SESSION["user"]["username"],
                             'username_update' => $_SESSION["user"]["username"]
@@ -2501,9 +2497,10 @@ class MasterFungsi
                                 'kel_rek' => $kel_rekening, //kd
                                 $kolomJumlah => (float)$jumlah,
                                 'disable' => 0,
-                                'tanggal' => date('Y-m-d H:i:s'),
+                                'tgl_insert' => date('Y-m-d H:i:s'),
                                 'tgl_update' => date('Y-m-d H:i:s'),
-                                'username_insert' => $_SESSION["user"]["username"]
+                                'username_insert' => $_SESSION["user"]["username"],
+                                'username_update' => $_SESSION["user"]["username"]
                             ];
                         }
                         $kondisi = [['kd_sub_keg', '=', $rekening_gabung], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];

@@ -1139,9 +1139,9 @@ class Impor_xlsx
                                                                 }
                                                                 $akun = $dataRslt->akun;
                                                                 $kelompok_akun = $dataRslt->kelompok;
-                                                                $jenis = $dataRslt->jenis;
+                                                                $jenis_akun = $dataRslt->jenis_akun;
                                                                 $objek = $dataRslt->objek;
-                                                                $rekAkunObjek = implode('.', [$akun, $kelompok_akun, $Fungsi->zero_pad($jenis, 2)]);
+                                                                $rekAkunObjek = implode('.', [$akun, $kelompok_akun, $Fungsi->zero_pad($jenis_akun, 2)]);
                                                                 switch ($rekAkunObjek) {
                                                                     case '5.1.01':
                                                                         $objek_belanja = 'gaji';
@@ -1391,24 +1391,9 @@ class Impor_xlsx
                                                                         'min_char' => 1
                                                                     ]);
                                                                 }
-                                                                /*
-                                                                $sasaran = $validateRow->setRules(0, 'sasaran', [
-                                                                    'numeric' => true,
-                                                                    'required' => true,
-                                                                    'inDB' => ['tujuan_sasaran_renstra_neo', 'id', [['id', '=', $_POST['sasaran']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']]],
-                                                                    'min_char' => 1
-                                                                ]);
-                                                                */
                                                                 $sasaran = $validateRow->setRules(0, 'sasaran', [
                                                                     'sanitize' => 'string',
                                                                 ]);
-                                                                // $kode_temporer = strtolower($getData[1]);
-                                                                // $kode = $validateRow->setRules(1, 'sub kegiatan', [
-                                                                //     'sanitize' => 'string',
-                                                                //     'required' => true,
-                                                                //     'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $kode_temporer]]],
-                                                                //     'min_char' => 1
-                                                                // ]);
                                                                 $uraian_prog_keg = $validateRow->setRules(2, 'uraian program dan kegiatan', [
                                                                     'sanitize' => 'string',
                                                                     'required' => true,

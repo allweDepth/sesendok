@@ -661,6 +661,8 @@ class print_pdf
     public static function kop_dinas($status_wilayah, $nama_wilayah, $nama_opd, $alamat_opd, $file_logo_daerah)
     {
         $image_file = '<img src="' . $file_logo_daerah . '" style="display:block;" width="50" height="50"/>';
+        $alamat_opd = $alamat_opd !== null ? ucwords($alamat_opd) : ''; 
+        $nama_opd = $nama_opd !== null ? ucwords($nama_opd) : ''; 
         return '<table>
                 <tbody>
 					<tr nobr="true">
@@ -668,10 +670,10 @@ class print_pdf
                         <td height="10" width="88%" align="center" style="font-family: Arial; font-size: 12px; width:100%;font-weight:bold;">PEMERINTAH ' . strtoupper($status_wilayah) . ' ' . strtoupper($nama_wilayah) . '</td>
 					</tr>
                     <tr nobr="true">
-                        <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 16px; width:100%;font-weight:bold">' . strtoupper($nama_opd) . '</td>
+                        <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 16px; width:100%;font-weight:bold">' .  $nama_opd . '</td>
 					</tr>
                     <tr nobr="true">
-                        <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 8px; width:100%;border-bottom: 1rem double #000000;padding: 0px 0px 0px 9px;">' . ucwords($alamat_opd) . '</td>
+                        <td height="20" width="88%" align="center"  style="font-family: Arial; font-size: 8px; width:100%;border-bottom: 1rem double #000000;padding: 0px 0px 0px 9px;">' . $alamat_opd . '</td>
 					</tr>
                 </tbody>
             </table>';

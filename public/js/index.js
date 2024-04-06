@@ -266,8 +266,8 @@ $(document).ready(function () {
 			organisasi: [
 				"id card icon",
 				"SKPD",
-				"Organisasi Perangkat Daerag",
-				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
+				"Organisasi Perangkat Daerah",
+				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening SKPD.",
 			],
 			sumber_dana: [
 				"money check alternate icon",
