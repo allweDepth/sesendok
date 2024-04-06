@@ -938,7 +938,7 @@ class Impor_xlsx
                                                                     'tgl_tmt_akhir' => $tgl_tmt_akhir,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
@@ -1222,7 +1222,7 @@ class Impor_xlsx
                                                                     'sumber_dana' => $sumber_dana,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
                                                                     'username_insert' => $_SESSION["user"]["username"],
                                                                     'username_update' => $_SESSION["user"]["username"]
@@ -1344,8 +1344,9 @@ class Impor_xlsx
                                                                     'jumlah_pagu' => (float)$jumlah_pagu,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $arrayDataRows_nonSubKeg = [
@@ -1357,8 +1358,9 @@ class Impor_xlsx
                                                                     'uraian' => $uraian_prog_keg,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
@@ -1500,8 +1502,9 @@ class Impor_xlsx
                                                                     'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
@@ -1542,8 +1545,9 @@ class Impor_xlsx
                                                                     'indikator' => preg_replace('/(\s\s+|\t|\n)/', ' ', $indikator),
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
                                                                     'tgl_update' => date('Y-m-d H:i:s'),
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
@@ -1624,7 +1628,9 @@ class Impor_xlsx
                                                                     'peraturan' => $id_aturan,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
                                                                     'disable' => 0,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
@@ -1711,7 +1717,9 @@ class Impor_xlsx
                                                                     'penduduk' => $penduduk,
                                                                     'disable' => 0,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
@@ -1740,7 +1748,9 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'peraturan' => $id_aturan_organisasi,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
@@ -1806,8 +1816,8 @@ class Impor_xlsx
                                                                     'username_update' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 //$string = preg_replace('/\s/', ' ', $string);
-                                                                $update_arrayData = [['kd_aset', '=', $kd_aset],['kd_akun', '=', $kd_akun,'AND']];
-                                                                $getWhereArrayData = [['kd_aset', '=', $kd_aset],['kd_akun', '=', $kd_akun,'AND']];
+                                                                $update_arrayData = [['kd_aset', '=', $kd_aset], ['kd_akun', '=', $kd_akun, 'AND']];
+                                                                $getWhereArrayData = [['kd_aset', '=', $kd_aset], ['kd_akun', '=', $kd_akun, 'AND']];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'peraturan':
@@ -1892,7 +1902,9 @@ class Impor_xlsx
                                                                     'disable' => 0,
                                                                     'keterangan' => $keterangan,
                                                                     'status' => $status,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 $update_arrayData = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND'], ['tgl_pengundangan', '=', $tgl_pengundangan, 'AND']];
@@ -1968,7 +1980,9 @@ class Impor_xlsx
                                                                     'kode' => $kode,
                                                                     'disable' => 0,
                                                                     'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 // var_dump($arrayDataRows);
@@ -2227,7 +2241,9 @@ class Impor_xlsx
                                                                     'no_ktp' => $no_ktp,
                                                                     'alamat_dir' => $alamat_dir,
                                                                     'keterangan' => $keterangan,
-                                                                    'tanggal' => date('Y-m-d H:i:s'),
+                                                                    'tgl_insert' => date('Y-m-d H:i:s'),
+                                                                    'tgl_update' => date('Y-m-d H:i:s'),
+                                                                    'username_insert' => $_SESSION["user"]["username"], 
                                                                     'username_insert' => $_SESSION["user"]["username"]
                                                                 ];
                                                                 // var_dump($getData[12]);
@@ -2282,8 +2298,8 @@ class Impor_xlsx
                                                                     $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
                                                                     $arrayDataRows['data_lain'] = json_encode($data_lain);
                                                                 }
-                                                                $update_arrayData =[['npwp', "=", $npwp],['kd_wilayah', "=", $kd_wilayah,'AND']];
-                                                                $getWhereArrayData = [['npwp', "=", $npwp],['kd_wilayah', "=", $kd_wilayah,'AND']];
+                                                                $update_arrayData = [['npwp', "=", $npwp], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
+                                                                $getWhereArrayData = [['npwp', "=", $npwp], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
                                                                 $no_sort++;
                                                                 break;
                                                             case 'x':
