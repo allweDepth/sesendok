@@ -844,7 +844,7 @@ class get_data
                                     $order = "ORDER BY kode ASC";
                                     $posisi = " LIMIT ?, ?";
                                     $where1 = "kd_wilayah = ?";
-                                    $data_where1 = [$kd_wilayah, 0];
+                                    $data_where1 = [$kd_wilayah];
                                     $whereGet_row_json = "kd_wilayah = ?";
                                     $data_hereGet_row_json = [$kd_wilayah];
                                     // $where = "nomor = ?";

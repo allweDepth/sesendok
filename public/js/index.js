@@ -121,6 +121,8 @@ $(document).ready(function () {
 		const dasboard = $(".message.dashboard");
 		let ini = $(this);
 		let tab = ini.attr("data-tab");
+		let iconTab = ini.find(`i.icon:last`).attr('class');
+		console.log(iconTab);
 		let jenis_this = ini.attr("jns");
 		let jns = ini.attr("jns");
 		let jenis = "get_tbl"; //get data
@@ -147,6 +149,11 @@ $(document).ready(function () {
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
 		]
 		let arrayDasboard = {
+			berita: ["newspaper icon", "Berita", "berita", "berita"],
+			wallchat: ["comments outline icon", "Pesan dan Wall", "pesan", "pesan"],
+			atur_satu: ["erase icon", "PENGATURAN", "seting data", "pengaturan"],
+			pengaturan: ["settings icon", "PENGATURAN", "seting data", "pengaturan"],
+			reset: ["erase icon", "RESET", "reset tabel data", "mereset tabel data"],
 			sk_asn: ["home icon", "Surat Keputusan", "Surat Keputusan", "Surat Keputusan"],
 			tab_home: ["home icon", "DASHBOARD", "seSendok", ""],
 			renstra: tab_renstra,
@@ -248,7 +255,7 @@ $(document).ready(function () {
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
 			],
 			wilayah: [
-				"clipboard list icon",
+				"globe icon",
 				"LOKASI/WILAYAH",
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
@@ -260,31 +267,31 @@ $(document).ready(function () {
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
 			],
 			sumber_dana: [
-				"clipboard list icon",
+				"money check alternate icon",
 				"Sumber Dana",
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Sumber Pendanaan ditujukan untuk memberikan informasi atas sumber dana berdasarkan tujuan penggunaan dana dari setiap pelaksanaan urusan pemerintahan daerah yang dijabarkan berdasarkan program, kegiatan dan sub kegiatan dalam rangka pengendalian masing-masing kelompok dana meliputi pengawasan/control, akuntabilitas/accountability dan transparansi/transparency (CAT).",
 			],
 			peraturan: [
-				"clipboard list icon",
+				"balance scale icon",
 				"Peraturan",
 				"Aturan Yang digunakan",
 				"ketentuan yang dengan sendirinya memiliki suatu makna normatif; ketentuan yang menyatakan bahwa sesuatu harus (tidak harus) dilakukan, atau boleh (tidak boleh) dilakukan.",
 			],
 			rekanan: [
-				"clipboard list icon",
+				"book reader icon",
 				"REKANAN",
 				"Klasifikasi dan kodefikasi",
 				"Penyedia barang dan/atau jasa",
 			],
 			satuan: [
-				"clipboard list icon",
+				"calculator icon",
 				"SATUAN",
 				"Klasifikasi dan kodefikasi",
 				"Penyedia barang dan/atau jasa",
 			],
 			tab_hargasat: [
-				"clipboard list icon",
+				"calculator icon",
 				"SSH",
 				"Standar Harga Satuan",
 				'PP 12 Tahun 2019<ol class="ui list"><li class="item">Belanja Daerah sebagaimana dimaksud dalam Pasal 49 ayat (5) berpedoman pada standar harga satuan regional, analisis standar belanja, dan/atau standar teknis sesuai dengan ketentuan peraturan perurndang-undangan.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (1) dan ayat (2) ditetapkan dengan Peraturan Presiden.</li><li class="item">Standar harga satuan regional sebagaimana dimaksud pada ayat (3) digunakan sebagai pedoman dalam menyusun standar harga satuan pada masing-masing Daerah.</li></ol>',
@@ -309,6 +316,7 @@ $(document).ready(function () {
 			"monev[laporan]": ["chart pie icon", "Informasi-Monev", "Laporan"],
 			tab_outbox: ["comment dots outline icon", "AHSP chat", "outbox"],
 		};
+
 		let divTab = $(`div[data-tab="${ini.attr("data-tab")}"]`);
 		let iconDashboard = "home icon";
 		let headerDashboard = ini.text();
@@ -331,15 +339,25 @@ $(document).ready(function () {
 			divTab = ini.closest('div[data-tab]');
 		}
 		$(`#cari_data`).attr("tbl", tbl).attr("dt-tab", tab);
-		if (tab in arrayDasboard) {
-			iconDashboard = arrayDasboard[tab][0];
-			headerDashboard = arrayDasboard[tab][1];
-			pDashboard = arrayDasboard[tab][2];
-		} else if (tbl in arrayDasboard) {
+
+		if (tbl in arrayDasboard) {
+			if (typeof iconTab !== 'undefined') {
+				arrayDasboard[tbl][0] = iconTab;
+			}
 			iconDashboard = arrayDasboard[tbl][0];
 			headerDashboard = arrayDasboard[tbl][1];
 			pDashboard = arrayDasboard[tbl][2];
+		} else if (tab in arrayDasboard) {
+			if (typeof iconTab !== 'undefined') {
+				arrayDasboard[tab][0] = iconTab;
+			}
+			iconDashboard = arrayDasboard[tab][0];
+			headerDashboard = arrayDasboard[tab][1];
+			pDashboard = arrayDasboard[tab][2];
 		} else if (tb in arrayDasboard) {
+			if (typeof iconTab !== 'undefined') {
+				arrayDasboard[tb][0] = iconTab;
+			}
 			iconDashboard = arrayDasboard[tb][0];
 			headerDashboard = arrayDasboard[tb][1];
 			pDashboard = arrayDasboard[tb][2];
