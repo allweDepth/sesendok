@@ -126,7 +126,6 @@ $(document).ready(function () {
 			.closest('a:not([name="page"])') // Temukan elemen <a> terdekat yang tidak memiliki atribut name dengan nilai "page"
 			.find('> i.icon') // Temukan kembali elemen <i> di dalam elemen <a>, hanya yang langsung berada di dalamnya
 			.attr('class'); // Mengambil kelas atributnya
-		console.log(iconTab);
 		let jenis_this = ini.attr("jns");
 		let jns = ini.attr("jns");
 		let jenis = "get_tbl"; //get data
