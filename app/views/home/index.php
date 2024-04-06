@@ -51,7 +51,8 @@ $theme = $_SESSION["user"]["theme"];
             </div>
             <div class="right inverted menu">
                 <div class="ui dropdown item lain"><span><i class="user icon"></i></span><i class="dropdown icon"></i>
-                    <div class="menu"><a class="item" data-tab="wallchat"><i class="circular comments outline icon"></i>Pesan</a><a class="item" name="change_themes"><i class="circular moon icon"></i>Change Themes</a><a class="item" data-tab="profil"><i class="circular qrcode icon"></i>Pengaturan</a><a class="item" onclick="window.location.href='home/logout'"><i class="circular sign out alternate icon"></i>Log Out</a></div>
+                    <div class="menu"><a class="item" data-tab="wallchat"><i class="circular comments outline icon"></i>Pesan</a><a class="item" name="change_themes"><i class="circular moon icon"></i>Change Themes</a><a class="item" data-tab="profil"><i class="circular qrcode icon"></i>Pengaturan</a><a class="item" onclick="window.location.href='home/logout'"><i class="circular sign out alternate icon"></i>Log Out</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,6 +124,7 @@ $theme = $_SESSION["user"]["theme"];
                 <div class="content">
                     <a class="item" href="#" data-tab="tab_all" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>ASN</a>
                     <a class="item" href="#" data-tab="tab_all" tbl="sk_asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat Keputusan (SK)</a>
+                    <a class="item" href="#" data-tab="tab_all" tbl="register_surat"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Register Surat</a>
                 </div>
             </div>
 
@@ -200,11 +202,12 @@ $theme = $_SESSION["user"]["theme"];
                     <h2 class="ui dividing header">Pengantar untuk <?php echo $type_user ?> </h2>
                     <div class="ui large info message">
                         <h2 class="ui header dash_header"><i class="settings icon"></i>
-                            <div class="content">seSendok <div class="sub header">merupakan aplikasi perencanaan, angaran dan realisasi Berbasis web</div>
+                            <div class="content">seSendok <div class="sub header">merupakan aplikasi perencanaan, angaran dan
+                                    realisasi Berbasis web</div>
                             </div>
                         </h2>
                     </div>
-                    
+
                     <div class="ui info message">
                         <h3 class="ui header dash_header"><i class="upload icon"></i>
                             <div class="content">menginpor file pada aplikasi ? <div class="sub header">
@@ -289,7 +292,8 @@ $theme = $_SESSION["user"]["theme"];
                         </div>
                     </div>
                     <div class="fourteen wide stretched right column">
-                        <h1 class="ui header">Rencana Strategis (Renstra) <div class="sub header">dokumen perencanaan berorientasi pada hasil yang ingin dicapai</div>
+                        <h1 class="ui header">Rencana Strategis (Renstra) <div class="sub header">dokumen perencanaan berorientasi
+                                pada hasil yang ingin dicapai</div>
                         </h1>
                         <div class="ui hidden divider"></div>
                         <div class="ui stretched stackable five column grid">
@@ -382,7 +386,8 @@ $theme = $_SESSION["user"]["theme"];
                         </div>
                     </div>
                     <div class="fourteen wide stretched right column">
-                        <h1 class="ui header">Rencana Kerja SKPD (Renja) <div class="sub header">dokumen perencanaan berorientasi pada hasil yang ingin dicapai</div>
+                        <h1 class="ui header">Rencana Kerja SKPD (Renja) <div class="sub header">dokumen perencanaan berorientasi
+                                pada hasil yang ingin dicapai</div>
                         </h1>
                         <div class="ui hidden divider"></div>
                         <table class="ui celled very basic striped table sub_keg" hidden>
@@ -1202,7 +1207,8 @@ $theme = $_SESSION["user"]["theme"];
 
                                 <div class="field"><label>Keterangan</label><textarea name="keterangan" rows="4"></textarea></div>
                                 <div class="field"><label></label>
-                                    <div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non Aktif</label></div>
+                                    <div class="ui toggle checkbox"><input type="checkbox" name="disable" non_data=""><label>Non
+                                            Aktif</label></div>
                                 </div>
                                 <div class="ui icon success message"><i class="check icon"></i>
                                     <div class="content">
