@@ -3368,8 +3368,8 @@ class post_data
                             }
                             break;
                         case 'update_row': //untuk 1 row
-                            var_dump($set);
-                            var_dump($kondisi);
+                            // var_dump($set);
+                            // var_dump($kondisi);
                             $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
                             $jumlahArray = is_array($resul) ? count($resul) : 0;
                             // var_dump($kondisi);

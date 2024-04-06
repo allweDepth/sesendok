@@ -121,7 +121,11 @@ $(document).ready(function () {
 		const dasboard = $(".message.dashboard");
 		let ini = $(this);
 		let tab = ini.attr("data-tab");
-		let iconTab = ini.find(`i.icon:last`).attr('class');
+		let iconTab = $(this)
+			.find(':not([name="page"]) > i.icon:not(:has(*))') // Memilih elemen <i> yang tidak berada dalam <span>
+			.closest('a:not([name="page"])') // Temukan elemen <a> terdekat yang tidak memiliki atribut name dengan nilai "page"
+			.find('> i.icon') // Temukan kembali elemen <i> di dalam elemen <a>, hanya yang langsung berada di dalamnya
+			.attr('class'); // Mengambil kelas atributnya
 		console.log(iconTab);
 		let jenis_this = ini.attr("jns");
 		let jns = ini.attr("jns");
@@ -137,13 +141,13 @@ $(document).ready(function () {
 		];
 		let tab_renstra = ["clipboard list icon", "RENSTRA", "Rencana Startegi", ""];
 		let tab_renja = [
-			"clipboard list icon",
+			"yellow tags icon",
 			"RENJA",
 			"Rencana Kerja dan Anggaran SKPD",
 			"Rencana Kerja dan Anggaran Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
 		]
 		let tab_dpa = [
-			"clipboard list icon",
+			"violet tag icon icon",
 			"DPA",
 			"Daftar Pelaksanaan Anggaran (DPA)",
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
@@ -163,19 +167,19 @@ $(document).ready(function () {
 			sub_keg_dpa: tab_dpa,
 			dpa: tab_dpa,
 			dppa: [
-				"clipboard list icon",
+				"violet tag icon",
 				"DPPA",
 				"Daftar PerubahanPelaksanaan Anggaran (DPPA)",
 				"Rencana Kerja dan Anggaran Perubahan Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
 			],
 			renja_p: [
-				"clipboard list icon",
+				"yellow tags icon",
 				"RENJA PEUBAHAN",
 				"Rencana Kerja dan Anggaran Perubahan SKPD",
 				"Rencana Kerja dan Anggaran PerubahanSatuan Kerja Perangkat Daerah, yang selanjutnya disingkat RKA SKPD adalah dokumen yang memuat rencana pendapatan dan belanja SKPD atau dokumen yang memuat rencana pendapatan, belanja, dan Pembiayaan SKPD yang melaksanakan fungsi bendahara umum daerah yang digunakan sebagai dasar penyusunan rancangan APBD.",
 			],
 			asn: [
-				"clipboard list icon",
+				"users icon",
 				"Aparatur Sipil Negara",
 				"Data Kepegawaian",
 				"Merupakan data kepegawaian satuan perangkat daerah",
@@ -193,7 +197,7 @@ $(document).ready(function () {
 				"Pengaturan akun",
 			],
 			tab_dpa: tab_dpa,
-			daftar_paket: ["clipboard list icon",
+			daftar_paket: ["file contract icon",
 				"DAFTAR PAKET DAN KONTRAK",
 				"daftar paket pekerjaan",
 				"Kontrak Pengadaan Barang/Jasa yang selanjutnya disebut Kontrak adalah perjanjian tertulis antara PA/KPA/PPK dengan Penyedia Barang/Jasa atau pelaksana Swakelola",],
@@ -261,7 +265,7 @@ $(document).ready(function () {
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
 			],
 			organisasi: [
-				"clipboard list icon",
+				"id card icon",
 				"SKPD",
 				"Organisasi Perangkat Daerag",
 				"Klasifikasi, Kodefikasi, dan Nomenklatur Rekening dalam pengelolaan keuangan daerah merupakan alat dalam proses perencanaan anggaran. Rekening Penyusunan Anggaran dan LRA disusun berdasarkan penggolongan, pemberian kode, dan daftar penamaan akun pendapatan daerah, belanja daerah, dan pembiayaan daerah yang ditujukan untuk digunakan dalam penyusunan anggaran dan LRA terdiri atas akun, kelompok, jenis, objek, rincian objek, dan sub rincian objek.",
@@ -843,8 +847,6 @@ $(document).ready(function () {
 		}
 		if (attrName === "flyout") {
 			formIni.attr("jns", jenis).attr("tbl", tbl);
-			// console.log(`jenis : ${jenis}`);
-			// console.log(`tbl : ${tbl}`);
 			switch (jenis) {
 				//EDIT DATA ROWS
 				case "edit":
@@ -2095,7 +2097,7 @@ $(document).ready(function () {
 									label: "Nomor",
 									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
 									txtLabel: "cek",
-									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
+									atributLabel: `name="get_data" jns="get_data" klm="nomor" tbl="${tbl}"`,
 								}) +
 								createHTML("fieldText", {
 									label: "Bentuk",
@@ -2581,6 +2583,9 @@ $(document).ready(function () {
 			};
 			$("[rms]").mathbiila();
 		} else if (attrName === "get_data") {
+			if (typeof ini.attr('klm') !== 'undefined') {
+				data.klm = ini.attr('klm');
+			}
 			switch (jenis) {
 				case "get_data":
 					switch (tbl) {

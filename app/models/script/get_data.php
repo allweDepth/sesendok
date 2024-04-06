@@ -313,7 +313,14 @@ class get_data
                                 // var_dump($kode);
                                 break;
                             default:
+                                $text = $validate->setRules('text', 'text', [
+                                    'required' => true,
+                                    'sanitize' => 'string',
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
                                 switch ($tbl) {
+                                    case 'peraturan':
                                     case 'user':
                                     case 'asn':
                                         $klm = $validate->setRules('klm', 'kolom', [
@@ -327,12 +334,7 @@ class get_data
                                         $kondisi = [['kode', '= ?', $text]];
                                         break;
                                 }
-                                $text = $validate->setRules('text', 'text', [
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 1,
-                                    'max_char' => 255
-                                ]);
+
                                 break;
                         }
 
@@ -1155,6 +1157,7 @@ class get_data
                                             $kondisi = [[$klm, '= ?', $text], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND']];
                                             break;
                                         case 'user':
+                                        case 'peraturan':
                                             $kondisi = [[$klm, '= ?', $text]];
                                             break;
                                         default:
