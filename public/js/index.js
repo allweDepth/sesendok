@@ -878,12 +878,12 @@ $(document).ready(function () {
 								createHTML("fieldDropdown", {
 									label: "Kategori klasifikasi keamanan",
 									atribut: 'name="klasifikasi_keamanan"',
-									kelas: "selection",
+									kelas: "lainnya selection",
 									dataArray: [
-										["SR", "sangat rahasia"],
-										["R", "Rahasia"],
-										["T", "Terbatas"],
-										["B", "biasa/terbuka"]
+										["sr", "sangat rahasia"],
+										["r", "Rahasia"],
+										["t", "Terbatas"],
+										["b", "biasa/terbuka"]
 									]
 								}) +
 								createHTML("fieldDropdown", {

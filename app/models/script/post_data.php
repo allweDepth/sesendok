@@ -166,6 +166,12 @@ class post_data
                                 O. Laporan
 P. Telaah Staf.
                                 */
+                                $klasifikasi_keamanan = $validate->setRules('klasifikasi_keamanan', 'Kategori klasifikasi keamanan', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'in_array' => ['sr', 'r', 't', 'b']
+                                ]);
                                 $jenis_naskah_dinas = $validate->setRules('jenis_naskah_dinas', 'jenis naskah dinas', [
                                     'sanitize' => 'string',
                                     'required' => true,
@@ -2336,6 +2342,7 @@ P. Telaah Staf.
                                         'nomor' => $nomor,
                                         'tanggal' => $tanggal,
                                         'uraian' => $uraian,
+                                        'klasifikasi_keamanan' => $klasifikasi_keamanan,
                                         'jenis_naskah_dinas' => $jenis_naskah_dinas,
                                         'sifat' => $sifat,
                                         'sub_sifat' => $sub_sifat,

@@ -571,7 +571,7 @@ class get_data
                                     $kondisi_result = [['kd_wilayah', '=', $kd_wilayah], ['peraturan', '=', ${"aturan_$tbl"}, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
                                     break;
                                 case 'user':
-                                    $kondisi_result = [['username', '=', $username], ['nip', '=', $nip, 'AND']];
+                                    $kondisi_result = [['username', '=', $username], ['kd_wilayah', '=', $kd_wilayah, 'AND']];
                                     $kodePosting = 'get_row';
                                     break;
                                 default:

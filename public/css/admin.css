@@ -87,10 +87,18 @@
 body.inverted {
     background-color: var(--darkBG) !important;
 }
+
+.ui.form.inverted input::selection,
+textarea::selection {
+    background-color: rgba(100, 100, 100, .4);
+    color: rgb(255, 255, 255) !important;
+}
+
 /* untuk label fields di form inverted */
 .ui.form.inverted .grouped.fields>label {
     color: rgb(255, 255, 255) !important;
 }
+
 .ui.input.multi input[type="text"]:not(:first-child) {
     border-radius: 0 !important;
 }
