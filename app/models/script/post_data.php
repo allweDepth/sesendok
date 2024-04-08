@@ -24,6 +24,7 @@ class post_data
         $hasilServer = hasilServer[$code];
         $pesan = 'posting kosong';
         $tambahan_pesan = '';
+        $set_file  = []; //['nama_file' => $uraian, 'dok' => $dok]
         $item = array('code' => "1", 'message' => $pesan);
         $json = array('success' => $sukses, 'error' => $item);
         $data = array();
@@ -161,15 +162,70 @@ class post_data
                                 $korespondensi_internal = ['korespondensi_internal_nota', 'korespondensi_internal_memorandum', 'korespondensi_internal_disposisi', 'korespondensi_internal_undangan'];
                                 $korespondensi_eksternal = ['korespondensi_eksternal_dinas'];
                                 $khusus = ['khusus_perjanjian', 'khusus_kuasa', 'khusus_ba', 'khusus_keterangan', 'khusus_pengantar', 'khusus_pengumuman', 'khusus_laporan', 'khusus_telaah'];
-                                var_dump($jenis_naskah_dinas);
-                                var_dump(${$jenis_naskah_dinas});
                                 $sifat = $validate->setRules('sifat', 'sifat', [
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 3,
                                     'in_array' => ${$jenis_naskah_dinas}
                                 ]);
-                                var_dump($sifat);
+                                // var_dump($sifat);
+                                $sub_sifat = $validate->setRules('sub_sifat', 'sub sifat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3,
+                                    'in_array' => ${$sifat}
+                                ]);
+                                $uraian = $validate->setRules('uraian', 'uraian', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 4,
+                                    'max_char' => 400
+                                ]);
+                                $nomor = $validate->setRules('nomor', 'nomor', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
+                                $tanggal = $validate->setRules('tanggal', 'tgl surat', [
+                                    'sanitize' => 'string',
+                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                                    'min_char' => 8
+                                ]);
+                                $asal_surat = $validate->setRules('asal_surat', 'asal surat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
+                                $nama_lengkap = $validate->setRules('nama_lengkap', 'Nama Penandatanganan Surat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 1,
+                                    'max_char' => 255
+                                ]);
+                                $nip = $validate->setRules('nip', 'nip', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 18
+                                ]);
+                                $pangkat = $validate->setRules('pangkat', 'pangkat', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 18
+                                ]);
+                                $jabatan = $validate->setRules('jabatan', 'jabatan', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 18
+                                ]);
+                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'sanitize' => 'string',
+                                    'max_char' => 255
+                                ]);
+                                $disable = $validate->setRules('disable', 'disable', [
+                                    'sanitize' => 'string',
+                                    'numeric' => true,
+                                    'in_array' => ['off', 'on']
+                                ]);
+                                $disable = ($disable == 'on') ? 1 : 0;
                                 break;
                             case 'sk_asn':
                                 $nomor = $validate->setRules('nomor', 'nomor', [
@@ -2249,6 +2305,39 @@ class post_data
                             }
                         case 'add':
                             switch ($tbl) {
+                                case 'register_surat':
+                                    $kodePosting = 'cek_insert';
+
+                                    $set = [
+                                        'tahun' => $tahun,
+                                        'kd_wilayah' => $kd_wilayah,
+                                        'kd_opd' => $kd_opd,
+                                        'nomor' => $nomor,
+                                        'tanggal' => $tanggal,
+                                        'uraian' => $uraian,
+                                        'jenis_naskah_dinas' => $jenis_naskah_dinas,
+                                        'sifat' => $sifat,
+                                        'sub_sifat' => $sub_sifat,
+                                        'asal_surat' => $asal_surat,
+                                        'jabatan' => $jabatan,
+                                        'nama_lengkap' => $nama_lengkap,
+                                        'nip' => $nip,
+                                        'pangkat' => $pangkat,
+                                        'disable' => $disable,
+                                        'keterangan' => $keterangan,
+                                        'tgl_update' => date('Y-m-d H:i:s'),
+                                        'username_update' => $_SESSION["user"]["username"]
+                                    ];
+                                    if ($jenis === 'add') {
+                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND'], ['uraian', '=', $uraian, 'AND']];
+                                        $set['username_insert'] = $_SESSION["user"]["username"];
+                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                                    } else {
+                                        $kondisi = [['id', '=', $id_row], ['tahun', '=', $tahun, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
+                                    }
+                                    $nama_file = "reg_surat_{$tahun}_wilayah({$kd_wilayah})_kd_opd({$kd_opd})";
+                                    $set_file = ['nama_file' => $nama_file];
+                                    break;
                                 case 'sk_asn':
                                     $kodePosting = 'cek_insert';
                                     $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
@@ -3253,7 +3342,7 @@ class post_data
                             }
                             if ($_FILES) {
                                 if (isset($_FILES['file'])) {
-                                    $file = $Fungsi->importFile($tbl, '');
+                                    $file = $Fungsi->importFile($tbl, $set_file);
                                     //var_dump($file);
                                     if ($file['result'] == 'ok') {
                                         $set['file'] = $file['file'];

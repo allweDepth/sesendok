@@ -44,8 +44,8 @@ class MasterFungsi
                 $rowData['thead'] = trim('<tr>
                         <th>NOMOR</th>
                         <th>TANGGAL</th>
+                        <th>URAIAN</th>
                         <th>JENIS</th>
-                        <th>SIFAT</th>
                         <th>SUB JENIS</th>
                         <th>FILE</th>
                         <th>KETERANGAN</th>
@@ -353,14 +353,13 @@ class MasterFungsi
                             $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
                         }
                         $buttons = '<div class="ui icon basic mini buttons">
-                        <button class="ui button" name="modal_show" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>
+                        <button class="ui button" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
                         <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="nomor">'  . $row->nomor . '</td>
                                     <td klm="tgl_surat_dibuat">'  . $row->tanggal . '</td>
                                     <td klm="uraian">' . $row->uraian . '</td>
                                     <td klm="jenis_naskah_dinas">'  . $row->jenis_naskah_dinas . '</td>
-                                    <td klm="sifat">'  . $row->sifat . '</td>
                                     <td klm="sub_sifat">'  . $row->sub_sifat . '</td>
                                     <td klm="file">' . $fileTag . '</td>
                                     <td klm="keterangan">' . $row->keterangan . '</td>
@@ -3490,6 +3489,10 @@ class MasterFungsi
                 );
                 $fileName = 'avatar.jpg';
                 $nama_files_hapus = '';
+                break;
+            case 'register_surat':
+                $path1 = 'upload';
+                $path2 = 'register_surat';
                 break;
             case 'peraturan':
                 //$targetPath = "upload{$slash}peraturan{$slash}";

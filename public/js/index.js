@@ -152,7 +152,7 @@ $(document).ready(function () {
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
 		]
 		let arrayDasboard = {
-			register_surat: ["newspaper icon", "Register Surat", "data register tata naskah", "surat"],
+			register_surat: ["newspaper icon", "Register Surat", "data register naskah dinas", "Naskah Dinas adalah informasi tertulis sebagai alat komunikasi kedinasan yang dibuat dan/atau diterima oleh pejabat yang berwenang di lingkungan Lembaga Negara dan Pemerintahan Daerah dalam rangka penyelenggaraan tugas pemerintahan dan pembangunan"],
 			berita: ["newspaper icon", "Berita", "berita", "berita"],
 			wallchat: ["comments outline icon", "Pesan dan Wall", "pesan", "pesan"],
 			atur_satu: ["erase icon", "PENGATURAN", "seting data", "pengaturan"],
@@ -892,7 +892,7 @@ $(document).ready(function () {
 									dataArray: []
 								}) +
 								createHTML("fieldDropdown", {
-									label: "Sub Sifat Naskah Dinas",
+									label: "Sub Jenis Naskah Dinas",
 									atribut: 'name="sub_sifat"',
 									kelas: "lainnya selection",
 									dataArray: []
@@ -909,6 +909,31 @@ $(document).ready(function () {
 								createHTML("fieldTextarea", {
 									label: "Uraian",
 									atribut: 'name="uraian" rows="2"',
+								}) +
+								createHTML("divider", {
+									header: "h4",
+									aligned: 'left aligned',
+									label: `Sumber Surat`
+								}) +
+								createHTML("fieldText", {
+									label: "Asal Surat",
+									atribut: 'name="asal_surat" placeholder="Asal Surat"',
+								}) +
+								createHTML("fieldText", {
+									label: "Nama Lengkap",
+									atribut: 'name="nama_lengkap" placeholder="Nama Lengkap"',
+								}) +
+								createHTML("fieldText", {
+									label: "Jabatan",
+									atribut: 'name="jabatan" placeholder="Jabatan" non_data',
+								}) +
+								createHTML("fieldText", {
+									label: "Pangkat",
+									atribut: 'name="pangkat" placeholder="Pangkat" non_data',
+								}) +
+								createHTML("fieldText", {
+									label: "Nip.",
+									atribut: 'name="nip" placeholder="NIP (jika ada)" non_data',
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
@@ -6279,7 +6304,7 @@ $(document).ready(function () {
 											case "organisasi":
 											case "sumber_dana":
 											case "akun_belanja":
-
+											case 'register_surat':
 											case "berita":
 											case "peraturan":
 											case "daftar_paket":
