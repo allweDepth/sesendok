@@ -145,6 +145,27 @@ class post_data
                     case 'add':
                         switch ($tbl) {
                             case 'register_surat':
+                                /*
+                                PERATURAN ARSIP NASIONAL REPUBLIK INDONESIA NOMOR 5 TAHUN 2021
+                                TENTANG PEDOMAN UMUM TATA NASKAH DINAS
+                                JENIS, SUSUNAN DAN BENTUK NASKAH DINAS
+                                A. Instruksi
+                                B. Surat Edaran
+                                C. Keputusan
+                                D. Surat Perintah atau Surat Tugas
+                                E. Nota Dinas
+                                F. Memorandum
+                                G. Undangan Internal
+                                H. Surat Dinas
+                                I. Perjanjian Dalam Negeri
+                                J. Surat Kuasa
+                                K. Berita Acara
+                                L. Surat Keterangan
+                                M. Surat Pengantar
+                                N. Pengumuman
+                                O. Laporan
+P. Telaah Staf.
+                                */
                                 $jenis_naskah_dinas = $validate->setRules('jenis_naskah_dinas', 'jenis naskah dinas', [
                                     'sanitize' => 'string',
                                     'required' => true,

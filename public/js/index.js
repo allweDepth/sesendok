@@ -876,6 +876,17 @@ $(document).ready(function () {
 						case 'register_surat':
 							dataHtmlku.konten =
 								createHTML("fieldDropdown", {
+									label: "Kategori klasifikasi keamanan",
+									atribut: 'name="klasifikasi_keamanan"',
+									kelas: "selection",
+									dataArray: [
+										["SR", "sangat rahasia"],
+										["R", "Rahasia"],
+										["T", "Terbatas"],
+										["B", "biasa/terbuka"]
+									]
+								}) +
+								createHTML("fieldDropdown", {
 									label: "Jenis Naskah Dinas",
 									atribut: 'name="jenis_naskah_dinas"',
 									kelas: "selection",
