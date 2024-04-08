@@ -1297,12 +1297,12 @@ class get_data
                                         if ($tahun_renstra > 2000) {
                                             $like = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND (text LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%') OR kelompok LIKE CONCAT('%',?,'%'))";
                                             $data_like = [$kd_wilayah, $kd_opd, $tahun_renstra, $cari, $cari, $cari];
-                                            $order = "ORDER BY id, id_tujuan ASC";
+                                            $order = "ORDER BY id_tujuan ASC";
                                             $where1 = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                             $data_where1 =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
                                             // $where_row = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";
                                             // $data_where_row =  [$kd_wilayah, $kd_opd, $tahun_renstra, 0];
-                                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['disable', '<=', 0, 'AND']];
+                                            $kondisi = [['id', '= ?', $id_row], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun_renstra, 'AND'], ['disable', '<= ?', 0, 'AND']];
                                             //pilih kolom yang diambil
                                             // $DB->select('id, kelompok, id_tujuan, text, keterangan');
                                             $whereGet_row_json = "kd_wilayah = ? AND kd_opd = ?  AND tahun = ? AND disable <= ?";

@@ -3626,8 +3626,6 @@ $(document).ready(function () {
 		let jalankanAjax = false;
 		let mdl = $('.ui.modal[name="mdl_general"]');
 		mdl.removeClass(`big tiny`);
-
-		// mdl.addClass("large");
 		//ubah kop header modal
 		let elmIkonModal = $(mdl.find(".big.icons i")[0]); //ganti class icon
 		let elmIkonModal2 = $(mdl.find(".big.icons i")[1]); //ganti class icon
@@ -3664,9 +3662,7 @@ $(document).ready(function () {
 						mdl.addClass("big");
 						if (mdl.find('.actions [name="modal_second"]').length <= 0) (
 							mdl.find('.actions').append(`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`)
-						)
-						// 		case "messageLink":
-						// elemen = `<div class="ui icon message ${colorData}"><i class="${iconData}"></i><div class="content"><div class="header">${label} </div><a ${atribut}  target="_blank">${valueData}</a></div></div>`;
+						);
 						elementForm = createHTML("message", {
 							color: "positive",
 							icon: `exclamation icon`,
@@ -3724,7 +3720,6 @@ $(document).ready(function () {
 								{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="menimbang"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
 								footerTable: [{
 									lbl: ``,
-
 								}, {
 									lbl: '',
 									attr: ``
