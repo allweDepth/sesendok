@@ -141,10 +141,29 @@ class post_data
                             'numeric' => true,
                             'min_char' => 1
                         ]);
-
-
                     case 'add':
                         switch ($tbl) {
+                            case 'register_surat':
+                                $jenis_naskah_dinas = $validate->setRules('jenis_naskah_dinas', 'jenis naskah dinas', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3,
+                                    'in_array' => ['arahan', 'korespondensi', 'khusus']
+                                ]);
+
+                                $arahan = ['arahan_pengaturan', 'arahan_penetapan', 'arahan_penugasan'];
+                                $arahan_pengaturan = ['arahan_pengaturan_undang2', 'arahan_pengaturan_instruksi', 'arahan_pengaturan_edaran', 'arahan_pengaturan_sop'];
+                                $arahan_penetapan = ['arahan_penetapan_keputusan'];
+                                $arahan_penugasan = [
+                                    'arahan_penugasan_suratperintah', 'arahan_penugasan_surattugas'
+                                ];
+                                $korespondensi = ['korespondensi_internal', 'korespondensi_eksternal'];
+                                $korespondensi_internal = ['korespondensi_internal_nota', 'korespondensi_internal_memorandum', 'korespondensi_internal_disposisi', 'korespondensi_internal_undangan'];
+                                $korespondensi_eksternal = ['korespondensi_eksternal_dinas'];
+                                $khusus = ['khusus_perjanjian', 'khusus_kuasa', 'khusus_ba', 'khusus_keterangan', 'khusus_pengantar', 'khusus_pengumuman', 'khusus_laporan', 'khusus_telaah'];
+
+
+                                break;
                             case 'sk_asn':
                                 $nomor = $validate->setRules('nomor', 'nomor', [
                                     'sanitize' => 'string',

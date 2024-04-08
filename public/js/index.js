@@ -6006,6 +6006,7 @@ $(document).ready(function () {
 								case 'prog':
 								case 'keg':
 								case 'sub_keg':
+								case 'register_surat':
 								case "daftar_paket":
 									switch (jenis) {
 										case "upload":
