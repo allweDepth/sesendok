@@ -161,8 +161,15 @@ class post_data
                                 $korespondensi_internal = ['korespondensi_internal_nota', 'korespondensi_internal_memorandum', 'korespondensi_internal_disposisi', 'korespondensi_internal_undangan'];
                                 $korespondensi_eksternal = ['korespondensi_eksternal_dinas'];
                                 $khusus = ['khusus_perjanjian', 'khusus_kuasa', 'khusus_ba', 'khusus_keterangan', 'khusus_pengantar', 'khusus_pengumuman', 'khusus_laporan', 'khusus_telaah'];
-
-
+                                var_dump($jenis_naskah_dinas);
+                                var_dump(${$jenis_naskah_dinas});
+                                $sifat = $validate->setRules('sifat', 'sifat', [
+                                    'sanitize' => 'string',
+                                    'required' => true,
+                                    'min_char' => 3,
+                                    'in_array' => ${$jenis_naskah_dinas}
+                                ]);
+                                var_dump($sifat);
                                 break;
                             case 'sk_asn':
                                 $nomor = $validate->setRules('nomor', 'nomor', [
