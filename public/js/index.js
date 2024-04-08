@@ -5191,9 +5191,19 @@ $(document).ready(function () {
 											}]
 											switch (value2) {
 												case 'arahan_pengaturan':
-													value_sub_sifat = value2;
+													value_sub_sifat = arahan_pengaturan;
 													break;
-												default:
+												case 'arahan_penetapan':
+													value_sub_sifat = arahan_penetapan;
+													break;
+												case 'arahan_penugasan':
+													value_sub_sifat = arahan_penugasan;
+													break;
+												case 'korespondensi_internal':
+													value_sub_sifat = korespondensi_internal;
+													break;
+												case 'korespondensi_eksternal':
+													value_sub_sifat = korespondensi_eksternal;
 													break;
 											}
 											myForm.find(`[name="sub_sifat"]`).dropdown({ values: value_sub_sifat });
