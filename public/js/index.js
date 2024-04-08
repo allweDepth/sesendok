@@ -152,6 +152,7 @@ $(document).ready(function () {
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
 		]
 		let arrayDasboard = {
+			register_surat: ["newspaper icon", "Register Surat", "data register tata naskah", "surat"],
 			berita: ["newspaper icon", "Berita", "berita", "berita"],
 			wallchat: ["comments outline icon", "Pesan dan Wall", "pesan", "pesan"],
 			atur_satu: ["erase icon", "PENGATURAN", "seting data", "pengaturan"],
@@ -408,10 +409,8 @@ $(document).ready(function () {
 					tbl: tbl, // Menambahkan atribut tbl
 					html: '<i class="plus icon"></i>' // Isi dari elemen button baru
 				});
-
 				// Mengganti elemen pertama dengan elemen baru
 				$('[data-tab="tab_all"] .ui.right.floated.basic.buttons button').eq(0).replaceWith(newButton);
-
 				$('div[name="ketref"]').html(arrayDasboard[tbl][3]);
 				jalankanAjax = true;
 				divTab.find('[tbl]').attr('tbl', tbl);
@@ -874,6 +873,58 @@ $(document).ready(function () {
 					}
 				case "add":
 					switch (tbl) {
+						case 'register_surat':
+							dataHtmlku.konten =
+								createHTML("fieldDropdown", {
+									label: "Jenis Naskah Dinas",
+									atribut: 'name="jenis_naskah_dinas"',
+									kelas: "selection",
+									dataArray: [
+										["arahan", "Naskah Dinas arahan"],
+										["korespondensi", "Naskah Dinas korespondensi"],
+										["khusus", "Naskah Dinas khusus"]
+									]
+								}) +
+								createHTML("fieldDropdown", {
+									label: "Sifat Naskah Dinas",
+									atribut: 'name="sifat"',
+									kelas: "lainnya selection",
+									dataArray: []
+								}) +
+								createHTML("fieldDropdown", {
+									label: "Sub Sifat Naskah Dinas",
+									atribut: 'name="sub_sifat"',
+									kelas: "lainnya selection",
+									dataArray: []
+								}) +
+								createHTML("fieldText", {
+									label: "Nomor Surat",
+									atribut: 'name="nomor" placeholder="Nomor Surat"',
+								}) +
+								createHTML("fieldCalendar", {
+									label: "Tanggal",
+									atribut: 'placeholder="Input tanggal surat.." name="tanggal" readonly',
+									kelas: "date",
+								}) +
+								createHTML("fieldTextarea", {
+									label: "Uraian",
+									atribut: 'name="uraian" rows="2"',
+								}) +
+								createHTML("fieldTextarea", {
+									label: "Keterangan",
+									atribut: 'name="keterangan" rows="2" non_data',
+								}) +
+								createHTML("fieldFileInput2", {
+									label: "Pilih File Dokumen",
+									placeholderData: "Pilih File...",
+									atribut: '',
+									accept: ".jpg,.jpeg,.png,.pdf,.xlsx,.docx",
+								}) +
+								createHTML("fielToggleCheckbox", {
+									atribut: 'name="disable" non_data',
+									txtLabel: "Non Aktif",
+								});
+							break;
 						case 'berita':
 							dataHtmlku.konten =
 								createHTML("fieldDropdown", {
@@ -2449,7 +2500,11 @@ $(document).ready(function () {
 				case 'add':
 				case 'edit':
 					switch (tbl) {
-						case 'users':
+						case 'register_surat':
+							var dropdownJenisNaskah = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="jenis_naskah_dinas"]');
+							dropdownJenisNaskah.onChange({ jenis: 'non', tbl: 'register_surat' });
+							break;
+						case 'users'://name="jenis_naskah_dinas"
 							var dropdown_ajx_organisasi = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_organisasi"]');
 							dropdown_ajx_organisasi.returnList({ jenis: "get_row_json", tbl: "organisasi", minCharacters: 1 });
 							var dropdown_ajx_wilayah = new DropdownConstructor('form[name="form_flyout"] .ui.dropdown[name="kd_wilayah"]');
@@ -4984,6 +5039,7 @@ $(document).ready(function () {
 			let tbl = allObjek.tbl;
 			this.element.dropdown({
 				onChange: function (value, text, $choice) {
+					console.log(value);
 					let dataChoice = $($choice).find('span.description').text();
 					switch (jenis) {
 						case 'getJsonRows':
@@ -5015,6 +5071,135 @@ $(document).ready(function () {
 							break;
 						case 'non':
 							switch (tbl) {
+								case 'register_surat':
+									var myForm = $('form[name="form_flyout"]')
+									let arahan = [
+										{
+											value: 'arahan_pengaturan',
+											name: 'Naskah Dinas pengaturan'
+										},
+										{
+											value: 'arahan_penetapan',
+											name: 'Naskah Dinas penetapan'
+										},
+										{
+											value: 'arahan_penugasan',
+											name: 'Naskah Dinas penugasan'
+										}];
+									let arahan_pengaturan = [
+										{
+											value: 'arahan_pengaturan_undang2',
+											name: 'peraturan perundang-undangan'
+										},
+										{
+											value: 'arahan_pengaturan_instruksi',
+											name: 'instruksi'
+										},
+										{
+											value: 'arahan_pengaturan_edaran',
+											name: 'surat edaran'
+										},
+										{
+											value: 'arahan_pengaturan_sop',
+											name: 'standar operasional prosedur administrasi pemerintahan'
+										}];
+									let arahan_penetapan = [
+										{
+											value: 'arahan_penetapan_keputusan',
+											name: 'Keputusan'
+										}];
+									let arahan_penugasan = [
+										{
+											value: 'arahan_penugasan_suratperintah',
+											name: 'surat perintah'
+										},
+										{
+											value: 'arahan_penugasan_surattugas',
+											name: 'surat tugas'
+										}];
+									let korespondensi = [
+										{
+											value: 'korespondensi_internal',
+											name: 'Naskah Dinas korespondensi internal;'
+										},
+										{
+											value: 'korespondensi_eksternal',
+											name: 'Naskah Dinas korespondensi eksternal'
+										}];
+									let korespondensi_internal = [
+										{
+											value: 'korespondensi_internal_nota',
+											name: 'nota dinas'
+										},
+										{
+											value: 'korespondensi_internal_memorandum',
+											name: 'memorandum'
+										},
+										{
+											value: 'korespondensi_internal_disposisi',
+											name: 'disposisi'
+										},
+										{
+											value: 'korespondensi_internal_undangan',
+											name: 'surat undangan internal'
+										}];
+									let korespondensi_eksternal = [
+										{
+											value: 'korespondensi_eksternal_dinas',
+											name: 'surat dinas'
+										}];
+									let khusus = [
+										{
+											value: 'khusus_perjanjian',
+											name: 'surat perjanjian'
+										},
+										{
+											value: 'khusus_kuasa',
+											name: 'surat kuasa'
+										},
+										{
+											value: 'khusus_ba',
+											name: 'berita acara'
+										},
+										{
+											value: 'khusus_keterangan',
+											name: 'surat keterangan'
+										},
+										{
+											value: 'khusus_pengantar',
+											name: 'surat pengantar'
+										},
+										{
+											value: 'khusus_pengumuman',
+											name: 'pengumuman'
+										},
+										{
+											value: 'khusus_laporan',
+											name: 'laporan'
+										},
+										{
+											value: 'khusus_telaah',
+											name: 'telaah staf'
+										}];
+									let myVariable = { arahan: arahan, korespondensi: korespondensi, khusus: khusus };
+									myForm.find(`.ui.dropdown[name="sifat"]`).dropdown({
+										values: myVariable[value],
+										onChange: function (value2, text, $choice) {
+											let value_sub_sifat = [{
+												value: value2,
+												name: text
+											}]
+											switch (value2) {
+												case 'arahan_pengaturan':
+													value_sub_sifat = value2;
+													break;
+												default:
+													break;
+											}
+											myForm.find(`[name="sub_sifat"]`).dropdown({ values: value_sub_sifat });
+										}
+									});
+									break;
 								case 'metodePengadaan':
 									let value_pengadaan_penyedia = [
 										{
@@ -5089,10 +5274,10 @@ $(document).ready(function () {
 											name: 'Swakelola Type IV'
 										},
 									];
-									let myForm = $('form[name="form_flyout"]')
+									var myForm = $('form[name="form_flyout"]')
 									if (value === 'penyedia') {
 										// 'name="metode_pemilihan"'
-										myForm.find(`[name="metode_pemilihan"]`).dropdown({ values: value_metode_pemilihan })
+										myForm.find(`[name="metode_pemilihan"]`).dropdown({ values: value_metode_pemilihan });
 										// 'name="pengadaan_penyedia"'
 										myForm.find(`[name="pengadaan_penyedia"]`).dropdown({
 											values: value_pengadaan_penyedia,
