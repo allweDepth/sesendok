@@ -1,151 +1,151 @@
 <?php
 class post_data
 {
-    public function post_data()
-    {
-        require 'init.php';
-        $user = new User();
-        $user->cekUserSession();
-        $type_user = $_SESSION["user"]["type_user"];
-        $id_user = $_SESSION["user"]["id"];
-        $tahun_anggaran = $_SESSION["user"]["tahun"];
-        $keyEncrypt = $_SESSION["user"]["key_encrypt"];
-        $btn_edit = '';
-        $DB = DB::getInstance();
-        $Fungsi = new MasterFungsi();
-        $type_user = $_SESSION["user"]["type_user"];
-        $username = $_SESSION["user"]["username"];
-        $status = 'user';
-        if ($type_user === 'admin') {
-            $status = 'admin';
+  public function post_data()
+  {
+    require 'init.php';
+    $user = new User();
+    $user->cekUserSession();
+    $type_user = $_SESSION["user"]["type_user"];
+    $id_user = $_SESSION["user"]["id"];
+    $tahun_anggaran = $_SESSION["user"]["tahun"];
+    $keyEncrypt = $_SESSION["user"]["key_encrypt"];
+    $btn_edit = '';
+    $DB = DB::getInstance();
+    $Fungsi = new MasterFungsi();
+    $type_user = $_SESSION["user"]["type_user"];
+    $username = $_SESSION["user"]["username"];
+    $status = 'user';
+    if ($type_user === 'admin') {
+      $status = 'admin';
+    }
+    $sukses = false;
+    $code = 40;
+    $hasilServer = hasilServer[$code];
+    $pesan = 'posting kosong';
+    $tambahan_pesan = '';
+    $set_file  = []; //['nama_file' => $uraian, 'dok' => $dok]
+    $item = array('code' => "1", 'message' => $pesan);
+    $json = array('success' => $sukses, 'error' => $item);
+    $data = array();
+    //ambil row user
+    $rowPengaturan = false;
+    $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
+    if ($rowUsername !== false) {
+      foreach ($rowUsername as $key => $value) {
+        ${$key} = $value;
+      }
+      $tahun = (int) $rowUsername->tahun;
+      $kd_wilayah = $rowUsername->kd_wilayah;
+      $kd_opd = $rowUsername->kd_organisasi;
+      $id_user = $rowUsername->id;
+      $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+      if ($rowPengaturan !== false) {
+        foreach ($rowPengaturan as $key => $value) {
+          ${$key} = $value;
         }
-        $sukses = false;
-        $code = 40;
-        $hasilServer = hasilServer[$code];
-        $pesan = 'posting kosong';
-        $tambahan_pesan = '';
-        $set_file  = []; //['nama_file' => $uraian, 'dok' => $dok]
-        $item = array('code' => "1", 'message' => $pesan);
-        $json = array('success' => $sukses, 'error' => $item);
-        $data = array();
-        //ambil row user
-        $rowPengaturan = false;
-        $rowUsername = $DB->getWhereOnce('user_sesendok_biila', ['username', '=', $username]);
-        if ($rowUsername !== false) {
-            foreach ($rowUsername as $key => $value) {
-                ${$key} = $value;
-            }
-            $tahun = (int) $rowUsername->tahun;
-            $kd_wilayah = $rowUsername->kd_wilayah;
-            $kd_opd = $rowUsername->kd_organisasi;
-            $id_user = $rowUsername->id;
-            $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-            if ($rowPengaturan !== false) {
-                foreach ($rowPengaturan as $key => $value) {
-                    ${$key} = $value;
-                }
-            }
-        } else {
-            $id_user = 0;
-            $code = 407;
-        }
-        // $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-        // var_dump($rowTahunAktif);
-        $group_by = "";
+      }
+    } else {
+      $id_user = 0;
+      $code = 407;
+    }
+    // $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+    // var_dump($rowTahunAktif);
+    $group_by = "";
 
-        if (!empty($_POST) && $id_user > 0 && $code != 407) {
-            $code = 11;
-            if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
-                $code = 12;
-                $validate = new Validate($_POST);
-                $validate_temp = new Validate($_POST); //untuk tanggal dan mengakali lainnya
-                //var_dump($_POST);
-                //var_dump($validate );
-                $jenis = $validate->setRules('jenis', 'jenis', [
-                    'sanitize' => 'string',
-                    'required' => true,
-                    'min_char' => 1,
-                    'max_char' => 100
-                ]);
-                $tbl = $validate->setRules('tbl', 'tbl', [
-                    'sanitize' => 'string',
-                    'required' => true,
-                    'min_char' => 1,
-                    'max_char' => 100
-                ]);
-                //var_dump($tbl);
-                //================
-                //PROSES VALIDASI
-                //================
-                switch ($jenis) {
-                    case 'upload':
-                        switch ($tbl) {
-                            case 'daftar_paket':
-                                $val_in_array = ['file_kontrak', 'file_addendum', 'file_pho', 'file_fho', 'file_laporan', 'file_dokumentasi0', 'file_dokumentasi50', 'file_dokumentasi100'];
-                                break;
-                            case 'asn':
-                                $val_in_array = ['file_akta_lahir', 'file_ktp', 'file_kk', 'file_npwp', 'file_buku_nikah', 'file_karpeg', 'file_karsi_karsu', 'file_photo', 'pend_file_sd', 'pend_file_smp', 'pend_file_smu', 'pend_file_s1', 'pend_file_s2', 'pend_file_s3'];
-                                break;
-                            case 'user':
-                                $val_in_array = ['photo'];
-                                break;
-                            case 'wilayah_logo': //upload logo wilayah
-                                $val_in_array = ['logo'];
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        $id_row = $validate->setRules('id_row', 'dokumen', [
-                            'required' => true,
-                            'numeric' => true,
-                            'min_char' => 1
-                        ]);
-                        $dok = $validate->setRules('dok', 'jenis dokumen', [
-                            'required' => true,
-                            'sanitize' => 'string',
-                            'min_char' => 1,
-                            'in_array' => $val_in_array
-                        ]);
-                        break;
-                    case 'unkunci':
-                    case 'unsetujui':
-                    case 'kunci':
-                    case 'setujui':
-                        if ($type_user === 'admin') {
-                            $tahun_dokumen = $validate->setRules('tahun', 'tahun dokumen', [
-                                'required' => true,
-                                'numeric' => true,
-                                'max_char' => 4,
-                                'min_char' => 4
-                            ]);
-                        } else {
-                            $tahun_dokumen = $validate->setRules('nabiilainayah_ok', 'anda bukan admin', [
-                                'required' => true,
-                                'numeric' => true,
-                                'max_char' => 8,
-                                'min_char' => 9
-                            ]);
-                        }
-                        break;
-                    case 'edit':
-                        switch ($tbl) {
-                            case 'profil':
+    if (!empty($_POST) && $id_user > 0 && $code != 407) {
+      $code = 11;
+      if (isset($_POST['jenis']) && isset($_POST['tbl'])) {
+        $code = 12;
+        $validate = new Validate($_POST);
+        $validate_temp = new Validate($_POST); //untuk tanggal dan mengakali lainnya
+        //var_dump($_POST);
+        //var_dump($validate );
+        $jenis = $validate->setRules('jenis', 'jenis', [
+          'sanitize' => 'string',
+          'required' => true,
+          'min_char' => 1,
+          'max_char' => 100
+        ]);
+        $tbl = $validate->setRules('tbl', 'tbl', [
+          'sanitize' => 'string',
+          'required' => true,
+          'min_char' => 1,
+          'max_char' => 100
+        ]);
+        //var_dump($tbl);
+        //================
+        //PROSES VALIDASI
+        //================
+        switch ($jenis) {
+          case 'upload':
+            switch ($tbl) {
+              case 'daftar_paket':
+                $val_in_array = ['file_kontrak', 'file_addendum', 'file_pho', 'file_fho', 'file_laporan', 'file_dokumentasi0', 'file_dokumentasi50', 'file_dokumentasi100'];
+                break;
+              case 'asn':
+                $val_in_array = ['file_akta_lahir', 'file_ktp', 'file_kk', 'file_npwp', 'file_buku_nikah', 'file_karpeg', 'file_karsi_karsu', 'file_photo', 'pend_file_sd', 'pend_file_smp', 'pend_file_smu', 'pend_file_s1', 'pend_file_s2', 'pend_file_s3'];
+                break;
+              case 'user':
+                $val_in_array = ['photo'];
+                break;
+              case 'wilayah_logo': //upload logo wilayah
+                $val_in_array = ['logo'];
+                break;
+              default:
+                # code...
+                break;
+            }
+            $id_row = $validate->setRules('id_row', 'dokumen', [
+              'required' => true,
+              'numeric' => true,
+              'min_char' => 1
+            ]);
+            $dok = $validate->setRules('dok', 'jenis dokumen', [
+              'required' => true,
+              'sanitize' => 'string',
+              'min_char' => 1,
+              'in_array' => $val_in_array
+            ]);
+            break;
+          case 'unkunci':
+          case 'unsetujui':
+          case 'kunci':
+          case 'setujui':
+            if ($type_user === 'admin') {
+              $tahun_dokumen = $validate->setRules('tahun', 'tahun dokumen', [
+                'required' => true,
+                'numeric' => true,
+                'max_char' => 4,
+                'min_char' => 4
+              ]);
+            } else {
+              $tahun_dokumen = $validate->setRules('nabiilainayah_ok', 'anda bukan admin', [
+                'required' => true,
+                'numeric' => true,
+                'max_char' => 8,
+                'min_char' => 9
+              ]);
+            }
+            break;
+          case 'edit':
+            switch ($tbl) {
+              case 'profil':
 
-                                break;
-                            case 'value':
-                                # code...
-                                break;
-                        }
-                        $id_row = $validate->setRules('id_row', 'id', [
-                            'required' => true,
-                            'numeric' => true,
-                            'min_char' => 1
-                        ]);
-                    case 'add':
-                        switch ($tbl) {
-                            case 'register_surat':
-                                /*
+                break;
+              case 'value':
+                # code...
+                break;
+            }
+            $id_row = $validate->setRules('id_row', 'id', [
+              'required' => true,
+              'numeric' => true,
+              'min_char' => 1
+            ]);
+          case 'add':
+            switch ($tbl) {
+              case 'register_surat':
+                /*
                                 PERATURAN ARSIP NASIONAL REPUBLIK INDONESIA NOMOR 5 TAHUN 2021
                                 TENTANG PEDOMAN UMUM TATA NASKAH DINAS
                                 JENIS, SUSUNAN DAN BENTUK NASKAH DINAS
@@ -166,3654 +166,3654 @@ class post_data
                                 O. Laporan
 P. Telaah Staf.
                                 */
-                                $klasifikasi_keamanan = $validate->setRules('klasifikasi_keamanan', 'Kategori klasifikasi keamanan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'in_array' => ['sr', 'r', 't', 'b']
-                                ]);
-                                $jenis_naskah_dinas = $validate->setRules('jenis_naskah_dinas', 'jenis naskah dinas', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3,
-                                    'in_array' => ['arahan', 'korespondensi', 'khusus']
-                                ]);
+                $klasifikasi_keamanan = $validate->setRules('klasifikasi_keamanan', 'Kategori klasifikasi keamanan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'in_array' => ['sr', 'r', 't', 'b']
+                ]);
+                $jenis_naskah_dinas = $validate->setRules('jenis_naskah_dinas', 'jenis naskah dinas', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3,
+                  'in_array' => ['arahan', 'korespondensi', 'khusus']
+                ]);
 
-                                $arahan = ['arahan_pengaturan', 'arahan_penetapan', 'arahan_penugasan'];
-                                $arahan_pengaturan = ['arahan_pengaturan_undang2', 'arahan_pengaturan_instruksi', 'arahan_pengaturan_edaran', 'arahan_pengaturan_sop'];
-                                $arahan_penetapan = ['arahan_penetapan_keputusan'];
-                                $arahan_penugasan = [
-                                    'arahan_penugasan_suratperintah', 'arahan_penugasan_surattugas'
-                                ];
-                                $korespondensi = ['korespondensi_internal', 'korespondensi_eksternal'];
-                                $korespondensi_internal = ['korespondensi_internal_nota', 'korespondensi_internal_memorandum', 'korespondensi_internal_disposisi', 'korespondensi_internal_undangan'];
-                                $korespondensi_eksternal = ['korespondensi_eksternal_dinas'];
-                                $khusus = ['khusus_perjanjian', 'khusus_kuasa', 'khusus_ba', 'khusus_keterangan', 'khusus_pengantar', 'khusus_pengumuman', 'khusus_laporan', 'khusus_telaah'];
-                                $sifat = $validate->setRules('sifat', 'sifat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3,
-                                    'in_array' => ${$jenis_naskah_dinas}
-                                ]);
-                                // var_dump($sifat);
-                                $sub_sifat = $validate->setRules('sub_sifat', 'sub sifat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3,
-                                    'in_array' => ${$sifat}
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 400
-                                ]);
-                                $nomor = $validate->setRules('nomor', 'nomor', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 255
-                                ]);
-                                $tanggal = $validate->setRules('tanggal', 'tgl surat', [
-                                    'sanitize' => 'string',
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $asal_surat = $validate->setRules('asal_surat', 'asal surat', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 255
-                                ]);
-                                $nama_lengkap = $validate->setRules('nama_lengkap', 'Nama Penandatanganan Surat', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 255
-                                ]);
-                                $nip = $validate->setRules('nip', 'nip', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 18
-                                ]);
-                                $pangkat = $validate->setRules('pangkat', 'pangkat', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'max_char' => 18
-                                ]);
-                                $jabatan = $validate->setRules('jabatan', 'jabatan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'max_char' => 18
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'sk_asn':
-                                $nomor = $validate->setRules('nomor', 'nomor', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 255
-                                ]);
-                                $tgl_surat_dibuat = $validate->setRules('tgl_surat_dibuat', 'tgl surat dibuat', [
-                                    'sanitize' => 'string',
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $tentang = $validate->setRules('tentang', 'tentang', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 400
-                                ]);
-                                $tabel_pakai_temporer = $Fungsi->tabel_pakai('asn')['tabel_pakai'];
-                                $pemberi_tgs = $validate->setRules('pemberi_tgs', 'Pemberi Tugas', [
-                                    'sanitize' => 'string',
-                                    'required' => true
-                                ]);
-                                $pemberi_tgs = $validate->setRules('pemberi_tgs', 'Pemberi Tugas', [
-                                    'inDB' => [$tabel_pakai_temporer, 'nip', [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']]]
-                                ]);
-                                $jbt_pemberi_tgs = $validate->setRules('jbt_pemberi_tgs', 'jbt pemberi tugas', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 255
-                                ]);
-                                $pangkat_pemberi_tgs = $validate->setRules('pangkat_pemberi_tgs', 'pangkat pemberi tugas', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 255
-                                ]);
-                                $kondisi_row = [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
-                                $row_resul_cari = $DB->getWhereOnceCustom($tabel_pakai_temporer, $kondisi_row);
-                                if ($row_resul_cari !== false) {
-                                    $pangkat_pemberi_tgs = $Fungsi->golongan_ruang($dinamic = ['golongan' => $row_resul_cari->golongan, 'ruang' => $row_resul_cari->ruang]);
-                                    $pangkat_pemberi_tgs = $pangkat = ucfirst($pangkat_pemberi_tgs['pangkat']) . ', ' . $pangkat_pemberi_tgs['singkat'];
-                                    $nama_pemberi_tgs = ucwords($row_resul_cari->nama);
-                                    if (strlen($row_resul_cari->gelar ?? '') > 0) {
-                                        $nama_pemberi_tgs .= ', ' . $row_resul_cari->gelar;
-                                    }
-                                    if (strlen($row_resul_cari->gelar_depan ?? '') > 0) {
-                                        $nama_pemberi_tgs = $row_resul_cari->gelar_depan . ' ' . $namaLengkap;
-                                    }
-                                } else {
-                                    $bentuk_lampiran = $validate->setRules('get', 'Pejabat Pemberi Tugas tidak dikenali', [
-                                        'error' =>  true
-                                    ]);
-                                }
-                                //$bentuk_lampiran 0 = bentuk list ol , 1= bentuk tabel
-                                $bentuk_lampiran = $validate->setRules('bentuk_lampiran', 'bentuk lampiran', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $bentuk_lampiran = ($bentuk_lampiran == 'on') ? 1 : 0;
-                                // var_dump(gettype($_POST['menimbang']));
-                                $menimbang = $validate->setRules('menimbang', 'menimbang', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $menimbang = $validate->setRules('menimbang', 'menimbang', [
-                                    'json_decode' => true
-                                ]);
-                                // var_dump( $menimbang );
-                                $sanitizeRules = [
-                                    'strip_tags' => true,
-                                    'htmlspecialchars' => true
-                                ];
-                                $menimbang = $validate->setRules('menimbang', 'menimbang', [
-                                    'sanitizeJSON' => $sanitizeRules
-                                ]);
-                                // var_dump( $menimbang );
-                                $mengingat = $validate->setRules('mengingat', 'mengingat', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $mengingat = $validate->setRules('mengingat', 'mengingat', [
-                                    'json_decode' => true
-                                ]);
-                                $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $menetapkan_2 = $validate->setRules('menetapkan_2', 'menetapkan kedua', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $menetapkan_3 = $validate->setRules('menetapkan_3', 'menetapkan ketiga', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $menetapkan_4 = $validate->setRules('menetapkan_4', 'menetapkan keempat', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
-                                    'json_decode' => true
-                                ]);
-                                $menetapkan_2 = $validate->setRules('menetapkan_2', 'menetapkan kedua', [
-                                    'json_decode' => true
-                                ]);
-                                $menetapkan_3 = $validate->setRules('menetapkan_3', 'menetapkan ketiga', [
-                                    'json_decode' => true
-                                ]);
-                                $menetapkan_4 = $validate->setRules('menetapkan_4', 'menetapkan keempat', [
-                                    'json_decode' => true
-                                ]);
-                                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
-                                    'json_decode' => true
-                                ]);
-                                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
-                                    'sanitizeJSON' => $sanitizeRules
-                                ]);
-                                $tembusan = $validate->setRules('tembusan', 'tembusan', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $tembusan = $validate->setRules('tembusan', 'tembusan', [
-                                    'json_decode' => true
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'rekanan':
-                                $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama perusahaan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 5,
-                                    'max_char' => 255
-                                ]);
-                                $alamat = $validate->setRules('alamat', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 255
-                                ]);
-                                $email = $validate->setRules('email', 'email', [
-                                    'sanitize' => 'string',
-                                ]);
-                                $npwp = $validate->setRules('npwp', 'npwp', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 16,
-                                    'max_char' => 21
-                                ]);
-                                $no_rekening = $validate->setRules('no_rekening', 'no_rekening', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $bank_rekening = $validate->setRules('bank_rekening', 'bank rekening', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $atas_nama_rekening = $validate->setRules('atas_nama_rekening', 'atas_nama_rekening', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $direktur = $validate->setRules('direktur', 'direktur', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $jabatan = $validate->setRules('jabatan', 'jabatan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3,
-                                    'max_char' => 255
-                                ]);
-                                $no_ktp = $validate->setRules('no_ktp', 'no_ktp', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]); //
-                                $alamat_dir = $validate->setRules('alamat_dir', 'alamat_dir', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $no_akta_pendirian = $validate->setRules('no_akta_pendirian', 'no_akta_pendirian', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $no_akta_perubahan = $validate->setRules('no_akta_perubahan', 'no_akta_perubahan', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $nama_pelaksana = $validate->setRules('nama_pelaksana', 'nama_pelaksana', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 255
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-
-                                // var_dump($getData[12]);
-                                // var_dump(preg_match('/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', $getData[12]));
-                                if (strlen($no_akta_pendirian) > 0) {
-                                    $tgl_akta_pendirian = $validate->setRules('tgl_akta_pendirian', 'tanggal akta pendirian ', [
-                                        'sanitize' => 'string',
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                    $tgl_akta_pendirian = $Fungsi->tanggal($tgl_akta_pendirian)['tanggalMysql'];
-                                    $lokasi_notaris_pendirian = $validate->setRules('lokasi_notaris_pendirian', 'lokasi_notaris_pendirian', [
-                                        'sanitize' => 'string',
-                                        'max_char' => 255
-                                    ]);
-                                    $nama_notaris_pendirian = $validate->setRules('nama_notaris_pendirian', 'nama_notaris_pendirian', [
-                                        'sanitize' => 'string',
-                                        'max_char' => 255
-                                    ]);
-                                }
-                                if (strlen($no_akta_perubahan) > 0) {
-                                    $tgl_akta_perubahan = $validate->setRules('tgl_akta_perubahan', 'tgl_akta_perubahan', [
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                        'max_char' => 100
-                                    ]);
-                                    $tgl_akta_perubahan = $Fungsi->tanggal($tgl_akta_perubahan)['tanggalMysql'];
-                                    $lokasi_notaris_perubahan = $validate->setRules('lokasi_notaris_perubahan', 'lokasi_notaris_perubahan', [
-                                        'sanitize' => 'string',
-                                        'max_char' => 255
-                                    ]);
-                                    $nama_notaris_perubahan = $validate->setRules('nama_notaris_perubahan', 'nama_notaris_perubahan', [
-                                        'sanitize' => 'string',
-                                        'max_char' => 255
-                                    ]);
-                                    $notaris_perubahan = new stdClass;
-                                    $notaris_perubahan->{'nomor[1]'} = $no_akta_perubahan;
-                                    $notaris_perubahan->{'tanggal[1]'} = $tgl_akta_perubahan;
-                                    $notaris_perubahan->{'alamat_notaris[1]'} = $lokasi_notaris_perubahan;
-                                    $notaris_perubahan->{'notaris[1]'} = $nama_notaris_perubahan;
-                                }
-                                if (strlen($nama_pelaksana) > 0) {
-                                    $jabatan_pelaksana = $validate->setRules('jabatan_pelaksana', 'jabatan_pelaksana', [
-                                        'sanitize' => 'string',
-                                        'max_char' => 255
-                                    ]);
-                                    $data_lain = new stdClass;
-                                    $data_lain->{'pelaksana[nama][1]'} = $nama_pelaksana;
-                                    $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
-                                }
-
-                                break;
-                            case 'mapping':
-                                $kd_aset = $validate->setRules('kd_aset', 'kode aset/neraca', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $kd_aset = $validate->setRules('kd_aset', 'kode aset/neraca', [
-                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $kd_aset]]]
-                                ]);
-                                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_aset, 'AND']];
-                                $row_resul_cari = $DB->getWhereOnceCustom('aset_neo', $kondisi_row);
-                                $uraian_aset = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
-                                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
-                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun]]]
-                                ]);
-                                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_akun, 'AND']];
-                                $row_resul_cari = $DB->getWhereOnceCustom('akun_neo', $kondisi_row);
-                                $uraian_akun = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
-                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3,
-                                    'in_array' => ['ssh', 'hspk', 'asb', 'sbu']
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'satuan':
-                                $value = $validate->setRules('value', 'value', [
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                $item = $validate->setRules('item', 'item', [
-                                    'del_2_spasi' => true,
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                $sebutan_lain = $validate->setRules('sebutan_lain', 'sebutan lain', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'akun_belanja':
-                            case 'neraca':
-                                $akun = $validate->setRules('akun', 'akun', [
-                                    'required' => true,
-                                    'nuneric' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-                                $kode = (int)$akun;
-                                $kelompok = null;
-                                $jenis_akun = null;
-                                $objek = null;
-                                $rincian_objek = null;
-                                $sub_rincian_objek = null;
-                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
-                                    'nuneric' => true,
-                                    'max_char' => 100
-                                ]);
-
-                                if ($kelompok > 0) {
-                                    $jenis_akun = $validate->setRules('jenis_akun', 'jenis', [
-                                        'nuneric' => true,
-                                        'max_char' => 100
-                                    ]);
-                                    if ($jenis_akun > 0) {
-                                        $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis_akun, 2)]);
-                                        $objek = $validate->setRules('objek', 'objek', [
-                                            'nuneric' => true,
-                                            'max_char' => 100
-                                        ]);
-                                        if ($objek > 0) {
-                                            $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2)]);
-                                            $rincian_objek = $validate->setRules('rincian_objek', 'rincian objek', [
-                                                'nuneric' => true,
-                                                'max_char' => 100
-                                            ]);
-                                            if ($rincian_objek > 0) {
-                                                $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2)]);
-                                                $sub_rincian_objek = $validate->setRules('sub_rincian_objek', 'sub rincian objek', [
-                                                    'nuneric' => true,
-                                                    'max_char' => 100
-                                                ]);
-                                                if ((int)$sub_rincian_objek > 0) {
-                                                    $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2), $Fungsi->zero_pad((int)$sub_rincian_objek, 4)]);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'del_2_spasi' => true
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                // var_dump($kode);
-                                break;
-                            case 'bidang_urusan':
-                            case 'prog':
-                            case 'keg':
-                            case 'sub_keg':
-                                $urusan = $validate->setRules('urusan', 'urusan', [
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 1,
-                                    'max_char' => 100
-                                ]);
-
-                                if ($urusan !== 'x' || $urusan !== 'X') {
-                                    $urusan = $validate->setRules('urusan', 'urusan', [
-                                        'numeric' => true
-                                    ]);
-                                } else {
-                                    $urusan = $validate->setRules('urusan', 'urusan', [
-                                        'strtolower' => true,
-                                        'in_array' => ['x', 'X'],
-                                    ]);
-                                }
-                                $kode = implode('.', [$urusan]);
-                                $bidang = '';
-                                $prog = 0;
-                                $keg = '';
-                                $sub_keg = 0;
-                                $bidang = $validate->setRules('bidang', 'bidang', [
-                                    'sanitize' => 'string',
-                                    'max_char' => 100
-                                ]);
-                                if (strlen($bidang)) {
-                                    if (strtolower($bidang) !== 'xx') {
-                                        $bidang = $validate->setRules('bidang', 'bidang', [
-                                            'numeric' => true
-                                        ]);
-                                    } else {
-                                        $bidang = $validate->setRules('bidang', 'bidang', [
-                                            'strtolower' => true,
-                                            'in_array' => ['xx', 'XX'],
-                                        ]);
-                                    }
-                                    $kode = implode('.', [$urusan, $bidang]);
-                                    //program
-                                    $prog = $validate->setRules('prog', 'program', [
-                                        'sanitize' => 'string',
-                                        'max_char' => 100
-                                    ]);
-                                    if (strlen($prog)) {
-                                        $prog = $validate->setRules('prog', 'program', [
-                                            'numeric' => true
-                                        ]);
-                                        if ($prog > 0) {
-                                            $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2)]);
-                                            $keg = $validate->setRules('keg', 'kegiatan', [
-                                                'sanitize' => 'string',
-                                                'max_char' => 100
-                                            ]);
-                                            $explode_keg = explode('.', $keg);
-                                            // var_dump($explode_keg);
-                                            if (strlen($keg) > 0 && (int)$explode_keg[0] > 0 && (int)$explode_keg[1] > 0) {
-                                                $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
-                                                    'sanitize' => 'string',
-                                                    'max_char' => 100
-                                                ]);
-                                                $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg]);
-                                                if (strlen($sub_keg)) {
-                                                    $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
-                                                        'numeric' => true
-                                                    ]);
-                                                    if ($sub_keg > 0) {
-                                                        $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg, $Fungsi->zero_pad($sub_keg, 4)]);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                $nomenklatur_urusan = $validate->setRules('nomenklatur_urusan', 'nomenklatur urusan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'del_2_spasi' => true
-                                ]);
-                                $kinerja = $validate->setRules('kinerja', 'kinerja', [
-                                    'sanitize' => 'string',
-                                    'del_2_spasi' => true
-                                ]);
-                                $indikator = $validate->setRules('indikator', 'indikator', [
-                                    'sanitize' => 'string',
-                                    'del_2_spasi' => true
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'satuan', [
-                                    'sanitize' => 'string',
-                                    'del_2_spasi' => true
-                                ]);
-                                if (strlen($satuan)) {
-                                    $satuan = $validate->setRules('satuan', 'satuan', [
-                                        'required' => true,
-                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $satuan]]]
-                                    ]);
-                                }
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'realisasi':
-                                if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
-                                        'error' => true
-                                    ]);
-                                }
-                                $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
-                                $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
-                                    'inDB' => [$tabel_get_row, 'id', [['id', "=", $id_row_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
-                                ]);
-                                $jumlah_realisasi = $validate->setRules('jumlah_realisasi', 'jumlah realisasi', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $uraian_paket = $validate->setRules('uraian', 'tanggal dokumen SPJ', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $tanggal = $validate->setRules('tanggal', 'tanggal dokumen SPJ', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $realisasi = $validate->setRules('realisasi', 'realisasi', [
-                                    'json_repair' => true,
-                                    'required' => true
-                                ]);
-                                $realisasi = $validate->setRules('realisasi', 'realisasi', [
-                                    'json_decode' => true
-                                ]);
-                                // realisasi harus di kontrol
-                                $realisasiObject = $realisasi->myrows;
-                                $sum = 0;
-                                foreach ($realisasiObject as $key => $value) {
-                                    $sum += $value->jumlah;
-                                }
-                                if ($jumlah_realisasi != $sum) {
-                                    $catchError = $validate->setRules('kesalahanformdanarraytdkcocok', 'terdapat kesalahan form', [
-                                        'error' => true //;catch/langsung error
-                                    ]);
-                                }
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'required' => true,
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                break;
-                            case 'berita':
-                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inArray' => ['berita', 'pelayanan', 'data_teknis', 'organisasi', 'anggaran']
-                                ]);
-                                $judul = $validate->setRules('judul', 'Judul Berita', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                ]);
-                                $tanggal = $validate->setRules('tanggal', 'tanggal berita', [
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'required' => true,
-                                    'max_char' => 100,
-                                    'min_char' => 8
-                                ]);
-                                $uraian_html = $validate->setRules('uraian_html', 'Markup HTML', [
-                                    'del_2_spasi' => true,
-                                    'required' => true,
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $urutan = $validate->setRules('urutan', 'Nomor Urut', [
-                                    'numeric' => true,
-                                    'required' => true
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'asn':
-                                $nama = $validate->setRules('nama', 'nama', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                ]);
-                                $gelar = $validate->setRules('gelar', 'gelar', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $jabatan = $validate->setRules('jabatan', 'alamat', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $nip = $validate->setRules('nip', 'nip', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'max_char' => 18,
-                                    'min_char' => 18,
-                                    // 'unique' => ['db_asn_pemda_neo', 'nip']
-                                ]);
-                                $golongan = $validate->setRules('golongan', 'golongan', [
-                                    'max_char' => 1,
-                                    'min_char' => 1,
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'inArray' => [1, 2, 3, 4]
-                                ]);
-                                $ruang = $validate->setRules('ruang', 'golongan', [
-                                    'strtolower' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inArray' => ['a', 'b', 'c', 'd', 'e'],
-                                    'max_char' => 1,
-                                    'min_char' => 1
-                                ]);
-                                $t4_lahir = $validate->setRules('t4_lahir', 'tempat lahir', [
-                                    'strtolower' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_lahir = $validate->setRules('tgl_lahir', 'tanggal lahir', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-
-                                $agama = $validate->setRules('agama', 'golongan', [
-                                    'strtolower' => true,
-                                    'sanitize' => 'string',
-                                    'inArray' => ['islam', 'kristen', 'katolik', 'protestan', 'yahudi', 'budha', 'konghucu', 'hindu', 'kepercayaan']
-                                ]);
-                                $kelamin = $validate->setRules('kelamin', 'golongan', [
-                                    'strtolower' => true,
-                                    'sanitize' => 'string',
-                                    'inArray' => ['pria', 'wanita']
-                                ]);
-                                $jenis_kepeg = $validate->setRules('jenis_kepeg', 'jenis kepegawaian', [
-                                    'strtolower' => true,
-                                    'sanitize' => 'string',
-                                    'inArray' => ['pnsp', 'pnsd1', 'pnsd2', 'pnsp_dpb1', 'pnsp_dpb2', 'pnsp_dpk1', 'pnsp_dpk2', 'pnsd_dpb_pusat', 'pnsd_dpk_pusat', 'swasta']
-                                ]);
-                                $status_kepeg = $validate->setRules('status_kepeg', 'status kepegawaian', [
-                                    'strtolower' => true,
-                                    'sanitize' => 'string',
-                                    'inArray' => ['capeg', 'peg_tetap', 'mpp', 'pen_uang_tunggu', 'peg_seorsing', 'cuti', 'peg_sementara', 'peg_bulanan']
-                                ]);
-                                $status = $validate->setRules('status', 'status kepegawaian', [
-                                    'strtolower' => true,
-                                    'sanitize' => 'string',
-                                    'inArray' => ['duda', 'janda', 'duda-janda', 'lajang', 'menikah']
-                                ]);
-                                $no_ktp = $validate->setRules('no_ktp', 'ktp', [
-                                    'preg_replace' => ["/[^0-9]/", ""],
-                                    'sanitize' => 'string',
-                                ]);
-                                $npwp = $validate->setRules('npwp', 'npwp', [
-                                    'preg_replace' => ["/[^0-9]/", ""],
-                                    'sanitize' => 'string',
-                                ]);
-                                $alamat = $validate->setRules('alamat', 'alamat', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
-                                    'preg_replace' => ["/[^0-9]/", ""],
-                                    'sanitize' => 'string'
-                                ]);
-                                // $kontak_person = preg_replace("/[^0-9]/", "", $getData[15]);
-                                $email = $validate->setRules('email', 'email', [
-                                    'sanitize' => 'string',
-                                    'email' => true
-                                ]);
-                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
-                                    'numeric' => true,
-                                    'inArray' => [1, 2, 3, 4, 5, 6]
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'daftar_paket':
-                                if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
-                                        'error' => true
-                                    ]);
-                                }
-                                $id_uraian = $validate->setRules('id_uraian', 'uraian paket', [
-                                    'min_char' => 8,
-                                    'required' => true,
-                                    'json_repair' => true
-                                ]);
-
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $uraian = preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian);
-                                $volume = $validate->setRules('volume', 'volume', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'satuan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['satuan']]]]
-                                ]);
-                                $id_rekanan = $validate->setRules('id_rekanan', 'Rekanan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['rekanan_neo', 'id', [['id', "=", $_POST['id_rekanan']], ['kd_wilayah', '=', $kd_wilayah, 'AND']]]
-                                ]);
-                                $kondisi = [['id', '=', $id_rekanan], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['disable', '<=', 0, 'AND']];
-                                $row_sub = $DB->getWhereOnceCustom('rekanan_neo', $kondisi);
-                                $nama_rekanan = '';
-                                if ($row_sub !== false) {
-                                    $nama_rekanan = $row_sub->nama_perusahaan;
-                                }
-                                $metode_pengadaan = $validate->setRules('metode_pengadaan', 'metode pengadaan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['penyedia', 'swakelola']
-                                ]);
-
-                                if ($metode_pengadaan === 'penyedia') {
-                                    $metode_pemilihan = $validate->setRules('metode_pemilihan', 'metode pengadaan', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'in_array' => ['e_purchasing', 'pengadaan_langsung', 'penunjukan', 'tender_cepat', 'tender', 'seleksi']
-                                    ]);
-                                    $pengadaan_penyedia = $validate->setRules('pengadaan_penyedia', 'pengadaan penyedia', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'in_array' => ['barang', 'konstruksi', 'konsultansi', 'konsultansi_non_konst', 'jasa_lainnya']
-                                    ]);
-                                    switch ($pengadaan_penyedia) {
-                                        case 'barang':
-                                        case 'jasa_lainnya':
-                                            $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
-                                                'sanitize' => 'string',
-                                                'required' => true,
-                                                'in_array' => ['lumsum', 'harga_satuan', 'gabungan_lum_sat', 'biaya_plus_imbalan', 'payung']
-                                            ]);
-                                            break;
-                                        case 'konstruksi':
-                                            $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
-                                                'sanitize' => 'string',
-                                                'required' => true,
-                                                'in_array' => ['lumsum', 'harga_satuan', 'gabungan_lum_sat', 'biaya_plus_imbalan', 'putar_kunci']
-                                            ]);
-                                            break;
-                                        case 'konsultansi':
-                                            $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
-                                                'sanitize' => 'string',
-                                                'required' => true,
-                                                'in_array' => ['lumsum', 'waktu_penugasan']
-                                            ]);
-                                            break;
-                                        case 'konsultansi_non_konst':
-                                            $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
-                                                'sanitize' => 'string',
-                                                'required' => true,
-                                                'in_array' => ['lumsum', 'waktu_penugasan', 'payung']
-                                            ]);
-                                            break;
-                                    }
-                                } else {
-                                    //SWAKELOLA
-                                    $metode_pemilihan = $validate->setRules('metode_pemilihan', 'metode pengadaan', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'in_array' => ['sw_type_1', 'sw_type_2', 'sw_type_3', 'sw_type_4']
-                                    ]);
-                                    $pengadaan_penyedia = $validate->setRules('pengadaan_penyedia', 'pengadaan penyedia', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'in_array' => ['swakelola']
-                                    ]);
-                                    $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'in_array' => ['swakelola']
-                                    ]);
-                                }
-                                //akali tanggal 
-                                $tgl_kontrak = '0000-00-00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_kontrak'] ?? '') > 7) {
-                                    $tgl_kontrak = $validate->setRules('tgl_kontrak', 'tanggal kontrak', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                        'min_char' => 7
-                                    ]);
-                                }
-                                $no_kontrak = $validate->setRules('no_kontrak', 'nomor kontrak', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_persiapan_kont = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_persiapan_kont'] ?? '') > 7) {
-                                    $tgl_persiapan_kont = $validate->setRules('tgl_persiapan_kont', 'tanggal persiapan kontrak', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_persiapan_kont = $validate->setRules('no_persiapan_kont', 'nomor persiapan kontrak', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_spmk = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_spmk'] ?? '') > 7) {
-                                    $tgl_spmk = $validate->setRules('tgl_spmk', 'tanggal spmk', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_spmk = $validate->setRules('no_spmk', 'nomor SPMK', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_undangan = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_undangan'] ?? '') > 7) {
-                                    $tgl_spmk = $validate->setRules('tgl_undangan', 'tanggal undangan', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_undangan = $validate->setRules('no_undangan', 'nomor Undangan/Pengumuman', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_penawaran = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_penawaran'] ?? '') > 7) {
-                                    $tgl_penawaran = $validate->setRules('tgl_penawaran', 'tanggal penawaran', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_penawaran = $validate->setRules('no_penawaran', 'nomor Penawaran', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_nego = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_nego'] ?? '') > 7) {
-                                    $tgl_nego = $validate->setRules('tgl_nego', 'tanggal negoisasi', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_nego = $validate->setRules('no_nego', 'nomor Negoisasi', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_sppbj = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_sppbj'] ?? '') > 7) {
-                                    $tgl_sppbj = $validate->setRules('tgl_sppbj', 'tanggal SPPBJ', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_sppbj = $validate->setRules('no_sppbj', 'nomor SPPBJ', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_pho = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_pho'] ?? '') > 7) {
-                                    $tgl_pho = $validate->setRules('tgl_pho', 'tanggal PHO', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_pho = $validate->setRules('no_pho', 'nomor PHO', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tgl_fho = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
-                                if (strlen($_POST['tgl_fho'] ?? '') > 7) {
-                                    $tgl_fho = $validate->setRules('tgl_fho', 'tanggal FHO', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                        'min_char' => 8
-                                    ]);
-                                }
-                                $no_fho = $validate->setRules('no_fho', 'nomor FHO', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $nama_ppk = $validate->setRules('nama_ppk', 'nama ppk', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $nip_ppk = $validate->setRules('nip_ppk', 'nip ppk', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $nama_pptk = $validate->setRules('nama_pptk', 'nama pptk', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $nip_pptk = $validate->setRules('nip_pptk', 'nip pptk', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $waktu_pelaksanaan = $validate->setRules('waktu_pelaksanaan', 'waktu pelaksanaan', [
-                                    'numeric_zero' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $waktu_pemeliharaan = $validate->setRules('waktu_pemeliharaan', 'waktu pemeliharaan', [
-                                    'numeric_zero' => true,
-                                    'sanitize' => 'string'
-                                ]);
-                                $kd_rup = $validate->setRules('kd_rup', 'Kode RUP', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $kd_paket = $validate->setRules('kd_paket', 'Kode Paket', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $renc_output = $validate->setRules('renc_output', 'Output Rencana', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $output = $validate->setRules('output', 'output paket', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $addendum = '{}';
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'pengaturan':
-                                $tahun = $validate->setRules('tahun', 'tahun anggaran', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 4
-                                ]);
-                                $tahun_renstra = $validate->setRules('tahun_renstra', 'tahun renstra', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 4,
-                                    'max_char' => 4
-                                ]);
-                                $aturan_anggaran = $validate->setRules('aturan_anggaran', 'Peraturan anggaran', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_anggaran']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_pengadaan = $validate->setRules('aturan_pengadaan', 'Peraturan pengadaan', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_pengadaan']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_organisasi = $validate->setRules('aturan_organisasi', 'Peraturan Organisasi', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_organisasi']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_akun = $validate->setRules('aturan_akun', 'Peraturan Akun', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_akun']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_sumber_dana = $validate->setRules('aturan_sumber_dana', 'Peraturan sumber dana', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sumber_dana']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_sub_kegiatan = $validate->setRules('aturan_sub_kegiatan', 'Peraturan sub kegiatan', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sub_kegiatan']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_ssh = $validate->setRules('aturan_ssh', 'Peraturan ssh', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_ssh']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_hspk = $validate->setRules('aturan_hspk', 'Peraturan hspk', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_hspk']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_asb = $validate->setRules('aturan_asb', 'Peraturan asb', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_asb']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $aturan_sbu = $validate->setRules('aturan_sbu', 'Peraturan sbu', [
-                                    'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sbu']]]],
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $awal_renstra = $validate->setRules('awal_renstra', 'tanggal awal renstra', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_renstra = $validate->setRules('akhir_renstra', 'tanggal akhir renstra', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_renja = $validate->setRules('awal_renja', 'tanggal awal renja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                //'/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',2024-2-16 10:10:0
-                                $akhir_renja = $validate->setRules('akhir_renja', 'tanggal akhir renja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_renja_p = $validate->setRules('awal_renja_p', 'tanggal awal renja perubahan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_renja_p = $validate->setRules('akhir_renja_p', 'tanggal akhir renja perubahan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_dpa = $validate->setRules('awal_dpa', 'tanggal awal dpa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_dpa = $validate->setRules('akhir_dpa', 'tanggal akhir dpa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $awal_dppa = $validate->setRules('awal_dppa', 'tanggal awal dppa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $akhir_dppa = $validate->setRules('akhir_dppa', 'tanggal akhir dppa', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $id_opd_tampilkan = (int)$id_opd_tampilkan;
-                                if ($id_opd_tampilkan > 0) {
-                                    $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
-                                        'inDB' => ['organisasi_neo', 'id', [['id', '=', (int)$_POST['id_opd_tampilkan']]]],
-                                        'required' => true,
-                                        'numeric' => true,
-                                        'min_char' => 1
-                                    ]);
-                                }
-
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-
-                            case 'peraturan':
-                                $type_dok = $validate->setRules('type_dok', 'type', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
-                                ]);
-                                $judul = $validate->setRules('judul', 'judul', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $nomor = $validate->setRules('nomor', 'nomor', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $bentuk = $validate->setRules('bentuk', 'bentuk', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $bentuk_singkat = $validate->setRules('bentuk_singkat', 'bentuk_singkat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $t4_penetapan = $validate->setRules('t4_penetapan', 'tempat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $tgl_penetapan = $validate->setRules('tgl_penetapan', 'tanggal penetapan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                //date time  ^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$
-                                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
-                                    'min_char' => 8
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                $status = $validate->setRules('status', 'status', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['rahasia', 'umum', 'proyek']
-                                ]);
-                                break;
-                            case 'organisasi':
-                                $kode = $validate->setRules('kode', 'kode', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'uraian', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $alamat = $validate->setRules('alamat', 'alamat', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $nama_kepala = $validate->setRules('nama_kepala', 'Nama Kepala SKPD', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'min_char' => 18
-                                ]);
-                                // $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
-                                //     'numeric' => true,
-                                //     'required' => true,
-                                //     'min_char' => 4,
-                                //     'max_char' => 4
-                                // ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-
-
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'renstra':
-                                if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
-                                        'error' => true
-                                    ]);
-                                }
-                                $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
-                                if ($rowPengaturan !== false) {
-                                    $tahun_renstra = $rowPengaturan->tahun_renstra;
-                                }
-                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
-                                    'min_char' => 4
-                                ]);
-                                $sasaran = $validate->setRules('sasaran', 'sasaran', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'inDB' => ['tujuan_sasaran_renstra_neo', 'id', [['id', '=', $_POST['sasaran']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']]],
-                                    'min_char' => 1
-                                ]);
-                                $indikator = $validate->setRules('indikator', 'indikator', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'satuan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $data_capaian_awal = $validate->setRules('data_capaian_awal', 'data capaian awal', [
-                                    'numeric_zero' => true,
-                                    'min_char' => 1
-                                ]);
-                                $target_thn_1 = $validate->setRules('target_thn_1', 'Target tahun pertama', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_1 = $validate->setRules('dana_thn_1', 'Dana tahun pertama', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_2 = $validate->setRules('target_thn_2', 'Target tahun kedua', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_2 = $validate->setRules('dana_thn_2', 'Dana tahun kedua', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_3 = $validate->setRules('target_thn_3', 'Target tahun ketiga', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_3 = $validate->setRules('dana_thn_3', 'Dana tahun ketiga', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_4 = $validate->setRules('target_thn_4', 'Target tahun keempat', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_4 = $validate->setRules('dana_thn_4', 'Dana tahun keempat', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $target_thn_5 = $validate->setRules('target_thn_5', 'Target tahun kelima', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $dana_thn_5 = $validate->setRules('dana_thn_5', 'Dana tahun kelima', [
-                                    'numeric_zero' => true,
-                                ]);
-                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'tujuan_sasaran_renstra':
-                            case 'sasaran_renstra':
-                            case 'tujuan_renstra':
-                                if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
-                                        'error' => true
-                                    ]);
-                                }
-                                $kelompok = $validate->setRules('kelompok', 'kelompok', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['tujuan', 'sasaran'],
-                                    'min_char' => 4
-                                ]);
-                                if ($kelompok == 'sasaran') {
-                                    $id_tujuan = $validate->setRules('id_tujuan', 'tujuan', [
-                                        'numeric' => true,
-                                        'required' => true,
-                                        'min_char' => 1
-                                    ]);
-                                }
-                                $text = $validate->setRules('text', 'text', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'sub_keg_dpa':
-                            case 'sub_keg_renja':
-                                if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
-                                        'error' => true
-                                    ]);
-                                }
-                                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
-                                    'min_char' => 4
-                                ]);
-                                //$kel_rek
-                                $tolak_ukur_capaian_keg = $validate->setRules('tolak_ukur_capaian_keg', 'tolak_ukur_capaian_keg', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $target_kinerja_capaian_keg = $validate->setRules('target_kinerja_capaian_keg', 'target_kinerja_capaian_keg', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tolak_ukur_keluaran = $validate->setRules('tolak_ukur_keluaran', 'tolak_ukur_keluaran', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $target_kinerja_keluaran = $validate->setRules('target_kinerja_keluaran', 'target_kinerja_keluaran', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target_kinerja_hasil', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tolak_ukur_capaian_keg_p = $validate->setRules('tolak_ukur_capaian_keg_p', 'tolak_ukur_capaian_keg perubahan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $target_kinerja_capaian_keg_p = $validate->setRules('target_kinerja_capaian_keg_p', 'target_kinerja_capaian_keg perubahan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tolak_ukur_keluaran_p = $validate->setRules('tolak_ukur_keluaran_p', 'tolak_ukur_keluaran perubahan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $target_kinerja_keluaran_p = $validate->setRules('target_kinerja_keluaran_p', 'target_kinerja_keluaran perubahan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $tolak_ukur_hasil_p = $validate->setRules('tolak_ukur_hasil_p', 'tolak_ukur_hasil perubahan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $target_kinerja_hasil_p = $validate->setRules('target_kinerja_hasil_p', 'target_kinerja_hasil perubahan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran_sub_keg', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keluaran_sub_keg_p = $validate->setRules('keluaran_sub_keg_p', 'keluaran sub keg perubahan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $sumber_dana_temp = $validate->setRules('sumber_dana', 'sumber dana', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $explodeAwal = explode(',', $sumber_dana_temp);
-                                foreach ($explodeAwal as $key => $row) {
-                                    $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', trim($row)]]);
-                                    if ($dataRslt === false) {
-                                        unset($explodeAwal[$key]);
-                                    }
-                                }
-                                $sumber_dana = preg_replace('/(\s\s+|\t|\n)/', ' ', implode(',', $explodeAwal));
-                                $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                ]);
-                                $jumlah_pagu_p = $validate->setRules('jumlah_pagu_p', 'jumlah pagu perubahan', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                ]);
-                                $lokasi = $validate->setRules('lokasi', 'lokasi', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'asb':
-                            case 'sbu':
-                            case 'hspk':
-                            case 'ssh':
-                                $kd_aset = $validate->setRules('kd_aset', 'kode aset', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['aset_neo', 'kode', [['kode', '=', $_POST['kd_aset']]]],
-                                    'min_char' => 4
-                                ]);
-                                $uraian_barang = $validate->setRules('uraian_barang', 'uraian barang', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $spesifikasi = $validate->setRules('spesifikasi', 'spesifikasi', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $satuan = $validate->setRules('satuan', 'satuan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['satuan']]]]
-                                ]);
-                                $harga_satuan = $validate->setRules('harga_satuan', 'harga satuan', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $tkdn = $validate->setRules('tkdn', 'Tingkat Komponen Dalam Negeri (TKDN)', [
-                                    'numeric_zero' => true
-                                ]);
-                                $merek = $validate->setRules('merek', 'merek', [
-                                    'sanitize' => 'string'
-                                ]);
-                                // urai kode akun
-                                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                if ($kd_akun) {
-                                    $formValueExplode = explode(',', $kd_akun);
-                                    $kd_akun = '';
-                                    foreach ($formValueExplode as $key_row => $row) {
-                                        $kondisi_result = [['kode', '=', trim($row)]];
-                                        $row_sub = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
-                                        // var_dump( $kondisi_result);
-                                        if ($row_sub !== false) {
-                                            if ($key_row == 0) {
-                                                $kd_akun = $row_sub->kode;
-                                            } else {
-                                                $kd_akun .= ',' . $row_sub->kode;
-                                            }
-                                        }
-                                    }
-                                }
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            case 'dpa':
-                            case 'renja':
-                            case 'dppa':
-                            case 'renja_p':
-                                if ($rowPengaturan === false) {
-                                    $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
-                                        'error' => true
-                                    ]);
-                                }
-                                $objek_belanja = $validate->setRules('objek_belanja', 'objek belanja', [
-                                    'sanitize' => 'string',
-                                    'in_array' => ['gaji', 'barang_jasa_modal', 'bunga', 'subsidi', 'hibah_barang_jasa', 'hibah_uang', 'sosial_barang_jasa', 'sosial_uang', 'keuangan_umum', 'keuangan_khusus', 'btt', 'bos_pusat', 'blud', 'lahan'],
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $kd_akun = $validate->setRules('kd_akun', 'kd_akun', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['akun_neo', 'kode', [['kode', '=', $_POST['kd_akun']]]],
-                                    'min_char' => 4
-                                ]);
-                                switch ($tbl) {
-                                    case 'dpa':
-                                    case 'dppa':
-                                        $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
-                                        break;
-                                    case 'renja':
-                                    case 'renja_p':
-                                        $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
-                                        break;
-                                };
-                                //ut satuan dan vol
-                                switch ($tbl) {
-                                    case 'dpa':
-                                    case 'renja':
-                                        $kolSat1 = 'sat_1';
-                                        $kolSat2 = 'sat_2';
-                                        $kolSat3 = 'sat_3';
-                                        $kolSat4 = 'sat_4';
-                                        $kolVol1 = 'vol_1';
-                                        $kolVol2 = 'vol_2';
-                                        $kolVol3 = 'vol_3';
-                                        $kolVol4 = 'vol_4';
-                                        $sumberDan = 'sumber_dana';
-                                        break;
-
-                                    case 'dppa':
-                                    case 'renja_p':
-                                        $kolSat1 = 'sat_1_p';
-                                        $kolSat2 = 'sat_2_p';
-                                        $kolSat3 = 'sat_3_p';
-                                        $kolSat4 = 'sat_4_p';
-                                        $kolVol1 = 'vol_1_p';
-                                        $kolVol2 = 'vol_2_p';
-                                        $kolVol3 = 'vol_3_p';
-                                        $kolVol4 = 'vol_4_p';
-                                        $sumberDan = 'sumber_dana_p';
-                                        break;
-                                };
-                                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'inDB' => [$tabel_pakai_temporerSubkeg, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
-                                ]);
-                                $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temporerSubkeg, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
-                                $kd_sub_keg = ($row_kd_sub_keg) ? $row_kd_sub_keg->kd_sub_keg : 'data sub kegiatan tidak ditemukan';
-                                $jenis_kelompok = $validate->setRules('jenis_kelompok', 'jenis kelompok belanja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['kelompok', 'paket'],
-                                    'min_char' => 3
-                                ]);
-                                $kelompok = $validate->setRules('kelompok', 'kelompok belanja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
-                                ]);
-
-                                $sumber_dana = $validate->setRules($sumberDan, 'sumber dana', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inLikeConcatDBMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana',  [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
-                                ]);
-                                // var_dump($sumber_dana);
-                                $jenis_standar_harga = $validate->setRules('jenis_standar_harga', 'jenis komponen', [
-                                    'sanitize' => 'string',
-                                    'in_array' => ['ssh', 'sbu', 'hspk', 'asb'],
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $tabel_pakai_temporer = $Fungsi->tabel_pakai($jenis_standar_harga)['tabel_pakai'];
-                                $id_standar_harga = $validate->setRules('komponen', 'komponen', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporer, 'id', [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
-                                ]);
-                                if ($id_standar_harga) {
-                                    $harga_row = $DB->getWhereOnceCustom($tabel_pakai_temporer, [['id', '=', $id_standar_harga], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND']]);
-                                    $harga_satuan = ($harga_row) ? $harga_row->harga_satuan : 0;
-                                    $komponen = ($harga_row) ? $harga_row->uraian_barang : 'komponen tidak ada di database';
-                                    $spesifikasi = ($harga_row) ? $harga_row->spesifikasi : 'komponen tidak ada di database';
-                                    $tkdn = ($harga_row) ? $harga_row->tkdn : 'komponen tidak ada di database';
-                                }
-                                $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
-                                $uraian = $validate->setRules('uraian', 'uraian belanja', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
-                                ]);
-                                $vol_1 = $validate->setRules($kolVol1, 'koefisien perkalian 1', [
-                                    'numeric_zero' => true,
-                                    'min_char' => 1
-                                ]);
-                                $sat_1 = $validate->setRules($kolSat1, 'satuan koefisien perkalian 1', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat1]]]]
-                                ]);
-                                $vol_2 = 0;
-                                $vol_2 = $validate->setRules($kolVol2, 'koefisien perkalian 2', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => true,
-                                ]);
-                                $sat_2 = '';
-                                if ($vol_2 > 0) {
-                                    $sat_2 = $validate->setRules($kolSat2, 'satuan koefisien perkalian 2', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat2]]]]
-                                    ]);
-                                }
-                                $vol_3 = 0;
-                                $vol_3 = $validate->setRules($kolVol3, 'koefisien perkalian 3', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => true,
-                                ]);
-                                $sat_3 = '';
-                                if ($vol_3 > 0) {
-                                    $sat_3 = $validate->setRules($kolSat3, 'satuan koefisien perkalian 3', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat3]]]]
-                                    ]);
-                                }
-                                $vol_4 = 0;
-                                $vol_4 = $validate->setRules($kolVol4, 'koefisien perkalian 3', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => true,
-                                ]);
-                                $sat_4 = '';
-                                if ($vol_4 > 0) {
-                                    $sat_4 = $validate->setRules($kolSat4, 'satuan koefisien perkalian 4', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat4]]]]
-                                    ]);
-                                }
-                                $vol_1_kali = ($vol_1) ? $vol_1 : 1;
-                                $vol_2_kali = ($vol_2) ? $vol_2 : 1;
-                                $vol_3_kali = ($vol_3) ? $vol_3 : 1;
-                                $vol_4_kali = ($vol_4) ? $vol_4 : 1;
-                                $volume = $vol_1_kali * $vol_2_kali * $vol_3_kali * $vol_4_kali;
-                                $jumlah = $volume * $harga_satuan;
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                $pajak = $validate->setRules('pajak', 'pajak', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $pajak = ($pajak == 'on') ? 1 : 0;
-                                break;
-                            case 'profil':
-                                $nama = $validate->setRules('nama', 'nama', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6
-                                ]);
-                                $nip = $validate->setRules('nip', 'NIP', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'max_char' => 18,
-                                    'min_char' => 18
-                                ]);
-                                if ($type_user == 'admin') {
-                                    $type_user_profil = $validate->setRules('type_user', 'type user', [
-                                        'sanitize' => 'string',
-                                        'min_char' => 2, //on-off
-                                        'in_array' => ['user', 'admin', 'super']
-                                    ]);
-                                    $username = $validate->setRules('username', 'username', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 6,
-                                        'max_char' => 100,
-                                        'regexp' => "/^[A-Za-z_]{6,}$/",
-                                        'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '!=', $id_row]]]
-                                    ]);
-                                    $email = $validate->setRules('email', 'email', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 6,
-                                        'max_char' => 255,
-                                        'email' => true,
-                                        'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_row]]]
-                                    ]);
-                                }
-                                $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6
-                                ]);
-                                $tahun = $validate->setRules('tahun', 'tahun aktif anggaran', [
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'min_char' => 4
-                                ]);
-                                $nama_org = $validate->setRules('nama_org', 'Nama Organisasi', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 6
-                                ]);
-                                $ket = $validate->setRules('ket', 'Keterangan', [
-                                    'sanitize' => 'string'
-                                ]);
-                                if ($tbl == 'profil') {
-                                    $font_size = $validate->setRules('font_size', 'font', [
-                                        'required' => true,
-                                        'numeric' => true
-                                    ]);
-                                    $warna_tbl = $validate->setRules('warna_tbl', 'warna Tabel', [
-                                        'sanitize' => 'string',
-                                        'required' => true,
-                                        'min_char' => 3
-                                    ]);
-                                }
-                                break;
-                            case 'wilayah':
-                                $kode = $validate->setRules('kode', 'Kode Wilayah', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'Uraian Wilayah', [
-                                    'del_2_spasi' => true,
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $status = $validate->setRules('status', 'Status Daerah', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'inArray' => ['prov', 'kota', 'kab', 'desa', 'dusun', 'kel', 'dusun', 'lain']
-                                ]);
-                                $jml_kec = $validate->setRules('jml_kec', 'Jumlah Kecamatan', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => 'true'
-
-                                ]);
-                                $jml_kec = $validate->setRules('jml_kec', 'Jumlah Kecamatan', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => 'true'
-
-                                ]);
-                                $jml_kel = $validate->setRules('jml_kel', 'Jumlah Kelurahan', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => 'true'
-
-                                ]);
-                                $jml_desa = $validate->setRules('jml_desa', 'Jumlah Desa', [
-                                    'sanitize' => 'string',
-                                    'numeric_zero' => 'true'
-
-                                ]);
-                                $luas = $validate->setRules('luas', 'Luas Daerah', [
-                                    'required' => true,
-                                    'numeric' => true
-
-                                ]);
-                                $penduduk = $validate->setRules('penduduk', 'Jumlah Penduduk(jiwa)', [
-                                    'required' => true,
-                                    'numeric' => true
-
-                                ]);
-                                $keterangan = $validate->setRules('keterangan', 'keterangan', [
-                                    'required' => true,
-                                    'sanitize' => 'string',
-                                    'min_char' => 3
-                                ]);
-                                $disable = $validate->setRules('disable', 'disable', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'in_array' => ['off', 'on']
-                                ]);
-                                $disable = ($disable == 'on') ? 1 : 0;
-                                break;
-                            default:
-                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'terdapat kesalahan data yang dikirim', [
-                                    'error' => true
-                                ]);
-                                break;
-                        }
-                        break;
-                    case 'add_field_json':
-                        switch ($tbl) {
-                            case 'sub_keg_dpa':
-                            case 'sub_keg_renja':
-                                $uraian_field = $validate->setRules('uraian', 'sub kegiatan', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $uraian_field =  preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_field);
-                                $nama_kolom = $validate->setRules('klm', 'nama kolom', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                $tabel_pakai_temporer = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
-                                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
-                                    'sanitize' => 'string',
-                                    'numeric' => true,
-                                    'required' => true,
-                                    'inDB' => [$tabel_pakai_temporer, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
-                                ]);
-                                $nama_kolom = $validate->setRules('klm', 'kolom', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 3
-                                ]);
-                                switch ($nama_kolom) {
-                                    case 'kelompok_json':
-                                        $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
-                                            'sanitize' => 'string',
-                                            'required' => true,
-                                            'in_array' => ['kelompok', 'paket'],
-                                            'min_char' => 3
-                                        ]);
-                                        break;
-                                    default:
-                                        // $jenis_kelompok nama key json
-                                        $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
-                                            'sanitize' => 'string',
-                                            'required' => true,
-                                            'min_char' => 1
-                                        ]);
-                                        break;
-                                }
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    default:
-                        switch ($tbl) {
-                            case 'dpa':
-                            case 'renja':
-                            case 'dppa':
-                            case 'renja_p':
-                                break;
-                            default:
-                                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
-                                    'required' => true,
-                                    'min_char' => 200
-                                ]);
-                                break;
-                        }
-                        break;
-                }
-                switch ($tbl) {
-                    case 'outbox':
-                        switch ($jenis) {
-                            case 'add_coment':
-                                //id reply jika tbl edit id_row
-                                $id_tujuan = $validate->setRules('users', 'user penerima', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $uraian = $validate->setRules('uraian', 'text', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 400
-                                ]);
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 'wall':
-                        switch ($jenis) {
-                            case 'edit':
-                            case 'reply':
-                                //id reply jika tbl edit id_row
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                            case 'add_coment':
-                                $uraian = $validate->setRules('text', 'text', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'min_char' => 1,
-                                    'max_char' => 400
-                                ]);
-                                break;
-                            case 'like':
-                                $id_row = $validate->setRules('id_row', 'id', [
-                                    'required' => true,
-                                    'numeric' => true,
-                                    'min_char' => 1
-                                ]);
-                                $like = $validate->setRules('like', 'like', [
-                                    'sanitize' => 'string',
-                                    'required' => true,
-                                    'in_array' => ['like', 'unlike', 'non']
-                                ]);
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    case 'x':
-                        switch ($tbl) {
-                            case 'y':
-                                break;
-                            default:
-                                # code...
-                                break;
-                        }
-                        break;
-                    default:
-                        $err = 6;
-                }
-                //==============================
-                //FINISH PROSES VALIDASI
-                //==============================
-                $kodePosting = '';
-                if ($validate->passed()) {
-                    $code = 55;
-                    //var_dump($rowTahunAktif);
-                    if ($rowPengaturan !== false) {
-                        $id_aturan_anggaran = $rowPengaturan->aturan_anggaran;
-                        $id_aturan_pengadaan = $rowPengaturan->aturan_pengadaan;
-                        $id_aturan_akun = $rowPengaturan->aturan_akun;
-                        $id_aturan_sub_kegiatan = $rowPengaturan->aturan_sub_kegiatan;
-                        $id_aturan_asb = $rowPengaturan->aturan_asb;
-                        $id_aturan_sbu = $rowPengaturan->aturan_sbu;
-                        $id_aturan_ssh = $rowPengaturan->aturan_ssh;
-                        $id_aturan_hspk = $rowPengaturan->aturan_hspk;
-                        $id_aturan_sumber_dana = $rowPengaturan->aturan_sumber_dana;
-                        $tahun_pengaturan = $rowPengaturan->tahun;
-                    } else {
-                        $id_peraturan = 0;
-                    }
-                    //tabel pakai
-                    $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
-                    $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
-                    $code = 10;
-                    $sukses = true;
-                    $err = 0;
-                    $columnName = "*";
-                    //=======================
-                    //========JENIS==========
-                    //=======================
-                    switch ($jenis) {
-                        case 'upload':
-                            $set_file = [];
-                            switch ($tbl) {
-                                case 'wilayah_logo':
-                                    $kondisi = [['kode', '=', $kd_wilayah], ['id', '=', $id_row, 'AND']];
-                                    $kodePosting = 'cek_insert';
-                                    $set = [];
-                                    break;
-                                case 'daftar_paket':
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
-                                    $kodePosting = 'cek_insert';
-                                    $set = [];
-                                    break;
-                                case 'asn':
-                                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['id', '=', $id_row, 'AND']];
-                                    $kodePosting = 'cek_insert';
-                                    $set = [];
-                                    break;
-                                case 'user':
-                                    $kondisi = [['username', '=', $username], ['id', '=', $id_row, 'AND']];
-                                    $kodePosting = 'cek_insert';
-                                    $set = [];
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
-                            if ($row_sub) {
-                                switch ($tbl) {
-                                    case 'wilayah_logo': //upload logo di tabel wilayah
-                                        $uraian = "logo_wilayah({$kd_wilayah})";
-                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
-                                        if (strlen($row_sub->$dok ?? '') > 2) {
-                                            $nameFileDel = $row_sub->$dok;
-                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
-                                        }
-                                        break;
-                                    case 'daftar_paket':
-                                        $uraian = "kd_paket({$row_sub->id})_dok({$dok})_wilayah({$kd_wilayah})";
-                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
-                                        if (strlen($row_sub->$dok ?? '') > 5) {
-                                            $nameFileDel = $row_sub->$dok;
-                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
-                                        }
-
-                                        break;
-                                    case 'asn':
-                                        $uraian = "nip({$row_sub->nip})_dok({$dok})_wilayah({$kd_wilayah})";
-                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
-                                        if (strlen($row_sub->$dok ?? '') > 2) {
-                                            $nameFileDel = $row_sub->$dok;
-                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
-                                        }
-                                        break;
-                                    case 'user':
-                                        $uraian = "username({$row_sub->username})_dok({$dok})_wilayah({$kd_wilayah})";
-                                        $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
-                                        if (strlen($row_sub->$dok ?? '') > 2) {
-                                            $nameFileDel = $row_sub->$dok;
-                                            $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
-                                        }
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                                if ($_FILES) {
-                                    if (isset($_FILES[$dok])) {
-                                        $file = $Fungsi->importFile($tbl, $set_file);
-                                        if ($file['result'] == 'ok') {
-                                            $set[$dok] = $file[$dok];
-                                        } else {
-                                            $tambahan_pesan = "(" . $file[$dok] . ")";
-                                        }
-                                    }
-                                }
-                                // var_dump($set);
-                            } else {
-                                $jenis = '';
-                                $code = 404;
-                            }
-
-                            break;
-                        case 'edit':
-                            $kondisi = [['id', '=', $id_row]];
-                            $kodePosting = 'update_row';
-                            switch ($tbl) {
-                                case 'value':
-                                    break;
-                                case 'value':
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if ($tbl == 2) {
-                                break;
-                            }
-                        case 'add':
-                            switch ($tbl) {
-                                case 'register_surat':
-                                    $kodePosting = 'cek_insert';
-
-                                    $set = [
-                                        'tahun' => $tahun,
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'nomor' => $nomor,
-                                        'tanggal' => $tanggal,
-                                        'uraian' => $uraian,
-                                        'klasifikasi_keamanan' => $klasifikasi_keamanan,
-                                        'jenis_naskah_dinas' => $jenis_naskah_dinas,
-                                        'sifat' => $sifat,
-                                        'sub_sifat' => $sub_sifat,
-                                        'asal_surat' => $asal_surat,
-                                        'jabatan' => $jabatan,
-                                        'nama_lengkap' => $nama_lengkap,
-                                        'nip' => $nip,
-                                        'pangkat' => $pangkat,
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND'], ['uraian', '=', $uraian, 'AND']];
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    } else {
-                                        $kondisi = [['id', '=', $id_row], ['tahun', '=', $tahun, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
-                                    }
-                                    $nama_file = "reg_surat_{$tahun}_wilayah({$kd_wilayah})_kd_opd({$kd_opd})";
-                                    $set_file = ['nama_file' => $nama_file];
-                                    break;
-                                case 'sk_asn':
-                                    $kodePosting = 'cek_insert';
-                                    $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
-                                    $tahun_sk = $tahun;
-                                    if ($type_user == 'admin') {
-                                        $tahun_sk = date('Y', strtotime($tgl_surat_dibuat));
-                                    }
-                                    $set = [
-                                        'tahun' => $tahun_sk,
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'nomor' => $nomor,
-                                        'tgl_surat_dibuat' => $tgl_surat_dibuat,
-                                        'tentang' => $tentang,
-                                        'pemberi_tgs' => $pemberi_tgs,
-                                        'jbt_pemberi_tgs' => $jbt_pemberi_tgs,
-                                        'pangkat_pemberi_tgs' => $pangkat_pemberi_tgs,
-                                        'nama_pemberi_tgs' => $nama_pemberi_tgs,
-                                        'nama_ditugaskan' => json_encode($nama_ditugaskan),
-                                        'bentuk_lampiran' => $bentuk_lampiran, //$bentuk_lampiran 0 = bentuk list ol , 1= bentuk tabel
-                                        'menimbang' => json_encode($menimbang),
-                                        'mengingat' => json_encode($mengingat),
-                                        'menetapkan_1' => json_encode($menetapkan_1),
-                                        'menetapkan_2' => json_encode($menetapkan_2),
-                                        'menetapkan_3' => json_encode($menetapkan_3),
-                                        'menetapkan_4' => json_encode($menetapkan_4),
-                                        'tembusan' => json_encode($tembusan),
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'rekanan':
-                                    $kodePosting = 'cek_insert';
-                                    $kondisi = [['npwp', "=", $npwp], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
-                                    if ($jenis == 'edit') {
-                                        $kondisi = [['id', "=", $id_row], ['npwp', "=", $npwp, 'AND'], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
-                                    }
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'nama_perusahaan' => $nama_perusahaan,
-                                        'alamat' => $alamat,
-                                        'email' => $email,
-                                        'npwp' => $npwp,
-                                        'no_rekening' => $no_rekening,
-                                        'bank_rekening' => $bank_rekening,
-                                        'atas_nama_rekening' => $atas_nama_rekening,
-                                        'direktur' => $direktur,
-                                        'jabatan' => $jabatan,
-                                        'no_ktp' => $no_ktp,
-                                        'alamat_dir' => $alamat_dir,
-                                        'keterangan' => $keterangan,
-                                        'tgl_insert' => date('Y-m-d H:i:s'),
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_insert' => $_SESSION["user"]["username"],
-                                        'username_insert' => $_SESSION["user"]["username"]
-                                    ];
-                                    if (strlen($no_akta_pendirian) > 0) {
-                                        $set['no_akta_pendirian'] = $no_akta_pendirian;
-                                        $set['tgl_akta_pendirian'] = $tgl_akta_pendirian;
-                                        $set['lokasi_notaris_pendirian'] = $lokasi_notaris_pendirian;
-                                        $set['nama_notaris_pendirian'] = $nama_notaris_pendirian;
-                                    }
-                                    if (strlen($no_akta_perubahan) > 0) {
-                                        $notaris_perubahan = new stdClass;
-                                        $notaris_perubahan->{'nomor[1]'} = $no_akta_perubahan;
-                                        $notaris_perubahan->{'tanggal[1]'} = $tgl_akta_perubahan;
-                                        $notaris_perubahan->{'alamat_notaris[1]'} = $lokasi_notaris_perubahan;
-                                        $notaris_perubahan->{'notaris[1]'} = $nama_notaris_perubahan;
-                                        $set['notaris_perubahan'] = json_encode($notaris_perubahan);
-                                    }
-                                    if (strlen($nama_pelaksana) > 0) {
-                                        $data_lain = new stdClass;
-                                        $data_lain->{'pelaksana[nama][1]'} = $nama_pelaksana;
-                                        $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
-                                        $set['data_lain'] = json_encode($data_lain);
-                                    }
-                                    break;
-                                case 'mapping':
-                                    $kodePosting = 'cek_insert';
-                                    $kondisi = [['kd_aset', '=', $kd_aset], ['kd_akun', '=', $kd_akun, 'AND']];
-                                    $set = [
-                                        'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
-                                        'uraian_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_aset),
-                                        'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
-                                        'uraian_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_akun),
-                                        'kelompok' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok),
-                                        'disable' => $disable,
-                                        'peraturan' => $id_aturan_anggaran,
-                                        'keterangan' => $keterangan,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'satuan':
-                                    $kodePosting = 'cek_insert';
-                                    $kondisi = [['value', '=', $value]];
-                                    $set = [
-                                        'value' => $value,
-                                        'item' => $item,
-                                        'sebutan_lain' => $sebutan_lain,
-                                        'peraturan' => $id_aturan_anggaran,
-                                        'keterangan' => $keterangan,
-                                        'disable' => $disable,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'akun_belanja':
-                                case 'neraca':
-                                    $kodePosting = 'cek_insert';
-                                    $kondisi = [['kode', '=', $kode]];
-                                    $set = [
-                                        'akun' => $akun,
-                                        'kelompok' => $kelompok,
-                                        'jenis_akun' => $jenis_akun,
-                                        'objek' => $objek,
-                                        'rincian_objek' => $rincian_objek,
-                                        'sub_rincian_objek' => $sub_rincian_objek,
-                                        'kode' => $kode,
-                                        'uraian' => $uraian,
-                                        'peraturan' => $id_aturan_sub_kegiatan,
-                                        'keterangan' => $keterangan,
-                                        'disable' => $disable,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'bidang_urusan':
-                                case 'prog':
-                                case 'keg':
-                                case 'sub_keg':
-                                    $kodePosting = 'cek_insert';
-                                    $kondisi = [['kode', '=', $kode]];
-                                    $set = [
-                                        'urusan' => $urusan,
-                                        'bidang' => $bidang,
-                                        'prog' => $prog,
-                                        'keg' => $keg,
-                                        'sub_keg' => $sub_keg,
-                                        'kode' => $kode,
-                                        'nomenklatur_urusan' => $nomenklatur_urusan,
-                                        'kinerja' => $kinerja,
-                                        'indikator' => $indikator,
-                                        'satuan' => $satuan,
-                                        'peraturan' => $id_aturan_sub_kegiatan,
-                                        'keterangan' => $keterangan,
-                                        'disable' => $disable,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'wilayah':
-                                    $kodePosting = 'cek_insert';
-                                    $kondisi = [['kode', '=', $kode]];
-                                    $set = [
-                                        'kode' => $kode,
-                                        'uraian' => $uraian,
-                                        'status' => $status,
-                                        'jml_kec' => (int)$jml_kec,
-                                        'jml_kel' => (int)$jml_kel,
-                                        'jml_desa' => (int)$jml_desa,
-                                        'luas' => (float)$luas,
-                                        'keterangan' => $keterangan,
-                                        'disable' => $disable,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'realisasi':
-                                    $disable = 0;
-                                    //ambil row paket
-                                    $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
-                                    $kondisi = [['id', '=', $id_row_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                    $row_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-                                    $uraian_paket = $row_paket->uraian;
-                                    foreach ($realisasiObject as $key => $value) {
-                                        $jumlah = $value->jumlah;
-                                        $vol = $value->vol;
-                                        $id_row_uraian_paket = $value->id_row_uraian_paket;
-                                        $sum += $jumlah;
-                                        if (($jumlah + $vol) > 0) {
-                                            //ambil data di dok anggaran dan di tabel uraian paket
-                                            //ambil di tabel uraian paket
-                                            $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
-                                            $kondisi = [['id', '=', $id_row_uraian_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                            $row_uraian_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-
-                                            $id_dok_anggaran = $row_uraian_paket->id_dok_anggaran;
-                                            $dok = $row_uraian_paket->dok;
-                                            $jumlah_kontrak = $row_uraian_paket->jumlah_kontrak;
-                                            $vol_kontrak = $row_uraian_paket->vol_kontrak;
-
-                                            //ambil tabel di dok anggaran
-                                            switch ($dok) {
-                                                case 'dpa':
-                                                case 'renja':
-                                                    $sumberDan = 'sumber_dana';
-                                                    $klmvolume = 'volume';
-                                                    $klmjumlah = 'jumlah';
-                                                    break;
-
-                                                case 'dppa':
-                                                case 'renja_p':
-                                                    $sumberDan = 'sumber_dana_p';
-                                                    $klmvolume = 'volume_p';
-                                                    $klmjumlah = 'jumlah_p';
-                                                    break;
-                                            };
-                                            $tabel_get_row = $Fungsi->tabel_pakai($dok)['tabel_pakai'];
-                                            $kondisi = [['id', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                            $row_dok_anggaran = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-                                            $batasAnggaran = $row_dok_anggaran->{$klmjumlah};
-                                            $ket_uraian_paket = $row_dok_anggaran->uraian;
-                                            if ($jenis == 'edit') {
-                                                $id_row_realisasi = $value->id_row_realisasi;
-                                                $kondisi = [['id', '=', $id_row_realisasi], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
-                                            } else {
-                                                $row = $row_uraian_paket;
-                                            }
-                                            $row = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-                                            if ($row !== false) {
-                                                $ket_paket = $uraian_paket;
-                                                $id_paket = $id_row_paket;
-                                                //cek jumlah keseluruhan harus lebih kecil dari kontrak dan dokumen anggaran
-                                                $DB->select("SUM(jumlah) AS jumlah,SUM(vol) AS vol");
-                                                $kondisiSum = [['id_dok_anggaran', '=', $id_dok_anggaran], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                $tabel_get_sum = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
-                                                $row_sum = $DB->getWhereOnceCustom($tabel_get_sum, $kondisiSum);
-                                                $DB->select("*");
-                                                $jumlahInput = $row_sum->jumlah;
-                                                $volInput = $row_sum->vol;
-                                                //cek volume dan nilai kontrak sekalian nilai pagu
-                                                $vol = (($vol + $volInput) > $vol_kontrak) ? $vol_kontrak - $volInput : $vol;
-                                                $jumlah = (($jumlah + $jumlahInput) > $jumlah_kontrak) ? $jumlah_kontrak - $jumlahInput : $jumlah;
-                                                // jika jumlah kontrak > jumlah anggaran
-                                                if ($jumlah_kontrak > $batasAnggaran) {
-                                                    // cari dahulu di dppa apakah jumlah anggaran perubahan bertambah
-                                                    if ($dok == 'dpa') {
-                                                        $tabel_get_row = $Fungsi->tabel_pakai('dppa')['tabel_pakai'];
-                                                        $kondisi = [['id_dpa', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                        $row_dppa = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-                                                        if ($row_dppa !== false) {
-                                                            $jumlahPaguDPPA = $row_dppa->jumlah_p;
-                                                            if ($jumlahPaguDPPA < $jumlah_kontrak) {
-                                                                $tambahan_pesan += ";nilai uraian kontrak > pagu dokumen anggaran";
-                                                            }
-                                                        }
-                                                    } else {
-                                                        $tambahan_pesan += ";nilai uraian kontrak > pagu dokumen anggaran dppa";
-                                                    }
-                                                }
-
-                                                $set = [
-                                                    'kd_wilayah' => $kd_wilayah,
-                                                    'kd_opd' => $kd_opd,
-                                                    'tahun' => $tahun,
-                                                    'kd_sub_keg' => $row->kd_sub_keg,
-                                                    'kd_akun' => $row->kd_akun,
-                                                    'id_paket' => $id_paket,
-                                                    'ket_paket' => $ket_paket,
-                                                    'id_uraian_paket' => $id_row_uraian_paket,
-                                                    'ket_uraian_paket' => $ket_uraian_paket,
-                                                    'id_dok_anggaran' => $id_dok_anggaran,
-                                                    'dok' => $dok,
-                                                    'vol' => $vol,
-                                                    'jumlah' => $jumlah,
-                                                    'tanggal' => $tanggal,
-                                                    'keterangan' => $keterangan,
-                                                    'tgl_update' => date('Y-m-d H:i:s'),
-                                                    'username_update' => $_SESSION["user"]["username"]
-                                                ];
-                                                if ($jenis === 'add') {
-                                                    $set['username_insert'] = $_SESSION["user"]["username"];
-                                                    $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                                }
-                                                //dicari dahulu row  yang tanggal sama dan dokumen anggaran sama idnya
-                                                $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
-                                                $kondisi = [['id_paket', '=', $id_paket], ['id_uraian_paket', '=', $id_row_uraian_paket, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['tanggal', '=', $tanggal, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                $row_inputRealisasi = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
-
-                                                require_once 'query.php';
-                                                $queryInstance = Query::createInstance(['jns' => $jenis, 'tbl' => $tbl]);
-                                                // $Query = new Query(['jns' => $jenis, 'tbl' => $tbl]);
-                                                if ($row_inputRealisasi === false) {
-                                                    // inser baru
-                                                    $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                                    $set['username_insert'] = $_SESSION["user"]["username"];
-
-                                                    $insert = $queryInstance->insertRow($set);
-                                                    $data['add_row'][] = $insert['add_row'];
-                                                } else {
-                                                    $update = $queryInstance->updateRow($kondisi, $set);
-                                                    $data['update'][] = $update['update'];
-                                                }
-                                                //update jumlah dan volume uraian paket 
-
-                                                //cek jumlah keseluruhan harus lebih kecil dari kontrak dan dokumen anggaran
-                                                $DB->select("SUM(jumlah) AS realisasi_jumlah,SUM(vol) AS realisasi_vol");
-                                                $kondisiSum = [['id_dok_anggaran', '=', $id_dok_anggaran], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                $tabel_get_sum = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
-                                                $row_sum = $DB->getWhereOnceCustom($tabel_get_sum, $kondisiSum);
-                                                $realisasi_jumlah = $row_sum->realisasi_jumlah;
-                                                $realisasi_vol = $row_sum->realisasi_vol;
-                                                $DB->select("*");
-                                                $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
-                                                $kondisi = [['id_paket', '=', $id_paket], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                $set = [
-                                                    'realisasi_jumlah' => $realisasi_jumlah,
-                                                    'realisasi_vol' => $realisasi_vol
-                                                ];
-                                                $queryInstance = Query::createInstance(['jns' => $jenis, 'tbl' => 'uraian_paket']);
-                                                $update = $queryInstance->updateRow($kondisi, $set);
-                                            }
-                                        }
-                                    }
-                                    $kodePosting = '';
-                                    break;
-                                case 'berita':
-                                    $kondisi = [['judul', '=', $judul], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tanggal', '=', $tanggal, 'AND']];
-                                    $kodePosting = 'cek_insert';
-                                    $length = 15;
-                                    $id_pengenal = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, $length);
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'judul' => $judul,
-                                        'kelompok' => $kelompok,
-                                        'uraian_html' => $uraian_html,
-                                        'urutan' => $urutan,
-                                        'tanggal' => $tanggal,
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => $disable,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                        $set['id_pengenal'] = $id_pengenal; // untuk link ketika anchor contoh <a href="#bawah">Rekomendasi IMB</a><div class="no example" id="bawah">
-                                    }
-                                    break;
-                                case 'asn':
-                                    $kondisi = [['nip', '=', $nip], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
-                                    $kodePosting = 'cek_insert';
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'nama' => $nama,
-                                        'gelar' => $gelar,
-                                        'kelompok' => $kelompok,
-                                        'jabatan' => $jabatan,
-                                        'nip' => $nip,
-                                        'golongan' => $golongan,
-                                        'ruang' => $ruang,
-                                        't4_lahir' => $t4_lahir,
-                                        'tgl_lahir' => $tgl_lahir,
-                                        'agama' => $agama,
-                                        'kelamin' => $kelamin,
-                                        'jenis_kepeg' => $jenis_kepeg,
-                                        'status_kepeg' => $status_kepeg,
-                                        'no_ktp' => $no_ktp,
-                                        'npwp' => $npwp,
-                                        'alamat' => $alamat,
-                                        'kontak_person' => $kontak_person,
-                                        'email' => $email,
-                                        'status' => $status,
-                                        // 'no_buku_nikah' => $no_buku_nikah,
-                                        // 'tgl_nikah' => $tgl_nikah,
-                                        // 'nama_anak' => $nama_anak,
-                                        // 'nik_anak' => $nik_anak,
-                                        // 'nama_ayah' => $nama_ayah,
-                                        // 'nama_ibu' => $nama_ibu,
-                                        // 'nama_pasangan' => $nama_pasangan,
-                                        // 'no_karpeg' => $no_karpeg,
-                                        // 'tgl_karpeg' => $tgl_karpeg,
-                                        // 'no_taspen' => $no_taspen,
-                                        // 'tgl_taspen' => $tgl_taspen,
-                                        // 'no_karsi_karsu' => $no_karsi_karsu,
-                                        // 'tgl_karsi_karsu' => $tgl_karsi_karsu,
-                                        // 'nmr_sk_terakhir' => $nmr_sk_terakhir,
-                                        // 'tgl_sk_terakhir' => $tgl_sk_terakhir,
-                                        // 'pj_sk_terakhir' => $pj_sk_terakhir,
-                                        // 'nmr_sk_cpns' => $nmr_sk_cpns,
-                                        // 'tgl_sk_cpns' => $tgl_sk_cpns,
-                                        // 'pj_sk_cpns' => $pj_sk_cpns,
-                                        // 'nmr_sk_pns' => $nmr_sk_pns,
-                                        // 'tgl_sk_pns' => $tgl_sk_pns,
-                                        // 'pj_sk_pns' => $pj_sk_pns,
-                                        // 'pend_sekolah_sd' => $pend_sekolah_sd,
-                                        // 'pend_ijasah_sd' => $pend_ijasah_sd,
-                                        // 'pend_tgl_tmt_sd' => $pend_tgl_tmt_sd,
-                                        // 'pend_t4_sd' => $pend_t4_sd,
-                                        // 'pend_sekolah_smp' => $pend_sekolah_smp,
-                                        // 'pend_ijasah_smp' => $pend_ijasah_smp,
-                                        // 'pend_tgl_tmt_smp' => $pend_tgl_tmt_smp,
-                                        // 'pend_t4_smp' => $pend_t4_smp,
-                                        // 'pend_sekolah_smu' => $pend_sekolah_smu,
-                                        // 'pend_ijasah_smu' => $pend_ijasah_smu,
-                                        // 'pend_tgl_tmt_smu' => $pend_tgl_tmt_smu,
-                                        // 'pend_t4_smu' => $pend_t4_smu,
-                                        // 'pend_sekolah_akhir' => $pend_sekolah_akhir,
-                                        // 'pend_ijasah_akhir' => $pend_ijasah_akhir,
-                                        // 'pend_tgl_tmt_akhir' => $pend_tgl_tmt_akhir,
-                                        // 'pend_t4_akhir' => $pend_t4_akhir,
-                                        // 'sk_pangkat_terakhir' => $sk_pangkat_terakhir,
-                                        // 'tgl_tmt_akhir' => $tgl_tmt_akhir,
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => $disable,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'daftar_paket':
-                                    //
-                                    $send = json_decode($id_uraian);
-                                    // atur kembali id uraian
-                                    $pagu = 0;
-                                    $jumlah = 0;
-                                    $kd_sub_keg = [];
-                                    $kumpulanRowSub = [];
-                                    $kumpulanRowSub_del = [];
-                                    foreach ($send as $key => $value) {
-                                        $tabel_pakaiku = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
-                                        $kondisi1 = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
-                                        $row_sub = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi1);
-                                        if ($row_sub !== false) {
-                                            //$kumpulanRowSub[] ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
-                                            $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
-
-                                            $row_sub->dok = $value->dok_anggaran;
-                                            $row_sub->nilai_kont = $row_sub->$klm_jumlah;
-                                            $row_sub->vol_kontrak = $value->vol_kontrak;
-                                            $row_sub->sat_kontrak = $value->sat_kontrak;
-
-                                            $id_dok_anggaran = $value->id;
-                                            $kumpulanRowSub[] = $row_sub;
-
-                                            $pagu += $row_sub->$klm_jumlah;
-                                            $jumlah += $value->val_kontrak;
-                                            $kd_sub_keg[] = $row_sub->kd_sub_keg;
-                                            // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
-                                        } else {
-                                            //hapus key yang tidak mempunyai persyaratan
-                                            $kumpulanRowSub_del[] = $value;
-                                            unset($send[$key]);
-                                        }
-                                    }
-                                    $kd_sub_keg = implode(',', $kd_sub_keg);
-                                    // var_dump($row_sub);
-                                    $id_uraian = $send;
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    } else if ($jenis == 'edit') {
-                                        $kodePosting = 'cek_insert';
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
-                                    }
-                                    if ($jumlah > $pagu) {
-                                        # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
-                                        $kodePosting = '';
-                                        $code = 405;
-                                        $tambahan_pesan = '(nilai jumlah kontrak lebih besar dari besaran pagu)';
-                                    } else {
-                                        // var_dump(json_encode($id_uraian));
-                                        $set = [
-                                            'kd_rup' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_rup),
-                                            'kd_paket' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_paket),
-                                            'kd_wilayah' => $kd_wilayah,
-                                            'kd_opd' => $kd_opd,
-                                            'tahun' => $tahun,
-                                            'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
-                                            'id_uraian' => json_encode($id_uraian),
-                                            'kd_sub_keg' => $kd_sub_keg,
-                                            'volume' => $volume,
-                                            'satuan' => $satuan,
-                                            'jumlah' => $jumlah,
-                                            'pagu' => $pagu,
-                                            'metode_pengadaan' => $metode_pengadaan,
-                                            'metode_pemilihan' => $metode_pemilihan,
-                                            'pengadaan_penyedia' => $pengadaan_penyedia,
-                                            'jns_kontrak' => $jns_kontrak,
-                                            'renc_output' => $renc_output,
-                                            'output' => $output,
-                                            'id_rekanan' => $id_rekanan,
-                                            'nama_rekanan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_rekanan),
-                                            'nama_ppk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_ppk),
-                                            'nip_ppk' => $nip_ppk,
-                                            'nama_pptk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_pptk),
-                                            'waktu_pelaksanaan' => $waktu_pelaksanaan,
-                                            'waktu_pemeliharaan' => $waktu_pemeliharaan,
-                                            'nip_pptk' => $nip_pptk,
-                                            'tgl_kontrak' => $tgl_kontrak,
-                                            'no_kontrak' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_kontrak),
-                                            'tgl_persiapan_kont' => $tgl_persiapan_kont,
-                                            'no_persiapan_kont' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_persiapan_kont),
-                                            'tgl_spmk' => $tgl_spmk,
-                                            'no_spmk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_spmk),
-                                            'addendum' => $addendum,
-                                            'tgl_undangan' => $tgl_undangan,
-                                            'no_undangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_undangan),
-                                            'tgl_penawaran' => $tgl_penawaran,
-                                            'no_penawaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_penawaran),
-                                            'tgl_nego' => $tgl_nego,
-                                            'no_nego' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_nego),
-                                            'tgl_sppbj' => $tgl_sppbj,
-                                            'no_sppbj' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_sppbj),
-                                            'tgl_pho' => $tgl_pho,
-                                            'no_pho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_pho),
-                                            'tgl_fho' => $tgl_fho,
-                                            'no_fho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_fho),
-                                            'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                            'disable' => $disable,
-                                            'tgl_update' => date('Y-m-d H:i:s'),
-                                            'username_update' => $_SESSION["user"]["username"]
-                                        ];
-                                        if ($jenis === 'add') {
-                                            $set['username_insert'] = $_SESSION["user"]["username"];
-                                            $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                        }
-                                    }
-
-                                    break;
-                                case 'profil':
-                                    switch ($jenis) {
-                                        case 'edit':
-                                            $kondisi = [['id', '=', $id_row]];
-                                            switch ($type_user) {
-                                                case 'admin':
-
-                                                    break;
-                                                default:
-
-                                                    break;
-                                            }
-                                            $set = [
-                                                'nama' => $nama,
-                                                'nip' => $nip,
-                                                'kontak_person' => $kontak_person,
-                                                'nama_org' => $nama_org,
-                                                'tahun' => $tahun,
-                                                'ket' => $ket
-                                            ];
-                                            if (isset($_FILES['file'])) {
-                                                $file = $Fungsi->importFile($jenis, $kd_proyek = '');
-                                                if ($file['result'] == 'ok') {
-                                                    $set['photo'] = $file['file'];
-                                                }
-                                            }
-                                            $kodePosting = 'cek_insert';
-                                            break;
-                                        case 'profil':
-                                            $kondisi = [['id', '=', $id_row], ['type_user', '=', $type_user, 'AND']];
-                                            $set = [
-                                                'username' => $username,
-                                                'email' => $email,
-                                                'nama' => $nama,
-                                                'kontak_person' => $kontak_person,
-                                                'nama_org' => $nama_org,
-                                                'disable_login' => $disable_login,
-                                                'disable_anggaran' => $disable_anggaran,
-                                                'disable_kontrak' => $disable_kontrak,
-                                                'disable_realisasi' => $disable_realisasi,
-                                                'disable_chat' => $disable_chat,
-                                                'ket' => $ket
-                                            ];
-
-
-                                            $kodePosting = 'cek_insert';
-                                            //var_dump($file);
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-                                    break;
-                                case 'organisasi':
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kode' => $kode,
-                                        'uraian' => $uraian,
-                                        'alamat' => $alamat,
-                                        'nama_kepala' => $nama_kepala,
-                                        'nip_kepala' => $nip_kepala,
-                                        'peraturan' => $id_aturan_anggaran,
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'peraturan':
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    $kode = "$nomor:$tgl_pengundangan";
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kode' => $kode,
-                                        'type_dok' => $type_dok,
-                                        'judul' => $judul,
-                                        'nomor' => $nomor,
-                                        'bentuk' => $bentuk,
-                                        'bentuk_singkat' => $bentuk_singkat,
-                                        't4_penetapan' => $t4_penetapan,
-                                        'tgl_penetapan' => $tgl_penetapan,
-                                        'tgl_pengundangan' => $tgl_pengundangan,
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'status' => $status,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    //var_dump($set);
-                                    //pengolahan file
-                                    if (isset($_FILES['file'])) {
-                                        $file = $Fungsi->importFile($tbl, '');
-                                        //var_dump($file);
-                                        if ($file['result'] == 'ok') {
-                                            $set['file'] = $file['file'];
-                                        } else {
-                                            $tambahan_pesan = "(" . $file['file'] . ")";
-                                        }
-                                    }
-                                    break;
-                                case 'pengaturan':
-                                    if ($jenis == 'add') {
-                                        $kondisi = [['tahun', '=', $tahun]];
-                                        $kodePosting = 'cek_insert';
-                                    }
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'tahun' => $tahun,
-                                        'tahun_renstra' => $tahun_renstra,
-                                        'aturan_anggaran' => $aturan_anggaran,
-                                        'aturan_pengadaan' => $aturan_pengadaan,
-                                        'aturan_organisasi' => $aturan_organisasi,
-                                        'aturan_akun' => $aturan_akun,
-                                        'aturan_asb' => $aturan_asb,
-                                        'aturan_sbu' => $aturan_sbu,
-                                        'aturan_ssh' => $aturan_ssh,
-                                        'aturan_hspk' => $aturan_hspk,
-                                        'aturan_sumber_dana' => $aturan_sumber_dana,
-                                        'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
-                                        'awal_renstra' => $awal_renstra,
-                                        'akhir_renstra' => $akhir_renstra,
-                                        'awal_renja' => $awal_renja,
-                                        'akhir_renja' => $akhir_renja,
-                                        'awal_renja_p' => $awal_renja_p,
-                                        'akhir_renja_p' => $akhir_renja_p,
-                                        'awal_dpa' => $awal_dpa,
-                                        'akhir_dpa' => $akhir_dpa,
-                                        'awal_dppa' => $awal_dppa,
-                                        'akhir_dppa' => $akhir_dppa,
-                                        'disable' => $disable,
-                                        'keterangan' => $keterangan,
-                                        'id_opd_tampilkan' => $id_opd_tampilkan,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    break;
-                                case 'renstra':
-                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
-                                    if ($rowPengaturan !== false) {
-                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
-                                        if ($tahun_renstra > 2000) {
-                                            if ($jenis == 'add') {
-                                                $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
-                                                $kodePosting = 'cek_insert';
-                                            } else {
-                                                $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
-                                            }
-                                            // id tujuan
-                                            $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
-                                            $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
-                                            $sasaran_txt = ($tujuan) ? $tujuan->text : '';
-                                            //uraian_prog_keg
-                                            $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                            $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
-                                            // $uraian_prog_keg = $progkeg->nomenklatur_urusan;
-                                            //kondisi_akhir
-                                            $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
-                                            $jumlah = (float)$dana_thn_1 + (float)$dana_thn_2 + (float)$dana_thn_3 + (float)$dana_thn_4 + (float)$dana_thn_5;
-                                            $dinamic = ['kode' => $kd_sub_keg];
-                                            $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
-                                            if (array_key_exists('kel_rek', $kodeRekUbah)) {
-                                                $kel_rek = $kodeRekUbah['kel_rek'];
-                                            }
-                                            $set = [
-                                                'kd_wilayah' => $kd_wilayah,
-                                                'kd_opd' => $kd_opd,
-                                                'tahun' => $tahun_renstra,
-                                                'kd_sub_keg' => $kd_sub_keg,
-                                                'kel_rek' => $kel_rek,
-                                                'tujuan' => $id_tujuan,
-                                                'sasaran' => $sasaran,
-                                                'sasaran_txt' => $sasaran_txt,
-                                                'uraian_prog_keg' => $uraian_prog_keg,
-                                                'indikator' => $indikator,
-                                                'satuan' => $satuan,
-                                                'data_capaian_awal' => (float)$data_capaian_awal,
-                                                'target_thn_1' => (float)$target_thn_1,
-                                                'dana_thn_1' => (float)$dana_thn_1,
-                                                'target_thn_2' => (float)$target_thn_2,
-                                                'dana_thn_2' => (float)$dana_thn_2,
-                                                'target_thn_3' => (float)$target_thn_3,
-                                                'dana_thn_3' => (float)$dana_thn_3,
-                                                'target_thn_4' => (float)$target_thn_4,
-                                                'dana_thn_4' => (float)$dana_thn_4,
-                                                'target_thn_5' => (float)$target_thn_5,
-                                                'dana_thn_5' => (float)$dana_thn_5,
-                                                'kondisi_akhir' => (float)$kondisi_akhir,
-                                                'jumlah' => (float)$jumlah,
-                                                'lokasi' => $lokasi,
-                                                'keterangan' => $keterangan,
-                                                'disable' => $disable,
-                                                'tgl_update' => date('Y-m-d H:i:s'),
-                                                'username_update' => $_SESSION["user"]["username"]
-                                            ];
-                                            if ($jenis === 'add') {
-                                                $set['username_insert'] = $_SESSION["user"]["username"];
-                                                $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                            }
-                                            $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
-                                            $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
-                                            $kodePosting = '';
-                                        } else {
-                                            $message_tambah = ' (atur tahun renstra OPD)';
-                                            $code = 70;
-                                            $kodePosting = '';
-                                        }
-                                    } else {
-                                        $message_tambah = ' (atur organisasi OPD)';
-                                        $kodePosting = '';
-                                        $code = 70;
-                                    }
-                                    break;
-                                case 'tujuan_renstra':
-                                case 'tujuan_sasaran_renstra':
-                                case 'sasaran_renstra':
-                                    if ($kelompok == 'tujuan') {
-                                        $id_tujuan = 0;
-                                    }
-                                    $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
-                                    if ($rowPengaturan !== false) {
-                                        $tahun_renstra = $rowPengaturan->tahun_renstra;
-                                        if ($tahun_renstra > 2000) {
-                                            if ($jenis == 'add') {
-                                                $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kelompok', '=', $kelompok, 'AND'], ['text', '=', $text, 'AND']];
-                                                $kodePosting = 'cek_insert';
-                                            }
-                                            $set = [
-                                                'kd_wilayah' => $kd_wilayah,
-                                                'kd_opd' => $kd_opd,
-                                                'tahun' => $tahun_renstra,
-                                                'id_tujuan' => $id_tujuan,
-                                                'kelompok' => $kelompok,
-                                                'text' => $text,
-                                                'disable' => $disable,
-                                                'keterangan' => $keterangan,
-                                                'tgl_update' => date('Y-m-d H:i:s'),
-                                                'username_update' => $_SESSION["user"]["username"]
-                                            ];
-                                            if ($jenis === 'add') {
-                                                $set['username_insert'] = $_SESSION["user"]["username"];
-                                                $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                            }
-                                        } else {
-                                            $message_tambah = ' (atur tahun renstra OPD)';
-                                            $code = 70;
-                                            $kodePosting = '';
-                                        }
-                                    } else {
-                                        $message_tambah = ' (atur organisasi OPD)';
-                                        $kodePosting = '';
-                                        $code = 70;
-                                    }
-                                    break;
-                                case 'sub_keg_dpa':
-                                case 'sub_keg_renja':
-                                    $dinamic = ['kode' => $kd_sub_keg];
-                                    $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
-                                    if (array_key_exists('kel_rek', $kodeRekUbah)) {
-                                        $kel_rek = $kodeRekUbah['kel_rek'];
-                                    }
-                                    $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                    $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'tahun' => $tahun,
-                                        'kd_sub_keg' => $kd_sub_keg,
-                                        'uraian' => $uraian,
-                                        'kel_rek' => $kel_rek,
-                                        'tolak_ukur_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg),
-                                        'target_kinerja_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg),
-                                        'tolak_ukur_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran),
-                                        'target_kinerja_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
-                                        'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
-                                        'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
-                                        'tolak_ukur_capaian_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg_p),
-                                        'target_kinerja_capaian_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg_p),
-                                        'tolak_ukur_keluaran_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran_p),
-                                        'target_kinerja_keluaran_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran_p),
-                                        'tolak_ukur_hasil_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil_p),
-                                        'target_kinerja_hasil_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil_p),
-                                        'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
-                                        'keluaran_sub_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg_p),
-                                        'sumber_dana' => $sumber_dana,
-                                        'jumlah_pagu' => $jumlah_pagu,
-                                        'jumlah_pagu_p' => $jumlah_pagu_p,
-                                        'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => $disable,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
-                                    $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
-                                    $data = $cekKodeRek;
-                                    $kodePosting = '';
-                                    break;
-                                case 'dppa':
-                                case 'renja_p':
-                                case 'dpa':
-                                case 'renja':
-                                    $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
-                                    // $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
-                                    switch ($tabel_pakai) {
-                                        case 'sub_keg_dpa_neo':
-                                        case 'sub_keg_renja_neo':
-                                            $kolomJumlah = 'jumlah';
-                                            break;
-                                        case 'dpa_neo':
-                                        case 'renja_neo':
-                                            $kolomJumlah = 'jumlah';
-                                            $kolomVol_1 = 'vol_1';
-                                            $kolomVol_2 = 'vol_2';
-                                            $kolomVol_3 = 'vol_3';
-                                            $kolomVol_4 = 'vol_4';
-                                            $kolomVol_5 = 'vol_5';
-                                            $kolomHarga_satuan = 'harga_satuan';
-                                            $kolomVolume = 'volume';
-                                            $kolomSat_1 = 'sat_1';
-                                            $kolomSat_2 = 'sat_2';
-                                            $kolomSat_3 = 'sat_3';
-                                            $kolomSat_4 = 'sat_4';
-                                            $kolomSat_5 = 'sat_5';
-                                            break;
-                                        case 'dppa_neo':
-                                        case 'renja_p_neo':
-                                            $kolomJumlah = 'jumlah_p';
-                                            $kolomVol_1 = 'vol_1_p';
-                                            $kolomVol_2 = 'vol_2_p';
-                                            $kolomVol_3 = 'vol_3_p';
-                                            $kolomVol_4 = 'vol_4_p';
-                                            $kolomVol_5 = 'vol_5_p';
-                                            $kolomHarga_satuan = 'harga_satuan';
-                                            $kolomVolume = 'volume_p';
-                                            $kolomSat_1 = 'sat_1_p';
-                                            $kolomSat_2 = 'sat_2_p';
-                                            $kolomSat_3 = 'sat_3_p';
-                                            $kolomSat_4 = 'sat_4_p';
-                                            $kolomSat_5 = 'sat_5_p';
-                                            break;
-                                        case 'renstra_neo':
-                                            $kolomJumlah = 'jumlah';
-                                            break;
-                                        default:
-                                            break;
-                                    };
-                                    // var_dump($sumber_dana);
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'kd_opd' => $kd_opd,
-                                        'tahun' => $tahun,
-                                        'kd_sub_keg' => $kd_sub_keg,
-                                        'kd_akun' => $kd_akun,
-                                        'kel_rek' => 'uraian', //kd
-                                        'objek_belanja' => $objek_belanja,
-                                        'uraian' => $uraian,
-                                        'jenis_kelompok' => $jenis_kelompok,
-                                        'kelompok' => $kelompok,
-                                        'jenis_standar_harga' => $jenis_standar_harga,
-                                        'id_standar_harga' => $id_standar_harga,
-                                        'komponen' => $komponen,
-                                        'spesifikasi' => $spesifikasi,
-                                        'tkdn' => (float)$tkdn,
-                                        'pajak' => $pajak,
-                                        $kolomHarga_satuan => $harga_satuan,
-                                        $kolomVol_1 => $vol_1,
-                                        $kolomVol_2 => $vol_2,
-                                        $kolomVol_3 => $vol_3,
-                                        $kolomVol_4 => $vol_4,
-                                        $kolomSat_1 => $sat_1,
-                                        $kolomSat_2 => $sat_2,
-                                        $kolomSat_3 => $sat_3,
-                                        $kolomSat_4 => $sat_4,
-                                        $kolomVolume => $volume,
-                                        $kolomJumlah => $jumlah,
-                                        $sumberDan => $sumber_dana,
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => 0,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                    }
-                                    $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_akun' => $kd_akun, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
-                                    if ($jenis == 'edit') {
-                                        $dinamic['id_row'] = $id_row;
-                                    }
-                                    $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
-                                    $data = $insertKodeRek;
-                                    $kodePosting = '';
-                                    break;
-                                case 'asb':
-                                case 'sbu':
-                                case 'hspk':
-                                case 'ssh':
-                                    $set = [
-                                        'kd_wilayah' => $kd_wilayah,
-                                        'tahun' => $tahun,
-                                        'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
-                                        'uraian_barang' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_barang),
-                                        'spesifikasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $spesifikasi),
-                                        'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
-                                        'harga_satuan' => $harga_satuan,
-                                        'tkdn' => $tkdn,
-                                        'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
-                                        'peraturan' => ${"aturan_$tbl"},
-                                        'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
-                                        'disable' => 0,
-                                        'tgl_update' => date('Y-m-d H:i:s'),
-                                        'username_update' => $_SESSION["user"]["username"]
-                                    ];
-                                    if ($jenis === 'add') {
-                                        $set['username_insert'] = $_SESSION["user"]["username"];
-                                        $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                        $kodePosting = 'cek_insert';
-                                    }
-
-                                    break;
-                                case 'value':
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if ($_FILES) {
-                                if (isset($_FILES['file'])) {
-                                    $file = $Fungsi->importFile($tbl, $set_file);
-                                    //var_dump($file);
-                                    if ($file['result'] == 'ok') {
-                                        $set['file'] = $file['file'];
-                                    } else {
-                                        $tambahan_pesan = "(" . $file['file'] . ")";
-                                    }
-                                }
-                            }
-                            break;
-                        case 'unkunci':
-                            switch ($tbl) {
-                                case 'renstra':
-                                case 'renja':
-                                case 'renja_p':
-                                case 'dpa':
-                                case 'dppa':
-                                    $set = ["kunci_$tbl" => 0];
-                                    break;
-                                default:
-                                    break;
-                            }
-                            $tabel_pakai = 'pengaturan_neo';
-                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                            if ($tbl == 2) {
-                                break;
-                            }
-                            $kodePosting = 'update_row';
-                            break;
-                        case 'unsetujui':
-
-                            $set = ["setujui_$tbl" => 0];
-                            $tabel_pakai = 'pengaturan_neo';
-                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                            $kodePosting = 'update_row';
-                            break;
-                        case 'kunci':
-                            $tabel_pakai = 'pengaturan_neo';
-                            $set = ["kunci_$tbl" => 1];
-                            $kodePosting = 'update_row';
-                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                            break;
-                        case 'setujui':
-                            $tabel_pakai = 'pengaturan_neo';
-                            switch ($tbl) {
-                                case 'dppa':
-                                    $tablePosting = '';
-
-                                    break;
-                                case 'renja_p': //renja p ke dppa
-                                    $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
-                                    $tablePosting = 'dppa_neo';
-                                    $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id_renja_p`";
-                                    $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id`";
-                                    break;
-                                case 'dpa': //dpa ke renja_p
-                                    $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
-                                    $tablePosting = 'renja_p_neo';
-                                    $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`";
-                                    $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `id`";
-                                    $tablePosting2 = 'sub_keg_dpa_neo';
-                                    $tabel_pakai2 = 'sub_keg_renja_neo';
-                                    break;
-                                case 'renja': //renja ke dpa
-                                    $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
-                                    $tablePosting = 'dpa_neo';
-                                    $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `id_renja`";
-                                    $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `id`";
-                                    //ut tabel sub_keg_dpa_neo
-                                    $tablePosting2 = 'sub_keg_dpa_neo';
-                                    $tabel_pakai2 = 'sub_keg_renja_neo';
-                                    $columnName2 = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kel_rek`, `uraian`, `tolak_ukur_capaian_keg`, `target_kinerja_capaian_keg`, `tolak_ukur_keluaran`, `target_kinerja_keluaran`, `tolak_ukur_hasil`, `target_kinerja_hasil`, `tolak_ukur_capaian_keg_p`, `target_kinerja_capaian_keg_p`, `tolak_ukur_keluaran_p`, `target_kinerja_keluaran_p`, `tolak_ukur_hasil_p`, `target_kinerja_hasil_p`, `sumber_dana`, `lokasi`, `keluaran_sub_keg`, `keluaran_sub_keg_p`, `awal_pelaksanaan`, `akhir_pelaksanaan`, `jumlah_pagu`, `jumlah_pagu_p`, `jumlah_rincian`, `jumlah_rincian_p`, `disable`, `aksi`, `keterangan`, `kelompok_json`, `keterangan_json`, `tanggal`, `tgl_update`, `username`";
-                                    $columnSelect2 = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kel_rek`, `uraian`, `tolak_ukur_capaian_keg`, `target_kinerja_capaian_keg`, `tolak_ukur_keluaran`, `target_kinerja_keluaran`, `tolak_ukur_hasil`, `target_kinerja_hasil`, `tolak_ukur_capaian_keg_p`, `target_kinerja_capaian_keg_p`, `tolak_ukur_keluaran_p`, `target_kinerja_keluaran_p`, `tolak_ukur_hasil_p`, `target_kinerja_hasil_p`, `sumber_dana`, `lokasi`, `keluaran_sub_keg`, `keluaran_sub_keg_p`, `awal_pelaksanaan`, `akhir_pelaksanaan`, `jumlah_pagu`, `jumlah_pagu_p`, `jumlah_rincian`, `jumlah_rincian_p`, `disable`, `aksi`, `keterangan`, `kelompok_json`, `keterangan_json`, `tanggal`, `tgl_update`, `username`";
-                                    break;
-                                case 'value':
-                                    break;
-                                default:
-                                    break;
-                            }
-                            $kondisi_delete = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                            $kondisi_insert_select = [['kd_wilayah', '= ?', $kd_wilayah], ['tahun', '= ?', $tahun_dokumen, 'AND']];
-                            $set = ["setujui_$tbl" => 1];
-                            $kodePosting = 'update_row';
-                            $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
-                            // posting ke dpa, renja_p, dppa
-                            break;
-                        case 'add_field_json':
-                            switch ($tbl) {
-                                case 'sub_keg_dpa':
-                                case 'sub_keg_renja':
-                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                    $kodePosting = $jenis;
-                                    break;
-                                case 'dppa':
-                                case 'renja_p':
-                                case 'dpa':
-                                case 'renja':
-                                    $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                    $kodePosting = $jenis;
-                                    break;
-                                case 'value':
-                                    break;
-                                case 'value':
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                        default:
-                            switch ($tbl) {
-                                case 'value':
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                    }
-                    //JENIS POST DATA/INSERT DATA
-                    switch ($kodePosting) {
-                        case 'add_field_json':
-                            //ambil data
-                            $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
-                            // Menghapus tanda kutip tunggal yang tidak valid
-                            //cari index di array
-                            $key = false;
-                            if ($data_klm) {
-                                $data_klm = json_decode($data_klm, true);
-                                $key = array_search($uraian_field, $data_klm, true);
-                                $kode_Field = 'updateJSONField';
-                            } else {
-                                $data_klm = array();
-                                $kode_Field  = 'insertJSONField';
-                            }
-                            if ($key === false) {
-                                $data_klm[] = $uraian_field;
-                                $uraian_field_insert = json_encode($data_klm);
-                                // var_dump($uraian_field_insert);
-                                if ($kode_Field  == 'insertJSONField') {
-                                    $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
-                                } else {
-                                    $tambah = $DB->updateJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
-                                }
-                                if ($tambah) {
-                                    $code = 3;
-                                } else {
-                                    $code = 33;
-                                }
-                            } else {
-                                $code = 37;
-                            }
-                            break;
-                        case 'update_rows': // untuk banyak row
-                            foreach ($dataArray as $key => $val) {
-                                $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id, 'AND']];
-                                $set = [
-                                    'value' => $value,
-                                    'item' => $item,
-                                    'keterangan' => $keterangan,
-                                    'sebutan_lain' => $sebutan_lain
-                                ];
-                                $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
-                                //var_dump($DB->count());
-                                $jumlahArray = is_array($DB->count()) ? count($DB->count()) : 0;
-                                if ($DB->count()) {
-                                    $code = 3;
-                                    $data['update'] = $DB->count();
-                                } else {
-                                    $code = 47;
-                                }
-                            }
-                            break;
-                        case 'update_row': //untuk 1 row
-                            // var_dump($set);
-                            // var_dump($kondisi);
-                            $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
-                            $jumlahArray = is_array($resul) ? count($resul) : 0;
-                            // var_dump($kondisi);
-                            //var_dump($DB->count());
-                            if ($DB->count()) {
-                                $code = 3;
-                                $data['update'] = $DB->count();
-                                switch ($jenis) {
-                                    case 'setujui':
-                                    case 'kunci':
-                                        // $set = [$jenis . '_' . $tbl => 1];
-                                    case 'unkunci':
-                                    case 'unsetujui':
-                                        // if ($jenis == 'unkunci' || $jenis == 'unsetujui') {
-                                        //     $jenisnya = $jenis;
-                                        //     $jenisnya = substr($jenisnya, 2); //hilangkan un depan kata
-                                        //     $set = [$jenisnya . '_' . $tbl => 0];
-                                        // }
-                                        // // update di tabel pengaturan
-                                        // $tabel_pengaturan = 'pengaturan_neo';
-                                        // $resul_pengaturan = $DB->update_array($tabel_pengaturan, $set, $kondisi);
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                                switch ($jenis) {
-                                    case 'setujui':
-                                        switch ($tbl) {
-                                            case 'dpa':
-                                            case 'renja':
-                                            case 'renja_p':
-                                                // hapus dahulu sebelum insert
-                                                $resul = $DB->delete_array($tablePosting, $kondisi_delete);
-                                                $resul = $DB->insert_select($tabel_from, $tablePosting, $columnName, $columnSelect, $kondisi_insert_select);
-                                                if ($tbl == 'renja') {
-                                                    $resul = $DB->delete_array($tablePosting2, $kondisi_delete);
-                                                    $resul = $DB->insert_select($tabel_pakai2, $tablePosting2, $columnName2, $columnSelect2, $kondisi_insert_select);
-                                                }
-                                                // var_dump($resul);
-                                                break;
-
-                                            default:
-                                                # code...
-                                                break;
-                                        }
-                                        break;
-                                    case 'value1':
-                                        #code...
-                                        break;
-                                    default:
-                                        #code...
-                                        break;
-                                };
-                            } else {
-                                $code = 33;
-                            }
-                            break;
-                        case 'cek_insert': //cek data klo tidak ada teruskan insert
-                            $ListRow = $DB->select_array($tabel_pakai, $kondisi, $columnName);
-                            // var_dump($ListRow);
-                            $jumlahArray = is_array($ListRow) ? count($ListRow) : 0;
-                            if ($jumlahArray) {
-                                //update row
-                                $DB->update_array($tabel_pakai, $set, $kondisi);
-                                //var_dump($hasilUpdate);
-                                $id_row_paket = $ListRow[0]->id;
-                                if ($DB->count()) {
-                                    $code = 3;
-                                    $data['update'] = $DB->count(); //$DB->count();
-                                    switch ($jenis) {
-                                        case 'edit':
-                                            switch ($tbl) {
-                                                case 'profil':
-                                                    $_SESSION["user"]["tahun"] = $set['tahun'];
-                                                    # code...
-                                                    $data['users'] = $set;
-                                                    break;
-
-                                                default:
-                                                    # code...
-                                                    break;
-                                            }
-                                            break;
-
-                                        default:
-                                            # code...
-                                            break;
-                                    }
-                                } else {
-                                    $code = 33;
-                                }
-                            } else {
-                                // inser row
-                                switch ($jenis) {
-                                    case 'add':
-                                        switch ($tbl) {
-                                            case 'pengaturan':
-                                                $set['kunci_renstra'] = 1;
-                                                $set['kunci_renja'] = 1;
-                                                $set['kunci_dpa'] = 1;
-                                                $set['kunci_renja_p'] = 1;
-                                                $set['kunci_dppa'] = 1;
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                        break;
-                                    case 'edit':
-                                        switch ($tbl) {
-                                            case 'sk_asn': //jika ingin clone sk maka ganti nomornya
-                                                $set['username_insert'] = $_SESSION["user"]["username"];
-                                                $set['tgl_insert'] = date('Y-m-d H:i:s');
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                $resul = $DB->insert($tabel_pakai, $set);
-                                $data['note']['add row'] = $DB->lastInsertId();
-                                $id_row_paket = $data['note']['add row'];
-                                $code = 2;
-                            }
-                            switch ($jenis) {
-                                case 'edit':
-                                    switch ($tbl) {
-                                        case 'daftar_paket':
-                                    }
-                                case 'add':
-                                    switch ($tbl) {
-                                        case 'sk_asn':
-                                            break;
-                                        case 'daftar_paket': //@audit sekarang pemaketan
-                                            $item_data_decode = false;
-                                            if ($jenis == 'edit') {
-                                                $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
-                                                //ambil data ruas dengan id paket
-                                                $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
-                                                $item_data_decode = $row_sub2;
-                                            }
-
-                                            foreach ($kumpulanRowSub as $key => $value) {
-                                                $id_dok_anggaran = $value->id;
-                                                $dok = $value->dok;
-                                                $kd_sub_keg = $value->kd_sub_keg;
-                                                $kd_akun = $value->kd_akun;
-                                                $kel_rek = $value->kel_rek;
-                                                $klm_jumlah = ($dok == 'dpa') ? 'jumlah' : 'jumlah_p';
-                                                $jumlah_pagu = $value->$klm_jumlah;
-                                                $jumlah_kontrak = $value->nilai_kont;
-                                                $vol_kontrak = $value->vol_kontrak;
-                                                $sat_kontrak = $value->sat_kontrak;
-                                                $kondisi_cari = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $dok, 'AND']];
-                                                $row_cari = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi_cari);
-                                                //@audit error tambah paket
-                                                if ($item_data_decode !== false) {
-                                                    // Loop through the array
-                                                    foreach ($item_data_decode as $key2 => $item) {
-                                                        if ($item->id_dok_anggaran == $id_dok_anggaran && $item->dok == $dok) {
-                                                            unset($item_data_decode[$key2]);
-                                                        }
-                                                    }
-                                                }
-                                                $set_insert = [
-                                                    'id_paket' => $id_row_paket, // $id_row,
-                                                    'id_dok_anggaran' => $id_dok_anggaran,
-                                                    'dok' => $dok,
-                                                    'tahun' => $tahun,
-                                                    'kd_wilayah' => $kd_wilayah,
-                                                    'kd_opd' => $kd_opd,
-                                                    'kd_sub_keg' => $kd_sub_keg,
-                                                    'kd_akun' => $kd_akun,
-                                                    'kel_rek' => $kel_rek,
-                                                    'jumlah_pagu' => $jumlah_pagu,
-                                                    'jumlah_kontrak' => $jumlah_kontrak,
-                                                    'vol_kontrak' => $vol_kontrak,
-                                                    'sat_kontrak' => $sat_kontrak,
-                                                    // 'realisasi_vol'=>$realisasi_vol,
-                                                    // 'realisasi_jumlah'=>$realisasi_jumlah,
-                                                    // 'keterangan'=>$keterangan
-                                                ];
-                                                //jika false tambahkan baris
-                                                if ($row_cari === false) {
-                                                    $resul = $DB->insert('daftar_uraian_paket', $set_insert);
-                                                } else {
-                                                    $resul = $DB->update_array('daftar_uraian_paket', $set_insert, $kondisi_cari);
-                                                }
-                                            }
-                                            if ($item_data_decode !== false) {
-                                                foreach ($item_data_decode as $key => $value2) {
-                                                    $idRow = $value2->id;
-                                                    $kondisi = [['id', '=', $idRow], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
-                                                    $DB->delete_array('daftar_uraian_paket', $kondisi);
-                                                    if ($DB->count() > 0) {
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                        case 'value':
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            break;
-                        case 'cekdouble_insert': //cek data klo tidak ada teruskan insert jika ada jangan update
-                            $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);
-                            //var_dump(sizeof($resul));
-                            $jumlahArray = is_array($resul) ? count($resul) : 0;
-                            if ($jumlahArray) {
-                                $code = 37;
-                            } else {
-                                // inser row
-                                $resul = $DB->insert($tabel_pakai, $set);
-                                $data['note']['add row'] = $DB->lastInsertId();
-                                $code = 2;
-                            }
-                            break;
-                        case 'insert_json':
-                            $resul = $DB->runQuery($query, $bindValue);
-                            break;
-                        case 'insert':
-                            $resul = $DB->insert($tabel_pakai, $set);
-                            if ($DB->lastInsertId()) {
-                                $data['note']['add row'] = $DB->lastInsertId(); //$resul->count;
-                                $code = 2;
-                            } else {
-                                $code = 32;
-                            }
-                            break;
-                        default:
-                            # code...
-                            break;
-                    }
-                    $hasilServer = hasilServer[$code];
+                $arahan = ['arahan_pengaturan', 'arahan_penetapan', 'arahan_penugasan'];
+                $arahan_pengaturan = ['arahan_pengaturan_undang2', 'arahan_pengaturan_instruksi', 'arahan_pengaturan_edaran', 'arahan_pengaturan_sop'];
+                $arahan_penetapan = ['arahan_penetapan_keputusan'];
+                $arahan_penugasan = [
+                  'arahan_penugasan_suratperintah', 'arahan_penugasan_surattugas'
+                ];
+                $korespondensi = ['korespondensi_internal', 'korespondensi_eksternal'];
+                $korespondensi_internal = ['korespondensi_internal_nota', 'korespondensi_internal_memorandum', 'korespondensi_internal_disposisi', 'korespondensi_internal_undangan'];
+                $korespondensi_eksternal = ['korespondensi_eksternal_dinas'];
+                $khusus = ['khusus_perjanjian', 'khusus_kuasa', 'khusus_ba', 'khusus_keterangan', 'khusus_pengantar', 'khusus_pengumuman', 'khusus_laporan', 'khusus_telaah'];
+                $sifat = $validate->setRules('sifat', 'sifat', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3,
+                  'in_array' => ${$jenis_naskah_dinas}
+                ]);
+                // var_dump($sifat);
+                $sub_sifat = $validate->setRules('sub_sifat', 'sub sifat', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3,
+                  'in_array' => ${$sifat}
+                ]);
+                $uraian = $validate->setRules('uraian', 'uraian', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4,
+                  'max_char' => 400
+                ]);
+                $nomor = $validate->setRules('nomor', 'nomor', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 255
+                ]);
+                $tanggal = $validate->setRules('tanggal', 'tgl surat', [
+                  'sanitize' => 'string',
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $asal_surat = $validate->setRules('asal_surat', 'asal surat', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 255
+                ]);
+                $nama_lengkap = $validate->setRules('nama_lengkap', 'Nama Penandatanganan Surat', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 255
+                ]);
+                $nip = $validate->setRules('nip', 'nip', [
+                  'sanitize' => 'string',
+                  'max_char' => 18
+                ]);
+                $pangkat = $validate->setRules('pangkat', 'pangkat', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'max_char' => 18
+                ]);
+                $jabatan = $validate->setRules('jabatan', 'jabatan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'max_char' => 18
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'sk_asn':
+                $nomor = $validate->setRules('nomor', 'nomor', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 255
+                ]);
+                $tgl_surat_dibuat = $validate->setRules('tgl_surat_dibuat', 'tgl surat dibuat', [
+                  'sanitize' => 'string',
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $tentang = $validate->setRules('tentang', 'tentang', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4,
+                  'max_char' => 400
+                ]);
+                $tabel_pakai_temporer = $Fungsi->tabel_pakai('asn')['tabel_pakai'];
+                $pemberi_tgs = $validate->setRules('pemberi_tgs', 'Pemberi Tugas', [
+                  'sanitize' => 'string',
+                  'required' => true
+                ]);
+                $pemberi_tgs = $validate->setRules('pemberi_tgs', 'Pemberi Tugas', [
+                  'inDB' => [$tabel_pakai_temporer, 'nip', [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']]]
+                ]);
+                $jbt_pemberi_tgs = $validate->setRules('jbt_pemberi_tgs', 'jbt pemberi tugas', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 255
+                ]);
+                $pangkat_pemberi_tgs = $validate->setRules('pangkat_pemberi_tgs', 'pangkat pemberi tugas', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 255
+                ]);
+                $kondisi_row = [['nip', "=", $pemberi_tgs], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                $row_resul_cari = $DB->getWhereOnceCustom($tabel_pakai_temporer, $kondisi_row);
+                if ($row_resul_cari !== false) {
+                  $pangkat_pemberi_tgs = $Fungsi->golongan_ruang($dinamic = ['golongan' => $row_resul_cari->golongan, 'ruang' => $row_resul_cari->ruang]);
+                  $pangkat_pemberi_tgs = $pangkat = ucfirst($pangkat_pemberi_tgs['pangkat']) . ', ' . $pangkat_pemberi_tgs['singkat'];
+                  $nama_pemberi_tgs = ucwords($row_resul_cari->nama);
+                  if (strlen($row_resul_cari->gelar ?? '') > 0) {
+                    $nama_pemberi_tgs .= ', ' . $row_resul_cari->gelar;
+                  }
+                  if (strlen($row_resul_cari->gelar_depan ?? '') > 0) {
+                    $nama_pemberi_tgs = $row_resul_cari->gelar_depan . ' ' . $namaLengkap;
+                  }
                 } else {
-                    $code = 29;
-                    $pesan = $validate->getError();
-                    //var_dump($pesan);
-                    $data['error_validate'][] = $pesan;
-                    $keterangan = '<ol class="ui horizontal ordered suffixed list">';
-                    foreach ($pesan as $key => $value) {
-                        $keterangan .= '<li class="item">' . $value . '</li>';
-                    }
-                    $keterangan .= '</ol>';
-                    $tambahan_pesan = [$code => 'Validasi Kembali :<br>' . $keterangan];
+                  $bentuk_lampiran = $validate->setRules('get', 'Pejabat Pemberi Tugas tidak dikenali', [
+                    'error' =>  true
+                  ]);
                 }
-            } else {
-                $pesan = 'tidak didefinisikan';
-                $code = 39;
+                //$bentuk_lampiran 0 = bentuk list ol , 1= bentuk tabel
+                $bentuk_lampiran = $validate->setRules('bentuk_lampiran', 'bentuk lampiran', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $bentuk_lampiran = ($bentuk_lampiran == 'on') ? 1 : 0;
+                // var_dump(gettype($_POST['menimbang']));
+                $menimbang = $validate->setRules('menimbang', 'menimbang', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $menimbang = $validate->setRules('menimbang', 'menimbang', [
+                  'json_decode' => true
+                ]);
+                // var_dump( $menimbang );
+                $sanitizeRules = [
+                  'strip_tags' => true,
+                  'htmlspecialchars' => true
+                ];
+                $menimbang = $validate->setRules('menimbang', 'menimbang', [
+                  'sanitizeJSON' => $sanitizeRules
+                ]);
+                // var_dump( $menimbang );
+                $mengingat = $validate->setRules('mengingat', 'mengingat', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $mengingat = $validate->setRules('mengingat', 'mengingat', [
+                  'json_decode' => true
+                ]);
+                $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $menetapkan_2 = $validate->setRules('menetapkan_2', 'menetapkan kedua', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $menetapkan_3 = $validate->setRules('menetapkan_3', 'menetapkan ketiga', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $menetapkan_4 = $validate->setRules('menetapkan_4', 'menetapkan keempat', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $menetapkan_1 = $validate->setRules('menetapkan_1', 'menetapkan kesatu', [
+                  'json_decode' => true
+                ]);
+                $menetapkan_2 = $validate->setRules('menetapkan_2', 'menetapkan kedua', [
+                  'json_decode' => true
+                ]);
+                $menetapkan_3 = $validate->setRules('menetapkan_3', 'menetapkan ketiga', [
+                  'json_decode' => true
+                ]);
+                $menetapkan_4 = $validate->setRules('menetapkan_4', 'menetapkan keempat', [
+                  'json_decode' => true
+                ]);
+                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
+                  'json_decode' => true
+                ]);
+                $nama_ditugaskan = $validate->setRules('nama_ditugaskan', 'nama yang ditugaskan', [
+                  'sanitizeJSON' => $sanitizeRules
+                ]);
+                $tembusan = $validate->setRules('tembusan', 'tembusan', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $tembusan = $validate->setRules('tembusan', 'tembusan', [
+                  'json_decode' => true
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'rekanan':
+                $nama_perusahaan = $validate->setRules('nama_perusahaan', 'nama perusahaan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 5,
+                  'max_char' => 255
+                ]);
+                $alamat = $validate->setRules('alamat', 'alamat', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4,
+                  'max_char' => 255
+                ]);
+                $email = $validate->setRules('email', 'email', [
+                  'sanitize' => 'string',
+                ]);
+                $npwp = $validate->setRules('npwp', 'npwp', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 16,
+                  'max_char' => 21
+                ]);
+                $no_rekening = $validate->setRules('no_rekening', 'no_rekening', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $bank_rekening = $validate->setRules('bank_rekening', 'bank rekening', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $atas_nama_rekening = $validate->setRules('atas_nama_rekening', 'atas_nama_rekening', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $direktur = $validate->setRules('direktur', 'direktur', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $jabatan = $validate->setRules('jabatan', 'jabatan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3,
+                  'max_char' => 255
+                ]);
+                $no_ktp = $validate->setRules('no_ktp', 'no_ktp', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]); //
+                $alamat_dir = $validate->setRules('alamat_dir', 'alamat_dir', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $no_akta_pendirian = $validate->setRules('no_akta_pendirian', 'no_akta_pendirian', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $no_akta_perubahan = $validate->setRules('no_akta_perubahan', 'no_akta_perubahan', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $nama_pelaksana = $validate->setRules('nama_pelaksana', 'nama_pelaksana', [
+                  'sanitize' => 'string',
+                  'max_char' => 255
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+
+                // var_dump($getData[12]);
+                // var_dump(preg_match('/(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?/', $getData[12]));
+                if (strlen($no_akta_pendirian) > 0) {
+                  $tgl_akta_pendirian = $validate->setRules('tgl_akta_pendirian', 'tanggal akta pendirian ', [
+                    'sanitize' => 'string',
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                  $tgl_akta_pendirian = $Fungsi->tanggal($tgl_akta_pendirian)['tanggalMysql'];
+                  $lokasi_notaris_pendirian = $validate->setRules('lokasi_notaris_pendirian', 'lokasi_notaris_pendirian', [
+                    'sanitize' => 'string',
+                    'max_char' => 255
+                  ]);
+                  $nama_notaris_pendirian = $validate->setRules('nama_notaris_pendirian', 'nama_notaris_pendirian', [
+                    'sanitize' => 'string',
+                    'max_char' => 255
+                  ]);
+                }
+                if (strlen($no_akta_perubahan) > 0) {
+                  $tgl_akta_perubahan = $validate->setRules('tgl_akta_perubahan', 'tgl_akta_perubahan', [
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                    'max_char' => 100
+                  ]);
+                  $tgl_akta_perubahan = $Fungsi->tanggal($tgl_akta_perubahan)['tanggalMysql'];
+                  $lokasi_notaris_perubahan = $validate->setRules('lokasi_notaris_perubahan', 'lokasi_notaris_perubahan', [
+                    'sanitize' => 'string',
+                    'max_char' => 255
+                  ]);
+                  $nama_notaris_perubahan = $validate->setRules('nama_notaris_perubahan', 'nama_notaris_perubahan', [
+                    'sanitize' => 'string',
+                    'max_char' => 255
+                  ]);
+                  $notaris_perubahan = new stdClass;
+                  $notaris_perubahan->{'nomor[1]'} = $no_akta_perubahan;
+                  $notaris_perubahan->{'tanggal[1]'} = $tgl_akta_perubahan;
+                  $notaris_perubahan->{'alamat_notaris[1]'} = $lokasi_notaris_perubahan;
+                  $notaris_perubahan->{'notaris[1]'} = $nama_notaris_perubahan;
+                }
+                if (strlen($nama_pelaksana) > 0) {
+                  $jabatan_pelaksana = $validate->setRules('jabatan_pelaksana', 'jabatan_pelaksana', [
+                    'sanitize' => 'string',
+                    'max_char' => 255
+                  ]);
+                  $data_lain = new stdClass;
+                  $data_lain->{'pelaksana[nama][1]'} = $nama_pelaksana;
+                  $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
+                }
+
+                break;
+              case 'mapping':
+                $kd_aset = $validate->setRules('kd_aset', 'kode aset/neraca', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $kd_aset = $validate->setRules('kd_aset', 'kode aset/neraca', [
+                  'inDB' => ['aset_neo', 'kode', [['kode', '=', $kd_aset]]]
+                ]);
+                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_aset, 'AND']];
+                $row_resul_cari = $DB->getWhereOnceCustom('aset_neo', $kondisi_row);
+                $uraian_aset = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
+                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
+                  'inDB' => ['akun_neo', 'kode', [['kode', '=', $kd_akun]]]
+                ]);
+                $kondisi_row = [['disable', '<=', 0], ['kode', '=', $kd_akun, 'AND']];
+                $row_resul_cari = $DB->getWhereOnceCustom('akun_neo', $kondisi_row);
+                $uraian_akun = ($row_resul_cari) ? $row_resul_cari->uraian : 'data akun tidak ditemukan';
+                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3,
+                  'in_array' => ['ssh', 'hspk', 'asb', 'sbu']
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'satuan':
+                $value = $validate->setRules('value', 'value', [
+                  'required' => true,
+                  'sanitize' => 'string',
+                  'min_char' => 1,
+                  'max_char' => 100
+                ]);
+                $item = $validate->setRules('item', 'item', [
+                  'del_2_spasi' => true,
+                  'required' => true,
+                  'sanitize' => 'string',
+                  'min_char' => 1,
+                  'max_char' => 100
+                ]);
+                $sebutan_lain = $validate->setRules('sebutan_lain', 'sebutan lain', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'akun_belanja':
+              case 'neraca':
+                $akun = $validate->setRules('akun', 'akun', [
+                  'required' => true,
+                  'nuneric' => true,
+                  'min_char' => 1,
+                  'max_char' => 100
+                ]);
+                $kode = (int)$akun;
+                $kelompok = null;
+                $jenis_akun = null;
+                $objek = null;
+                $rincian_objek = null;
+                $sub_rincian_objek = null;
+                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                  'nuneric' => true,
+                  'max_char' => 100
+                ]);
+
+                if ($kelompok > 0) {
+                  $jenis_akun = $validate->setRules('jenis_akun', 'jenis', [
+                    'nuneric' => true,
+                    'max_char' => 100
+                  ]);
+                  if ($jenis_akun > 0) {
+                    $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis_akun, 2)]);
+                    $objek = $validate->setRules('objek', 'objek', [
+                      'nuneric' => true,
+                      'max_char' => 100
+                    ]);
+                    if ($objek > 0) {
+                      $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2)]);
+                      $rincian_objek = $validate->setRules('rincian_objek', 'rincian objek', [
+                        'nuneric' => true,
+                        'max_char' => 100
+                      ]);
+                      if ($rincian_objek > 0) {
+                        $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2)]);
+                        $sub_rincian_objek = $validate->setRules('sub_rincian_objek', 'sub rincian objek', [
+                          'nuneric' => true,
+                          'max_char' => 100
+                        ]);
+                        if ((int)$sub_rincian_objek > 0) {
+                          $kode = implode('.', [$akun, (int)$kelompok, $Fungsi->zero_pad((int)$jenis, 2), $Fungsi->zero_pad((int)$objek, 2), $Fungsi->zero_pad((int)$rincian_objek, 2), $Fungsi->zero_pad((int)$sub_rincian_objek, 4)]);
+                        }
+                      }
+                    }
+                  }
+                }
+                $uraian = $validate->setRules('uraian', 'uraian', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'del_2_spasi' => true
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                // var_dump($kode);
+                break;
+              case 'bidang_urusan':
+              case 'prog':
+              case 'keg':
+              case 'sub_keg':
+                $urusan = $validate->setRules('urusan', 'urusan', [
+                  'required' => true,
+                  'sanitize' => 'string',
+                  'min_char' => 1,
+                  'max_char' => 100
+                ]);
+
+                if ($urusan !== 'x' || $urusan !== 'X') {
+                  $urusan = $validate->setRules('urusan', 'urusan', [
+                    'numeric' => true
+                  ]);
+                } else {
+                  $urusan = $validate->setRules('urusan', 'urusan', [
+                    'strtolower' => true,
+                    'in_array' => ['x', 'X'],
+                  ]);
+                }
+                $kode = implode('.', [$urusan]);
+                $bidang = '';
+                $prog = 0;
+                $keg = '';
+                $sub_keg = 0;
+                $bidang = $validate->setRules('bidang', 'bidang', [
+                  'sanitize' => 'string',
+                  'max_char' => 100
+                ]);
+                if (strlen($bidang)) {
+                  if (strtolower($bidang) !== 'xx') {
+                    $bidang = $validate->setRules('bidang', 'bidang', [
+                      'numeric' => true
+                    ]);
+                  } else {
+                    $bidang = $validate->setRules('bidang', 'bidang', [
+                      'strtolower' => true,
+                      'in_array' => ['xx', 'XX'],
+                    ]);
+                  }
+                  $kode = implode('.', [$urusan, $bidang]);
+                  //program
+                  $prog = $validate->setRules('prog', 'program', [
+                    'sanitize' => 'string',
+                    'max_char' => 100
+                  ]);
+                  if (strlen($prog)) {
+                    $prog = $validate->setRules('prog', 'program', [
+                      'numeric' => true
+                    ]);
+                    if ($prog > 0) {
+                      $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2)]);
+                      $keg = $validate->setRules('keg', 'kegiatan', [
+                        'sanitize' => 'string',
+                        'max_char' => 100
+                      ]);
+                      $explode_keg = explode('.', $keg);
+                      // var_dump($explode_keg);
+                      if (strlen($keg) > 0 && (int)$explode_keg[0] > 0 && (int)$explode_keg[1] > 0) {
+                        $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                          'sanitize' => 'string',
+                          'max_char' => 100
+                        ]);
+                        $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg]);
+                        if (strlen($sub_keg)) {
+                          $sub_keg = $validate->setRules('sub_keg', 'sub kegiatan', [
+                            'numeric' => true
+                          ]);
+                          if ($sub_keg > 0) {
+                            $kode = implode('.', [$urusan, $bidang, $Fungsi->zero_pad($prog, 2), $keg, $Fungsi->zero_pad($sub_keg, 4)]);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                $nomenklatur_urusan = $validate->setRules('nomenklatur_urusan', 'nomenklatur urusan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'del_2_spasi' => true
+                ]);
+                $kinerja = $validate->setRules('kinerja', 'kinerja', [
+                  'sanitize' => 'string',
+                  'del_2_spasi' => true
+                ]);
+                $indikator = $validate->setRules('indikator', 'indikator', [
+                  'sanitize' => 'string',
+                  'del_2_spasi' => true
+                ]);
+                $satuan = $validate->setRules('satuan', 'satuan', [
+                  'sanitize' => 'string',
+                  'del_2_spasi' => true
+                ]);
+                if (strlen($satuan)) {
+                  $satuan = $validate->setRules('satuan', 'satuan', [
+                    'required' => true,
+                    'inDB' => ['satuan_neo', 'value', [['value', "=", $satuan]]]
+                  ]);
+                }
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'realisasi':
+                if ($rowPengaturan === false) {
+                  $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
+                    'error' => true
+                  ]);
+                }
+                $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
+                $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $id_row_paket = $validate->setRules('id_row_paket', 'kode paket', [
+                  'inDB' => [$tabel_get_row, 'id', [['id', "=", $id_row_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                ]);
+                $jumlah_realisasi = $validate->setRules('jumlah_realisasi', 'jumlah realisasi', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $uraian_paket = $validate->setRules('uraian', 'tanggal dokumen SPJ', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1
+                ]);
+                $tanggal = $validate->setRules('tanggal', 'tanggal dokumen SPJ', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $realisasi = $validate->setRules('realisasi', 'realisasi', [
+                  'json_repair' => true,
+                  'required' => true
+                ]);
+                $realisasi = $validate->setRules('realisasi', 'realisasi', [
+                  'json_decode' => true
+                ]);
+                // realisasi harus di kontrol
+                $realisasiObject = $realisasi->myrows;
+                $sum = 0;
+                foreach ($realisasiObject as $key => $value) {
+                  $sum += $value->jumlah;
+                }
+                if ($jumlah_realisasi != $sum) {
+                  $catchError = $validate->setRules('kesalahanformdanarraytdkcocok', 'terdapat kesalahan form', [
+                    'error' => true //;catch/langsung error
+                  ]);
+                }
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'required' => true,
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                break;
+              case 'berita':
+                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inArray' => ['berita', 'pelayanan', 'data_teknis', 'organisasi', 'anggaran']
+                ]);
+                $judul = $validate->setRules('judul', 'Judul Berita', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                ]);
+                $tanggal = $validate->setRules('tanggal', 'tanggal berita', [
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                  'required' => true,
+                  'max_char' => 100,
+                  'min_char' => 8
+                ]);
+                $uraian_html = $validate->setRules('uraian_html', 'Markup HTML', [
+                  'del_2_spasi' => true,
+                  'required' => true,
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $urutan = $validate->setRules('urutan', 'Nomor Urut', [
+                  'numeric' => true,
+                  'required' => true
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'asn':
+                $nama = $validate->setRules('nama', 'nama', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                ]);
+                $gelar = $validate->setRules('gelar', 'gelar', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $jabatan = $validate->setRules('jabatan', 'alamat', [
+                  'sanitize' => 'string'
+                ]);
+                $nip = $validate->setRules('nip', 'nip', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'max_char' => 18,
+                  'min_char' => 18,
+                  // 'unique' => ['db_asn_pemda_neo', 'nip']
+                ]);
+                $golongan = $validate->setRules('golongan', 'golongan', [
+                  'max_char' => 1,
+                  'min_char' => 1,
+                  'numeric' => true,
+                  'required' => true,
+                  'inArray' => [1, 2, 3, 4]
+                ]);
+                $ruang = $validate->setRules('ruang', 'golongan', [
+                  'strtolower' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inArray' => ['a', 'b', 'c', 'd', 'e'],
+                  'max_char' => 1,
+                  'min_char' => 1
+                ]);
+                $t4_lahir = $validate->setRules('t4_lahir', 'tempat lahir', [
+                  'strtolower' => true,
+                  'sanitize' => 'string'
+                ]);
+                $tgl_lahir = $validate->setRules('tgl_lahir', 'tanggal lahir', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+
+                $agama = $validate->setRules('agama', 'golongan', [
+                  'strtolower' => true,
+                  'sanitize' => 'string',
+                  'inArray' => ['islam', 'kristen', 'katolik', 'protestan', 'yahudi', 'budha', 'konghucu', 'hindu', 'kepercayaan']
+                ]);
+                $kelamin = $validate->setRules('kelamin', 'golongan', [
+                  'strtolower' => true,
+                  'sanitize' => 'string',
+                  'inArray' => ['pria', 'wanita']
+                ]);
+                $jenis_kepeg = $validate->setRules('jenis_kepeg', 'jenis kepegawaian', [
+                  'strtolower' => true,
+                  'sanitize' => 'string',
+                  'inArray' => ['pnsp', 'pnsd1', 'pnsd2', 'pnsp_dpb1', 'pnsp_dpb2', 'pnsp_dpk1', 'pnsp_dpk2', 'pnsd_dpb_pusat', 'pnsd_dpk_pusat', 'swasta']
+                ]);
+                $status_kepeg = $validate->setRules('status_kepeg', 'status kepegawaian', [
+                  'strtolower' => true,
+                  'sanitize' => 'string',
+                  'inArray' => ['capeg', 'peg_tetap', 'mpp', 'pen_uang_tunggu', 'peg_seorsing', 'cuti', 'peg_sementara', 'peg_bulanan']
+                ]);
+                $status = $validate->setRules('status', 'status kepegawaian', [
+                  'strtolower' => true,
+                  'sanitize' => 'string',
+                  'inArray' => ['duda', 'janda', 'duda-janda', 'lajang', 'menikah']
+                ]);
+                $no_ktp = $validate->setRules('no_ktp', 'ktp', [
+                  'preg_replace' => ["/[^0-9]/", ""],
+                  'sanitize' => 'string',
+                ]);
+                $npwp = $validate->setRules('npwp', 'npwp', [
+                  'preg_replace' => ["/[^0-9]/", ""],
+                  'sanitize' => 'string',
+                ]);
+                $alamat = $validate->setRules('alamat', 'alamat', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
+                  'preg_replace' => ["/[^0-9]/", ""],
+                  'sanitize' => 'string'
+                ]);
+                // $kontak_person = preg_replace("/[^0-9]/", "", $getData[15]);
+                $email = $validate->setRules('email', 'email', [
+                  'sanitize' => 'string',
+                  'email' => true
+                ]);
+                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                  'numeric' => true,
+                  'inArray' => [1, 2, 3, 4, 5, 6]
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'daftar_paket':
+                if ($rowPengaturan === false) {
+                  $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
+                    'error' => true
+                  ]);
+                }
+                $id_uraian = $validate->setRules('id_uraian', 'uraian paket', [
+                  'min_char' => 8,
+                  'required' => true,
+                  'json_repair' => true
+                ]);
+
+                $uraian = $validate->setRules('uraian', 'uraian', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $uraian = preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian);
+                $volume = $validate->setRules('volume', 'volume', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $satuan = $validate->setRules('satuan', 'satuan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['satuan']]]]
+                ]);
+                $id_rekanan = $validate->setRules('id_rekanan', 'Rekanan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['rekanan_neo', 'id', [['id', "=", $_POST['id_rekanan']], ['kd_wilayah', '=', $kd_wilayah, 'AND']]]
+                ]);
+                $kondisi = [['id', '=', $id_rekanan], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['disable', '<=', 0, 'AND']];
+                $row_sub = $DB->getWhereOnceCustom('rekanan_neo', $kondisi);
+                $nama_rekanan = '';
+                if ($row_sub !== false) {
+                  $nama_rekanan = $row_sub->nama_perusahaan;
+                }
+                $metode_pengadaan = $validate->setRules('metode_pengadaan', 'metode pengadaan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'in_array' => ['penyedia', 'swakelola']
+                ]);
+
+                if ($metode_pengadaan === 'penyedia') {
+                  $metode_pemilihan = $validate->setRules('metode_pemilihan', 'metode pengadaan', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'in_array' => ['e_purchasing', 'pengadaan_langsung', 'penunjukan', 'tender_cepat', 'tender', 'seleksi']
+                  ]);
+                  $pengadaan_penyedia = $validate->setRules('pengadaan_penyedia', 'pengadaan penyedia', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'in_array' => ['barang', 'konstruksi', 'konsultansi', 'konsultansi_non_konst', 'jasa_lainnya']
+                  ]);
+                  switch ($pengadaan_penyedia) {
+                    case 'barang':
+                    case 'jasa_lainnya':
+                      $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
+                        'sanitize' => 'string',
+                        'required' => true,
+                        'in_array' => ['lumsum', 'harga_satuan', 'gabungan_lum_sat', 'biaya_plus_imbalan', 'payung']
+                      ]);
+                      break;
+                    case 'konstruksi':
+                      $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
+                        'sanitize' => 'string',
+                        'required' => true,
+                        'in_array' => ['lumsum', 'harga_satuan', 'gabungan_lum_sat', 'biaya_plus_imbalan', 'putar_kunci']
+                      ]);
+                      break;
+                    case 'konsultansi':
+                      $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
+                        'sanitize' => 'string',
+                        'required' => true,
+                        'in_array' => ['lumsum', 'waktu_penugasan']
+                      ]);
+                      break;
+                    case 'konsultansi_non_konst':
+                      $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
+                        'sanitize' => 'string',
+                        'required' => true,
+                        'in_array' => ['lumsum', 'waktu_penugasan', 'payung']
+                      ]);
+                      break;
+                  }
+                } else {
+                  //SWAKELOLA
+                  $metode_pemilihan = $validate->setRules('metode_pemilihan', 'metode pengadaan', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'in_array' => ['sw_type_1', 'sw_type_2', 'sw_type_3', 'sw_type_4']
+                  ]);
+                  $pengadaan_penyedia = $validate->setRules('pengadaan_penyedia', 'pengadaan penyedia', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'in_array' => ['swakelola']
+                  ]);
+                  $jns_kontrak = $validate->setRules('jns_kontrak', 'jenis kontrak', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'in_array' => ['swakelola']
+                  ]);
+                }
+                //akali tanggal 
+                $tgl_kontrak = '0000-00-00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_kontrak'] ?? '') > 7) {
+                  $tgl_kontrak = $validate->setRules('tgl_kontrak', 'tanggal kontrak', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                    'min_char' => 7
+                  ]);
+                }
+                $no_kontrak = $validate->setRules('no_kontrak', 'nomor kontrak', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_persiapan_kont = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_persiapan_kont'] ?? '') > 7) {
+                  $tgl_persiapan_kont = $validate->setRules('tgl_persiapan_kont', 'tanggal persiapan kontrak', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_persiapan_kont = $validate->setRules('no_persiapan_kont', 'nomor persiapan kontrak', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_spmk = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_spmk'] ?? '') > 7) {
+                  $tgl_spmk = $validate->setRules('tgl_spmk', 'tanggal spmk', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_spmk = $validate->setRules('no_spmk', 'nomor SPMK', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_undangan = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_undangan'] ?? '') > 7) {
+                  $tgl_spmk = $validate->setRules('tgl_undangan', 'tanggal undangan', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_undangan = $validate->setRules('no_undangan', 'nomor Undangan/Pengumuman', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_penawaran = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_penawaran'] ?? '') > 7) {
+                  $tgl_penawaran = $validate->setRules('tgl_penawaran', 'tanggal penawaran', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_penawaran = $validate->setRules('no_penawaran', 'nomor Penawaran', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_nego = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_nego'] ?? '') > 7) {
+                  $tgl_nego = $validate->setRules('tgl_nego', 'tanggal negoisasi', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_nego = $validate->setRules('no_nego', 'nomor Negoisasi', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_sppbj = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_sppbj'] ?? '') > 7) {
+                  $tgl_sppbj = $validate->setRules('tgl_sppbj', 'tanggal SPPBJ', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_sppbj = $validate->setRules('no_sppbj', 'nomor SPPBJ', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_pho = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_pho'] ?? '') > 7) {
+                  $tgl_pho = $validate->setRules('tgl_pho', 'tanggal PHO', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_pho = $validate->setRules('no_pho', 'nomor PHO', [
+                  'sanitize' => 'string'
+                ]);
+                $tgl_fho = '0000-00-00 00:00:00'; //'0000-00-00 00:00:00'
+                if (strlen($_POST['tgl_fho'] ?? '') > 7) {
+                  $tgl_fho = $validate->setRules('tgl_fho', 'tanggal FHO', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                    'min_char' => 8
+                  ]);
+                }
+                $no_fho = $validate->setRules('no_fho', 'nomor FHO', [
+                  'sanitize' => 'string'
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $nama_ppk = $validate->setRules('nama_ppk', 'nama ppk', [
+                  'sanitize' => 'string'
+                ]);
+                $nip_ppk = $validate->setRules('nip_ppk', 'nip ppk', [
+                  'sanitize' => 'string'
+                ]);
+                $nama_pptk = $validate->setRules('nama_pptk', 'nama pptk', [
+                  'sanitize' => 'string'
+                ]);
+                $nip_pptk = $validate->setRules('nip_pptk', 'nip pptk', [
+                  'sanitize' => 'string'
+                ]);
+                $waktu_pelaksanaan = $validate->setRules('waktu_pelaksanaan', 'waktu pelaksanaan', [
+                  'numeric_zero' => true,
+                  'sanitize' => 'string'
+                ]);
+                $waktu_pemeliharaan = $validate->setRules('waktu_pemeliharaan', 'waktu pemeliharaan', [
+                  'numeric_zero' => true,
+                  'sanitize' => 'string'
+                ]);
+                $kd_rup = $validate->setRules('kd_rup', 'Kode RUP', [
+                  'sanitize' => 'string'
+                ]);
+                $kd_paket = $validate->setRules('kd_paket', 'Kode Paket', [
+                  'sanitize' => 'string'
+                ]);
+                $renc_output = $validate->setRules('renc_output', 'Output Rencana', [
+                  'sanitize' => 'string'
+                ]);
+                $output = $validate->setRules('output', 'output paket', [
+                  'sanitize' => 'string'
+                ]);
+                $addendum = '{}';
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'pengaturan':
+                $tahun = $validate->setRules('tahun', 'tahun anggaran', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 4,
+                  'max_char' => 4
+                ]);
+                $tahun_renstra = $validate->setRules('tahun_renstra', 'tahun renstra', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 4,
+                  'max_char' => 4
+                ]);
+                $aturan_anggaran = $validate->setRules('aturan_anggaran', 'Peraturan anggaran', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_anggaran']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_pengadaan = $validate->setRules('aturan_pengadaan', 'Peraturan pengadaan', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_pengadaan']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_organisasi = $validate->setRules('aturan_organisasi', 'Peraturan Organisasi', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_organisasi']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_akun = $validate->setRules('aturan_akun', 'Peraturan Akun', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_akun']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_sumber_dana = $validate->setRules('aturan_sumber_dana', 'Peraturan sumber dana', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sumber_dana']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_sub_kegiatan = $validate->setRules('aturan_sub_kegiatan', 'Peraturan sub kegiatan', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sub_kegiatan']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_ssh = $validate->setRules('aturan_ssh', 'Peraturan ssh', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_ssh']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_hspk = $validate->setRules('aturan_hspk', 'Peraturan hspk', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_hspk']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_asb = $validate->setRules('aturan_asb', 'Peraturan asb', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_asb']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $aturan_sbu = $validate->setRules('aturan_sbu', 'Peraturan sbu', [
+                  'inDB' => ['peraturan_neo', 'id', [['id', '=', (int)$_POST['aturan_sbu']]]],
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $awal_renstra = $validate->setRules('awal_renstra', 'tanggal awal renstra', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $akhir_renstra = $validate->setRules('akhir_renstra', 'tanggal akhir renstra', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $awal_renja = $validate->setRules('awal_renja', 'tanggal awal renja', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                //'/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',2024-2-16 10:10:0
+                $akhir_renja = $validate->setRules('akhir_renja', 'tanggal akhir renja', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $awal_renja_p = $validate->setRules('awal_renja_p', 'tanggal awal renja perubahan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $akhir_renja_p = $validate->setRules('akhir_renja_p', 'tanggal akhir renja perubahan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $awal_dpa = $validate->setRules('awal_dpa', 'tanggal awal dpa', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $akhir_dpa = $validate->setRules('akhir_dpa', 'tanggal akhir dpa', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $awal_dppa = $validate->setRules('awal_dppa', 'tanggal awal dppa', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $akhir_dppa = $validate->setRules('akhir_dppa', 'tanggal akhir dppa', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
+                  'numeric_zero' => true,
+                ]);
+                $id_opd_tampilkan = (int)$id_opd_tampilkan;
+                if ($id_opd_tampilkan > 0) {
+                  $id_opd_tampilkan = $validate->setRules('id_opd_tampilkan', 'organisasi yang ditampilkan', [
+                    'inDB' => ['organisasi_neo', 'id', [['id', '=', (int)$_POST['id_opd_tampilkan']]]],
+                    'required' => true,
+                    'numeric' => true,
+                    'min_char' => 1
+                  ]);
+                }
+
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+
+              case 'peraturan':
+                $type_dok = $validate->setRules('type_dok', 'type', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'in_array' => ['peraturan_undang_undang_pusat', 'peraturan_menteri_lembaga', 'peraturan_daerah', 'pengumuman', 'artikel', 'lain']
+                ]);
+                $judul = $validate->setRules('judul', 'judul', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $nomor = $validate->setRules('nomor', 'nomor', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $bentuk = $validate->setRules('bentuk', 'bentuk', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $bentuk_singkat = $validate->setRules('bentuk_singkat', 'bentuk_singkat', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $t4_penetapan = $validate->setRules('t4_penetapan', 'tempat', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $tgl_penetapan = $validate->setRules('tgl_penetapan', 'tanggal penetapan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                //date time  ^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$
+                $tgl_pengundangan = $validate->setRules('tgl_pengundangan', 'tanggal pengundangan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'regexp' => '/^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$/',
+                  'min_char' => 8
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                $status = $validate->setRules('status', 'status', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'in_array' => ['rahasia', 'umum', 'proyek']
+                ]);
+                break;
+              case 'organisasi':
+                $kode = $validate->setRules('kode', 'kode', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $uraian = $validate->setRules('uraian', 'uraian', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $alamat = $validate->setRules('alamat', 'alamat', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $nama_kepala = $validate->setRules('nama_kepala', 'Nama Kepala SKPD', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $nip_kepala = $validate->setRules('nip_kepala', 'Nip Kepala SKPD', [
+                  'numeric' => true,
+                  'required' => true,
+                  'min_char' => 18
+                ]);
+                // $tahun_renstra = $validate->setRules('tahun_renstra', 'Tahun Renstra', [
+                //     'numeric' => true,
+                //     'required' => true,
+                //     'min_char' => 4,
+                //     'max_char' => 4
+                // ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+
+
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'renstra':
+                if ($rowPengaturan === false) {
+                  $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
+                    'error' => true
+                  ]);
+                }
+                $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                if ($rowPengaturan !== false) {
+                  $tahun_renstra = $rowPengaturan->tahun_renstra;
+                }
+                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
+                  'min_char' => 4
+                ]);
+                $sasaran = $validate->setRules('sasaran', 'sasaran', [
+                  'numeric' => true,
+                  'required' => true,
+                  'inDB' => ['tujuan_sasaran_renstra_neo', 'id', [['id', '=', $_POST['sasaran']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']]],
+                  'min_char' => 1
+                ]);
+                $indikator = $validate->setRules('indikator', 'indikator', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $satuan = $validate->setRules('satuan', 'satuan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1
+                ]);
+                $data_capaian_awal = $validate->setRules('data_capaian_awal', 'data capaian awal', [
+                  'numeric_zero' => true,
+                  'min_char' => 1
+                ]);
+                $target_thn_1 = $validate->setRules('target_thn_1', 'Target tahun pertama', [
+                  'numeric_zero' => true,
+                ]);
+                $dana_thn_1 = $validate->setRules('dana_thn_1', 'Dana tahun pertama', [
+                  'numeric_zero' => true,
+                ]);
+                $target_thn_2 = $validate->setRules('target_thn_2', 'Target tahun kedua', [
+                  'numeric_zero' => true,
+                ]);
+                $dana_thn_2 = $validate->setRules('dana_thn_2', 'Dana tahun kedua', [
+                  'numeric_zero' => true,
+                ]);
+                $target_thn_3 = $validate->setRules('target_thn_3', 'Target tahun ketiga', [
+                  'numeric_zero' => true,
+                ]);
+                $dana_thn_3 = $validate->setRules('dana_thn_3', 'Dana tahun ketiga', [
+                  'numeric_zero' => true,
+                ]);
+                $target_thn_4 = $validate->setRules('target_thn_4', 'Target tahun keempat', [
+                  'numeric_zero' => true,
+                ]);
+                $dana_thn_4 = $validate->setRules('dana_thn_4', 'Dana tahun keempat', [
+                  'numeric_zero' => true,
+                ]);
+                $target_thn_5 = $validate->setRules('target_thn_5', 'Target tahun kelima', [
+                  'numeric_zero' => true,
+                ]);
+                $dana_thn_5 = $validate->setRules('dana_thn_5', 'Dana tahun kelima', [
+                  'numeric_zero' => true,
+                ]);
+                $lokasi = $validate->setRules('lokasi', 'lokasi', [
+                  'sanitize' => 'string'
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'tujuan_sasaran_renstra':
+              case 'sasaran_renstra':
+              case 'tujuan_renstra':
+                if ($rowPengaturan === false) {
+                  $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
+                    'error' => true
+                  ]);
+                }
+                $kelompok = $validate->setRules('kelompok', 'kelompok', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'in_array' => ['tujuan', 'sasaran'],
+                  'min_char' => 4
+                ]);
+                if ($kelompok == 'sasaran') {
+                  $id_tujuan = $validate->setRules('id_tujuan', 'tujuan', [
+                    'numeric' => true,
+                    'required' => true,
+                    'min_char' => 1
+                  ]);
+                }
+                $text = $validate->setRules('text', 'text', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'sub_keg_dpa':
+              case 'sub_keg_renja':
+                if ($rowPengaturan === false) {
+                  $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
+                    'error' => true
+                  ]);
+                }
+                $kd_sub_keg = $validate->setRules('kd_sub_keg', 'sub kegiatan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['sub_kegiatan_neo', 'kode', [['kode', '=', $_POST['kd_sub_keg']]]],
+                  'min_char' => 4
+                ]);
+                //$kel_rek
+                $tolak_ukur_capaian_keg = $validate->setRules('tolak_ukur_capaian_keg', 'tolak_ukur_capaian_keg', [
+                  'sanitize' => 'string'
+                ]);
+                $target_kinerja_capaian_keg = $validate->setRules('target_kinerja_capaian_keg', 'target_kinerja_capaian_keg', [
+                  'sanitize' => 'string'
+                ]);
+                $tolak_ukur_keluaran = $validate->setRules('tolak_ukur_keluaran', 'tolak_ukur_keluaran', [
+                  'sanitize' => 'string'
+                ]);
+                $target_kinerja_keluaran = $validate->setRules('target_kinerja_keluaran', 'target_kinerja_keluaran', [
+                  'sanitize' => 'string'
+                ]);
+                $tolak_ukur_hasil = $validate->setRules('tolak_ukur_hasil', 'tolak_ukur_hasil', [
+                  'sanitize' => 'string'
+                ]);
+                $target_kinerja_hasil = $validate->setRules('target_kinerja_hasil', 'target_kinerja_hasil', [
+                  'sanitize' => 'string'
+                ]);
+                $tolak_ukur_capaian_keg_p = $validate->setRules('tolak_ukur_capaian_keg_p', 'tolak_ukur_capaian_keg perubahan', [
+                  'sanitize' => 'string'
+                ]);
+                $target_kinerja_capaian_keg_p = $validate->setRules('target_kinerja_capaian_keg_p', 'target_kinerja_capaian_keg perubahan', [
+                  'sanitize' => 'string'
+                ]);
+                $tolak_ukur_keluaran_p = $validate->setRules('tolak_ukur_keluaran_p', 'tolak_ukur_keluaran perubahan', [
+                  'sanitize' => 'string'
+                ]);
+                $target_kinerja_keluaran_p = $validate->setRules('target_kinerja_keluaran_p', 'target_kinerja_keluaran perubahan', [
+                  'sanitize' => 'string'
+                ]);
+                $tolak_ukur_hasil_p = $validate->setRules('tolak_ukur_hasil_p', 'tolak_ukur_hasil perubahan', [
+                  'sanitize' => 'string'
+                ]);
+                $target_kinerja_hasil_p = $validate->setRules('target_kinerja_hasil_p', 'target_kinerja_hasil perubahan', [
+                  'sanitize' => 'string'
+                ]);
+                $keluaran_sub_keg = $validate->setRules('keluaran_sub_keg', 'keluaran_sub_keg', [
+                  'sanitize' => 'string'
+                ]);
+                $keluaran_sub_keg_p = $validate->setRules('keluaran_sub_keg_p', 'keluaran sub keg perubahan', [
+                  'sanitize' => 'string'
+                ]);
+                $sumber_dana_temp = $validate->setRules('sumber_dana', 'sumber dana', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1
+                ]);
+                $explodeAwal = explode(',', $sumber_dana_temp);
+                foreach ($explodeAwal as $key => $row) {
+                  $dataRslt = $DB->getWhereOnceCustom('sumber_dana_neo', [['kode', '=', trim($row)]]);
+                  if ($dataRslt === false) {
+                    unset($explodeAwal[$key]);
+                  }
+                }
+                $sumber_dana = preg_replace('/(\s\s+|\t|\n)/', ' ', implode(',', $explodeAwal));
+                $jumlah_pagu = $validate->setRules('jumlah_pagu', 'jumlah pagu', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                ]);
+                $jumlah_pagu_p = $validate->setRules('jumlah_pagu_p', 'jumlah pagu perubahan', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                ]);
+                $lokasi = $validate->setRules('lokasi', 'lokasi', [
+                  'sanitize' => 'string'
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'asb':
+              case 'sbu':
+              case 'hspk':
+              case 'ssh':
+                $kd_aset = $validate->setRules('kd_aset', 'kode aset', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['aset_neo', 'kode', [['kode', '=', $_POST['kd_aset']]]],
+                  'min_char' => 4
+                ]);
+                $uraian_barang = $validate->setRules('uraian_barang', 'uraian barang', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $spesifikasi = $validate->setRules('spesifikasi', 'spesifikasi', [
+                  'sanitize' => 'string'
+                ]);
+                $satuan = $validate->setRules('satuan', 'satuan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST['satuan']]]]
+                ]);
+                $harga_satuan = $validate->setRules('harga_satuan', 'harga satuan', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $tkdn = $validate->setRules('tkdn', 'Tingkat Komponen Dalam Negeri (TKDN)', [
+                  'numeric_zero' => true
+                ]);
+                $merek = $validate->setRules('merek', 'merek', [
+                  'sanitize' => 'string'
+                ]);
+                // urai kode akun
+                $kd_akun = $validate->setRules('kd_akun', 'kode akun', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                if ($kd_akun) {
+                  $formValueExplode = explode(',', $kd_akun);
+                  $kd_akun = '';
+                  foreach ($formValueExplode as $key_row => $row) {
+                    $kondisi_result = [['kode', '=', trim($row)]];
+                    $row_sub = $DB->getWhereOnceCustom('akun_neo', $kondisi_result);
+                    // var_dump( $kondisi_result);
+                    if ($row_sub !== false) {
+                      if ($key_row == 0) {
+                        $kd_akun = $row_sub->kode;
+                      } else {
+                        $kd_akun .= ',' . $row_sub->kode;
+                      }
+                    }
+                  }
+                }
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              case 'dpa':
+              case 'renja':
+              case 'dppa':
+              case 'renja_p':
+                if ($rowPengaturan === false) {
+                  $error = $validate->setRules('error', "Pengaturan Tahun Anggran $tahun belum di buat, hubungi administrator", [
+                    'error' => true
+                  ]);
+                }
+                $objek_belanja = $validate->setRules('objek_belanja', 'objek belanja', [
+                  'sanitize' => 'string',
+                  'in_array' => ['gaji', 'barang_jasa_modal', 'bunga', 'subsidi', 'hibah_barang_jasa', 'hibah_uang', 'sosial_barang_jasa', 'sosial_uang', 'keuangan_umum', 'keuangan_khusus', 'btt', 'bos_pusat', 'blud', 'lahan'],
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $kd_akun = $validate->setRules('kd_akun', 'kd_akun', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['akun_neo', 'kode', [['kode', '=', $_POST['kd_akun']]]],
+                  'min_char' => 4
+                ]);
+                switch ($tbl) {
+                  case 'dpa':
+                  case 'dppa':
+                    $tabel_pakai_temporerSubkeg = 'sub_keg_dpa_neo';
+                    break;
+                  case 'renja':
+                  case 'renja_p':
+                    $tabel_pakai_temporerSubkeg = 'sub_keg_renja_neo';
+                    break;
+                };
+                //ut satuan dan vol
+                switch ($tbl) {
+                  case 'dpa':
+                  case 'renja':
+                    $kolSat1 = 'sat_1';
+                    $kolSat2 = 'sat_2';
+                    $kolSat3 = 'sat_3';
+                    $kolSat4 = 'sat_4';
+                    $kolVol1 = 'vol_1';
+                    $kolVol2 = 'vol_2';
+                    $kolVol3 = 'vol_3';
+                    $kolVol4 = 'vol_4';
+                    $sumberDan = 'sumber_dana';
+                    break;
+
+                  case 'dppa':
+                  case 'renja_p':
+                    $kolSat1 = 'sat_1_p';
+                    $kolSat2 = 'sat_2_p';
+                    $kolSat3 = 'sat_3_p';
+                    $kolSat4 = 'sat_4_p';
+                    $kolVol1 = 'vol_1_p';
+                    $kolVol2 = 'vol_2_p';
+                    $kolVol3 = 'vol_3_p';
+                    $kolVol4 = 'vol_4_p';
+                    $sumberDan = 'sumber_dana_p';
+                    break;
+                };
+                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'required' => true,
+                  'inDB' => [$tabel_pakai_temporerSubkeg, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                ]);
+                $row_kd_sub_keg = $DB->getWhereOnceCustom($tabel_pakai_temporerSubkeg, [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]);
+                $kd_sub_keg = ($row_kd_sub_keg) ? $row_kd_sub_keg->kd_sub_keg : 'data sub kegiatan tidak ditemukan';
+                $jenis_kelompok = $validate->setRules('jenis_kelompok', 'jenis kelompok belanja', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'in_array' => ['kelompok', 'paket'],
+                  'min_char' => 3
+                ]);
+                $kelompok = $validate->setRules('kelompok', 'kelompok belanja', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'kelompok_json', [['kelompok_json', "LIKE CONCAT('%',?,'%')", $_POST['kelompok']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                ]);
+
+                $sumber_dana = $validate->setRules($sumberDan, 'sumber dana', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inLikeConcatDBMultiple' => [$tabel_pakai_temporerSubkeg, 'sumber_dana',  [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                ]);
+                // var_dump($sumber_dana);
+                $jenis_standar_harga = $validate->setRules('jenis_standar_harga', 'jenis komponen', [
+                  'sanitize' => 'string',
+                  'in_array' => ['ssh', 'sbu', 'hspk', 'asb'],
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $tabel_pakai_temporer = $Fungsi->tabel_pakai($jenis_standar_harga)['tabel_pakai'];
+                $id_standar_harga = $validate->setRules('komponen', 'komponen', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1,
+                  'inLikeConcatDB' => [$tabel_pakai_temporer, 'id', [['id', "LIKE CONCAT('%',?,'%')", $_POST['komponen']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                ]);
+                if ($id_standar_harga) {
+                  $harga_row = $DB->getWhereOnceCustom($tabel_pakai_temporer, [['id', '=', $id_standar_harga], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tahun', '=', $tahun, 'AND']]);
+                  $harga_satuan = ($harga_row) ? $harga_row->harga_satuan : 0;
+                  $komponen = ($harga_row) ? $harga_row->uraian_barang : 'komponen tidak ada di database';
+                  $spesifikasi = ($harga_row) ? $harga_row->spesifikasi : 'komponen tidak ada di database';
+                  $tkdn = ($harga_row) ? $harga_row->tkdn : 'komponen tidak ada di database';
+                }
+                $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+                $uraian = $validate->setRules('uraian', 'uraian belanja', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inLikeConcatDB' => [$tabel_pakai_temporerSubkeg, 'keterangan_json', [['keterangan_json', "LIKE CONCAT('%',?,'%')", $_POST['uraian']], ['kd_wilayah', '= ?', $kd_wilayah, 'AND'], ['kd_opd', '= ?', $kd_opd, 'AND'], ['tahun', '= ?', $tahun, 'AND']]]
+                ]);
+                $vol_1 = $validate->setRules($kolVol1, 'koefisien perkalian 1', [
+                  'numeric_zero' => true,
+                  'min_char' => 1
+                ]);
+                $sat_1 = $validate->setRules($kolSat1, 'satuan koefisien perkalian 1', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat1]]]]
+                ]);
+                $vol_2 = 0;
+                $vol_2 = $validate->setRules($kolVol2, 'koefisien perkalian 2', [
+                  'sanitize' => 'string',
+                  'numeric_zero' => true,
+                ]);
+                $sat_2 = '';
+                if ($vol_2 > 0) {
+                  $sat_2 = $validate->setRules($kolSat2, 'satuan koefisien perkalian 2', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat2]]]]
+                  ]);
+                }
+                $vol_3 = 0;
+                $vol_3 = $validate->setRules($kolVol3, 'koefisien perkalian 3', [
+                  'sanitize' => 'string',
+                  'numeric_zero' => true,
+                ]);
+                $sat_3 = '';
+                if ($vol_3 > 0) {
+                  $sat_3 = $validate->setRules($kolSat3, 'satuan koefisien perkalian 3', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat3]]]]
+                  ]);
+                }
+                $vol_4 = 0;
+                $vol_4 = $validate->setRules($kolVol4, 'koefisien perkalian 3', [
+                  'sanitize' => 'string',
+                  'numeric_zero' => true,
+                ]);
+                $sat_4 = '';
+                if ($vol_4 > 0) {
+                  $sat_4 = $validate->setRules($kolSat4, 'satuan koefisien perkalian 4', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'inDB' => ['satuan_neo', 'value', [['value', "=", $_POST[$kolSat4]]]]
+                  ]);
+                }
+                $vol_1_kali = ($vol_1) ? $vol_1 : 1;
+                $vol_2_kali = ($vol_2) ? $vol_2 : 1;
+                $vol_3_kali = ($vol_3) ? $vol_3 : 1;
+                $vol_4_kali = ($vol_4) ? $vol_4 : 1;
+                $volume = $vol_1_kali * $vol_2_kali * $vol_3_kali * $vol_4_kali;
+                $jumlah = $volume * $harga_satuan;
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                $pajak = $validate->setRules('pajak', 'pajak', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $pajak = ($pajak == 'on') ? 1 : 0;
+                break;
+              case 'profil':
+                $nama = $validate->setRules('nama', 'nama', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 6
+                ]);
+                $nip = $validate->setRules('nip', 'NIP', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'max_char' => 18,
+                  'min_char' => 18
+                ]);
+                if ($type_user == 'admin') {
+                  $type_user_profil = $validate->setRules('type_user', 'type user', [
+                    'sanitize' => 'string',
+                    'min_char' => 2, //on-off
+                    'in_array' => ['user', 'admin', 'super']
+                  ]);
+                  $username = $validate->setRules('username', 'username', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'min_char' => 6,
+                    'max_char' => 100,
+                    'regexp' => "/^[A-Za-z_]{6,}$/",
+                    'uniqueArray' => ['user_sesendok_biila', 'username', [['id', '!=', $id_row]]]
+                  ]);
+                  $email = $validate->setRules('email', 'email', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'min_char' => 6,
+                    'max_char' => 255,
+                    'email' => true,
+                    'uniqueArray' => ['user_sesendok_biila', 'email', [['id', '!=', $id_row]]]
+                  ]);
+                }
+                $kontak_person = $validate->setRules('kontak_person', 'kontak person', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 6
+                ]);
+                $tahun = $validate->setRules('tahun', 'tahun aktif anggaran', [
+                  'numeric' => true,
+                  'required' => true,
+                  'min_char' => 4
+                ]);
+                $nama_org = $validate->setRules('nama_org', 'Nama Organisasi', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 6
+                ]);
+                $ket = $validate->setRules('ket', 'Keterangan', [
+                  'sanitize' => 'string'
+                ]);
+                if ($tbl == 'profil') {
+                  $font_size = $validate->setRules('font_size', 'font', [
+                    'required' => true,
+                    'numeric' => true
+                  ]);
+                  $warna_tbl = $validate->setRules('warna_tbl', 'warna Tabel', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'min_char' => 3
+                  ]);
+                }
+                break;
+              case 'wilayah':
+                $kode = $validate->setRules('kode', 'Kode Wilayah', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1
+                ]);
+                $uraian = $validate->setRules('uraian', 'Uraian Wilayah', [
+                  'del_2_spasi' => true,
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $status = $validate->setRules('status', 'Status Daerah', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'inArray' => ['prov', 'kota', 'kab', 'desa', 'dusun', 'kel', 'dusun', 'lain']
+                ]);
+                $jml_kec = $validate->setRules('jml_kec', 'Jumlah Kecamatan', [
+                  'sanitize' => 'string',
+                  'numeric_zero' => 'true'
+
+                ]);
+                $jml_kec = $validate->setRules('jml_kec', 'Jumlah Kecamatan', [
+                  'sanitize' => 'string',
+                  'numeric_zero' => 'true'
+
+                ]);
+                $jml_kel = $validate->setRules('jml_kel', 'Jumlah Kelurahan', [
+                  'sanitize' => 'string',
+                  'numeric_zero' => 'true'
+
+                ]);
+                $jml_desa = $validate->setRules('jml_desa', 'Jumlah Desa', [
+                  'sanitize' => 'string',
+                  'numeric_zero' => 'true'
+
+                ]);
+                $luas = $validate->setRules('luas', 'Luas Daerah', [
+                  'required' => true,
+                  'numeric' => true
+
+                ]);
+                $penduduk = $validate->setRules('penduduk', 'Jumlah Penduduk(jiwa)', [
+                  'required' => true,
+                  'numeric' => true
+
+                ]);
+                $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                  'required' => true,
+                  'sanitize' => 'string',
+                  'min_char' => 3
+                ]);
+                $disable = $validate->setRules('disable', 'disable', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'in_array' => ['off', 'on']
+                ]);
+                $disable = ($disable == 'on') ? 1 : 0;
+                break;
+              default:
+                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'terdapat kesalahan data yang dikirim', [
+                  'error' => true
+                ]);
+                break;
             }
+            break;
+          case 'add_field_json':
+            switch ($tbl) {
+              case 'sub_keg_dpa':
+              case 'sub_keg_renja':
+                $uraian_field = $validate->setRules('uraian', 'sub kegiatan', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $uraian_field =  preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_field);
+                $nama_kolom = $validate->setRules('klm', 'nama kolom', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                $tabel_pakai_temporer = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+                $id_sub_keg = $validate->setRules('id_sub_keg', 'sub kegiatan', [
+                  'sanitize' => 'string',
+                  'numeric' => true,
+                  'required' => true,
+                  'inDB' => [$tabel_pakai_temporer, 'id', [['id', '=', (int)$_POST['id_sub_keg']], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']]]
+                ]);
+                $nama_kolom = $validate->setRules('klm', 'kolom', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 3
+                ]);
+                switch ($nama_kolom) {
+                  case 'kelompok_json':
+                    $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                      'sanitize' => 'string',
+                      'required' => true,
+                      'in_array' => ['kelompok', 'paket'],
+                      'min_char' => 3
+                    ]);
+                    break;
+                  default:
+                    // $jenis_kelompok nama key json
+                    $jenis_kelompok = $validate->setRules('jns_kel', 'jenis kelompok belanja', [
+                      'sanitize' => 'string',
+                      'required' => true,
+                      'min_char' => 1
+                    ]);
+                    break;
+                }
+                break;
+              default:
+                # code...
+                break;
+            }
+            break;
+          default:
+            switch ($tbl) {
+              case 'dpa':
+              case 'renja':
+              case 'dppa':
+              case 'renja_p':
+                break;
+              default:
+                $untuk_paksa_error = $validate->setRules('inayah_nabiila45557', 'jenis', [
+                  'required' => true,
+                  'min_char' => 200
+                ]);
+                break;
+            }
+            break;
         }
-        $tambahanNote = (is_array($tambahan_pesan)) ? implode($tambahan_pesan) : $tambahan_pesan;
-        $item = array('code' => $code, 'message' => hasilServer[$code] . ", " . $tambahanNote, "note" => $tambahan_pesan);
-        $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
-        // return json_encode($json);
-        return json_encode($json, JSON_HEX_APOS);
+        switch ($tbl) {
+          case 'outbox':
+            switch ($jenis) {
+              case 'add_coment':
+                //id reply jika tbl edit id_row
+                $id_tujuan = $validate->setRules('users', 'user penerima', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $uraian = $validate->setRules('uraian', 'text', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 400
+                ]);
+                break;
+              default:
+                break;
+            }
+            break;
+          case 'wall':
+            switch ($jenis) {
+              case 'edit':
+              case 'reply':
+                //id reply jika tbl edit id_row
+                $id_row = $validate->setRules('id_row', 'id', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+              case 'add_coment':
+                $uraian = $validate->setRules('text', 'text', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'min_char' => 1,
+                  'max_char' => 400
+                ]);
+                break;
+              case 'like':
+                $id_row = $validate->setRules('id_row', 'id', [
+                  'required' => true,
+                  'numeric' => true,
+                  'min_char' => 1
+                ]);
+                $like = $validate->setRules('like', 'like', [
+                  'sanitize' => 'string',
+                  'required' => true,
+                  'in_array' => ['like', 'unlike', 'non']
+                ]);
+                break;
+              default:
+                # code...
+                break;
+            }
+            break;
+          case 'x':
+            switch ($tbl) {
+              case 'y':
+                break;
+              default:
+                # code...
+                break;
+            }
+            break;
+          default:
+            $err = 6;
+        }
+        //==============================
+        //FINISH PROSES VALIDASI
+        //==============================
+        $kodePosting = '';
+        if ($validate->passed()) {
+          $code = 55;
+          //var_dump($rowTahunAktif);
+          if ($rowPengaturan !== false) {
+            $id_aturan_anggaran = $rowPengaturan->aturan_anggaran;
+            $id_aturan_pengadaan = $rowPengaturan->aturan_pengadaan;
+            $id_aturan_akun = $rowPengaturan->aturan_akun;
+            $id_aturan_sub_kegiatan = $rowPengaturan->aturan_sub_kegiatan;
+            $id_aturan_asb = $rowPengaturan->aturan_asb;
+            $id_aturan_sbu = $rowPengaturan->aturan_sbu;
+            $id_aturan_ssh = $rowPengaturan->aturan_ssh;
+            $id_aturan_hspk = $rowPengaturan->aturan_hspk;
+            $id_aturan_sumber_dana = $rowPengaturan->aturan_sumber_dana;
+            $tahun_pengaturan = $rowPengaturan->tahun;
+          } else {
+            $id_peraturan = 0;
+          }
+          //tabel pakai
+          $tabel_pakai = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+          $jumlah_kolom = $Fungsi->tabel_pakai($tbl)['jumlah_kolom'];
+          $code = 10;
+          $sukses = true;
+          $err = 0;
+          $columnName = "*";
+          //=======================
+          //========JENIS==========
+          //=======================
+          switch ($jenis) {
+            case 'upload':
+              $set_file = [];
+              switch ($tbl) {
+                case 'wilayah_logo':
+                  $kondisi = [['kode', '=', $kd_wilayah], ['id', '=', $id_row, 'AND']];
+                  $kodePosting = 'cek_insert';
+                  $set = [];
+                  break;
+                case 'daftar_paket':
+                  $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
+                  $kodePosting = 'cek_insert';
+                  $set = [];
+                  break;
+                case 'asn':
+                  $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['id', '=', $id_row, 'AND']];
+                  $kodePosting = 'cek_insert';
+                  $set = [];
+                  break;
+                case 'user':
+                  $kondisi = [['username', '=', $username], ['id', '=', $id_row, 'AND']];
+                  $kodePosting = 'cek_insert';
+                  $set = [];
+                  break;
+                default:
+                  # code...
+                  break;
+              }
+              $row_sub = $DB->getWhereOnceCustom($tabel_pakai, $kondisi);
+              if ($row_sub) {
+                switch ($tbl) {
+                  case 'wilayah_logo': //upload logo di tabel wilayah
+                    $uraian = "logo_wilayah({$kd_wilayah})";
+                    $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                    if (strlen($row_sub->$dok ?? '') > 2) {
+                      $nameFileDel = $row_sub->$dok;
+                      $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                    }
+                    break;
+                  case 'daftar_paket':
+                    $uraian = "kd_paket({$row_sub->id})_dok({$dok})_wilayah({$kd_wilayah})";
+                    $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                    if (strlen($row_sub->$dok ?? '') > 5) {
+                      $nameFileDel = $row_sub->$dok;
+                      $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                    }
+
+                    break;
+                  case 'asn':
+                    $uraian = "nip({$row_sub->nip})_dok({$dok})_wilayah({$kd_wilayah})";
+                    $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                    if (strlen($row_sub->$dok ?? '') > 2) {
+                      $nameFileDel = $row_sub->$dok;
+                      $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                    }
+                    break;
+                  case 'user':
+                    $uraian = "username({$row_sub->username})_dok({$dok})_wilayah({$kd_wilayah})";
+                    $set_file  = ['nama_file' => $uraian, 'dok' => $dok];
+                    if (strlen($row_sub->$dok ?? '') > 2) {
+                      $nameFileDel = $row_sub->$dok;
+                      $set_file  = ['nama_file' => $uraian, 'nameFileDel' => $nameFileDel, 'dok' => $dok];
+                    }
+                    break;
+                  default:
+                    # code...
+                    break;
+                }
+                if ($_FILES) {
+                  if (isset($_FILES[$dok])) {
+                    $file = $Fungsi->importFile($tbl, $set_file);
+                    if ($file['result'] == 'ok') {
+                      $set[$dok] = $file[$dok];
+                    } else {
+                      $tambahan_pesan = "(" . $file[$dok] . ")";
+                    }
+                  }
+                }
+                // var_dump($set);
+              } else {
+                $jenis = '';
+                $code = 404;
+              }
+
+              break;
+            case 'edit':
+              $kondisi = [['id', '=', $id_row]];
+              $kodePosting = 'update_row';
+              switch ($tbl) {
+                case 'value':
+                  break;
+                case 'value':
+                  break;
+                default:
+                  break;
+              }
+              if ($tbl == 2) {
+                break;
+              }
+            case 'add':
+              switch ($tbl) {
+                case 'register_surat':
+                  $kodePosting = 'cek_insert';
+
+                  $set = [
+                    'tahun' => $tahun,
+                    'kd_wilayah' => $kd_wilayah,
+                    'kd_opd' => $kd_opd,
+                    'nomor' => $nomor,
+                    'tanggal' => $tanggal,
+                    'uraian' => $uraian,
+                    'klasifikasi_keamanan' => $klasifikasi_keamanan,
+                    'jenis_naskah_dinas' => $jenis_naskah_dinas,
+                    'sifat' => $sifat,
+                    'sub_sifat' => $sub_sifat,
+                    'asal_surat' => $asal_surat,
+                    'jabatan' => $jabatan,
+                    'nama_lengkap' => $nama_lengkap,
+                    'nip' => $nip,
+                    'pangkat' => $pangkat,
+                    'disable' => $disable,
+                    'keterangan' => $keterangan,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND'], ['uraian', '=', $uraian, 'AND']];
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  } else {
+                    $kondisi = [['id', '=', $id_row], ['tahun', '=', $tahun, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
+                  }
+                  $nama_file = "reg_surat_{$tahun}_wilayah({$kd_wilayah})_kd_opd({$kd_opd})";
+                  $set_file = ['nama_file' => $nama_file];
+                  break;
+                case 'sk_asn':
+                  $kodePosting = 'cek_insert';
+                  $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
+                  $tahun_sk = $tahun;
+                  if ($type_user == 'admin') {
+                    $tahun_sk = date('Y', strtotime($tgl_surat_dibuat));
+                  }
+                  $set = [
+                    'tahun' => $tahun_sk,
+                    'kd_wilayah' => $kd_wilayah,
+                    'kd_opd' => $kd_opd,
+                    'nomor' => $nomor,
+                    'tgl_surat_dibuat' => $tgl_surat_dibuat,
+                    'tentang' => $tentang,
+                    'pemberi_tgs' => $pemberi_tgs,
+                    'jbt_pemberi_tgs' => $jbt_pemberi_tgs,
+                    'pangkat_pemberi_tgs' => $pangkat_pemberi_tgs,
+                    'nama_pemberi_tgs' => $nama_pemberi_tgs,
+                    'nama_ditugaskan' => json_encode($nama_ditugaskan),
+                    'bentuk_lampiran' => $bentuk_lampiran, //$bentuk_lampiran 0 = bentuk list ol , 1= bentuk tabel
+                    'menimbang' => json_encode($menimbang),
+                    'mengingat' => json_encode($mengingat),
+                    'menetapkan_1' => json_encode($menetapkan_1),
+                    'menetapkan_2' => json_encode($menetapkan_2),
+                    'menetapkan_3' => json_encode($menetapkan_3),
+                    'menetapkan_4' => json_encode($menetapkan_4),
+                    'tembusan' => json_encode($tembusan),
+                    'disable' => $disable,
+                    'keterangan' => $keterangan,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['nomor', '=', $nomor, 'AND']];
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'rekanan':
+                  $kodePosting = 'cek_insert';
+                  $kondisi = [['npwp', "=", $npwp], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
+                  if ($jenis == 'edit') {
+                    $kondisi = [['id', "=", $id_row], ['npwp', "=", $npwp, 'AND'], ['kd_wilayah', "=", $kd_wilayah, 'AND']];
+                  }
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'nama_perusahaan' => $nama_perusahaan,
+                    'alamat' => $alamat,
+                    'email' => $email,
+                    'npwp' => $npwp,
+                    'no_rekening' => $no_rekening,
+                    'bank_rekening' => $bank_rekening,
+                    'atas_nama_rekening' => $atas_nama_rekening,
+                    'direktur' => $direktur,
+                    'jabatan' => $jabatan,
+                    'no_ktp' => $no_ktp,
+                    'alamat_dir' => $alamat_dir,
+                    'keterangan' => $keterangan,
+                    'tgl_insert' => date('Y-m-d H:i:s'),
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_insert' => $_SESSION["user"]["username"],
+                    'username_insert' => $_SESSION["user"]["username"]
+                  ];
+                  if (strlen($no_akta_pendirian) > 0) {
+                    $set['no_akta_pendirian'] = $no_akta_pendirian;
+                    $set['tgl_akta_pendirian'] = $tgl_akta_pendirian;
+                    $set['lokasi_notaris_pendirian'] = $lokasi_notaris_pendirian;
+                    $set['nama_notaris_pendirian'] = $nama_notaris_pendirian;
+                  }
+                  if (strlen($no_akta_perubahan) > 0) {
+                    $notaris_perubahan = new stdClass;
+                    $notaris_perubahan->{'nomor[1]'} = $no_akta_perubahan;
+                    $notaris_perubahan->{'tanggal[1]'} = $tgl_akta_perubahan;
+                    $notaris_perubahan->{'alamat_notaris[1]'} = $lokasi_notaris_perubahan;
+                    $notaris_perubahan->{'notaris[1]'} = $nama_notaris_perubahan;
+                    $set['notaris_perubahan'] = json_encode($notaris_perubahan);
+                  }
+                  if (strlen($nama_pelaksana) > 0) {
+                    $data_lain = new stdClass;
+                    $data_lain->{'pelaksana[nama][1]'} = $nama_pelaksana;
+                    $data_lain->{'pelaksana[jabatan][1]'} = $tgl_akta_perubahan;
+                    $set['data_lain'] = json_encode($data_lain);
+                  }
+                  break;
+                case 'mapping':
+                  $kodePosting = 'cek_insert';
+                  $kondisi = [['kd_aset', '=', $kd_aset], ['kd_akun', '=', $kd_akun, 'AND']];
+                  $set = [
+                    'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
+                    'uraian_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_aset),
+                    'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
+                    'uraian_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_akun),
+                    'kelompok' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kelompok),
+                    'disable' => $disable,
+                    'peraturan' => $id_aturan_anggaran,
+                    'keterangan' => $keterangan,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'satuan':
+                  $kodePosting = 'cek_insert';
+                  $kondisi = [['value', '=', $value]];
+                  $set = [
+                    'value' => $value,
+                    'item' => $item,
+                    'sebutan_lain' => $sebutan_lain,
+                    'peraturan' => $id_aturan_anggaran,
+                    'keterangan' => $keterangan,
+                    'disable' => $disable,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'akun_belanja':
+                case 'neraca':
+                  $kodePosting = 'cek_insert';
+                  $kondisi = [['kode', '=', $kode]];
+                  $set = [
+                    'akun' => $akun,
+                    'kelompok' => $kelompok,
+                    'jenis_akun' => $jenis_akun,
+                    'objek' => $objek,
+                    'rincian_objek' => $rincian_objek,
+                    'sub_rincian_objek' => $sub_rincian_objek,
+                    'kode' => $kode,
+                    'uraian' => $uraian,
+                    'peraturan' => $id_aturan_sub_kegiatan,
+                    'keterangan' => $keterangan,
+                    'disable' => $disable,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'bidang_urusan':
+                case 'prog':
+                case 'keg':
+                case 'sub_keg':
+                  $kodePosting = 'cek_insert';
+                  $kondisi = [['kode', '=', $kode]];
+                  $set = [
+                    'urusan' => $urusan,
+                    'bidang' => $bidang,
+                    'prog' => $prog,
+                    'keg' => $keg,
+                    'sub_keg' => $sub_keg,
+                    'kode' => $kode,
+                    'nomenklatur_urusan' => $nomenklatur_urusan,
+                    'kinerja' => $kinerja,
+                    'indikator' => $indikator,
+                    'satuan' => $satuan,
+                    'peraturan' => $id_aturan_sub_kegiatan,
+                    'keterangan' => $keterangan,
+                    'disable' => $disable,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'wilayah':
+                  $kodePosting = 'cek_insert';
+                  $kondisi = [['kode', '=', $kode]];
+                  $set = [
+                    'kode' => $kode,
+                    'uraian' => $uraian,
+                    'status' => $status,
+                    'jml_kec' => (int)$jml_kec,
+                    'jml_kel' => (int)$jml_kel,
+                    'jml_desa' => (int)$jml_desa,
+                    'luas' => (float)$luas,
+                    'keterangan' => $keterangan,
+                    'disable' => $disable,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'realisasi':
+                  $disable = 0;
+                  //ambil row paket
+                  $tabel_get_row = $Fungsi->tabel_pakai('daftar_paket')['tabel_pakai'];
+                  $kondisi = [['id', '=', $id_row_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                  $row_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                  $uraian_paket = $row_paket->uraian;
+                  foreach ($realisasiObject as $key => $value) {
+                    $jumlah = $value->jumlah;
+                    $vol = $value->vol;
+                    $id_row_uraian_paket = $value->id_row_uraian_paket;
+                    $sum += $jumlah;
+                    if (($jumlah + $vol) > 0) {
+                      //ambil data di dok anggaran dan di tabel uraian paket
+                      //ambil di tabel uraian paket
+                      $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
+                      $kondisi = [['id', '=', $id_row_uraian_paket], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                      $row_uraian_paket = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+
+                      $id_dok_anggaran = $row_uraian_paket->id_dok_anggaran;
+                      $dok = $row_uraian_paket->dok;
+                      $jumlah_kontrak = $row_uraian_paket->jumlah_kontrak;
+                      $vol_kontrak = $row_uraian_paket->vol_kontrak;
+
+                      //ambil tabel di dok anggaran
+                      switch ($dok) {
+                        case 'dpa':
+                        case 'renja':
+                          $sumberDan = 'sumber_dana';
+                          $klmvolume = 'volume';
+                          $klmjumlah = 'jumlah';
+                          break;
+
+                        case 'dppa':
+                        case 'renja_p':
+                          $sumberDan = 'sumber_dana_p';
+                          $klmvolume = 'volume_p';
+                          $klmjumlah = 'jumlah_p';
+                          break;
+                      };
+                      $tabel_get_row = $Fungsi->tabel_pakai($dok)['tabel_pakai'];
+                      $kondisi = [['id', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                      $row_dok_anggaran = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                      $batasAnggaran = $row_dok_anggaran->{$klmjumlah};
+                      $ket_uraian_paket = $row_dok_anggaran->uraian;
+                      if ($jenis == 'edit') {
+                        $id_row_realisasi = $value->id_row_realisasi;
+                        $kondisi = [['id', '=', $id_row_realisasi], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                      } else {
+                        $row = $row_uraian_paket;
+                      }
+                      $row = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                      if ($row !== false) {
+                        $ket_paket = $uraian_paket;
+                        $id_paket = $id_row_paket;
+                        //cek jumlah keseluruhan harus lebih kecil dari kontrak dan dokumen anggaran
+                        $DB->select("SUM(jumlah) AS jumlah,SUM(vol) AS vol");
+                        $kondisiSum = [['id_dok_anggaran', '=', $id_dok_anggaran], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $tabel_get_sum = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                        $row_sum = $DB->getWhereOnceCustom($tabel_get_sum, $kondisiSum);
+                        $DB->select("*");
+                        $jumlahInput = $row_sum->jumlah;
+                        $volInput = $row_sum->vol;
+                        //cek volume dan nilai kontrak sekalian nilai pagu
+                        $vol = (($vol + $volInput) > $vol_kontrak) ? $vol_kontrak - $volInput : $vol;
+                        $jumlah = (($jumlah + $jumlahInput) > $jumlah_kontrak) ? $jumlah_kontrak - $jumlahInput : $jumlah;
+                        // jika jumlah kontrak > jumlah anggaran
+                        if ($jumlah_kontrak > $batasAnggaran) {
+                          // cari dahulu di dppa apakah jumlah anggaran perubahan bertambah
+                          if ($dok == 'dpa') {
+                            $tabel_get_row = $Fungsi->tabel_pakai('dppa')['tabel_pakai'];
+                            $kondisi = [['id_dpa', '=', $id_dok_anggaran], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                            $row_dppa = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+                            if ($row_dppa !== false) {
+                              $jumlahPaguDPPA = $row_dppa->jumlah_p;
+                              if ($jumlahPaguDPPA < $jumlah_kontrak) {
+                                $tambahan_pesan += ";nilai uraian kontrak > pagu dokumen anggaran";
+                              }
+                            }
+                          } else {
+                            $tambahan_pesan += ";nilai uraian kontrak > pagu dokumen anggaran dppa";
+                          }
+                        }
+
+                        $set = [
+                          'kd_wilayah' => $kd_wilayah,
+                          'kd_opd' => $kd_opd,
+                          'tahun' => $tahun,
+                          'kd_sub_keg' => $row->kd_sub_keg,
+                          'kd_akun' => $row->kd_akun,
+                          'id_paket' => $id_paket,
+                          'ket_paket' => $ket_paket,
+                          'id_uraian_paket' => $id_row_uraian_paket,
+                          'ket_uraian_paket' => $ket_uraian_paket,
+                          'id_dok_anggaran' => $id_dok_anggaran,
+                          'dok' => $dok,
+                          'vol' => $vol,
+                          'jumlah' => $jumlah,
+                          'tanggal' => $tanggal,
+                          'keterangan' => $keterangan,
+                          'tgl_update' => date('Y-m-d H:i:s'),
+                          'username_update' => $_SESSION["user"]["username"]
+                        ];
+                        if ($jenis === 'add') {
+                          $set['username_insert'] = $_SESSION["user"]["username"];
+                          $set['tgl_insert'] = date('Y-m-d H:i:s');
+                        }
+                        //dicari dahulu row  yang tanggal sama dan dokumen anggaran sama idnya
+                        $tabel_get_row = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                        $kondisi = [['id_paket', '=', $id_paket], ['id_uraian_paket', '=', $id_row_uraian_paket, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['tanggal', '=', $tanggal, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $row_inputRealisasi = $DB->getWhereOnceCustom($tabel_get_row, $kondisi);
+
+                        require_once 'query.php';
+                        $queryInstance = Query::createInstance(['jns' => $jenis, 'tbl' => $tbl]);
+                        // $Query = new Query(['jns' => $jenis, 'tbl' => $tbl]);
+                        if ($row_inputRealisasi === false) {
+                          // inser baru
+                          $set['tgl_insert'] = date('Y-m-d H:i:s');
+                          $set['username_insert'] = $_SESSION["user"]["username"];
+
+                          $insert = $queryInstance->insertRow($set);
+                          $data['add_row'][] = $insert['add_row'];
+                        } else {
+                          $update = $queryInstance->updateRow($kondisi, $set);
+                          $data['update'][] = $update['update'];
+                        }
+                        //update jumlah dan volume uraian paket 
+
+                        //cek jumlah keseluruhan harus lebih kecil dari kontrak dan dokumen anggaran
+                        $DB->select("SUM(jumlah) AS realisasi_jumlah,SUM(vol) AS realisasi_vol");
+                        $kondisiSum = [['id_dok_anggaran', '=', $id_dok_anggaran], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $tabel_get_sum = $Fungsi->tabel_pakai('realisasi')['tabel_pakai'];
+                        $row_sum = $DB->getWhereOnceCustom($tabel_get_sum, $kondisiSum);
+                        $realisasi_jumlah = $row_sum->realisasi_jumlah;
+                        $realisasi_vol = $row_sum->realisasi_vol;
+                        $DB->select("*");
+                        $tabel_get_row = $Fungsi->tabel_pakai('uraian_paket')['tabel_pakai'];
+                        $kondisi = [['id_paket', '=', $id_paket], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $dok, 'AND'], ['id_paket', '=', $id_paket, 'AND'], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                        $set = [
+                          'realisasi_jumlah' => $realisasi_jumlah,
+                          'realisasi_vol' => $realisasi_vol
+                        ];
+                        $queryInstance = Query::createInstance(['jns' => $jenis, 'tbl' => 'uraian_paket']);
+                        $update = $queryInstance->updateRow($kondisi, $set);
+                      }
+                    }
+                  }
+                  $kodePosting = '';
+                  break;
+                case 'berita':
+                  $kondisi = [['judul', '=', $judul], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['tanggal', '=', $tanggal, 'AND']];
+                  $kodePosting = 'cek_insert';
+                  $length = 15;
+                  $id_pengenal = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, $length);
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'judul' => $judul,
+                    'kelompok' => $kelompok,
+                    'uraian_html' => $uraian_html,
+                    'urutan' => $urutan,
+                    'tanggal' => $tanggal,
+                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                    'disable' => $disable,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                    $set['id_pengenal'] = $id_pengenal; // untuk link ketika anchor contoh <a href="#bawah">Rekomendasi IMB</a><div class="no example" id="bawah">
+                  }
+                  break;
+                case 'asn':
+                  $kondisi = [['nip', '=', $nip], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND']];
+                  $kodePosting = 'cek_insert';
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'kd_opd' => $kd_opd,
+                    'nama' => $nama,
+                    'gelar' => $gelar,
+                    'kelompok' => $kelompok,
+                    'jabatan' => $jabatan,
+                    'nip' => $nip,
+                    'golongan' => $golongan,
+                    'ruang' => $ruang,
+                    't4_lahir' => $t4_lahir,
+                    'tgl_lahir' => $tgl_lahir,
+                    'agama' => $agama,
+                    'kelamin' => $kelamin,
+                    'jenis_kepeg' => $jenis_kepeg,
+                    'status_kepeg' => $status_kepeg,
+                    'no_ktp' => $no_ktp,
+                    'npwp' => $npwp,
+                    'alamat' => $alamat,
+                    'kontak_person' => $kontak_person,
+                    'email' => $email,
+                    'status' => $status,
+                    // 'no_buku_nikah' => $no_buku_nikah,
+                    // 'tgl_nikah' => $tgl_nikah,
+                    // 'nama_anak' => $nama_anak,
+                    // 'nik_anak' => $nik_anak,
+                    // 'nama_ayah' => $nama_ayah,
+                    // 'nama_ibu' => $nama_ibu,
+                    // 'nama_pasangan' => $nama_pasangan,
+                    // 'no_karpeg' => $no_karpeg,
+                    // 'tgl_karpeg' => $tgl_karpeg,
+                    // 'no_taspen' => $no_taspen,
+                    // 'tgl_taspen' => $tgl_taspen,
+                    // 'no_karsi_karsu' => $no_karsi_karsu,
+                    // 'tgl_karsi_karsu' => $tgl_karsi_karsu,
+                    // 'nmr_sk_terakhir' => $nmr_sk_terakhir,
+                    // 'tgl_sk_terakhir' => $tgl_sk_terakhir,
+                    // 'pj_sk_terakhir' => $pj_sk_terakhir,
+                    // 'nmr_sk_cpns' => $nmr_sk_cpns,
+                    // 'tgl_sk_cpns' => $tgl_sk_cpns,
+                    // 'pj_sk_cpns' => $pj_sk_cpns,
+                    // 'nmr_sk_pns' => $nmr_sk_pns,
+                    // 'tgl_sk_pns' => $tgl_sk_pns,
+                    // 'pj_sk_pns' => $pj_sk_pns,
+                    // 'pend_sekolah_sd' => $pend_sekolah_sd,
+                    // 'pend_ijasah_sd' => $pend_ijasah_sd,
+                    // 'pend_tgl_tmt_sd' => $pend_tgl_tmt_sd,
+                    // 'pend_t4_sd' => $pend_t4_sd,
+                    // 'pend_sekolah_smp' => $pend_sekolah_smp,
+                    // 'pend_ijasah_smp' => $pend_ijasah_smp,
+                    // 'pend_tgl_tmt_smp' => $pend_tgl_tmt_smp,
+                    // 'pend_t4_smp' => $pend_t4_smp,
+                    // 'pend_sekolah_smu' => $pend_sekolah_smu,
+                    // 'pend_ijasah_smu' => $pend_ijasah_smu,
+                    // 'pend_tgl_tmt_smu' => $pend_tgl_tmt_smu,
+                    // 'pend_t4_smu' => $pend_t4_smu,
+                    // 'pend_sekolah_akhir' => $pend_sekolah_akhir,
+                    // 'pend_ijasah_akhir' => $pend_ijasah_akhir,
+                    // 'pend_tgl_tmt_akhir' => $pend_tgl_tmt_akhir,
+                    // 'pend_t4_akhir' => $pend_t4_akhir,
+                    // 'sk_pangkat_terakhir' => $sk_pangkat_terakhir,
+                    // 'tgl_tmt_akhir' => $tgl_tmt_akhir,
+                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                    'disable' => $disable,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'daftar_paket':
+                  //
+                  $send = json_decode($id_uraian);
+                  // atur kembali id uraian
+                  $pagu = 0;
+                  $jumlah = 0;
+                  $kd_sub_keg = [];
+                  $kumpulanRowSub = [];
+                  $kumpulanRowSub_del = [];
+                  foreach ($send as $key => $value) {
+                    $tabel_pakaiku = $Fungsi->tabel_pakai($value->dok_anggaran)['tabel_pakai'];
+                    $kondisi1 = [['id', '=', $value->id], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['disable', '<=', 0, 'AND'], ['kel_rek', '=', 'uraian', 'AND']];
+                    $row_sub = $DB->getWhereOnceCustom($tabel_pakaiku, $kondisi1);
+                    if ($row_sub !== false) {
+                      //$kumpulanRowSub[] ini insert atau update  di daftar_uraian_paket atau hapus data tidak ada disini
+                      $klm_jumlah = ($tabel_pakaiku == 'dpa_neo') ? 'jumlah' : 'jumlah_p';
+
+                      $row_sub->dok = $value->dok_anggaran;
+                      $row_sub->nilai_kont = $row_sub->$klm_jumlah;
+                      $row_sub->vol_kontrak = $value->vol_kontrak;
+                      $row_sub->sat_kontrak = $value->sat_kontrak;
+
+                      $id_dok_anggaran = $value->id;
+                      $kumpulanRowSub[] = $row_sub;
+
+                      $pagu += $row_sub->$klm_jumlah;
+                      $jumlah += $value->val_kontrak;
+                      $kd_sub_keg[] = $row_sub->kd_sub_keg;
+                      // tambahkan row di tabel daftar_uraian_paket tiap item disini jika sdh ada update rows
+                    } else {
+                      //hapus key yang tidak mempunyai persyaratan
+                      $kumpulanRowSub_del[] = $value;
+                      unset($send[$key]);
+                    }
+                  }
+                  $kd_sub_keg = implode(',', $kd_sub_keg);
+                  // var_dump($row_sub);
+                  $id_uraian = $send;
+                  if ($jenis == 'add') {
+                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['uraian', '=', $uraian, 'AND']];
+                    $kodePosting = 'cek_insert';
+                  } else if ($jenis == 'edit') {
+                    $kodePosting = 'cek_insert';
+                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id', '=', $id_row, 'AND']];
+                  }
+                  if ($jumlah > $pagu) {
+                    # buat kesalahan bahwa jumlah(kontrak) tidak bisa lebih besar dari pagu
+                    $kodePosting = '';
+                    $code = 405;
+                    $tambahan_pesan = '(nilai jumlah kontrak lebih besar dari besaran pagu)';
+                  } else {
+                    // var_dump(json_encode($id_uraian));
+                    $set = [
+                      'kd_rup' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_rup),
+                      'kd_paket' => preg_replace('/(\s\s+|\t|\n)/', '', $kd_paket),
+                      'kd_wilayah' => $kd_wilayah,
+                      'kd_opd' => $kd_opd,
+                      'tahun' => $tahun,
+                      'uraian' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian),
+                      'id_uraian' => json_encode($id_uraian),
+                      'kd_sub_keg' => $kd_sub_keg,
+                      'volume' => $volume,
+                      'satuan' => $satuan,
+                      'jumlah' => $jumlah,
+                      'pagu' => $pagu,
+                      'metode_pengadaan' => $metode_pengadaan,
+                      'metode_pemilihan' => $metode_pemilihan,
+                      'pengadaan_penyedia' => $pengadaan_penyedia,
+                      'jns_kontrak' => $jns_kontrak,
+                      'renc_output' => $renc_output,
+                      'output' => $output,
+                      'id_rekanan' => $id_rekanan,
+                      'nama_rekanan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_rekanan),
+                      'nama_ppk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_ppk),
+                      'nip_ppk' => $nip_ppk,
+                      'nama_pptk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $nama_pptk),
+                      'waktu_pelaksanaan' => $waktu_pelaksanaan,
+                      'waktu_pemeliharaan' => $waktu_pemeliharaan,
+                      'nip_pptk' => $nip_pptk,
+                      'tgl_kontrak' => $tgl_kontrak,
+                      'no_kontrak' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_kontrak),
+                      'tgl_persiapan_kont' => $tgl_persiapan_kont,
+                      'no_persiapan_kont' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_persiapan_kont),
+                      'tgl_spmk' => $tgl_spmk,
+                      'no_spmk' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_spmk),
+                      'addendum' => $addendum,
+                      'tgl_undangan' => $tgl_undangan,
+                      'no_undangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_undangan),
+                      'tgl_penawaran' => $tgl_penawaran,
+                      'no_penawaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_penawaran),
+                      'tgl_nego' => $tgl_nego,
+                      'no_nego' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_nego),
+                      'tgl_sppbj' => $tgl_sppbj,
+                      'no_sppbj' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_sppbj),
+                      'tgl_pho' => $tgl_pho,
+                      'no_pho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_pho),
+                      'tgl_fho' => $tgl_fho,
+                      'no_fho' => preg_replace('/(\s\s+|\t|\n)/', ' ', $no_fho),
+                      'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                      'disable' => $disable,
+                      'tgl_update' => date('Y-m-d H:i:s'),
+                      'username_update' => $_SESSION["user"]["username"]
+                    ];
+                    if ($jenis === 'add') {
+                      $set['username_insert'] = $_SESSION["user"]["username"];
+                      $set['tgl_insert'] = date('Y-m-d H:i:s');
+                    }
+                  }
+
+                  break;
+                case 'profil':
+                  switch ($jenis) {
+                    case 'edit':
+                      $kondisi = [['id', '=', $id_row]];
+                      switch ($type_user) {
+                        case 'admin':
+
+                          break;
+                        default:
+
+                          break;
+                      }
+                      $set = [
+                        'nama' => $nama,
+                        'nip' => $nip,
+                        'kontak_person' => $kontak_person,
+                        'nama_org' => $nama_org,
+                        'tahun' => $tahun,
+                        'ket' => $ket
+                      ];
+                      if (isset($_FILES['file'])) {
+                        $file = $Fungsi->importFile($jenis, $kd_proyek = '');
+                        if ($file['result'] == 'ok') {
+                          $set['photo'] = $file['file'];
+                        }
+                      }
+                      $kodePosting = 'cek_insert';
+                      break;
+                    case 'profil':
+                      $kondisi = [['id', '=', $id_row], ['type_user', '=', $type_user, 'AND']];
+                      $set = [
+                        'username' => $username,
+                        'email' => $email,
+                        'nama' => $nama,
+                        'kontak_person' => $kontak_person,
+                        'nama_org' => $nama_org,
+                        'disable_login' => $disable_login,
+                        'disable_anggaran' => $disable_anggaran,
+                        'disable_kontrak' => $disable_kontrak,
+                        'disable_realisasi' => $disable_realisasi,
+                        'disable_chat' => $disable_chat,
+                        'ket' => $ket
+                      ];
+
+
+                      $kodePosting = 'cek_insert';
+                      //var_dump($file);
+                      break;
+                    default:
+                      # code...
+                      break;
+                  }
+                  break;
+                case 'organisasi':
+                  if ($jenis == 'add') {
+                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kode', '=', $kd_organisasi, 'AND']];
+                    $kodePosting = 'cek_insert';
+                  }
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'kode' => $kode,
+                    'uraian' => $uraian,
+                    'alamat' => $alamat,
+                    'nama_kepala' => $nama_kepala,
+                    'nip_kepala' => $nip_kepala,
+                    'peraturan' => $id_aturan_anggaran,
+                    'disable' => $disable,
+                    'keterangan' => $keterangan,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'peraturan':
+                  if ($jenis == 'add') {
+                    $kondisi = [['judul', '=', $judul], ['nomor', '=', $nomor, 'AND']];
+                    $kodePosting = 'cek_insert';
+                  }
+                  $kode = "$nomor:$tgl_pengundangan";
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'kode' => $kode,
+                    'type_dok' => $type_dok,
+                    'judul' => $judul,
+                    'nomor' => $nomor,
+                    'bentuk' => $bentuk,
+                    'bentuk_singkat' => $bentuk_singkat,
+                    't4_penetapan' => $t4_penetapan,
+                    'tgl_penetapan' => $tgl_penetapan,
+                    'tgl_pengundangan' => $tgl_pengundangan,
+                    'disable' => $disable,
+                    'keterangan' => $keterangan,
+                    'status' => $status,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  //var_dump($set);
+                  //pengolahan file
+                  if (isset($_FILES['file'])) {
+                    $file = $Fungsi->importFile($tbl, '');
+                    //var_dump($file);
+                    if ($file['result'] == 'ok') {
+                      $set['file'] = $file['file'];
+                    } else {
+                      $tambahan_pesan = "(" . $file['file'] . ")";
+                    }
+                  }
+                  break;
+                case 'pengaturan':
+                  if ($jenis == 'add') {
+                    $kondisi = [['tahun', '=', $tahun]];
+                    $kodePosting = 'cek_insert';
+                  }
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'tahun' => $tahun,
+                    'tahun_renstra' => $tahun_renstra,
+                    'aturan_anggaran' => $aturan_anggaran,
+                    'aturan_pengadaan' => $aturan_pengadaan,
+                    'aturan_organisasi' => $aturan_organisasi,
+                    'aturan_akun' => $aturan_akun,
+                    'aturan_asb' => $aturan_asb,
+                    'aturan_sbu' => $aturan_sbu,
+                    'aturan_ssh' => $aturan_ssh,
+                    'aturan_hspk' => $aturan_hspk,
+                    'aturan_sumber_dana' => $aturan_sumber_dana,
+                    'aturan_sub_kegiatan' => $aturan_sub_kegiatan,
+                    'awal_renstra' => $awal_renstra,
+                    'akhir_renstra' => $akhir_renstra,
+                    'awal_renja' => $awal_renja,
+                    'akhir_renja' => $akhir_renja,
+                    'awal_renja_p' => $awal_renja_p,
+                    'akhir_renja_p' => $akhir_renja_p,
+                    'awal_dpa' => $awal_dpa,
+                    'akhir_dpa' => $akhir_dpa,
+                    'awal_dppa' => $awal_dppa,
+                    'akhir_dppa' => $akhir_dppa,
+                    'disable' => $disable,
+                    'keterangan' => $keterangan,
+                    'id_opd_tampilkan' => $id_opd_tampilkan,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  break;
+                case 'renstra':
+                  $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                  if ($rowPengaturan !== false) {
+                    $tahun_renstra = $rowPengaturan->tahun_renstra;
+                    if ($tahun_renstra > 2000) {
+                      if ($jenis == 'add') {
+                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kode', '=', $kode, 'AND']];
+                        $kodePosting = 'cek_insert';
+                      } else {
+                        $kondisi = [['id', '=', $id_row], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND']];
+                      }
+                      // id tujuan
+                      $tujuan = $DB->getWhereOnceCustom('tujuan_sasaran_renstra_neo', [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['id', '=', $sasaran, 'AND']]);
+                      $id_tujuan = ($tujuan) ? $tujuan->id_tujuan : 0;
+                      $sasaran_txt = ($tujuan) ? $tujuan->text : '';
+                      //uraian_prog_keg
+                      $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                      $uraian_prog_keg = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data tidak ditemukan';
+                      // $uraian_prog_keg = $progkeg->nomenklatur_urusan;
+                      //kondisi_akhir
+                      $kondisi_akhir = (float)$data_capaian_awal + (float)$target_thn_1 + (float)$target_thn_2 + (float)$target_thn_3 + (float)$target_thn_3 + (float)$target_thn_5;
+                      $jumlah = (float)$dana_thn_1 + (float)$dana_thn_2 + (float)$dana_thn_3 + (float)$dana_thn_4 + (float)$dana_thn_5;
+                      $dinamic = ['kode' => $kd_sub_keg];
+                      $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
+                      if (array_key_exists('kel_rek', $kodeRekUbah)) {
+                        $kel_rek = $kodeRekUbah['kel_rek'];
+                      }
+                      $set = [
+                        'kd_wilayah' => $kd_wilayah,
+                        'kd_opd' => $kd_opd,
+                        'tahun' => $tahun_renstra,
+                        'kd_sub_keg' => $kd_sub_keg,
+                        'kel_rek' => $kel_rek,
+                        'tujuan' => $id_tujuan,
+                        'sasaran' => $sasaran,
+                        'sasaran_txt' => $sasaran_txt,
+                        'uraian_prog_keg' => $uraian_prog_keg,
+                        'indikator' => $indikator,
+                        'satuan' => $satuan,
+                        'data_capaian_awal' => (float)$data_capaian_awal,
+                        'target_thn_1' => (float)$target_thn_1,
+                        'dana_thn_1' => (float)$dana_thn_1,
+                        'target_thn_2' => (float)$target_thn_2,
+                        'dana_thn_2' => (float)$dana_thn_2,
+                        'target_thn_3' => (float)$target_thn_3,
+                        'dana_thn_3' => (float)$dana_thn_3,
+                        'target_thn_4' => (float)$target_thn_4,
+                        'dana_thn_4' => (float)$dana_thn_4,
+                        'target_thn_5' => (float)$target_thn_5,
+                        'dana_thn_5' => (float)$dana_thn_5,
+                        'kondisi_akhir' => (float)$kondisi_akhir,
+                        'jumlah' => (float)$jumlah,
+                        'lokasi' => $lokasi,
+                        'keterangan' => $keterangan,
+                        'disable' => $disable,
+                        'tgl_update' => date('Y-m-d H:i:s'),
+                        'username_update' => $_SESSION["user"]["username"]
+                      ];
+                      if ($jenis === 'add') {
+                        $set['username_insert'] = $_SESSION["user"]["username"];
+                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                      }
+                      $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun_renstra];
+                      $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                      $kodePosting = '';
+                    } else {
+                      $message_tambah = ' (atur tahun renstra OPD)';
+                      $code = 70;
+                      $kodePosting = '';
+                    }
+                  } else {
+                    $message_tambah = ' (atur organisasi OPD)';
+                    $kodePosting = '';
+                    $code = 70;
+                  }
+                  break;
+                case 'tujuan_renstra':
+                case 'tujuan_sasaran_renstra':
+                case 'sasaran_renstra':
+                  if ($kelompok == 'tujuan') {
+                    $id_tujuan = 0;
+                  }
+                  $rowPengaturan = $DB->getWhereOnceCustom('pengaturan_neo', [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun, 'AND']]);
+                  if ($rowPengaturan !== false) {
+                    $tahun_renstra = $rowPengaturan->tahun_renstra;
+                    if ($tahun_renstra > 2000) {
+                      if ($jenis == 'add') {
+                        $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun_renstra, 'AND'], ['kelompok', '=', $kelompok, 'AND'], ['text', '=', $text, 'AND']];
+                        $kodePosting = 'cek_insert';
+                      }
+                      $set = [
+                        'kd_wilayah' => $kd_wilayah,
+                        'kd_opd' => $kd_opd,
+                        'tahun' => $tahun_renstra,
+                        'id_tujuan' => $id_tujuan,
+                        'kelompok' => $kelompok,
+                        'text' => $text,
+                        'disable' => $disable,
+                        'keterangan' => $keterangan,
+                        'tgl_update' => date('Y-m-d H:i:s'),
+                        'username_update' => $_SESSION["user"]["username"]
+                      ];
+                      if ($jenis === 'add') {
+                        $set['username_insert'] = $_SESSION["user"]["username"];
+                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                      }
+                    } else {
+                      $message_tambah = ' (atur tahun renstra OPD)';
+                      $code = 70;
+                      $kodePosting = '';
+                    }
+                  } else {
+                    $message_tambah = ' (atur organisasi OPD)';
+                    $kodePosting = '';
+                    $code = 70;
+                  }
+                  break;
+                case 'sub_keg_dpa':
+                case 'sub_keg_renja':
+                  $dinamic = ['kode' => $kd_sub_keg];
+                  $kodeRekUbah = $Fungsi->kelolaRek($dinamic);
+                  if (array_key_exists('kel_rek', $kodeRekUbah)) {
+                    $kel_rek = $kodeRekUbah['kel_rek'];
+                  }
+                  $progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                  $uraian = ($progkeg) ? $progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'kd_opd' => $kd_opd,
+                    'tahun' => $tahun,
+                    'kd_sub_keg' => $kd_sub_keg,
+                    'uraian' => $uraian,
+                    'kel_rek' => $kel_rek,
+                    'tolak_ukur_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg),
+                    'target_kinerja_capaian_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg),
+                    'tolak_ukur_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran),
+                    'target_kinerja_keluaran' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran),
+                    'tolak_ukur_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil),
+                    'target_kinerja_hasil' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil),
+                    'tolak_ukur_capaian_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_capaian_keg_p),
+                    'target_kinerja_capaian_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_capaian_keg_p),
+                    'tolak_ukur_keluaran_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_keluaran_p),
+                    'target_kinerja_keluaran_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_keluaran_p),
+                    'tolak_ukur_hasil_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $tolak_ukur_hasil_p),
+                    'target_kinerja_hasil_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $target_kinerja_hasil_p),
+                    'keluaran_sub_keg' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg),
+                    'keluaran_sub_keg_p' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keluaran_sub_keg_p),
+                    'sumber_dana' => $sumber_dana,
+                    'jumlah_pagu' => $jumlah_pagu,
+                    'jumlah_pagu_p' => $jumlah_pagu_p,
+                    'lokasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $lokasi),
+                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                    'disable' => $disable,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                  $cekKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                  $data = $cekKodeRek;
+                  $kodePosting = '';
+                  break;
+                case 'dppa':
+                case 'renja_p':
+                case 'dpa':
+                case 'renja':
+                  $row_progkeg = $DB->getWhereOnceCustom('sub_kegiatan_neo', [['kode', '=', $kd_sub_keg]]);
+                  // $uraian = ($row_progkeg) ? $row_progkeg->nomenklatur_urusan : 'data sub kegiatan tidak ditemukan';
+                  switch ($tabel_pakai) {
+                    case 'sub_keg_dpa_neo':
+                    case 'sub_keg_renja_neo':
+                      $kolomJumlah = 'jumlah';
+                      break;
+                    case 'dpa_neo':
+                    case 'renja_neo':
+                      $kolomJumlah = 'jumlah';
+                      $kolomVol_1 = 'vol_1';
+                      $kolomVol_2 = 'vol_2';
+                      $kolomVol_3 = 'vol_3';
+                      $kolomVol_4 = 'vol_4';
+                      $kolomVol_5 = 'vol_5';
+                      $kolomHarga_satuan = 'harga_satuan';
+                      $kolomVolume = 'volume';
+                      $kolomSat_1 = 'sat_1';
+                      $kolomSat_2 = 'sat_2';
+                      $kolomSat_3 = 'sat_3';
+                      $kolomSat_4 = 'sat_4';
+                      $kolomSat_5 = 'sat_5';
+                      break;
+                    case 'dppa_neo':
+                    case 'renja_p_neo':
+                      $kolomJumlah = 'jumlah_p';
+                      $kolomVol_1 = 'vol_1_p';
+                      $kolomVol_2 = 'vol_2_p';
+                      $kolomVol_3 = 'vol_3_p';
+                      $kolomVol_4 = 'vol_4_p';
+                      $kolomVol_5 = 'vol_5_p';
+                      $kolomHarga_satuan = 'harga_satuan';
+                      $kolomVolume = 'volume_p';
+                      $kolomSat_1 = 'sat_1_p';
+                      $kolomSat_2 = 'sat_2_p';
+                      $kolomSat_3 = 'sat_3_p';
+                      $kolomSat_4 = 'sat_4_p';
+                      $kolomSat_5 = 'sat_5_p';
+                      break;
+                    case 'renstra_neo':
+                      $kolomJumlah = 'jumlah';
+                      break;
+                    default:
+                      break;
+                  };
+                  // var_dump($sumber_dana);
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'kd_opd' => $kd_opd,
+                    'tahun' => $tahun,
+                    'kd_sub_keg' => $kd_sub_keg,
+                    'kd_akun' => $kd_akun,
+                    'kel_rek' => 'uraian', //kd
+                    'objek_belanja' => $objek_belanja,
+                    'uraian' => $uraian,
+                    'jenis_kelompok' => $jenis_kelompok,
+                    'kelompok' => $kelompok,
+                    'jenis_standar_harga' => $jenis_standar_harga,
+                    'id_standar_harga' => $id_standar_harga,
+                    'komponen' => $komponen,
+                    'spesifikasi' => $spesifikasi,
+                    'tkdn' => (float)$tkdn,
+                    'pajak' => $pajak,
+                    $kolomHarga_satuan => $harga_satuan,
+                    $kolomVol_1 => $vol_1,
+                    $kolomVol_2 => $vol_2,
+                    $kolomVol_3 => $vol_3,
+                    $kolomVol_4 => $vol_4,
+                    $kolomSat_1 => $sat_1,
+                    $kolomSat_2 => $sat_2,
+                    $kolomSat_3 => $sat_3,
+                    $kolomSat_4 => $sat_4,
+                    $kolomVolume => $volume,
+                    $kolomJumlah => $jumlah,
+                    $sumberDan => $sumber_dana,
+                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                    'disable' => 0,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                  }
+                  $dinamic = ['tbl' => $tbl, 'kd_sub_keg' => $kd_sub_keg, 'set' => $set, 'kd_akun' => $kd_akun, 'kd_wilayah' => $kd_wilayah, 'kd_opd' => $kd_opd, 'tahun' => $tahun];
+                  if ($jenis == 'edit') {
+                    $dinamic['id_row'] = $id_row;
+                  }
+                  $insertKodeRek = $Fungsi->kelolaRekSubKegDanAkun($dinamic);
+                  $data = $insertKodeRek;
+                  $kodePosting = '';
+                  break;
+                case 'asb':
+                case 'sbu':
+                case 'hspk':
+                case 'ssh':
+                  $set = [
+                    'kd_wilayah' => $kd_wilayah,
+                    'tahun' => $tahun,
+                    'kd_aset' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_aset),
+                    'uraian_barang' => preg_replace('/(\s\s+|\t|\n)/', ' ', $uraian_barang),
+                    'spesifikasi' => preg_replace('/(\s\s+|\t|\n)/', ' ', $spesifikasi),
+                    'satuan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $satuan),
+                    'harga_satuan' => $harga_satuan,
+                    'tkdn' => $tkdn,
+                    'kd_akun' => preg_replace('/(\s\s+|\t|\n)/', ' ', $kd_akun),
+                    'peraturan' => ${"aturan_$tbl"},
+                    'keterangan' => preg_replace('/(\s\s+|\t|\n)/', ' ', $keterangan),
+                    'disable' => 0,
+                    'tgl_update' => date('Y-m-d H:i:s'),
+                    'username_update' => $_SESSION["user"]["username"]
+                  ];
+                  if ($jenis === 'add') {
+                    $set['username_insert'] = $_SESSION["user"]["username"];
+                    $set['tgl_insert'] = date('Y-m-d H:i:s');
+                    $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['kd_aset', '=', $kd_aset, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                    $kodePosting = 'cek_insert';
+                  }
+
+                  break;
+                case 'value':
+                  break;
+                default:
+                  break;
+              }
+              if ($_FILES) {
+                if (isset($_FILES['file'])) {
+                  $file = $Fungsi->importFile($tbl, $set_file);
+                  //var_dump($file);
+                  if ($file['result'] == 'ok') {
+                    $set['file'] = $file['file'];
+                  } else {
+                    $tambahan_pesan = "(" . $file['file'] . ")";
+                  }
+                }
+              }
+              break;
+            case 'unkunci':
+              switch ($tbl) {
+                case 'renstra':
+                case 'renja':
+                case 'renja_p':
+                case 'dpa':
+                case 'dppa':
+                  $set = ["kunci_$tbl" => 0];
+                  break;
+                default:
+                  break;
+              }
+              $tabel_pakai = 'pengaturan_neo';
+              $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+              if ($tbl == 2) {
+                break;
+              }
+              $kodePosting = 'update_row';
+              break;
+            case 'unsetujui':
+
+              $set = ["setujui_$tbl" => 0];
+              $tabel_pakai = 'pengaturan_neo';
+              $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+              $kodePosting = 'update_row';
+              break;
+            case 'kunci':
+              $tabel_pakai = 'pengaturan_neo';
+              $set = ["kunci_$tbl" => 1];
+              $kodePosting = 'update_row';
+              $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+              break;
+            case 'setujui':
+              $tabel_pakai = 'pengaturan_neo';
+              switch ($tbl) {
+                case 'dppa':
+                  $tablePosting = '';
+
+                  break;
+                case 'renja_p': //renja p ke dppa
+                  $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+                  $tablePosting = 'dppa_neo';
+                  $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id_renja_p`";
+                  $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`, `id`";
+                  break;
+                case 'dpa': //dpa ke renja_p
+                  $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+                  $tablePosting = 'renja_p_neo';
+                  $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1_p`, `vol_2_p`, `vol_3_p`, `vol_4_p`, `vol_5_p`, `sat_1_p`, `sat_2_p`, `sat_3_p`, `sat_4_p`, `sat_5_p`, `volume_p`, `jumlah_p`, `sumber_dana_p`, `id_dpa`";
+                  $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `id`";
+                  $tablePosting2 = 'sub_keg_dpa_neo';
+                  $tabel_pakai2 = 'sub_keg_renja_neo';
+                  break;
+                case 'renja': //renja ke dpa
+                  $tabel_from = $Fungsi->tabel_pakai($tbl)['tabel_pakai'];
+                  $tablePosting = 'dpa_neo';
+                  $columnName = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `id_renja`";
+                  $columnSelect = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kd_akun`, `kel_rek`, `objek_belanja`, `uraian`, `jenis_kelompok`, `kelompok`, `jenis_standar_harga`, `id_standar_harga`, `komponen`, `spesifikasi`, `tkdn`, `pajak`, `harga_satuan`, `vol_1`, `vol_2`, `vol_3`, `vol_4`, `vol_5`, `sat_1`, `sat_2`, `sat_3`, `sat_4`, `sat_5`, `volume`, `jumlah`, `sumber_dana`, `keterangan`, `disable`, `tanggal`, `tgl_update`, `username_input`, `username_update`, `id`";
+                  //ut tabel sub_keg_dpa_neo
+                  $tablePosting2 = 'sub_keg_dpa_neo';
+                  $tabel_pakai2 = 'sub_keg_renja_neo';
+                  $columnName2 = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kel_rek`, `uraian`, `tolak_ukur_capaian_keg`, `target_kinerja_capaian_keg`, `tolak_ukur_keluaran`, `target_kinerja_keluaran`, `tolak_ukur_hasil`, `target_kinerja_hasil`, `tolak_ukur_capaian_keg_p`, `target_kinerja_capaian_keg_p`, `tolak_ukur_keluaran_p`, `target_kinerja_keluaran_p`, `tolak_ukur_hasil_p`, `target_kinerja_hasil_p`, `sumber_dana`, `lokasi`, `keluaran_sub_keg`, `keluaran_sub_keg_p`, `awal_pelaksanaan`, `akhir_pelaksanaan`, `jumlah_pagu`, `jumlah_pagu_p`, `jumlah_rincian`, `jumlah_rincian_p`, `disable`, `aksi`, `keterangan`, `kelompok_json`, `keterangan_json`, `tanggal`, `tgl_update`, `username`";
+                  $columnSelect2 = "`kd_wilayah`, `kd_opd`, `tahun`, `kd_sub_keg`, `kel_rek`, `uraian`, `tolak_ukur_capaian_keg`, `target_kinerja_capaian_keg`, `tolak_ukur_keluaran`, `target_kinerja_keluaran`, `tolak_ukur_hasil`, `target_kinerja_hasil`, `tolak_ukur_capaian_keg_p`, `target_kinerja_capaian_keg_p`, `tolak_ukur_keluaran_p`, `target_kinerja_keluaran_p`, `tolak_ukur_hasil_p`, `target_kinerja_hasil_p`, `sumber_dana`, `lokasi`, `keluaran_sub_keg`, `keluaran_sub_keg_p`, `awal_pelaksanaan`, `akhir_pelaksanaan`, `jumlah_pagu`, `jumlah_pagu_p`, `jumlah_rincian`, `jumlah_rincian_p`, `disable`, `aksi`, `keterangan`, `kelompok_json`, `keterangan_json`, `tanggal`, `tgl_update`, `username`";
+                  break;
+                case 'value':
+                  break;
+                default:
+                  break;
+              }
+              $kondisi_delete = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+              $kondisi_insert_select = [['kd_wilayah', '= ?', $kd_wilayah], ['tahun', '= ?', $tahun_dokumen, 'AND']];
+              $set = ["setujui_$tbl" => 1];
+              $kodePosting = 'update_row';
+              $kondisi = [['kd_wilayah', '=', $kd_wilayah], ['tahun', '=', $tahun_dokumen, 'AND']];
+              // posting ke dpa, renja_p, dppa
+              break;
+            case 'add_field_json':
+              switch ($tbl) {
+                case 'sub_keg_dpa':
+                case 'sub_keg_renja':
+                  $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                  $kodePosting = $jenis;
+                  break;
+                case 'dppa':
+                case 'renja_p':
+                case 'dpa':
+                case 'renja':
+                  $dataKondisiField = [['id', '=', $id_sub_keg], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                  $kodePosting = $jenis;
+                  break;
+                case 'value':
+                  break;
+                case 'value':
+                  break;
+                default:
+                  break;
+              }
+              break;
+            default:
+              switch ($tbl) {
+                case 'value':
+                  break;
+                default:
+                  break;
+              }
+              break;
+          }
+          //JENIS POST DATA/INSERT DATA
+          switch ($kodePosting) {
+            case 'add_field_json':
+              //ambil data
+              $data_klm = $DB->readJSONField($tabel_pakai, $nama_kolom, $jenis_kelompok, $dataKondisiField); //sdh ok
+              // Menghapus tanda kutip tunggal yang tidak valid
+              //cari index di array
+              $key = false;
+              if ($data_klm) {
+                $data_klm = json_decode($data_klm, true);
+                $key = array_search($uraian_field, $data_klm, true);
+                $kode_Field = 'updateJSONField';
+              } else {
+                $data_klm = array();
+                $kode_Field  = 'insertJSONField';
+              }
+              if ($key === false) {
+                $data_klm[] = $uraian_field;
+                $uraian_field_insert = json_encode($data_klm);
+                // var_dump($uraian_field_insert);
+                if ($kode_Field  == 'insertJSONField') {
+                  $tambah = $DB->insertJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+                } else {
+                  $tambah = $DB->updateJSONField($tabel_pakai, $nama_kolom, $uraian_field_insert, $jenis_kelompok, $dataKondisiField);
+                }
+                if ($tambah) {
+                  $code = 3;
+                } else {
+                  $code = 33;
+                }
+              } else {
+                $code = 37;
+              }
+              break;
+            case 'update_rows': // untuk banyak row
+              foreach ($dataArray as $key => $val) {
+                $kondisi = [['kd_proyek', '=', $kd_proyek], ['id', '=', $id, 'AND']];
+                $set = [
+                  'value' => $value,
+                  'item' => $item,
+                  'keterangan' => $keterangan,
+                  'sebutan_lain' => $sebutan_lain
+                ];
+                $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
+                //var_dump($DB->count());
+                $jumlahArray = is_array($DB->count()) ? count($DB->count()) : 0;
+                if ($DB->count()) {
+                  $code = 3;
+                  $data['update'] = $DB->count();
+                } else {
+                  $code = 47;
+                }
+              }
+              break;
+            case 'update_row': //untuk 1 row
+              // var_dump($set);
+              // var_dump($kondisi);
+              $resul = $DB->update_array($tabel_pakai, $set, $kondisi);
+              $jumlahArray = is_array($resul) ? count($resul) : 0;
+              // var_dump($kondisi);
+              //var_dump($DB->count());
+              if ($DB->count()) {
+                $code = 3;
+                $data['update'] = $DB->count();
+                switch ($jenis) {
+                  case 'setujui':
+                  case 'kunci':
+                    // $set = [$jenis . '_' . $tbl => 1];
+                  case 'unkunci':
+                  case 'unsetujui':
+                    // if ($jenis == 'unkunci' || $jenis == 'unsetujui') {
+                    //     $jenisnya = $jenis;
+                    //     $jenisnya = substr($jenisnya, 2); //hilangkan un depan kata
+                    //     $set = [$jenisnya . '_' . $tbl => 0];
+                    // }
+                    // // update di tabel pengaturan
+                    // $tabel_pengaturan = 'pengaturan_neo';
+                    // $resul_pengaturan = $DB->update_array($tabel_pengaturan, $set, $kondisi);
+                    break;
+                  default:
+                    # code...
+                    break;
+                }
+                switch ($jenis) {
+                  case 'setujui':
+                    switch ($tbl) {
+                      case 'dpa':
+                      case 'renja':
+                      case 'renja_p':
+                        // hapus dahulu sebelum insert
+                        $resul = $DB->delete_array($tablePosting, $kondisi_delete);
+                        $resul = $DB->insert_select($tabel_from, $tablePosting, $columnName, $columnSelect, $kondisi_insert_select);
+                        if ($tbl == 'renja') {
+                          $resul = $DB->delete_array($tablePosting2, $kondisi_delete);
+                          $resul = $DB->insert_select($tabel_pakai2, $tablePosting2, $columnName2, $columnSelect2, $kondisi_insert_select);
+                        }
+                        // var_dump($resul);
+                        break;
+
+                      default:
+                        # code...
+                        break;
+                    }
+                    break;
+                  case 'value1':
+                    #code...
+                    break;
+                  default:
+                    #code...
+                    break;
+                };
+              } else {
+                $code = 33;
+              }
+              break;
+            case 'cek_insert': //cek data klo tidak ada teruskan insert
+              $ListRow = $DB->select_array($tabel_pakai, $kondisi, $columnName);
+              // var_dump($ListRow);
+              $jumlahArray = is_array($ListRow) ? count($ListRow) : 0;
+              if ($jumlahArray) {
+                //update row
+                $DB->update_array($tabel_pakai, $set, $kondisi);
+                //var_dump($hasilUpdate);
+                $id_row_paket = $ListRow[0]->id;
+                if ($DB->count()) {
+                  $code = 3;
+                  $data['update'] = $DB->count(); //$DB->count();
+                  switch ($jenis) {
+                    case 'edit':
+                      switch ($tbl) {
+                        case 'profil':
+                          $_SESSION["user"]["tahun"] = $set['tahun'];
+                          # code...
+                          $data['users'] = $set;
+                          break;
+
+                        default:
+                          # code...
+                          break;
+                      }
+                      break;
+
+                    default:
+                      # code...
+                      break;
+                  }
+                } else {
+                  $code = 33;
+                }
+              } else {
+                // inser row
+                switch ($jenis) {
+                  case 'add':
+                    switch ($tbl) {
+                      case 'pengaturan':
+                        $set['kunci_renstra'] = 1;
+                        $set['kunci_renja'] = 1;
+                        $set['kunci_dpa'] = 1;
+                        $set['kunci_renja_p'] = 1;
+                        $set['kunci_dppa'] = 1;
+                        break;
+                      default:
+                        break;
+                    }
+                    break;
+                  case 'edit':
+                    switch ($tbl) {
+                      case 'sk_asn': //jika ingin clone sk maka ganti nomornya
+                        $set['username_insert'] = $_SESSION["user"]["username"];
+                        $set['tgl_insert'] = date('Y-m-d H:i:s');
+                        break;
+                      default:
+                        break;
+                    }
+                    break;
+                  default:
+                    break;
+                }
+                $resul = $DB->insert($tabel_pakai, $set);
+                $data['note']['add row'] = $DB->lastInsertId();
+                $id_row_paket = $data['note']['add row'];
+                $code = 2;
+              }
+              switch ($jenis) {
+                case 'edit':
+                  switch ($tbl) {
+                    case 'daftar_paket':
+                  }
+                case 'add':
+                  switch ($tbl) {
+                    case 'sk_asn':
+                      break;
+                    case 'daftar_paket': //@audit sekarang pemaketan
+                      $item_data_decode = false;
+                      if ($jenis == 'edit') {
+                        $kondisi1 = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_paket', '=', $id_row, 'AND']];
+                        //ambil data ruas dengan id paket
+                        $row_sub2 = $DB->getWhereCustom('daftar_uraian_paket', $kondisi1);
+                        $item_data_decode = $row_sub2;
+                      }
+
+                      foreach ($kumpulanRowSub as $key => $value) {
+                        $id_dok_anggaran = $value->id;
+                        $dok = $value->dok;
+                        $kd_sub_keg = $value->kd_sub_keg;
+                        $kd_akun = $value->kd_akun;
+                        $kel_rek = $value->kel_rek;
+                        $klm_jumlah = ($dok == 'dpa') ? 'jumlah' : 'jumlah_p';
+                        $jumlah_pagu = $value->$klm_jumlah;
+                        $jumlah_kontrak = $value->nilai_kont;
+                        $vol_kontrak = $value->vol_kontrak;
+                        $sat_kontrak = $value->sat_kontrak;
+                        $kondisi_cari = [['kd_wilayah', '=', $kd_wilayah], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND'], ['id_dok_anggaran', '=', $id_dok_anggaran, 'AND'], ['dok', '=', $dok, 'AND']];
+                        $row_cari = $DB->getWhereOnceCustom('daftar_uraian_paket', $kondisi_cari);
+                        //@audit error tambah paket
+                        if ($item_data_decode !== false) {
+                          // Loop through the array
+                          foreach ($item_data_decode as $key2 => $item) {
+                            if ($item->id_dok_anggaran == $id_dok_anggaran && $item->dok == $dok) {
+                              unset($item_data_decode[$key2]);
+                            }
+                          }
+                        }
+                        $set_insert = [
+                          'id_paket' => $id_row_paket, // $id_row,
+                          'id_dok_anggaran' => $id_dok_anggaran,
+                          'dok' => $dok,
+                          'tahun' => $tahun,
+                          'kd_wilayah' => $kd_wilayah,
+                          'kd_opd' => $kd_opd,
+                          'kd_sub_keg' => $kd_sub_keg,
+                          'kd_akun' => $kd_akun,
+                          'kel_rek' => $kel_rek,
+                          'jumlah_pagu' => $jumlah_pagu,
+                          'jumlah_kontrak' => $jumlah_kontrak,
+                          'vol_kontrak' => $vol_kontrak,
+                          'sat_kontrak' => $sat_kontrak,
+                          // 'realisasi_vol'=>$realisasi_vol,
+                          // 'realisasi_jumlah'=>$realisasi_jumlah,
+                          // 'keterangan'=>$keterangan
+                        ];
+                        //jika false tambahkan baris
+                        if ($row_cari === false) {
+                          $resul = $DB->insert('daftar_uraian_paket', $set_insert);
+                        } else {
+                          $resul = $DB->update_array('daftar_uraian_paket', $set_insert, $kondisi_cari);
+                        }
+                      }
+                      if ($item_data_decode !== false) {
+                        foreach ($item_data_decode as $key => $value2) {
+                          $idRow = $value2->id;
+                          $kondisi = [['id', '=', $idRow], ['kd_wilayah', '=', $kd_wilayah, 'AND'], ['kd_opd', '=', $kd_opd, 'AND'], ['tahun', '=', $tahun, 'AND']];
+                          $DB->delete_array('daftar_uraian_paket', $kondisi);
+                          if ($DB->count() > 0) {
+                          }
+                        }
+                      }
+                      break;
+                    case 'value':
+                      break;
+                    default:
+                      break;
+                  }
+                  break;
+                default:
+                  # code...
+                  break;
+              }
+              break;
+            case 'cekdouble_insert': //cek data klo tidak ada teruskan insert jika ada jangan update
+              $resul = $DB->getWhereCustom($tabel_pakai, $kondisi);
+              //var_dump(sizeof($resul));
+              $jumlahArray = is_array($resul) ? count($resul) : 0;
+              if ($jumlahArray) {
+                $code = 37;
+              } else {
+                // inser row
+                $resul = $DB->insert($tabel_pakai, $set);
+                $data['note']['add row'] = $DB->lastInsertId();
+                $code = 2;
+              }
+              break;
+            case 'insert_json':
+              $resul = $DB->runQuery($query, $bindValue);
+              break;
+            case 'insert':
+              $resul = $DB->insert($tabel_pakai, $set);
+              if ($DB->lastInsertId()) {
+                $data['note']['add row'] = $DB->lastInsertId(); //$resul->count;
+                $code = 2;
+              } else {
+                $code = 32;
+              }
+              break;
+            default:
+              # code...
+              break;
+          }
+          $hasilServer = hasilServer[$code];
+        } else {
+          $code = 29;
+          $pesan = $validate->getError();
+          //var_dump($pesan);
+          $data['error_validate'][] = $pesan;
+          $keterangan = '<ol class="ui horizontal ordered suffixed list">';
+          foreach ($pesan as $key => $value) {
+            $keterangan .= '<li class="item">' . $value . '</li>';
+          }
+          $keterangan .= '</ol>';
+          $tambahan_pesan = [$code => 'Validasi Kembali :<br>' . $keterangan];
+        }
+      } else {
+        $pesan = 'tidak didefinisikan';
+        $code = 39;
+      }
     }
+    $tambahanNote = (is_array($tambahan_pesan)) ? implode($tambahan_pesan) : $tambahan_pesan;
+    $item = array('code' => $code, 'message' => hasilServer[$code] . ", " . $tambahanNote, "note" => $tambahan_pesan);
+    $json = array('success' => $sukses, 'data' => $data, 'error' => $item);
+    // return json_encode($json);
+    return json_encode($json, JSON_HEX_APOS);
+  }
 }
