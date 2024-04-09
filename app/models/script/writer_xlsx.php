@@ -33,18 +33,17 @@ class writer_xlsx
             foreach ($userAktif[0] as $key => $value) {
                 ${$key} = $value;
             }
-            $nama_opd=$nama_org;
+            $nama_opd = $nama_org;
             $id_user = $id;
             $kd_opd = $kd_organisasi;
             $tabel_get_row = $Fungsi->tabel_pakai('organisasi')['tabel_pakai'];
             $row_organisasi = $DB->getWhereCustom($tabel_get_row, [['kode', '=', $kd_opd], ['kd_wilayah', '=', $kd_wilayah, 'AND']]);
-            if($row_organisasi !== false){
+            if ($row_organisasi !== false) {
                 foreach ($row_organisasi[0] as $key => $value) {
                     ${$key} = $value;
                 }
-                $nama_opd=$uraian;
+                $nama_opd = $uraian;
             }
-            
         } else {
             $id_user = 0;
             $code = 407;
@@ -68,21 +67,11 @@ class writer_xlsx
         $kolom = '*';
         $nama_sheet = 'Inayah';
         if ($validate->passed()) {
-            $rowTahunAktif = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
-            //var_dump($rowTahunAktif);
-            if ($rowTahunAktif) {
-                $id_aturan_anggaran = $rowTahunAktif->aturan_anggaran;
-                $id_aturan_pengadaan = $rowTahunAktif->aturan_pengadaan;
-                $id_aturan_akun = $rowTahunAktif->aturan_akun;
-                $id_aturan_sub_kegiatan = $rowTahunAktif->aturan_sub_kegiatan;
-                $id_aturan_asb = $rowTahunAktif->aturan_asb;
-                $id_aturan_sbu = $rowTahunAktif->aturan_sbu;
-                $id_aturan_ssh = $rowTahunAktif->aturan_ssh;
-                $id_aturan_hspk = $rowTahunAktif->aturan_hspk;
-                $id_aturan_sumber_dana = $rowTahunAktif->aturan_sumber_dana;
-                $tahun_pengaturan = $rowTahunAktif->tahun;
-            } else {
-                $id_peraturan = 0;
+            $rowPengaturan = $DB->getWhereOnce('pengaturan_neo', ['tahun', '=', $tahun]);
+            if ($rowPengaturan !== false) {
+                foreach ($rowPengaturan as $key => $value) {
+                    ${$key} = $value;
+                }
             }
             $sukses = true;
             //var_dump('Content');
@@ -98,7 +87,6 @@ class writer_xlsx
                             $order = "ORDER BY kelompok ASC";
                             $query = "SELECT $kolom FROM $tabel_pakai WHERE $where1 $order";
                             $data_where1 =  [$kd_wilayah, $kd_opd];
-                            $jmlKolom=61;
                             $headerSet = array(
                                 "OPD" => 'string', //
                                 '2' => 'string', //
@@ -110,6 +98,7 @@ class writer_xlsx
                                 '8' => 'string'
                             );
                             $row_header = ['No.', 'NAMA', 'GELAR', 'JABATAN', 'NIP', 'GOL.', 'RUANG', 'TEMPAT LAHIR', 'TANGGAL LAHIR', 'AGAMA', 'JENIS KELAMIN', 'JENIS KEPEGAWAIAN', 'STATUS KEPEGAWAIAN', 'No. KTP', 'NPWP', 'ALAMAT', 'NO. HP', 'EMAIL', 'STATUS', 'NO. BUKU NIKAH', 'TANGGAL NIKAH', 'NAMA ANAK', 'NIK ANAK', 'NAMA AYAH', 'NAMA IBU', 'NAMA PASANGAN', 'NO. KARPEG', 'TGL. KARPEG', 'NO. TASPEN', 'TGL. TASPEN', 'NO.KARSI KARSU', 'TGL KARSI KARSU', 'NO.SK TERKHIR', 'TGL.SK TERKHIR', 'Pj.TTD SK TERAKHIR', 'NO.SK CPNS', 'TGL.SK CPNS', 'Pj.TTD SK CPNS', 'NO.SK PNS', 'TGL.SK PNS', 'Pj.TTD SK PNS', 'NAMA SD', 'IJASAH SD', 'TGL IJASAH SD', 'LOKASI SD', 'NAMA SMP', 'IJASAH SMP', 'TGL IJASAH SMP', 'LOKASI SSMP', 'NAMA SMU', 'IJASAH SMU', 'TGL IJASAH SMU', 'LOKASI SMU', 'NAMA PEND. TERAKHIR', 'IJASAH PEND. TERAKHIR', 'TGL IJASAH PEND. TERAKHIR', 'LOKASI PEND. TERAKHIR', 'SK PANGKAT TERAKHIR', 'TGL.SK TERAKHIR', 'KETERANGAN', 'KELOMPOK'];
+                            $jmlKolom = count($row_header);
                             break;
                         default:
                             # code...
@@ -335,9 +324,9 @@ class writer_xlsx
                             $nama_sheet = 'ASN';
                             switch ($jenis) {
                                 case 'dok':
-                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [5, 30,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 2, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
+                                    $writer->writeSheetHeader($nama_sheet, $headerSet, $col_options = array('widths' => [5, 30, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], 'color' => '#323232', 'collapsed' => true, 'freeze_rows' => 4, 'freeze_columns' => 2, 'height' => 40, 'font-style' => 'bold', 'font-size' => 16, 'halign' => 'center', 'valign' => 'center'));
                                     $writer->markMergedCell($nama_sheet, $start_row = 0, $start_col = 0, $end_row = 0, $end_col = $jmlKolom - 1);
-                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('SKPD','', ": ($kd_opd) $nama_opd"), ['font-style' => 'bold', 'font-size' => 12]);
+                                    $writer->writeSheetRow($nama_sheet, $rowdata = array('SKPD', '', ": ($kd_opd) $nama_opd"), ['font-style' => 'bold', 'font-size' => 12]);
                                     for ($x = 1; $x <= $jmlKolom; ++$x) {
                                         $colHeader[] = '="(' . $x . ')"';
                                     }

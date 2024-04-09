@@ -203,12 +203,14 @@ P. Telaah Staf.
                                     'in_array' => ${$sifat}
                                 ]);
                                 $uraian = $validate->setRules('uraian', 'uraian', [
+                                    'del_2_spasi' => true,
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 4,
                                     'max_char' => 400
                                 ]);
                                 $nomor = $validate->setRules('nomor', 'nomor', [
+                                    'del_2_spasi' => true,
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 1,
@@ -220,12 +222,14 @@ P. Telaah Staf.
                                     'min_char' => 8
                                 ]);
                                 $asal_surat = $validate->setRules('asal_surat', 'asal surat', [
+                                    'del_2_spasi' => true,
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 1,
                                     'max_char' => 255
                                 ]);
                                 $nama_lengkap = $validate->setRules('nama_lengkap', 'Nama Penandatanganan Surat', [
+                                    'del_2_spasi' => true,
                                     'sanitize' => 'string',
                                     'required' => true,
                                     'min_char' => 1,
@@ -236,14 +240,17 @@ P. Telaah Staf.
                                     'max_char' => 18
                                 ]);
                                 $pangkat = $validate->setRules('pangkat', 'pangkat', [
+                                    'del_2_spasi' => true,
                                     'sanitize' => 'string',
                                     'max_char' => 18
                                 ]);
                                 $jabatan = $validate->setRules('jabatan', 'jabatan', [
+                                    'del_2_spasi' => true,
                                     'sanitize' => 'string',
                                     'max_char' => 18
                                 ]);
                                 $keterangan = $validate->setRules('keterangan', 'keterangan', [
+                                    'del_2_spasi' => true,
                                     'sanitize' => 'string',
                                     'max_char' => 255
                                 ]);

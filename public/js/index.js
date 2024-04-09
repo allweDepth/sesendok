@@ -152,6 +152,7 @@ $(document).ready(function () {
 			"Daftar Pelaksanaan Anggaran (DPA) Satuan Kerja Perangkat Daerah, yang selanjutnya disingkat DPA SKPD adalah dokumen yang memuat pendapatan dan belanja setiap SKPD yang digunakan sebagai dasar pelaksanaan oleh pengguna anggaran.",
 		]
 		let arrayDasboard = {
+			create_surat: ["newspaper icon", "Tata Naskah", "membuat naskah dinas", "Naskah Dinas adalah informasi tertulis sebagai alat komunikasi kedinasan yang dibuat dan/atau diterima oleh pejabat yang berwenang di lingkungan Lembaga Negara dan Pemerintahan Daerah dalam rangka penyelenggaraan tugas pemerintahan dan pembangunan"],
 			register_surat: ["newspaper icon", "Register Surat", "data register naskah dinas", "Naskah Dinas adalah informasi tertulis sebagai alat komunikasi kedinasan yang dibuat dan/atau diterima oleh pejabat yang berwenang di lingkungan Lembaga Negara dan Pemerintahan Daerah dalam rangka penyelenggaraan tugas pemerintahan dan pembangunan"],
 			berita: ["newspaper icon", "Berita", "berita", "berita"],
 			wallchat: ["comments outline icon", "Pesan dan Wall", "pesan", "pesan"],
@@ -396,6 +397,7 @@ $(document).ready(function () {
 			case "tab_all":
 				let attrButton = 'flyout';
 				switch (tbl) {
+					case 'create_surat':
 					case 'sk_asn':
 						attrButton = 'modal_show';
 						break;
@@ -3749,6 +3751,67 @@ $(document).ready(function () {
 				elementForm = '';
 			case 'add':
 				switch (tblAttr) {
+					case 'create_surat':
+						mdl.addClass("big");
+						elementForm = createHTML("fields", {
+							classField: "four",
+							content: createHTML("fieldDropdown", {
+								label: "Jenis Naskah Dinas",
+								classField: `required`,
+								atribut: 'name="jenis_naskah_dinas" placeholder="Jenis, Susunan dan bentuk naskah dinas..."',
+								kelas: "search clearable selection",
+								dataArray: [
+									['instruksi', 'Instruksi'],
+									['surat_edaran', 'Surat Edaran'],
+									['keputusan', 'Keputusan'],
+									['surat_perintah', 'Surat Perintah atau Surat Tugas'],
+									['nota_dinas', 'Nota Dinas'],
+									['memorandum', 'Memorandum'],
+									['undangan_internal', 'Undangan Internal'],
+									['perjanjian', 'Perjanjian Dalam Negeri'],
+									['surat_kuasa', 'Surat Kuasa'],
+									['berita_acara', 'Berita Acara'],
+									['surat_keterangan', 'Surat Keterangan'],
+									['surat_pengantar', 'Surat Pengantar'],
+									['pengumuman', 'Pengumuman'],
+									['laporan', 'Laporan'],
+									['telaah_staf', 'Telaah Staf']
+								]
+							}) + createHTML("fieldText", {
+								label: "Nomor Surat",
+								classField: `required`,
+								atribut: `name="nomor" placeholder="Nomor Surat"`,
+							}) + createHTML("fieldCalendar", {
+								classField: `required`,
+								kelas: "date",
+								label: "Tanggal Surat",
+								atribut: `name="tgl_surat_dibuat" placeholder="tanggal" readonly`,
+							}) + createHTML("fieldFileInput2", {
+								label: "Pilih File Dokumen",
+								placeholderData: "Pilih File...",
+								accept: ".jpg,.jpeg,.png,.pdf,.docx",
+								atribut: 'non_data',
+							})
+						}) +
+							createHTML("fields", {
+								classField: "three",
+								content: createHTML("fieldDropdown", {
+									label: "Pejabat yang menetapkan",
+									classField: `ten wide required`,
+									atribut: 'name="pemberi_tgs" placeholder="Pemberi Tugas..."',
+									kelas: "search clearable pemberi_tgs ajx selection",
+									dataArray: []
+								}) + createHTML("fieldText", {
+									label: "Jabatan Pemberi Tugas",
+									classField: `three wide required`,
+									atribut: `name="jbt_pemberi_tgs" placeholder="Jabatan Pemberi Tugas"`,
+								}) + createHTML("fieldText", {
+									label: "Pangkat Pemberi Tugas",
+									classField: `three wide required`,
+									atribut: `name="pangkat_pemberi_tgs" placeholder="Nomor Surat"`,
+								})
+							})
+						break;
 					case 'sk_asn':
 						mdl.addClass("big");
 						if (mdl.find('.actions [name="modal_second"]').length <= 0) (
@@ -4241,6 +4304,12 @@ $(document).ready(function () {
 				data.id_row = ini.attr('id_row');
 			case 'add':
 				switch (tblAttr) {
+					case 'create_surat':
+						var dropdownASN = new DropdownConstructor('form[name="form_modal"] .ui.dropdown.pemberi_tgs.ajx');
+						dropdownASN.returnList({ jenis: "get_row_json", tbl: "asn", attrresponserver: { golongan: 'golongan', ruang: 'ruang' } });
+						var dropdownJenisNaskah = new DropdownConstructor('form[name="form_modal"] .ui.dropdown[name="jenis_naskah_dinas"]');
+						dropdownJenisNaskah.onChange({ jenis: 'non', tbl: 'create_surat' });
+						break;
 					case 'realisasi':
 						var searchPaket = new SearchConstructor('form[name="form_modal"] .ui.search');
 						let allField = { minCharacters: 3, searchDelay: 600, jenis: 'get_Search_Json', tbl: 'daftar_paket', data_send: {} };
@@ -5107,6 +5176,32 @@ $(document).ready(function () {
 							break;
 						case 'non':
 							switch (tbl) {
+								case 'create_surat'://"divider_tabel_1klm"
+									let elmNaskah = { instruksi: { elemen: "divider_tabel_1klm" } }
+									let goooo = [
+										['instruksi', 'Instruksi'],
+										['surat_edaran', 'Surat Edaran'],
+										['keputusan', 'Keputusan'],
+										['surat_perintah', 'Surat Perintah atau Surat Tugas'],
+										['nota_dinas', 'Nota Dinas'],
+										['memorandum', 'Memorandum'],
+										['undangan_internal', 'Undangan Internal'],
+										['perjanjian', 'Perjanjian Dalam Negeri'],
+										['surat_kuasa', 'Surat Kuasa'],
+										['berita_acara', 'Berita Acara'],
+										['surat_keterangan', 'Surat Keterangan'],
+										['surat_pengantar', 'Surat Pengantar'],
+										['pengumuman', 'Pengumuman'],
+										['laporan', 'Laporan'],
+										['telaah_staf', 'Telaah Staf']
+									]
+									switch (value) {
+										case 'value':
+											break;
+										default:
+											break;
+									}
+									break;
 								case 'register_surat':
 									var myForm = $('form[name="form_flyout"]')
 									let arahan = [
@@ -6986,12 +7081,9 @@ $(document).ready(function () {
 		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let classField = "classField" in dataElemen ? `${dataElemen.classField} ` : "";
 		let kelas = "kelas" in dataElemen ? dataElemen.kelas : "";
-
 		let kelas2 = "kelas2" in dataElemen ? dataElemen.kelas2 : "";
-
 		let txtLabel = "txtLabel" in dataElemen ? dataElemen.txtLabel : "";
 		let label = "label" in dataElemen ? dataElemen.label : "";
-
 		let href = "href" in dataElemen ? dataElemen.href : "";//file
 		let file = "file" in dataElemen ? dataElemen.file : "file";//file
 		let textDrpdown = "textDrpdown" in dataElemen ? dataElemen.textDrpdown : "";
@@ -7015,6 +7107,56 @@ $(document).ready(function () {
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		let elemen = '';
 		switch (namaElemen) {
+			case "divider_tabel_1klm":
+				icon = "icon" in dataElemen ? dataElemen.icon : '<i class="feather alternate icon"></i>';
+				elemen = createHTML("divider", {
+					header: "h4",
+					icon: icon,
+					label: label
+				}) + createHTML("tabel2", {
+					atribut: `name="${atribut}"`,
+					kelas: `celled structured`,
+					headerTable: [[{ attr: '', lbl: `URAIAN` },
+					{ attr: '', class: 'collapsing', lbl: `JENIS` },
+					{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm3"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+					footerTable: [{
+						lbl: ``,
+					}, {
+						lbl: '',
+						attr: ``
+					}, {
+						lbl: '',
+						attr: ``
+					}],
+					bodyTable: []
+				})
+				break;
+			case "divider_tabel_2klm":
+				icon = "icon" in dataElemen ? dataElemen.icon : '<i class="feather alternate icon"></i>';
+				elemen = createHTML("divider", {
+					header: "h4",
+					icon: icon,
+					label: label
+				}) + createHTML("tabel2", {
+					atribut: `name="${atribut}"`,
+					kelas: `celled structured`,
+					headerTable: [[{ attr: '', lbl: `URAIAN` }, { attr: '', lbl: `VALUE` },
+					{ attr: '', class: 'collapsing', lbl: `JENIS` },
+					{ attr: '', lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm4"><i class="plus icon"></i></button>`, class: 'collapsing' }]],
+					footerTable: [{
+						lbl: ``,
+					}, {
+						lbl: ``,
+					}, {
+						lbl: '',
+						attr: ``
+					}, {
+						lbl: '',
+						attr: ``
+					}],
+					bodyTable: []
+				})
+				break;
 			case "header":
 				elemen = `<${header} class="ui header${kelas}">${content}</${header}>`
 				break;
@@ -7857,7 +7999,7 @@ $(document).ready(function () {
 		return decimalPart.length;
 	}
 	return 0;
-};
+	};
 	*/
 	//touppercase "pascal".toProperCase();
 	String.prototype.toProperCase = function () {

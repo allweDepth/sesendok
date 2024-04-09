@@ -660,6 +660,16 @@ class get_data
                         case 'get_tbl':
                             $kodePosting = 'get_tbl';
                             switch ($tbl) {
+                                case 'create_surat':
+                                    $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ? AND(nomor LIKE CONCAT('%',?,'%') OR tgl_surat_dibuat LIKE CONCAT('%',?,'%') OR tentang LIKE CONCAT('%',?,'%') OR nama_pemberi_tgs LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
+                                    $data_like = [$kd_wilayah, $tahun, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari];
+                                    $order = "ORDER BY tgl_surat_dibuat ASC";
+                                    $posisi = " LIMIT ?, ?";
+                                    $where1 = "kd_wilayah = ? AND kd_opd = ? AND tahun = ? AND disable <= ?";
+                                    $data_where1 =  [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    $whereGet_row_json = "kd_wilayah = ? kd_opd = ? AND tahun = ? AND disable <= ?";
+                                    $data_hereGet_row_json = [$kd_wilayah, $kd_opd, $tahun, 0];
+                                    break;
                                 case 'register_surat':
                                     $like = "kd_wilayah = ? AND tahun = ? AND kd_opd = ? AND disable <= ? AND(nomor LIKE CONCAT('%',?,'%') OR uraian LIKE CONCAT('%',?,'%') OR tanggal LIKE CONCAT('%',?,'%') OR asal_surat LIKE CONCAT('%',?,'%') OR keterangan LIKE CONCAT('%',?,'%'))";
                                     $data_like = [$kd_wilayah, $tahun, $kd_opd, 0, $cari, $cari, $cari, $cari, $cari];

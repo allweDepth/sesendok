@@ -40,6 +40,17 @@ class MasterFungsi
         //var_dump("dmn($myrow)");
         // jika tabel mengganti thead
         switch ($tbl) {
+            case 'create_surat':
+                $rowData['thead'] = trim('<tr>
+                        <th>NOMOR</th>
+                        <th>TANGGAL</th>
+                        <th>URAIAN</th>
+                        <th>JENIS</th>
+                        <th>FILE</th>
+                        <th>KETERANGAN</th>
+                        <th class="collapsing">AKSI</th>
+                    </tr>');
+                break;
             case 'register_surat':
                 $rowData['thead'] = trim('<tr>
                         <th>NOMOR</th>
@@ -346,6 +357,26 @@ class MasterFungsi
                 $myrow++;
                 $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
                 switch ($tbl) {
+                    case 'create_surat':
+                        $file = $row->file;
+                        $fileTag = '';
+                        if (strlen($file ?? '')) {
+                            $fileTag = '<a class="ui primary label" href="' . $file . '" target="_blank">Ungguh</a>';
+                        }
+                        $buttons = '<div class="ui icon basic mini buttons">
+                        <button class="ui button" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="edit outline blue icon"></i></button>
+                        <button class="ui red button" name="del_row"  jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"><i class="trash alternate outline red icon"></i></button></div>';
+                        $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
+                                    <td klm="nomor">'  . $row->nomor . '</td>
+                                    <td klm="tgl_surat_dibuat">'  . $row->tanggal . '</td>
+                                    <td klm="uraian">' . $row->uraian . '</td>
+                                    <td klm="jenis_naskah_dinas">'  . $row->jenis_naskah_dinas . '</td>
+                                    <td klm="sub_sifat">'  . $row->sub_sifat . '</td>
+                                    <td klm="file">' . $fileTag . '</td>
+                                    <td klm="keterangan">' . $row->keterangan . '</td>
+                                    <td>' . $buttons . '</td>
+                                </tr>');
+                        break;
                     case 'register_surat':
                         $file = $row->file;
                         $fileTag = '';
@@ -683,8 +714,15 @@ class MasterFungsi
                             $deactivate = ' deactivate="1"';
                         };
                         $divAwalAngka  = '<div contenteditable rms onkeypress="return rumus(event);">';
-                        $buttons = '<div class="ui icon basic mini buttons">
+
+                        $kel_rek = $row->kel_rek;
+                        if ($kel_rek == 'sub_keg') {
+                            $buttons = '<div class="ui icon basic mini buttons">
                             <button class="ui button" name="flyout" name="flyout" jns="edit" tbl="' . $tbl . '" id_row="' . $row->id . '"' . $deactivate . '><i class="edit outline blue icon"></i></button>' . $buttonDel . '</div>';
+                        } else {
+                            $buttons = '<div class="ui icon basic mini buttons">' . $buttonDel . '</div>';
+                        }
+
                         $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                                     <td klm="kd_sub_keg">' .  $row->kd_sub_keg . '</td>
                                     <td klm="uraian_prog_keg">' .  $row->uraian_prog_keg . '</td>
@@ -693,7 +731,7 @@ class MasterFungsi
                                     <td klm="data_capaian_awal">' . $divAwalAngka . number_format((float)$row->data_capaian_awal, 2, ',', '.') . $divAkhir . '</td>
                                     <td klm="kondisi_akhir">' .  number_format((float)$row->kondisi_akhir, 2, ',', '.') . '</td>
                                     <td klm="jumlah">' .  number_format((float)$row->jumlah, $desimal, ',', '.') . '</td>
-                                    <td>' . $buttons . '</td>
+                                    <td class="center aligned">' . $buttons . '</td>
                                 </tr>');
                         // $rowData['tbody'] .= trim('<tr id_row="' . $row->id . '">
                         //             <td klm="kd_sub_keg">' .  $row->kd_sub_keg . '</td>
@@ -1161,8 +1199,11 @@ class MasterFungsi
     public function tabel_pakai($tbl)
     {
         $tabel_pakai = '';
-        $jumlah_kolom = 11;
+        $jumlah_kolom = 20;
         switch ($tbl) {
+            case 'create_surat':
+                $tabel_pakai = 'naskah_dinas_neo';
+                break;
             case 'register_surat':
                 $tabel_pakai = 'register_naskah_dinas';
                 break;
