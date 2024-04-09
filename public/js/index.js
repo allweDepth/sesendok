@@ -5177,7 +5177,7 @@ $(document).ready(function () {
 						case 'non':
 							switch (tbl) {
 								case 'create_surat'://"divider_tabel_1klm"
-									let elmNaskah = { instruksi: { elemen: "divider_tabel_1klm" } }
+									let elmNaskah = { instruksi: { elemen: [{ tag: "divider_tabel_1klm", icon: '', label: '', atribut: '' }] } }
 									let goooo = [
 										['instruksi', 'Instruksi'],
 										['surat_edaran', 'Surat Edaran'],
