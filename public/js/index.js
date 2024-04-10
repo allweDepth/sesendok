@@ -5277,8 +5277,8 @@ $(document).ready(function () {
 									if (value in elmNaskah) {
 										for (let { tag, prop } of elmNaskah[value].elemen) {
 											console.log(elemen);
-											// console.log("Tag:", tag);
-											// console.log("Properti:", prop);
+											console.log("Tag:", tag);
+											console.log("Properti:", prop);
 											elemen += createHTML(tag, prop);
 											
 										}
