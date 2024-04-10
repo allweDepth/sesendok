@@ -5276,10 +5276,11 @@ $(document).ready(function () {
 
 									if (value in elmNaskah) {
 										for (let { tag, prop } of elmNaskah[value].elemen) {
-											console.log("Tag:", tag);
-											console.log("Properti:", prop);
-											elemen += createHTML(tag, prop);
 											console.log(elemen);
+											// console.log("Tag:", tag);
+											// console.log("Properti:", prop);
+											elemen += createHTML(tag, prop);
+											
 										}
 										myForm.find('div[name="elm_naskah"]').html(elemen);
 									}
@@ -7191,7 +7192,6 @@ $(document).ready(function () {
 		let elemen = '';
 		switch (namaElemen) {
 			case "divider_tabel_1klm":
-				console.log(atribut);
 				icon = "icon" in dataElemen ? dataElemen.icon : '<i class="feather alternate icon"></i>';
 				elemen = createHTML("divider", {
 					header: "h4",
@@ -7214,7 +7214,6 @@ $(document).ready(function () {
 					}],
 					bodyTable: []
 				})
-				console.log(elemen);
 				break;
 			case "divider_tabel_2klm":
 				console.log(atribut);
@@ -7243,6 +7242,7 @@ $(document).ready(function () {
 					}],
 					bodyTable: []
 				})
+				console.log(atribut);
 				break;
 			case "header":
 				elemen = `<${header} class="ui header${kelas}">${content}</${header}>`
