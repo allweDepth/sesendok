@@ -7193,12 +7193,11 @@ $(document).ready(function () {
 			case "divider_tabel_1klm":
 				console.log(atribut);
 				icon = "icon" in dataElemen ? dataElemen.icon : '<i class="feather alternate icon"></i>';
-				let elemen1 = createHTML("divider", {
+				elemen = createHTML("divider", {
 					header: "h4",
 					icon: icon,
 					label: label
-				});
-				let elemen2 = createHTML("tabel2", {
+				})+ createHTML("tabel2", {
 					atribut: `name="${atribut}"`,
 					kelas: `celled structured`,
 					headerTable: [[{ attr: '', lbl: `URAIAN` },
@@ -7215,7 +7214,7 @@ $(document).ready(function () {
 					}],
 					bodyTable: []
 				})
-				elemen = elemen1 + elemen2;
+				console.log(elemen);
 				break;
 			case "divider_tabel_2klm":
 				console.log(atribut);
