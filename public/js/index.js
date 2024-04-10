@@ -7242,7 +7242,7 @@ $(document).ready(function () {
 					}],
 					bodyTable: []
 				})
-				console.log(atribut);
+				console.log(elemen);
 				break;
 			case "header":
 				elemen = `<${header} class="ui header${kelas}">${content}</${header}>`
