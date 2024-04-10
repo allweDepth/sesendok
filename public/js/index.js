@@ -3572,7 +3572,7 @@ $(document).ready(function () {
 		inputFile.val("");
 		inputFile.trigger("click");
 	});
-	$("body").on("change", 'input[type="file"]', function (e) {//@audit now
+	$("body").on("change", 'input[type="file"]', function (e) {
 		// e.preventDefault();
 		let ini = $(this);
 		//Membaca File Excel dengan sheetJS
@@ -3810,6 +3810,8 @@ $(document).ready(function () {
 									classField: `three wide required`,
 									atribut: `name="pangkat_pemberi_tgs" placeholder="Nomor Surat"`,
 								})
+							}) + createHTML("div", {//@audit sekarang elm
+								atribut: `name="elm_naskah"`,
 							})
 						break;
 					case 'sk_asn':
@@ -4462,7 +4464,7 @@ $(document).ready(function () {
 										}
 									}
 									switch (tblAttr) {
-										case 'sk_asn'://@audit isi tabel sk
+										case 'sk_asn':
 											formIni.attr('id_row', result.data?.users.id);
 											//insert semua data di tabel fom
 											let allTable = $(`form[name="form_modal"] table[name]`);
@@ -5176,31 +5178,112 @@ $(document).ready(function () {
 							break;
 						case 'non':
 							switch (tbl) {
-								case 'create_surat'://"divider_tabel_1klm"
-									let elmNaskah = { instruksi: { elemen: [{ tag: "divider_tabel_1klm", icon: '', label: '', atribut: '' }] } }
-									let goooo = [
-										['instruksi', 'Instruksi'],
-										['surat_edaran', 'Surat Edaran'],
-										['keputusan', 'Keputusan'],
-										['surat_perintah', 'Surat Perintah atau Surat Tugas'],
-										['nota_dinas', 'Nota Dinas'],
-										['memorandum', 'Memorandum'],
-										['undangan_internal', 'Undangan Internal'],
-										['perjanjian', 'Perjanjian Dalam Negeri'],
-										['surat_kuasa', 'Surat Kuasa'],
-										['berita_acara', 'Berita Acara'],
-										['surat_keterangan', 'Surat Keterangan'],
-										['surat_pengantar', 'Surat Pengantar'],
-										['pengumuman', 'Pengumuman'],
-										['laporan', 'Laporan'],
-										['telaah_staf', 'Telaah Staf']
-									]
-									switch (value) {
-										case 'value':
-											break;
-										default:
-											break;
+								case 'create_surat'://"divider_tabel_1klm"//@audit sekarang elm
+									var myForm = $('form[name="form_modal"]')
+									let elemen = '';
+									let elmNaskah = {
+										instruksi: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										surat_edaran: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										keputusan: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										surat_perintah: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										nota_dinas: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										memorandum: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										undangan_internal: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										perjanjian: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										surat_kuasa: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										berita_acara: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										surat_keterangan: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										surat_pengantar: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										pengumuman: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										laporan: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										},
+										telaah_staf: {
+											elemen: [
+												{ tag: "divider_tabel_1klm", prop: { icon: '', label: '', atribut: '1' } },
+												{ tag: "divider_tabel_1klm", prop: { icon: '2', label: '3', atribut: '4' } }
+											]
+										}
+									};
+
+									if (value in elmNaskah) {
+										for (let { tag, prop } of elmNaskah[value].elemen) {
+											console.log("Tag:", tag);
+											console.log("Properti:", prop);
+											elemen += createHTML(tag, prop);
+											console.log(elemen);
+										}
+										myForm.find('div[name="elm_naskah"]').html(elemen);
 									}
+
 									break;
 								case 'register_surat':
 									var myForm = $('form[name="form_flyout"]')
@@ -5988,7 +6071,7 @@ $(document).ready(function () {
 								case "add":
 								case "edit":
 									switch (tbl) {
-										case 'sk_asn'://@audit isi tabel sk
+										case 'sk_asn':
 											ini.attr('id_row', id_row);
 											//insert semua data di tabel fom
 											let allTable = $(`form[name="form_modal"] table[name]`);
@@ -6076,7 +6159,7 @@ $(document).ready(function () {
 															myRows[index][$headers[cellIndex]] = strText;
 															break;
 														case 'vol':
-														case 'jumlah'://@audit now
+														case 'jumlah':
 															strText = $(this).find('div').html();
 															strText = Number(accounting.unformat(strText, ","));
 															myRows[index][$headers[cellIndex]] = strText;
@@ -6784,7 +6867,7 @@ $(document).ready(function () {
 									}
 									$("[rms]").mathbiila();
 									break;
-								case 'daftar_paket'://@audit now paket//untuk select paket di input realisasi
+								case 'daftar_paket':
 									let myForm = $(`[name="form_modal"]`);
 									cellJumlah = myForm.find(`table tfoot [name="jumlah"]`);
 									cellKontrak = myForm.find(`table tfoot [name="kontrak"]`);
@@ -7108,12 +7191,14 @@ $(document).ready(function () {
 		let elemen = '';
 		switch (namaElemen) {
 			case "divider_tabel_1klm":
+				console.log(atribut);
 				icon = "icon" in dataElemen ? dataElemen.icon : '<i class="feather alternate icon"></i>';
-				elemen = createHTML("divider", {
+				let elemen1 = createHTML("divider", {
 					header: "h4",
 					icon: icon,
 					label: label
-				}) + createHTML("tabel2", {
+				});
+				let elemen2 = createHTML("tabel2", {
 					atribut: `name="${atribut}"`,
 					kelas: `celled structured`,
 					headerTable: [[{ attr: '', lbl: `URAIAN` },
@@ -7130,14 +7215,17 @@ $(document).ready(function () {
 					}],
 					bodyTable: []
 				})
+				elemen = elemen1 + elemen2;
 				break;
 			case "divider_tabel_2klm":
+				console.log(atribut);
 				icon = "icon" in dataElemen ? dataElemen.icon : '<i class="feather alternate icon"></i>';
 				elemen = createHTML("divider", {
 					header: "h4",
 					icon: icon,
 					label: label
-				}) + createHTML("tabel2", {
+				});
+				elemen += createHTML("tabel2", {
 					atribut: `name="${atribut}"`,
 					kelas: `celled structured`,
 					headerTable: [[{ attr: '', lbl: `URAIAN` }, { attr: '', lbl: `VALUE` },
@@ -7177,7 +7265,7 @@ $(document).ready(function () {
                 <div class="ui compact labeled icon menu">${menu}</div></div>`
 				break;
 			case "div":
-				elemen = `<div class="${kelas}">${content}</div>`;
+				elemen = `<div class="${kelas}" ${atribut}>${content}</div>`;
 				break;
 			case "card":
 				elemen = `<div class="ui fluid card">
