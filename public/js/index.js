@@ -5056,7 +5056,7 @@ $(document).ready(function () {
 		let kelasToast = "warning";
 		let pesanToast = "Koreksi Data";
 		formIni.attr({ jns: jnsAttr, tbl: tblAttr });
-		console.log(mdl.find('.actions [name="modal_second"]').length);
+		// console.log(mdl.find('.actions [name="modal_second"]').length);
 		if (mdl.find('.actions [name="modal_second"]').length)
 			mdl.find('.actions [name="modal_second"]').remove(
 				`[name="modal_second"]`
