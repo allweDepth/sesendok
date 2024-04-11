@@ -5085,11 +5085,11 @@ $(document).ready(function () {
 										atribut:
 											'name="jenis_naskah_dinas" placeholder="Jenis, Susunan dan bentuk naskah dinas..."',
 										kelas: "search clearable selection",
-										dataArray: [
+ 										dataArray: [
 											["instruksi", "Instruksi"],
 											["surat_edaran", "Surat Edaran"],
 											["keputusan", "Keputusan"],
-											[
+											[ 
 												"surat_perintah",
 												"Surat Perintah atau Surat Tugas",
 											],
@@ -6545,6 +6545,10 @@ $(document).ready(function () {
 										dataArray: [
 											["sk_asn", "Surat Keputusan"],
 											["kontrak", "Kontrak"],
+											[
+												"laporan_realisasi",
+												"Laporan Realisasi",
+											],
 										],
 									}) +
 									createHTML("fieldCalendar", {
