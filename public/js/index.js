@@ -6684,14 +6684,6 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														txtLabel: "Kepada",
-														atribut: "kepada",
-													},
-												},
-												{
-													tag: "divider_tabel_1klm",
-													prop: {
-														icon: "",
 														txtLabel: "MENIMBANG",
 														atribut: "menimbang",
 													},
@@ -6746,7 +6738,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Tembusan",
+														txtLabel: "TEMBUSAN",
 														atribut: "tembusan",
 													},
 												},
