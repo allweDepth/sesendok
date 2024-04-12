@@ -170,30 +170,10 @@ $(document).ready(function () {
 				"Naskah Dinas adalah informasi tertulis sebagai alat komunikasi kedinasan yang dibuat dan/atau diterima oleh pejabat yang berwenang di lingkungan Lembaga Negara dan Pemerintahan Daerah dalam rangka penyelenggaraan tugas pemerintahan dan pembangunan",
 			],
 			berita: ["newspaper icon", "Berita", "berita", "berita"],
-			wallchat: [
-				"comments outline icon",
-				"Pesan dan Wall",
-				"pesan",
-				"pesan",
-			],
-			atur_satu: [
-				"erase icon",
-				"PENGATURAN",
-				"seting data",
-				"pengaturan",
-			],
-			pengaturan: [
-				"settings icon",
-				"PENGATURAN",
-				"seting data",
-				"pengaturan",
-			],
-			reset: [
-				"erase icon",
-				"RESET",
-				"reset tabel data",
-				"mereset tabel data",
-			],
+			wallchat: ["comments outline icon", "Pesan dan Wall", "pesan", "pesan"],
+			atur_satu: ["erase icon", "PENGATURAN", "seting data", "pengaturan"],
+			pengaturan: ["settings icon", "PENGATURAN", "seting data", "pengaturan"],
+			reset: ["erase icon", "RESET", "reset tabel data", "mereset tabel data"],
 			sk_asn: [
 				"home icon",
 				"Surat Keputusan",
@@ -231,12 +211,7 @@ $(document).ready(function () {
 				"Klasifikasi dan kodefikasi",
 				"Klasifikasi dan kodefikasi program disusun berdasarkan pembagian sub urusan dan kegiatan disusun berdasarkan pembagian kewenangan yang diatur dalam Lampiran Undang-Undang Nomor 23 Tahun 2014.Hal ini dilakukan untuk memastikan ruang lingkup penyelenggaraan pemerintahan daerah dilakukan sesuai dengan keenangannya, sehingga mendukung pelaksanaan asas prinsip akuntabilitas, efisiensi, eksternalitas serta kepentingan strategis nasional",
 			],
-			users: [
-				"users icon",
-				"users",
-				"Pengaturan Akun",
-				"Pengaturan akun",
-			],
+			users: ["users icon", "users", "Pengaturan Akun", "Pengaturan akun"],
 			tab_dpa: tab_dpa,
 			daftar_paket: [
 				"file contract icon",
@@ -250,11 +225,7 @@ $(document).ready(function () {
 				"Dokumen Pelaksanaan Perubahan Anggaran",
 				"",
 			],
-			tab_input_real: [
-				"clipboard list icon",
-				"Realisasi",
-				"Input Realisasi",
-			],
+			tab_input_real: ["clipboard list icon", "Realisasi", "Input Realisasi"],
 			tab_spj: ["clipboard list icon", "Renja", "Rencana Kerja"],
 			tab_lap: ["clipboard list icon", "Renja", "Rencana Kerja"],
 			bidang_urusan: [
@@ -363,22 +334,10 @@ $(document).ready(function () {
 			],
 			tab_user: ["users icon", "Users AHSP", "Akun user ahsp"],
 			tab_wallchat: ["comments outline icon", "AHSP chat", "we are chat"],
-			tab_wall: [
-				"comments outline icon",
-				"AHSP chat",
-				"Ruang Chat Users",
-			],
+			tab_wall: ["comments outline icon", "AHSP chat", "Ruang Chat Users"],
 			tab_inbox: ["comment outline icon", "AHSP chat", "inbox"],
-			"monev[informasi]": [
-				"info circle icon",
-				"Informasi-Monev",
-				"Informasi",
-			],
-			"monev[realisasi]": [
-				"chartline icon",
-				"Informasi-Monev",
-				"Realisasi",
-			],
+			"monev[informasi]": ["info circle icon", "Informasi-Monev", "Informasi"],
+			"monev[realisasi]": ["chartline icon", "Informasi-Monev", "Realisasi"],
 			"monev[laporan]": ["chart pie icon", "Informasi-Monev", "Laporan"],
 			tab_outbox: ["comment dots outline icon", "AHSP chat", "outbox"],
 		};
@@ -512,12 +471,8 @@ $(document).ready(function () {
 								dynamic[namaAttr] = new CalendarConstructor(
 									`div[name="${namaAttr}"],div[name="${bill}"]`
 								);
-								dynamic[namaAttr].startCalendar = $(
-									`div[name="${namaAttr}"]`
-								);
-								dynamic[namaAttr].endCalendar = $(
-									`div[name="${bill}"]`
-								);
+								dynamic[namaAttr].startCalendar = $(`div[name="${namaAttr}"]`);
+								dynamic[namaAttr].endCalendar = $(`div[name="${bill}"]`);
 								dynamic[namaAttr].Type("datetime");
 								dynamic[namaAttr].runCalendar();
 							}
@@ -577,9 +532,7 @@ $(document).ready(function () {
 			case "sub_keg_renja":
 			case "sub_keg_dpa":
 			case "tab_renja":
-				let itemDivDataTab = $(
-					`div[data-tab="tab_renja"] .menu a.item`
-				);
+				let itemDivDataTab = $(`div[data-tab="tab_renja"] .menu a.item`);
 				switch (jns) {
 					case "rincian_perubahan":
 					case "rincian_pokok":
@@ -619,10 +572,7 @@ $(document).ready(function () {
 					case "sub_keg_dpa":
 						itemDivDataTab.eq(0).attr("tbl", "sub_keg_dpa");
 						itemDivDataTab.eq(0).text("Sub Kegiatan");
-						itemDivDataTab
-							.eq(1)
-							.attr("tbl", "dpa")
-							.attr("id_sub_keg", "renja");
+						itemDivDataTab.eq(1).attr("tbl", "dpa").attr("id_sub_keg", "renja");
 						itemDivDataTab.eq(1).text("D P A");
 						itemDivDataTab
 							.eq(2)
@@ -646,9 +596,7 @@ $(document).ready(function () {
 					case "dppa":
 					case "renja":
 					case "renja_p":
-						let elmk = divTab.find(
-							`.secondary.menu [tbl="${tbl}"]`
-						);
+						let elmk = divTab.find(`.secondary.menu [tbl="${tbl}"]`);
 						if (
 							tbl !== "sub_keg_renja" &&
 							tbl !== "sub_keg_dpa" &&
@@ -667,7 +615,8 @@ $(document).ready(function () {
 							}
 						}
 						if (jalankanAjax) {
-							elmk.addClass("active")
+							elmk
+								.addClass("active")
 								.closest(".ui.menu")
 								.find(".item")
 								.not($(elmk))
@@ -711,11 +660,7 @@ $(document).ready(function () {
 								if (result?.data?.thead) {
 									elmthead.html(result.data.thead);
 								}
-								if (
-									$(`a[name="change_themes"]`).attr(
-										"theme"
-									) === "dark"
-								) {
+								if ($(`a[name="change_themes"]`).attr("theme") === "dark") {
 									elmTable
 										.find(".ui:not(.hidden),.icon")
 										.removeClass("inverted")
@@ -749,11 +694,8 @@ $(document).ready(function () {
 									case "dpa":
 									case "renja_p":
 									case "dppa":
-										const elmTableSubKeg =
-											divTab.find("table.sub_keg");
-										elmTableSubKeg.html(
-											result.data.tr_sub_keg
-										);
+										const elmTableSubKeg = divTab.find("table.sub_keg");
+										elmTableSubKeg.html(result.data.tr_sub_keg);
 									case "sub_keg_renja":
 									case "sub_keg_dpa":
 									case "tujuan_renstra":
@@ -761,29 +703,19 @@ $(document).ready(function () {
 									case "sasaran_renstra":
 									case "renstra":
 										window["kunci_" + dokumenAnggaran] =
-											result.data[
-												`kunci_${dokumenAnggaran}`
-											];
+											result.data[`kunci_${dokumenAnggaran}`];
 										window["setujui_" + dokumenAnggaran] =
-											result.data[
-												`setujui_${dokumenAnggaran}`
-											];
+											result.data[`setujui_${dokumenAnggaran}`];
 										if (
-											window[
-												"kunci_" + dokumenAnggaran
-											] ||
+											window["kunci_" + dokumenAnggaran] ||
 											window["setujui_" + dokumenAnggaran]
 										) {
 											divTab
-												.find(
-													`button[jns="add"], button[jns="import"]`
-												)
+												.find(`button[jns="add"], button[jns="import"]`)
 												.attr("disabled", "");
 										} else {
 											divTab
-												.find(
-													`button[jns="add"], button[jns="import"]`
-												)
+												.find(`button[jns="add"], button[jns="import"]`)
 												.removeAttr("disabled");
 										}
 										break;
@@ -796,18 +728,13 @@ $(document).ready(function () {
 								switch (tbl) {
 									case "pengaturan":
 										// result.data?.tahun;
-										var dropdown_ajx_org =
-											new DropdownConstructor(
-												'form[name="form_pengaturan"] .ui.dropdown[name="id_opd_tampilkan"]'
-											);
-										let hasKey =
-											result?.data.hasOwnProperty(
-												"values"
-											);
+										var dropdown_ajx_org = new DropdownConstructor(
+											'form[name="form_pengaturan"] .ui.dropdown[name="id_opd_tampilkan"]'
+										);
+										let hasKey = result?.data.hasOwnProperty("values");
 										if (hasKey) {
 											dropdown_ajx_org.valuesDropdown(
-												result.data.values
-													.id_opd_tampilkan
+												result.data.values.id_opd_tampilkan
 											);
 										}
 										dropdown_ajx_org.returnList({
@@ -815,9 +742,7 @@ $(document).ready(function () {
 											tbl: "organisasi",
 											minCharacters: 1,
 										});
-										let formPengaturan = $(
-											'form[name="form_pengaturan"]'
-										);
+										let formPengaturan = $('form[name="form_pengaturan"]');
 										$(
 											'form[name="form_pengaturan"] .ui.dropdown.aturan'
 										).dropdown({
@@ -827,44 +752,31 @@ $(document).ready(function () {
 											"input[name],textarea[name]"
 										);
 										for (const iterator of attrName) {
-											let attrElm =
-												$(iterator).attr("name");
+											let attrElm = $(iterator).attr("name");
 											if (attrElm !== "file") {
 												formPengaturan.form(
 													"set value",
 													attrElm,
-													result?.data?.row_tahun[
-														attrElm
-													]
+													result?.data?.row_tahun[attrElm]
 												);
 											}
 										}
 										$(
 											`button[jns="kunci"] i,button[jns="setujui"] i`
 										).removeClass("red");
-										let buttonElm = $(
-											`form[name="form_pengaturan"]`
-										).find(`button[jns="kunci"]`);
-										buttonElm.each(function (
-											index,
-											element
-										) {
+										let buttonElm = $(`form[name="form_pengaturan"]`).find(
+											`button[jns="kunci"]`
+										);
+										buttonElm.each(function (index, element) {
 											// element == this
-											let tabelPakai =
-												$(element).attr("tbl");
-											if (
-												result?.data?.row_tahun[
-													`kunci_${tabelPakai}`
-												] > 0
-											) {
+											let tabelPakai = $(element).attr("tbl");
+											if (result?.data?.row_tahun[`kunci_${tabelPakai}`] > 0) {
 												$(
 													`button[jns="kunci"][tbl="${tabelPakai}"] i`
 												).addClass("red");
 											}
 											if (
-												result?.data?.row_tahun[
-													`setujui_${tabelPakai}`
-												] > 0
+												result?.data?.row_tahun[`setujui_${tabelPakai}`] > 0
 											) {
 												$(
 													`button[jns="setujui"][tbl="${tabelPakai}"] i`
@@ -882,29 +794,19 @@ $(document).ready(function () {
 							case "get_row":
 								switch (tbl) {
 									case "user":
-										let myForm = $(
-											`form.profil[name="profil"]`
-										);
-										let card = $(
-											`[data-tab="profil"] .ui.card`
-										);
+										let myForm = $(`form.profil[name="profil"]`);
+										let card = $(`[data-tab="profil"] .ui.card`);
 										let elm = card.find(`[src]`);
-										$(`span[name="nama"]`).html(
-											result.data.users.nama
-										);
-										let imgeProfil =
-											result.data.users.photo;
+										$(`span[name="nama"]`).html(result.data.users.nama);
+										let imgeProfil = result.data.users.photo;
 										// console.log(namaku);
 										if (imgeProfil.length > 8) {
 											elm.attr("src", imgeProfil);
 										}
-										myForm.attr(
-											"id_row",
-											result.data.users.id
-										);
-										card.find(
-											`button[for="directupload1"]`
-										).attr("id_row", result.data.users.id);
+										myForm.attr("id_row", result.data.users.id);
+										card
+											.find(`button[for="directupload1"]`)
+											.attr("id_row", result.data.users.id);
 										let resultUser = result.data.users;
 										for (let key in resultUser) {
 											let value = resultUser[key];
@@ -912,11 +814,7 @@ $(document).ready(function () {
 												`input[name="${key}"], textarea[name="${key}"]`
 											);
 											if (elmTxt.length > 0) {
-												myForm.form(
-													"set value",
-													key,
-													value
-												);
+												myForm.form("set value", key, value);
 											}
 										}
 										break;
@@ -933,8 +831,7 @@ $(document).ready(function () {
 							switch (error_code) {
 								case 9:
 									kelasToast = "error";
-									iconToast =
-										"exclamation triangle yellow icon";
+									iconToast = "exclamation triangle yellow icon";
 									break;
 								default:
 									break;
@@ -997,8 +894,7 @@ $(document).ready(function () {
 			sbu: "template/17. sbu 2024.xlsx",
 			tujuan_sasaran_renstra: "template/18. tujuan sasaran renstra.xlsx",
 			renstra: "template/19. Renstra Template.xlsx",
-			sub_keg_renja:
-				"template/20. Format Sub Kegiatan Renja:DPA:DPPA.xlsx",
+			sub_keg_renja: "template/20. Format Sub Kegiatan Renja:DPA:DPPA.xlsx",
 			sub_keg_dpa: "template/20. Format Sub Kegiatan Renja:DPA:DPPA.xlsx",
 			renja: "template/21. Form Renja DPA DPPA.xlsx",
 			renja_p: "template/21. Form Renja DPA DPPA.xlsx",
@@ -1089,10 +985,7 @@ $(document).ready(function () {
 									kelas: "selection",
 									dataArray: [
 										["arahan", "Naskah Dinas arahan"],
-										[
-											"korespondensi",
-											"Naskah Dinas korespondensi",
-										],
+										["korespondensi", "Naskah Dinas korespondensi"],
 										["khusus", "Naskah Dinas khusus"],
 									],
 								}) +
@@ -1110,8 +1003,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Nomor Surat",
-									atribut:
-										'name="nomor" placeholder="Nomor Surat"',
+									atribut: 'name="nomor" placeholder="Nomor Surat"',
 								}) +
 								createHTML("fieldCalendar", {
 									label: "Tanggal",
@@ -1130,33 +1022,27 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Asal Surat",
-									atribut:
-										'name="asal_surat" placeholder="Asal Surat"',
+									atribut: 'name="asal_surat" placeholder="Asal Surat"',
 								}) +
 								createHTML("fieldText", {
 									label: "Nama Lengkap",
-									atribut:
-										'name="nama_lengkap" placeholder="Nama Lengkap"',
+									atribut: 'name="nama_lengkap" placeholder="Nama Lengkap"',
 								}) +
 								createHTML("fieldText", {
 									label: "Jabatan",
-									atribut:
-										'name="jabatan" placeholder="Jabatan" non_data',
+									atribut: 'name="jabatan" placeholder="Jabatan" non_data',
 								}) +
 								createHTML("fieldText", {
 									label: "Pangkat",
-									atribut:
-										'name="pangkat" placeholder="Pangkat" non_data',
+									atribut: 'name="pangkat" placeholder="Pangkat" non_data',
 								}) +
 								createHTML("fieldText", {
 									label: "Nip.",
-									atribut:
-										'name="nip" placeholder="NIP (jika ada)" non_data',
+									atribut: 'name="nip" placeholder="NIP (jika ada)" non_data',
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="2" non_data',
+									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
 								createHTML("fieldFileInput2", {
 									label: "Pilih File Dokumen",
@@ -1210,8 +1096,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="2" non_data',
+									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -1234,15 +1119,13 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextAction", {
 									label: "username",
-									atribut:
-										'name="username" placeholder="username"',
+									atribut: 'name="username" placeholder="username"',
 									txtLabel: `<i class="search icon"></i>`,
 									atributLabel: `name="get_data" type="button" jns="get_data" tbl="user" klm="username"`,
 								}) +
 								createHTML("fieldText", {
 									label: "email",
-									atribut:
-										'name="email" placeholder="email" readonly',
+									atribut: 'name="email" placeholder="email" readonly',
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Type User",
@@ -1257,13 +1140,11 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Kontak Person",
-									atribut:
-										'name="kontak_person" placeholder="Kontak Person"',
+									atribut: 'name="kontak_person" placeholder="Kontak Person"',
 								}) +
 								createHTML("fieldText", {
 									label: "Alamat",
-									atribut:
-										'name="alamat" placeholder="Alamat..."',
+									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Nama Wilayah",
@@ -1280,8 +1161,7 @@ $(document).ready(function () {
 								createHTML("fieldCalendar", {
 									label: "Tahun Anggaran Aktif",
 									kelas: "year",
-									atribut:
-										'placeholder="Tanggal.." name="tahun" readonly',
+									atribut: 'placeholder="Tanggal.." name="tahun" readonly',
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
@@ -1304,8 +1184,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("labelToggleCheckbox", {
 									label: "Non Aktifkan User Input/Edit Realisasi",
-									atribut:
-										'name="disable_realisasi" non_data',
+									atribut: 'name="disable_realisasi" non_data',
 									txtLabel: "Disable",
 								}) +
 								createHTML("labelToggleCheckbox", {
@@ -1351,8 +1230,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Jabatan",
-									atribut:
-										'name="jabatan" placeholder="Jabatan..."',
+									atribut: 'name="jabatan" placeholder="Jabatan..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Tempat Lahir",
@@ -1396,30 +1274,12 @@ $(document).ready(function () {
 										["pnsp", "ASN pusat"],
 										["pnsd1", "ASN Provinsi"],
 										["pnsd2", "ASN Kabupaten/Kota"],
-										[
-											"pnsp_dpb1",
-											"ASN Pusat diperbantukan Provinsi",
-										],
-										[
-											"pnsp_dpb2",
-											"ASN Pusat diperbantukan Kab./Kota",
-										],
-										[
-											"pnsp_dpk1",
-											"ASN Pusat dipekerjakan Provinsi",
-										],
-										[
-											"pnsp_dpk2",
-											"ASN Pusat dipekerjakan Kab./Kota",
-										],
-										[
-											"pnsd_dpb_pusat",
-											"ASN Daerah diperbantukan Pusat",
-										],
-										[
-											"pnsd_dpk_pusat",
-											"ASN Daerah dipekerjakan Pusat",
-										],
+										["pnsp_dpb1", "ASN Pusat diperbantukan Provinsi"],
+										["pnsp_dpb2", "ASN Pusat diperbantukan Kab./Kota"],
+										["pnsp_dpk1", "ASN Pusat dipekerjakan Provinsi"],
+										["pnsp_dpk2", "ASN Pusat dipekerjakan Kab./Kota"],
+										["pnsd_dpb_pusat", "ASN Daerah diperbantukan Pusat"],
+										["pnsd_dpk_pusat", "ASN Daerah dipekerjakan Pusat"],
 										["swasta", "Swasta"],
 									],
 								}) +
@@ -1440,18 +1300,15 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Nomor KTP",
-									atribut:
-										'name="no_ktp" placeholder="Nomor ktp..."',
+									atribut: 'name="no_ktp" placeholder="Nomor ktp..."',
 								}) +
 								createHTML("fieldText", {
 									label: "NPWP",
-									atribut:
-										'name="npwp" placeholder="NPWP..."',
+									atribut: 'name="npwp" placeholder="NPWP..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Alamat",
-									atribut:
-										'name="alamat" placeholder="Alamat..."',
+									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Kontak Person",
@@ -1460,8 +1317,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "email",
-									atribut:
-										'name="email" placeholder="email..."',
+									atribut: 'name="email" placeholder="email..."',
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Agama",
@@ -1476,10 +1332,7 @@ $(document).ready(function () {
 										["budha", "Budha"],
 										["konghucu", "Konghucu"],
 										["yahudi", "Yahudi"],
-										[
-											"kepercayaan",
-											"Kepercayaan Tuhan YME.",
-										],
+										["kepercayaan", "Kepercayaan Tuhan YME."],
 									],
 								}) +
 								createHTML("fieldDropdown", {
@@ -1503,8 +1356,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="2" non_data',
+									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -1534,8 +1386,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Volume",
-									atribut:
-										'name="volume" placeholder="volume output..." rms',
+									atribut: 'name="volume" placeholder="volume output..." rms',
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Satuan",
@@ -1570,8 +1421,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "NIP. PPK",
-									atribut:
-										'name="nip_ppk" placeholder="NIP. PPK..." non_data',
+									atribut: 'name="nip_ppk" placeholder="NIP. PPK..." non_data',
 								}) +
 								createHTML("fieldText", {
 									label: "Nama PPTK",
@@ -1604,10 +1454,7 @@ $(document).ready(function () {
 									kelas: "lainnya selection",
 									dataArray: [
 										["e_purchasing", "e-purchasing"],
-										[
-											"pengadaan_langsung",
-											"pengadaan langsung",
-										],
+										["pengadaan_langsung", "pengadaan langsung"],
 										["penunjukan", "penunjukan langsung"],
 										["tender_cepat", "tender cepat"],
 										["tender", "tender"],
@@ -1731,8 +1578,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="3" non_data',
+									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -1784,10 +1630,7 @@ $(document).ready(function () {
 										'name="objek_belanja" placeholder="pilih objek belanja..."',
 									kelas: "search lainnya selection",
 									dataArray: [
-										[
-											"gaji",
-											"Belanja Gaji dan Tunjangan ASN",
-										],
+										["gaji", "Belanja Gaji dan Tunjangan ASN"],
 										[
 											"barang_jasa_modal",
 											"Belanja Barang Jasa dan Modal",
@@ -1795,27 +1638,15 @@ $(document).ready(function () {
 										],
 										["bunga", "Belanja Bunga"],
 										["subsidi", "Belanja Subsidi"],
-										[
-											"hibah_barang_jasa",
-											"Belanja Hibah (Barang/Jasa)",
-										],
+										["hibah_barang_jasa", "Belanja Hibah (Barang/Jasa)"],
 										["hibah_uang", "Belanja Hibah (Uang)"],
 										[
 											"sosial_barang_jasa",
 											"Belanja Bantuan Sosial (Barang/Jasa)",
 										],
-										[
-											"sosial_uang",
-											"Belanja Bantuan Sosial (Uang)",
-										],
-										[
-											"keuangan_umum",
-											"Belania Bantuan Keuangan Umum",
-										],
-										[
-											"keuangan_khusus",
-											"Belanja Bantuan Keuangan Khusus",
-										],
+										["sosial_uang", "Belanja Bantuan Sosial (Uang)"],
+										["keuangan_umum", "Belania Bantuan Keuangan Umum"],
+										["keuangan_khusus", "Belanja Bantuan Keuangan Khusus"],
 										["btt", "Belanja Tidak Terduga (BTT)"],
 										["bos_pusat", "Dana BOS (BOS Pusat)"],
 										["blud", "Belanja Operasional (BLUD)"],
@@ -1876,8 +1707,7 @@ $(document).ready(function () {
 									txtLabel: '<i class="search icon"></i>',
 									classField: `required`,
 									atributLabel: `name="modal_show" jns="search_field_json" tbl=""`,
-									atribut:
-										'name="komponen" placeholder="pilih komponen..."',
+									atribut: 'name="komponen" placeholder="pilih komponen..."',
 									kelas: "search clearable komponen ajx selection",
 									dataArray: [],
 								}) +
@@ -1910,8 +1740,7 @@ $(document).ready(function () {
 									txtLabel: '<i class="plus icon"></i>',
 									classField: `required`,
 									atributLabel: `name="modal_show" jns="add_field_json" tbl="sub_keg_${tbl}" klm="keterangan_json"`,
-									atribut:
-										'name="uraian" placeholder="pilih keterangan..."',
+									atribut: 'name="uraian" placeholder="pilih keterangan..."',
 									kelas: "search clearable uraian ajx selection",
 									dataArray: [["", ""]],
 								}) +
@@ -1961,8 +1790,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Catatan",
-									atribut:
-										'name="keterangan" rows="2" non_data',
+									atribut: 'name="keterangan" rows="2" non_data',
 								});
 							break;
 						case "sub_keg_dpa":
@@ -2072,8 +1900,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Lokasi",
-									atribut:
-										'name="lokasi" placeholder="lokasi..." non_data',
+									atribut: 'name="lokasi" placeholder="lokasi..." non_data',
 								}) +
 								createHTML("fieldText", {
 									label: "Keterangan",
@@ -2087,9 +1914,7 @@ $(document).ready(function () {
 								});
 							break;
 						case "tujuan_renstra":
-							let kelompok = (tbl = "tujuan_renstra")
-								? "tujuan"
-								: "sasaran";
+							let kelompok = (tbl = "tujuan_renstra") ? "tujuan" : "sasaran";
 							dataHtmlku.konten =
 								createHTML("fieldText", {
 									label: "Kelompok",
@@ -2097,8 +1922,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: `Uraian ${kelompok}`,
-									atribut:
-										'name="text" rows="4" placeholder="uraian..."',
+									atribut: 'name="text" rows="4" placeholder="uraian..."',
 								}) +
 								createHTML("fieldTextarea", {
 									label: `Indikator`,
@@ -2117,9 +1941,7 @@ $(document).ready(function () {
 								});
 							break;
 						case "sasaran_renstra":
-							kelompok = (tbl = "tujuan_renstra")
-								? "tujuan"
-								: "sasaran";
+							kelompok = (tbl = "tujuan_renstra") ? "tujuan" : "sasaran";
 							dataHtmlku.konten =
 								createHTML("fieldText", {
 									label: "Kelompok",
@@ -2132,8 +1954,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: `Uraian ${kelompok}`,
-									atribut:
-										'name="text" rows="4" placeholder="uraian..."',
+									atribut: 'name="text" rows="4" placeholder="uraian..."',
 								}) +
 								createHTML("fieldTextarea", {
 									label: `Indikator`,
@@ -2215,8 +2036,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Satuan",
-									atribut:
-										'name="satuan" placeholder="pilih satuan..."',
+									atribut: 'name="satuan" placeholder="pilih satuan..."',
 									kelas: "search clearable satuan ajx selection",
 									dataArray: [],
 								}) +
@@ -2278,8 +2098,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Lokasi",
-									atribut:
-										'name="lokasi" placeholder="lokasi..." non_data',
+									atribut: 'name="lokasi" placeholder="lokasi..." non_data',
 								}) +
 								createHTML("fieldText", {
 									label: "Keterangan",
@@ -2303,18 +2122,15 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Alamat",
-									atribut:
-										'name="alamat" placeholder="Alamat..."',
+									atribut: 'name="alamat" placeholder="Alamat..."',
 								}) +
 								createHTML("fieldText", {
 									label: "NPWP",
-									atribut:
-										'name="npwp" placeholder="NPWP..."',
+									atribut: 'name="npwp" placeholder="NPWP..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Nama Pemilik Penanda Tangan Perjanjian",
-									atribut:
-										'name="direktur" placeholder="Direktur..."',
+									atribut: 'name="direktur" placeholder="Direktur..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Jabatan Penanda Tangan Perjanjian",
@@ -2323,13 +2139,11 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "No. KTP Direktur",
-									atribut:
-										'name="no_ktp" placeholder="KTP Direktur..."',
+									atribut: 'name="no_ktp" placeholder="KTP Direktur..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Alamat Pemilik",
-									atribut:
-										'name="alamat_dir" placeholder="Alamat Pemilik..."',
+									atribut: 'name="alamat_dir" placeholder="Alamat Pemilik..."',
 								}) +
 								createHTML("fieldText", {
 									label: "No. Akta Pendirian",
@@ -2411,9 +2225,7 @@ $(document).ready(function () {
 									label: "Kode Kelompok Barang/Jasa",
 									atribut: 'name="kd_aset"',
 									kelas: "search clearable aset ajx selection",
-									dataArray: [
-										["1.1.12.01.01.0010", "Isi Tabung Gas"],
-									],
+									dataArray: [["1.1.12.01.01.0010", "Isi Tabung Gas"]],
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Uraian Barang/Jasa",
@@ -2438,8 +2250,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "TKDN",
-									atribut:
-										'name="tkdn" placeholder="tkdn..." rms non_data',
+									atribut: 'name="tkdn" placeholder="tkdn..." rms non_data',
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Mapping Kode Akun dan Belanja",
@@ -2451,8 +2262,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="3" non_data',
+									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -2467,8 +2277,7 @@ $(document).ready(function () {
 							dataHtmlku.konten =
 								createHTML("multiFieldTextAction", {
 									label: "Kode",
-									atribut:
-										'name="kode" placeholder="Kode (jangan ganda)..."',
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 									dataArray: [
@@ -2486,8 +2295,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Kinerja",
-									atribut:
-										'name="kinerja" rows="4" placeholder="kinerja..."',
+									atribut: 'name="kinerja" rows="4" placeholder="kinerja..."',
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Indikator",
@@ -2502,8 +2310,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="4" non_data',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -2516,8 +2323,7 @@ $(document).ready(function () {
 							dataHtmlku.konten =
 								createHTML("multiFieldTextAction", {
 									label: "Kode",
-									atribut:
-										'name="kode" placeholder="Kode (jangan ganda)..."',
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 									dataArray: [
@@ -2531,13 +2337,11 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Uraian",
-									atribut:
-										'name="uraian" rows="4" placeholder="Uraian..."',
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="3" non_data',
+									atribut: 'name="keterangan" rows="3" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -2549,8 +2353,7 @@ $(document).ready(function () {
 							dataHtmlku.konten =
 								createHTML("multiFieldTextAction", {
 									label: "Kode",
-									atribut:
-										'name="kode" placeholder="Kode (jangan ganda)..."',
+									atribut: 'name="kode" placeholder="Kode (jangan ganda)..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data"  jns="get_data" tbl="${tbl}"`,
 									dataArray: [
@@ -2564,13 +2367,11 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Uraian",
-									atribut:
-										'name="uraian" rows="4" placeholder="Uraian..."',
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="4" non_data',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -2600,10 +2401,7 @@ $(document).ready(function () {
 											"peraturan_menteri_lembaga",
 											"Peraturan Kementerian / Lembaga",
 										],
-										[
-											"peraturan_daerah",
-											"Peraturan Perundang-undangan Daerah",
-										],
+										["peraturan_daerah", "Peraturan Perundang-undangan Daerah"],
 										["pengumuman", "Pengumuman"],
 										["artikel", "Artikel"],
 										["lain", "Data Lainnya"],
@@ -2612,8 +2410,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Judul",
-									atribut:
-										'name="judul" rows="3" placeholder="Uraian..."',
+									atribut: 'name="judul" rows="3" placeholder="Uraian..."',
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Uraian Singkat Peraturan",
@@ -2622,8 +2419,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextAction", {
 									label: "Nomor",
-									atribut:
-										'name="nomor" placeholder="Nomor Peraturan..."',
+									atribut: 'name="nomor" placeholder="Nomor Peraturan..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" klm="nomor" tbl="${tbl}"`,
 								}) +
@@ -2656,8 +2452,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="4" non_data',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Status Data",
@@ -2686,9 +2481,7 @@ $(document).ready(function () {
 									label: "Kode Kelompok Barang/Jasa",
 									atribut: 'name="kd_aset"',
 									kelas: "search clearable aset ajx selection",
-									dataArray: [
-										["1.1.12.01.01.0010", "Isi Tabung Gas"],
-									],
+									dataArray: [["1.1.12.01.01.0010", "Isi Tabung Gas"]],
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Rekening / Akun",
@@ -2713,8 +2506,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="2" non_data',
+									atribut: 'name="keterangan" rows="2" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -2726,20 +2518,17 @@ $(document).ready(function () {
 							dataHtmlku.konten +=
 								createHTML("fieldTextAction", {
 									label: "Kode",
-									atribut:
-										'name="kode" placeholder="Nomor Peraturan..."',
+									atribut: 'name="kode" placeholder="Nomor Peraturan..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Nama SKPD",
-									atribut:
-										'name="uraian" rows="4" placeholder="Uraian..."',
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Alamat",
-									atribut:
-										'name="alamat" placeholder="Alamat OPD..."',
+									atribut: 'name="alamat" placeholder="Alamat OPD..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Kepala OPD",
@@ -2771,15 +2560,13 @@ $(document).ready(function () {
 							dataHtmlku.konten +=
 								createHTML("fieldTextAction", {
 									label: "Kode Wilayah",
-									atribut:
-										'name="kode" placeholder="Kode Wilayah..."',
+									atribut: 'name="kode" placeholder="Kode Wilayah..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Nama Wilayah",
-									atribut:
-										'name="uraian" rows="4" placeholder="Uraian..."',
+									atribut: 'name="uraian" rows="4" placeholder="Uraian..."',
 								}) +
 								createHTML("fieldDropdown", {
 									label: "Status Wilayah",
@@ -2797,23 +2584,19 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldText", {
 									label: "Jumlah Kecamatan",
-									atribut:
-										'name="jml_kec" placeholder="Jumlah Kecamatan..."',
+									atribut: 'name="jml_kec" placeholder="Jumlah Kecamatan..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Jumlah Keluarahan",
-									atribut:
-										'name="jml_kel" placeholder="Jumlah Keluarahan..."',
+									atribut: 'name="jml_kel" placeholder="Jumlah Keluarahan..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Jumlah Desa",
-									atribut:
-										'name="jml_desa" placeholder="Jumlah Desa..."',
+									atribut: 'name="jml_desa" placeholder="Jumlah Desa..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Luas Wilayah (km2)",
-									atribut:
-										'name="luas" placeholder="Luas Wilayah (km2)..."',
+									atribut: 'name="luas" placeholder="Luas Wilayah (km2)..."',
 								}) +
 								createHTML("fieldText", {
 									label: "Jumlah Penduduk (jiwa)",
@@ -2846,8 +2629,7 @@ $(document).ready(function () {
 							dataHtmlku.konten +=
 								createHTML("fieldTextAction", {
 									label: "Kode Pengenal",
-									atribut:
-										'name="value" placeholder="Kode Pengenal..."',
+									atribut: 'name="value" placeholder="Kode Pengenal..."',
 									txtLabel: "cek",
 									atributLabel: `name="get_data" jns="get_data" tbl="${tbl}"`,
 								}) +
@@ -2861,8 +2643,7 @@ $(document).ready(function () {
 								}) +
 								createHTML("fieldTextarea", {
 									label: "Keterangan",
-									atribut:
-										'name="keterangan" rows="4" non_data',
+									atribut: 'name="keterangan" rows="4" non_data',
 								}) +
 								createHTML("fielToggleCheckbox", {
 									label: "",
@@ -2938,10 +2719,7 @@ $(document).ready(function () {
 					switch (tbl) {
 						case "daftar_paket":
 							data.id_row = id_row;
-							formIni.attr(
-								"id_row",
-								ini.closest("tr").attr("id_row")
-							);
+							formIni.attr("id_row", ini.closest("tr").attr("id_row"));
 							formIni.attr("dok", ini.attr("dok"));
 							data.dok = ini.attr("dok");
 							jalankanAjax = true;
@@ -2978,9 +2756,7 @@ $(document).ready(function () {
 			formIni.html(htmlForm);
 			let calendarDate = new CalendarConstructor(".ui.calendar.date");
 			calendarDate.runCalendar();
-			let calendarDateTime = new CalendarConstructor(
-				".ui.calendar.datetime"
-			);
+			let calendarDateTime = new CalendarConstructor(".ui.calendar.datetime");
 			calendarDateTime.Type("datetime");
 			calendarDateTime.runCalendar();
 			let calendarYear = new CalendarConstructor(".ui.calendar.year");
@@ -3007,10 +2783,9 @@ $(document).ready(function () {
 							});
 							break;
 						case "users": //name="jenis_naskah_dinas"
-							var dropdown_ajx_organisasi =
-								new DropdownConstructor(
-									'form[name="form_flyout"] .ui.dropdown[name="kd_organisasi"]'
-								);
+							var dropdown_ajx_organisasi = new DropdownConstructor(
+								'form[name="form_flyout"] .ui.dropdown[name="kd_organisasi"]'
+							);
 							dropdown_ajx_organisasi.returnList({
 								jenis: "get_row_json",
 								tbl: "organisasi",
@@ -3059,10 +2834,9 @@ $(document).ready(function () {
 								jenis: "non",
 								tbl: "metodePengadaan",
 							};
-							var dropdownMetodePemilihan =
-								new DropdownConstructor(
-									'form[name="form_flyout"] .ui.dropdown[name="metode_pengadaan"]'
-								);
+							var dropdownMetodePemilihan = new DropdownConstructor(
+								'form[name="form_flyout"] .ui.dropdown[name="metode_pengadaan"]'
+							);
 							dropdownMetodePemilihan.onChange(allObjek);
 							break;
 						case "mapping":
@@ -3217,9 +2991,7 @@ $(document).ready(function () {
 							);
 							var allField = {
 								klm: sumber,
-								id_sub_keg: $('form[name="form_flyout"]').attr(
-									"id_sub_keg"
-								),
+								id_sub_keg: $('form[name="form_flyout"]').attr("id_sub_keg"),
 								jns_kel: sumber,
 							};
 							dropdownSumberDana.returnList({
@@ -3232,9 +3004,7 @@ $(document).ready(function () {
 							);
 							allField = {
 								klm: "keterangan_json",
-								id_sub_keg: $('form[name="form_flyout"]').attr(
-									"id_sub_keg"
-								),
+								id_sub_keg: $('form[name="form_flyout"]').attr("id_sub_keg"),
 								jns_kel: "keterangan_json",
 							};
 							dropdownKeterangan.returnList({
@@ -3288,10 +3058,8 @@ $(document).ready(function () {
 							let calendarDateTime = new CalendarConstructor(
 								`[name="awal_renja"],[name="akhir_renja"]`
 							); //(`.ui.calendar.datetime.startend
-							calendarDateTime.startCalendar =
-								$(`[name="awal_renja"]`);
-							calendarDateTime.endCalendar =
-								$(`[name="akhir_renja"]`);
+							calendarDateTime.startCalendar = $(`[name="awal_renja"]`);
+							calendarDateTime.endCalendar = $(`[name="akhir_renja"]`);
 							calendarDateTime.Type("datetime");
 							calendarDateTime.runCalendar();
 							break;
@@ -3312,10 +3080,7 @@ $(document).ready(function () {
 					switch (tbl) {
 						case "user":
 						case "asn":
-							data.text = ini
-								.closest(".input")
-								.find("input")
-								.val();
+							data.text = ini.closest(".input").find("input").val();
 							data.klm = ini.attr("klm");
 							jalankanAjax = true;
 							break;
@@ -3356,10 +3121,7 @@ $(document).ready(function () {
 							jalankanAjax = true;
 							break;
 						case "satuan":
-							data.value = ini
-								.closest(".input")
-								.find("input")
-								.val();
+							data.value = ini.closest(".input").find("input").val();
 							jalankanAjax = true;
 							break;
 						default:
@@ -3368,10 +3130,7 @@ $(document).ready(function () {
 								.find('input[name="kode"]')
 								.val();
 							if (typeof data.text === "undefined") {
-								data.text = ini
-									.closest(".input")
-									.find("input[name]")
-									.val();
+								data.text = ini.closest(".input").find("input[name]").val();
 							}
 							if (data.text.length > 1) {
 								jalankanAjax = true;
@@ -3417,105 +3176,60 @@ $(document).ready(function () {
 												break;
 											default: //isi form dengan data
 												for (const iterator of elmAttrName) {
-													let attrElm =
-														$(iterator).attr(
-															"name"
-														);
+													let attrElm = $(iterator).attr("name");
 													let postDataField = true;
 													let dropDownElmAjx =
-														$(iterator).closest(
-															".ui.dropdown.ajx"
-														);
+														$(iterator).closest(".ui.dropdown.ajx");
 													let text = `${result.data?.users[attrElm]}`;
-													let position =
-														text.search("file");
-													if (
-														attrElm === "file" ||
-														position >= 0
-													) {
+													let position = text.search("file");
+													if (attrElm === "file" || position >= 0) {
 														formIni.form(
 															"set value",
 															"dum_file",
-															result.data?.users[
-																attrElm
-															]
+															result.data?.users[attrElm]
 														);
 													} else {
 														let strText = null;
-														let cariAttrRms =
-															$(iterator).attr(
-																"rms"
-															);
+														let cariAttrRms = $(iterator).attr("rms");
 														// console.log(`cariAttrRms : ${cariAttrRms}`);
 														if (
-															typeof cariAttrRms ===
-																"undefined" ||
-															cariAttrRms ===
-																false
+															typeof cariAttrRms === "undefined" ||
+															cariAttrRms === false
 														) {
-															strText =
-																result.data
-																	?.users[
-																	attrElm
-																];
+															strText = result.data?.users[attrElm];
 														} else {
-															strText =
-																parseFloat(
-																	result.data
-																		?.users[
-																		attrElm
-																	]
-																);
-															strText =
-																accounting.formatNumber(
-																	result.data
-																		?.users[
-																		attrElm
-																	],
-																	strText.countDecimals(),
-																	".",
-																	","
-																);
+															strText = parseFloat(result.data?.users[attrElm]);
+															strText = accounting.formatNumber(
+																result.data?.users[attrElm],
+																strText.countDecimals(),
+																".",
+																","
+															);
 														}
 														// console.log(`strText : ${strText}`);
 														// jika ada ajx class drpdown
 														if (
-															dropDownElmAjx.length >
-																0 &&
-															result.data.hasOwnProperty(
-																"values"
-															)
+															dropDownElmAjx.length > 0 &&
+															result.data.hasOwnProperty("values")
 														) {
-															if (
-																result.data
-																	?.values[
-																	attrElm
-																]
-															) {
+															if (result.data?.values[attrElm]) {
 																postDataField = false;
 																switch (tbl) {
 																	case "users":
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "kd_organisasi":
 																				var dropdown_ajx_organisasi =
 																					new DropdownConstructor(
 																						'form[name="form_flyout"] .ui.dropdown[name="kd_organisasi"]'
 																					);
 																				dropdown_ajx_organisasi.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_organisasi
+																					result.data?.values?.kd_organisasi
 																				);
-																				dropdown_ajx_organisasi.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "organisasi",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdown_ajx_organisasi.returnList({
+																					jenis: "get_row_json",
+																					tbl: "organisasi",
+																					minCharacters: 1,
+																				});
 																				break;
 																			case "kd_wilayah":
 																				var dropdown_ajx_wilayah =
@@ -3523,18 +3237,13 @@ $(document).ready(function () {
 																						'form[name="form_flyout"] .ui.dropdown[name="kd_wilayah"]'
 																					);
 																				dropdown_ajx_wilayah.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_wilayah
+																					result.data?.values?.kd_wilayah
 																				);
-																				dropdown_ajx_wilayah.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "wilayah",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdown_ajx_wilayah.returnList({
+																					jenis: "get_row_json",
+																					tbl: "wilayah",
+																					minCharacters: 1,
+																				});
 																				break;
 																		}
 																		break;
@@ -3542,96 +3251,65 @@ $(document).ready(function () {
 																	case "prog":
 																	case "keg":
 																	case "sub_keg":
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "satuan":
 																				dropdown_ajx_satuan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.satuan
+																					result.data?.values?.satuan
 																				);
-																				dropdown_ajx_satuan.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdown_ajx_satuan.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					minCharacters: 1,
+																				});
 																				break;
 																		}
 																		break;
 																	case "daftar_paket":
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "satuan":
 																				dropdown_ajx_satuan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.satuan
+																					result.data?.values?.satuan
 																				);
-																				dropdown_ajx_satuan.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdown_ajx_satuan.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					minCharacters: 1,
+																				});
 																				break;
 																			case "id_rekanan":
 																				dropdown_ajx_rekanan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.id_rekanan
+																					result.data?.values?.id_rekanan
 																				);
-																				dropdown_ajx_rekanan.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "rekanan",
-																						minCharacters: 3,
-																					}
-																				);
+																				dropdown_ajx_rekanan.returnList({
+																					jenis: "get_row_json",
+																					tbl: "rekanan",
+																					minCharacters: 3,
+																				});
 																				break;
 																			default:
 																				break;
 																		}
 																		break;
 																	case "mapping":
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "kd_aset":
 																				dropKdAset.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_aset
+																					result.data?.values?.kd_aset
 																				);
-																				dropKdAset.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "aset",
-																					}
-																				);
+																				dropKdAset.returnList({
+																					jenis: "get_row_json",
+																					tbl: "aset",
+																				});
 																				postDataField = false;
 																				break;
 																			case "kd_akun":
 																				dropKdAkun.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_akun
+																					result.data?.values?.kd_akun
 																				);
-																				dropKdAkun.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "akun_belanja",
-																					}
-																				);
+																				dropKdAkun.returnList({
+																					jenis: "get_row_json",
+																					tbl: "akun_belanja",
+																				});
 																				postDataField = false;
 																				break;
 																			default:
@@ -3643,53 +3321,36 @@ $(document).ready(function () {
 																	case "ssh":
 																	case "hspk":
 																		// name="kd_aset"
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "satuan":
 																				dropdown_ajx_satuan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.satuan
+																					result.data?.values?.satuan
 																				);
-																				dropdown_ajx_satuan.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						set: allField,
-																					}
-																				);
+																				dropdown_ajx_satuan.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					set: allField,
+																				});
 																				postDataField = false;
 																				break;
 																			case "kd_aset":
 																				dropdownKdAset.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_aset
+																					result.data?.values?.kd_aset
 																				);
-																				dropdownKdAset.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "aset",
-																					}
-																				);
+																				dropdownKdAset.returnList({
+																					jenis: "get_row_json",
+																					tbl: "aset",
+																				});
 																				postDataField = false;
 																				break;
 																			case "kd_akun":
 																				dropdownKdAkun.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_akun
+																					result.data?.values?.kd_akun
 																				);
-																				dropdownKdAkun.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "akun_belanja_val",
-																					}
-																				);
+																				dropdownKdAkun.returnList({
+																					jenis: "get_row_json",
+																					tbl: "akun_belanja_val",
+																				});
 																				break;
 																				postDataField = false;
 																				break;
@@ -3703,37 +3364,25 @@ $(document).ready(function () {
 																	case "dppa":
 																		tabel_pakai_temporerSubkeg =
 																			"sub_keg_renja";
-																		switch (
-																			tbl
-																		) {
+																		switch (tbl) {
 																			case "dpa":
 																			case "dppa":
 																				tabel_pakai_temporerSubkeg =
 																					"sub_keg_dpa";
 																				break;
 																		}
-																		let id_sub_keg =
-																			$(
-																				'form[name="form_flyout"]'
-																			).attr(
-																				"id_sub_keg"
-																			);
-																		switch (
-																			attrElm
-																		) {
+																		let id_sub_keg = $(
+																			'form[name="form_flyout"]'
+																		).attr("id_sub_keg");
+																		switch (attrElm) {
 																			case "kd_akun":
 																				renja_dpa.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_akun
+																					result.data?.values?.kd_akun
 																				);
-																				renja_dpa.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "akun_belanja",
-																					}
-																				);
+																				renja_dpa.returnList({
+																					jenis: "get_row_json",
+																					tbl: "akun_belanja",
+																				});
 																				break;
 																			// case 'jenis_standar_harga':
 																			// 	dropdownJenisKomponen.valuesDropdown(result.data?.values?.jenis_standar_harga);
@@ -3746,71 +3395,42 @@ $(document).ready(function () {
 																						'form[name="form_flyout"] .ui.dropdown[name="kelompok"]'
 																					);
 																				dropdownKelompok.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kelompok
+																					result.data?.values?.kelompok
 																				);
-																				allField =
-																					{
-																						klm: "kelompok_json",
-																						id_sub_keg:
-																							id_sub_keg,
-																					};
-																				dropdownKelompok.returnList(
-																					{
-																						jenis: "get_field_json",
-																						tbl: tabel_pakai_temporerSubkeg,
-																						set: allField,
-																					}
-																				);
+																				allField = {
+																					klm: "kelompok_json",
+																					id_sub_keg: id_sub_keg,
+																				};
+																				dropdownKelompok.returnList({
+																					jenis: "get_field_json",
+																					tbl: tabel_pakai_temporerSubkeg,
+																					set: allField,
+																				});
 																				break;
 																			case "sumber_dana_p":
 																			case "sumber_dana":
-																				let sumber =
-																					"sumber_dana";
-																				if (
-																					tbl ==
-																						"dppa" ||
-																					tbl ==
-																						"renja_p"
-																				) {
-																					sumber =
-																						"sumber_dana_p";
+																				let sumber = "sumber_dana";
+																				if (tbl == "dppa" || tbl == "renja_p") {
+																					sumber = "sumber_dana_p";
 																				}
 																				dropdownSumberDana.valuesDropdown(
-																					result
-																						.data
-																						?.values[
-																						sumber
-																					]
+																					result.data?.values[sumber]
 																				);
 																				console.log(
-																					result
-																						.data
-																						?.values[
-																						sumber
-																					]
+																					result.data?.values[sumber]
 																				);
-																				var allField =
-																					{
-																						klm: "sumber_dana",
-																						id_sub_keg:
-																							$(
-																								'form[name="form_flyout"]'
-																							).attr(
-																								"id_sub_keg"
-																							),
-																						jns_kel:
-																							"sumber_dana",
-																					};
-																				dropdownSumberDana.returnList(
-																					{
-																						jenis: "getJsonRows",
-																						tbl: tabel_pakai_temporerSubkeg,
-																						set: allField,
-																					}
-																				);
+																				var allField = {
+																					klm: "sumber_dana",
+																					id_sub_keg: $(
+																						'form[name="form_flyout"]'
+																					).attr("id_sub_keg"),
+																					jns_kel: "sumber_dana",
+																				};
+																				dropdownSumberDana.returnList({
+																					jenis: "getJsonRows",
+																					tbl: tabel_pakai_temporerSubkeg,
+																					set: allField,
+																				});
 																				break;
 																			case "komponen":
 																				let dropdownKomponen =
@@ -3818,216 +3438,135 @@ $(document).ready(function () {
 																						'form[name="form_flyout"] .ui.dropdown[name="komponen"]'
 																					);
 																				dropdownKomponen.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.komponen
+																					result.data?.values?.komponen
 																				);
-																				let jenisKomponen =
-																					$(
-																						'form[name="form_flyout"]'
+																				let jenisKomponen = $(
+																					'form[name="form_flyout"]'
+																				)
+																					.find(
+																						'.ui.dropdown[name="jenis_standar_harga"]'
 																					)
-																						.find(
-																							'.ui.dropdown[name="jenis_standar_harga"]'
-																						)
-																						.dropdown(
-																							"get value"
-																						);
-																				let rekeningAkun =
-																					$(
-																						'form[name="form_flyout"]'
-																					)
-																						.find(
-																							'.ui.dropdown[name="kd_akun"]'
-																						)
-																						.dropdown(
-																							"get value"
-																						);
-																				let allFieldKomponen =
-																					{
-																						id_sub_keg:
-																							id_sub_keg,
-																						kd_akun:
-																							rekeningAkun,
-																					};
-																				dropdownKomponen.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: jenisKomponen,
-																						set: allFieldKomponen,
-																					}
-																				);
+																					.dropdown("get value");
+																				let rekeningAkun = $(
+																					'form[name="form_flyout"]'
+																				)
+																					.find('.ui.dropdown[name="kd_akun"]')
+																					.dropdown("get value");
+																				let allFieldKomponen = {
+																					id_sub_keg: id_sub_keg,
+																					kd_akun: rekeningAkun,
+																				};
+																				dropdownKomponen.returnList({
+																					jenis: "get_row_json",
+																					tbl: jenisKomponen,
+																					set: allFieldKomponen,
+																				});
 
 																				break;
 																			case "uraian":
 																				dropdownKeterangan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.uraian
+																					result.data?.values?.uraian
 																				);
-																				allField =
-																					{
-																						klm: "keterangan_json",
-																						id_sub_keg:
-																							id_sub_keg,
-																						jns_kel:
-																							"keterangan_json",
-																					};
-																				dropdownKeterangan.returnList(
-																					{
-																						jenis: "get_field_json",
-																						tbl: tabel_pakai_temporerSubkeg,
-																						set: allField,
-																					}
-																				);
+																				allField = {
+																					klm: "keterangan_json",
+																					id_sub_keg: id_sub_keg,
+																					jns_kel: "keterangan_json",
+																				};
+																				dropdownKeterangan.returnList({
+																					jenis: "get_field_json",
+																					tbl: tabel_pakai_temporerSubkeg,
+																					set: allField,
+																				});
 																				break;
 																			case "sat_1_p":
 																			case "sat_1":
 																				dropdownSatuanRenja1.valuesDropdown(
-																					result
-																						.data
-																						?.values[
-																						attrElm
-																					]
+																					result.data?.values[attrElm]
 																				);
-																				dropdownSatuanRenja1.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdownSatuanRenja1.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					minCharacters: 1,
+																				});
 																				break;
 																			case "sat_2_p":
 																			case "sat_2":
 																				dropdownSatuanRenja2.valuesDropdown(
-																					result
-																						.data
-																						?.values[
-																						attrElm
-																					]
+																					result.data?.values[attrElm]
 																				);
-																				dropdownSatuanRenja2.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdownSatuanRenja2.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					minCharacters: 1,
+																				});
 																				break;
 																			case "sat_3_p":
 																			case "sat_3":
 																				dropdownSatuanRenja3.valuesDropdown(
-																					result
-																						.data
-																						?.values[
-																						attrElm
-																					]
+																					result.data?.values[attrElm]
 																				);
-																				dropdownSatuanRenja3.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdownSatuanRenja3.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					minCharacters: 1,
+																				});
 																				break;
 																			case "sat_4_p":
 																			case "sat_4":
 																				dropdownSatuanRenja4.valuesDropdown(
-																					result
-																						.data
-																						?.values[
-																						attrElm
-																					]
+																					result.data?.values[attrElm]
 																				);
-																				dropdownSatuanRenja4.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						minCharacters: 1,
-																					}
-																				);
+																				dropdownSatuanRenja4.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					minCharacters: 1,
+																				});
 																			default:
 																				break;
 																		}
-																		if (
-																			tbl ===
-																				"renja_p" ||
-																			tbl ===
-																				"dppa"
-																		) {
-																			let id_dpa =
-																				result
-																					.data
-																					?.users
-																					?.id_dpa;
-																			if (
-																				id_dpa >
-																				0
-																			) {
-																				$(
-																					'form[name="form_flyout"]'
-																				)
+																		if (tbl === "renja_p" || tbl === "dppa") {
+																			let id_dpa = result.data?.users?.id_dpa;
+																			if (id_dpa > 0) {
+																				$('form[name="form_flyout"]')
 																					.find(
 																						'.ui.dropdown[name="komponen"],.ui.dropdown[name="jenis_standar_harga"],.ui.dropdown[name="uraian"],.ui.dropdown[name="kd_akun"],.ui.dropdown[name="objek_belanja"],.ui.dropdown[name="jenis_kelompok"],.ui.dropdown[name="kelompok"]'
 																					)
-																					.addClass(
-																						"disabled"
-																					);
+																					.addClass("disabled");
 																			}
 																		}
 																		break;
 																	case "renstra":
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "sasaran":
 																				dropdown_ajx_tujuan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.sasaran
+																					result.data?.values?.sasaran
 																				);
-																				dropdown_ajx_tujuan.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "sasaran_renstra",
-																						set: allField,
-																					}
-																				);
+																				dropdown_ajx_tujuan.returnList({
+																					jenis: "get_row_json",
+																					tbl: "sasaran_renstra",
+																					set: allField,
+																				});
 																				postDataField = false;
 																				break;
 																			case "kd_sub_keg":
 																				dropdown_ajx_kode.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_sub_keg
+																					result.data?.values?.kd_sub_keg
 																				);
-																				dropdown_ajx_kode.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "sub_keg",
-																					}
-																				);
+																				dropdown_ajx_kode.returnList({
+																					jenis: "get_row_json",
+																					tbl: "sub_keg",
+																				});
 																				postDataField = false;
 																				break;
 																			case "satuan":
 																				dropdown_ajx_satuan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.satuan
+																					result.data?.values?.satuan
 																				);
-																				dropdown_ajx_satuan.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "satuan",
-																						set: allField,
-																					}
-																				);
+																				dropdown_ajx_satuan.returnList({
+																					jenis: "get_row_json",
+																					tbl: "satuan",
+																					set: allField,
+																				});
 																				postDataField = false;
 																				break;
 																			default:
@@ -4036,37 +3575,25 @@ $(document).ready(function () {
 																		break;
 																	case "sub_keg_dpa":
 																	case "sub_keg_renja":
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "kd_sub_keg":
 																				dropdown_ajx_sub_keg.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.kd_sub_keg
+																					result.data?.values?.kd_sub_keg
 																				);
-																				dropdown_ajx_sub_keg.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "sub_keg",
-																					}
-																				);
+																				dropdown_ajx_sub_keg.returnList({
+																					jenis: "get_row_json",
+																					tbl: "sub_keg",
+																				});
 																				postDataField = false;
 																				break;
 																			case "sumber_dana":
 																				dropdownSumberDana.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.sumber_dana
+																					result.data?.values?.sumber_dana
 																				);
-																				dropdownSumberDana.returnList(
-																					{
-																						jenis: "get_row_json",
-																						tbl: "sumber_dana",
-																					}
-																				);
+																				dropdownSumberDana.returnList({
+																					jenis: "get_row_json",
+																					tbl: "sumber_dana",
+																				});
 																				postDataField = false;
 																				break;
 																			default:
@@ -4074,23 +3601,16 @@ $(document).ready(function () {
 																		}
 																		break;
 																	case "tujuan_sasaran_renstra":
-																		switch (
-																			attrElm
-																		) {
+																		switch (attrElm) {
 																			case "id_tujuan":
 																				dropdown_ajx_tujuan.valuesDropdown(
-																					result
-																						.data
-																						?.values
-																						?.id_tujuan
+																					result.data?.values?.id_tujuan
 																				);
-																				dropdown_ajx_tujuan.returnList(
-																					{
-																						jenis: "getJsonRows",
-																						tbl: "tujuan_renstra",
-																						ajax: true,
-																					}
-																				);
+																				dropdown_ajx_tujuan.returnList({
+																					jenis: "getJsonRows",
+																					tbl: "tujuan_renstra",
+																					ajax: true,
+																				});
 																				postDataField = false;
 																				break;
 																			default:
@@ -4103,11 +3623,7 @@ $(document).ready(function () {
 															}
 														}
 														if (postDataField) {
-															formIni.form(
-																"set value",
-																attrElm,
-																strText
-															);
+															formIni.form("set value", attrElm, strText);
 														}
 													}
 												}
@@ -4117,15 +3633,11 @@ $(document).ready(function () {
 										switch (tbl) {
 											case "wilayah": //upload direct logo wilayah
 											case "asn":
-												let fileUnggah =
-													result?.data?.users
-														?.file_photo;
+												let fileUnggah = result?.data?.users?.file_photo;
 												let hasUnggah = "file_photo";
 												switch (tbl) {
 													case "wilayah":
-														fileUnggah =
-															result?.data?.users
-																?.logo;
+														fileUnggah = result?.data?.users?.logo;
 														hasUnggah = "logo";
 														break;
 												}
@@ -4134,35 +3646,21 @@ $(document).ready(function () {
 													'form[name="form_flyout"] .special.card .dimmable.image'
 												).dimmer({
 													on:
-														"ontouchstart" in
-														document.documentElement
+														"ontouchstart" in document.documentElement
 															? "click"
 															: "hover",
 												});
 												//
-												if (
-													result?.data?.hasOwnProperty(
-														"users"
-													)
-												) {
+												if (result?.data?.hasOwnProperty("users")) {
 													// let card = document.querySelector('.ui.special.fluid.card');
 													// let NameElement = card.querySelector('.content');
 													// NameElement.textContent = result?.data?.users.nama.toProperCase();
-													if (
-														result?.data?.users.hasOwnProperty(
-															hasUnggah
-														)
-													) {
+													if (result?.data?.users.hasOwnProperty(hasUnggah)) {
 														let angka = fileUnggah;
 														if (angka) {
 															formIni
-																.find(
-																	".ui.card img"
-																)
-																.attr(
-																	"src",
-																	fileUnggah
-																);
+																.find(".ui.card img")
+																.attr("src", fileUnggah);
 														}
 													}
 												}
@@ -4176,62 +3674,33 @@ $(document).ready(function () {
 											case "daftar_paket":
 												let dok = ini.attr("dok");
 												formIni
-													.find(
-														`[name_bayang="${dok}"]`
-													)
-													.val(
-														result.data?.users[dok]
-													);
+													.find(`[name_bayang="${dok}"]`)
+													.val(result.data?.users[dok]);
 												// formIni.form("set value", dok, result.data?.users[dok]).trigger("change");
-												let namaFileLink =
-													result.data.users[dok];
+												let namaFileLink = result.data.users[dok];
 												if (namaFileLink) {
-													let splitku =
-														namaFileLink.split(".");
-													let extensionFile =
-														splitku[
-															splitku.length - 1
-														];
+													let splitku = namaFileLink.split(".");
+													let extensionFile = splitku[splitku.length - 1];
 													switch (extensionFile) {
 														case "jpeg":
 														case "png":
 														case "jpg":
 														case "jpeg":
-															formIni
-																.find("img")
-																.attr(
-																	"src",
-																	namaFileLink
-																);
-															formIni
-																.find("[href]")
-																.attr(
-																	"href",
-																	namaFileLink
-																);
+															formIni.find("img").attr("src", namaFileLink);
+															formIni.find("[href]").attr("href", namaFileLink);
 															break;
 														default:
-															formIni
-																.find("[href]")
-																.attr(
-																	"href",
-																	namaFileLink
-																);
+															formIni.find("[href]").attr("href", namaFileLink);
 															break;
 													}
 												} else {
-													formIni
-														.find(".ribbon.label")
-														.text("Unggah File");
+													formIni.find(".ribbon.label").text("Unggah File");
 												}
 												break;
 											case "logo":
 												formIni
 													.find("[href]")
-													.attr(
-														"href",
-														result.data.users.logo
-													);
+													.attr("href", result.data.users.logo);
 												break;
 											default:
 												break;
@@ -4267,8 +3736,7 @@ $(document).ready(function () {
 											case "sub_keg":
 											case "wilayah":
 												if (result.error.code === 404) {
-													result.error.message =
-														"kode dapat digunakan";
+													result.error.message = "kode dapat digunakan";
 												} else {
 													kelasToast = "warning";
 													result.error.message =
@@ -4276,31 +3744,16 @@ $(document).ready(function () {
 												}
 												break;
 											default:
-												if (
-													pengenal.hasOwnProperty(tbl)
-												) {
-													if (
-														result.error.code ===
-														404
-													) {
-														result.error.message =
-															pengenal[tbl][
-																"404"
-															];
+												if (pengenal.hasOwnProperty(tbl)) {
+													if (result.error.code === 404) {
+														result.error.message = pengenal[tbl]["404"];
 													} else {
 														kelasToast = "warning";
-														result.error.message =
-															pengenal[tbl][
-																"302"
-															];
+														result.error.message = pengenal[tbl]["302"];
 													}
 												} else {
-													if (
-														result.error.code ===
-														404
-													) {
-														result.error.message =
-															"value dapat digunakan";
+													if (result.error.code === 404) {
+														result.error.message = "value dapat digunakan";
 													} else {
 														kelasToast = "warning";
 														result.error.message =
@@ -4322,8 +3775,7 @@ $(document).ready(function () {
 							switch (error_code) {
 								case 9:
 									kelasToast = "error";
-									iconToast =
-										"exclamation triangle yellow icon";
+									iconToast = "exclamation triangle yellow icon";
 									break;
 								default:
 									break;
@@ -4484,10 +3936,7 @@ $(document).ready(function () {
 				break;
 			case "reset":
 				//contentModal = ['<i class="trash alternate icon"></i>anda yakin akan mereset tabel data ini?', 'mereset tabel tidak dapat di batalkan...!']
-				var tabelreset = ini
-					.closest(".card")
-					.find(".content .header")
-					.text();
+				var tabelreset = ini.closest(".card").find(".content .header").text();
 				contentModal = [
 					'<i class="trash alternate icon"></i>anda yakin akan mereset tabel ' +
 						tabelreset +
@@ -4534,9 +3983,7 @@ $(document).ready(function () {
 											}
 										}
 										//console.log(obj);
-										obj.find("input, textarea").addClass(
-											"transparent"
-										);
+										obj.find("input, textarea").addClass("transparent");
 										obj.css("background-color", "#EF617C");
 										obj.fadeOut(600, function () {
 											obj.remove();
@@ -4593,9 +4040,7 @@ $(document).ready(function () {
 								if (direct) {
 									obj = ini.closest('[direct="del"]');
 								}
-								obj.find("input, textarea").addClass(
-									"transparent"
-								);
+								obj.find("input, textarea").addClass("transparent");
 								obj.css("background-color", "#EF617C");
 								obj.fadeOut(500, function () {
 									obj.remove();
@@ -4700,15 +4145,7 @@ $(document).ready(function () {
 						icon: iconToast,
 					});
 				};
-				runAjax(
-					url,
-					"POST",
-					data,
-					"Json",
-					undefined,
-					undefined,
-					"ajaxku"
-				);
+				runAjax(url, "POST", data, "Json", undefined, undefined, "ajaxku");
 			}
 		}
 	});
@@ -4826,9 +4263,7 @@ $(document).ready(function () {
 				case "L": //list
 					let bentuk = jenis === "P" ? "L" : "P";
 					let tooltip = jenis === "P" ? "List" : "paragraf";
-					ini.attr({ jns: bentuk, "data-tooltip": tooltip }).text(
-						bentuk
-					);
+					ini.attr({ jns: bentuk, "data-tooltip": tooltip }).text(bentuk);
 					break;
 				default:
 					break;
@@ -4895,12 +4330,9 @@ $(document).ready(function () {
 				let data = new Uint8Array(reader.result);
 				let workbook = XLSX.read(data, { type: "array" });
 				let first_sheet_name = workbook.SheetNames[0];
-				jsonData = XLSX.utils.sheet_to_json(
-					workbook.Sheets[first_sheet_name],
-					{
-						header: 1,
-					}
-				);
+				jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[first_sheet_name], {
+					header: 1,
+				});
 				jsonData.forEach((value, key) => {
 					let jumlahData = value.length;
 					let jumlahKolom = 8;
@@ -5058,9 +4490,9 @@ $(document).ready(function () {
 		formIni.attr({ jns: jnsAttr, tbl: tblAttr });
 		// console.log(mdl.find('.actions [name="modal_second"]').length);
 		if (mdl.find('.actions [name="modal_second"]').length)
-			mdl.find('.actions [name="modal_second"]').remove(
-				`[name="modal_second"]`
-			);
+			mdl
+				.find('.actions [name="modal_second"]')
+				.remove(`[name="modal_second"]`);
 		switch (jnsAttr) {
 			case "edit":
 				elementForm = "";
@@ -5068,13 +4500,12 @@ $(document).ready(function () {
 				switch (tblAttr) {
 					case "create_surat":
 						mdl.addClass("big");
-						if (
-							mdl.find('.actions [name="modal_second"]').length <=
-							0
-						)
-							mdl.find(".actions").append(
-								`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`
-							);
+						if (mdl.find('.actions [name="modal_second"]').length <= 0)
+							mdl
+								.find(".actions")
+								.append(
+									`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`
+								);
 						elementForm =
 							createHTML("fields", {
 								classField: "four",
@@ -5085,34 +4516,19 @@ $(document).ready(function () {
 										atribut:
 											'name="jenis_naskah_dinas" placeholder="Jenis, Susunan dan bentuk naskah dinas..."',
 										kelas: "search clearable selection",
- 										dataArray: [
+										dataArray: [
 											["instruksi", "Instruksi"],
 											["surat_edaran", "Surat Edaran"],
 											["keputusan", "Keputusan"],
-											[ 
-												"surat_perintah",
-												"Surat Perintah atau Surat Tugas",
-											],
+											["surat_perintah", "Surat Perintah atau Surat Tugas"],
 											["nota_dinas", "Nota Dinas"],
 											["memorandum", "Memorandum"],
-											[
-												"undangan_internal",
-												"Undangan Internal",
-											],
-											[
-												"perjanjian",
-												"Perjanjian Dalam Negeri",
-											],
+											["undangan_internal", "Undangan Internal"],
+											["perjanjian", "Perjanjian Dalam Negeri"],
 											["surat_kuasa", "Surat Kuasa"],
 											["berita_acara", "Berita Acara"],
-											[
-												"surat_keterangan",
-												"Surat Keterangan",
-											],
-											[
-												"surat_pengantar",
-												"Surat Pengantar",
-											],
+											["surat_keterangan", "Surat Keterangan"],
+											["surat_pengantar", "Surat Pengantar"],
 											["pengumuman", "Pengumuman"],
 											["laporan", "Laporan"],
 											["telaah_staf", "Telaah Staf"],
@@ -5165,13 +4581,12 @@ $(document).ready(function () {
 						break;
 					case "sk_asn":
 						mdl.addClass("big");
-						if (
-							mdl.find('.actions [name="modal_second"]').length <=
-							0
-						)
-							mdl.find(".actions").append(
-								`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`
-							);
+						if (mdl.find('.actions [name="modal_second"]').length <= 0)
+							mdl
+								.find(".actions")
+								.append(
+									`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`
+								);
 						elementForm =
 							createHTML("message", {
 								color: "positive",
@@ -5660,9 +5075,7 @@ $(document).ready(function () {
 					case "sub_keg_dpa":
 					case "sub_keg_renja":
 						mdl.addClass("tiny");
-						let id_sub_keg = ini
-							.closest(".ui.form")
-							.attr("id_sub_keg");
+						let id_sub_keg = ini.closest(".ui.form").attr("id_sub_keg");
 						data.id_sub_keg = id_sub_keg;
 						data.klm = klmAttr;
 						let jenis_kelompok = klmAttr;
@@ -5683,17 +5096,14 @@ $(document).ready(function () {
 							case "kelompok_json":
 								switch (jenis_kelompok) {
 									case "paket":
-										headerModal =
-											"Tambah Uraian Pemaketan Belanja";
+										headerModal = "Tambah Uraian Pemaketan Belanja";
 										break;
 									case "kelompok":
-										headerModal =
-											"Tambah Uraian Pengelompokan Belanja";
+										headerModal = "Tambah Uraian Pengelompokan Belanja";
 										break;
 									default:
 										nameAttr = "";
-										pesanToast =
-											"Pilih Pengelompokan Belanja";
+										pesanToast = "Pilih Pengelompokan Belanja";
 										break;
 								}
 								break;
@@ -5763,8 +5173,7 @@ $(document).ready(function () {
 							}) +
 							createHTML("fieldText", {
 								label: "TKDN",
-								atribut:
-									'name="tkdn" placeholder="tkdn..." non_data readonly',
+								atribut: 'name="tkdn" placeholder="tkdn..." non_data readonly',
 							}) +
 							createHTML("fieldTextarea", {
 								label: "Mapping Kode Akun",
@@ -5796,10 +5205,7 @@ $(document).ready(function () {
 						);
 						if (json_id_uraian.length > 2) {
 							json_id_uraian = JSON.parse(
-								$(`form[name="form_flyout"]`).form(
-									"get value",
-									"id_uraian"
-								)
+								$(`form[name="form_flyout"]`).form("get value", "id_uraian")
 							);
 							jalankanAjax = true;
 							data.jenis = "get_rows";
@@ -5811,8 +5217,7 @@ $(document).ready(function () {
 						elementForm =
 							createHTML("fieldSearchGrid", {
 								kelas: `uraian`,
-								atribut:
-									'name="uraian" placeholder="cari..." non_data',
+								atribut: 'name="uraian" placeholder="cari..." non_data',
 							}) +
 							createHTML("fieldDropdown", {
 								label: "Sub Kegiatan",
@@ -5987,11 +5392,7 @@ $(document).ready(function () {
 							"get value",
 							klmAttr
 						);
-						$(`form[name="form_modal"]`).form(
-							"set value",
-							klmAttr,
-							komponen
-						);
+						$(`form[name="form_modal"]`).form("set value", klmAttr, komponen);
 						let elmTambahan = createHTML("ribbonLabel", {
 							label: "Result HTML",
 							posisi: "right",
@@ -6070,38 +5471,25 @@ $(document).ready(function () {
 								case "ssh":
 								case "hspk":
 								case "asb":
-									let strText = parseFloat(
-										result?.data?.users?.harga_satuan
-									);
+									let strText = parseFloat(result?.data?.users?.harga_satuan);
 									strText = accounting.formatNumber(
 										result?.data?.users?.harga_satuan,
 										strText.countDecimals(),
 										".",
 										","
 									);
-									$(`form[name="form_modal"]`).form(
-										"set values",
-										{
-											id: result?.data?.users?.id,
-											kd_aset:
-												result?.data?.users?.kd_aset,
-											uraian_barang:
-												result?.data?.users
-													?.uraian_barang,
-											spesifikasi:
-												result?.data?.users
-													?.spesifikasi,
-											satuan: result?.data?.users?.satuan,
-											harga_satuan: strText,
-											tkdn: result?.data?.users?.tkdn,
-											kd_akun:
-												result?.data?.users?.kd_akun,
-											keterangan:
-												result?.data?.users?.keterangan,
-											disable:
-												result?.data?.users?.disable,
-										}
-									);
+									$(`form[name="form_modal"]`).form("set values", {
+										id: result?.data?.users?.id,
+										kd_aset: result?.data?.users?.kd_aset,
+										uraian_barang: result?.data?.users?.uraian_barang,
+										spesifikasi: result?.data?.users?.spesifikasi,
+										satuan: result?.data?.users?.satuan,
+										harga_satuan: strText,
+										tkdn: result?.data?.users?.tkdn,
+										kd_akun: result?.data?.users?.kd_akun,
+										keterangan: result?.data?.users?.keterangan,
+										disable: result?.data?.users?.disable,
+									});
 									break;
 								default:
 									break;
@@ -6110,9 +5498,7 @@ $(document).ready(function () {
 						case "uraian_belanja":
 							switch (tblAttr) {
 								case "daftar_paket":
-									formIni
-										.find(`table tbody`)
-										.html(result.data.users);
+									formIni.find(`table tbody`).html(result.data.users);
 									onkeypressGlobal(
 										{
 											jns: "uraian_sub_keg",
@@ -6127,9 +5513,7 @@ $(document).ready(function () {
 							break;
 						case "edit":
 							// set nilai form
-							let elmAttrName = formIni.find(
-								"input[name],textarea[name]"
-							);
+							let elmAttrName = formIni.find("input[name],textarea[name]");
 							switch (tblAttr) {
 								case "xcv":
 									break;
@@ -6138,15 +5522,10 @@ $(document).ready(function () {
 										let attrElm = $(iterator).attr("name");
 										let postDataField = true;
 										let dropDownElmAjx =
-											$(iterator).closest(
-												".ui.dropdown.ajx"
-											);
+											$(iterator).closest(".ui.dropdown.ajx");
 										let text = `${result.data?.users[attrElm]}`;
 										let position = text.search("file");
-										if (
-											attrElm === "file" ||
-											position >= 0
-										) {
+										if (attrElm === "file" || position >= 0) {
 											formIni.form(
 												"set value",
 												"dum_file",
@@ -6154,56 +5533,39 @@ $(document).ready(function () {
 											);
 										} else {
 											let strText = null;
-											let cariAttrRms =
-												$(iterator).attr("rms");
+											let cariAttrRms = $(iterator).attr("rms");
 											// console.log(`cariAttrRms : ${cariAttrRms}`);
 											if (
-												typeof cariAttrRms ===
-													"undefined" ||
+												typeof cariAttrRms === "undefined" ||
 												cariAttrRms === false
 											) {
-												strText =
-													result.data?.users[attrElm];
+												strText = result.data?.users[attrElm];
 											} else {
-												strText = parseFloat(
-													result.data?.users[attrElm]
+												strText = parseFloat(result.data?.users[attrElm]);
+												strText = accounting.formatNumber(
+													result.data?.users[attrElm],
+													strText.countDecimals(),
+													".",
+													","
 												);
-												strText =
-													accounting.formatNumber(
-														result.data?.users[
-															attrElm
-														],
-														strText.countDecimals(),
-														".",
-														","
-													);
 											}
 											if (
 												dropDownElmAjx.length > 0 &&
-												result.data.hasOwnProperty(
-													"values"
-												)
+												result.data.hasOwnProperty("values")
 											) {
-												if (
-													result.data?.values[attrElm]
-												) {
+												if (result.data?.values[attrElm]) {
 													postDataField = false;
 													switch (tblAttr) {
 														case "sk_asn":
 															switch (attrElm) {
 																case "pemberi_tgs":
 																	dropdownASN.valuesDropdown(
-																		result
-																			.data
-																			?.values
-																			?.pemberi_tgs
+																		result.data?.values?.pemberi_tgs
 																	);
-																	dropdownASN.returnList(
-																		{
-																			jenis: "get_row_json",
-																			tbl: "asn",
-																		}
-																	);
+																	dropdownASN.returnList({
+																		jenis: "get_row_json",
+																		tbl: "asn",
+																	});
 																	break;
 															}
 															break;
@@ -6213,130 +5575,82 @@ $(document).ready(function () {
 												}
 											}
 											if (postDataField) {
-												formIni.form(
-													"set value",
-													attrElm,
-													strText
-												);
+												formIni.form("set value", attrElm, strText);
 											}
 										}
 									}
 									switch (tblAttr) {
 										case "sk_asn":
-											formIni.attr(
-												"id_row",
-												result.data?.users.id
-											);
+											formIni.attr("id_row", result.data?.users.id);
 											//insert semua data di tabel fom
-											let allTable = $(
-												`form[name="form_modal"] table[name]`
-											);
-											allTable.each(function (
-												index,
-												element
-											) {
+											let allTable = $(`form[name="form_modal"] table[name]`);
+											allTable.each(function (index, element) {
 												// element == this
-												let tbodyElemen =
-													$(this).find("tbody");
-												let attrTable =
-													$(this).attr("name");
+												let tbodyElemen = $(this).find("tbody");
+												let attrTable = $(this).attr("name");
 												// console.log(attrTable);
 												if (
-													result.data?.users.hasOwnProperty(
-														attrTable
-													) !== false
+													result.data?.users.hasOwnProperty(attrTable) !== false
 												) {
 													let dataResult = JSON.parse(
-														result.data?.users[
-															attrTable
-														]
+														result.data?.users[attrTable]
 													);
-													Object.keys(
-														dataResult
-													).forEach((key) => {
+													Object.keys(dataResult).forEach((key) => {
 														// console.log(key, dataResult[key]);
-														let p_l = dataResult[
-															key
-														].hasOwnProperty("p_l")
-															? dataResult[key][
-																	"p_l"
-															  ]
+														let p_l = dataResult[key].hasOwnProperty("p_l")
+															? dataResult[key]["p_l"]
 															: "L";
-														let tooltip =
-															p_l === "P"
-																? "Paragraf"
-																: "List";
-														let keyObject =
-															Object.keys(
-																dataResult[key]
-															);
+														let tooltip = p_l === "P" ? "Paragraf" : "List";
+														let keyObject = Object.keys(dataResult[key]);
 														switch (attrTable) {
 															case "nama_ditugaskan":
-																let elmTrName =
-																	createHTML(
-																		"tr_tabel",
-																		{
-																			bodyTable:
-																				[
-																					[
-																						{
-																							lbl: `<div contenteditable="">${dataResult[key]["nama"]}</div>`,
-																						},
-																						{
-																							lbl: `<div contenteditable="">${dataResult[key]["pangkat"]}</div></td>`,
-																						},
-																						{
-																							lbl: `<div contenteditable="">${dataResult[key]["nip"]}</div>`,
-																						},
-																						{
-																							lbl: `<div contenteditable="">${dataResult[key]["jabatan"]}</div>`,
-																						},
-																						{
-																							lbl: `<div contenteditable="">${dataResult[key]["jabatan_sk"]}</div>`,
-																						},
-																						{
-																							class: "collapsing",
-																							lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																						},
-																					],
-																				],
-																		}
-																	);
-																tbodyElemen.append(
-																	elmTrName
-																);
+																let elmTrName = createHTML("tr_tabel", {
+																	bodyTable: [
+																		[
+																			{
+																				lbl: `<div contenteditable="">${dataResult[key]["nama"]}</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable="">${dataResult[key]["pangkat"]}</div></td>`,
+																			},
+																			{
+																				lbl: `<div contenteditable="">${dataResult[key]["nip"]}</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable="">${dataResult[key]["jabatan"]}</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable="">${dataResult[key]["jabatan_sk"]}</div>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	],
+																});
+																tbodyElemen.append(elmTrName);
 																break;
 															default:
-																let elmTr =
-																	createHTML(
-																		"tr_tabel",
-																		{
-																			bodyTable:
-																				[
-																					[
-																						{
-																							lbl: `<div contenteditable="">${
-																								dataResult[
-																									key
-																								][
-																									keyObject[0]
-																								]
-																							}</div>`,
-																						},
-																						{
-																							lbl: `<button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button>`,
-																						},
-																						{
-																							class: "collapsing",
-																							lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																						},
-																					],
-																				],
-																		}
-																	);
-																tbodyElemen.append(
-																	elmTr
-																);
+																let elmTr = createHTML("tr_tabel", {
+																	bodyTable: [
+																		[
+																			{
+																				lbl: `<div contenteditable="">${
+																					dataResult[key][keyObject[0]]
+																				}</div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	],
+																});
+																tbodyElemen.append(elmTr);
 																break;
 														}
 													});
@@ -6367,9 +5681,7 @@ $(document).ready(function () {
 						case "add":
 							switch (tblAttr) {
 								case "realisasi":
-									formIni
-										.find(`table.tblUraian tbody`)
-										.html(result.data.tbody);
+									formIni.find(`table.tblUraian tbody`).html(result.data.tbody);
 									onkeypressGlobal(
 										{
 											jns: "realisasi",
@@ -6402,9 +5714,7 @@ $(document).ready(function () {
 									//jika edit maka disabled tanggal
 									switch (tblAttr) {
 										case "realisasi":
-											formIni
-												.find(`.ui.calendar.date`)
-												.addClass("disabled");
+											formIni.find(`.ui.calendar.date`).addClass("disabled");
 											break;
 										default:
 											break;
@@ -6509,13 +5819,11 @@ $(document).ready(function () {
 						elementForm +=
 							createHTML("fieldText", {
 								label: "Sub Kegiatan",
-								atribut:
-									'name="uraian" placeholder="uraian..." readonly',
+								atribut: 'name="uraian" placeholder="uraian..." readonly',
 							}) +
 							createHTML("fieldText", {
 								label: "Akun Belanja",
-								atribut:
-									'name="uraian" placeholder="uraian..." readonly',
+								atribut: 'name="uraian" placeholder="uraian..." readonly',
 							});
 						data.id_row = id_rowAttr;
 						jalankanAjax = true;
@@ -6525,9 +5833,7 @@ $(document).ready(function () {
 			case "cetak":
 				switch (tblAttr) {
 					case "sk_asn": //@audit cetak sk
-						var id_row_form_modal = $(
-							'form[name="form_modal"]'
-						).attr("id_row");
+						var id_row_form_modal = $('form[name="form_modal"]').attr("id_row");
 						elementForm =
 							createHTML("text", {
 								atribut:
@@ -6539,16 +5845,12 @@ $(document).ready(function () {
 									createHTML("fieldDropdown", {
 										label: "Dokumen",
 										classField: `required`,
-										atribut:
-											'name="dokumen" placeholder="Jenis Dokumen..."',
+										atribut: 'name="dokumen" placeholder="Jenis Dokumen..."',
 										kelas: "read-only selection lainnya",
 										dataArray: [
 											["sk_asn", "Surat Keputusan"],
 											["kontrak", "Kontrak"],
-											[
-												"laporan_realisasi",
-												"Laporan Realisasi",
-											],
+											["laporan_realisasi", "Laporan Realisasi"],
 										],
 									}) +
 									createHTML("fieldCalendar", {
@@ -6576,19 +5878,10 @@ $(document).ready(function () {
 												"letter",
 												"Letter ( 216 x 279 ) mm = ( 8.50 x 11.00 ) in",
 											],
-											[
-												"legal",
-												"Legal ( 216 x 356 ) mm = ( 8.50 x 14.00 ) in",
-											],
+											["legal", "Legal ( 216 x 356 ) mm = ( 8.50 x 14.00 ) in"],
 											["divider"],
-											[
-												"A4",
-												"A4 ( 210 x 297 ) mm = ( 8,27 x 11,69 ) in",
-											],
-											[
-												"A3",
-												"A3 ( 297 × 420 ) mm = ( 11,69 x 16,54 ) in",
-											],
+											["A4", "A4 ( 210 x 297 ) mm = ( 8,27 x 11,69 ) in"],
+											["A3", "A3 ( 297 × 420 ) mm = ( 11,69 x 16,54 ) in"],
 											["divider"],
 											[
 												"F4",
@@ -6661,13 +5954,11 @@ $(document).ready(function () {
 								content:
 									createHTML("fielToggleCheckbox", {
 										label: "",
-										atribut:
-											'name="header" non_data readonly',
+										atribut: 'name="header" non_data readonly',
 										txtLabel: "Aktifkan Header",
 									}) +
 									createHTML("fielToggleCheckbox", {
-										atribut:
-											'name="footer" non_data readonly',
+										atribut: 'name="footer" non_data readonly',
 										txtLabel: "Aktifkan Footer",
 									}),
 							}) +
@@ -6691,8 +5982,7 @@ $(document).ready(function () {
 								content: "Kop Surat",
 							}) +
 							createHTML("fielToggleCheckbox", {
-								atribut:
-									'name="cetak_kop" checked="checked" non_data readonly',
+								atribut: 'name="cetak_kop" checked="checked" non_data readonly',
 								txtLabel: "Cetak Kop Surat",
 							}) +
 							createHTML("fields", {
@@ -6913,10 +6203,7 @@ $(document).ready(function () {
 									case "asn":
 										//merubah pilihan di sk_asn
 										// String yang akan diubah menjadi objek
-										if (
-											value.length > 0 &&
-											typeof $choice !== "undefined"
-										) {
+										if (value.length > 0 && typeof $choice !== "undefined") {
 											let dataString = dataChoice;
 											// Membagi string menjadi bagian-bagian berdasarkan tanda titik koma dan spasi
 											let parts = dataString.split("; ");
@@ -6936,58 +6223,45 @@ $(document).ready(function () {
 											switch (nameAttr) {
 												case "asn": //wait
 													if (
-														typeof elm.closest(
-															'form[tbl="sk_asn"]'
-														) !== "undefined"
+														typeof elm.closest('form[tbl="sk_asn"]') !==
+														"undefined"
 													) {
 														let elmTabelAsnSK = elm
 															.closest("form")
-															.find(
-																'table[name="nama_ditugaskan"] tbody'
-															);
-														let trRow = createHTML(
-															"tr_tabel",
-															{
-																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>${text}</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable>${dataObj.Pangkat}</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable>${value}</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable="">${dataObj.Jabatan}</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+															.find('table[name="nama_ditugaskan"] tbody');
+														let trRow = createHTML("tr_tabel", {
+															bodyTable: [
+																[
+																	{
+																		lbl: `<div contenteditable>${text}</div>`,
+																	},
+																	{
+																		lbl: `<div contenteditable>${dataObj.Pangkat}</div>`,
+																	},
+																	{
+																		lbl: `<div contenteditable>${value}</div>`,
+																	},
+																	{
+																		lbl: `<div contenteditable="">${dataObj.Jabatan}</div>`,
+																	},
+																	{
+																		lbl: `<div contenteditable></div>`,
+																	},
+																	{
+																		class: "collapsing",
+																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																	},
 																],
-															}
-														);
-														elmTabelAsnSK.append(
-															trRow
-														);
+															],
+														});
+														elmTabelAsnSK.append(trRow);
 													}
 													break;
 												case "pemberi_tgs":
-													elm.closest("form").form(
-														"set values",
-														{
-															jbt_pemberi_tgs:
-																dataObj.Jabatan,
-															pangkat_pemberi_tgs:
-																dataObj.Pangkat,
-														}
-													);
+													elm.closest("form").form("set values", {
+														jbt_pemberi_tgs: dataObj.Jabatan,
+														pangkat_pemberi_tgs: dataObj.Pangkat,
+													});
 													break;
 												default:
 													break;
@@ -7004,22 +6278,17 @@ $(document).ready(function () {
 											objekArray = el;
 											return el.value == value;
 										});
-										var MyForm = $(
-											`form[name="form_flyout"]`
-										);
+										var MyForm = $(`form[name="form_flyout"]`);
 										MyForm.form("set values", {
 											tkdn: objekArray.tkdn,
 											satuan: objekArray.satuan,
 											spesifikasi: objekArray.spesifikasi,
-											harga_satuan:
-												accounting.formatNumber(
-													objekArray.harga_satuan,
-													parseFloat(
-														objekArray.harga_satuan
-													).countDecimals(),
-													".",
-													","
-												),
+											harga_satuan: accounting.formatNumber(
+												objekArray.harga_satuan,
+												parseFloat(objekArray.harga_satuan).countDecimals(),
+												".",
+												","
+											),
 										});
 										break;
 									case "sub_keg_dpa":
@@ -7028,10 +6297,9 @@ $(document).ready(function () {
 										let kd_sub_keg = MyForm.find(
 											`.ui.dropdown[name="kd_sub_keg"]`
 										).dropdown("get value");
-										var searchPrompt =
-											new SearchConstructor(
-												'form[name="form_modal"] .ui.search.uraian'
-											);
+										var searchPrompt = new SearchConstructor(
+											'form[name="form_modal"] .ui.search.uraian'
+										);
 										let allField = {
 											minCharacters: 3,
 											searchDelay: 600,
@@ -7135,11 +6403,10 @@ $(document).ready(function () {
 						case "getJsonRows":
 							switch (tbl) {
 								case "tujuan_renstra": //tujuan sasaran renstra
-									let elmTujuan = $(
-										`form[name="form_flyout"]`
-									).find('[name="id_tujuan"]');
-									let fieldElmTujuan =
-										elmTujuan.closest(".field");
+									let elmTujuan = $(`form[name="form_flyout"]`).find(
+										'[name="id_tujuan"]'
+									);
+									let fieldElmTujuan = elmTujuan.closest(".field");
 									ajaxSend = false;
 									if (value === "tujuan") {
 										fieldElmTujuan.attr("hidden");
@@ -7174,9 +6441,7 @@ $(document).ready(function () {
 									case "getJsonRows":
 										switch (tbl) {
 											case "tujuan_renstra": //tujuan sasaran renstra
-												MethodConstructor.tujuanRenstra(
-													result
-												);
+												MethodConstructor.tujuanRenstra(result);
 												break;
 											default:
 												break;
@@ -7237,11 +6502,10 @@ $(document).ready(function () {
 						case "getJsonRows":
 							switch (allObjek.tbl) {
 								case "tujuan_renstra": //tujuan sasaran renstra
-									let elmTujuan = $(
-										`form[name="form_flyout"]`
-									).find('[name="id_tujuan"]');
-									let fieldElmTujuan =
-										elmTujuan.closest(".field");
+									let elmTujuan = $(`form[name="form_flyout"]`).find(
+										'[name="id_tujuan"]'
+									);
+									let fieldElmTujuan = elmTujuan.closest(".field");
 									ajaxSend = false;
 									if (value === "tujuan") {
 										fieldElmTujuan.attr("hidden");
@@ -7581,15 +6845,11 @@ $(document).ready(function () {
 									};
 
 									if (value in elmNaskah) {
-										for (let { tag, prop } of elmNaskah[
-											value
-										].elemen) {
+										for (let { tag, prop } of elmNaskah[value].elemen) {
 											elemen += createHTML(tag, prop);
 										}
 									}
-									myForm
-										.find('div[name="elm_naskah"]')
-										.html(elemen);
+									myForm.find('div[name="elm_naskah"]').html(elemen);
 									break;
 								case "register_surat":
 									var myForm = $('form[name="form_flyout"]');
@@ -7714,50 +6974,37 @@ $(document).ready(function () {
 										korespondensi: korespondensi,
 										khusus: khusus,
 									};
-									myForm
-										.find(`.ui.dropdown[name="sifat"]`)
-										.dropdown({
-											values: myVariable[value],
-											onChange: function (
-												value2,
-												text,
-												$choice
-											) {
-												let value_sub_sifat = [
-													{
-														value: value2,
-														name: text,
-													},
-												];
-												switch (value2) {
-													case "arahan_pengaturan":
-														value_sub_sifat =
-															arahan_pengaturan;
-														break;
-													case "arahan_penetapan":
-														value_sub_sifat =
-															arahan_penetapan;
-														break;
-													case "arahan_penugasan":
-														value_sub_sifat =
-															arahan_penugasan;
-														break;
-													case "korespondensi_internal":
-														value_sub_sifat =
-															korespondensi_internal;
-														break;
-													case "korespondensi_eksternal":
-														value_sub_sifat =
-															korespondensi_eksternal;
-														break;
-												}
-												myForm
-													.find(`[name="sub_sifat"]`)
-													.dropdown({
-														values: value_sub_sifat,
-													});
-											},
-										});
+									myForm.find(`.ui.dropdown[name="sifat"]`).dropdown({
+										values: myVariable[value],
+										onChange: function (value2, text, $choice) {
+											let value_sub_sifat = [
+												{
+													value: value2,
+													name: text,
+												},
+											];
+											switch (value2) {
+												case "arahan_pengaturan":
+													value_sub_sifat = arahan_pengaturan;
+													break;
+												case "arahan_penetapan":
+													value_sub_sifat = arahan_penetapan;
+													break;
+												case "arahan_penugasan":
+													value_sub_sifat = arahan_penugasan;
+													break;
+												case "korespondensi_internal":
+													value_sub_sifat = korespondensi_internal;
+													break;
+												case "korespondensi_eksternal":
+													value_sub_sifat = korespondensi_eksternal;
+													break;
+											}
+											myForm.find(`[name="sub_sifat"]`).dropdown({
+												values: value_sub_sifat,
+											});
+										},
+									});
 									break;
 								case "metodePengadaan":
 									let value_pengadaan_penyedia = [
@@ -7836,152 +7083,134 @@ $(document).ready(function () {
 									var myForm = $('form[name="form_flyout"]');
 									if (value === "penyedia") {
 										// 'name="metode_pemilihan"'
-										myForm
-											.find(`[name="metode_pemilihan"]`)
-											.dropdown({
-												values: value_metode_pemilihan,
-											});
+										myForm.find(`[name="metode_pemilihan"]`).dropdown({
+											values: value_metode_pemilihan,
+										});
 										// 'name="pengadaan_penyedia"'
-										myForm
-											.find(`[name="pengadaan_penyedia"]`)
-											.dropdown({
-												values: value_pengadaan_penyedia,
-												onChange: function (
-													value,
-													text,
-													$choice
-												) {
-													let jenis_kontrak = [
-														{
-															value: "lumsum",
-															name: "Lumsum",
-														},
-														{
-															value: "harga_satuan",
-															name: "Harga Satuan",
-														},
-														{
-															value: "gabungan_lum_sat",
-															name: "Gabungan Lumsum dan Harga Satuan",
-														},
-														{
-															value: "terima_jadi",
-															name: "Terima Jadi (Turnkey)",
-														},
-														{
-															value: "payung",
-															name: "Kontrak Payung",
-														},
-													];
-													switch (value) {
-														case "barang":
-														case "jasa_lainnya":
-															jenis_kontrak = [
-																{
-																	value: "lumsum",
-																	name: "Lumsum",
-																},
-																{
-																	value: "harga_satuan",
-																	name: "Harga Satuan",
-																},
-																{
-																	value: "gabungan_lum_sat",
-																	name: "Gabungan Lumsum dan Harga Satuan",
-																},
-																{
-																	value: "biaya_plus_imbalan",
-																	name: "Biaya Plus Imbalan",
-																},
-																{
-																	value: "payung",
-																	name: "Kontrak Payung",
-																},
-															];
-															break;
-														case "konstruksi":
-															jenis_kontrak = [
-																{
-																	value: "lumsum",
-																	name: "Lumsum",
-																},
-																{
-																	value: "harga_satuan",
-																	name: "Harga Satuan",
-																},
-																{
-																	value: "gabungan_lum_sat",
-																	name: "Gabungan Lumsum dan Harga Satuan",
-																},
-																{
-																	value: "putar_kunci",
-																	name: "Putar Kunci",
-																},
-																{
-																	value: "biaya_plus_imbalan",
-																	name: "Biaya Plus Imbalan",
-																},
-															];
-															break;
-														case "konsultansi":
-															jenis_kontrak = [
-																{
-																	value: "lumsum",
-																	name: "Lumsum",
-																},
-																{
-																	value: "waktu_penugasan",
-																	name: "Waktu Penugasan",
-																},
-															];
-															break;
-														case "konsultansi_non_konst":
-															jenis_kontrak = [
-																{
-																	value: "lumsum",
-																	name: "Lumsum",
-																},
-																{
-																	value: "waktu_penugasan",
-																	name: "Waktu Penugasan",
-																},
-																{
-																	value: "payung",
-																	name: "Kontrak Payung",
-																},
-															];
-															break;
-														default:
-															break;
-													}
-													myForm
-														.find(
-															`[name="jns_kontrak"]`
-														)
-														.dropdown({
-															values: jenis_kontrak,
-														});
-												},
-											});
+										myForm.find(`[name="pengadaan_penyedia"]`).dropdown({
+											values: value_pengadaan_penyedia,
+											onChange: function (value, text, $choice) {
+												let jenis_kontrak = [
+													{
+														value: "lumsum",
+														name: "Lumsum",
+													},
+													{
+														value: "harga_satuan",
+														name: "Harga Satuan",
+													},
+													{
+														value: "gabungan_lum_sat",
+														name: "Gabungan Lumsum dan Harga Satuan",
+													},
+													{
+														value: "terima_jadi",
+														name: "Terima Jadi (Turnkey)",
+													},
+													{
+														value: "payung",
+														name: "Kontrak Payung",
+													},
+												];
+												switch (value) {
+													case "barang":
+													case "jasa_lainnya":
+														jenis_kontrak = [
+															{
+																value: "lumsum",
+																name: "Lumsum",
+															},
+															{
+																value: "harga_satuan",
+																name: "Harga Satuan",
+															},
+															{
+																value: "gabungan_lum_sat",
+																name: "Gabungan Lumsum dan Harga Satuan",
+															},
+															{
+																value: "biaya_plus_imbalan",
+																name: "Biaya Plus Imbalan",
+															},
+															{
+																value: "payung",
+																name: "Kontrak Payung",
+															},
+														];
+														break;
+													case "konstruksi":
+														jenis_kontrak = [
+															{
+																value: "lumsum",
+																name: "Lumsum",
+															},
+															{
+																value: "harga_satuan",
+																name: "Harga Satuan",
+															},
+															{
+																value: "gabungan_lum_sat",
+																name: "Gabungan Lumsum dan Harga Satuan",
+															},
+															{
+																value: "putar_kunci",
+																name: "Putar Kunci",
+															},
+															{
+																value: "biaya_plus_imbalan",
+																name: "Biaya Plus Imbalan",
+															},
+														];
+														break;
+													case "konsultansi":
+														jenis_kontrak = [
+															{
+																value: "lumsum",
+																name: "Lumsum",
+															},
+															{
+																value: "waktu_penugasan",
+																name: "Waktu Penugasan",
+															},
+														];
+														break;
+													case "konsultansi_non_konst":
+														jenis_kontrak = [
+															{
+																value: "lumsum",
+																name: "Lumsum",
+															},
+															{
+																value: "waktu_penugasan",
+																name: "Waktu Penugasan",
+															},
+															{
+																value: "payung",
+																name: "Kontrak Payung",
+															},
+														];
+														break;
+													default:
+														break;
+												}
+												myForm.find(`[name="jns_kontrak"]`).dropdown({
+													values: jenis_kontrak,
+												});
+											},
+										});
 									} else {
 										// 'name="metode_pemilihan"'
-										myForm
-											.find(`[name="metode_pemilihan"]`)
-											.dropdown({
-												values: value_metode_pemilihanSW,
-											});
+										myForm.find(`[name="metode_pemilihan"]`).dropdown({
+											values: value_metode_pemilihanSW,
+										});
 										// 'name="pengadaan_penyedia"'
-										myForm
-											.find(`[name="pengadaan_penyedia"]`)
-											.dropdown({
-												values: value_pengadaan_penyediaSW,
-											});
+										myForm.find(`[name="pengadaan_penyedia"]`).dropdown({
+											values: value_pengadaan_penyediaSW,
+										});
 										// 'name="jns_kontrak"'
-										myForm
-											.find(`[name="jns_kontrak"]`)
-											.dropdown({
-												values: value_pengadaan_penyediaSW,
-											});
+										myForm.find(`[name="jns_kontrak"]`).dropdown({
+											values: value_pengadaan_penyediaSW,
+										});
 									}
 									break;
 								default:
@@ -8012,11 +7241,8 @@ $(document).ready(function () {
 										.removeClass(
 											"red orange yellow green olive teal blue violet purple pink brown grey black"
 										);
-									let warnapilih =
-										warna_tbl !== "non" ? warna_tbl : "";
-									$("body")
-										.find(".table.insert")
-										.addClass(warnapilih);
+									let warnapilih = warna_tbl !== "non" ? warna_tbl : "";
+									$("body").find(".table.insert").addClass(warnapilih);
 									break;
 								default:
 									break;
@@ -8044,9 +7270,7 @@ $(document).ready(function () {
 									case "getJsonRows":
 										switch (allObjek.tbl) {
 											case "tujuan_renstra": //tujuan sasaran renstra
-												MethodConstructor.tujuanRenstra(
-													result
-												);
+												MethodConstructor.tujuanRenstra(result);
 												break;
 											default:
 												break;
@@ -8128,9 +7352,7 @@ $(document).ready(function () {
 		}
 		static tujuanRenstra(result = {}) {
 			let formIni = $(`form[name="form_flyout"]`);
-			let elmTujuan = $(`form[name="form_flyout"]`).find(
-				'[name="id_tujuan"]'
-			);
+			let elmTujuan = $(`form[name="form_flyout"]`).find('[name="id_tujuan"]');
 			let fieldElmTujuan = elmTujuan.closest(".field");
 			fieldElmTujuan.removeClass("hidden");
 			if (elmTujuan.length <= 0) {
@@ -8159,9 +7381,7 @@ $(document).ready(function () {
 					);
 					let allField = {
 						klm: "kelompok_json",
-						id_sub_keg: $('form[name="form_flyout"]').attr(
-							"id_sub_keg"
-						),
+						id_sub_keg: $('form[name="form_flyout"]').attr("id_sub_keg"),
 					};
 					dropdownKelompok.returnList({
 						jenis: "get_field_json",
@@ -8180,9 +7400,7 @@ $(document).ready(function () {
 						.find('.ui.dropdown[name="kd_akun"]')
 						.dropdown("get value");
 					let allFieldKomponen = {
-						id_sub_keg: $('form[name="form_flyout"]').attr(
-							"id_sub_keg"
-						),
+						id_sub_keg: $('form[name="form_flyout"]').attr("id_sub_keg"),
 						kd_akun: rekeningAkun,
 					};
 					dropdownKomponen.returnList({
@@ -8292,9 +7510,7 @@ $(document).ready(function () {
 							tanggal = `${tanggal.getFullYear()}-${
 								tanggal.getMonth() + 1
 							}-${tanggal.getDate()}`; //local time
-							$(
-								'a[data-tab="lap-harian"][tbl="get_list"]'
-							).trigger("click");
+							$('a[data-tab="lap-harian"][tbl="get_list"]').trigger("click");
 							break;
 						case "value2":
 							break;
@@ -8466,59 +7682,34 @@ $(document).ready(function () {
 											let kd_akunsub_keg = [];
 											let sumPagu = 0;
 											let sumKontrak = 0;
-											$(
-												`[name="form_modal"] table tbody tr`
-											).each(function () {
+											$(`[name="form_modal"] table tbody tr`).each(function () {
 												sx++;
 												let element = $(this);
 												if (sx === 1) {
 													namaPaketAwal = element
-														.find(
-															'td[klm="uraian"]'
-														)
+														.find('td[klm="uraian"]')
 														.text();
 												}
 												kd_akunsub_keg.push(
-													element
-														.find(
-															'td[klm="kd_sub_keg"]'
-														)
-														.text()
+													element.find('td[klm="kd_sub_keg"]').text()
 												);
-												let idUraian = Number(
-													element.attr("id_row")
-												);
-												let dok_anggaran =
-													element.attr(
-														"dok_anggaran"
-													);
-												sumPagu += Number(
-													element.attr("pagu")
-												);
+												let idUraian = Number(element.attr("id_row"));
+												let dok_anggaran = element.attr("dok_anggaran");
+												sumPagu += Number(element.attr("pagu"));
 												let kontrak = Number(
 													accounting.unformat(
-														element
-															.find(
-																`[klm="kontrak"] div`
-															)
-															.text(),
+														element.find(`[klm="kontrak"] div`).text(),
 														","
 													)
 												);
 												let vol_kontrak = Number(
 													accounting.unformat(
-														element
-															.find(
-																`[klm="vol_kontrak"] div`
-															)
-															.text(),
+														element.find(`[klm="vol_kontrak"] div`).text(),
 														","
 													)
 												);
 												let sat_kontrak = element
-													.find(
-														`[klm="sat_kontrak"] div`
-													)
+													.find(`[klm="sat_kontrak"] div`)
 													.text();
 												sumKontrak += kontrak;
 												dataUraian[`AL${sx}`] = {
@@ -8533,9 +7724,10 @@ $(document).ready(function () {
 											if (sx > 1) {
 												namaPaketAwal += " cs.";
 											}
-											let namaPaket = $(
-												`[name="form_flyout"]`
-											).form("get value", "uraian");
+											let namaPaket = $(`[name="form_flyout"]`).form(
+												"get value",
+												"uraian"
+											);
 											if (namaPaket.length < 2) {
 												namaPaket = namaPaketAwal;
 											}
@@ -8547,29 +7739,20 @@ $(document).ready(function () {
 												","
 											);
 											sumKontrak = parseFloat(sumKontrak);
-											sumKontrak =
-												accounting.formatNumber(
-													sumKontrak,
-													sumKontrak.countDecimals(),
-													".",
-													","
-												);
-											$(`[name="form_flyout"]`).form(
-												"set values",
-												{
-													id_uraian:
-														JSON.stringify(
-															dataUraian
-														),
-													uraian: namaPaket,
-													pagu: sumPagu,
-													jumlah: sumKontrak,
-													count_uraian_belanja: `${sx} uraian {${kd_akunsub_keg}}`,
-												}
+											sumKontrak = accounting.formatNumber(
+												sumKontrak,
+												sumKontrak.countDecimals(),
+												".",
+												","
 											);
-											$(".ui.modal.mdl_general").modal(
-												"hide"
-											);
+											$(`[name="form_flyout"]`).form("set values", {
+												id_uraian: JSON.stringify(dataUraian),
+												uraian: namaPaket,
+												pagu: sumPagu,
+												jumlah: sumKontrak,
+												count_uraian_belanja: `${sx} uraian {${kd_akunsub_keg}}`,
+											});
+											$(".ui.modal.mdl_general").modal("hide");
 											break;
 										default:
 											break;
@@ -8581,24 +7764,13 @@ $(document).ready(function () {
 										case "sk_asn":
 											ini.attr("id_row", id_row);
 											//insert semua data di tabel fom
-											let allTable = $(
-												`form[name="form_modal"] table[name]`
-											);
-											allTable.each(function (
-												index,
-												element
-											) {
+											let allTable = $(`form[name="form_modal"] table[name]`);
+											allTable.each(function (index, element) {
 												// element == this
-												let tbodyElemen =
-													$(this).find("tbody");
-												let attrTable =
-													$(this).attr("name");
+												let tbodyElemen = $(this).find("tbody");
+												let attrTable = $(this).attr("name");
 												// console.log(attrTable);
-												let $headers = [
-													"isi",
-													"p_l",
-													"button",
-												];
+												let $headers = ["isi", "p_l", "button"];
 												switch (attrTable) {
 													case "nama_ditugaskan":
 														$headers = [
@@ -8619,111 +7791,42 @@ $(document).ready(function () {
 
 												let $rows = tbodyElemen
 													.find("tr")
-													.each(function (
-														index,
-														value
-													) {
-														let cells =
-															$(this).find("td");
+													.each(function (index, value) {
+														let cells = $(this).find("td");
 														myRows[index] = {};
 														if (jenis === "edit") {
 															// let id_row = $(value).attr('id_row');
 															// myRows[index]['id_row'] = parseInt(id_row);
 														}
 														// myRows[index]['id_row_uraian_paket'] = parseInt(id_row_uraian_paket);
-														cells.each(function (
-															cellIndex
-														) {
-															switch (
-																$headers[
-																	cellIndex
-																]
-															) {
+														cells.each(function (cellIndex) {
+															switch ($headers[cellIndex]) {
 																case "angka":
-																	strText =
-																		$(
-																			this
-																		).html();
-																	strText =
-																		accounting.unformat(
-																			strText,
-																			","
-																		);
-																	myRows[
-																		index
-																	][
-																		$headers[
-																			cellIndex
-																		]
-																	] = strText;
+																	strText = $(this).html();
+																	strText = accounting.unformat(strText, ",");
+																	myRows[index][$headers[cellIndex]] = strText;
 																	break;
 																case "angka_div":
-																	strText = $(
-																		this
-																	)
-																		.find(
-																			"div"
-																		)
-																		.html();
-																	strText =
-																		Number(
-																			accounting.unformat(
-																				strText,
-																				","
-																			)
-																		);
-																	myRows[
-																		index
-																	][
-																		$headers[
-																			cellIndex
-																		]
-																	] = strText;
+																	strText = $(this).find("div").html();
+																	strText = Number(
+																		accounting.unformat(strText, ",")
+																	);
+																	myRows[index][$headers[cellIndex]] = strText;
 																	break;
 																case "p_l":
-																	strText = $(
-																		this
-																	)
-																		.find(
-																			"button"
-																		)
-																		.text();
-																	myRows[
-																		index
-																	][
-																		$headers[
-																			cellIndex
-																		]
-																	] = strText
-																		.replace(
-																			/\s+/g,
-																			""
-																		)
+																	strText = $(this).find("button").text();
+																	myRows[index][$headers[cellIndex]] = strText
+																		.replace(/\s+/g, "")
 																		.trim();
 																	break;
 																case "button":
 																	// myRows[index][$headers[cellIndex]] = '';
 																	break;
 																default:
-																	strText = $(
-																		this
-																	)
-																		.find(
-																			"div"
-																		)
-																		.html();
+																	strText = $(this).find("div").html();
 																	//Remove Extra Spaces From a String menggunakan .replace(/\s+/g, ' ').trim();
-																	myRows[
-																		index
-																	][
-																		$headers[
-																			cellIndex
-																		]
-																	] = strText
-																		.replace(
-																			/\s+/g,
-																			" "
-																		)
+																	myRows[index][$headers[cellIndex]] = strText
+																		.replace(/\s+/g, " ")
 																		.trim();
 																	break;
 															}
@@ -8731,10 +7834,7 @@ $(document).ready(function () {
 													});
 												// var myObj = {};
 												// myObj = myRows;
-												formData.append(
-													attrTable,
-													JSON.stringify(myRows)
-												);
+												formData.append(attrTable, JSON.stringify(myRows));
 											});
 											break;
 										case "realisasi":
@@ -8756,88 +7856,43 @@ $(document).ready(function () {
 											let $rows = ini
 												.find(".tblUraian tbody tr")
 												.each(function (index, value) {
-													let cells =
-														$(this).find("td");
+													let cells = $(this).find("td");
 													myRows[index] = {};
 													console.log(value);
-													let id_row_uraian_paket = $(
-														value
-													).attr(
+													let id_row_uraian_paket = $(value).attr(
 														"id_row_uraian_paket"
 													);
 													if (jenis === "edit") {
-														let id_row =
-															$(value).attr(
-																"id_row"
-															);
-														myRows[index][
-															"id_row"
-														] = parseInt(id_row);
+														let id_row = $(value).attr("id_row");
+														myRows[index]["id_row"] = parseInt(id_row);
 													}
-													myRows[index][
-														"id_row_uraian_paket"
-													] =
-														parseInt(
-															id_row_uraian_paket
-														);
-													cells.each(function (
-														cellIndex
-													) {
-														switch (
-															$headers[cellIndex]
-														) {
+													myRows[index]["id_row_uraian_paket"] =
+														parseInt(id_row_uraian_paket);
+													cells.each(function (cellIndex) {
+														switch ($headers[cellIndex]) {
 															case "vol_kontrak":
 															case "pagu":
 															case "jumlah_kontrak":
 															case "realisasi_vol":
 															case "realisasi_jumlah":
-																strText =
-																	$(
-																		this
-																	).html();
-																strText =
-																	accounting.unformat(
-																		strText,
-																		","
-																	);
-																myRows[index][
-																	$headers[
-																		cellIndex
-																	]
-																] = strText;
+																strText = $(this).html();
+																strText = accounting.unformat(strText, ",");
+																myRows[index][$headers[cellIndex]] = strText;
 																break;
 															case "vol":
 															case "jumlah":
-																strText = $(
-																	this
-																)
-																	.find("div")
-																	.html();
-																strText =
-																	Number(
-																		accounting.unformat(
-																			strText,
-																			","
-																		)
-																	);
-																myRows[index][
-																	$headers[
-																		cellIndex
-																	]
-																] = strText;
+																strText = $(this).find("div").html();
+																strText = Number(
+																	accounting.unformat(strText, ",")
+																);
+																myRows[index][$headers[cellIndex]] = strText;
 																break;
 															case "button":
 																// myRows[index][$headers[cellIndex]] = '';
 																break;
 															default:
-																myRows[index][
-																	$headers[
-																		cellIndex
-																	]
-																] =
-																	$(
-																		this
-																	).html();
+																myRows[index][$headers[cellIndex]] =
+																	$(this).html();
 																break;
 														}
 													});
@@ -8845,14 +7900,8 @@ $(document).ready(function () {
 											var myObj = {};
 											myObj.myrows = myRows;
 
-											formData.append(
-												"id_row_paket",
-												id_row_paketAttr
-											);
-											formData.append(
-												"realisasi",
-												JSON.stringify(myObj)
-											);
+											formData.append("id_row_paket", id_row_paketAttr);
+											formData.append("realisasi", JSON.stringify(myObj));
 											jalankanAjax = true;
 											break;
 										case "value1":
@@ -8868,14 +7917,8 @@ $(document).ready(function () {
 										case "sub_keg_renja":
 										case "sub_keg_dpa":
 											formData.set("klm", klmAttr);
-											formData.set(
-												"id_sub_keg",
-												id_sub_kegAttr
-											);
-											formData.set(
-												"jns_kel",
-												jns_kelAttr
-											);
+											formData.set("id_sub_keg", id_sub_kegAttr);
+											formData.set("jns_kel", jns_kelAttr);
 											break;
 										case "value1":
 											break;
@@ -8921,50 +7964,30 @@ $(document).ready(function () {
 										case "edit":
 										//formData.append("id_row", tbl);
 										case "input":
-											let property =
-												ini.find(".ui.calendar.date");
+											let property = ini.find(".ui.calendar.date");
 											if (property.length > 0) {
 												for (const key of property) {
-													let nameAttr = $(key)
-														.find("[name]")
-														.attr("name");
-													let tanggal =
-														$(key).calendar(
-															"get date"
-														);
+													let nameAttr = $(key).find("[name]").attr("name");
+													let tanggal = $(key).calendar("get date");
 													if (tanggal) {
 														tanggal = `${tanggal.getFullYear()}-${
-															tanggal.getMonth() +
-															1
+															tanggal.getMonth() + 1
 														}-${tanggal.getDate()}`; //local time
-														formData.set(
-															nameAttr,
-															tanggal
-														);
+														formData.set(nameAttr, tanggal);
 													}
 												}
 											}
-											property = ini.find(
-												".ui.calendar.datetime"
-											);
+											property = ini.find(".ui.calendar.datetime");
 											if (property.length > 0) {
 												for (const key of property) {
-													let nameAttr = $(key)
-														.find("[name]")
-														.attr("name");
-													let tanggal =
-														$(key).calendar(
-															"get date"
-														);
+													let nameAttr = $(key).find("[name]").attr("name");
+													let tanggal = $(key).calendar("get date");
 													if (tanggal) {
 														tanggal = new Date()
 															.toISOString()
 															.slice(0, 19)
 															.replace("T", " ");
-														formData.set(
-															nameAttr,
-															tanggal
-														);
+														formData.set(nameAttr, tanggal);
 													}
 												}
 											}
@@ -8991,10 +8014,7 @@ $(document).ready(function () {
 								case "dpa":
 								case "renja_p":
 								case "dppa":
-									formData.append(
-										"id_sub_keg",
-										MyForm.attr("id_sub_keg")
-									);
+									formData.append("id_sub_keg", MyForm.attr("id_sub_keg"));
 									jalankanAjax = true;
 									break;
 								default:
@@ -9056,10 +8076,7 @@ $(document).ready(function () {
 						// =================
 						case "profil":
 							//[name="ket"]
-							formData.set(
-								"ket",
-								$('textarea[name="ket"]').val()
-							);
+							formData.set("ket", $('textarea[name="ket"]').val());
 							jalankanAjax = true;
 							break;
 						// =================
@@ -9068,8 +8085,7 @@ $(document).ready(function () {
 						case "form_upload":
 							if (id_row) {
 								let uploadedFile =
-									document.getElementById("directupload1")
-										.files[0];
+									document.getElementById("directupload1").files[0];
 								formData.append("dok", dok);
 								formData.append("jenis", jenis);
 								formData.append("tbl", tbl);
@@ -9090,10 +8106,7 @@ $(document).ready(function () {
 								case "tbl":
 									break;
 								default:
-									formData.set(
-										key,
-										encryption.encrypt(value, keyEncryption)
-									);
+									formData.set(key, encryption.encrypt(value, keyEncryption));
 									break;
 							}
 						});
@@ -9107,39 +8120,17 @@ $(document).ready(function () {
 									var pesan = "";
 									var hasil = 0;
 									if (result.data.hasOwnProperty("note")) {
-										if (
-											result.data.note.hasOwnProperty(
-												"add row"
-											)
-										) {
+										if (result.data.note.hasOwnProperty("add row")) {
 											hasil = result.data.note["add row"];
-											pesan +=
-												"<p>" +
-												hasil.length +
-												" row ditambahkan</p> ";
+											pesan += "<p>" + hasil.length + " row ditambahkan</p> ";
 										}
-										if (
-											result.data.note.hasOwnProperty(
-												"gagal"
-											)
-										) {
+										if (result.data.note.hasOwnProperty("gagal")) {
 											hasil = result.data.note["gagal"];
-											pesan +=
-												"<p>" +
-												hasil.length +
-												" row gagal running</p> ";
+											pesan += "<p>" + hasil.length + " row gagal running</p> ";
 										}
-										if (
-											result.data.note.hasOwnProperty(
-												"row update"
-											)
-										) {
-											hasil =
-												result.data.note["row update"];
-											pesan +=
-												"<p>" +
-												hasil.length +
-												" row diupdate</p> ";
+										if (result.data.note.hasOwnProperty("row update")) {
+											hasil = result.data.note["row update"];
+											pesan += "<p>" + hasil.length + " row diupdate</p> ";
 										}
 									}
 								}
@@ -9154,21 +8145,11 @@ $(document).ready(function () {
 											case "wall":
 												switch (tbl) {
 													case "add_coment":
-														var tabAktif = $(
-															'a[data-tab="wall"]'
-														)
-															.closest(
-																".vertical.pointing.menu"
-															)
-															.find(
-																".item.active"
-															);
-														if (
-															tabAktif.length > 0
-														) {
-															$(tabAktif).trigger(
-																"click"
-															);
+														var tabAktif = $('a[data-tab="wall"]')
+															.closest(".vertical.pointing.menu")
+															.find(".item.active");
+														if (tabAktif.length > 0) {
+															$(tabAktif).trigger("click");
 														}
 														break;
 													case "reply":
@@ -9185,9 +8166,7 @@ $(document).ready(function () {
 									// UNTUK FORM form_range_date
 									// ===========================
 									case "form_range_date":
-										$('table[name="laporan"] tbody').html(
-											result.data.tbody
-										);
+										$('table[name="laporan"] tbody').html(result.data.tbody);
 										break;
 									case "monev[informasi]":
 										break;
@@ -9280,28 +8259,18 @@ $(document).ready(function () {
 											case "cetak":
 												switch (tbl) {
 													case "sk_asn":
-														function printPreviewBase64(
-															base64String
-														) {
+														function printPreviewBase64(base64String) {
 															// Buat URL data untuk PDF
 															var pdfDataUri =
-																"data:application/pdf;base64," +
-																base64String;
+																"data:application/pdf;base64," + base64String;
 															// Buat sebuah elemen <a> untuk membuka PDF dalam tab baru
-															var link =
-																document.createElement(
-																	"a"
-																);
-															link.href =
-																pdfDataUri;
-															link.target =
-																"_blank";
+															var link = document.createElement("a");
+															link.href = pdfDataUri;
+															link.target = "_blank";
 															// Klik pada link secara otomatis
 															link.click();
 														}
-														printPreviewBase64(
-															result.data.pdf
-														);
+														printPreviewBase64(result.data.pdf);
 														break;
 													case "value1":
 														break;
@@ -9335,8 +8304,7 @@ $(document).ready(function () {
 											"grey",
 											"black",
 										];
-										let warna_tbl =
-											formData.get("warna_tbl");
+										let warna_tbl = formData.get("warna_tbl");
 										//ambil seluruh row thead dan row tfoot
 										const elmRow = $("table tr"); //$('table tfoot tr, table thead tr');
 										warna.forEach((value, key) => {
@@ -9351,11 +8319,8 @@ $(document).ready(function () {
 											case "edit":
 												switch (tbl) {
 													case "profil":
-														$(
-															"#set_tahun_anggaran"
-														).text(
-															result.data.users
-																.tahun
+														$("#set_tahun_anggaran").text(
+															result.data.users.tahun
 														);
 														break;
 												}
@@ -9364,9 +8329,7 @@ $(document).ready(function () {
 										break;
 								}
 								if (jenisTrigger.length > 0) {
-									let elmTrigger = $(
-										`a[data-tab][tbl="${jenisTrigger}"]:last`
-									);
+									let elmTrigger = $(`a[data-tab][tbl="${jenisTrigger}"]:last`);
 									elmTrigger.trigger("click");
 								}
 								$("[rms]").mathbiila();
@@ -9402,9 +8365,7 @@ $(document).ready(function () {
 								case "modal_show":
 									switch (tbl) {
 										case "berita":
-											$(".ui.modal.mdl_general").modal(
-												"hide"
-											);
+											$(".ui.modal.mdl_general").modal("hide");
 											break;
 									}
 									break;
@@ -9434,19 +8395,14 @@ $(document).ready(function () {
 		addRulesForm() {
 			let MyForm = this.form;
 			MyForm.form("set auto check");
-			let elmtInputTextarea = MyForm.find(
-				$("input[name],textarea[name]")
-			);
+			let elmtInputTextarea = MyForm.find($("input[name],textarea[name]"));
 			for (const iterator of elmtInputTextarea) {
 				let atribut = $(iterator).attr("name");
 				let lbl = $(iterator).attr("placeholder");
 				if (lbl === undefined) {
 					lbl = $(iterator).closest(".field").find("label").text();
 					if (lbl === undefined || lbl === "") {
-						lbl = $(iterator)
-							.closest(".field")
-							.find("div.sub.header")
-							.text();
+						lbl = $(iterator).closest(".field").find("div.sub.header").text();
 					}
 					if (lbl === undefined || lbl === "") {
 						lbl = atribut.replaceAll(/_/g, " ");
@@ -9475,10 +8431,7 @@ $(document).ready(function () {
 				var atribut = MyForm.find(attrName[i]).attr("name");
 				var lbl = MyForm.find(attrName[i]).attr("placeholder");
 				if (lbl === undefined) {
-					lbl = MyForm.find(attrName[i])
-						.closest(".field")
-						.find("label")
-						.text();
+					lbl = MyForm.find(attrName[i]).closest(".field").find("label").text();
 					if (lbl === undefined || lbl === "") {
 						lbl = MyForm.find(attrName[i])
 							.closest(".field")
@@ -9617,39 +8570,30 @@ $(document).ready(function () {
 								case "ssh":
 								case "hspk":
 								case "asb":
-									let strText = parseFloat(
-										result.harga_satuan
-									);
+									let strText = parseFloat(result.harga_satuan);
 									strText = accounting.formatNumber(
 										result.harga_satuan,
 										strText.countDecimals(),
 										".",
 										","
 									);
-									$(`form[name="form_modal"]`).form(
-										"set values",
-										{
-											id: result.value,
-											kd_aset: result.kd_aset,
-											uraian_barang: result.title,
-											spesifikasi: result.spesifikasi,
-											satuan: result.satuan,
-											harga_satuan: strText,
-											tkdn: result.tkdn,
-											kd_akun: result.kd_akun,
-											keterangan: result.keterangan,
-											disable: result.disable,
-										}
-									);
+									$(`form[name="form_modal"]`).form("set values", {
+										id: result.value,
+										kd_aset: result.kd_aset,
+										uraian_barang: result.title,
+										spesifikasi: result.spesifikasi,
+										satuan: result.satuan,
+										harga_satuan: strText,
+										tkdn: result.tkdn,
+										kd_akun: result.kd_akun,
+										keterangan: result.keterangan,
+										disable: result.disable,
+									});
 									break;
 								case "dpa_dppa":
 									let MyForm = $(`[name="form_modal"]`);
-									var cellJumlah = MyForm.find(
-										`table tfoot [name="jumlah"]`
-									);
-									var cellKontrak = MyForm.find(
-										`table tfoot [name="kontrak"]`
-									);
+									var cellJumlah = MyForm.find(`table tfoot [name="jumlah"]`);
+									var cellKontrak = MyForm.find(`table tfoot [name="kontrak"]`);
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									var cek_id = MyForm.find(
 										`table tbody tr[id_row="${result.value}"]`
@@ -9673,30 +8617,20 @@ $(document).ready(function () {
 											","
 										);
 										let trElm = `<tr id_row="${result.value}" pagu="${result.jumlah}" dok_anggaran="${result.dok_anggaran}"><td klm="kd_sub_keg">${result.kd_sub_keg}</td><td klm="uraian">${result.title}</td><td klm="vol_kontrak"><div contenteditable rms>${strvol}</div></td><td klm="sat_kontrak"><div contenteditable>${result.sat}</div></td><td klm="pagu">${strText}</td><td klm="kontrak"><div contenteditable oninput="onkeypressGlobal({ jns: 'uraian_sub_keg', tbl: 'renja_p' },this);" rms></div></td><td><button class="ui red basic icon mini button" name="del_row" jns="direct" tbl="remove_uraian" id_row="${result.value}"><i class="trash alternate outline icon"></i></button></td></tr>`;
-										MyForm.find(`table tbody`).append(
-											trElm
-										);
+										MyForm.find(`table tbody`).append(trElm);
 										let pagu = 0;
 										let kontrak = 0;
-										$(
-											`[name="form_modal"] table tbody tr`
-										).each(function () {
+										$(`[name="form_modal"] table tbody tr`).each(function () {
 											let element = $(this);
 											pagu += Number(
 												accounting.unformat(
-													element
-														.find(`[klm="pagu"]`)
-														.text(),
+													element.find(`[klm="pagu"]`).text(),
 													","
 												)
 											);
 											kontrak += Number(
 												accounting.unformat(
-													element
-														.find(
-															`[klm="kontrak"] div`
-														)
-														.text(),
+													element.find(`[klm="kontrak"] div`).text(),
 													","
 												)
 											);
@@ -9722,73 +8656,51 @@ $(document).ready(function () {
 									break;
 								case "daftar_paket":
 									let myForm = $(`[name="form_modal"]`);
-									cellJumlah = myForm.find(
-										`table tfoot [name="jumlah"]`
-									);
-									cellKontrak = myForm.find(
-										`table tfoot [name="kontrak"]`
-									);
+									cellJumlah = myForm.find(`table tfoot [name="jumlah"]`);
+									cellKontrak = myForm.find(`table tfoot [name="kontrak"]`);
 									// harus di cari dulu klo sdh ada add row tidak berlaku
 									cek_id = myForm.find(
 										`table tbody tr[id_row="${result.value}"]`
 									);
-									let dataRowsAnggaran =
-										result.uraian_id_uraian;
+									let dataRowsAnggaran = result.uraian_id_uraian;
 									myForm.attr("id_row_paket", result.value);
 									let trElm = "";
 									myForm.form("set values", {
 										uraian: result.title,
 										volume: result.volume,
 										satuan: result.satuan,
-										jumlah: accounting.formatNumber(
-											result.jumlah,
-											2,
-											".",
-											","
-										),
+										jumlah: accounting.formatNumber(result.jumlah, 2, ".", ","),
 									});
 									dataRowsAnggaran.forEach((value, key) => {
-										let vol_kontrak = parseFloat(
-											value.vol_kontrak
-										);
+										let vol_kontrak = parseFloat(value.vol_kontrak);
 										vol_kontrak = accounting.formatNumber(
 											vol_kontrak,
 											vol_kontrak.countDecimals(),
 											".",
 											","
 										);
-										let jumlah_pagu = parseFloat(
-											value.jumlah_pagu
-										);
+										let jumlah_pagu = parseFloat(value.jumlah_pagu);
 										jumlah_pagu = accounting.formatNumber(
 											jumlah_pagu,
 											jumlah_pagu.countDecimals(),
 											".",
 											","
 										);
-										let jumlah_kontrak = parseFloat(
-											value.jumlah_kontrak
+										let jumlah_kontrak = parseFloat(value.jumlah_kontrak);
+										jumlah_kontrak = accounting.formatNumber(
+											jumlah_kontrak,
+											jumlah_kontrak.countDecimals(),
+											".",
+											","
 										);
-										jumlah_kontrak =
-											accounting.formatNumber(
-												jumlah_kontrak,
-												jumlah_kontrak.countDecimals(),
-												".",
-												","
-											);
-										let realisasi_jumlah = parseFloat(
-											value.realisasi_jumlah
+										let realisasi_jumlah = parseFloat(value.realisasi_jumlah);
+										realisasi_jumlah = accounting.formatNumber(
+											realisasi_jumlah,
+											realisasi_jumlah.countDecimals(),
+											".",
+											","
 										);
-										realisasi_jumlah =
-											accounting.formatNumber(
-												realisasi_jumlah,
-												realisasi_jumlah.countDecimals(),
-												".",
-												","
-											);
-										let realisasi_vol = parseFloat(
-											value.realisasi_vol
-										);
+										let realisasi_vol = parseFloat(value.realisasi_vol);
 										realisasi_vol = accounting.formatNumber(
 											realisasi_vol,
 											realisasi_vol.countDecimals(),
@@ -9814,9 +8726,7 @@ $(document).ready(function () {
 													id_row="${value.id_uraian_paket}"><i class="edit alternate outline icon"></i></button></td>
 										</tr>`;
 									});
-									myForm
-										.find(`table.tblUraian tbody`)
-										.html(trElm);
+									myForm.find(`table.tblUraian tbody`).html(trElm);
 									onkeypressGlobal(
 										{
 											jns: "realisasi",
@@ -9913,9 +8823,7 @@ $(document).ready(function () {
 	function tok(elm) {
 		$(".ui.sidebar").sidebar("hide");
 		// elm.closest('.ui.accordion').find('.active').removeClass('active');
-		elm.closest(".vertical.sidebar.menu")
-			.find(".active")
-			.removeClass("active");
+		elm.closest(".vertical.sidebar.menu").find(".active").removeClass("active");
 	}
 	//=============================
 	//======  FUNCTION MASTER =====
@@ -10089,8 +8997,7 @@ $(document).ready(function () {
 		let label = "label" in dataElemen ? dataElemen.label : "";
 		let href = "href" in dataElemen ? dataElemen.href : ""; //file
 		let file = "file" in dataElemen ? dataElemen.file : "file"; //file
-		let textDrpdown =
-			"textDrpdown" in dataElemen ? dataElemen.textDrpdown : "";
+		let textDrpdown = "textDrpdown" in dataElemen ? dataElemen.textDrpdown : "";
 		let placeholderData =
 			"placeholderData" in dataElemen ? dataElemen.placeholderData : "";
 		let elemen1Data = "elemen1" in dataElemen ? dataElemen.elemen1 : "";
@@ -10100,16 +9007,13 @@ $(document).ready(function () {
 		let posisi = "posisi" in dataElemen ? dataElemen.posisi : "left";
 		let colorData = "color" in dataElemen ? dataElemen.color : "positive";
 		let valueData = "value" in dataElemen ? dataElemen.value : "";
-		let iconDataSeach =
-			"icon" in dataElemen ? dataElemen.icon : "search icon";
+		let iconDataSeach = "icon" in dataElemen ? dataElemen.icon : "search icon";
 
 		let dataArray = "dataArray" in dataElemen ? dataElemen.dataArray : []; //contoh untuk dropdown
 		let typeText = "typeText" in dataElemen ? dataElemen.typeText : `text`;
 
-		let headerTable =
-			"headerTable" in dataElemen ? dataElemen.headerTable : "";
-		let footerTable =
-			"footerTable" in dataElemen ? dataElemen.footerTable : "";
+		let headerTable = "headerTable" in dataElemen ? dataElemen.headerTable : "";
+		let footerTable = "footerTable" in dataElemen ? dataElemen.footerTable : "";
 		let bodyTable = "bodyTable" in dataElemen ? dataElemen.bodyTable : "";
 		// let file
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
@@ -10207,8 +9111,7 @@ $(document).ready(function () {
 				let menu = "";
 				dataArray.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-					let classRow =
-						val.class !== undefined ? ` ${val.class}` : "";
+					let classRow = val.class !== undefined ? ` ${val.class}` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					menu += `<a class="item${classRow}" ${attrRow}>${lblRow}</a>`;
@@ -10320,8 +9223,7 @@ $(document).ready(function () {
 				//buat header tabel
 				headerTable.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-					let classRow =
-						val.class !== undefined ? ` class="${val.class}"` : "";
+					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					head += `<th${classRow} ${attrRow}>${lblRow}</th$>`;
@@ -10330,8 +9232,7 @@ $(document).ready(function () {
 				//buat body tabel
 				bodyTable.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-					let classRow =
-						val.class !== undefined ? ` class="${val.class}"` : "";
+					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					body += `<td${classRow} ${attrRow}>${lblRow}</td>`;
@@ -10340,8 +9241,7 @@ $(document).ready(function () {
 				//buat foot tabel
 				footerTable.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-					let classRow =
-						val.class !== undefined ? ` class="${val.class}"` : "";
+					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					foot += `<td${classRow} ${attrRow}>${lblRow}</td>`;
@@ -10355,20 +9255,15 @@ $(document).ready(function () {
 				var body = `<tbody>`;
 				//buat header tabel
 				headerTable.forEach(function (val) {
-					let classRow =
-						val.class !== undefined ? ` class="${val.class}"` : "";
+					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					head += `<tr${classRow} ${attrRow}>`;
 					val.forEach(function (val2) {
 						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-						classRow =
-							val2.class !== undefined
-								? ` class="${val2.class}"`
-								: "";
+						classRow = val2.class !== undefined ? ` class="${val2.class}"` : "";
 						lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
-						attrRow =
-							val2.attr !== undefined ? ` ${val2.attr}` : "";
+						attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
 						head += `<th${classRow} ${attrRow}>${lblRow}</th>`;
 					});
 					head += `</tr>`;
@@ -10377,20 +9272,15 @@ $(document).ready(function () {
 				//buat body tabel
 				bodyTable.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-					let classRow =
-						val.class !== undefined ? ` class="${val.class}"` : "";
+					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					body += `<tr${classRow} ${attrRow}>`;
 					val.forEach(function (val2) {
 						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-						classRow =
-							val2.class !== undefined
-								? ` class="${val2.class}"`
-								: "";
+						classRow = val2.class !== undefined ? ` class="${val2.class}"` : "";
 						lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
-						attrRow =
-							val2.attr !== undefined ? ` ${val2.attr}` : "";
+						attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
 						head += `<td${classRow} ${attrRow}>${lblRow}</td>`;
 					});
 					body += `</tr>`;
@@ -10399,8 +9289,7 @@ $(document).ready(function () {
 				//buat foot tabel
 				footerTable.forEach(function (val) {
 					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-					let classRow =
-						val.class !== undefined ? ` class="${val.class}"` : "";
+					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					foot += `<td${classRow} ${attrRow}>${lblRow}</td>`;
@@ -10411,21 +9300,16 @@ $(document).ready(function () {
 			case "tr_tabel":
 				body = ``;
 				bodyTable.forEach(function (val) {
-					let classRow =
-						val.class !== undefined ? ` class="${val.class}"` : "";
+					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
 					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
 					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
 					body += `<tr${classRow} ${attrRow}>`;
 
 					val.forEach(function (val2) {
 						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-						classRow =
-							val2.class !== undefined
-								? ` class="${val2.class}"`
-								: "";
+						classRow = val2.class !== undefined ? ` class="${val2.class}"` : "";
 						lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
-						attrRow =
-							val2.attr !== undefined ? ` ${val2.attr}` : "";
+						attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
 						body += `<td${classRow}${attrRow}>${lblRow}</td>`;
 					});
 					body += `</tr>`;
@@ -10645,10 +9529,7 @@ $(document).ready(function () {
 					if (rowsData.length === 1) {
 						let txt = dataValue;
 						if (rowsData[2]) {
-							if (
-								rowsData[2] === "active" ||
-								rowsData[3] === "active"
-							) {
+							if (rowsData[2] === "active" || rowsData[3] === "active") {
 								classItem = "item active selected";
 							}
 						}
@@ -10661,10 +9542,7 @@ $(document).ready(function () {
 					} else if (rowsData.length === 2) {
 						let txt = rowsData[1];
 						if (rowsData[2]) {
-							if (
-								rowsData[2] === "active" ||
-								rowsData[3] === "active"
-							) {
+							if (rowsData[2] === "active" || rowsData[3] === "active") {
 								classItem = "item active selected";
 							}
 						}
@@ -10722,10 +9600,7 @@ $(document).ready(function () {
 							if (rowsData.length === 1) {
 								let txt = dataValue;
 								if (rowsData[2]) {
-									if (
-										rowsData[2] === "active" ||
-										rowsData[3] === "active"
-									) {
+									if (rowsData[2] === "active" || rowsData[3] === "active") {
 										classItem = "item active selected";
 										disableatributActive = true;
 										txtSelectedActive = ` value="${dataValue}"`;
@@ -10739,10 +9614,7 @@ $(document).ready(function () {
 									"</div>";
 							} else if (rowsData.length === 2) {
 								let txt = rowsData[1];
-								if (
-									rowsData[2] === "active" ||
-									rowsData[3] === "active"
-								) {
+								if (rowsData[2] === "active" || rowsData[3] === "active") {
 									classItem = "item active selected";
 									disableatributActive = true;
 									txtSelectedActive = ` value="${dataValue}"`;
@@ -10767,10 +9639,7 @@ $(document).ready(function () {
 										txt +
 										"</span></div>";
 								} else {
-									if (
-										rowsData[2] === "active" ||
-										rowsData[3] === "active"
-									) {
+									if (rowsData[2] === "active" || rowsData[3] === "active") {
 										classItem = "item active selected";
 										disableatributActive = true;
 										txtSelectedActive = ` value="${dataValue}"`;
@@ -10908,9 +9777,7 @@ $(document).ready(function () {
 				"transition",
 			];
 			usedComponents.forEach((usedComponent) => {
-				let uiComponents = document.querySelectorAll(
-					".ui." + usedComponent
-				);
+				let uiComponents = document.querySelectorAll(".ui." + usedComponent);
 				uiComponents.forEach((component) => {
 					if (component.classList.contains("inverted")) {
 						component.classList.remove("inverted");
@@ -10946,10 +9813,7 @@ $(document).ready(function () {
 			if (lbl === undefined) {
 				lbl = $(iterator).closest(".field").find("label").text();
 				if (lbl === undefined || lbl === "") {
-					lbl = $(iterator)
-						.closest(".field")
-						.find("div.sub.header")
-						.text();
+					lbl = $(iterator).closest(".field").find("div.sub.header").text();
 				}
 				if (lbl === undefined || lbl === "") {
 					lbl = atribut.replaceAll(/_/g, " ");
@@ -10994,11 +9858,7 @@ $(document).ready(function () {
 			var atribut = formku.find(attrName[i]).attr("name");
 			var lbl = formku.find(attrName[i]).attr("placeholder");
 			if (lbl === undefined) {
-				lbl = formku
-					.find(attrName[i])
-					.closest(".field")
-					.find("label")
-					.text();
+				lbl = formku.find(attrName[i]).closest(".field").find("label").text();
 				if (lbl === undefined || lbl === "") {
 					lbl = formku
 						.find(attrName[i])
@@ -11023,16 +9883,13 @@ $(document).ready(function () {
 	}
 	//
 	function showToast(message, settings) {
-		settings.title =
-			settings.title === undefined ? "info !" : settings.title;
+		settings.title = settings.title === undefined ? "info !" : settings.title;
 		settings.position =
 			settings.position === undefined ? "top center" : settings.position;
 		settings.class = settings.class === undefined ? "info" : settings.class; //warna
 		settings.icon = settings.icon === undefined ? false : settings.icon;
 		settings.showProgress =
-			settings.showProgress === undefined
-				? "bottom"
-				: settings.showProgress;
+			settings.showProgress === undefined ? "bottom" : settings.showProgress;
 		settings.displayTime =
 			settings.displayTime === undefined ? 4500 : settings.displayTime; //0 jika ingin tampil terus sebelum diklik
 		settings.showMethod =
@@ -11130,10 +9987,7 @@ function onkeypressGlobal(
 					$(`[name="form_modal"] table tbody tr`).each(function () {
 						let element = $(this);
 						let paguTemp = Number(
-							accounting.unformat(
-								element.find(`[klm="pagu"]`).text(),
-								","
-							)
+							accounting.unformat(element.find(`[klm="pagu"]`).text(), ",")
 						);
 
 						let kontrakTemp = Number(
@@ -11203,10 +10057,7 @@ function onkeypressGlobal(
 						);
 						vol_kontrak += vol_kontrakTemp;
 						pagu += Number(
-							accounting.unformat(
-								element.find(`[klm="pagu"]`).text(),
-								","
-							)
+							accounting.unformat(element.find(`[klm="pagu"]`).text(), ",")
 						);
 						let jumlah_kontrakTemp = Number(
 							accounting.unformat(
@@ -11230,10 +10081,7 @@ function onkeypressGlobal(
 						);
 						realisasi_jumlah += realisasi_jumlahTemp;
 						vol_temp = Number(
-							accounting.unformat(
-								element.find(`[klm="vol"] div`).text(),
-								","
-							)
+							accounting.unformat(element.find(`[klm="vol"] div`).text(), ",")
 						);
 						if (vol_temp + realisasi_volTemp > vol_kontrakTemp) {
 							vol_temp = vol_kontrakTemp - realisasi_volTemp;
@@ -11253,12 +10101,8 @@ function onkeypressGlobal(
 								","
 							)
 						);
-						if (
-							jumlah_temp + realisasi_jumlahTemp >
-							jumlah_kontrakTemp
-						) {
-							jumlah_temp =
-								jumlah_kontrakTemp - realisasi_jumlahTemp;
+						if (jumlah_temp + realisasi_jumlahTemp > jumlah_kontrakTemp) {
+							jumlah_temp = jumlah_kontrakTemp - realisasi_jumlahTemp;
 							strText = parseFloat(jumlah_temp);
 							strText = accounting.formatNumber(
 								strText,
@@ -11295,9 +10139,7 @@ function onkeypressGlobal(
 							".",
 							","
 						);
-						form.find(`table tfoot tr td[name="${key}"]`).text(
-							strText
-						);
+						form.find(`table tfoot tr td[name="${key}"]`).text(strText);
 					});
 					break;
 			}
