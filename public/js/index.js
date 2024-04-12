@@ -6545,19 +6545,59 @@ $(document).ready(function () {
 										instruksi: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "fieldTextarea",
 													prop: {
-														icon: "",
-														label: "iki",
-														atribut: "1",
+														label: "Tentang",
+														classField: `required`,
+														atribut: `name="tentang" placeholder="tentang" rows="2"`,
 													},
 												},
 												{
-													tag: "divider_tabel_2klm",
+													tag: "fieldTextarea",
+													prop: {
+														label: "Dalam Rangka",
+														classField: `required`,
+														atribut: `name="text_1" placeholder="dalam rangka" rows="2"`,
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "opo",
-														atribut: "4",
+														label: "Kepada",
+														atribut: "kepada",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KESATU",
+														atribut: "kesatu",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KEDUA",
+														atribut: "kedua",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KETIGA",
+														atribut: "ketiga",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KEEMPAT",
+														atribut: "keempat",
 													},
 												},
 											],
@@ -6565,19 +6605,67 @@ $(document).ready(function () {
 										surat_edaran: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "fieldTextarea",
 													prop: {
-														icon: "",
-														label: "",
-														atribut: "1",
+														label: "Tentang",
+														classField: `required`,
+														atribut: `name="tentang" placeholder="tentang" rows="2"`,
 													},
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
+														icon: "",
+														label: "Yth.",
+														atribut: "yth",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "latar Belakang",
+														atribut: "latar_belakang",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "Maksud dan Tujuan",
+														atribut: "maksud_tujuan",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "Ruang Lingkup",
+														atribut: "ruang_lingkup",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "Dasar",
+														atribut: "dasar",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "Isi Edaran",
+														atribut: "isi_edaran",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "Penutup",
+														atribut: "penutup",
 													},
 												},
 											],
@@ -9019,6 +9107,43 @@ $(document).ready(function () {
 		let accept = "accept" in dataElemen ? dataElemen.accept : ".xlsx";
 		let elemen = "";
 		switch (namaElemen) {
+			case "asn_tabel":
+				elemen =
+					createHTML("fieldDropdown", {
+						label: label,
+						atribut: 'name="asn" placeholder="Nama ASN..." non_data',
+						kelas: "search clearable asn ajx selection",
+						dataArray: [],
+					}) +
+					createHTML("tabel2", {
+						atribut: `name="nama_ditugaskan"`,
+						kelas: `stackable celled structured`,
+						headerTable: [
+							[
+								{ attr: "", lbl: `NAMA` },
+								{
+									attr: "",
+									class: "collapsing",
+									lbl: `PANGKAT/GOLONGAN`,
+								},
+								{
+									attr: "",
+									class: "collapsing",
+									lbl: `NIP`,
+								},
+								{ attr: "", lbl: `JABATAN` },
+								{ attr: "", lbl: `JABATAN SK` },
+								{
+									attr: "",
+									lbl: ``,
+									class: "collapsing",
+								},
+							],
+						],
+						footerTable: [],
+						bodyTable: [],
+					});
+				break;
 			case "divider_tabel_1klm":
 				icon =
 					"icon" in dataElemen
