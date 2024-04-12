@@ -6673,21 +6673,77 @@ $(document).ready(function () {
 										keputusan: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "fieldTextarea",
 													prop: {
-														icon: "",
-														label: "",
-														atribut: "1",
+														label: "Tentang",
+														classField: `required`,
+														atribut: `name="tentang" placeholder="tentang" rows="2"`,
+													},
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Dalam Rangka",
+														classField: `required`,
+														atribut: `name="text_1" placeholder="dalam rangka" rows="2"`,
 													},
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
+														icon: "",
+														label: "Kepada",
+														atribut: "kepada",
 													},
 												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KESATU",
+														atribut: "kesatu",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KEDUA",
+														atribut: "kedua",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KETIGA",
+														atribut: "ketiga",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "KEEMPAT",
+														atribut: "keempat",
+													},
+												},
+												{
+													tag: "asn_tabel",
+													prop: {
+														icon: "",
+														label: "ASN yang ditugaskan",
+														atribut: `name="nama_ditugaskan"`,
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "Tembusan",
+														atribut: "tembusan",
+													},
+												}
 											],
 										},
 										surat_perintah: {
@@ -9116,7 +9172,7 @@ $(document).ready(function () {
 						dataArray: [],
 					}) +
 					createHTML("tabel2", {
-						atribut: `name="nama_ditugaskan"`,
+						atribut: atribut,
 						kelas: `stackable celled structured`,
 						headerTable: [
 							[
