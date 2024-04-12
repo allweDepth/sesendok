@@ -1,6 +1,6 @@
 {
 	"inline-bookmarks.view.showVisibleFilesOnly": false,
-	"liveServer.settings.port": 5501,
+	"liveServer.settings.port": 5500,
 	"editor.fontSize": 16,
 	"liveServer.settings.CustomBrowser": "chrome",
 	// Mainly for static files
