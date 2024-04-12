@@ -6564,7 +6564,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Kepada",
+														txtLabel: "Kepada",
 														atribut: "kepada",
 													},
 												},
@@ -6572,7 +6572,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "KESATU",
+														txtLabel: "KESATU",
 														atribut: "kesatu",
 													},
 												},
@@ -6580,7 +6580,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "KEDUA",
+														txtLabel: "KEDUA",
 														atribut: "kedua",
 													},
 												},
@@ -6588,7 +6588,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "KETIGA",
+														txtLabel: "KETIGA",
 														atribut: "ketiga",
 													},
 												},
@@ -6596,7 +6596,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "KEEMPAT",
+														txtLabel: "KEEMPAT",
 														atribut: "keempat",
 													},
 												},
@@ -6616,7 +6616,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Yth.",
+														txtLabel: "Yth.",
 														atribut: "yth",
 													},
 												},
@@ -6624,7 +6624,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "latar Belakang",
+														txtLabel: "latar Belakang",
 														atribut: "latar_belakang",
 													},
 												},
@@ -6632,7 +6632,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Maksud dan Tujuan",
+														txtLabel: "Maksud dan Tujuan",
 														atribut: "maksud_tujuan",
 													},
 												},
@@ -6640,7 +6640,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Ruang Lingkup",
+														txtLabel: "Ruang Lingkup",
 														atribut: "ruang_lingkup",
 													},
 												},
@@ -6648,7 +6648,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Dasar",
+														txtLabel: "Dasar",
 														atribut: "dasar",
 													},
 												},
@@ -6656,7 +6656,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Isi Edaran",
+														txtLabel: "Isi Edaran",
 														atribut: "isi_edaran",
 													},
 												},
@@ -6664,7 +6664,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Penutup",
+														txtLabel: "Penutup",
 														atribut: "penutup",
 													},
 												},
@@ -6684,7 +6684,7 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "Kepada",
+														txtLabel: "Kepada",
 														atribut: "kepada",
 													},
 												},
@@ -6692,30 +6692,44 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
+														txtLabel: "MENIMBANG",
+														atribut: "menimbang",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														txtLabel: "MENGINGAT",
+														atribut: "mengingat",
+													},
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														txtLabel: "MENETAPKAN",
 														label: "KESATU",
 														atribut: "kesatu",
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "tabel_1klm",
 													prop: {
-														icon: "",
 														label: "KEDUA",
 														atribut: "kedua",
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "tabel_1klm",
 													prop: {
-														icon: "",
 														label: "KETIGA",
 														atribut: "ketiga",
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "tabel_1klm",
 													prop: {
-														icon: "",
 														label: "KEEMPAT",
 														atribut: "keempat",
 													},
@@ -9192,7 +9206,40 @@ $(document).ready(function () {
 						bodyTable: [],
 					});
 				break;
+			case "tabel_1klm":
+				elemen = createHTML("tabel2", {
+					atribut: `name="${atribut}"`,
+					kelas: `celled structured`,
+					headerTable: [
+						[
+							{ attr: "", lbl: label },
+							{ attr: "", class: "collapsing", lbl: `JENIS` },
+							{
+								attr: "",
+								lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm3"><i class="plus icon"></i></button>`,
+								class: "collapsing",
+							},
+						],
+					],
+					footerTable: [
+						{
+							lbl: ``,
+						},
+						{
+							lbl: "",
+							attr: ``,
+						},
+						{
+							lbl: "",
+							attr: ``,
+						},
+					],
+					bodyTable: [],
+				});
+				break;
 			case "divider_tabel_1klm":
+				txtLabel = "txtLabel" in dataElemen ? dataElemen.txtLabel : "PENJELASAN";
+				label = "label" in dataElemen ? dataElemen.txtLabel : "URAIAN";
 				icon =
 					"icon" in dataElemen
 						? dataElemen.icon
@@ -9201,14 +9248,14 @@ $(document).ready(function () {
 					createHTML("divider", {
 						header: "h4",
 						icon: icon,
-						label: label,
+						label: txtLabel,
 					}) +
 					createHTML("tabel2", {
 						atribut: `name="${atribut}"`,
 						kelas: `celled structured`,
 						headerTable: [
 							[
-								{ attr: "", lbl: `URAIAN` },
+								{ attr: "", lbl: label },
 								{ attr: "", class: "collapsing", lbl: `JENIS` },
 								{
 									attr: "",
