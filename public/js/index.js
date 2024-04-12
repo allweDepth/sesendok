@@ -6681,14 +6681,6 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "fieldTextarea",
-													prop: {
-														label: "Dalam Rangka",
-														classField: `required`,
-														atribut: `name="text_1" placeholder="dalam rangka" rows="2"`,
-													},
-												},
-												{
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
@@ -6743,7 +6735,7 @@ $(document).ready(function () {
 														label: "Tembusan",
 														atribut: "tembusan",
 													},
-												}
+												},
 											],
 										},
 										surat_perintah: {
