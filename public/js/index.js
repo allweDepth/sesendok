@@ -6731,7 +6731,7 @@ $(document).ready(function () {
 													prop: {
 														icon: "",
 														label: "ASN yang ditugaskan",
-														atribut: `name="nama_ditugaskan"`,
+														atribut: `name="nama_ditugaskan"`
 													},
 												},
 												{
@@ -6750,19 +6750,40 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "",
-														atribut: "1",
-													},
+														txtLabel: "MENIMBANG",
+														atribut: "menimbang",
+													}
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
-													},
+														icon: "",
+														txtLabel: "DASAR",
+														atribut: "dasar",
+													}
 												},
-											],
+												{
+													tag: "divider",
+													prop: {
+														label: "MEMBERI PERINTAH"
+													}
+												},
+												{
+													tag: "asn_tabel",
+													prop: {
+														label: "ASN yang ditugaskan",
+														atribut: `name="nama_ditugaskan"`
+													}
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														txtLabel: "UNTUK",
+														atribut: "untuk"
+													}
+												}
+											]
 										},
 										nota_dinas: {
 											elemen: [
@@ -6992,6 +7013,16 @@ $(document).ready(function () {
 										}
 									}
 									myForm.find('div[name="elm_naskah"]').html(elemen);
+									$(".ui.sticky").sticky("refresh");
+									let mdl = $('.ui.kedua.modal[name="mdl_kedua"]');
+		let modalsecond = new ModalConstructor(mdl);
+		modalsecond.globalModal();
+		let InitializeForm = new FormGlobal(myForm);
+		InitializeForm.run();
+		myForm.find(".ui.dropdown.lainnya").dropdown();
+									removeRulesForm(myForm);
+									addRulesForm(myForm);
+									$("[rms]").mathbiila();
 									break;
 								case "register_surat":
 									var myForm = $('form[name="form_flyout"]');

@@ -25,6 +25,7 @@
     --google-grey-900: rgb(var(--google-grey-900-rgb));
     --darkBG: #232B32;
     --whiteBG: white;
+    --darkbackground: rgba(100, 100, 100, .4);
 }
 
 @media screen and (max-width: 700px) {
@@ -102,7 +103,17 @@ body.inverted {
 .ui.input.multi input[type="text"]:not(:first-child) {
     border-radius: 0 !important;
 }
-
+.ui.form.inverted .field.error .ui.dropdown,.ui.form.inverted .field.error .ui.dropdown .item,.ui.form.inverted .field.error .ui.dropdown>.text,.ui.form.inverted .fields.error .field .ui.dropdown,.ui.form.inverted .fields.error .field .ui.dropdown .item {
+    background:var(--darkBG) !important;
+    color: #9f3a38;
+    border-color: #e0b4b4;
+}
+.ui.form.inverted .field.error input:not([type]),.ui.form.inverted .field.error input[type=color],.ui.form.inverted .field.error input[type=date],.ui.form.inverted .field.error input[type=datetime-local],.ui.form.inverted .field.error input[type=email],.ui.form.inverted .field.error input[type=file],.ui.form.inverted .field.error input[type=month],.ui.form.inverted .field.error input[type=number],.ui.form.inverted .field.error input[type=password],.ui.form.inverted .field.error input[type=search],.ui.form.inverted .field.error input[type=tel],.ui.form.inverted .field.error input[type=text],.ui.form.inverted .field.error input[type=time],.ui.form .field.error input[type=url],.ui.form.inverted .field.error input[type=week],.ui.form.inverted .field.error select,.ui.form.inverted .field.error textarea,.ui.form.inverted .fields.error .field input:not([type]),.ui.form.inverted .fields.error .field input[type=color],.ui.form.inverted .fields.error .field input[type=date],.ui.form.inverted .fields.error .field input[type=datetime-local],.ui.form.inverted .fields.error .field input[type=email],.ui.form.inverted .fields.error .field input[type=file],.ui.form.inverted .fields.error .field input[type=month],.ui.form.inverted .fields.error .field input[type=number],.ui.form.inverted .fields.error .field input[type=password],.ui.form.inverted .fields.error .field input[type=search],.ui.form.inverted .fields.error .field input[type=tel],.ui.form.inverted .fields.error .field input[type=text],.ui.form.inverted .fields.error .field input[type=time],.ui.form.inverted .fields.error .field input[type=url],.ui.form.inverted .fields.error .field input[type=week],.ui.form.inverted .fields.error .field select,.ui.form.inverted .fields.error .field textarea {
+    color: #9f3a38;
+    border-color: #e0b4b4 !important;
+    /* #ff695e */
+    box-shadow: none;
+}
 h1.spin {
     margin: 0;
     padding: 0;
