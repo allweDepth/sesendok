@@ -9231,7 +9231,7 @@ $(document).ready(function () {
 				break;
 			case "divider_tabel_1klm":
 				txtLabel = "txtLabel" in dataElemen ? dataElemen.txtLabel : "PENJELASAN";
-				label = "label" in dataElemen ? dataElemen.txtLabel : "URAIAN";
+				label = "label" in dataElemen ? dataElemen.label : "URAIAN";
 				icon =
 					"icon" in dataElemen
 						? dataElemen.icon
