@@ -6731,7 +6731,7 @@ $(document).ready(function () {
 													prop: {
 														icon: "",
 														label: "ASN yang ditugaskan",
-														atribut: `name="nama_ditugaskan"`
+														atribut: `name="nama_ditugaskan"`,
 													},
 												},
 												{
@@ -6752,7 +6752,7 @@ $(document).ready(function () {
 														icon: "",
 														txtLabel: "MENIMBANG",
 														atribut: "menimbang",
-													}
+													},
 												},
 												{
 													tag: "divider_tabel_1klm",
@@ -6760,30 +6760,30 @@ $(document).ready(function () {
 														icon: "",
 														txtLabel: "DASAR",
 														atribut: "dasar",
-													}
+													},
 												},
 												{
 													tag: "divider",
 													prop: {
-														label: "MEMBERI PERINTAH"
-													}
+														label: "MEMBERI PERINTAH",
+													},
 												},
 												{
 													tag: "asn_tabel",
 													prop: {
 														label: "ASN yang ditugaskan",
-														atribut: `name="nama_ditugaskan"`
-													}
+														atribut: `name="nama_ditugaskan"`,
+													},
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
 														txtLabel: "UNTUK",
-														atribut: "untuk"
-													}
-												}
-											]
+														atribut: "untuk",
+													},
+												},
+											],
 										},
 										nota_dinas: {
 											elemen: [
@@ -7015,14 +7015,27 @@ $(document).ready(function () {
 									myForm.find('div[name="elm_naskah"]').html(elemen);
 									$(".ui.sticky").sticky("refresh");
 									let mdl = $('.ui.kedua.modal[name="mdl_kedua"]');
-		let modalsecond = new ModalConstructor(mdl);
-		modalsecond.globalModal();
-		let InitializeForm = new FormGlobal(myForm);
-		InitializeForm.run();
-		myForm.find(".ui.dropdown.lainnya").dropdown();
+									let modalsecond = new ModalConstructor(mdl);
+									modalsecond.globalModal();
+									let InitializeForm = new FormGlobal(myForm);
+									InitializeForm.run();
+									myForm.find(".ui.dropdown.lainnya").dropdown();
 									removeRulesForm(myForm);
 									addRulesForm(myForm);
 									$("[rms]").mathbiila();
+									if(typeof myForm.find('.ui.dropdown.asn.ajx').length){
+										var dropdownASNTugas = new DropdownConstructor(
+											'form[name="form_modal"] .ui.dropdown.asn.ajx'
+										);
+										dropdownASNTugas.returnList({
+											jenis: "get_row_json",
+											tbl: "asn",
+											attrresponserver: {
+												golongan: "golongan",
+												ruang: "ruang",
+											},
+										});
+									};
 									break;
 								case "register_surat":
 									var myForm = $('form[name="form_flyout"]');
@@ -9261,7 +9274,8 @@ $(document).ready(function () {
 				});
 				break;
 			case "divider_tabel_1klm":
-				txtLabel = "txtLabel" in dataElemen ? dataElemen.txtLabel : "PENJELASAN";
+				txtLabel =
+					"txtLabel" in dataElemen ? dataElemen.txtLabel : "PENJELASAN";
 				label = "label" in dataElemen ? dataElemen.label : "URAIAN";
 				icon =
 					"icon" in dataElemen
