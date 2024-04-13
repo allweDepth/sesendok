@@ -7005,32 +7005,56 @@ $(document).ready(function () {
 										surat_dinas: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "fieldTextarea",
 													prop: {
-														icon: "",
-														label: "",
-														atribut: "1",
-													}
+														label: "Lampiran",
+														classField: `required`,
+														atribut: `name="text_1" placeholder="tentang" rows="2"`,
+													},
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Hal",
+														classField: `required`,
+														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+													},
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Yth.",
+														classField: `required`,
+														atribut: `name="text_3" placeholder="Yth..." rows="2"`,
+													},
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
+														icon: "",
+														txtLabel: "Batang Tubuh/Alinea",
+														atribut: "batang_tubuh",
 													},
 												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														txtLabel: "TEMBUSAN",
+														atribut: "tembusan",
+													},
+												}
 											],
 										},
 										perjanjian: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "fieldTextarea",
 													prop: {
-														icon: "",
-														label: "",
-														atribut: "1",
-													},
+														label: "Tentang",
+														classField: `required`,
+														atribut: `name="tentang" placeholder="tentang" rows="2"`,
+													}
 												},
 												{
 													tag: "divider_tabel_1klm",
@@ -8122,11 +8146,78 @@ $(document).ready(function () {
 									break;
 								case "add":
 								case "edit":
+									let allTable = $(`form[name="form_modal"] table[name]`);
 									switch (tbl) {
+										case "create_surat":
+											allTable.each(function (index, element) {
+												// element == this
+												let tbodyElemen = $(this).find("tbody");
+												let attrTable = $(this).attr("name");
+												// console.log(attrTable);
+												let $headers = ["isi", "p_l", "button"];
+												switch (attrTable) {
+													case "nama_ditugaskan":
+														$headers = [
+															"nama",
+															"pangkat",
+															"nip",
+															"jabatan",
+															"jabatan_sk",
+															"button"
+														];
+														break;
+													default:
+														break;
+												}
+												let strText = "";
+												let myRows = {};
+												let $rows = tbodyElemen
+													.find("tr")
+													.each(function (index, value) {
+														let cells = $(this).find("td");
+														myRows[index] = {};
+														cells.each(function (cellIndex) {
+															switch ($headers[cellIndex]) {
+																case "angka":
+																	strText = $(this).html();
+																	strText = accounting.unformat(strText, ",");
+																	myRows[index][$headers[cellIndex]] = strText;
+																	break;
+																case "angka_div":
+																	strText = $(this).find("div").html();
+																	strText = Number(
+																		accounting.unformat(strText, ",")
+																	);
+																	myRows[index][$headers[cellIndex]] = strText;
+																	break;
+																case "p_l":
+																	strText = $(this).find("button").text();
+																	myRows[index][$headers[cellIndex]] = strText
+																		.replace(/\s+/g, "")
+																		.trim();
+																	break;
+																case "button":
+																	// myRows[index][$headers[cellIndex]] = '';
+																	break;
+																default:
+																	strText = $(this).find("div").html();
+																	//Remove Extra Spaces From a String menggunakan .replace(/\s+/g, ' ').trim();
+																	myRows[index][$headers[cellIndex]] = strText
+																		.replace(/\s+/g, " ")
+																		.trim();
+																	break;
+															}
+														});
+													});
+												// var myObj = {};
+												// myObj = myRows;
+												formData.append(attrTable, JSON.stringify(myRows));
+											});
+											jalankanAjax = true;
+											break;
 										case "sk_asn":
 											ini.attr("id_row", id_row);
 											//insert semua data di tabel fom
-											let allTable = $(`form[name="form_modal"] table[name]`);
 											allTable.each(function (index, element) {
 												// element == this
 												let tbodyElemen = $(this).find("tbody");
@@ -8150,17 +8241,13 @@ $(document).ready(function () {
 												}
 												let strText = "";
 												let myRows = {};
-
 												let $rows = tbodyElemen
 													.find("tr")
 													.each(function (index, value) {
 														let cells = $(this).find("td");
 														myRows[index] = {};
 														if (jenis === "edit") {
-															// let id_row = $(value).attr('id_row');
-															// myRows[index]['id_row'] = parseInt(id_row);
 														}
-														// myRows[index]['id_row_uraian_paket'] = parseInt(id_row_uraian_paket);
 														cells.each(function (cellIndex) {
 															switch ($headers[cellIndex]) {
 																case "angka":
