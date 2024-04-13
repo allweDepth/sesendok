@@ -29,8 +29,7 @@ $theme = $_SESSION["user"]["theme"];
       <i class="sidebar icon"></i>
     </a>
     <div class="right menu">
-      <div class="ui inline inverted dropdown item lain" id="countRow"><span><i class="list icon"></i></span><input
-          type="hidden" name="countRow" value="5">
+      <div class="ui inline inverted dropdown item lain" id="countRow"><span><i class="list icon"></i></span><input type="hidden" name="countRow" value="5">
         <div class="text">5</div>
         <div class="menu">
           <div class="item" data-value="all">All</div>
@@ -52,11 +51,7 @@ $theme = $_SESSION["user"]["theme"];
       </div>
       <div class="right inverted menu">
         <div class="ui dropdown item lain"><span><i class="user icon"></i></span><i class="dropdown icon"></i>
-          <div class="menu"><a class="item" data-tab="wallchat"><i
-                class="circular comments outline icon"></i>Pesan</a><a class="item" name="change_themes"><i
-                class="circular moon icon"></i>Change Themes</a><a class="item" data-tab="profil"><i
-                class="circular qrcode icon"></i>Pengaturan</a><a class="item"
-              onclick="window.location.href='home/logout'"><i class="circular sign out alternate icon"></i>Log
+          <div class="menu"><a class="item" data-tab="wallchat"><i class="circular comments outline icon"></i>Pesan</a><a class="item" name="change_themes"><i class="circular moon icon"></i>Change Themes</a><a class="item" data-tab="profil"><i class="circular qrcode icon"></i>Pengaturan</a><a class="item" onclick="window.location.href='home/logout'"><i class="circular sign out alternate icon"></i>Log
               Out</a>
           </div>
         </div>
@@ -67,12 +62,10 @@ $theme = $_SESSION["user"]["theme"];
     <!-- sidebar-->
     <div class="ui inverted left vertical sidebar menu">
       <div class="item">
-        <h2 class="ui inverted center red aligned icon header dash_header"><i
-            class="circular colored blue building icon"></i>
+        <h2 class="ui inverted center red aligned icon header dash_header"><i class="circular colored blue building icon"></i>
           <div class="content">seSendok <span id="kopku" style="color: darkcyan!important;font-style: italic"></span>
             <div class="sub header">pemerintahan</div>
-            <a class="ui blue center basic label inverted"
-              id="set_tahun_anggaran"><?php echo $_SESSION["user"]["tahun"]; ?></a>
+            <a class="ui blue center basic label inverted" id="set_tahun_anggaran"><?php echo $_SESSION["user"]["tahun"]; ?></a>
           </div>
         </h2>
       </div>
@@ -86,81 +79,54 @@ $theme = $_SESSION["user"]["theme"];
       <div class="ui accordion inverted item">
         <div class="title item"><i class="dropdown icon"></i><span></span>Anggaran </div>
         <div class="content">
-          <a class="item nabiila" href="#" data-tab="tab_renstra" tbl="renstra"><span><i
-                class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
-          <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_renja"><span><i
-                class="toggle on icon"></i></span><i class="violet tag icon"></i>RENJA</a>
-          <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_dpa"><span><i
-                class="toggle on icon"></i></span><i class="yellow tags icon"></i>DPA</a>
+          <a class="item nabiila" href="#" data-tab="tab_renstra" tbl="renstra"><span><i class="toggle on icon"></i></span><i class="purple sitemap icon"></i>RENSTRA</a>
+          <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_renja"><span><i class="toggle on icon"></i></span><i class="violet tag icon"></i>RENJA</a>
+          <a class="item nabiila" href="#" data-tab="tab_renja" tbl="sub_keg_dpa"><span><i class="toggle on icon"></i></span><i class="yellow tags icon"></i>DPA</a>
         </div>
       </div>
       <a class="item" href="#" data-tab="tab_kontrak" tbl="daftar_paket"><i class="file contract icon"></i>Kontrak</a>
       <div class="ui accordion inverted item">
         <div class="title item"><i class="dropdown icon"></i><span></span>Realisasi</div>
         <div class="content">
-          <a class="item" href="#" data-tab="tab_input_real" tbl="realisasi"><span><i
-                class="toggle on icon"></i></span><i class="purple chart pie icon"></i>Input Realisasi</a>
-          <a class="item" href="#" data-tab="tab_input_real" tbl="spj"><span><i class="toggle on icon"></i></span><i
-              class="violet chartline icon"></i>SPJ</a>
-          <a class="item" href="#" data-tab="tab_input_real" tbl="laporan"><span><i class="toggle on icon"></i></span><i
-              class="yellow chart bar icon"></i>Laporan</a>
+          <a class="item" href="#" data-tab="tab_input_real" tbl="realisasi"><span><i class="toggle on icon"></i></span><i class="purple chart pie icon"></i>Input Realisasi</a>
+          <a class="item" href="#" data-tab="tab_input_real" tbl="spj"><span><i class="toggle on icon"></i></span><i class="violet chartline icon"></i>SPJ</a>
+          <a class="item" href="#" data-tab="tab_input_real" tbl="laporan"><span><i class="toggle on icon"></i></span><i class="yellow chart bar icon"></i>Laporan</a>
         </div>
       </div>
       <div class="ui accordion inverted item">
         <div class="title item"><i class="dropdown icon"></i>Referensi</div>
         <div class="content">
-          <a class="item" href="#" data-tab="tab_ref" tbl="bidang_urusan"><span><i
-                class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="prog"><span><i class="toggle on blue icon"></i></span><i
-              class="users icon"></i>Program</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="keg"><span><i class="toggle on blue icon"></i></span><i
-              class="outdent icon"></i>Kegiatan</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i
-              class="layer group icon"></i>Sub Kegiatan</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="rekanan"><span><i class="toggle on blue icon"></i></span><i
-              class="book reader icon"></i>Rekanan</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="satuan"><span><i class="toggle on blue icon"></i></span><i
-              class="calculator icon"></i>Satuan</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="mapping"><span><i class="toggle on blue icon"></i></span><i
-              class="stream icon"></i>Mapping</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="aset"><span><i class="toggle on blue icon"></i></span><i
-              class="calendar alternate icon"></i>Neraca</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="akun_belanja"><span><i
-                class="toggle on blue icon"></i></span><i class="calendar alternate outline icon"></i>Akun</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="sumber_dana"><span><i
-                class="toggle on blue icon"></i></span><i class="money check alternate icon"></i>Sumber Dana</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i
-                class="toggle on blue icon"></i></span><i class="id card icon"></i>Organisasi</a>
-          <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i
-                class="toggle on blue icon"></i></span><i class="balance scale icon"></i>Peraturan</a>
-          <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i
-              class="globe icon"></i>Wilayah</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="bidang_urusan"><span><i class="toggle on blue icon"></i></span><i class="user plus icon"></i>Bidang Urusan</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="prog"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Program</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="keg"><span><i class="toggle on blue icon"></i></span><i class="outdent icon"></i>Kegiatan</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="sub_keg"><span><i class="toggle on blue icon"></i></span><i class="layer group icon"></i>Sub Kegiatan</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="rekanan"><span><i class="toggle on blue icon"></i></span><i class="book reader icon"></i>Rekanan</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="satuan"><span><i class="toggle on blue icon"></i></span><i class="calculator icon"></i>Satuan</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="mapping"><span><i class="toggle on blue icon"></i></span><i class="stream icon"></i>Mapping</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="aset"><span><i class="toggle on blue icon"></i></span><i class="calendar alternate icon"></i>Neraca</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="akun_belanja"><span><i class="toggle on blue icon"></i></span><i class="calendar alternate outline icon"></i>Akun</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="sumber_dana"><span><i class="toggle on blue icon"></i></span><i class="money check alternate icon"></i>Sumber Dana</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="organisasi"><span><i class="toggle on blue icon"></i></span><i class="id card icon"></i>Organisasi</a>
+          <a class="item" href="#" data-tab="tab_peraturan" tbl="peraturan"><span><i class="toggle on blue icon"></i></span><i class="balance scale icon"></i>Peraturan</a>
+          <a class="item" href="#" data-tab="tab_ref" tbl="wilayah"><span><i class="toggle on blue icon"></i></span><i class="globe icon"></i>Wilayah</a>
         </div>
       </div>
       <div class="ui accordion inverted item">
         <div class="title item"><i class="dropdown icon"></i>Standar Harga Satuan</div>
         <div class="content">
-          <a class="item" href="#" data-tab="tab_hargasat" tbl="ssh"><span><i class="toggle on blue icon"></i></span><i
-              class="file icon"></i>SSH</a>
-          <a class="item" href="#" data-tab="tab_hargasat" tbl="hspk"><span><i class="toggle on blue icon"></i></span><i
-              class="file alternate icon"></i>HSPK</a>
-          <a class="item" href="#" data-tab="tab_hargasat" tbl="asb"><span><i class="toggle on blue icon"></i></span><i
-              class="file alternate outline icon"></i>ASB</a>
-          <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i
-              class="file outline icon"></i>SBU</a>
+          <a class="item" href="#" data-tab="tab_hargasat" tbl="ssh"><span><i class="toggle on blue icon"></i></span><i class="file icon"></i>SSH</a>
+          <a class="item" href="#" data-tab="tab_hargasat" tbl="hspk"><span><i class="toggle on blue icon"></i></span><i class="file alternate icon"></i>HSPK</a>
+          <a class="item" href="#" data-tab="tab_hargasat" tbl="asb"><span><i class="toggle on blue icon"></i></span><i class="file alternate outline icon"></i>ASB</a>
+          <a class="item" href="#" data-tab="tab_hargasat" tbl="sbu"><span><i class="toggle on blue icon"></i></span><i class="file outline icon"></i>SBU</a>
         </div>
       </div>
       <div class="ui accordion inverted item">
         <div class="title item"><i class="dropdown icon"></i>Kepegawaian</div>
         <div class="content">
-          <a class="item" href="#" data-tab="tab_all" tbl="asn"><span><i class="toggle on blue icon"></i></span><i
-              class="users icon"></i>ASN</a>
-          <a class="item" href="#" data-tab="tab_all" tbl="sk_asn"><span><i class="toggle on blue icon"></i></span><i
-              class="users icon"></i>Surat Keputusan (SK)</a>
-          <a class="item" href="#" data-tab="tab_all" tbl="register_surat"><span><i
-                class="toggle on blue icon"></i></span><i class="users icon"></i>Register Surat</a>
-          <a class="item" href="#" data-tab="tab_all" tbl="create_surat"><span><i
-                class="toggle on blue icon"></i></span><i class="users icon"></i>Surat</a>
+          <a class="item" href="#" data-tab="tab_all" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>ASN</a>
+          <a class="item" href="#" data-tab="tab_all" tbl="sk_asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat Keputusan (SK)</a>
+          <a class="item" href="#" data-tab="tab_all" tbl="register_surat"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Register Surat</a>
+          <a class="item" href="#" data-tab="tab_all" tbl="create_surat"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat</a>
         </div>
       </div>
       <!-- ut admin-->
@@ -231,7 +197,7 @@ $theme = $_SESSION["user"]["theme"];
       </div>
       <!-- ============== -->
       <!-- tab home -->
-      <!-- ============== -->
+      <!-- ============== @audit-ok home -->
       <div class="ui tab basic segment active" data-tab="tab_home">
         <div class="main ui intro container">
           <h2 class="ui dividing header">Pengantar untuk <?php echo $type_user ?> </h2>
@@ -242,25 +208,48 @@ $theme = $_SESSION["user"]["theme"];
               </div>
             </h2>
           </div>
-
           <div class="ui info message">
             <h3 class="ui header dash_header"><i class="upload icon"></i>
               <div class="content">menginpor file pada aplikasi ? <div class="sub header">
                   <div class="ui divided selection list">
-                    <li class="item">file yang di Impor harus extension <a class="ui green label custom csv_format"><i
-                          class="file excel icon"></i>xlsx</a>,
+                    <li class="item">file yang di Impor harus extension <a class="ui green label custom csv_format"><i class="file excel icon"></i>xlsx</a>,
                       file template pengimporan dapat di download di <a class="ui teal tag label">menu data
                         umum</a></li>
-                    <li class="item">Format angka menggunakan regional Indonesia <a class="ui blue label"><i
-                          class="money check icon"></i>pengelompokan " . "</a><a class="ui blue label"><i
-                          class="money check icon"></i>desimal " , "</a><a class="ui blue label"><i
-                          class="money check icon"></i>contoh "1.200.000,50"</a></li>
+                    <li class="item">Format angka menggunakan regional Indonesia <a class="ui blue label"><i class="money check icon"></i>pengelompokan " . "</a><a class="ui blue label"><i class="money check icon"></i>desimal " , "</a><a class="ui blue label"><i class="money check icon"></i>contoh "1.200.000,50"</a></li>
                   </div>
                 </div>
               </div>
             </h3>
           </div>
-
+          <div class="ui icon buttons mini align">
+                  <button class="ui button"><i class="align left icon"></i></button>
+                  <button class="ui button"><i class="align center icon"></i></button>
+                  <button class="ui button"><i class="align right icon"></i></button>
+                  <button class="ui button"><i class="align justify icon"></i></button>
+                </div>
+                <div class="ui icon buttons mini font">
+                  <button class="ui button"><i class="bold icon"></i></button>
+                  <button class="ui button"><i class="underline icon"></i></button>
+                  <button class="ui button"><i class="text width icon"></i></button>
+                </div>
+          <div class="ui dropdown">
+            <div class="text">Pilih Opsi</div>
+            <div class="menu">
+              <div class="item no-margin no-padding">
+                <div class="ui icon buttons mini">
+                  <button class="ui button"><i class="align left icon"></i></button>
+                  <button class="ui button"><i class="align center icon"></i></button>
+                  <button class="ui button"><i class="align right icon"></i></button>
+                  <button class="ui button"><i class="align justify icon"></i></button>
+                </div>
+                <div class="ui icon buttons mini">
+                  <button class="ui button"><i class="bold icon"></i></button>
+                  <button class="ui button"><i class="underline icon"></i></button>
+                  <button class="ui button"><i class="text width icon"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
           <h2 class="ui dividing header">Cara menggunakan <a class="anchor"></a></h2>
           <div class="ui relaxed divided list">
             <div class="item">
@@ -299,24 +288,20 @@ $theme = $_SESSION["user"]["theme"];
               </div>
             </div>
           </div>
-          <p>Tutorial cara menggunakan aplikasi seSendok untuk penyusunan anggaran dapat di download <a
-              href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
+          <p>Tutorial cara menggunakan aplikasi seSendok untuk penyusunan anggaran dapat di download <a href="<?= BASEURL; ?>template/tutorial_user.pdf" target="_blank">disini</a></p>
           <p></p>
           <p></p>
         </div>
         <div class="ui vertical footer segment">
           <div class="three column divided stackable center aligned ui grid">
             <div class="column">
-              <div class="ui icon header"><i class="teal rocket circular icon"></i>AHSP : <a
-                  href="javascript: void(0)">efisiensi dan efektif</a></div>
+              <div class="ui icon header"><i class="teal rocket circular icon"></i>AHSP : <a href="javascript: void(0)">efisiensi dan efektif</a></div>
             </div>
             <div class="column">
-              <div class="ui icon header"><i class="teal theme circular icon"></i>transparansi, <a
-                  href="javascript: void(0)">akuntabilitas</a></div>
+              <div class="ui icon header"><i class="teal theme circular icon"></i>transparansi, <a href="javascript: void(0)">akuntabilitas</a></div>
             </div>
             <div class="column">
-              <div class="ui icon header"><i class="teal food circular icon"></i>serta <a
-                  href="javascript: void(0)">partisipatif</a></div>
+              <div class="ui icon header"><i class="teal food circular icon"></i>serta <a href="javascript: void(0)">partisipatif</a></div>
             </div>
           </div>
         </div>
@@ -388,13 +373,12 @@ $theme = $_SESSION["user"]["theme"];
                 <div class="ui hidden divider"></div>
                 <div class="ui right floated basic icon buttons">
                   <?php
-									if ($type_user == 'admin') {
-										echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl="tujuan_sasaran_renstra"><i class="plus icon"></i></button>
+                  if ($type_user == 'admin') {
+                    echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl="tujuan_sasaran_renstra"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-									}
-									?>
-                  <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh"
-                    jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
+                  }
+                  ?>
+                  <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
                 </div>
                 <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
                 <div class="ui hidden divider"></div>
@@ -505,12 +489,9 @@ $theme = $_SESSION["user"]["theme"];
                 <div class="ui hidden divider"></div>
                 <div style="height: 1px">
                   <div class="ui right floated basic icon buttons">
-                    <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center"
-                      jns="add" tbl=""><i class="plus icon"></i></button>
-                    <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center"
-                      jns="import"><i class="upload icon"></i></button>
-                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh"
-                      jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
+                    <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
+                    <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                    <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="" type="submit"><i class="alternate download icon"></i></button>
                   </div>
                 </div>
                 <div class="ui hidden divider"></div>
@@ -538,12 +519,9 @@ $theme = $_SESSION["user"]["theme"];
           <div class="ui info message" name="ketref">Nabiilainayah</div>
           <div class="ui hidden divider"></div>
           <div class="ui right floated basic icon buttons">
-            <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"
-              tbl="daftar_paket"><i class="plus icon"></i></button>
-            <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX"
-              data-position="bottom center" jns="import"><i class="upload icon"></i></button>
-            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok"
-              tbl="daftar_paket" type="submit"><i class="alternate download icon"></i></button>
+            <button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl="daftar_paket"><i class="plus icon"></i></button>
+            <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="daftar_paket" type="submit"><i class="alternate download icon"></i></button>
           </div>
           <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
           <div class="ui hidden divider"></div>
@@ -607,12 +585,9 @@ $theme = $_SESSION["user"]["theme"];
               <div class="ui hidden divider"></div>
               <div style="height: 1px">
                 <div class="ui right floated basic icon buttons">
-                  <button class="ui button" name="modal_show" jns="add" tbl="realisasi" data-tooltip="Tambah Data"
-                    data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
-                  <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center"
-                    jns="import"><i class="upload icon"></i></button>
-                  <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh"
-                    jns="dok" tbl="realisasi" type="submit"><i class="alternate download icon"></i></button>
+                  <button class="ui button" name="modal_show" jns="add" tbl="realisasi" data-tooltip="Tambah Data" data-position="bottom center" jns="add" tbl=""><i class="plus icon"></i></button>
+                  <button class="ui button" name="flyout" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+                  <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="realisasi" type="submit"><i class="alternate download icon"></i></button>
                 </div>
               </div>
               <div class="ui hidden divider"></div>
@@ -650,12 +625,9 @@ $theme = $_SESSION["user"]["theme"];
           <div class="ui info message" name="ketref">Nabiilainayah</div>
           <div class="ui hidden divider"></div>
           <div class="ui right floated basic icon buttons">
-            <button class="ui button" name="" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i
-                class="plus icon"></i></button>
-            <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX"
-              data-position="bottom center" jns="import"><i class="upload icon"></i></button>
-            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok"
-              tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+            <button class="ui button" name="" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+            <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>
+            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
           </div>
           <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
           <div class="ui hidden divider"></div>
@@ -697,13 +669,12 @@ $theme = $_SESSION["user"]["theme"];
           <div class="ui hidden divider"></div>
           <div class="ui right floated basic icon buttons">
             <?php
-						if ($type_user == 'admin') {
-							echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+            if ($type_user == 'admin') {
+              echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-						}
-						?>
-            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok"
-              tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+            }
+            ?>
+            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
           </div>
           <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
           <div class="ui hidden divider"></div>
@@ -744,13 +715,12 @@ $theme = $_SESSION["user"]["theme"];
           <div class="ui hidden divider"></div>
           <div class="ui right floated basic icon buttons">
             <?php
-						if ($type_user == 'admin') {
-							echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+            if ($type_user == 'admin') {
+              echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-						}
-						?>
-            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok"
-              tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
+            }
+            ?>
+            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="peraturan" type="submit"><i class="alternate download icon"></i></button>
           </div>
           <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
           <div class="ui hidden divider"></div>
@@ -805,13 +775,12 @@ $theme = $_SESSION["user"]["theme"];
           <div class="ui hidden divider"></div>
           <div class="ui right floated basic icon buttons">
             <?php
-						if ($type_user == 'admin') {
-							echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
+            if ($type_user == 'admin') {
+              echo '<button class="ui button" name="flyout" data-tooltip="Tambah Data" data-position="bottom center" jns="add"><i class="plus icon"></i></button>
                             <button class="ui button" name="flyout" jns="import" data-tooltip="Import XLSX" data-position="bottom center" jns="import"><i class="upload icon"></i></button>';
-						}
-						?>
-            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok"
-              tbl="asb" type="submit"><i class="alternate download icon"></i></button>
+            }
+            ?>
+            <button class="ui button" data-tooltip="Download" data-position="bottom center" name="ungguh" jns="dok" tbl="asb" type="submit"><i class="alternate download icon"></i></button>
           </div>
           <h3 class="ui dividing header"><i class="left align icon"></i>Tabel Dokumen</h3>
           <div class="ui hidden divider"></div>
@@ -885,55 +854,55 @@ $theme = $_SESSION["user"]["theme"];
             </div>
             <div class="ui three stackable cards">
               <?php
-							$data_card = new stdClass;
-							$data_card->peraturan = ['header' => 'Peraturan', 'meta' => 'peraturan terkait aplikasi', 'description' => 'ketentuan yang dengan sendirinya memiliki suatu makna normatif; ketentuan yang menyatakan bahwa sesuatu harus (tidak harus) dilakukan, atau boleh (tidak boleh) dilakukan', 'icon' => 'teal road'];
-							$data_card->pengaturan = ['header' => 'Pengaturan', 'meta' => 'pengaturan APBD', 'description' => 'ketentuan yang dengan sendirinya memiliki suatu makna normatif; ketentuan yang menyatakan bahwa sesuatu harus (tidak harus) dilakukan, atau boleh (tidak boleh) dilakukan', 'icon' => 'teal road'];
-							$data_card->sumber_dana = ['header' => 'Sumber Dana', 'meta' => 'Sumber dana kegiatan', 'description' => 'Klasifikasi, Kodefikasi, dan Nomenklatur Sumber Pendanaan masing-masing kelompok dana meliputi pengawasan/control, akuntabilitas/accountability dan transparansi/transparency (CAT).', 'icon' => 'purple money'];
-							$data_card->akun_belanja = ['header' => 'Akun Belanja', 'meta' => 'Aplikasi Standar Satuan Harga (SSH)', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'teal money bill alternate outline'];
-							$data_card->sub_keg = ['header' => 'Sub Kegiatan', 'meta' => 'SUB KEGIATAN', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'violet users cog'];
-							$data_card->aset = ['header' => 'Neraca', 'meta' => 'neraca/aset', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'violet users cog'];
-							$data_card->mapping = ['header' => 'Mapping', 'meta' => 'mapping neraca dan akun', 'description' => 'mapping (pemetaan) neraca dengan akun belanja', 'icon' => 'violet users cog'];
-							$data_card->wilayah = ['header' => 'Kode Wilayah', 'meta' => 'kode wilayah indonesia', 'description' => 'identitas wilayah administrasi pemerintahan', 'icon' => 'violet users cog'];
-							$data_card->organisasi = ['header' => 'Organisasi', 'meta' => 'kode organisasi SKPD', 'description' => ' organisasi atau lembaga pada Pemerintah Daerah yang bertanggung jawab kepada Kepala Daerah dalam rangka penyelenggaraan pemerintahan', 'icon' => 'violet users cog'];
-							$data_card->sbu = ['header' => 'SBU', 'meta' => 'Standar Biaya Umum (SBU)', 'description' => 'harga satuan setiap unit non barang/jasa seperti honorarium dan perjalanan dinas yang berlaku di suatu daerah', 'icon' => 'violet users cog'];
-							$data_card->asb = ['header' => 'ASB', 'meta' => 'Analisis Standar Belanja (ASB)', 'description' => 'penilaian kewajaran atas beban kerja dan biaya yang digunakan untuk melaksanakan suatu kegiatan', 'icon' => 'violet users cog'];
-							$data_card->ssh = ['header' => 'SSH', 'meta' => 'Standar Satuan Harga (SSH)', 'description' => 'harga satuan setiap unit barang/jasa yang berlaku disuatu daerah', 'icon' => 'violet users cog'];
-							$data_card->hspk = ['header' => 'HSPK', 'meta' => 'Harga Satuan Pokok Kegiatan (HSPK)', 'description' => 'merupakan harga komponen kegiatan fisik/non fisik melalui analisis yang distandarkan untuk setiap jenis komponen kegiatan dengan menggunakan SSH sebagai elemen penyusunannya', 'icon' => 'violet users cog'];
-							$data_card->tujuan_sasaran_renstra = ['header' => 'TUJUAN DAN SASARAN RENSTRA', 'meta' => 'renstra', 'description' => 'tujuan dan sasaran renstra', 'icon' => 'violet users cog'];
-							$data_card->renstra = ['header' => 'RENSTRA', 'meta' => 'Rencana Strategis (Renstra)', 'description' => 'dokumen perencanaan suatu organisasi yang berorientasi pada hasil yang ingin dicapai', 'icon' => 'violet users cog'];
-							$data_card->sub_keg_renja = ['header' => 'SUB KEGIATAN RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];
-							$data_card->renja = ['header' => 'RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];
-							$data_card->renja_p = ['header' => 'RENJA PERUBAHAN', 'meta' => 'renja perubahan', 'description' => 'renja perubahan', 'icon' => 'violet users cog'];
-							$data_card->sub_keg_dpa = ['header' => 'SUB KEGIATAN DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
-							$data_card->dpa = ['header' => 'DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
-							$data_card->dppa = ['header' => 'DPPA', 'meta' => 'dpa perubahan', 'description' => 'dpa perubahan', 'icon' => 'violet users cog'];
-							$data_card->daftar_kontrak = ['header' => 'KONTRAK', 'meta' => 'daftar kontrak', 'description' => 'kontraktual/swakelola', 'icon' => 'violet users cog'];
-							if ($type_user == 'admin') {
-								$data_card->realisasi = ['header' => 'REALISASI', 'meta' => 'daftar realisasi', 'description' => 'realisasi', 'icon' => 'money cog'];
-								$data_card->asn = ['header' => 'Aparatur Sipil Negara', 'meta' => 'ASN', 'description' => 'Aparatur Sipil Negara', 'icon' => 'user plus'];
-								$data_card->satuan = ['header' => 'Satuan', 'meta' => 'Ukuran suatu besaran', 'description' => 'Satuan atau satuan ukur atau unit digunakan untuk memastikan kebenaran pengukuran', 'icon' => 'user plus'];
-								$data_card->divisi = ['header' => 'Divisi', 'meta' => 'Task HSP', 'description' => 'Pembagian divisi pekerjaan', 'icon' => 'teal users cog'];
-								$data_card->chat = ['header' => 'Ruang Chating', 'meta' => 'Chat, message', 'description' => 'ruang di peruntukkan chat', 'icon' => 'comments outline'];
-								$data_card->rekanan = ['header' => 'Rekanan', 'meta' => 'Rekanan', 'description' => 'data rekanan yang terdaftar', 'icon' => 'users'];
-							}
-							foreach ($data_card as $key => $value) {
-								if ($type_user == 'user') {
-									$button = '<button class="ui fluid orange button" name="del_row" jns="del_proyek" tbl="' . $key . '">Hapus Dokumen</button>';
-									$nButton = '';
-								} else {
-									$button = '<div class="ui three buttons"><div class="ui teal button" name="del_row" jns="' . $key . '" tbl="dell_all">All</div>
+              $data_card = new stdClass;
+              $data_card->peraturan = ['header' => 'Peraturan', 'meta' => 'peraturan terkait aplikasi', 'description' => 'ketentuan yang dengan sendirinya memiliki suatu makna normatif; ketentuan yang menyatakan bahwa sesuatu harus (tidak harus) dilakukan, atau boleh (tidak boleh) dilakukan', 'icon' => 'teal road'];
+              $data_card->pengaturan = ['header' => 'Pengaturan', 'meta' => 'pengaturan APBD', 'description' => 'ketentuan yang dengan sendirinya memiliki suatu makna normatif; ketentuan yang menyatakan bahwa sesuatu harus (tidak harus) dilakukan, atau boleh (tidak boleh) dilakukan', 'icon' => 'teal road'];
+              $data_card->sumber_dana = ['header' => 'Sumber Dana', 'meta' => 'Sumber dana kegiatan', 'description' => 'Klasifikasi, Kodefikasi, dan Nomenklatur Sumber Pendanaan masing-masing kelompok dana meliputi pengawasan/control, akuntabilitas/accountability dan transparansi/transparency (CAT).', 'icon' => 'purple money'];
+              $data_card->akun_belanja = ['header' => 'Akun Belanja', 'meta' => 'Aplikasi Standar Satuan Harga (SSH)', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'teal money bill alternate outline'];
+              $data_card->sub_keg = ['header' => 'Sub Kegiatan', 'meta' => 'SUB KEGIATAN', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'violet users cog'];
+              $data_card->aset = ['header' => 'Neraca', 'meta' => 'neraca/aset', 'description' => 'sebagai perhitungan kebutuhan biaya Tenaga Kerja, bahan, dan peralatan', 'icon' => 'violet users cog'];
+              $data_card->mapping = ['header' => 'Mapping', 'meta' => 'mapping neraca dan akun', 'description' => 'mapping (pemetaan) neraca dengan akun belanja', 'icon' => 'violet users cog'];
+              $data_card->wilayah = ['header' => 'Kode Wilayah', 'meta' => 'kode wilayah indonesia', 'description' => 'identitas wilayah administrasi pemerintahan', 'icon' => 'violet users cog'];
+              $data_card->organisasi = ['header' => 'Organisasi', 'meta' => 'kode organisasi SKPD', 'description' => ' organisasi atau lembaga pada Pemerintah Daerah yang bertanggung jawab kepada Kepala Daerah dalam rangka penyelenggaraan pemerintahan', 'icon' => 'violet users cog'];
+              $data_card->sbu = ['header' => 'SBU', 'meta' => 'Standar Biaya Umum (SBU)', 'description' => 'harga satuan setiap unit non barang/jasa seperti honorarium dan perjalanan dinas yang berlaku di suatu daerah', 'icon' => 'violet users cog'];
+              $data_card->asb = ['header' => 'ASB', 'meta' => 'Analisis Standar Belanja (ASB)', 'description' => 'penilaian kewajaran atas beban kerja dan biaya yang digunakan untuk melaksanakan suatu kegiatan', 'icon' => 'violet users cog'];
+              $data_card->ssh = ['header' => 'SSH', 'meta' => 'Standar Satuan Harga (SSH)', 'description' => 'harga satuan setiap unit barang/jasa yang berlaku disuatu daerah', 'icon' => 'violet users cog'];
+              $data_card->hspk = ['header' => 'HSPK', 'meta' => 'Harga Satuan Pokok Kegiatan (HSPK)', 'description' => 'merupakan harga komponen kegiatan fisik/non fisik melalui analisis yang distandarkan untuk setiap jenis komponen kegiatan dengan menggunakan SSH sebagai elemen penyusunannya', 'icon' => 'violet users cog'];
+              $data_card->tujuan_sasaran_renstra = ['header' => 'TUJUAN DAN SASARAN RENSTRA', 'meta' => 'renstra', 'description' => 'tujuan dan sasaran renstra', 'icon' => 'violet users cog'];
+              $data_card->renstra = ['header' => 'RENSTRA', 'meta' => 'Rencana Strategis (Renstra)', 'description' => 'dokumen perencanaan suatu organisasi yang berorientasi pada hasil yang ingin dicapai', 'icon' => 'violet users cog'];
+              $data_card->sub_keg_renja = ['header' => 'SUB KEGIATAN RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];
+              $data_card->renja = ['header' => 'RENJA', 'meta' => 'renja', 'description' => 'renja', 'icon' => 'violet users cog'];
+              $data_card->renja_p = ['header' => 'RENJA PERUBAHAN', 'meta' => 'renja perubahan', 'description' => 'renja perubahan', 'icon' => 'violet users cog'];
+              $data_card->sub_keg_dpa = ['header' => 'SUB KEGIATAN DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
+              $data_card->dpa = ['header' => 'DPA', 'meta' => 'dpa', 'description' => 'dpa', 'icon' => 'violet users cog'];
+              $data_card->dppa = ['header' => 'DPPA', 'meta' => 'dpa perubahan', 'description' => 'dpa perubahan', 'icon' => 'violet users cog'];
+              $data_card->daftar_kontrak = ['header' => 'KONTRAK', 'meta' => 'daftar kontrak', 'description' => 'kontraktual/swakelola', 'icon' => 'violet users cog'];
+              if ($type_user == 'admin') {
+                $data_card->realisasi = ['header' => 'REALISASI', 'meta' => 'daftar realisasi', 'description' => 'realisasi', 'icon' => 'money cog'];
+                $data_card->asn = ['header' => 'Aparatur Sipil Negara', 'meta' => 'ASN', 'description' => 'Aparatur Sipil Negara', 'icon' => 'user plus'];
+                $data_card->satuan = ['header' => 'Satuan', 'meta' => 'Ukuran suatu besaran', 'description' => 'Satuan atau satuan ukur atau unit digunakan untuk memastikan kebenaran pengukuran', 'icon' => 'user plus'];
+                $data_card->divisi = ['header' => 'Divisi', 'meta' => 'Task HSP', 'description' => 'Pembagian divisi pekerjaan', 'icon' => 'teal users cog'];
+                $data_card->chat = ['header' => 'Ruang Chating', 'meta' => 'Chat, message', 'description' => 'ruang di peruntukkan chat', 'icon' => 'comments outline'];
+                $data_card->rekanan = ['header' => 'Rekanan', 'meta' => 'Rekanan', 'description' => 'data rekanan yang terdaftar', 'icon' => 'users'];
+              }
+              foreach ($data_card as $key => $value) {
+                if ($type_user == 'user') {
+                  $button = '<button class="ui fluid orange button" name="del_row" jns="del_proyek" tbl="' . $key . '">Hapus Dokumen</button>';
+                  $nButton = '';
+                } else {
+                  $button = '<div class="ui three buttons"><div class="ui teal button" name="del_row" jns="' . $key . '" tbl="dell_all">All</div>
                                     <button class="ui blue button" name="del_row" jns="del_proyek" tbl="' . $key . '">Dokumen</button>
                                     <div class="ui violet button" name="del_row" jns="reset" tbl="' . $key . '">Reset</div></div>';
-									$nButton = 'three';
-								}
-								echo '<div class="card">
+                  $nButton = 'three';
+                }
+                echo '<div class="card">
                                 <div class="content"><i class="right floated large ui bordered colored ' . $value['icon'] . ' icon"></i>
                                     <div class="header">' . $value['header'] . '</div>
                                     <div class="meta">' . $value['meta'] . '</div>
                                     <div class="description">' . $value['description'] . '</div>
                                 </div><div class="extra content">' . $button . ' </div></div>';
-							}
-							?>
+              }
+              ?>
             </div>
           </div>
         </div>
@@ -999,14 +968,10 @@ $theme = $_SESSION["user"]["theme"];
                       <td>RENSTRA</td>
                       <td>
                         <div class="ui basic icon buttons">
-                          <button class="ui button" name="jalankan" jns="kunci" tbl="renstra" type="button"><i
-                              class="lock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renstra" type="button"><i
-                              class="unlock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="setujui" tbl="renstra" type="button"><i
-                              class="check square icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renstra" type="button"><i
-                              class="edit icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="kunci" tbl="renstra" type="button"><i class="lock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renstra" type="button"><i class="unlock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="setujui" tbl="renstra" type="button"><i class="check square icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renstra" type="button"><i class="edit icon"></i></button>
                         </div>
                       </td>
                     </tr>
@@ -1014,14 +979,10 @@ $theme = $_SESSION["user"]["theme"];
                       <td>RENJA</td>
                       <td>
                         <div class="ui basic icon buttons">
-                          <button class="ui button" name="jalankan" jns="kunci" tbl="renja" type="button"><i
-                              class="lock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renja" type="button"><i
-                              class="unlock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="setujui" tbl="renja" type="button"><i
-                              class="check square icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja" type="button"><i
-                              class="edit icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="kunci" tbl="renja" type="button"><i class="lock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renja" type="button"><i class="unlock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="setujui" tbl="renja" type="button"><i class="check square icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja" type="button"><i class="edit icon"></i></button>
                         </div>
                       </td>
                     </tr>
@@ -1029,14 +990,10 @@ $theme = $_SESSION["user"]["theme"];
                       <td>D P A</td>
                       <td>
                         <div class="ui basic icon buttons">
-                          <button class="ui button" name="jalankan" jns="kunci" tbl="dpa" type="button"><i
-                              class="lock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unkunci" tbl="dpa" type="button"><i
-                              class="unlock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="setujui" tbl="dpa" type="button"><i
-                              class="check square icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="dpa" type="button"><i
-                              class="edit icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="kunci" tbl="dpa" type="button"><i class="lock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unkunci" tbl="dpa" type="button"><i class="unlock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="setujui" tbl="dpa" type="button"><i class="check square icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="dpa" type="button"><i class="edit icon"></i></button>
                         </div>
                       </td>
                     </tr>
@@ -1044,14 +1001,10 @@ $theme = $_SESSION["user"]["theme"];
                       <td>RENJA PERUBAHAN</td>
                       <td>
                         <div class="ui basic icon buttons">
-                          <button class="ui button" name="jalankan" jns="kunci" tbl="renja_p" type="button"><i
-                              class="lock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renja_p" type="button"><i
-                              class="unlock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="setujui" tbl="renja_p" type="button"><i
-                              class="check square icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja_p" type="button"><i
-                              class="edit icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="kunci" tbl="renja_p" type="button"><i class="lock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renja_p" type="button"><i class="unlock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="setujui" tbl="renja_p" type="button"><i class="check square icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renja_p" type="button"><i class="edit icon"></i></button>
                         </div>
                       </td>
                     </tr>
@@ -1059,14 +1012,10 @@ $theme = $_SESSION["user"]["theme"];
                       <td>D P P A</td>
                       <td>
                         <div class="ui basic icon buttons">
-                          <button class="ui button" name="jalankan" jns="kunci" tbl="dppa" type="button"><i
-                              class="lock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unkunci" tbl="dppa" type="button"><i
-                              class="unlock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="setujui" tbl="dppa" type="button"><i
-                              class="check square icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="dppa" type="button"><i
-                              class="edit icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="kunci" tbl="dppa" type="button"><i class="lock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unkunci" tbl="dppa" type="button"><i class="unlock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="setujui" tbl="dppa" type="button"><i class="check square icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="dppa" type="button"><i class="edit icon"></i></button>
                         </div>
                       </td>
                     </tr>
@@ -1348,15 +1297,13 @@ $theme = $_SESSION["user"]["theme"];
             <div class="ui special centered fluid card">
               <div class="content">
                 <div class="right floated meta">14h</div>
-                <img class="ui avatar image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)"><span
-                  name="nama">Alwi Mansyur</span>
+                <img class="ui avatar image" src="img/avatar/large/elliot.jpg" onerror="imgsrc(this)"><span name="nama">Alwi Mansyur</span>
               </div>
               <div class="blurring dimmable image">
                 <div class="ui dimmer">
                   <div class="content">
                     <div class="center">
-                      <button for="directupload1" name="direct" type="button" id_row="" jns="upload" tbl="user"
-                        dok="photo" class="ui inverted icon button" accept=".jpg,.png,.jpeg,.img">
+                      <button for="directupload1" name="direct" type="button" id_row="" jns="upload" tbl="user" dok="photo" class="ui inverted icon button" accept=".jpg,.png,.jpeg,.img">
                         <i class="file icon"></i>ganti profil
                       </button>
                     </div>
@@ -1594,12 +1541,12 @@ $theme = $_SESSION["user"]["theme"];
   <script src="<?= BASEURL; ?>vendor/node_modules/crypto-js/crypto-js.js"></script>
   <script src="<?= BASEURL; ?>js/Encryption.js"></script>
   <script type="text/javascript">
-  var theme = '<?= $theme; ?>';
-  var warna_tbl = '<?= $_SESSION["user"]["warna_tbl"]; ?>';
-  const halamanDefault = '<?= $keyEnc; ?>';
+    var theme = '<?= $theme; ?>';
+    var warna_tbl = '<?= $_SESSION["user"]["warna_tbl"]; ?>';
+    const halamanDefault = '<?= $keyEnc; ?>';
   </script>
   <script>
-  const BASEURL = '<?= BASEURL; ?>';
+    const BASEURL = '<?= BASEURL; ?>';
   </script>
   <script src="<?= BASEURL; ?>js/index.js"></script>
 </body>

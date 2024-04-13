@@ -46,6 +46,19 @@ $(document).ready(function () {
 			}
 		},
 	};
+	$("body").on("click", ".align .button, .font .button", function(e) {
+		e.preventDefault();
+		if ($(this).parent().hasClass('align')) {
+			// Hapus kelas 'active' dari semua tombol .align
+			$('.align .button').removeClass('active');
+			// Tambahkan kelas 'active' hanya pada tombol yang diklik
+			$(this).addClass('active');
+		} else if ($(this).parent().hasClass('font')) {
+			// Toggle kelas 'active' pada tombol yang diklik
+			$(this).toggleClass('active');
+		}
+	});
+	
 	$("body").on("click", ".menu .item.aksi", handler.menuorientasi);
 	$(".menu .item.inayah").on("click", handler.activate);
 	$(".ui.dropdown").dropdown();
@@ -8209,15 +8222,13 @@ $(document).ready(function () {
 															}
 														});
 													});
-												// var myObj = {};
-												// myObj = myRows;
 												formData.append(attrTable, JSON.stringify(myRows));
 											});
 											jalankanAjax = true;
 											break;
 										case "sk_asn":
 											ini.attr("id_row", id_row);
-											//insert semua data di tabel fom
+											//insert semua data di tabel form
 											allTable.each(function (index, element) {
 												// element == this
 												let tbodyElemen = $(this).find("tbody");
@@ -10212,7 +10223,9 @@ $(document).ready(function () {
 			if ($elemen.hasClass("ui")) {
 				$elemen.addClass("inverted");
 			}
-			$elemen.find(".ui, .icon").addClass("inverted");
+			// $elemen.find(".ui, .icon:not(.ui.button i.icon)").addClass("inverted");
+			$elemen.find(".ui, .icon:not(.ui.button > i.icon)").addClass("inverted");
+			// $elemen.find(".ui, .icon:not(.buttons .icon), .icon:not(.buttons .button)").addClass("inverted");
 			// elemen = $elemen.prop('outerHTML');
 			// Ubah semua elemen dalam kumpulan menjadi string HTML
 			elemen = $elemen

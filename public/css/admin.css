@@ -5,207 +5,251 @@
 } */
 
 :root {
-    --google-grey-100-rgb: 241, 243, 244;
-    --google-grey-100: rgb(var(--google-grey-100-rgb));
-    --google-grey-200-rgb: 232, 234, 237;
-    --google-grey-200: rgb(var(--google-grey-200-rgb));
-    --google-grey-300-rgb: 218, 220, 224;
-    --google-grey-300: rgb(var(--google-grey-300-rgb));
-    --google-grey-400-rgb: 189, 193, 198;
-    --google-grey-400: rgb(var(--google-grey-400-rgb));
-    --google-grey-500-rgb: 154, 160, 166;
-    --google-grey-500: rgb(var(--google-grey-500-rgb));
-    --google-grey-600-rgb: 128, 134, 139;
-    --google-grey-600: rgb(var(--google-grey-600-rgb));
-    --google-grey-700-rgb: 95, 99, 104;
-    --google-grey-700: rgb(var(--google-grey-700-rgb));
-    --google-grey-800-rgb: 60, 64, 67;
-    --google-grey-800: rgb(var(--google-grey-800-rgb));
-    --google-grey-900-rgb: 32, 33, 36;
-    --google-grey-900: rgb(var(--google-grey-900-rgb));
-    --darkBG: #232B32;
-    --whiteBG: white;
-    --darkbackground: rgba(100, 100, 100, .4);
+	--google-grey-100-rgb: 241, 243, 244;
+	--google-grey-100: rgb(var(--google-grey-100-rgb));
+	--google-grey-200-rgb: 232, 234, 237;
+	--google-grey-200: rgb(var(--google-grey-200-rgb));
+	--google-grey-300-rgb: 218, 220, 224;
+	--google-grey-300: rgb(var(--google-grey-300-rgb));
+	--google-grey-400-rgb: 189, 193, 198;
+	--google-grey-400: rgb(var(--google-grey-400-rgb));
+	--google-grey-500-rgb: 154, 160, 166;
+	--google-grey-500: rgb(var(--google-grey-500-rgb));
+	--google-grey-600-rgb: 128, 134, 139;
+	--google-grey-600: rgb(var(--google-grey-600-rgb));
+	--google-grey-700-rgb: 95, 99, 104;
+	--google-grey-700: rgb(var(--google-grey-700-rgb));
+	--google-grey-800-rgb: 60, 64, 67;
+	--google-grey-800: rgb(var(--google-grey-800-rgb));
+	--google-grey-900-rgb: 32, 33, 36;
+	--google-grey-900: rgb(var(--google-grey-900-rgb));
+	--darkBG: #232b32;
+	--whiteBG: white;
+	--darkbackground: rgba(100, 100, 100, 0.4);
 }
 
 @media screen and (max-width: 700px) {
-    .cari_data {
-        /* float: none; */
-        width: 70% !important;
-    }
+	.cari_data {
+		/* float: none; */
+		width: 70% !important;
+	}
 }
 
 .ui.tab.segment.active,
 .pusher {
-    background-color: var(--whiteBG);
+	background-color: var(--whiteBG);
 }
 
 .ui.tab.segment.active.inverted,
 .pusher.inverted {
-    background-color: var(--google-grey-900);
+	background-color: var(--google-grey-900);
 }
 
 /* Styling for inputs and textareas outside .ui.dropdown */
 .ui.form.inverted textarea,
 .ui.input.inverted.textarea {
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    background: #1b1c1d !important;
-    color: rgba(255, 255, 255, 0.8) !important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
+	background: #1b1c1d !important;
+	color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Styling for inputs and textareas outside .ui.dropdown */
 .form.inverted:not(.ui.dropdown) input,
 .ui.input.inverted:not(.transparent):not(.ui.dropdown) input {
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: #1b1c1d;
-    color: rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background: #1b1c1d;
+	color: rgba(255, 255, 255, 0.8);
 }
 
 /* Focus styling for inputs and textareas outside .ui.dropdown */
 .ui.form.inverted textarea:focus,
 .ui.input.inverted.textarea:focus {
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    background: var(--darkBG) !important;
-    color: rgba(255, 255, 255, 0.8) !important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
+	background: var(--darkBG) !important;
+	color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Focus styling for inputs and textareas outside .ui.dropdown */
 .form.inverted:not(.ui.dropdown) input:focus,
 .ui.input.inverted:not(.transparent):not(.ui.dropdown) input:focus {
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: var(--darkBG);
-    color: rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background: var(--darkBG);
+	color: rgba(255, 255, 255, 0.8);
 }
 
 /* Reset styles for inputs and textareas inside .ui.dropdown */
 .ui.dropdown input,
 .ui.dropdown textarea {
-    border: none !important;
-    background: none !important;
-    color: inherit !important;
+	border: none !important;
+	background: none !important;
+	color: inherit !important;
 }
 
 body.inverted {
-    background-color: var(--darkBG) !important;
+	background-color: var(--darkBG) !important;
 }
 
 .ui.form.inverted input::selection,
 .ui.form.inverted textarea::selection {
-    background-color: rgba(100, 100, 100, .4);
-    color: rgb(255, 255, 255) !important;
+	background-color: rgba(100, 100, 100, 0.4);
+	color: rgb(255, 255, 255) !important;
 }
 
 /* untuk label fields di form inverted */
-.ui.form.inverted .grouped.fields>label {
-    color: rgb(255, 255, 255) !important;
+.ui.form.inverted .grouped.fields > label {
+	color: rgb(255, 255, 255) !important;
 }
 
 .ui.input.multi input[type="text"]:not(:first-child) {
-    border-radius: 0 !important;
+	border-radius: 0 !important;
 }
-.ui.form.inverted .field.error .ui.dropdown,.ui.form.inverted .field.error .ui.dropdown .item,.ui.form.inverted .field.error .ui.dropdown>.text,.ui.form.inverted .fields.error .field .ui.dropdown,.ui.form.inverted .fields.error .field .ui.dropdown .item {
-    background:var(--darkBG) !important;
-    color: #9f3a38;
-    border-color: #e0b4b4;
+.ui.form.inverted .field.error .ui.dropdown,
+.ui.form.inverted .field.error .ui.dropdown .item,
+.ui.form.inverted .field.error .ui.dropdown > .text,
+.ui.form.inverted .fields.error .field .ui.dropdown,
+.ui.form.inverted .fields.error .field .ui.dropdown .item {
+	background: var(--darkBG) !important;
+	color: #9f3a38;
+	border-color: #e0b4b4;
 }
-.ui.form.inverted .field.error input:not([type]),.ui.form.inverted .field.error input[type=color],.ui.form.inverted .field.error input[type=date],.ui.form.inverted .field.error input[type=datetime-local],.ui.form.inverted .field.error input[type=email],.ui.form.inverted .field.error input[type=file],.ui.form.inverted .field.error input[type=month],.ui.form.inverted .field.error input[type=number],.ui.form.inverted .field.error input[type=password],.ui.form.inverted .field.error input[type=search],.ui.form.inverted .field.error input[type=tel],.ui.form.inverted .field.error input[type=text],.ui.form.inverted .field.error input[type=time],.ui.form .field.error input[type=url],.ui.form.inverted .field.error input[type=week],.ui.form.inverted .field.error select,.ui.form.inverted .field.error textarea,.ui.form.inverted .fields.error .field input:not([type]),.ui.form.inverted .fields.error .field input[type=color],.ui.form.inverted .fields.error .field input[type=date],.ui.form.inverted .fields.error .field input[type=datetime-local],.ui.form.inverted .fields.error .field input[type=email],.ui.form.inverted .fields.error .field input[type=file],.ui.form.inverted .fields.error .field input[type=month],.ui.form.inverted .fields.error .field input[type=number],.ui.form.inverted .fields.error .field input[type=password],.ui.form.inverted .fields.error .field input[type=search],.ui.form.inverted .fields.error .field input[type=tel],.ui.form.inverted .fields.error .field input[type=text],.ui.form.inverted .fields.error .field input[type=time],.ui.form.inverted .fields.error .field input[type=url],.ui.form.inverted .fields.error .field input[type=week],.ui.form.inverted .fields.error .field select,.ui.form.inverted .fields.error .field textarea {
-    color: #9f3a38;
-    border-color: #e0b4b4 !important;
-    /* #ff695e */
-    box-shadow: none;
+.ui.form.inverted .field.error input:not([type]),
+.ui.form.inverted .field.error input[type="color"],
+.ui.form.inverted .field.error input[type="date"],
+.ui.form.inverted .field.error input[type="datetime-local"],
+.ui.form.inverted .field.error input[type="email"],
+.ui.form.inverted .field.error input[type="file"],
+.ui.form.inverted .field.error input[type="month"],
+.ui.form.inverted .field.error input[type="number"],
+.ui.form.inverted .field.error input[type="password"],
+.ui.form.inverted .field.error input[type="search"],
+.ui.form.inverted .field.error input[type="tel"],
+.ui.form.inverted .field.error input[type="text"],
+.ui.form.inverted .field.error input[type="time"],
+.ui.form .field.error input[type="url"],
+.ui.form.inverted .field.error input[type="week"],
+.ui.form.inverted .field.error select,
+.ui.form.inverted .field.error textarea,
+.ui.form.inverted .fields.error .field input:not([type]),
+.ui.form.inverted .fields.error .field input[type="color"],
+.ui.form.inverted .fields.error .field input[type="date"],
+.ui.form.inverted .fields.error .field input[type="datetime-local"],
+.ui.form.inverted .fields.error .field input[type="email"],
+.ui.form.inverted .fields.error .field input[type="file"],
+.ui.form.inverted .fields.error .field input[type="month"],
+.ui.form.inverted .fields.error .field input[type="number"],
+.ui.form.inverted .fields.error .field input[type="password"],
+.ui.form.inverted .fields.error .field input[type="search"],
+.ui.form.inverted .fields.error .field input[type="tel"],
+.ui.form.inverted .fields.error .field input[type="text"],
+.ui.form.inverted .fields.error .field input[type="time"],
+.ui.form.inverted .fields.error .field input[type="url"],
+.ui.form.inverted .fields.error .field input[type="week"],
+.ui.form.inverted .fields.error .field select,
+.ui.form.inverted .fields.error .field textarea {
+	color: #9f3a38;
+	border-color: #e0b4b4 !important;
+	/* #ff695e */
+	box-shadow: none;
+}
+/* Menentukan margin 0 untuk kelompok tombol */
+.no-margin {
+	margin: 0 !important;
+}
+.no-padding {
+	padding: 0 !important;
 }
 h1.spin {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial Narrow', sans-serif;
-    font-weight: 100;
-    font-size: 1.6em;
-    color: #a3e1f0;
+	margin: 0;
+	padding: 0;
+	font-family: "Arial Narrow", sans-serif;
+	font-weight: 100;
+	font-size: 1.6em;
+	color: #a3e1f0;
 }
 
 span.spin {
-    position: relative;
-    top: 0.63em;
-    display: inline-block;
-    text-transform: uppercase;
-    opacity: 0;
-    transform: rotateX(-90deg);
+	position: relative;
+	top: 0.63em;
+	display: inline-block;
+	text-transform: uppercase;
+	opacity: 0;
+	transform: rotateX(-90deg);
 }
 
 .let1 {
-    -webkit-animation: drop 1.2s ease-in-out infinite;
-    animation: drop 1.2s ease-in-out infinite;
-    -webkit-animation-delay: 1.2s;
-    animation-delay: 1.2s;
+	-webkit-animation: drop 1.2s ease-in-out infinite;
+	animation: drop 1.2s ease-in-out infinite;
+	-webkit-animation-delay: 1.2s;
+	animation-delay: 1.2s;
 }
 
 .let2 {
-    -webkit-animation: drop 1.2s ease-in-out infinite;
-    animation: drop 1.2s ease-in-out infinite;
-    -webkit-animation-delay: 1.3s;
-    animation-delay: 1.3s;
+	-webkit-animation: drop 1.2s ease-in-out infinite;
+	animation: drop 1.2s ease-in-out infinite;
+	-webkit-animation-delay: 1.3s;
+	animation-delay: 1.3s;
 }
 
 .let3 {
-    -webkit-animation: drop 1.2s ease-in-out infinite;
-    animation: drop 1.2s ease-in-out infinite;
-    -webkit-animation-delay: 1.4s;
-    animation-delay: 1.4s;
+	-webkit-animation: drop 1.2s ease-in-out infinite;
+	animation: drop 1.2s ease-in-out infinite;
+	-webkit-animation-delay: 1.4s;
+	animation-delay: 1.4s;
 }
 
 .let4 {
-    -webkit-animation: drop 1.2s ease-in-out infinite;
-    animation: drop 1.2s ease-in-out infinite;
-    -webkit-animation-delay: 1.5s;
-    animation-delay: 1.5s;
+	-webkit-animation: drop 1.2s ease-in-out infinite;
+	animation: drop 1.2s ease-in-out infinite;
+	-webkit-animation-delay: 1.5s;
+	animation-delay: 1.5s;
 }
 
 .let5 {
-    -webkit-animation: drop 1.2s ease-in-out infinite;
-    animation: drop 1.2s ease-in-out infinite;
-    -webkit-animation-delay: 1.6s;
-    animation-delay: 1.6s;
+	-webkit-animation: drop 1.2s ease-in-out infinite;
+	animation: drop 1.2s ease-in-out infinite;
+	-webkit-animation-delay: 1.6s;
+	animation-delay: 1.6s;
 }
 
 .let6 {
-    -webkit-animation: drop 1.2s ease-in-out infinite;
-    animation: drop 1.2s ease-in-out infinite;
-    -webkit-animation-delay: 1.7s;
-    animation-delay: 1.7s;
+	-webkit-animation: drop 1.2s ease-in-out infinite;
+	animation: drop 1.2s ease-in-out infinite;
+	-webkit-animation-delay: 1.7s;
+	animation-delay: 1.7s;
 }
 
 .let7 {
-    -webkit-animation: drop 1.2s ease-in-out infinite;
-    animation: drop 1.2s ease-in-out infinite;
-    -webkit-animation-delay: 1.8s;
-    animation-delay: 1.8s;
+	-webkit-animation: drop 1.2s ease-in-out infinite;
+	animation: drop 1.2s ease-in-out infinite;
+	-webkit-animation-delay: 1.8s;
+	animation-delay: 1.8s;
 }
 
 @keyframes drop {
-    10% {
-        opacity: 0.5;
-    }
+	10% {
+		opacity: 0.5;
+	}
 
-    20% {
-        opacity: 1;
-        top: 3.78em;
-        transform: rotateX(-360deg);
-    }
+	20% {
+		opacity: 1;
+		top: 3.78em;
+		transform: rotateX(-360deg);
+	}
 
-    80% {
-        opacity: 1;
-        top: 3.78em;
-        transform: rotateX(-360deg);
-    }
+	80% {
+		opacity: 1;
+		top: 3.78em;
+		transform: rotateX(-360deg);
+	}
 
-    90% {
-        opacity: 0.5;
-    }
+	90% {
+		opacity: 0.5;
+	}
 
-    100% {
-        opacity: 0;
-        top: 6.94em
-    }
+	100% {
+		opacity: 0;
+		top: 6.94em;
+	}
 }
 
 /* .putar {
@@ -361,70 +405,68 @@ span.spin:before {
     }
 } */
 
-
 #map {
-    width: 100%;
-    height: 500px;
-    /*height: 80vh;*/
+	width: 100%;
+	height: 500px;
+	/*height: 80vh;*/
 }
 
 /* .ui.container {
     position: fixed !important;
 } */
 
-
 /* Dark Mode */
 .dark-mode {
-    background-color: #121212;
-    /* Ganti dengan warna latar belakang dark mode */
-    color: #ffffff;
-    /* Ganti dengan warna teks pada dark mode */
-    /* Tambahkan gaya tambahan sesuai kebutuhan */
+	background-color: #121212;
+	/* Ganti dengan warna latar belakang dark mode */
+	color: #ffffff;
+	/* Ganti dengan warna teks pada dark mode */
+	/* Tambahkan gaya tambahan sesuai kebutuhan */
 }
 
 /* Contoh: Mengubah warna teks untuk semua elemen UI */
 .dark-mode .ui {
-    color: #ffffff;
-    background-color: #1a1a1a;
-    /* Ganti dengan warna teks untuk elemen UI pada dark mode */
+	color: #ffffff;
+	background-color: #1a1a1a;
+	/* Ganti dengan warna teks untuk elemen UI pada dark mode */
 }
 
 /* Contoh: Mengubah warna latar belakang untuk semua elemen UI */
 .dark-mode .ui.segment {
-    background-color: #1a1a1a;
-    /* Ganti dengan warna latar belakang elemen segment pada dark mode */
+	background-color: #1a1a1a;
+	/* Ganti dengan warna latar belakang elemen segment pada dark mode */
 }
 
 /* untuk merapikan text dropdown yg ada deskripsi */
 .ui.dropdown div.text {
-    display: flex;
-    flex-direction: column-reverse;
-    text-align: justify;
+	display: flex;
+	flex-direction: column-reverse;
+	text-align: justify;
 }
 
 .pusher .ui.tab.basic.segment {
-    margin: 0px !important;
-    height: calc(100vh - 45px - 90px) !important;
-    overflow-y: auto;
+	margin: 0px !important;
+	height: calc(100vh - 45px - 90px) !important;
+	overflow-y: auto;
 }
 
 .ui.visible.overlay.flyout {
-    height: calc(100vh - 45px) !important;
-    overflow-y: auto;
+	height: calc(100vh - 45px) !important;
+	overflow-y: auto;
 }
 
 .ui.visible.overlay.flyout .form.scrolling {
-    height: calc(100vh - 45px - 175px) !important;
-    overflow-y: auto;
+	height: calc(100vh - 45px - 175px) !important;
+	overflow-y: auto;
 }
 
 div.menu.transition.visible {
-    z-index: 999 !important;
+	z-index: 999 !important;
 }
 
 .ui.inverted.red.menu,
 .ui.inverted.menu .red.active.item {
-    background-color: transparent !important;
+	background-color: transparent !important;
 }
 
 /* .ui.inverted.form input {
@@ -465,113 +507,113 @@ div.menu.transition.visible {
 } */
 
 .ui.search .prompt {
-    border-radius: 500rem !important;
+	border-radius: 500rem !important;
 }
 
 .ui.accordion.item {
-    padding: 0px;
+	padding: 0px;
 }
 
-.ui.accordion.item>.title {
-    padding: 0.92857143em 1.14285714em;
+.ui.accordion.item > .title {
+	padding: 0.92857143em 1.14285714em;
 }
 
-.ui.accordion.item>.title:NOT(.active):hover {
-    background: rgba(255, 255, 255, .1);
-    /* color: #ffffff; */
+.ui.accordion.item > .title:not(.active):hover {
+	background: rgba(255, 255, 255, 0.1);
+	/* color: #ffffff; */
 }
 
 .cobaColor {
-    background: rgba(255, 255, 255, .1);
-    color: #ee3939;
+	background: rgba(255, 255, 255, 0.1);
+	color: #ee3939;
 }
 
-.ui.accordion.item>.content>.item {
-    padding-left: 1.4em;
+.ui.accordion.item > .content > .item {
+	padding-left: 1.4em;
 }
 
 .mlr-0 {
-    margin-left: 0px !important;
-    margin-right: 0px !important
+	margin-left: 0px !important;
+	margin-right: 0px !important;
 }
 
 .mlrb-0 {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-    margin-bottom: 0px !important
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	margin-bottom: 0px !important;
 }
 
 .mt-0 {
-    margin-top: 0px !important;
+	margin-top: 0px !important;
 }
 
 .mb-0 {
-    margin-bottom: 0px !important;
+	margin-bottom: 0px !important;
 }
 
 .plr-0 {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
 }
 
 .plrb-0 {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    padding-bottom: 0px !important;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	padding-bottom: 0px !important;
 }
 
 .pt-0 {
-    padding-top: 0px !important;
+	padding-top: 0px !important;
 }
 
 .pb-0 {
-    padding-bottom: 0px !important;
+	padding-bottom: 0px !important;
 }
 
 .p-0 {
-    padding: 0px !important;
+	padding: 0px !important;
 }
 
 .pr-0 {
-    padding-right: 0px !important;
+	padding-right: 0px !important;
 }
 
 .pl-0 {
-    padding-left: 0px !important;
+	padding-left: 0px !important;
 }
 
 .m-0 {
-    margin: 0px !important;
+	margin: 0px !important;
 }
 
 .bg-0 {
-    background: rgba(0, 0, 0, 0.00) !important;
+	background: rgba(0, 0, 0, 0) !important;
 }
 
 .bl-0 {
-    border: 0px !important;
+	border: 0px !important;
 }
 
 .ui.action.input .ui.dropdown:first-child {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 .ui.action.input .ui.dropdown:last-child {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 [contenteditable] {
-    padding: 6px !important;
+	padding: 6px !important;
 }
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup.tip,
 .leaflet-pane,
 .leaflet-popup-tip {
-    background-color: rgba(0, 0, 0, 0.771) !important;
-    color: #ffffff;
+	background-color: rgba(0, 0, 0, 0.771) !important;
+	color: #ffffff;
 }
 
 /* quote */
