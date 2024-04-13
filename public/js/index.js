@@ -4501,7 +4501,11 @@ $(document).ready(function () {
 					case "create_surat":
 						mdl.addClass("big");
 						if (mdl.find('.actions [name="modal_second"]').length <= 0)
-							mdl.find(".actions").append(`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`);
+							mdl
+								.find(".actions")
+								.append(
+									`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`
+								);
 						elementForm =
 							createHTML("fields", {
 								classField: "four",
@@ -4551,14 +4555,14 @@ $(document).ready(function () {
 											["t", "Terbatas"],
 											["b", "biasa/terbuka"],
 										],
-									})
+									}),
 							}) +
 							createHTML("fieldFileInput2", {
 								label: "Pilih File Dokumen",
 								placeholderData: "Pilih File...",
 								accept: ".jpg,.jpeg,.png,.pdf,.docx",
 								atribut: "non_data",
-							})+
+							}) +
 							createHTML("fields", {
 								classField: "three",
 								content:
@@ -6808,7 +6812,7 @@ $(document).ready(function () {
 														label: "Dari",
 														classField: `required`,
 														atribut: `name="text_1" placeholder="dari" rows="2"`,
-													}
+													},
 												},
 												{
 													tag: "fieldTextarea",
@@ -6816,7 +6820,7 @@ $(document).ready(function () {
 														label: "Hal",
 														classField: `required`,
 														atribut: `name="text_2" placeholder="tentang" rows="2"`,
-													}
+													},
 												},
 												{
 													tag: "divider_tabel_1klm",
@@ -6824,9 +6828,9 @@ $(document).ready(function () {
 														icon: "",
 														txtLabel: "BATANG TUBUH",
 														atribut: "batang_tubuh",
-													}
-												}
-											]
+													},
+												},
+											],
 										},
 										memorandum: {
 											elemen: [
@@ -6844,7 +6848,7 @@ $(document).ready(function () {
 														label: "Hal",
 														classField: `required`,
 														atribut: `name="text_2" placeholder="tentang" rows="2"`,
-													}
+													},
 												},
 												{
 													tag: "divider_tabel_1klm",
@@ -6852,9 +6856,9 @@ $(document).ready(function () {
 														icon: "",
 														txtLabel: "BATANG TUBUH",
 														atribut: "batang_tubuh",
-													}
-												}
-											]
+													},
+												},
+											],
 										},
 										undangan_internal: {
 											elemen: [
@@ -6864,7 +6868,7 @@ $(document).ready(function () {
 														label: "Lampiran",
 														classField: `required`,
 														atribut: `name="text_1" placeholder="tentang" rows="2"`,
-													}
+													},
 												},
 												{
 													tag: "fieldTextarea",
@@ -6872,7 +6876,7 @@ $(document).ready(function () {
 														label: "Hal",
 														classField: `required`,
 														atribut: `name="text_2" placeholder="tentang" rows="2"`,
-													}
+													},
 												},
 												{
 													tag: "fieldTextarea",
@@ -6880,7 +6884,7 @@ $(document).ready(function () {
 														label: "Yth.",
 														classField: `required`,
 														atribut: `name="text_3" placeholder="Yth..." rows="2"`,
-													}
+													},
 												},
 												{
 													tag: "divider_tabel_1klm",
@@ -6913,7 +6917,7 @@ $(document).ready(function () {
 														txtLabel: "TEMBUSAN",
 														atribut: "tembusan",
 													},
-												}
+												},
 											],
 										},
 										perjanjian: {
@@ -7093,7 +7097,7 @@ $(document).ready(function () {
 									removeRulesForm(myForm);
 									addRulesForm(myForm);
 									$("[rms]").mathbiila();
-									if(typeof myForm.find('.ui.dropdown.asn.ajx').length){
+									if (typeof myForm.find(".ui.dropdown.asn.ajx").length) {
 										var dropdownASNTugas = new DropdownConstructor(
 											'form[name="form_modal"] .ui.dropdown.asn.ajx'
 										);
@@ -7105,7 +7109,7 @@ $(document).ready(function () {
 												ruang: "ruang",
 											},
 										});
-									};
+									}
 									break;
 								case "register_surat":
 									var myForm = $('form[name="form_flyout"]');
@@ -9309,7 +9313,7 @@ $(document).ready(function () {
 							],
 						],
 						footerTable: [],
-						bodyTable: [],
+						bodyTable: [bodyTable],
 					});
 				break;
 			case "tabel_1klm":
@@ -9340,7 +9344,7 @@ $(document).ready(function () {
 							attr: ``,
 						},
 					],
-					bodyTable: [],
+					bodyTable: [bodyTable],
 				});
 				break;
 			case "divider_tabel_1klm":
@@ -9384,7 +9388,7 @@ $(document).ready(function () {
 								attr: ``,
 							},
 						],
-						bodyTable: [],
+						bodyTable: [bodyTable],
 					});
 				break;
 			case "divider_tabel_2klm":
@@ -9428,7 +9432,7 @@ $(document).ready(function () {
 							attr: ``,
 						},
 					],
-					bodyTable: [],
+					bodyTable: [bodyTable],
 				});
 				break;
 			case "header":
@@ -9598,19 +9602,24 @@ $(document).ready(function () {
 				head += headerTable.length > 0 ? "</thead>" : "";
 				//buat body tabel
 				bodyTable.forEach(function (val) {
-					// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
-					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
-					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
-					body += `<tr${classRow} ${attrRow}>`;
-					val.forEach(function (val2) {
+					console.log(typeof val);
+					if (typeof val !== "string") {
 						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-						classRow = val2.class !== undefined ? ` class="${val2.class}"` : "";
-						lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
-						attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
-						head += `<td${classRow} ${attrRow}>${lblRow}</td>`;
-					});
-					body += `</tr>`;
+						let classRow =
+							val.class !== undefined ? ` class="${val.class}"` : "";
+						let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
+						let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
+						body += `<tr${classRow} ${attrRow}>`;
+						val.forEach(function (val2) {
+							// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+							classRow =
+								val2.class !== undefined ? ` class="${val2.class}"` : "";
+							lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
+							attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
+							head += `<td${classRow}${attrRow}>${lblRow}</td>`;
+						});
+						body += `</tr>`;
+					}
 				});
 				body += `</tbody>`;
 				//buat foot tabel
