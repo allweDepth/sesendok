@@ -6859,21 +6859,61 @@ $(document).ready(function () {
 										undangan_internal: {
 											elemen: [
 												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Lampiran",
+														classField: `required`,
+														atribut: `name="text_1" placeholder="tentang" rows="2"`,
+													}
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Hal",
+														classField: `required`,
+														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+													}
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Yth.",
+														classField: `required`,
+														atribut: `name="text_3" placeholder="Yth..." rows="2"`,
+													}
+												},
+												{
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "",
-														atribut: "1",
+														txtLabel: "Alinea Pembuka",
+														atribut: "alinea_pembuka",
+													},
+												},
+												{
+													tag: "divider_tabel_2klm",
+													prop: {
+														icon: "",
+														txtLabel: "Jadwal",
+														atribut: "jadwal",
 													},
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
+														icon: "",
+														txtLabel: "Alinea Penutup",
+														atribut: "alinea_penutup",
 													},
 												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														txtLabel: "TEMBUSAN",
+														atribut: "tembusan",
+													},
+												}
 											],
 										},
 										perjanjian: {
