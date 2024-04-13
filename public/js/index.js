@@ -4524,6 +4524,7 @@ $(document).ready(function () {
 											["nota_dinas", "Nota Dinas"],
 											["memorandum", "Memorandum"],
 											["undangan_internal", "Undangan Internal"],
+											["surat_dinas", "Surat Dinas"],
 											["perjanjian", "Perjanjian Dalam Negeri"],
 											["surat_kuasa", "Surat Kuasa"],
 											["berita_acara", "Berita Acara"],
@@ -4575,7 +4576,7 @@ $(document).ready(function () {
 										dataArray: [],
 									}) +
 									createHTML("fieldText", {
-										label: "Jabatan Pemberi Tugas",
+										label: "Nama Jabatan",
 										classField: `three wide required`,
 										atribut: `name="jbt_pemberi_tgs" placeholder="Jabatan Pemberi Tugas"`,
 									}) +
@@ -6900,6 +6901,79 @@ $(document).ready(function () {
 														icon: "",
 														txtLabel: "Jadwal",
 														atribut: "jadwal",
+														bodyTable:
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable="">pada hari/tanggal</div>`,
+																		},
+																		{ lbl: `<div contenteditable=""></div>` },
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>waktu</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>tempat</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>acara</div>`,
+																		},
+																		{ lbl: `<div contenteditable></div>` },
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}),
 													},
 												},
 												{
@@ -6916,6 +6990,34 @@ $(document).ready(function () {
 														icon: "",
 														txtLabel: "TEMBUSAN",
 														atribut: "tembusan",
+													},
+												},{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														txtLabel: "LAMPIRAN",
+														label: "DAFTAR YANG DIUNDANG",
+														atribut: "lampiran"
+													},
+												}
+											],
+										},
+										surat_dinas: {
+											elemen: [
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "",
+														label: "",
+														atribut: "1",
+													}
+												},
+												{
+													tag: "divider_tabel_1klm",
+													prop: {
+														icon: "2",
+														label: "3",
+														atribut: "4",
 													},
 												},
 											],
@@ -6936,8 +7038,8 @@ $(document).ready(function () {
 														icon: "2",
 														label: "3",
 														atribut: "4",
-													},
-												},
+													}
+												}
 											],
 										},
 										surat_kuasa: {
@@ -6948,7 +7050,7 @@ $(document).ready(function () {
 														icon: "",
 														label: "",
 														atribut: "1",
-													},
+													}
 												},
 												{
 													tag: "divider_tabel_1klm",
@@ -9313,7 +9415,7 @@ $(document).ready(function () {
 							],
 						],
 						footerTable: [],
-						bodyTable: [bodyTable],
+						bodyTable: bodyTable,
 					});
 				break;
 			case "tabel_1klm":
@@ -9344,7 +9446,7 @@ $(document).ready(function () {
 							attr: ``,
 						},
 					],
-					bodyTable: [bodyTable],
+					bodyTable: bodyTable,
 				});
 				break;
 			case "divider_tabel_1klm":
@@ -9388,7 +9490,7 @@ $(document).ready(function () {
 								attr: ``,
 							},
 						],
-						bodyTable: [bodyTable],
+						bodyTable: bodyTable,
 					});
 				break;
 			case "divider_tabel_2klm":
@@ -9432,7 +9534,7 @@ $(document).ready(function () {
 							attr: ``,
 						},
 					],
-					bodyTable: [bodyTable],
+					bodyTable: bodyTable,
 				});
 				break;
 			case "header":
@@ -9601,26 +9703,31 @@ $(document).ready(function () {
 				});
 				head += headerTable.length > 0 ? "</thead>" : "";
 				//buat body tabel
-				bodyTable.forEach(function (val) {
-					console.log(typeof val);
-					if (typeof val !== "string") {
-						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-						let classRow =
-							val.class !== undefined ? ` class="${val.class}"` : "";
-						let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
-						let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
-						body += `<tr${classRow} ${attrRow}>`;
-						val.forEach(function (val2) {
+				if (typeof bodyTable === "object") {
+					bodyTable.forEach(function (val) {
+						if (typeof val !== "string") {
 							// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-							classRow =
-								val2.class !== undefined ? ` class="${val2.class}"` : "";
-							lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
-							attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
-							head += `<td${classRow}${attrRow}>${lblRow}</td>`;
-						});
-						body += `</tr>`;
-					}
-				});
+							let classRow =
+								val.class !== undefined ? ` class="${val.class}"` : "";
+							let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
+							let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
+							body += `<tr${classRow} ${attrRow}>`;
+							val.forEach(function (val2) {
+								// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
+								classRow =
+									val2.class !== undefined ? ` class="${val2.class}"` : "";
+								lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
+								attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
+								head += `<td${classRow}${attrRow}>${lblRow}</td>`;
+							});
+							body += `</tr>`;
+						} else {
+							body += val;
+						}
+					});
+				} else {
+					body += bodyTable;
+				}
 				body += `</tbody>`;
 				//buat foot tabel
 				footerTable.forEach(function (val) {
