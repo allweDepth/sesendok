@@ -4501,11 +4501,7 @@ $(document).ready(function () {
 					case "create_surat":
 						mdl.addClass("big");
 						if (mdl.find('.actions [name="modal_second"]').length <= 0)
-							mdl
-								.find(".actions")
-								.append(
-									`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`
-								);
+							mdl.find(".actions").append(`<button class="ui primary icon button" name="modal_second" jns="cetak" tbl="sk_asn"><i class="print icon"></i></button>`);
 						elementForm =
 							createHTML("fields", {
 								classField: "four",
@@ -4545,13 +4541,24 @@ $(document).ready(function () {
 										label: "Tanggal Surat",
 										atribut: `name="tgl_surat_dibuat" placeholder="tanggal" readonly`,
 									}) +
-									createHTML("fieldFileInput2", {
-										label: "Pilih File Dokumen",
-										placeholderData: "Pilih File...",
-										accept: ".jpg,.jpeg,.png,.pdf,.docx",
-										atribut: "non_data",
-									}),
+									createHTML("fieldDropdown", {
+										label: "Kategori klasifikasi keamanan",
+										atribut: 'name="klasifikasi_keamanan"',
+										kelas: "lainnya selection",
+										dataArray: [
+											["sr", "sangat rahasia"],
+											["r", "Rahasia"],
+											["t", "Terbatas"],
+											["b", "biasa/terbuka"],
+										],
+									})
 							}) +
+							createHTML("fieldFileInput2", {
+								label: "Pilih File Dokumen",
+								placeholderData: "Pilih File...",
+								accept: ".jpg,.jpeg,.png,.pdf,.docx",
+								atribut: "non_data",
+							})+
 							createHTML("fields", {
 								classField: "three",
 								content:
@@ -6791,19 +6798,35 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "",
-														atribut: "1",
+														txtLabel: "YTH.",
+														atribut: "yth",
 													},
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Dari",
+														classField: `required`,
+														atribut: `name="text_1" placeholder="dari" rows="2"`,
+													}
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Hal",
+														classField: `required`,
+														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+													}
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
-													},
-												},
-											],
+														icon: "",
+														txtLabel: "BATANG TUBUH",
+														atribut: "batang_tubuh",
+													}
+												}
+											]
 										},
 										memorandum: {
 											elemen: [
@@ -6811,19 +6834,27 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "",
-														atribut: "1",
+														txtLabel: "YTH.",
+														atribut: "yth",
 													},
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Hal",
+														classField: `required`,
+														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+													}
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
-													},
-												},
-											],
+														icon: "",
+														txtLabel: "BATANG TUBUH",
+														atribut: "batang_tubuh",
+													}
+												}
+											]
 										},
 										undangan_internal: {
 											elemen: [
@@ -7006,7 +7037,6 @@ $(document).ready(function () {
 											],
 										},
 									};
-
 									if (value in elmNaskah) {
 										for (let { tag, prop } of elmNaskah[value].elemen) {
 											elemen += createHTML(tag, prop);
