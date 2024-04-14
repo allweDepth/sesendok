@@ -126,7 +126,7 @@ $theme = $_SESSION["user"]["theme"];
           <a class="item" href="#" data-tab="tab_all" tbl="asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>ASN</a>
           <a class="item" href="#" data-tab="tab_all" tbl="sk_asn"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat Keputusan (SK)</a>
           <a class="item" href="#" data-tab="tab_all" tbl="register_surat"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Register Surat</a>
-          <a class="item" href="#" data-tab="tab_all" tbl="create_surat"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Surat</a>
+          <a class="item" href="#" data-tab="tab_all" tbl="create_surat"><span><i class="toggle on blue icon"></i></span><i class="users icon"></i>Tata Naskah</a>
         </div>
       </div>
       <!-- ut admin-->
