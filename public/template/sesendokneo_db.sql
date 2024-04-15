@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 08 Apr 2024 pada 18.30
+-- Waktu pembuatan: 15 Apr 2024 pada 00.19
 -- Versi server: 11.3.2-MariaDB
--- Versi PHP: 8.3.4
+-- Versi PHP: 8.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -581,6 +581,54 @@ CREATE TABLE `mapping_aset_akun` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `naskah_dinas_neo`
+--
+
+DROP TABLE IF EXISTS `naskah_dinas_neo`;
+CREATE TABLE `naskah_dinas_neo` (
+  `id` int(11) NOT NULL,
+  `tahun` year(4) NOT NULL,
+  `kd_wilayah` varchar(150) NOT NULL,
+  `kd_opd` varchar(50) NOT NULL,
+  `jenis_naskah_dinas` varchar(255) NOT NULL,
+  `nomor` varchar(255) NOT NULL,
+  `tgl_surat_dibuat` date NOT NULL,
+  `tentang` varchar(400) NOT NULL,
+  `klasifikasi_keamanan` varchar(255) NOT NULL,
+  `pemberi_tgs` varchar(18) NOT NULL,
+  `jbt_pemberi_tgs` varchar(150) DEFAULT NULL,
+  `pangkat_pemberi_tgs` varchar(150) DEFAULT NULL,
+  `nama_pemberi_tgs` varchar(255) NOT NULL,
+  `alinea_1` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`alinea_1`)),
+  `alinea_2` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_2`)),
+  `alinea_3` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_3`)),
+  `alinea_4` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_4`)),
+  `alinea_5` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_5`)),
+  `alinea_6` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_6`)),
+  `alinea_7` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_7`)),
+  `alinea_8` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_8`)),
+  `alinea_9` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_9`)),
+  `alinea_10` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_10`)),
+  `alinea_11` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`alinea_11`)),
+  `text_1` text DEFAULT NULL,
+  `text_2` text DEFAULT NULL,
+  `text_3` text DEFAULT NULL,
+  `text_4` text DEFAULT NULL,
+  `text_5` text DEFAULT NULL,
+  `text_6` text DEFAULT NULL,
+  `text_7` text DEFAULT NULL,
+  `file` varchar(255) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `tgl_insert` datetime NOT NULL,
+  `username_insert` varchar(255) NOT NULL,
+  `tgl_update` datetime NOT NULL,
+  `username_update` varchar(255) NOT NULL,
+  `disable` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `organisasi_neo`
 --
 
@@ -743,6 +791,7 @@ CREATE TABLE `register_naskah_dinas` (
   `tahun` year(4) NOT NULL,
   `kd_wilayah` varchar(50) NOT NULL,
   `kd_opd` varchar(150) NOT NULL,
+  `klasifikasi_keamanan` varchar(255) NOT NULL,
   `jenis_naskah_dinas` varchar(255) NOT NULL,
   `sifat` varchar(255) NOT NULL,
   `sub_sifat` varchar(255) NOT NULL,
@@ -1303,8 +1352,8 @@ CREATE TABLE `user_sesendok_biila` (
 --
 
 INSERT INTO `user_sesendok_biila` (`id`, `username`, `email`, `nama`, `nip`, `password`, `kd_organisasi`, `nama_org`, `kd_wilayah`, `type_user`, `photo`, `tgl_daftar`, `tgl_login`, `tahun`, `kontak_person`, `alamat`, `font_size`, `theme`, `warna_tbl`, `scrolling_table`, `disable_login`, `disable_anggaran`, `disable_kontrak`, `disable_realisasi`, `disable_chat`, `ket`, `disable`) VALUES
-(1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'DINAS PEKERJAAN UMUM DAN PENATAAN RUANG', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-03-29 15:36:26', '2024', 'pasangkayu ji', NULL, 90.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan', 0),
-(2, 'nabiila', 'nabiila@gmail.com', 'Najwan Nabiila', '123456789012345678', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'DINAS PEKERJAAN UMUM DAN PENATAAN RUANG', '76.01', 'admin', 'img/avatar/username(nabiila)_dok(photo)_wilayah(76.01)_2305070e99916190687b3774c0d56f134b954d74_2.jpg', '2018-06-09 15:54:29', '2024-04-09 01:01:36', '2024', '08128888', NULL, 80.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu', 0),
+(1, 'alwi_mansyur', 'alwi@gmail.com', 'Alwi Mansyur', '1980', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'DINAS PEKERJAAN UMUM DAN PENATAAN RUANG', '76.01', 'user', 'images/avatar/default.jpeg', '2018-06-04 21:57:05', '2024-04-10 21:08:27', '2024', 'pasangkayu ji', NULL, 90.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'apa yang dapat saya berikan', 0),
+(2, 'nabiila', 'nabiila@gmail.com', 'Najwan Nabiila', '123456789012345678', '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'DINAS PEKERJAAN UMUM DAN PENATAAN RUANG', '76.01', 'admin', 'img/avatar/username(nabiila)_dok(photo)_wilayah(76.01)_2305070e99916190687b3774c0d56f134b954d74_2.jpg', '2018-06-09 15:54:29', '2024-04-15 07:54:58', '2024', '08128888', NULL, 80.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu', 0),
 (3, 'inayah', 'inayah@gmail.com', 'Inayah Nadhilah', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '1.03.0.00.0.00.01.0000', 'DINAS PEKERJAAN UMUM DAN PENATAAN RUANG', '', 'user', 'images/avatar/default.jpeg', '2018-06-22 22:04:17', '2020-03-08 02:30:41', '2024', '', NULL, 80.00, 'auto', NULL, 'short', 0, 0, 0, 0, 1, 'dimana mana hatiku senang oke', 0),
 (4, 'Arlinda', 'arlinda@gmail.com', 'Arlinda Achmad', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'Prof', '', 'admin', 'images/avatar/default.jpeg', '2018-07-10 14:27:06', '2018-10-21 12:23:09', '2024', '', NULL, 80.00, 'auto', NULL, 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk Pasangkayu.', 0),
 (5, 'administrator', 'alwi.mansyur@gmail.com', 'administrator', NULL, '$2y$10$wkIJCe8dk3YaLaaIScBOBOAY4M8cLEyDsFm66Xhwo9U3p/wcik9Bi', '', 'administrator AHSP', '', 'user', 'images/avatar/c14719a7f71e46badf2cf93ae373ae9797281782_9.png', '2023-02-09 23:41:34', '2023-02-23 00:05:26', '2024', '08128886665', NULL, 80.00, 'auto', 'non', 'short', 0, 0, 0, 0, 1, 'Apa yang dapat saya berikan untuk mu', 0),
@@ -1419,6 +1468,12 @@ ALTER TABLE `kd_wilayah_neo`
 -- Indeks untuk tabel `mapping_aset_akun`
 --
 ALTER TABLE `mapping_aset_akun`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `naskah_dinas_neo`
+--
+ALTER TABLE `naskah_dinas_neo`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1627,6 +1682,12 @@ ALTER TABLE `kd_wilayah_neo`
 -- AUTO_INCREMENT untuk tabel `mapping_aset_akun`
 --
 ALTER TABLE `mapping_aset_akun`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `naskah_dinas_neo`
+--
+ALTER TABLE `naskah_dinas_neo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
