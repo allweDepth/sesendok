@@ -7082,22 +7082,148 @@ $(document).ready(function () {
 										surat_kuasa: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_tabel_2klm",
 													prop: {
 														icon: "",
-														label: "",
-														atribut: "1",
+														txtLabel: "Yang bertanda tangan dibawah ini",
+														atribut: "pemberi_kuasa",
+														bodyTable:
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable="">Nama</div>`,
+																		},
+																		{ lbl: `<div contenteditable=""></div>` },
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>Jabatan</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>Alamat</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															})
 													}
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_tabel_2klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
-													},
+														icon: "",
+														txtLabel: "Memberi Kuasa Kepada",
+														atribut: "diberi_kuasa",
+														bodyTable:
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable="">Nama</div>`,
+																		},
+																		{ lbl: `<div contenteditable=""></div>` },
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>Jabatan</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>Alamat</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																],
+															})
+													}
 												},
-											],
+												{
+													tag: "tabel_1klm",
+													prop: {
+														label: "ALINEA PENUTUP",
+														atribut: "penutup",
+													}
+												},
+												{
+													tag: "fieldText",
+													prop: {
+														label: "Lokasi",
+														atribut: 'name="text_1" placeholder="lokasi"'
+													}
+												}
+											]
 										},
 										berita_acara: {
 											elemen: [
@@ -9592,21 +9718,24 @@ $(document).ready(function () {
 					});
 				break;
 			case "divider_tabel_2klm":
+				txtLabel =
+					"txtLabel" in dataElemen ? dataElemen.txtLabel : "PENJELASAN";
+				label = "label" in dataElemen ? dataElemen.label : "URAIAN";
 				icon =
 					"icon" in dataElemen
 						? dataElemen.icon
 						: '<i class="feather alternate icon"></i>';
-				elemen = createHTML("divider", {
-					header: "h4",
-					icon: icon,
-					label: label,
-				});
-				elemen += createHTML("tabel2", {
+				elemen =
+					createHTML("divider", {
+						header: "h4",
+						icon: icon,
+						label: txtLabel,
+					}) + createHTML("tabel2", {
 					atribut: `name="${atribut}"`,
 					kelas: `celled structured`,
 					headerTable: [
 						[
-							{ attr: "", lbl: `URAIAN` },
+							{ attr: "", lbl: label },
 							{ attr: "", lbl: `VALUE` },
 							{ attr: "", class: "collapsing", lbl: `JENIS` },
 							{
@@ -9941,7 +10070,7 @@ $(document).ready(function () {
 				elemen = `<div class="${classField}field" ${atributField}><label>${label} ${labelTambahan}</label> ${elemen1Data}</div>`;
 				break;
 			case "fieldText":
-				elemen = `<div class="${classField}field" ${atributField}><label>${label} ${labelTambahan}</label><div class="ui ${kelas} input"><input type="${typeText}" ${atribut} ></div></div>`;
+				elemen = `<div class="${classField}field" ${atributField}><label>${label}${labelTambahan}</label><div class="ui ${kelas} input"><input type="${typeText}" ${atribut} ></div></div>`;
 				break;
 			case "multiFieldTextAction":
 				let inputElm = "";
