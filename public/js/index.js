@@ -7231,16 +7231,64 @@ $(document).ready(function () {
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
-														label: "",
-														atribut: "1",
+														txtLabel: "Batang Tubuh/Alinea",
+														atribut: "alinea_1",
+														bodyTable: 
+														createHTML("tr_tabel", {
+															bodyTable: [
+																[
+																	{
+																		lbl: `<div contenteditable>Pada hari ini ...., tanggal ..., tahun ..., kami masing-masing :</div>`,
+																	},
+																	{
+																		lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																	},
+																	{
+																		class: "collapsing",
+																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																	},
+																],
+																[
+																	{
+																		lbl: `<div contenteditable>... [Nama pejabat],... [NIP dan Jabatan], selanjutnya disebut pihak pertama</div>`,
+																	},
+																	{
+																		lbl: `<button class="ui teal mini button" name="add" jns="L" data-tooltip="list">P</button>`,
+																	},
+																	{
+																		class: "collapsing",
+																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																	},
+																],
+															],
+														}) +
+														createHTML("tr_tabel", {
+															bodyTable: [
+																[
+																	{
+																		lbl: `<div contenteditable>Alamat</div>`,
+																	},
+																	{
+																		lbl: `<div contenteditable></div>`,
+																	},
+																	{
+																		lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																	},
+																	{
+																		class: "collapsing",
+																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																	},
+																],
+															],
+														})
 													},
 												},
 												{
 													tag: "divider_tabel_1klm",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
+														icon: "",
+														txtLabel: "Batang Tubuh/Alinea",
+														atribut: "alinea_2",
 													},
 												},
 											],
@@ -7344,7 +7392,7 @@ $(document).ready(function () {
 													},
 												},
 											],
-										},
+										}
 									};
 									if (value in elmNaskah) {
 										for (let { tag, prop } of elmNaskah[value].elemen) {
