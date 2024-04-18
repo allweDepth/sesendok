@@ -222,16 +222,16 @@ $theme = $_SESSION["user"]["theme"];
             </h3>
           </div>
           <div class="ui icon buttons mini align">
-                  <button class="ui button"><i class="align left icon"></i></button>
-                  <button class="ui button"><i class="align center icon"></i></button>
-                  <button class="ui button"><i class="align right icon"></i></button>
-                  <button class="ui button"><i class="align justify icon"></i></button>
-                </div>
-                <div class="ui icon buttons mini font">
-                  <button class="ui button"><i class="bold icon"></i></button>
-                  <button class="ui button"><i class="underline icon"></i></button>
-                  <button class="ui button"><i class="text width icon"></i></button>
-                </div>
+            <button class="ui button"><i class="align left icon"></i></button>
+            <button class="ui button"><i class="align center icon"></i></button>
+            <button class="ui button"><i class="align right icon"></i></button>
+            <button class="ui button"><i class="align justify icon"></i></button>
+          </div>
+          <div class="ui icon buttons mini font">
+            <button class="ui button"><i class="bold icon"></i></button>
+            <button class="ui button"><i class="underline icon"></i></button>
+            <button class="ui button"><i class="text width icon"></i></button>
+          </div>
           <div class="ui dropdown">
             <div class="text">Pilih Opsi</div>
             <div class="menu">
