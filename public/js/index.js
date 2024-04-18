@@ -4230,18 +4230,21 @@ $(document).ready(function () {
 						case "tembusan":
 							let elmTr = createHTML("tr_tabel", {
 								bodyTable: [
-									[
-										{
-											lbl: `<div contenteditable=""></div>`,
-										},
-										{
-											lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-										},
-										{
-											class: "collapsing",
-											lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-										},
-									],
+									{
+										// attrs: 'klm="alinea"', // Attributes for the first row
+										cells: [
+											{
+												lbl: `<div contenteditable=""></div>`,
+											},
+											{
+												lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+											},
+											{
+												class: "collapsing",
+												lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+											},
+										],
+									},
 								],
 							});
 							Tbody.append(elmTr);
@@ -4249,21 +4252,23 @@ $(document).ready(function () {
 						case "klm4":
 							let elmTr2 = createHTML("tr_tabel", {
 								bodyTable: [
-									[
-										{
-											lbl: `<div contenteditable=""></div>`,
-										},
-										{
-											lbl: `<div contenteditable=""></div>`,
-										},
-										{
-											lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-										},
-										{
-											class: "collapsing",
-											lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-										},
-									],
+									{
+										cells: [
+											{
+												lbl: `<div contenteditable=""></div>`,
+											},
+											{
+												lbl: `<div contenteditable=""></div>`,
+											},
+											{
+												lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+											},
+											{
+												class: "collapsing",
+												lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+											},
+										],
+									},
 								],
 							});
 							Tbody.append(elmTr2);
@@ -4271,15 +4276,18 @@ $(document).ready(function () {
 						case "klm_custom":
 							let elmTr3 = createHTML("tr_tabel", {
 								bodyTable: [
-									[
-										{
-											lbl: `<div contenteditable></div>`,
-										},
-										{
-											class: "collapsing",
-											lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-										},
-									],
+									{
+										cells: [
+											{
+												attr: `klm="alinea" data-alinea='["p","j"]'`, //["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
+												lbl: `<div contenteditable></div>`,
+											},
+											{
+												class: "collapsing",
+												lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+											},
+										],
+									},
 								],
 							});
 							Tbody.append(elmTr3);
@@ -5647,27 +5655,30 @@ $(document).ready(function () {
 															case "nama_ditugaskan":
 																let elmTrName = createHTML("tr_tabel", {
 																	bodyTable: [
-																		[
-																			{
-																				lbl: `<div contenteditable="">${dataResult[key]["nama"]}</div>`,
-																			},
-																			{
-																				lbl: `<div contenteditable="">${dataResult[key]["pangkat"]}</div></td>`,
-																			},
-																			{
-																				lbl: `<div contenteditable="">${dataResult[key]["nip"]}</div>`,
-																			},
-																			{
-																				lbl: `<div contenteditable="">${dataResult[key]["jabatan"]}</div>`,
-																			},
-																			{
-																				lbl: `<div contenteditable="">${dataResult[key]["jabatan_sk"]}</div>`,
-																			},
-																			{
-																				class: "collapsing",
-																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																			},
-																		],
+																		{
+																			attrs: "", // Attributes for the first row
+																			cells: [
+																				{
+																					lbl: `<div contenteditable="">${dataResult[key]["nama"]}</div>`,
+																				},
+																				{
+																					lbl: `<div contenteditable="">${dataResult[key]["pangkat"]}</div></td>`,
+																				},
+																				{
+																					lbl: `<div contenteditable="">${dataResult[key]["nip"]}</div>`,
+																				},
+																				{
+																					lbl: `<div contenteditable="">${dataResult[key]["jabatan"]}</div>`,
+																				},
+																				{
+																					lbl: `<div contenteditable="">${dataResult[key]["jabatan_sk"]}</div>`,
+																				},
+																				{
+																					class: "collapsing",
+																					lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																				},
+																			],
+																		},
 																	],
 																});
 																tbodyElemen.append(elmTrName);
@@ -5675,20 +5686,22 @@ $(document).ready(function () {
 															default:
 																let elmTr = createHTML("tr_tabel", {
 																	bodyTable: [
-																		[
-																			{
-																				lbl: `<div contenteditable="">${
-																					dataResult[key][keyObject[0]]
-																				}</div>`,
-																			},
-																			{
-																				lbl: `<button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button>`,
-																			},
-																			{
-																				class: "collapsing",
-																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																			},
-																		],
+																		{
+																			cells: [
+																				{
+																					lbl: `<div contenteditable="">${
+																						dataResult[key][keyObject[0]]
+																					}</div>`,
+																				},
+																				{
+																					lbl: `<button class="ui teal mini button" name="add" jns="${p_l}" data-tooltip="${tooltip}">${p_l}</button>`,
+																				},
+																				{
+																					class: "collapsing",
+																					lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																				},
+																			],
+																		},
 																	],
 																});
 																tbodyElemen.append(elmTr);
@@ -6272,27 +6285,30 @@ $(document).ready(function () {
 															.find('table[name="nama_ditugaskan"] tbody');
 														let trRow = createHTML("tr_tabel", {
 															bodyTable: [
-																[
-																	{
-																		lbl: `<div contenteditable>${text}</div>`,
-																	},
-																	{
-																		lbl: `<div contenteditable>${dataObj.Pangkat}</div>`,
-																	},
-																	{
-																		lbl: `<div contenteditable>${value}</div>`,
-																	},
-																	{
-																		lbl: `<div contenteditable="">${dataObj.Jabatan}</div>`,
-																	},
-																	{
-																		lbl: `<div contenteditable></div>`,
-																	},
-																	{
-																		class: "collapsing",
-																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																	},
-																],
+																{
+																	attrs: "", // Attributes for the first row
+																	cells: [
+																		{
+																			lbl: `<div contenteditable>${text}</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable>${dataObj.Pangkat}</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable>${value}</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable="">${dataObj.Jabatan}</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																},
 															],
 														});
 														elmTabelAsnSK.append(trRow);
@@ -6933,74 +6949,85 @@ $(document).ready(function () {
 														bodyTable:
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable="">pada hari/tanggal</div>`,
-																		},
-																		{ lbl: `<div contenteditable=""></div>` },
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		attrs: "", // Attributes for the first row
+																		cells: [
+																			{
+																				lbl: `<div contenteditable="">pada hari/tanggal</div>`,
+																			},
+																			{ lbl: `<div contenteditable=""></div>` },
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>waktu</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>waktu</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable></div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>tempat</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		attrs: "", // Attributes for the first row
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>tempat</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable></div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>acara</div>`,
-																		},
-																		{ lbl: `<div contenteditable></div>` },
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		attrs: "", // Attributes for the first row
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>acara</div>`,
+																			},
+																			{ lbl: `<div contenteditable></div>` },
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}),
 													},
@@ -7107,57 +7134,63 @@ $(document).ready(function () {
 														bodyTable:
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable="">Nama</div>`,
-																		},
-																		{ lbl: `<div contenteditable=""></div>` },
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		cells: [
+																			{
+																				lbl: `<div contenteditable="">Nama</div>`,
+																			},
+																			{ lbl: `<div contenteditable=""></div>` },
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>Jabatan</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>Jabatan</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable></div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>Alamat</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>Alamat</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable></div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}),
 													},
@@ -7171,57 +7204,64 @@ $(document).ready(function () {
 														bodyTable:
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable="">Nama</div>`,
-																		},
-																		{ lbl: `<div contenteditable=""></div>` },
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		attrs: "", // Attributes for the first row
+																		cells: [
+																			{
+																				lbl: `<div contenteditable="">Nama</div>`,
+																			},
+																			{ lbl: `<div contenteditable=""></div>` },
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>Jabatan</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>Jabatan</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable></div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>Alamat</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>Alamat</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable></div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}),
 													},
@@ -7253,49 +7293,58 @@ $(document).ready(function () {
 														bodyTable:
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>Pada hari ini ...., tanggal ..., tahun ..., kami masing-masing :</div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
-																	[
-																		{
-																			lbl: `<div contenteditable>... [Nama pejabat],... [NIP dan Jabatan], selanjutnya disebut pihak pertama</div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="L" data-tooltip="list">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		attrs: "", // Attributes for the first row
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>Pada hari ini ...., tanggal ..., tahun ..., kami masing-masing :</div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
+																	{
+																		attrs: "", // Attributes for the first row
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>... [Nama pejabat],... [NIP dan Jabatan], selanjutnya disebut pihak pertama</div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="L" data-tooltip="list">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}) +
 															createHTML("tr_tabel", {
 																bodyTable: [
-																	[
-																		{
-																			lbl: `<div contenteditable>Alamat</div>`,
-																		},
-																		{
-																			lbl: `<div contenteditable></div>`,
-																		},
-																		{
-																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																		},
-																		{
-																			class: "collapsing",
-																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																		},
-																	],
+																	{
+																		attrs: "", // Attributes for the first row
+																		cells: [
+																			{
+																				lbl: `<div contenteditable>Alamat</div>`,
+																			},
+																			{
+																				lbl: `<div contenteditable></div>`,
+																			},
+																			{
+																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																			},
+																			{
+																				class: "collapsing",
+																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																			},
+																		],
+																	},
 																],
 															}),
 													},
@@ -9478,14 +9527,59 @@ $(document).ready(function () {
 		// elm.closest('.ui.accordion').find('.active').removeClass('active');
 		elm.closest(".vertical.sidebar.menu").find(".active").removeClass("active");
 	}
+	//cell alinea
+	// Fungsi untuk menambahkan atau menghapus data-alinea dari elemen
+	function toggleAlinea(alinea,elemen) {
+		let dataAlinea = $(elemen).data("alinea") || []; // Mendapatkan data-alinea yang sudah ada atau membuat array kosong jika belum ada
+		let index = dataAlinea.indexOf(alinea); // Cek apakah data-alinea sudah ada dalam array
 
+		if (alinea === "l" || alinea === "c" || alinea === "r" || alinea === "j") {
+			// Jika alinea adalah salah satu dari ["l", "c", "r", "j"]
+			// Hapus semua yang terkait dan tambahkan alinea yang baru
+			dataAlinea = dataAlinea.filter(
+				(item) => !["l", "c", "r", "j"].includes(item)
+			);
+			dataAlinea.push(alinea);
+		} else if (alinea === "i_ol" || alinea === "l_ui" || alinea === "p") {
+			// Jika alinea adalah salah satu dari ["i_ol", "l_ui", "p"]
+			// Hapus semua yang terkait dan tambahkan alinea yang baru
+			dataAlinea = dataAlinea.filter(
+				(item) => !["i_ol", "l_ui", "p"].includes(item)
+			);
+			dataAlinea.push(alinea);
+		}
+
+		// Perbarui nilai atribut data-alinea pada elemen
+		$(elemen).data("alinea", dataAlinea);
+
+		// Tampilkan nilai data-alinea pada elemen (hanya untuk keperluan demonstrasi)
+		console.log("Data-alinea setelah diubah:", $(elemen).data("alinea"));
+	}
 	//================================
-	//======= EDIT CELL TABEL=========
+	//======= EDIT CELL TABEL=========@audit edit cell
 	//================================
 	var dataAwal_Cell = "";
 	//data awal edit cell
 	$(document).on("focus", "[klm]", function () {
 		dataAwal_Cell = $(this).text().trim();
+		let ini = $(this);
+		if (ini.attr("klm", "alinea")) {
+			//ambil index tr
+			let index = ini.closest('tr').index();
+			ini.closest("table").find("thead th:first").attr('id_tr',index);
+			let th = ini.closest("table").find("thead th:first [alinea]");
+			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
+			let alinea = ini.data("alinea");
+			alinea.forEach((value, key) => {
+				ini
+					.closest("table")
+					.find(`thead th:first [alinea="${value}"]`)
+					.addClass("active");
+			});
+
+			console.log(th);
+			console.log(alinea);
+		}
 	});
 	$(document).on("blur", "[klm]", function () {
 		//console.log("masukmi blur");
@@ -9515,7 +9609,34 @@ $(document).ready(function () {
 			);
 		}
 		if (klm !== "" && parseInt(id) > 0 && tbl !== "") {
-			setTimeout(function () {}, 350);
+			setTimeout(function () {
+				var text = ini.text().trim();
+				var tbody_tbl = ini.closest("tbody");
+				// tentukan jika ada atribut angka/rms maka ubah tabel dengan mengambil data
+				if (
+					ini.attr("angka") !== undefined ||
+					ini.find("div").attr("rms") !== undefined
+				) {
+					text = accounting.unformat(text, ",");
+					//console.log(`angka klm:${klm}, tbl:${tbl}, id:${id}`);
+					if (
+						Number.parseFloat(text) !==
+						Number.parseFloat(accounting.unformat(dataAwal, ","))
+					) {
+					}
+				} else {
+					//console.log(`string klm:${klm}, tbl:${tbl}, id:${id}`);
+					var tryNumbers = text.replaceAll(",", "");
+					tryNumbers = tryNumbers.replaceAll(".", "");
+					if (containsOnlyNumbers(tryNumbers)) {
+						text = accounting.unformat(text, ",");
+						dataAwal = accounting.unformat(dataAwal, ",");
+					}
+					if (text !== dataAwal) {
+						edit_data(tbl, id, text, klm, "non");
+					}
+				}
+			}, 350);
 		}
 	});
 	//=============================
@@ -9757,26 +9878,26 @@ $(document).ready(function () {
 						[
 							{
 								attr: "",
-								class: "",
+								class: "", //["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 								lbl: `<div class="ui icon buttons mini align">
-								<button class="ui button" align="l" data-tooltip="align left"><i class="align left icon"></i></button>
-								<button class="ui button" align="c" data-tooltip="align center"><i class="align center icon"></i></button>
-								<button class="ui button" align="r" data-tooltip="align right"><i class="align right icon"></i></button>
-								<button class="ui button" align="j" data-tooltip="align justify"><i class="align justify icon"></i></button>
+								<button class="ui button" alinea="l" data-tooltip="align left"><i class="align left icon"></i></button>
+								<button class="ui button" alinea="c" data-tooltip="align center"><i class="align center icon"></i></button>
+								<button class="ui button" alinea="r" data-tooltip="align right"><i class="align right icon"></i></button>
+								<button class="ui button" alinea="j" data-tooltip="align justify"><i class="align justify icon"></i></button>
 							</div>
 							<div class="ui icon buttons mini font">
-								<button class="ui button" font="b" data-tooltip="huruf tebal"><i class="bold icon"></i></button>
-								<button class="ui button" font="u" data-tooltip="huruf garis bawah"><i class="underline icon"></i></button>
+								<button class="ui button" alinea="b" data-tooltip="huruf tebal"><i class="bold icon"></i></button>
+								<button class="ui button" alinea="u" data-tooltip="huruf garis bawah"><i class="underline icon"></i></button>
 								<button class="ui button" font="i" data-tooltip="huruf miring"><i class="italic icon"></i></button>
 							</div>
 							<div class="ui icon buttons mini align">
-								<button class="ui button" list="l_ol" data-tooltip="list bernomor"><i class="list ol icon"></i></button>
-								<button class="ui button" list="l_ui" data-tooltip="list simbol"><i class="list ui icon"></i></button>
-								<button class="ui button" list="p" data-tooltip="paragraf"><i class="align justify icon"></i></button>
+								<button class="ui button" alinea="l_ol" data-tooltip="list bernomor"><i class="list ol icon"></i></button>
+								<button class="ui button" alinea="l_ui" data-tooltip="list simbol"><i class="list ui icon"></i></button>
+								<button class="ui button" alinea="p" data-tooltip="paragraf"><i class="align justify icon"></i></button>
 							</div>
 							<div class="ui icon buttons mini font">
-								<button class="ui button" indent="i" data-tooltip="indent"><i class="indent icon"></i></button>
-								<button class="ui button" margin="m" data-tooltip="margin"><i class="indent icon"></i></button>
+								<button class="ui button" alinea="indent" data-tooltip="indent"><i class="indent icon"></i></button>
+								<button class="ui button" alinea="m" data-tooltip="margin"><i class="indent icon"></i></button>
 							</div>`,
 							},
 							{
@@ -10125,22 +10246,30 @@ $(document).ready(function () {
 				elemen = `<table class="ui ${kelas} table" ${atribut}>${head}${body}${foot}</table>`;
 				break;
 			case "tr_tabel":
+				// Initialize body as an empty string
 				body = ``;
-				bodyTable.forEach(function (val) {
-					let classRow = val.class !== undefined ? ` class="${val.class}"` : "";
-					let lblRow = val.lbl !== undefined ? `${val.lbl}` : "";
-					let attrRow = val.attr !== undefined ? ` ${val.attr}` : "";
-					body += `<tr${classRow} ${attrRow}>`;
+				// Iterate over each row in bodyTable
+				bodyTable.forEach(function (rowObj) {
+					// Extract attributes for the row
+					let rowAttrs = rowObj.attrs !== undefined ? ` ${rowObj.attrs}` : "";
+					let rowClass = rowObj.class !== undefined ? ` ${rowObj.class}` : "";
+					// Initialize an empty string for the row HTML
+					let rowHTML = ``;
 
-					val.forEach(function (val2) {
-						// console.log(`Judul: ${val.judul}, Penulis: ${val.penulis}`);
-						classRow = val2.class !== undefined ? ` class="${val2.class}"` : "";
-						lblRow = val2.lbl !== undefined ? `${val2.lbl}` : "";
-						attrRow = val2.attr !== undefined ? ` ${val2.attr}` : "";
-						body += `<td${classRow}${attrRow}>${lblRow}</td>`;
+					// Iterate over each cell in the row
+					rowObj.cells.forEach(function (cell) {
+						// Extract properties for the cell
+						let classRow =
+							cell.class !== undefined ? ` class="${cell.class}"` : "";
+						let lblRow = cell.lbl !== undefined ? `${cell.lbl}` : "";
+						let attrRow = cell.attr !== undefined ? ` ${cell.attr}` : "";
+						// Construct the HTML for the cell and append it to the row HTML
+						rowHTML += `<td${classRow}${attrRow}>${lblRow}</td>`;
 					});
-					body += `</tr>`;
+					// Construct the HTML for the row, including attributes, and append it to the body
+					body += `<tr${rowClass}${rowAttrs}>${rowHTML}</tr>`;
 				});
+				// Now the 'body' variable contains the generated HTML for the body of the table, including row attributes
 				elemen = body;
 				break;
 			case "errorForm":
