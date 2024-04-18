@@ -9478,6 +9478,46 @@ $(document).ready(function () {
 		// elm.closest('.ui.accordion').find('.active').removeClass('active');
 		elm.closest(".vertical.sidebar.menu").find(".active").removeClass("active");
 	}
+
+	//================================
+	//======= EDIT CELL TABEL=========
+	//================================
+	var dataAwal_Cell = "";
+	//data awal edit cell
+	$(document).on("focus", "[klm]", function () {
+		dataAwal_Cell = $(this).text().trim();
+	});
+	$(document).on("blur", "[klm]", function () {
+		//console.log("masukmi blur");
+		let ini = $(this);
+		let dataAwal = dataAwal_Cell;
+		let tbl = ini.attr("tbl");
+		let klm = ini.attr("klm");
+		let id = ini.attr("id_row");
+		if (tbl === undefined) {
+			tbl = findTableIdentifier(ini);
+		}
+		if (id === undefined) {
+			id = findRowIdentifier(ini);
+		}
+		function findTableIdentifier(element) {
+			return (
+				element.closest("tr").attr("tbl") ||
+				element.closest("tbody").attr("tbl") ||
+				element.closest("table").attr("tbl") ||
+				element.closest("table").attr("name")
+			);
+		}
+		function findRowIdentifier(element) {
+			return (
+				element.closest("tr").attr("id_row") ||
+				element.closest("table").attr("id_row")
+			);
+		}
+		if (klm !== "" && parseInt(id) > 0 && tbl !== "") {
+			setTimeout(function () {}, 350);
+		}
+	});
 	//=============================
 	//======  FUNCTION MASTER =====
 	//=============================
@@ -9735,8 +9775,8 @@ $(document).ready(function () {
 								<button class="ui button" list="p" data-tooltip="paragraf"><i class="align justify icon"></i></button>
 							</div>
 							<div class="ui icon buttons mini font">
-							<button class="ui button" indent="i" data-tooltip="indent"><i class="indent icon"></i></button>
-							<button class="ui button" margin="m" data-tooltip="margin"><i class="indent icon"></i></button>
+								<button class="ui button" indent="i" data-tooltip="indent"><i class="indent icon"></i></button>
+								<button class="ui button" margin="m" data-tooltip="margin"><i class="indent icon"></i></button>
 							</div>`,
 							},
 							{
