@@ -7296,7 +7296,9 @@ $(document).ready(function () {
 										surat_keterangan: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "custom_tabel_1klm",
+													txtLabel: "Batang Tubuh/Alinea",
+														atribut: "alinea_1",
 													prop: {
 														icon: "",
 														label: "",
@@ -9690,6 +9692,54 @@ $(document).ready(function () {
 						bodyTable: bodyTable,
 					});
 				break;
+				case "custom_tabel_1klm":
+					elemen = createHTML("tabel2", {
+						atribut: `name="${atribut}"`,
+						kelas: `celled structured`,
+						headerTable: [
+							[
+								{ attr: "", lbl: label },
+								{ attr: "", class: "collapsing", lbl: `<div class="ui icon buttons mini align">
+								<button class="ui button" align="l"><i class="align left icon"></i></button>
+								<button class="ui button" align="c"><i class="align center icon"></i></button>
+								<button class="ui button" align="r"><i class="align right icon"></i></button>
+								<button class="ui button" align="j"><i class="align justify icon"></i></button>
+							</div>
+							<div class="ui icon buttons mini font">
+								<button class="ui button" font="b"><i class="bold icon"></i></button>
+								<button class="ui button" font="u"><i class="underline icon"></i></button>
+								<button class="ui button" font="i"><i class="italic icon"></i></button>
+							</div>
+							<div class="ui icon buttons mini font">
+								<button class="ui button" list="l_ol"><i class="list ol icon"></i></button>
+								<button class="ui button" list="l_ui"><i class="list ui icon"></i></button>
+								<button class="ui button" list="p"><i class="align justify icon"></i></button>
+							</div>
+							<button class="ui button" indent="i"><i class="indent icon"></i></button>
+							<button class="ui button" margin="m"><i class="indent icon"></i></button>` },
+								{
+									attr: "",
+									lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm_custom"><i class="plus icon"></i></button>`,
+									class: "collapsing",
+								},
+							],
+						],
+						footerTable: [
+							{
+								lbl: ``,
+							},
+							{
+								lbl: "",
+								attr: ``,
+							},
+							{
+								lbl: "",
+								attr: ``,
+							},
+						],
+						bodyTable: bodyTable,
+					});
+					break;
 			case "tabel_1klm":
 				elemen = createHTML("tabel2", {
 					atribut: `name="${atribut}"`,
