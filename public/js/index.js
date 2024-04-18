@@ -50,7 +50,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if ($(this).parent().hasClass("align")) {
 			// Hapus kelas 'active' dari semua tombol .align
-			$(".align .button").removeClass("active");
+			$(this).closest('.align').find('.button').removeClass("active");
 			// Tambahkan kelas 'active' hanya pada tombol yang diklik
 			$(this).addClass("active");
 		} else if ($(this).parent().hasClass("font")) {
@@ -9556,7 +9556,7 @@ $(document).ready(function () {
 		console.log("Data-alinea setelah diubah:", $(elemen).data("alinea"));
 	}
 	//================================
-	//======= EDIT CELL TABEL=========@audit edit cell
+	//======= EDIT CELL TABEL=========@audit-ok edit cell
 	//================================
 	var dataAwal_Cell = "";
 	//data awal edit cell
@@ -9570,14 +9570,13 @@ $(document).ready(function () {
 			let th = ini.closest("table").find("thead th:first [alinea]");
 			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 			let alinea = ini.data("alinea");
+			ini.closest("table").find(`thead th:first [alinea]`).removeClass('active');
 			alinea.forEach((value, key) => {
 				ini
 					.closest("table")
 					.find(`thead th:first [alinea="${value}"]`)
 					.addClass("active");
 			});
-
-			console.log(th);
 			console.log(alinea);
 		}
 	});
@@ -9888,7 +9887,7 @@ $(document).ready(function () {
 							<div class="ui icon buttons mini font">
 								<button class="ui button" alinea="b" data-tooltip="huruf tebal"><i class="bold icon"></i></button>
 								<button class="ui button" alinea="u" data-tooltip="huruf garis bawah"><i class="underline icon"></i></button>
-								<button class="ui button" font="i" data-tooltip="huruf miring"><i class="italic icon"></i></button>
+								<button class="ui button" alinea="i" data-tooltip="huruf miring"><i class="italic icon"></i></button>
 							</div>
 							<div class="ui icon buttons mini align">
 								<button class="ui button" alinea="l_ol" data-tooltip="list bernomor"><i class="list ol icon"></i></button>
