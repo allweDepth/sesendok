@@ -46,19 +46,19 @@ $(document).ready(function () {
 			}
 		},
 	};
-	$("body").on("click", ".align .button, .font .button", function(e) {
+	$("body").on("click", ".align .button, .font .button", function (e) {
 		e.preventDefault();
-		if ($(this).parent().hasClass('align')) {
+		if ($(this).parent().hasClass("align")) {
 			// Hapus kelas 'active' dari semua tombol .align
-			$('.align .button').removeClass('active');
+			$(".align .button").removeClass("active");
 			// Tambahkan kelas 'active' hanya pada tombol yang diklik
-			$(this).addClass('active');
-		} else if ($(this).parent().hasClass('font')) {
+			$(this).addClass("active");
+		} else if ($(this).parent().hasClass("font")) {
 			// Toggle kelas 'active' pada tombol yang diklik
-			$(this).toggleClass('active');
+			$(this).toggleClass("active");
 		}
 	});
-	
+
 	$("body").on("click", ".menu .item.aksi", handler.menuorientasi);
 	$(".menu .item.inayah").on("click", handler.activate);
 	$(".ui.dropdown").dropdown();
@@ -4268,6 +4268,22 @@ $(document).ready(function () {
 							});
 							Tbody.append(elmTr2);
 							break;
+						case "klm_custom":
+							let elmTr3 = createHTML("tr_tabel", {
+								bodyTable: [
+									[
+										{
+											lbl: `<div contenteditable></div>`,
+										},
+										{
+											class: "collapsing",
+											lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+										},
+									],
+								],
+							});
+							Tbody.append(elmTr3);
+							break;
 						default:
 							break;
 					}
@@ -7004,15 +7020,16 @@ $(document).ready(function () {
 														txtLabel: "TEMBUSAN",
 														atribut: "tembusan",
 													},
-												},{
+												},
+												{
 													tag: "divider_tabel_1klm",
 													prop: {
 														icon: "",
 														txtLabel: "LAMPIRAN",
 														label: "DAFTAR YANG DIUNDANG",
-														atribut: "lampiran"
+														atribut: "lampiran",
 													},
-												}
+												},
 											],
 										},
 										surat_dinas: {
@@ -7056,7 +7073,7 @@ $(document).ready(function () {
 														txtLabel: "TEMBUSAN",
 														atribut: "tembusan",
 													},
-												}
+												},
 											],
 										},
 										perjanjian: {
@@ -7067,7 +7084,7 @@ $(document).ready(function () {
 														label: "Tentang",
 														classField: `required`,
 														atribut: `name="tentang" placeholder="tentang" rows="2"`,
-													}
+													},
 												},
 												{
 													tag: "divider_tabel_1klm",
@@ -7075,8 +7092,8 @@ $(document).ready(function () {
 														icon: "2",
 														label: "3",
 														atribut: "4",
-													}
-												}
+													},
+												},
 											],
 										},
 										surat_kuasa: {
@@ -7142,8 +7159,8 @@ $(document).ready(function () {
 																		},
 																	],
 																],
-															})
-													}
+															}),
+													},
 												},
 												{
 													tag: "divider_tabel_2klm",
@@ -7206,24 +7223,24 @@ $(document).ready(function () {
 																		},
 																	],
 																],
-															})
-													}
+															}),
+													},
 												},
 												{
 													tag: "tabel_1klm",
 													prop: {
 														label: "ALINEA PENUTUP",
 														atribut: "penutup",
-													}
+													},
 												},
 												{
 													tag: "fieldText",
 													prop: {
 														label: "Lokasi",
-														atribut: 'name="text_1" placeholder="lokasi"'
-													}
-												}
-											]
+														atribut: 'name="text_1" placeholder="lokasi"',
+													},
+												},
+											],
 										},
 										berita_acara: {
 											elemen: [
@@ -7233,54 +7250,54 @@ $(document).ready(function () {
 														icon: "",
 														txtLabel: "Batang Tubuh/Alinea",
 														atribut: "alinea_1",
-														bodyTable: 
-														createHTML("tr_tabel", {
-															bodyTable: [
-																[
-																	{
-																		lbl: `<div contenteditable>Pada hari ini ...., tanggal ..., tahun ..., kami masing-masing :</div>`,
-																	},
-																	{
-																		lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																	},
-																	{
-																		class: "collapsing",
-																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																	},
+														bodyTable:
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>Pada hari ini ...., tanggal ..., tahun ..., kami masing-masing :</div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
+																	[
+																		{
+																			lbl: `<div contenteditable>... [Nama pejabat],... [NIP dan Jabatan], selanjutnya disebut pihak pertama</div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="L" data-tooltip="list">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
 																],
-																[
-																	{
-																		lbl: `<div contenteditable>... [Nama pejabat],... [NIP dan Jabatan], selanjutnya disebut pihak pertama</div>`,
-																	},
-																	{
-																		lbl: `<button class="ui teal mini button" name="add" jns="L" data-tooltip="list">P</button>`,
-																	},
-																	{
-																		class: "collapsing",
-																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																	},
+															}) +
+															createHTML("tr_tabel", {
+																bodyTable: [
+																	[
+																		{
+																			lbl: `<div contenteditable>Alamat</div>`,
+																		},
+																		{
+																			lbl: `<div contenteditable></div>`,
+																		},
+																		{
+																			lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
+																		},
+																		{
+																			class: "collapsing",
+																			lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+																		},
+																	],
 																],
-															],
-														}) +
-														createHTML("tr_tabel", {
-															bodyTable: [
-																[
-																	{
-																		lbl: `<div contenteditable>Alamat</div>`,
-																	},
-																	{
-																		lbl: `<div contenteditable></div>`,
-																	},
-																	{
-																		lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																	},
-																	{
-																		class: "collapsing",
-																		lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
-																	},
-																],
-															],
-														})
+															}),
 													},
 												},
 												{
@@ -7298,7 +7315,7 @@ $(document).ready(function () {
 												{
 													tag: "custom_tabel_1klm",
 													txtLabel: "Batang Tubuh/Alinea",
-														atribut: "alinea_1",
+													atribut: "alinea_1",
 													prop: {
 														icon: "",
 														label: "",
@@ -7394,7 +7411,7 @@ $(document).ready(function () {
 													},
 												},
 											],
-										}
+										},
 									};
 									if (value in elmNaskah) {
 										for (let { tag, prop } of elmNaskah[value].elemen) {
@@ -8352,7 +8369,7 @@ $(document).ready(function () {
 															"nip",
 															"jabatan",
 															"jabatan_sk",
-															"button"
+															"button",
 														];
 														break;
 													default:
@@ -9692,54 +9709,55 @@ $(document).ready(function () {
 						bodyTable: bodyTable,
 					});
 				break;
-				case "custom_tabel_1klm":
-					elemen = createHTML("tabel2", {
-						atribut: `name="${atribut}"`,
-						kelas: `celled structured`,
-						headerTable: [
-							[
-								{ attr: "", lbl: label },
-								{ attr: "", class: "collapsing", lbl: `<div class="ui icon buttons mini align">
-								<button class="ui button" align="l"><i class="align left icon"></i></button>
-								<button class="ui button" align="c"><i class="align center icon"></i></button>
-								<button class="ui button" align="r"><i class="align right icon"></i></button>
-								<button class="ui button" align="j"><i class="align justify icon"></i></button>
+			case "custom_tabel_1klm":
+				elemen = createHTML("tabel2", {
+					atribut: `name="${atribut}"`,
+					kelas: `celled structured`,
+					headerTable: [
+						[
+							{
+								attr: "",
+								class: "",
+								lbl: `<div class="ui icon buttons mini align">
+								<button class="ui button" align="l" data-tooltip="align left"><i class="align left icon"></i></button>
+								<button class="ui button" align="c" data-tooltip="align center"><i class="align center icon"></i></button>
+								<button class="ui button" align="r" data-tooltip="align right"><i class="align right icon"></i></button>
+								<button class="ui button" align="j" data-tooltip="align justify"><i class="align justify icon"></i></button>
 							</div>
 							<div class="ui icon buttons mini font">
-								<button class="ui button" font="b"><i class="bold icon"></i></button>
-								<button class="ui button" font="u"><i class="underline icon"></i></button>
-								<button class="ui button" font="i"><i class="italic icon"></i></button>
+								<button class="ui button" font="b" data-tooltip="huruf tebal"><i class="bold icon"></i></button>
+								<button class="ui button" font="u" data-tooltip="huruf garis bawah"><i class="underline icon"></i></button>
+								<button class="ui button" font="i" data-tooltip="huruf miring"><i class="italic icon"></i></button>
+							</div>
+							<div class="ui icon buttons mini align">
+								<button class="ui button" list="l_ol" data-tooltip="list bernomor"><i class="list ol icon"></i></button>
+								<button class="ui button" list="l_ui" data-tooltip="list simbol"><i class="list ui icon"></i></button>
+								<button class="ui button" list="p" data-tooltip="paragraf"><i class="align justify icon"></i></button>
 							</div>
 							<div class="ui icon buttons mini font">
-								<button class="ui button" list="l_ol"><i class="list ol icon"></i></button>
-								<button class="ui button" list="l_ui"><i class="list ui icon"></i></button>
-								<button class="ui button" list="p"><i class="align justify icon"></i></button>
-							</div>
-							<button class="ui button" indent="i"><i class="indent icon"></i></button>
-							<button class="ui button" margin="m"><i class="indent icon"></i></button>` },
-								{
-									attr: "",
-									lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm_custom"><i class="plus icon"></i></button>`,
-									class: "collapsing",
-								},
-							],
-						],
-						footerTable: [
-							{
-								lbl: ``,
+							<button class="ui button" indent="i" data-tooltip="indent"><i class="indent icon"></i></button>
+							<button class="ui button" margin="m" data-tooltip="margin"><i class="indent icon"></i></button>
+							</div>`,
 							},
 							{
-								lbl: "",
-								attr: ``,
-							},
-							{
-								lbl: "",
-								attr: ``,
+								attr: "",
+								lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm_custom"><i class="plus icon"></i></button>`,
+								class: "collapsing",
 							},
 						],
-						bodyTable: bodyTable,
-					});
-					break;
+					],
+					footerTable: [
+						{
+							lbl: ``,
+						},
+						{
+							lbl: "",
+							attr: ``,
+						},
+					],
+					bodyTable: bodyTable,
+				});
+				break;
 			case "tabel_1klm":
 				elemen = createHTML("tabel2", {
 					atribut: `name="${atribut}"`,
@@ -9828,39 +9846,40 @@ $(document).ready(function () {
 						header: "h4",
 						icon: icon,
 						label: txtLabel,
-					}) + createHTML("tabel2", {
-					atribut: `name="${atribut}"`,
-					kelas: `celled structured`,
-					headerTable: [
-						[
-							{ attr: "", lbl: label },
-							{ attr: "", lbl: `VALUE` },
-							{ attr: "", class: "collapsing", lbl: `JENIS` },
+					}) +
+					createHTML("tabel2", {
+						atribut: `name="${atribut}"`,
+						kelas: `celled structured`,
+						headerTable: [
+							[
+								{ attr: "", lbl: label },
+								{ attr: "", lbl: `VALUE` },
+								{ attr: "", class: "collapsing", lbl: `JENIS` },
+								{
+									attr: "",
+									lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm4"><i class="plus icon"></i></button>`,
+									class: "collapsing",
+								},
+							],
+						],
+						footerTable: [
 							{
-								attr: "",
-								lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm4"><i class="plus icon"></i></button>`,
-								class: "collapsing",
+								lbl: ``,
+							},
+							{
+								lbl: ``,
+							},
+							{
+								lbl: "",
+								attr: ``,
+							},
+							{
+								lbl: "",
+								attr: ``,
 							},
 						],
-					],
-					footerTable: [
-						{
-							lbl: ``,
-						},
-						{
-							lbl: ``,
-						},
-						{
-							lbl: "",
-							attr: ``,
-						},
-						{
-							lbl: "",
-							attr: ``,
-						},
-					],
-					bodyTable: bodyTable,
-				});
+						bodyTable: bodyTable,
+					});
 				break;
 			case "header":
 				elemen = `<${header} class="ui header${kelas}">${content}</${header}>`;
