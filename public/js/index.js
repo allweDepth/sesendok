@@ -8446,26 +8446,28 @@ $(document).ready(function () {
 																	myRows[index][$headers[cellIndex]] = strText;
 																	break;
 																case "p_l":
-																	if($(this).find("button")){
+																	if ($(this).find("button")) {
 																		strText = $(this).find("button").text();
 																		myRows[index][$headers[cellIndex]] = strText
 																			.replace(/\s+/g, "")
 																			.trim();
-																	}else{
-
+																	} else {
 																	}
-																	
+
 																	break;
 																case "button":
 																	// myRows[index][$headers[cellIndex]] = '';
 																	break;
 																default:
 																	strText = $(this).find("div").html();
-																	let alinea = $(this).attr("ilinea")
+																	let alinea = $(this).attr("ilinea");
 																	//Remove Extra Spaces From a String menggunakan .replace(/\s+/g, ' ').trim();
 																	myRows[index][$headers[cellIndex]] = strText
 																		.replace(/\s+/g, " ")
 																		.trim();
+																		if($(this).data('alinea')){
+																			myRows[index]['alinea']=$(this).data('alinea');
+																		}
 																	break;
 															}
 														});
