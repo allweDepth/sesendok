@@ -9785,6 +9785,15 @@ $(document).ready(function () {
 	function loaderHide() {
 		$(".demo.page.dimmer:first").dimmer("hide");
 	}
+	$('.ui.icon.buttons.mini.button[alinea]').on('click', function() {
+		var command = $(this).attr('alinea');
+		var selectedRow = $(this).closest('tr');
+
+		// Mengubah font pada sel-sel dalam baris yang dipilih
+		selectedRow.find('.contenteditable').each(function() {
+			document.execCommand(command, false, null);
+		});
+	});
 	//====MEMBUAT ELEMEN HTML================
 	//====contohdataElemen={atribut:'name="tambah" jns="harga_satuan" tbl="input"'}
 	//================================
