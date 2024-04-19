@@ -50,7 +50,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if ($(this).parent().hasClass("align")) {
 			// Hapus kelas 'active' dari semua tombol .align
-			$(this).closest('.align').find('.button').removeClass("active");
+			$(this).closest(".align").find(".button").removeClass("active");
 			// Tambahkan kelas 'active' hanya pada tombol yang diklik
 			$(this).addClass("active");
 		} else if ($(this).parent().hasClass("font")) {
@@ -8408,7 +8408,7 @@ $(document).ready(function () {
 												// element == this
 												let tbodyElemen = $(this).find("tbody");
 												let attrTable = $(this).attr("name");
-												// console.log(attrTable);
+												console.log(attrTable);
 												let $headers = ["isi", "p_l", "button"];
 												switch (attrTable) {
 													case "nama_ditugaskan":
@@ -8446,16 +8446,22 @@ $(document).ready(function () {
 																	myRows[index][$headers[cellIndex]] = strText;
 																	break;
 																case "p_l":
-																	strText = $(this).find("button").text();
-																	myRows[index][$headers[cellIndex]] = strText
-																		.replace(/\s+/g, "")
-																		.trim();
+																	if($(this).find("button")){
+																		strText = $(this).find("button").text();
+																		myRows[index][$headers[cellIndex]] = strText
+																			.replace(/\s+/g, "")
+																			.trim();
+																	}else{
+
+																	}
+																	
 																	break;
 																case "button":
 																	// myRows[index][$headers[cellIndex]] = '';
 																	break;
 																default:
 																	strText = $(this).find("div").html();
+																	let alinea = $(this).attr("ilinea")
 																	//Remove Extra Spaces From a String menggunakan .replace(/\s+/g, ' ').trim();
 																	myRows[index][$headers[cellIndex]] = strText
 																		.replace(/\s+/g, " ")
@@ -9488,6 +9494,9 @@ $(document).ready(function () {
 			});
 		}
 	}
+	//=======================================
+	//===============VISIBILITY CONSTR=======
+	//=======================================
 	class VisibilityConstructor {
 		//@audit-ok VisibilityConstructor
 		constructor(visibilityElemen) {
@@ -9529,8 +9538,109 @@ $(document).ready(function () {
 	}
 	//cell alinea
 	// Fungsi untuk menambahkan atau menghapus data-alinea dari elemen
-	function toggleAlinea(alinea,elemen) {
-		let dataAlinea = $(elemen).data("alinea") || []; // Mendapatkan data-alinea yang sudah ada atau membuat array kosong jika belum ada
+	$("body").on("click", ".button[alinea]", function (e) {
+		var command = $(this).attr("alinea");
+		var selectedRow = $(this).closest("tr");
+		var rowIndex = parseInt($(this).closest("th").attr("id_tr")); // Mendapatkan indeks baris sebagai angka
+		var selectedRow = $(this).closest("table").find("tbody tr").eq(rowIndex);
+		// Mendapatkan elemen div yang dapat diedit di dalam baris yang dipilih
+		var editableDiv = selectedRow.find("[contenteditable]");
+		console.log(command);
+
+		// Melakukan manipulasi langsung terhadap konten teks di dalam elemen div
+		switch (command) {
+			case "l":
+				// Toggle align left
+				if (editableDiv.css("text-align") !== "left") {
+					// Jika tidak dalam keadaan left, atur menjadi left
+					editableDiv.css("text-align", "left");
+				} else {
+					// Jika dalam keadaan left, atur kembali menjadi default (left)
+					editableDiv.css("text-align", "");
+				}
+				break;
+			case "c":
+				// Toggle align center
+				if (editableDiv.css("text-align") !== "center") {
+					// Jika tidak dalam keadaan center, atur menjadi center
+					editableDiv.css("text-align", "center");
+				} else {
+					// Jika dalam keadaan center, atur kembali menjadi default (left)
+					editableDiv.css("text-align", "");
+				}
+				break;
+			case "r":
+				// Toggle align right
+				if (editableDiv.css("text-align") !== "right") {
+					// Jika tidak dalam keadaan right, atur menjadi right
+					editableDiv.css("text-align", "right");
+				} else {
+					// Jika dalam keadaan right, atur kembali menjadi default (left)
+					editableDiv.css("text-align", "");
+				}
+				break;
+			case "j":
+				// Toggle align justify
+				if (editableDiv.css("text-align") !== "justify") {
+					// Jika tidak dalam keadaan justify, atur menjadi justify
+					editableDiv.css("text-align", "justify");
+				} else {
+					// Jika dalam keadaan justify, atur kembali menjadi default (left)
+					editableDiv.css("text-align", "");
+				}
+				break;
+			case "b":
+				// Toggle bold
+				editableDiv.css("font-weight", function (index, value) {
+					return value === "bold" ? "normal" : "bold";
+				});
+				break;
+			case "u":
+				// Toggle underline
+				editableDiv.css("text-decoration", function (index, value) {
+					return value.includes("underline") ? "none" : "underline";
+				});
+				break;
+			case "i":
+				// Toggle italic
+				editableDiv.css("font-style", function (index, value) {
+					return value === "italic" ? "normal" : "italic";
+				});
+				break;
+			case "m":
+				// Toggle margin
+				if (editableDiv.css("margin") === "0px") {
+					// Jika margin adalah 0px, atur margin sesuai kebutuhan Anda
+					editableDiv.css("margin", "10px"); // Contoh atur margin 10px
+				} else {
+					// Jika margin tidak 0px, atur kembali menjadi 0px
+					editableDiv.css("margin", "0px");
+				}
+				break;
+			case "indent":
+				// Toggle indentasi
+				if (editableDiv.css("text-indent") === "0px") {
+					// Jika indentasi adalah 0px, atur indentasi sesuai kebutuhan Anda
+					editableDiv.css("text-indent", "20px"); // Contoh atur indentasi 20px
+				} else {
+					// Jika indentasi tidak 0px, atur kembali menjadi 0px
+					editableDiv.css("text-indent", "0px");
+				}
+				break;
+			default:
+				// Untuk perintah lain, Anda dapat menangani sesuai kebutuhan Anda
+				break;
+		}
+		toggleAlinea(command, selectedRow.find("[data-alinea]"));
+		// Mengubah font pada sel-sel dalam baris yang dipilih
+		// selectedRow.find('.contenteditable').each(function() {
+		// 	document.execCommand(command, false, null);
+		// });
+	});
+	function toggleAlinea(alinea, elemen) {
+		console.log(elemen);
+
+		let dataAlinea = elemen.data("alinea") || []; // Mendapatkan data-alinea yang sudah ada atau membuat array kosong jika belum ada
 		let index = dataAlinea.indexOf(alinea); // Cek apakah data-alinea sudah ada dalam array
 
 		if (alinea === "l" || alinea === "c" || alinea === "r" || alinea === "j") {
@@ -9547,10 +9657,20 @@ $(document).ready(function () {
 				(item) => !["i_ol", "l_ui", "p"].includes(item)
 			);
 			dataAlinea.push(alinea);
+		} else {
+			// Jika alinea bukan dari kriteria yang telah ditentukan,
+			// lakukan toggle (tambah jika belum ada, hapus jika sudah ada)
+			if (index !== -1) {
+				// Jika alinea sudah ada dalam data-alinea, hapus
+				dataAlinea.splice(index, 1);
+			} else {
+				// Jika alinea belum ada dalam data-alinea, tambahkan
+				dataAlinea.push(alinea);
+			}
 		}
 
 		// Perbarui nilai atribut data-alinea pada elemen
-		$(elemen).data("alinea", dataAlinea);
+		elemen.data("alinea", dataAlinea);
 
 		// Tampilkan nilai data-alinea pada elemen (hanya untuk keperluan demonstrasi)
 		console.log("Data-alinea setelah diubah:", $(elemen).data("alinea"));
@@ -9565,12 +9685,15 @@ $(document).ready(function () {
 		let ini = $(this);
 		if (ini.attr("klm", "alinea")) {
 			//ambil index tr
-			let index = ini.closest('tr').index();
-			ini.closest("table").find("thead th:first").attr('id_tr',index);
+			let index = ini.closest("tr").index();
+			ini.closest("table").find("thead th:first").attr("id_tr", index);
 			let th = ini.closest("table").find("thead th:first [alinea]");
 			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 			let alinea = ini.data("alinea");
-			ini.closest("table").find(`thead th:first [alinea]`).removeClass('active');
+			ini
+				.closest("table")
+				.find(`thead th:first [alinea]`)
+				.removeClass("active");
 			alinea.forEach((value, key) => {
 				ini
 					.closest("table")
@@ -9578,6 +9701,8 @@ $(document).ready(function () {
 					.addClass("active");
 			});
 			console.log(alinea);
+			// Memicu event click pada button[alinea] yang memiliki kelas active
+			// $(document).find(".button[alinea].active").trigger("click");
 		}
 	});
 	$(document).on("blur", "[klm]", function () {
@@ -9785,21 +9910,13 @@ $(document).ready(function () {
 	function loaderHide() {
 		$(".demo.page.dimmer:first").dimmer("hide");
 	}
-	$('.ui.icon.buttons.mini.button[alinea]').on('click', function() {
-		var command = $(this).attr('alinea');
-		var selectedRow = $(this).closest('tr');
 
-		// Mengubah font pada sel-sel dalam baris yang dipilih
-		selectedRow.find('.contenteditable').each(function() {
-			document.execCommand(command, false, null);
-		});
-	});
 	//====MEMBUAT ELEMEN HTML================
 	//====contohdataElemen={atribut:'name="tambah" jns="harga_satuan" tbl="input"'}
 	//================================
 	function createHTML(namaElemen = "", dataElemen = {}) {
 		//@audit-ok createHTML
-		let acceptData = "atribut" in dataElemen ? dataElemen.accept : ".pdf";
+		let acceptData = "accept" in dataElemen ? dataElemen.accept : ".pdf";
 		let labelTambahan =
 			"labelTambahan" in dataElemen ? dataElemen.labelTambahan : "";
 		let content = "content" in dataElemen ? dataElemen.content : "";
