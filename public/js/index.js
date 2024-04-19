@@ -9550,6 +9550,7 @@ $(document).ready(function () {
 		console.log(command);
 
 		// Melakukan manipulasi langsung terhadap konten teks di dalam elemen div
+		toggleAlinea(command, selectedRow.find("[data-alinea]"));
 		switch (command) {
 			case "l":
 				// Toggle align left
@@ -9633,7 +9634,7 @@ $(document).ready(function () {
 				// Untuk perintah lain, Anda dapat menangani sesuai kebutuhan Anda
 				break;
 		}
-		toggleAlinea(command, selectedRow.find("[data-alinea]"));
+		
 		// Mengubah font pada sel-sel dalam baris yang dipilih
 		// selectedRow.find('.contenteditable').each(function() {
 		// 	document.execCommand(command, false, null);
@@ -9670,10 +9671,8 @@ $(document).ready(function () {
 				dataAlinea.push(alinea);
 			}
 		}
-
 		// Perbarui nilai atribut data-alinea pada elemen
 		elemen.data("alinea", dataAlinea);
-
 		// Tampilkan nilai data-alinea pada elemen (hanya untuk keperluan demonstrasi)
 		console.log("Data-alinea setelah diubah:", $(elemen).data("alinea"));
 	}
@@ -9697,14 +9696,13 @@ $(document).ready(function () {
 				.find(`thead th:first [alinea]`)
 				.removeClass("active");
 			alinea.forEach((value, key) => {
-				ini
-					.closest("table")
-					.find(`thead th:first [alinea="${value}"]`)
-					.addClass("active");
+				let btnAlinea = ini
+				.closest("table")
+				.find(`thead th:first [alinea="${value}"]`)
+				btnAlinea.addClass("active");
+				// Memicu event click pada button[alinea] yang memiliki kelas active
+				// btnAlinea.trigger("click");
 			});
-			console.log(alinea);
-			// Memicu event click pada button[alinea] yang memiliki kelas active
-			// $(document).find(".button[alinea].active").trigger("click");
 		}
 	});
 	$(document).on("blur", "[klm]", function () {

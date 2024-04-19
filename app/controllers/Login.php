@@ -26,23 +26,23 @@ class Login extends Controller
     public function masuk()
     { 
         $data = $this->script("masuk")->masuk();
-        echo $data;
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;//gettype($a)
     }
     public function register()
     {
         $data = $this->script("register")->register();
-        echo $data;
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
     public function wilayah()
     {
         $send = ['jns'=>'json_list_dropdown','tbl'=>'wilayah','kondisi'=>[['disable','<= ?',0]]];
         $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
-        echo $data;
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
     public function organisasi()
     {
         $send = ['jns'=>'json_list_dropdown','tbl'=>'organisasi','kondisi'=>[['kd_wilayah','= ?',$_POST['kd_wilayah']],['disable','<= ?',0,'AND']]];
         $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
-        echo $data;
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
 }
