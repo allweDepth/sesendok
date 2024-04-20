@@ -4218,7 +4218,7 @@ $(document).ready(function () {
 					break;
 				case "add_row":
 					let Tbody = ini.closest("table").find("tbody");
-					
+
 					switch (tbl) {
 						case "klm3":
 						case "menimbang":
@@ -4236,7 +4236,7 @@ $(document).ready(function () {
 										cells: [
 											{
 												attr: `klm="alinea" data-alinea='["p","j"]'`,
-												lbl: `<div contenteditable=""></div>`
+												lbl: `<div contenteditable=""></div>`,
 											},
 											{
 												attr: `klm="alinea" data-alinea='["p","j"]'`,
@@ -4250,10 +4250,10 @@ $(document).ready(function () {
 									},
 								],
 							});
-							if (typeof ini.attr("id_tr") !== 'undefined') {
-								let indexRow =  parseInt(ini.attr("id_tr"));
-								Tbody.find('tr').eq(indexRow).after(elmTr)
-							}else{
+							if (typeof ini.attr("id_tr") !== "undefined") {
+								let indexRow = parseInt(ini.attr("id_tr"));
+								Tbody.find("tr").eq(indexRow).after(elmTr);
+							} else {
 								Tbody.append(elmTr);
 							}
 							break;
@@ -4264,7 +4264,7 @@ $(document).ready(function () {
 										cells: [
 											{
 												attr: `klm="alinea" data-alinea='["p","j"]'`,
-												lbl: `<div contenteditable=""></div>`
+												lbl: `<div contenteditable=""></div>`,
 											},
 											{
 												attr: `klm="alinea" data-alinea='["p","j"]'`,
@@ -4281,10 +4281,10 @@ $(document).ready(function () {
 									},
 								],
 							});
-							if (typeof ini.attr("id_tr") !== 'undefined') {
-								let indexRow =  parseInt(ini.attr("id_tr"));
-								Tbody.find('tr').eq(indexRow).after(elmTr2)
-							}else{
+							if (typeof ini.attr("id_tr") !== "undefined") {
+								let indexRow = parseInt(ini.attr("id_tr"));
+								Tbody.find("tr").eq(indexRow).after(elmTr2);
+							} else {
 								Tbody.append(elmTr2);
 							}
 							break;
@@ -4295,7 +4295,7 @@ $(document).ready(function () {
 										cells: [
 											{
 												attr: `klm="alinea" data-alinea='["p","j"]'`, //["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
-												lbl: `<div contenteditable></div>`
+												lbl: `<div contenteditable></div>`,
 											},
 											{
 												class: "collapsing",
@@ -4305,10 +4305,10 @@ $(document).ready(function () {
 									},
 								],
 							});
-							if (typeof ini.attr("id_tr") !== 'undefined') {
-								let indexRow =  parseInt(ini.attr("id_tr"));
-								Tbody.find('tr').eq(indexRow).after(elmTr3)
-							}else{
+							if (typeof ini.attr("id_tr") !== "undefined") {
+								let indexRow = parseInt(ini.attr("id_tr"));
+								Tbody.find("tr").eq(indexRow).after(elmTr3);
+							} else {
 								Tbody.append(elmTr3);
 							}
 							break;
@@ -5679,9 +5679,11 @@ $(document).ready(function () {
 																			attrs: "", // Attributes for the first row
 																			cells: [
 																				{
+																					attr: `klm="alinea" data-alinea='["p","j"]'`,
 																					lbl: `<div contenteditable="">${dataResult[key]["nama"]}</div>`,
 																				},
 																				{
+																					attr: `klm="alinea" data-alinea='["p","j"]'`,
 																					lbl: `<div contenteditable="">${dataResult[key]["pangkat"]}</div></td>`,
 																				},
 																				{
@@ -5709,6 +5711,7 @@ $(document).ready(function () {
 																		{
 																			cells: [
 																				{
+																					attr: `klm="alinea" data-alinea='["p","j"]'`,
 																					lbl: `<div contenteditable="">${
 																						dataResult[key][keyObject[0]]
 																					}</div>`,
@@ -6309,9 +6312,11 @@ $(document).ready(function () {
 																	attrs: "", // Attributes for the first row
 																	cells: [
 																		{
+																			attr: `klm="alinea" data-alinea='["p","j"]'`,
 																			lbl: `<div contenteditable>${text}</div>`,
 																		},
 																		{
+																			attr: `klm="alinea" data-alinea='["p","j"]'`,
 																			lbl: `<div contenteditable>${dataObj.Pangkat}</div>`,
 																		},
 																		{
@@ -6973,9 +6978,13 @@ $(document).ready(function () {
 																		attrs: "", // Attributes for the first row
 																		cells: [
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable="">pada hari/tanggal</div>`,
 																			},
-																			{ lbl: `<div contenteditable=""></div>` },
+																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
+																				lbl: `<div contenteditable=""></div>`,
+																			},
 																			{
 																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
 																			},
@@ -6992,9 +7001,11 @@ $(document).ready(function () {
 																	{
 																		cells: [
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable>waktu</div>`,
 																			},
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable></div>`,
 																			},
 																			{
@@ -7014,9 +7025,11 @@ $(document).ready(function () {
 																		attrs: "", // Attributes for the first row
 																		cells: [
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable>tempat</div>`,
 																			},
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable></div>`,
 																			},
 																			{
@@ -7036,9 +7049,13 @@ $(document).ready(function () {
 																		attrs: "", // Attributes for the first row
 																		cells: [
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable>acara</div>`,
 																			},
-																			{ lbl: `<div contenteditable></div>` },
+																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
+																				lbl: `<div contenteditable></div>`,
+																			},
 																			{
 																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
 																			},
@@ -7144,7 +7161,7 @@ $(document).ready(function () {
 														label: "",
 														atribut: "1",
 													},
-												}
+												},
 											],
 										},
 										surat_kuasa: {
@@ -7161,9 +7178,13 @@ $(document).ready(function () {
 																	{
 																		cells: [
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable="">Nama</div>`,
 																			},
-																			{ lbl: `<div contenteditable=""></div>` },
+																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
+																				lbl: `<div contenteditable=""></div>`,
+																			},
 																			{
 																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
 																			},
@@ -7321,9 +7342,11 @@ $(document).ready(function () {
 																		attrs: "", // Attributes for the first row
 																		cells: [
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable>Pada hari ini ...., tanggal ..., tahun ..., kami masing-masing :</div>`,
 																			},
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
 																			},
 																			{
@@ -7355,9 +7378,11 @@ $(document).ready(function () {
 																		attrs: "", // Attributes for the first row
 																		cells: [
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable>Alamat</div>`,
 																			},
 																			{
+																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable></div>`,
 																			},
 																			{
@@ -7394,7 +7419,7 @@ $(document).ready(function () {
 														label: "",
 														atribut: "1",
 													},
-												}
+												},
 											],
 										},
 										surat_pengantar: {
@@ -8476,14 +8501,15 @@ $(document).ready(function () {
 																	break;
 																default:
 																	strText = $(this).find("div").html();
-																	let alinea = $(this).attr("ilinea");
+																	let alinea = $(this).attr("alinea");
 																	//Remove Extra Spaces From a String menggunakan .replace(/\s+/g, ' ').trim();
 																	myRows[index][$headers[cellIndex]] = strText
 																		.replace(/\s+/g, " ")
 																		.trim();
-																		if($(this).data('alinea')){
-																			myRows[index]['alinea']=$(this).data('alinea');
-																		}
+																	if ($(this).data("alinea")) {
+																		myRows[index][$headers[cellIndex]["alinea"]] =
+																			$(this).data("alinea");
+																	}
 																	break;
 															}
 														});
@@ -9561,14 +9587,13 @@ $(document).ready(function () {
 		let rowIndex = parseInt($(this).closest("th").attr("id_tr")); // Mendapatkan indeks baris sebagai angka
 		let tdIndex = parseInt($(this).closest("th").attr("id_td"));
 		let selectedRow = $(this).closest("table").find("tbody tr").eq(rowIndex);
-		let selectedTd =selectedRow.find('td').eq(tdIndex);
+		let selectedTd = selectedRow.find("td").eq(tdIndex);
 		// Mendapatkan elemen div yang dapat diedit di dalam baris yang dipilih
 		let editableDiv = selectedTd.find("[contenteditable]");
 		console.log(command);
 		// Melakukan manipulasi langsung terhadap konten teks di dalam elemen div
 		toggleAlinea(command, selectedRow.find("[data-alinea]"));
 		if ($(this).hasClass("active")) {
-
 		}
 		switch (command) {
 			case "l":
@@ -9613,7 +9638,7 @@ $(document).ready(function () {
 				break;
 			case "b":
 				// Toggle bold
-console.log(editableDiv.hasClass("font-weight"));
+				console.log(editableDiv.hasClass("font-weight"));
 				editableDiv.css("font-weight", function (index, value) {
 					return value === "bold" ? "normal" : "bold";
 				});
@@ -9654,7 +9679,7 @@ console.log(editableDiv.hasClass("font-weight"));
 				// Untuk perintah lain, Anda dapat menangani sesuai kebutuhan Anda
 				break;
 		}
-		
+
 		// Mengubah font pada sel-sel dalam baris yang dipilih
 		// selectedRow.find('.contenteditable').each(function() {
 		// 	document.execCommand(command, false, null);
@@ -9705,8 +9730,14 @@ console.log(editableDiv.hasClass("font-weight"));
 			//ambil index tr
 			let index = ini.closest("tr").index();
 			let indexTd = ini.closest("td").index();
-			ini.closest("table").find("thead th:first").attr({id_tr:index,id_td:indexTd});
-			ini.closest("table").find('thead button[name="add"]').attr({id_tr:index,id_td:indexTd});
+			ini
+				.closest("table")
+				.find("thead th:first")
+				.attr({ id_tr: index, id_td: indexTd });
+			ini
+				.closest("table")
+				.find('thead button[name="add"]')
+				.attr({ id_tr: index, id_td: indexTd });
 			let th = ini.closest("table").find("thead th:first [alinea]");
 			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 			let alinea = ini.data("alinea");
@@ -9716,8 +9747,8 @@ console.log(editableDiv.hasClass("font-weight"));
 				.removeClass("active");
 			alinea.forEach((value, key) => {
 				let btnAlinea = ini
-				.closest("table")
-				.find(`thead th:first [alinea="${value}"]`)
+					.closest("table")
+					.find(`thead th:first [alinea="${value}"]`);
 				btnAlinea.addClass("active");
 				// Memicu event click pada button[alinea] yang memiliki kelas active
 				// btnAlinea.trigger("click");
