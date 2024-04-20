@@ -8507,8 +8507,9 @@ $(document).ready(function () {
 																		.replace(/\s+/g, " ")
 																		.trim();
 																	if ($(this).data("alinea")) {
-																		myRows[index][$headers[cellIndex]["alinea"]] =
-																			$(this).data("alinea");
+																		myRows[index][
+																			$headers[cellIndex]["alinea"]
+																		] = $(this).data("alinea");
 																	}
 																	break;
 															}
@@ -8932,6 +8933,7 @@ $(document).ready(function () {
 											case "z":
 												break;
 										}
+										jenisTrigger = tbl;
 										break;
 									// =================
 									// UNTUK FORM FLYOUT
@@ -9657,13 +9659,29 @@ $(document).ready(function () {
 				break;
 			case "m":
 				// Toggle margin
-				if (editableDiv.css("margin") === "0px") {
-					// Jika margin adalah 0px, atur margin sesuai kebutuhan Anda
-					editableDiv.css("margin", "10px"); // Contoh atur margin 10px
-				} else {
-					// Jika margin tidak 0px, atur kembali menjadi 0px
-					editableDiv.css("margin", "0px");
-				}
+				editableDiv.css("margin", function (index, value) {
+					return value === "10px" ? "0px" : "10px";
+				});
+				break;
+			case "m-l":
+				editableDiv.css("margin-left", function (index, value) {
+					return value === "10px" ? "0px" : "10px";
+				});
+				break;
+			case "m-r":
+				editableDiv.css("margin-right", function (index, value) {
+					return value === "10px" ? "0px" : "10px";
+				});
+				break;
+			case "m-t":
+				editableDiv.css("margin-top", function (index, value) {
+					return value === "10px" ? "0px" : "10px";
+				});
+				break;
+			case "m-b":
+				editableDiv.css("margin-bottom", function (index, value) {
+					return value === "10px" ? "0px" : "10px";
+				});
 				break;
 			case "indent":
 				// Toggle indentasi
@@ -10045,6 +10063,38 @@ $(document).ready(function () {
 						bodyTable: bodyTable,
 					});
 				break;
+			case "button_txt":
+				elemen = `<div class="ui icon buttons mini align">
+					<button class="ui button" alinea="l" data-tooltip="align left"><i class="align left icon"></i></button>
+					<button class="ui button" alinea="c" data-tooltip="align center"><i class="align center icon"></i></button>
+					<button class="ui button" alinea="r" data-tooltip="align right"><i class="align right icon"></i></button>
+					<button class="ui button" alinea="j" data-tooltip="align justify"><i class="align justify icon"></i></button>
+				</div>
+				<div class="ui icon buttons mini font">
+					<button class="ui button" alinea="b" data-tooltip="huruf tebal"><i class="bold icon"></i></button>
+					<button class="ui button" alinea="u" data-tooltip="huruf garis bawah"><i class="underline icon"></i></button>
+					<button class="ui button" alinea="i" data-tooltip="huruf miring"><i class="italic icon"></i></button>
+				</div>
+				<div class="ui icon buttons mini align">
+					<button class="ui button" alinea="l_ol" data-tooltip="list bernomor"><i class="list ol icon"></i></button>
+					<button class="ui button" alinea="l_ui" data-tooltip="list simbol"><i class="list ui icon"></i></button>
+					<button class="ui button" alinea="p" data-tooltip="paragraf"><i class="align justify icon"></i></button>
+				</div>
+				<div class="ui icon buttons mini font">
+					<button class="ui button" alinea="indent" data-tooltip="indent"><i class="indent icon"></i></button>
+				</div>
+				<div class="ui icon buttons mini font">
+					<button class="ui button" alinea="m" data-tooltip="margin"><i class="list alternate icon"></i></button>
+					<button class="ui button" alinea="m-l" data-tooltip="margin kanan"><i class="list alternate icon"></i></button>
+					<button class="ui button" alinea="m-r" data-tooltip="margin kiri"><i class="list alternate icon"></i></button>
+					<button class="ui button" alinea="m-t" data-tooltip="margin atas"><i class="list alternate icon"></i></button>
+					<button class="ui button" alinea="m-b" data-tooltip="margin bawah"><i class="list alternate icon"></i></button>
+				</div>
+				<div class="ui icon buttons mini align">
+					<button class="ui button" alinea="col_2" data-tooltip="2 column"><i class="columns icon"></i></button>
+					<button class="ui button" alinea="col_3" data-tooltip="3 column"><i class="th icon"></i></button>
+				</div>`;
+				break;
 			case "custom_tabel_1klm":
 				elemen = createHTML("tabel2", {
 					atribut: `name="${atribut}"`,
@@ -10052,32 +10102,7 @@ $(document).ready(function () {
 					headerTable: [
 						[
 							{
-								attr: "",
-								class: "", //["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
-								lbl: `<div class="ui icon buttons mini align">
-								<button class="ui button" alinea="l" data-tooltip="align left"><i class="align left icon"></i></button>
-								<button class="ui button" alinea="c" data-tooltip="align center"><i class="align center icon"></i></button>
-								<button class="ui button" alinea="r" data-tooltip="align right"><i class="align right icon"></i></button>
-								<button class="ui button" alinea="j" data-tooltip="align justify"><i class="align justify icon"></i></button>
-							</div>
-							<div class="ui icon buttons mini font">
-								<button class="ui button" alinea="b" data-tooltip="huruf tebal"><i class="bold icon"></i></button>
-								<button class="ui button" alinea="u" data-tooltip="huruf garis bawah"><i class="underline icon"></i></button>
-								<button class="ui button" alinea="i" data-tooltip="huruf miring"><i class="italic icon"></i></button>
-							</div>
-							<div class="ui icon buttons mini align">
-								<button class="ui button" alinea="l_ol" data-tooltip="list bernomor"><i class="list ol icon"></i></button>
-								<button class="ui button" alinea="l_ui" data-tooltip="list simbol"><i class="list ui icon"></i></button>
-								<button class="ui button" alinea="p" data-tooltip="paragraf"><i class="align justify icon"></i></button>
-							</div>
-							<div class="ui icon buttons mini font">
-								<button class="ui button" alinea="indent" data-tooltip="indent"><i class="indent icon"></i></button>
-								<button class="ui button" alinea="m" data-tooltip="margin"><i class="list alternate icon"></i></button>
-							</div>
-							<div class="ui icon buttons mini font">
-								<button class="ui button" alinea="col_2" data-tooltip="2 column"><i class="columns icon"></i></button>
-								<button class="ui button" alinea="col_3" data-tooltip="3 column"><i class="th icon"></i></button>
-							</div>`,
+								lbl: createHTML("button_txt"),
 							},
 							{
 								attr: "",
