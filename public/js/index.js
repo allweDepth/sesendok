@@ -9541,16 +9541,19 @@ $(document).ready(function () {
 	//cell alinea
 	// Fungsi untuk menambahkan atau menghapus data-alinea dari elemen
 	$("body").on("click", ".button[alinea]", function (e) {
-		var command = $(this).attr("alinea");
-		var selectedRow = $(this).closest("tr");
-		var rowIndex = parseInt($(this).closest("th").attr("id_tr")); // Mendapatkan indeks baris sebagai angka
-		var selectedRow = $(this).closest("table").find("tbody tr").eq(rowIndex);
+		let command = $(this).attr("alinea");
+		let rowIndex = parseInt($(this).closest("th").attr("id_tr")); // Mendapatkan indeks baris sebagai angka
+		let tdIndex = parseInt($(this).closest("th").attr("id_td"));
+		let selectedRow = $(this).closest("table").find("tbody tr").eq(rowIndex);
+		let selectedTd =selectedRow.find('td').eq(tdIndex);
 		// Mendapatkan elemen div yang dapat diedit di dalam baris yang dipilih
-		var editableDiv = selectedRow.find("[contenteditable]");
+		let editableDiv = selectedTd.find("[contenteditable]");
 		console.log(command);
-
 		// Melakukan manipulasi langsung terhadap konten teks di dalam elemen div
 		toggleAlinea(command, selectedRow.find("[data-alinea]"));
+		if ($(this).hasClass("active")) {
+
+		}
 		switch (command) {
 			case "l":
 				// Toggle align left
@@ -9594,6 +9597,8 @@ $(document).ready(function () {
 				break;
 			case "b":
 				// Toggle bold
+console.log(editableDiv.hasClass("font-weight"));
+
 				editableDiv.css("font-weight", function (index, value) {
 					return value === "bold" ? "normal" : "bold";
 				});
@@ -9641,11 +9646,8 @@ $(document).ready(function () {
 		// });
 	});
 	function toggleAlinea(alinea, elemen) {
-		console.log(elemen);
-
 		let dataAlinea = elemen.data("alinea") || []; // Mendapatkan data-alinea yang sudah ada atau membuat array kosong jika belum ada
 		let index = dataAlinea.indexOf(alinea); // Cek apakah data-alinea sudah ada dalam array
-
 		if (alinea === "l" || alinea === "c" || alinea === "r" || alinea === "j") {
 			// Jika alinea adalah salah satu dari ["l", "c", "r", "j"]
 			// Hapus semua yang terkait dan tambahkan alinea yang baru
@@ -9687,7 +9689,8 @@ $(document).ready(function () {
 		if (ini.attr("klm", "alinea")) {
 			//ambil index tr
 			let index = ini.closest("tr").index();
-			ini.closest("table").find("thead th:first").attr("id_tr", index);
+			let indexTd = ini.closest("td").index();
+			ini.closest("table").find("thead th:first").attr({id_tr:index,id_td:indexTd});
 			let th = ini.closest("table").find("thead th:first [alinea]");
 			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 			let alinea = ini.data("alinea");
