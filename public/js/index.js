@@ -4218,6 +4218,7 @@ $(document).ready(function () {
 					break;
 				case "add_row":
 					let Tbody = ini.closest("table").find("tbody");
+					
 					switch (tbl) {
 						case "klm3":
 						case "menimbang":
@@ -4234,9 +4235,11 @@ $(document).ready(function () {
 										// attrs: 'klm="alinea"', // Attributes for the first row
 										cells: [
 											{
-												lbl: `<div contenteditable=""></div>`,
+												attr: `klm="alinea" data-alinea='["p","j"]'`,
+												lbl: `<div contenteditable=""></div>`
 											},
 											{
+												attr: `klm="alinea" data-alinea='["p","j"]'`,
 												lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
 											},
 											{
@@ -4247,7 +4250,12 @@ $(document).ready(function () {
 									},
 								],
 							});
-							Tbody.append(elmTr);
+							if (typeof ini.attr("id_tr") !== 'undefined') {
+								let indexRow =  parseInt(ini.attr("id_tr"));
+								Tbody.find('tr').eq(indexRow).after(elmTr)
+							}else{
+								Tbody.append(elmTr);
+							}
 							break;
 						case "klm4":
 							let elmTr2 = createHTML("tr_tabel", {
@@ -4255,9 +4263,11 @@ $(document).ready(function () {
 									{
 										cells: [
 											{
-												lbl: `<div contenteditable=""></div>`,
+												attr: `klm="alinea" data-alinea='["p","j"]'`,
+												lbl: `<div contenteditable=""></div>`
 											},
 											{
+												attr: `klm="alinea" data-alinea='["p","j"]'`,
 												lbl: `<div contenteditable=""></div>`,
 											},
 											{
@@ -4271,7 +4281,12 @@ $(document).ready(function () {
 									},
 								],
 							});
-							Tbody.append(elmTr2);
+							if (typeof ini.attr("id_tr") !== 'undefined') {
+								let indexRow =  parseInt(ini.attr("id_tr"));
+								Tbody.find('tr').eq(indexRow).after(elmTr2)
+							}else{
+								Tbody.append(elmTr2);
+							}
 							break;
 						case "klm_custom":
 							let elmTr3 = createHTML("tr_tabel", {
@@ -4280,7 +4295,7 @@ $(document).ready(function () {
 										cells: [
 											{
 												attr: `klm="alinea" data-alinea='["p","j"]'`, //["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
-												lbl: `<div contenteditable></div>`,
+												lbl: `<div contenteditable></div>`
 											},
 											{
 												class: "collapsing",
@@ -4290,7 +4305,12 @@ $(document).ready(function () {
 									},
 								],
 							});
-							Tbody.append(elmTr3);
+							if (typeof ini.attr("id_tr") !== 'undefined') {
+								let indexRow =  parseInt(ini.attr("id_tr"));
+								Tbody.find('tr').eq(indexRow).after(elmTr3)
+							}else{
+								Tbody.append(elmTr3);
+							}
 							break;
 						default:
 							break;
@@ -7106,21 +7126,25 @@ $(document).ready(function () {
 										perjanjian: {
 											elemen: [
 												{
-													tag: "fieldTextarea",
+													tag: "custom_tabel_1klm",
+													txtLabel: "Batang Tubuh/Alinea",
+													atribut: "alinea_1",
 													prop: {
-														label: "Tentang",
-														classField: `required`,
-														atribut: `name="tentang" placeholder="tentang" rows="2"`,
+														icon: "",
+														label: "",
+														atribut: "1",
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "custom_tabel_1klm",
+													txtLabel: "Batang Tubuh/Alinea",
+													atribut: "alinea_2",
 													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
+														icon: "",
+														label: "",
+														atribut: "1",
 													},
-												},
+												}
 											],
 										},
 										surat_kuasa: {
@@ -7370,15 +7394,7 @@ $(document).ready(function () {
 														label: "",
 														atribut: "1",
 													},
-												},
-												{
-													tag: "divider_tabel_1klm",
-													prop: {
-														icon: "2",
-														label: "3",
-														atribut: "4",
-													},
-												},
+												}
 											],
 										},
 										surat_pengantar: {
@@ -9598,7 +9614,6 @@ $(document).ready(function () {
 			case "b":
 				// Toggle bold
 console.log(editableDiv.hasClass("font-weight"));
-
 				editableDiv.css("font-weight", function (index, value) {
 					return value === "bold" ? "normal" : "bold";
 				});
@@ -9691,6 +9706,7 @@ console.log(editableDiv.hasClass("font-weight"));
 			let index = ini.closest("tr").index();
 			let indexTd = ini.closest("td").index();
 			ini.closest("table").find("thead th:first").attr({id_tr:index,id_td:indexTd});
+			ini.closest("table").find('thead button[name="add"]').attr({id_tr:index,id_td:indexTd});
 			let th = ini.closest("table").find("thead th:first [alinea]");
 			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 			let alinea = ini.data("alinea");
@@ -10025,7 +10041,11 @@ console.log(editableDiv.hasClass("font-weight"));
 							</div>
 							<div class="ui icon buttons mini font">
 								<button class="ui button" alinea="indent" data-tooltip="indent"><i class="indent icon"></i></button>
-								<button class="ui button" alinea="m" data-tooltip="margin"><i class="indent icon"></i></button>
+								<button class="ui button" alinea="m" data-tooltip="margin"><i class="list alternate icon"></i></button>
+							</div>
+							<div class="ui icon buttons mini font">
+								<button class="ui button" alinea="col_2" data-tooltip="2 column"><i class="columns icon"></i></button>
+								<button class="ui button" alinea="col_3" data-tooltip="3 column"><i class="th icon"></i></button>
 							</div>`,
 							},
 							{
