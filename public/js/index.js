@@ -6890,7 +6890,7 @@ $(document).ready(function () {
 													prop: {
 														label: "Hal",
 														classField: `required`,
-														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+														atribut: `name="text_2" placeholder="hal" rows="2"`,
 													},
 												},
 												{
@@ -6918,7 +6918,7 @@ $(document).ready(function () {
 													prop: {
 														label: "Hal",
 														classField: `required`,
-														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+														atribut: `name="text_2" placeholder="hal" rows="2"`,
 													},
 												},
 												{
@@ -6938,7 +6938,7 @@ $(document).ready(function () {
 													prop: {
 														label: "Lampiran",
 														classField: `required`,
-														atribut: `name="text_1" placeholder="tentang" rows="2"`,
+														atribut: `name="text_1" placeholder="lampiran" rows="2"`,
 													},
 												},
 												{
@@ -6946,7 +6946,7 @@ $(document).ready(function () {
 													prop: {
 														label: "Hal",
 														classField: `required`,
-														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+														atribut: `name="text_2" placeholder="hal" rows="2"`,
 													},
 												},
 												{
@@ -7103,7 +7103,7 @@ $(document).ready(function () {
 													prop: {
 														label: "Lampiran",
 														classField: `required`,
-														atribut: `name="text_1" placeholder="tentang" rows="2"`,
+														atribut: `name="text_1" placeholder="lampiran" rows="2"`,
 													},
 												},
 												{
@@ -7111,7 +7111,7 @@ $(document).ready(function () {
 													prop: {
 														label: "Hal",
 														classField: `required`,
-														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+														atribut: `name="text_2" placeholder="hal" rows="2"`,
 													},
 												},
 												{
@@ -7330,11 +7330,13 @@ $(document).ready(function () {
 										berita_acara: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "custom_tabel_1klm",
+													txtLabel: "Batang Tubuh/Alinea",
+													atribut: "alinea_1",
 													prop: {
 														icon: "",
-														txtLabel: "Batang Tubuh/Alinea",
-														atribut: "alinea_1",
+														label: "",
+														atribut: "1",
 														bodyTable:
 															createHTML("tr_tabel", {
 																bodyTable: [
@@ -7344,10 +7346,6 @@ $(document).ready(function () {
 																			{
 																				attr: `klm="alinea" data-alinea='["p","j"]'`,
 																				lbl: `<div contenteditable>Pada hari ini ...., tanggal ..., tahun ..., kami masing-masing :</div>`,
-																			},
-																			{
-																				attr: `klm="alinea" data-alinea='["p","j"]'`,
-																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
 																			},
 																			{
 																				class: "collapsing",
@@ -7360,9 +7358,6 @@ $(document).ready(function () {
 																		cells: [
 																			{
 																				lbl: `<div contenteditable>... [Nama pejabat],... [NIP dan Jabatan], selanjutnya disebut pihak pertama</div>`,
-																			},
-																			{
-																				lbl: `<button class="ui teal mini button" name="add" jns="L" data-tooltip="list">P</button>`,
 																			},
 																			{
 																				class: "collapsing",
@@ -7382,31 +7377,16 @@ $(document).ready(function () {
 																				lbl: `<div contenteditable>Alamat</div>`,
 																			},
 																			{
-																				attr: `klm="alinea" data-alinea='["p","j"]'`,
-																				lbl: `<div contenteditable></div>`,
-																			},
-																			{
-																				lbl: `<button class="ui teal mini button" name="add" jns="P" data-tooltip="paragraf">P</button>`,
-																			},
-																			{
 																				class: "collapsing",
 																				lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
 																			},
 																		],
 																	},
 																],
-															}),
+															})
 													},
-												},
-												{
-													tag: "divider_tabel_1klm",
-													prop: {
-														icon: "",
-														txtLabel: "Batang Tubuh/Alinea",
-														atribut: "alinea_2",
-													},
-												},
-											],
+												}
+											]
 										},
 										surat_keterangan: {
 											elemen: [
