@@ -7397,10 +7397,10 @@ $(document).ready(function () {
 													prop: {
 														icon: "",
 														label: "",
-														atribut: "1",
-													},
-												},
-											],
+														atribut: "1"
+													}
+												}
+											]
 										},
 										surat_pengantar: {
 											elemen: [
