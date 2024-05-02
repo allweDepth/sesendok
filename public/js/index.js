@@ -6643,7 +6643,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Kepada",
@@ -6651,7 +6651,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "KESATU",
@@ -6659,7 +6659,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "KEDUA",
@@ -6667,7 +6667,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "KETIGA",
@@ -6675,7 +6675,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "KEEMPAT",
@@ -6695,7 +6695,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Yth.",
@@ -6703,7 +6703,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "latar Belakang",
@@ -6711,7 +6711,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Maksud dan Tujuan",
@@ -6719,7 +6719,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Ruang Lingkup",
@@ -6727,7 +6727,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Dasar",
@@ -6735,7 +6735,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Isi Edaran",
@@ -6743,7 +6743,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Penutup",
@@ -6763,7 +6763,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "MENIMBANG",
@@ -6771,7 +6771,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "MENGINGAT",
@@ -6779,7 +6779,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "MENETAPKAN",
@@ -6788,21 +6788,21 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "tabel_1klm",
+													tag: "custom_tabel_1klm",
 													prop: {
 														label: "KEDUA",
 														atribut: "kedua",
 													},
 												},
 												{
-													tag: "tabel_1klm",
+													tag: "custom_tabel_1klm",
 													prop: {
 														label: "KETIGA",
 														atribut: "ketiga",
 													},
 												},
 												{
-													tag: "tabel_1klm",
+													tag: "custom_tabel_1klm",
 													prop: {
 														label: "KEEMPAT",
 														atribut: "keempat",
@@ -6817,7 +6817,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "TEMBUSAN",
@@ -6829,7 +6829,7 @@ $(document).ready(function () {
 										surat_perintah: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "MENIMBANG",
@@ -6837,7 +6837,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "DASAR",
@@ -6858,7 +6858,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "UNTUK",
@@ -6870,7 +6870,7 @@ $(document).ready(function () {
 										nota_dinas: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "YTH.",
@@ -6894,7 +6894,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "BATANG TUBUH",
@@ -6906,7 +6906,7 @@ $(document).ready(function () {
 										memorandum: {
 											elemen: [
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "YTH.",
@@ -6922,7 +6922,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "BATANG TUBUH",
@@ -6958,7 +6958,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Alinea Pembuka",
@@ -7070,7 +7070,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Alinea Penutup",
@@ -7078,7 +7078,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "TEMBUSAN",
@@ -7086,7 +7086,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "LAMPIRAN",
@@ -7123,7 +7123,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "Batang Tubuh/Alinea",
@@ -7131,7 +7131,7 @@ $(document).ready(function () {
 													},
 												},
 												{
-													tag: "divider_tabel_1klm",
+													tag: "divider_custom_tabel",
 													prop: {
 														icon: "",
 														txtLabel: "TEMBUSAN",
@@ -10074,6 +10074,46 @@ $(document).ready(function () {
 					<button class="ui button" alinea="col_2" data-tooltip="2 column"><i class="columns icon"></i></button>
 					<button class="ui button" alinea="col_3" data-tooltip="3 column"><i class="th icon"></i></button>
 				</div>`;
+				break;
+			case "divider_custom_tabel":
+				txtLabel =
+					"txtLabel" in dataElemen ? dataElemen.txtLabel : "PENJELASAN";
+				label = "label" in dataElemen ? dataElemen.label : "URAIAN";
+				icon =
+					"icon" in dataElemen
+						? dataElemen.icon
+						: '<i class="feather alternate icon"></i>';
+				elemen =
+					createHTML("divider", {
+						header: "h4",
+						icon: icon,
+						label: txtLabel,
+					}) +createHTML("tabel2", {
+						atribut: `name="${atribut}"`,
+						kelas: `celled structured`,
+						headerTable: [
+							[
+								{
+									lbl: createHTML("button_txt"),
+								},
+								{
+									attr: "",
+									lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm_custom"><i class="plus icon"></i></button>`,
+									class: "collapsing",
+								},
+							],
+						],
+						footerTable: [
+							{
+								lbl: ``,
+							},
+							{
+								lbl: "",
+								attr: ``,
+							},
+						],
+						bodyTable: bodyTable,
+					});
 				break;
 			case "custom_tabel_1klm":
 				elemen = createHTML("tabel2", {
