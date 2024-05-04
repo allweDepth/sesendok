@@ -4565,19 +4565,22 @@ $(document).ready(function () {
 								);
 						elementForm =
 							createHTML("fields", {
-								classField: "four",
+								classField: "three",
 								content:
-									createHTML("fieldDropdown", {
+									createHTML("fieldDropdownLabel", {
 										label: "Jenis Naskah Dinas",
+										atributLabel: 'href="template/form_tata_naskah/naskah_berita_acara.png" target="_blank"',
+										tagg: 'a',
+										txtLabel: '<i class="download icon"></i>',
 										classField: `required`,
-										atribut:
-											'name="jenis_naskah_dinas" placeholder="Jenis, Susunan dan bentuk naskah dinas..."',
+										atribut: 'name="jenis_naskah_dinas" placeholder="Jenis, Susunan dan bentuk naskah dinas..."',
 										kelas: "search clearable selection",
 										dataArray: [
 											["instruksi", "Instruksi"],
 											["surat_edaran", "Surat Edaran"],
 											["keputusan", "Keputusan"],
-											["surat_perintah", "Surat Perintah atau Surat Tugas"],
+											["surat_perintah", "Surat Perintah"],
+											["surat_tugas", "Surat Tugas"],
 											["nota_dinas", "Nota Dinas"],
 											["memorandum", "Memorandum"],
 											["undangan_internal", "Undangan Internal"],
@@ -4591,11 +4594,6 @@ $(document).ready(function () {
 											["laporan", "Laporan"],
 											["telaah_staf", "Telaah Staf"],
 										],
-									}) +
-									createHTML("fieldText", {
-										label: "Nomor Surat",
-										classField: `required`,
-										atribut: `name="nomor" placeholder="Nomor Surat"`,
 									}) +
 									createHTML("fieldCalendar", {
 										classField: `required`,
@@ -4614,6 +4612,11 @@ $(document).ready(function () {
 											["b", "biasa/terbuka"],
 										],
 									}),
+							}) +
+							createHTML("fieldText", {
+								label: "Nomor Surat",
+								classField: `required`,
+								atribut: `name="nomor" placeholder="Nomor Surat"`,
 							}) +
 							createHTML("fieldFileInput2", {
 								label: "Pilih File Dokumen",
@@ -6620,7 +6623,7 @@ $(document).ready(function () {
 							break;
 						case "non":
 							switch (tbl) {
-								case "create_surat": //"divider_tabel_1klm"//@audit sekarang elm
+								case "create_surat": //"divider_tabel_1klm"//@audit sekarang naskah
 									var myForm = $('form[name="form_modal"]');
 									let elemen = "";
 									let elmNaskah = {
@@ -6827,6 +6830,47 @@ $(document).ready(function () {
 											],
 										},
 										surat_perintah: {
+											elemen: [
+												{
+													tag: "divider_custom_tabel",
+													prop: {
+														icon: "",
+														txtLabel: "MENIMBANG",
+														atribut: "menimbang",
+													},
+												},
+												{
+													tag: "divider_custom_tabel",
+													prop: {
+														icon: "",
+														txtLabel: "DASAR",
+														atribut: "dasar",
+													},
+												},
+												{
+													tag: "divider",
+													prop: {
+														label: "MEMBERI PERINTAH",
+													},
+												},
+												{
+													tag: "asn_tabel",
+													prop: {
+														label: "ASN yang ditugaskan",
+														atribut: `name="nama_ditugaskan"`,
+													},
+												},
+												{
+													tag: "divider_custom_tabel",
+													prop: {
+														icon: "",
+														txtLabel: "UNTUK",
+														atribut: "untuk",
+													},
+												},
+											],
+										},
+										surat_tugas: {
 											elemen: [
 												{
 													tag: "divider_custom_tabel",
@@ -7383,10 +7427,10 @@ $(document).ready(function () {
 																		],
 																	},
 																],
-															})
+															}),
 													},
-												}
-											]
+												},
+											],
 										},
 										surat_keterangan: {
 											elemen: [
@@ -7397,10 +7441,10 @@ $(document).ready(function () {
 													prop: {
 														icon: "",
 														label: "",
-														atribut: "1"
-													}
-												}
-											]
+														atribut: "1",
+													},
+												},
+											],
 										},
 										surat_pengantar: {
 											elemen: [
@@ -7487,6 +7531,8 @@ $(document).ready(function () {
 										for (let { tag, prop } of elmNaskah[value].elemen) {
 											elemen += createHTML(tag, prop);
 										}
+										myForm.find('div[name="jenis_naskah_dinas"]').closest(`.ui.right.labeled.input`).find('a').attr('href','template/form_tata_naskah/naskah_'+value+'.png');
+										// 'href="template/form_tata_naskah/naskah_berita_acara.png" target="_blank"',
 									}
 									myForm.find('div[name="elm_naskah"]').html(elemen);
 									$(".ui.sticky").sticky("refresh");
@@ -9972,10 +10018,10 @@ $(document).ready(function () {
 		let atribut2 = "atribut2" in dataElemen ? dataElemen.atribut2 : "";
 		let aligned = "aligned" in dataElemen ? dataElemen.aligned : "";
 		let header = "header" in dataElemen ? dataElemen.header : "h4";
+		let tagg = "tagg" in dataElemen ? dataElemen.tagg : "div";
 		let atributField =
 			"atributField" in dataElemen ? dataElemen.atributField : "";
-		let atributLabel =
-			"atributLabel" in dataElemen ? dataElemen.atributLabel : "";
+		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let classField =
 			"classField" in dataElemen ? `${dataElemen.classField} ` : "";
 		let kelas = "kelas" in dataElemen ? dataElemen.kelas : "";
@@ -9993,6 +10039,7 @@ $(document).ready(function () {
 		let icon2 = "icon2" in dataElemen ? dataElemen.icon2 : "";
 		let posisi = "posisi" in dataElemen ? dataElemen.posisi : "left";
 		let colorData = "color" in dataElemen ? dataElemen.color : "positive";
+		let color = "color" in dataElemen ? dataElemen.color : "";
 		let valueData = "value" in dataElemen ? dataElemen.value : "";
 		let iconDataSeach = "icon" in dataElemen ? dataElemen.icon : "search icon";
 
@@ -10088,7 +10135,8 @@ $(document).ready(function () {
 						header: "h4",
 						icon: icon,
 						label: txtLabel,
-					}) +createHTML("tabel2", {
+					}) +
+					createHTML("tabel2", {
 						atribut: `name="${atribut}"`,
 						kelas: `celled structured`,
 						headerTable: [
@@ -10554,6 +10602,9 @@ $(document).ready(function () {
 			case "dividerHidden":
 				elemen = `<div class="ui hidden divider"></div>`;
 				break;
+			case "label":
+				elemen = `<a class="ui fluid label ${kelas}" href="${href}" ${atribut}><i class="${icon} icon"></i>${valueData}</a>`;
+				break;
 			case "fieldLabel":
 				elemen = `<div class="${classField}field" ${atributField}><label>${label}</label><a class="ui fluid label ${kelas}" href="${href}" ${atribut}><i class="${icon} icon"></i>${valueData}</a></div>`;
 				break;
@@ -10755,7 +10806,9 @@ $(document).ready(function () {
 						}
 					}
 				}
-				var elemen33 = `</div></div><button class="ui teal label icon button" ${atributLabel}>${txtLabel}</button>
+				color = "color" in dataElemen ? `${dataElemen.color} ` : "teal ";
+				tagg = "tagg" in dataElemen ? dataElemen.tagg : "button";
+				var elemen33 = `</div></div><${tagg} class="ui ${color}label icon button" ${atributLabel}>${txtLabel}</${tagg}>
 				</div></div>`;
 				elemen = elemen11 + elemen22 + elemen33;
 				break;
