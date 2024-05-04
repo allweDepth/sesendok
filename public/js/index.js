@@ -7532,7 +7532,6 @@ $(document).ready(function () {
 											elemen += createHTML(tag, prop);
 										}
 										myForm.find('div[name="jenis_naskah_dinas"]').closest(`.ui.right.labeled.input`).find('a').attr('href','template/form_tata_naskah/naskah_'+value+'.png');
-										// 'href="template/form_tata_naskah/naskah_berita_acara.png" target="_blank"',
 									}
 									myForm.find('div[name="elm_naskah"]').html(elemen);
 									$(".ui.sticky").sticky("refresh");
