@@ -12,12 +12,9 @@ $(document).ready(function () {
 		$(this).checkbox(); // Inisialisasi checkbox pada elemen yang diklik
 	});
 	//sidebar toggle
-	$(".ui.sidebar")
-		.sidebar({
+	$(".ui.sidebar").sidebar({
 			context: $(".bottom.pushable"),
-		})
-		.sidebar("attach events", ".menu .item.nabiila")
-		.sidebar("setting", "transition", "push");
+		}).sidebar("attach events", ".menu .item.nabiila").sidebar("setting", "transition", "push");
 	let handler = {
 		activate: function () {
 			if (!$(this).hasClass("dropdown browse")) {
@@ -9682,13 +9679,13 @@ $(document).ready(function () {
 		let command = $(this).attr("alinea");
 		let rowIndex = parseInt($(this).closest("th").attr("id_tr")); // Mendapatkan indeks baris sebagai angka
 		let tdIndex = parseInt($(this).closest("th").attr("id_td"));
-		let selectedRow = $(this).closest("table").find("tbody tr").eq(rowIndex);
+		let selectedRow = $(this).closest("table").find("tbody tr").eq(rowIndex).find("td").eq(tdIndex);
 		let selectedTd = selectedRow.find("td").eq(tdIndex);
 		// Mendapatkan elemen div yang dapat diedit di dalam baris yang dipilih
 		let editableDiv = selectedTd.find("[contenteditable]");
 		console.log(command);
 		// Melakukan manipulasi langsung terhadap konten teks di dalam elemen div
-		toggleAlinea(command, selectedRow.find("[data-alinea]"));
+		toggleAlinea(command, selectedRow);
 		if ($(this).hasClass("active")) {
 		}
 		switch (command) {
@@ -9791,7 +9788,6 @@ $(document).ready(function () {
 				// Untuk perintah lain, Anda dapat menangani sesuai kebutuhan Anda
 				break;
 		}
-
 		// Mengubah font pada sel-sel dalam baris yang dipilih
 		// selectedRow.find('.contenteditable').each(function() {
 		// 	document.execCommand(command, false, null);
