@@ -4289,12 +4289,40 @@ $(document).ready(function () {
 							}
 							break;
 						case "klm_custom":
-							let elmTr3 = createHTML("tr_tabel", {
+							var elmTr3 = createHTML("tr_tabel", {
 								bodyTable: [
 									{
 										cells: [
 											{
 												attr: `klm="alinea" data-alinea='["p","j"]'`, //["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
+												lbl: `<div contenteditable></div>`,
+											},
+											{
+												class: "collapsing",
+												lbl: `<button class="ui icon mini red button" name="del_row" jns="direct"><i class="trash icon"></i></button>`,
+											},
+										],
+									},
+								],
+							});
+							if (typeof ini.attr("id_tr") !== "undefined") {
+								let indexRow = parseInt(ini.attr("id_tr"));
+								Tbody.find("tr").eq(indexRow).after(elmTr3);
+							} else {
+								Tbody.append(elmTr3);
+							}
+							break;
+						case "klm2_custom":
+							var elmTr3 = createHTML("tr_tabel", {
+								bodyTable: [
+									{
+										cells: [
+											{
+												attr: `klm="alinea" data-alinea='["p","j"]'`,
+												lbl: `<div contenteditable></div>`,
+											},
+											{
+												attr: `klm="alinea" data-alinea='["p","j"]'`,
 												lbl: `<div contenteditable></div>`,
 											},
 											{
@@ -4569,11 +4597,13 @@ $(document).ready(function () {
 								content:
 									createHTML("fieldDropdownLabel", {
 										label: "Jenis Naskah Dinas",
-										atributLabel: 'href="template/form_tata_naskah/naskah_berita_acara.png" target="_blank"',
-										tagg: 'a',
+										atributLabel:
+											'href="template/form_tata_naskah/naskah_berita_acara.png" target="_blank"',
+										tagg: "a",
 										txtLabel: '<i class="download icon"></i>',
 										classField: `required`,
-										atribut: 'name="jenis_naskah_dinas" placeholder="Jenis, Susunan dan bentuk naskah dinas..."',
+										atribut:
+											'name="jenis_naskah_dinas" placeholder="Jenis, Susunan dan bentuk naskah dinas..."',
 										kelas: "search clearable selection",
 										dataArray: [
 											["instruksi", "Instruksi"],
@@ -7187,13 +7217,45 @@ $(document).ready(function () {
 										perjanjian: {
 											elemen: [
 												{
-													tag: "custom_tabel_1klm",
+													tag: "fieldText",
+													prop: {
+														label: "Nomor Surat Pihak lain",
+														classField: `required`,
+														atribut: `name="text_1" placeholder="nomor" rows="2"`,
+													},
+												},
+												{
+													tag: "fieldTextarea",
+													prop: {
+														label: "Tentang",
+														classField: `required`,
+														atribut: `name="text_2" placeholder="tentang" rows="2"`,
+													},
+												},
+												{
+													tag: "divider",
+													prop: {
+														header: "h4",
+														icon: "",
+														label: "Para Pihak",
+													},
+												},
+												{
+													tag: "custom_tabel_2klm",
 													txtLabel: "Batang Tubuh/Alinea",
 													atribut: "alinea_1",
 													prop: {
 														icon: "",
 														label: "",
 														atribut: "1",
+													},
+												},
+												{
+													tag: "divider",
+													prop: {
+														header: "h4",
+														icon: "",
+														label: "Alinea",
 													},
 												},
 												{
@@ -7531,7 +7593,14 @@ $(document).ready(function () {
 										for (let { tag, prop } of elmNaskah[value].elemen) {
 											elemen += createHTML(tag, prop);
 										}
-										myForm.find('div[name="jenis_naskah_dinas"]').closest(`.ui.right.labeled.input`).find('a').attr('href','template/form_tata_naskah/naskah_'+value+'.png');
+										myForm
+											.find('div[name="jenis_naskah_dinas"]')
+											.closest(`.ui.right.labeled.input`)
+											.find("a")
+											.attr(
+												"href",
+												"template/form_tata_naskah/naskah_" + value + ".png"
+											);
 									}
 									myForm.find('div[name="elm_naskah"]').html(elemen);
 									$(".ui.sticky").sticky("refresh");
@@ -10020,7 +10089,8 @@ $(document).ready(function () {
 		let tagg = "tagg" in dataElemen ? dataElemen.tagg : "div";
 		let atributField =
 			"atributField" in dataElemen ? dataElemen.atributField : "";
-		let atributLabel = "atributLabel" in dataElemen ? dataElemen.atributLabel : "";
+		let atributLabel =
+			"atributLabel" in dataElemen ? dataElemen.atributLabel : "";
 		let classField =
 			"classField" in dataElemen ? `${dataElemen.classField} ` : "";
 		let kelas = "kelas" in dataElemen ? dataElemen.kelas : "";
@@ -10185,6 +10255,34 @@ $(document).ready(function () {
 						{
 							lbl: "",
 							attr: ``,
+						},
+					],
+					bodyTable: bodyTable,
+				});
+				break;
+			case "custom_tabel_2klm":
+				elemen = createHTML("tabel2", {
+					atribut: `name="${atribut}"`,
+					kelas: `celled structured`,
+					headerTable: [
+						[
+							{
+								attr: `colspan="2"`,
+								lbl: createHTML("button_txt"),
+							},
+							{
+								lbl: `<button class="ui green icon mini button" name="add" jns="add_row" tbl="klm2_custom"><i class="plus icon"></i></button>`,
+								class: "collapsing",
+							},
+						],
+					],
+					footerTable: [
+						{
+							lbl: ``,
+						},
+						{
+							lbl: "",
+							attr: `colspan="2"`,
 						},
 					],
 					bodyTable: bodyTable,
