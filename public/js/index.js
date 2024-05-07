@@ -8893,27 +8893,6 @@ $(document).ready(function () {
 								default:
 									break;
 							}
-
-							// var atributFormAwal = ini.attr("nama_modal_awal");
-							// var mdlTujuan = $('div[name="' + atributFormAwal + '"]');
-							// var formTujuan = mdlTujuan.find("form");
-							// var dataForm = ini.form("get values");
-							// var tbodyFormAwal = formTujuan.find("table tbody");
-							// var indexTr = ini.attr("indextr");
-							// var trTable = tbodyFormAwal.children();
-							// var tdEdit = trTable.eq(indexTr).find("td");
-							// Object.keys(tdEdit).forEach((key) => {
-							// 	var element = $(tdEdit[key]);
-							// 	var nama_kolom = element.attr("klm");
-							// 	if (typeof dataForm[nama_kolom] !== "undefined") {
-							// 		var elemenku = element.children();
-							// 		if (elemenku.length > 0) {
-							// 			element.children().text(dataForm[nama_kolom]); // jika ada div contenteditable
-							// 		} else {
-							// 			element.text(dataForm[nama_kolom]);
-							// 		}
-							// 	}
-							// });
 							break;
 						// =================
 						// UNTUK PROFIL====
@@ -8928,8 +8907,7 @@ $(document).ready(function () {
 						// =================
 						case "form_upload":
 							if (id_row) {
-								let uploadedFile =
-									document.getElementById("directupload1").files[0];
+								let uploadedFile = document.getElementById("directupload1").files[0];
 								formData.append("dok", dok);
 								formData.append("jenis", jenis);
 								formData.append("tbl", tbl);
@@ -9011,8 +8989,6 @@ $(document).ready(function () {
 									// ===========================
 									case "form_range_date":
 										$('table[name="laporan"] tbody').html(result.data.tbody);
-										break;
-									case "monev[informasi]":
 										break;
 									// ==================
 									// =UNTUK FORM MODAL=
@@ -9204,7 +9180,7 @@ $(document).ready(function () {
 					}
 					switch (nama_form) {
 						case "form_modal":
-							MyForm.form("reset");
+							// MyForm.form("reset");
 							loaderHide();
 							switch (jenis) {
 								case "modal_show":
