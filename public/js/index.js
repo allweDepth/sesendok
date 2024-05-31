@@ -9825,6 +9825,8 @@ $(document).ready(function () {
 			let th = ini.closest("table").find("thead th:first [alinea]");
 			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 			let alinea = ini.data("alinea");
+			console.log(alinea);
+			
 			ini
 				.closest("table")
 				.find(`thead th:first [alinea]`)
