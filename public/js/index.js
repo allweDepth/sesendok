@@ -9826,8 +9826,8 @@ $(document).ready(function () {
 			//attr: `klm="alinea" data-alinea='["p","j"]'`,["l","c","r","j","b","u","i","i_ol","l_ui","p","indent","m"]
 			let alinea = ini.data("alinea");
 			console.log(alinea);
-			
-			ini
+			if (alinea !== undefined) {
+				ini
 				.closest("table")
 				.find(`thead th:first [alinea]`)
 				.removeClass("active");
@@ -9839,6 +9839,8 @@ $(document).ready(function () {
 				// Memicu event click pada button[alinea] yang memiliki kelas active
 				// btnAlinea.trigger("click");
 			});
+			}
+			
 		}
 	});
 	$(document).on("blur", "[klm]", function () {
@@ -11274,6 +11276,7 @@ function onkeypressGlobal(
 	evt
 ) {
 	let ini = $(this);
+	console.log(ini);
 	console.log(evt);
 
 	let form = $(evt).closest(`form`);
@@ -11295,7 +11298,7 @@ function onkeypressGlobal(
 						let paguTemp = Number(
 							accounting.unformat(element.find(`[klm="pagu"]`).text(), ",")
 						);
-
+//!klm="kontrak" tidak ada di cell makanya error perlu perhatikan sepertinya konflik dengan alinea
 						let kontrakTemp = Number(
 							accounting.unformat(
 								element.find(`[klm="kontrak"] div`).text(),
