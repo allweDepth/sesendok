@@ -7,7 +7,7 @@
  * @category  Library
  * @package   Pdf
  * @author    Nicola Asuni <info@tecnick.com>
- * @copyright 2002-2024 Nicola Asuni - Tecnick.com LTD
+ * @copyright 2002-2025 Nicola Asuni - Tecnick.com LTD
  * @license   http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link      https://github.com/tecnickcom/tc-lib-pdf
  *
@@ -27,13 +27,15 @@ use Com\Tecnick\Pdf\Exception as PdfException;
  * @category  Library
  * @package   Pdf
  * @author    Nicola Asuni <info@tecnick.com>
- * @copyright 2002-2024 Nicola Asuni - Tecnick.com LTD
+ * @copyright 2002-2025 Nicola Asuni - Tecnick.com LTD
  * @license   http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link      https://github.com/tecnickcom/tc-lib-pdf
  *
  * @phpstan-import-type TViewerPref from Base
+ *
+ * @SuppressWarnings("PHPMD.DepthOfInheritance")
  */
-abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
+abstract class MetaInfo extends \Com\Tecnick\Pdf\JavaScript
 {
     /**
      * Valid document zoom modes
@@ -60,6 +62,28 @@ abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
     {
         if ($value !== '') {
             $this->$field = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the value of an existing array key if it is not empty.
+     *
+     * @param string $field Field array name
+     * @param string $key Key name
+     * @param string $value Value to set
+     */
+    private function setNonEmptyArrayFieldValue(string $field, string $key, string $value): static
+    {
+        if (
+            isset($this->$field)
+            && is_array($this->$field)
+            && ($key !== '')
+            && isset($this->$field[$key])
+            && ($value !== '')
+        ) {
+            $this->$field[$key] = $value;
         }
 
         return $this;
@@ -265,35 +289,28 @@ abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
     }
 
     /**
-     * Set additional XMP data to be appended just before the end of "x:xmpmeta" tag.
+     * Set additional custom XMP data to be appended just before the end of the tag indicated by the key.
      *
      * IMPORTANT:
      * This data is added as-is without controls, so you have to validate your data before using this method.
      *
+     * @param string $key Key for the custom XMP data. Valid keys are:
+     *                    - 'x:xmpmeta'
+     *                    - 'x:xmpmeta.rdf:RDF'
+     *                    - 'x:xmpmeta.rdf:RDF.rdf:Description'
+     *                    - 'x:xmpmeta.rdf:RDF.rdf:Description.pdfaExtension:schemas'
+     *                    - 'x:xmpmeta.rdf:RDF.rdf:Description.pdfaExtension:schemas.rdf:Bag'
      * @param string $xmp Custom XMP data.
      */
-    public function setExtraXMP(string $xmp): static
+    public function setCustomXMP(string $key, string $xmp): static
     {
-        return $this->setNonEmptyFieldValue('custom_xmp', $xmp);
-    }
-
-    /**
-     * Set additional XMP data to be appended just before the end of "rdf:RDF" tag.
-     *
-     * IMPORTANT:
-     * This data is added as-is without controls, so you have to validate your data before using this method.
-     *
-     * @param string $xmp Custom XMP data.
-     */
-    public function setExtraXMPRDF(string $xmp): static
-    {
-        return $this->setNonEmptyFieldValue('custom_xmp_rdf', $xmp);
+        return $this->setNonEmptyArrayFieldValue('custom_xmp', $key, $xmp);
     }
 
     /**
      * Get the PDF output string for the XMP data object
      *
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
      */
     protected function getOutXMP(): string
     {
@@ -403,12 +420,15 @@ abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
         . "\t\t\t\t\t\t\t" . '</rdf:Seq>' . "\n"
         . "\t\t\t\t\t\t" . '</pdfaSchema:property>' . "\n"
         . "\t\t\t\t\t" . '</rdf:li>' . "\n"
+        . $this->custom_xmp['x:xmpmeta.rdf:RDF.rdf:Description.pdfaExtension:schemas.rdf:Bag'] . "\n"
         . "\t\t\t\t" . '</rdf:Bag>' . "\n"
+        . $this->custom_xmp['x:xmpmeta.rdf:RDF.rdf:Description.pdfaExtension:schemas'] . "\n"
         . "\t\t\t" . '</pdfaExtension:schemas>' . "\n"
+        . $this->custom_xmp['x:xmpmeta.rdf:RDF.rdf:Description'] . "\n"
         . "\t\t" . '</rdf:Description>' . "\n"
-        . $this->custom_xmp_rdf . "\n"
+        . $this->custom_xmp['x:xmpmeta.rdf:RDF'] . "\n"
         . "\t" . '</rdf:RDF>' . "\n"
-        . $this->custom_xmp . "\n"
+        . $this->custom_xmp['x:xmpmeta'] . "\n"
         . '</x:xmpmeta>' . "\n"
         . '<?xpacket end="w"?>';
         // @codingStandardsIgnoreEnd
@@ -460,7 +480,10 @@ abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
         $box = 'CropBox';
         if (isset($this->viewerpref[$name])) {
             $val = $this->viewerpref[$name];
-            if (isset($this->page->$box[$val])) {
+            if (
+                isset($this->page->$box[$val]) // @phpstan-ignore offsetAccess.nonOffsetAccessible
+                && is_string($this->page->$box[$val])
+            ) {
                 $box = $this->page->$box[$val];
             }
         }
@@ -493,7 +516,6 @@ abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
      */
     protected function getDuplexMode(): string
     {
-        $mode = 'none';
         if (isset($this->viewerpref['Duplex'])) {
             $name = strtolower($this->viewerpref['Duplex']);
             $valid = [
@@ -502,11 +524,11 @@ abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
                 'duplexfliplongedge' => 'DuplexFlipLongEdge',
             ];
             if (isset($valid[$name])) {
-                $mode = $valid[$name];
+                return ' /Duplex /' . $valid[$name];
             }
         }
 
-        return ' /Duplex /' . $mode;
+        return '';
     }
 
     /**
@@ -517,7 +539,7 @@ abstract class MetaInfo extends \Com\Tecnick\Pdf\Text
     protected function getBooleanMode(string $name): string
     {
         if (isset($this->viewerpref[$name])) {
-            return ' /' . $name . ' ' . var_export((bool) $this->viewerpref[$name], true);
+            return ' /' . $name . ' ' . ($this->viewerpref[$name] === true ? 'true' : 'false');
         }
 
         return '';

@@ -1,25 +1,19 @@
 # tc-lib-pdf
 *PHP PDF Library*
 
-# UNDER DEVELOPMENT (NOT READY)
-
-UPDATE: CURRENTLY ALL THE DEPENDENCY LIBRARIES COMPLETE.
-THE CORE LIBRARY CONTAINS PRIMITIVE METHODS TO GENERATE A PDF DOC.
-MISSING: advanced text methods, html and css parsing.
-
 [![Latest Stable Version](https://poser.pugx.org/tecnickcom/tc-lib-pdf/version)](https://packagist.org/packages/tecnickcom/tc-lib-pdf)
 ![Build](https://github.com/tecnickcom/tc-lib-pdf/actions/workflows/check.yml/badge.svg)
 [![Coverage](https://codecov.io/gh/tecnickcom/tc-lib-pdf/graph/badge.svg?token=rmAqNKVG1c)](https://codecov.io/gh/tecnickcom/tc-lib-pdf)
 [![License](https://poser.pugx.org/tecnickcom/tc-lib-pdf/license)](https://packagist.org/packages/tecnickcom/tc-lib-pdf)
 [![Downloads](https://poser.pugx.org/tecnickcom/tc-lib-pdf/downloads)](https://packagist.org/packages/tecnickcom/tc-lib-pdf)
 
-[![Donate via PayPal](https://img.shields.io/badge/donate-paypal-87ceeb.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&currency_code=GBP&business=paypal@tecnick.com&item_name=donation%20for%20tc-lib-pdf%20project)
-*Please consider supporting this project by making a donation via [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&currency_code=GBP&business=paypal@tecnick.com&item_name=donation%20for%20tc-lib-pdf%20project)*
+[![Donate via PayPal](https://img.shields.io/badge/donate-paypal-87ceeb.svg)](https://www.paypal.com/donate/?hosted_button_id=NZUEC5XS8MFBJ)
+*Please consider supporting this project by making a donation via [PayPal](https://www.paypal.com/donate/?hosted_button_id=NZUEC5XS8MFBJ)*
 
 * **category**    Library
 * **package**     \Com\Tecnick\Pdf
 * **author**      Nicola Asuni <info@tecnick.com>
-* **copyright**   2002-2024 Nicola Asuni - Tecnick.com LTD
+* **copyright**   2002-2025 Nicola Asuni - Tecnick.com LTD
 * **license**     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
 * **link**        https://tcpdf.org
 * **source**      https://github.com/tecnickcom/tc-lib-pdf
@@ -28,21 +22,28 @@ MISSING: advanced text methods, html and css parsing.
 ## Description
 
 PHP library for generating PDF documents on-the-fly.
+This is the new version of the TCPDF library that will be deprecated once all the existing features are ported.
+
+NOTE: The first complete (stable) version will be 8.1.0. As this is currently unstable, only the patch number in the version will be updated, even if breaking changes are introduced.
 
 ### Main Features:
-* no external libraries are required for the basic functions;
+
+***(the features striked through are in progress)***
+
 * all standard page formats, custom page formats, custom margins and units of measure;
 * UTF-8 Unicode and Right-To-Left languages;
 * TrueTypeUnicode, OpenTypeUnicode v1, TrueType, OpenType v1, Type1 and CID-0 fonts;
 * font subsetting;
-* methods to publish some XHTML + CSS code, Javascript and Forms;
+* [] ~SVG~
+* [] ~CSS~
+* [] ~HTML~
+* [] ~JavaScript~
 * images, graphic (geometric figures) and transformation methods;
 * supports JPEG, PNG and SVG images natively, all images supported by GD (GD, GD2, GD2PART, GIF, JPEG, PNG, BMP, XBM, XPM) and all images supported via ImagMagick (http://www.imagemagick.org/script/formats.php)
-* 1D and 2D barcodes: CODE 39, ANSI MH10.8M-1983, USD-3, 3 of 9, CODE 93, USS-93, Standard 2 of 5, Interleaved 2 of 5, CODE 128 A/B/C, 2 and 5 Digits UPC-Based Extension, EAN 8, EAN 13, UPC-A, UPC-E, MSI, POSTNET, PLANET, RMS4CC (Royal Mail 4-state Customer Code), CBC (Customer Bar Code), KIX (Klant index - Customer index), Intelligent Mail Barcode, Onecode, USPS-B-3200, CODABAR, CODE 11, PHARMACODE, PHARMACODE TWO-TRACKS, Datamatrix, QR-Code, PDF417;
+* 1D and 2D barcodes via tc-lib-barcode.
 * JPEG and PNG ICC profiles, Grayscale, RGB, CMYK, Spot Pdfs and Transparencies;
-* automatic page header and footer management;
+* page common content support (header/footer);
 * document encryption up to 256 bit and digital signature certifications;
-* transactions to UNDO commands;
 * PDF annotations, including links, text and file attachments;
 * text rendering modes (fill, stroke and clipping);
 * multiple columns mode;

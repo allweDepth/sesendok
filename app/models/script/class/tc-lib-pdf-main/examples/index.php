@@ -6,7 +6,7 @@
  * @category    Library
  * @package     Pdf
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2002-2024 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2002-2025 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-pdf
  *
@@ -19,10 +19,10 @@
 require(__DIR__ . '/../vendor/autoload.php');
 
 
-define('OUTPUT_FILE', '../target/example.pdf');
+define('OUTPUT_FILE', realpath(__DIR__ . '/../target') . '/example.pdf');
 
 // define fonts directory
-define('K_PATH_FONTS', '../vendor/tecnickcom/tc-lib-pdf-font/target/fonts');
+define('K_PATH_FONTS', realpath(__DIR__ . '/../vendor/tecnickcom/tc-lib-pdf-font/target/fonts'));
 
 // autoloader when using RPM or DEB package installation
 //require ('/usr/share/php/Com/Tecnick/Pdf/autoload.php');
@@ -42,75 +42,86 @@ $pdf = new \Com\Tecnick\Pdf\Tcpdf(
 
 $pdf->setCreator('tc-lib-pdf');
 $pdf->setAuthor('John Doe');
-$pdf->setSubject('tc-lib-pdf example');
+$pdf->setSubject('tc-lib-pdf generic example');
 $pdf->setTitle('Example');
-$pdf->setKeywords('TCPDF tc-lib-pdf example');
+$pdf->setKeywords('TCPDF tc-lib-pdf generic example');
 $pdf->setPDFFilename('test_index.pdf');
+
+$pdf->setViewerPreferences(['DisplayDocTitle' => true]);
+
+$pdf->enableDefaultPageContent();
 
 // ----------
 // Insert fonts
 
 $bfont1 = $pdf->font->insert($pdf->pon, 'helvetica', '', 12);
 
+
+// test images directory
+$imgdir = realpath(__DIR__ . '/../vendor/tecnickcom/tc-lib-pdf-image/test/images/');
+
+
 // ----------
 // Add first page
 
-$page01 = $pdf->page->add();
+$page01 = $pdf->addPage();
+$pdf->setBookmark('Images', '', 0, -1, 0, 0, 'B', 'blue');
 
 // Add Images
 
-$iid01 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_CMYK.jpg');
+$iid01 = $pdf->image->add($imgdir . '/200x100_CMYK.jpg');
 $iid01_out = $pdf->image->getSetImage($iid01, 0, 0, 40, 20, $page01['height']);
 $pdf->page->addContent($iid01_out);
 
-$iid02 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_GRAY.jpg');
+$iid02 = $pdf->image->add($imgdir . '/200x100_GRAY.jpg');
 $iid02_out = $pdf->image->getSetImage($iid02, 40, 0, 40, 20, $page01['height']);
 $pdf->page->addContent($iid02_out);
 
-$iid03 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_GRAY.png');
+$iid03 = $pdf->image->add($imgdir . '/200x100_GRAY.png');
 $iid03_out = $pdf->image->getSetImage($iid03, 80, 0, 40, 20, $page01['height']);
 $pdf->page->addContent($iid03_out);
 
-$iid04 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_INDEX16.png');
+$iid04 = $pdf->image->add($imgdir . '/200x100_INDEX16.png');
 $iid04_out = $pdf->image->getSetImage($iid04, 120, 0, 40, 20, $page01['height']);
 $pdf->page->addContent($iid04_out);
 
-$iid05 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_INDEX256.png');
+$iid05 = $pdf->image->add($imgdir . '/200x100_INDEX256.png');
 $iid05_out = $pdf->image->getSetImage($iid05, 160, 0, 40, 20, $page01['height']);
 $pdf->page->addContent($iid05_out);
 
-$iid06 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_INDEXALPHA.png');
+$iid06 = $pdf->image->add($imgdir . '/200x100_INDEXALPHA.png');
 $iid06_out = $pdf->image->getSetImage($iid06, 0, 20, 40, 20, $page01['height']);
 $pdf->page->addContent($iid06_out);
 
-$iid07 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_RGB.jpg');
+$iid07 = $pdf->image->add($imgdir . '/200x100_RGB.jpg');
 $iid07_out = $pdf->image->getSetImage($iid07, 40, 20, 40, 20, $page01['height']);
 $pdf->page->addContent($iid07_out);
 
-$iid08 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_RGB.png');
+$iid08 = $pdf->image->add($imgdir . '/200x100_RGB.png');
 $iid08_out = $pdf->image->getSetImage($iid08, 80, 20, 40, 20, $page01['height']);
 $pdf->page->addContent($iid08_out);
 
-$iid09 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_RGBALPHA.png');
+$iid09 = $pdf->image->add($imgdir . '/200x100_RGBALPHA.png');
 $iid09_out = $pdf->image->getSetImage($iid09, 120, 20, 40, 20, $page01['height']);
 $pdf->page->addContent($iid09_out);
 
-$iid10 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_RGBICC.jpg');
+$iid10 = $pdf->image->add($imgdir . '/200x100_RGBICC.jpg');
 $iid10_out = $pdf->image->getSetImage($iid10, 160, 20, 40, 20, $page01['height']);
 $pdf->page->addContent($iid10_out);
 
-$iid11 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_RGBICC.png');
+$iid11 = $pdf->image->add($imgdir . '/200x100_RGBICC.png');
 $iid11_out = $pdf->image->getSetImage($iid11, 0, 40, 40, 20, $page01['height']);
 $pdf->page->addContent($iid11_out);
 
-$iid12 = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_RGBINT.png');
+$iid12 = $pdf->image->add($imgdir . '/200x100_RGBINT.png');
 $iid12_out = $pdf->image->getSetImage($iid12, 40, 40, 40, 20, $page01['height']);
 $pdf->page->addContent($iid12_out);
 
 // ----------
 // Add second page
 
-$page02 = $pdf->page->add();
+$page02 = $pdf->addPage();
+$pdf->setBookmark('Graphics', '', 0, -1, 0, 0, 'B', 'green');
 
 $style1 = [
     'lineWidth' => 0.5,
@@ -153,6 +164,7 @@ $style4 = [
         'lineColor' => 'black',
         'fillColor' => 'aliceblue',
     ],
+    // TOP
     0 => [
         'lineWidth' => 0.25,
         'lineCap' => 'butt',
@@ -162,6 +174,7 @@ $style4 = [
         'lineColor' => 'red',
         'fillColor' => 'powderblue',
     ],
+    // RIGHT
     1 => [
         'lineWidth' => 0.25,
         'lineCap' => 'butt',
@@ -171,6 +184,7 @@ $style4 = [
         'lineColor' => 'green',
         'fillColor' => 'powderblue',
     ],
+    // BOTTOM
     2 => [
         'lineWidth' => 0.50,
         'lineCap' => 'round',
@@ -180,6 +194,7 @@ $style4 = [
         'lineColor' => 'blue',
         'fillColor' => 'powderblue',
     ],
+    // LEFT
     3 => [
         'lineWidth' => 0.75,
         'lineCap' => 'square',
@@ -400,7 +415,8 @@ $pdf->page->addContent($arrow4);
 // ----------
 // Add page 2
 
-$page03 = $pdf->page->add();
+$page03 = $pdf->addPage();
+$pdf->setBookmark('Ellipse', '', 1);
 
 $pdf->graph->setPageWidth($page03['width']);
 $pdf->graph->setPageHeight($page03['height']);
@@ -433,7 +449,8 @@ $pdf->page->addContent($arc6);
 // ----------
 // Add page 4
 
-$page04 = $pdf->page->add();
+$page04 = $pdf->addPage();
+$pdf->setBookmark('Pie Chart', '', 1);
 
 $pdf->graph->setPageWidth($page04['width']);
 $pdf->graph->setPageHeight($page04['height']);
@@ -455,7 +472,8 @@ $pdf->page->addContent($pie3);
 // ----------
 // Add page 5
 
-$page05 = $pdf->page->add();
+$page05 = $pdf->addPage();
+$pdf->setBookmark('Crop Marks and Color Maps', '', 1);
 
 $pdf->graph->setPageWidth($page05['width']);
 $pdf->graph->setPageHeight($page05['height']);
@@ -666,7 +684,8 @@ $pdf->page->addContent($colreg4);
 // ----------
 // Add page 6
 
-$page06 = $pdf->page->add();
+$page06 = $pdf->addPage();
+$pdf->setBookmark('Color Gradients', '', 1);
 
 $pdf->graph->setPageWidth($page06['width']);
 $pdf->graph->setPageHeight($page06['height']);
@@ -726,7 +745,8 @@ $pdf->page->addContent($coonspatchmesh2);
 // ----------
 // Add page 7
 
-$page07 = $pdf->page->add();
+$page07 = $pdf->addPage();
+$pdf->setBookmark('Color gradient mesh', '', 1);
 
 $pdf->graph->setPageWidth($page07['width']);
 $pdf->graph->setPageHeight($page07['height']);
@@ -813,7 +833,8 @@ $pdf->page->addContent($coonspatchmesh3);
 // ----------
 // Add page 8
 
-$page08 = $pdf->page->add();
+$page08 = $pdf->addPage();
+$pdf->setBookmark('Transformations', '', 1);
 
 $pdf->graph->setPageWidth($page08['width']);
 $pdf->graph->setPageHeight($page08['height']);
@@ -940,7 +961,10 @@ $pdf->page->addContent($t8);
 // ----------
 // Add page 9
 
-$page09 = $pdf->page->add();
+$page09 = $pdf->addPage();
+$pdf->setBookmark('Barcodes', '', 0, -1, 0, 0, 'B', '');
+
+$dest_barcode_page = $pdf->setNamedDestination('barcode');
 
 $pdf->graph->setPageWidth($page09['width']);
 $pdf->graph->setPageHeight($page09['height']);
@@ -985,7 +1009,8 @@ $pdf->page->addContent($barcode2);
 // ----------
 // Add page 10
 
-$page10 = $pdf->page->add();
+$page10 = $pdf->addPage();
+$pdf->setBookmark('Image Clipping', '', 0, -1, 0, 0, 'B', '');
 
 $pdf->graph->setPageWidth($page10['width']);
 $pdf->graph->setPageHeight($page10['height']);
@@ -994,16 +1019,21 @@ $pdf->graph->setPageHeight($page10['height']);
 
 $cnz = $pdf->graph->getStartTransform();
 $cnz .= $pdf->graph->getStarPolygon(50, 50, 40, 10, 3, 0, 'CNZ');
-$clipimg = $pdf->image->add('../vendor/tecnickcom/tc-lib-pdf-image/test/images/200x100_CMYK.jpg');
+$clipimg = $pdf->image->add($imgdir . '/200x100_CMYK.jpg');
 $cnz .= $pdf->image->getSetImage($clipimg, 10, 10, 80, 80, $page10['height']);
 $cnz .= $pdf->graph->getStopTransform();
+
 $pdf->page->addContent($cnz);
 
 
 // ----------
 // Add page 11
 
-$page11 = $pdf->page->add();
+$page11 = $pdf->addPage();
+$pdf->setBookmark('Text', '', 0, -1, 0, 0, 'B', '');
+
+// Add an internal link to this page
+$page11_link = $pdf->addInternalLink();
 
 $pdf->graph->setPageWidth($page11['width']);
 $pdf->graph->setPageHeight($page11['height']);
@@ -1021,7 +1051,6 @@ $styletxt = [
 $pdf->graph->add($styletxt);
 
 
-
 $bfont2 = $pdf->font->insert($pdf->pon, 'times', 'BI', 24);
 
 $pdf->page->addContent($bfont2['out']);
@@ -1030,7 +1059,7 @@ $pdf->page->addContent($bfont2['out']);
 
 // Add text
 $txt = $pdf->getTextLine(
-    'Test PDF text with justification (stretching).',
+    'Test PDF text with justification (stretching) % %% %%%',
     0,
     $pdf->toUnit($bfont2['ascent']),
     $page11['width']
@@ -1038,13 +1067,13 @@ $txt = $pdf->getTextLine(
 
 $pdf->page->addContent($txt);
 
-$bbox = $pdf->getLastTextBBox();
+$bbox = $pdf->getLastBBox();
 
 // Add text
 $txt2 = $pdf->getTextLine(
     'Link to https://tcpdf.org',
     15,
-    ($bbox['y'] + $bbox['height'] + $pdf->toUnit($bfont2['ascent'])),
+    ($bbox['y'] + $bbox['h'] + $pdf->toUnit($bfont2['ascent'])),
     0,
     0,
     0,
@@ -1053,7 +1082,11 @@ $txt2 = $pdf->getTextLine(
     true,
     false,
     false,
+    false,
+    false,
+    false,
     '',
+    'S',
     [
         'xoffset' => 0.5,
         'yoffset' => 0.5,
@@ -1062,23 +1095,19 @@ $txt2 = $pdf->getTextLine(
         'color' => 'red',
     ],
 );
-
 $pdf->page->addContent($txt2);
 
 // get the coordinates of the box containing the last added text string.
-$bbox = $pdf->getLastTextBBox();
+$bbox = $pdf->getLastBBox();
 
-$aoid = $pdf->setAnnotation(
+$aoid1 = $pdf->setLink(
     $bbox['x'],
     $bbox['y'],
-    $bbox['width'],
-    $bbox['height'],
+    $bbox['w'],
+    $bbox['h'],
     'https://tcpdf.org',
-    [
-        'subtype' => 'Link',
-    ]
 );
-$pdf->page->addAnnotRef($aoid);
+$pdf->page->addAnnotRef($aoid1);
 
 // -----------------------------------------------
 
@@ -1089,77 +1118,69 @@ $pdf->page->addContent($bfont3['out']);
 
 $txt3 = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'."\n".'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
+$col = $pdf->color->getPdfColor('blue');
+$pdf->page->addContent($col);
+
 // single block of text 
-$txtbox = $pdf->getTextCol(
-    $txt3,
+$txtbox = $pdf->getTextCell(
+    $txt3, // string $txt,
     20, // float $posx = 0,
     30, // float $posy = 0,
     150, // float $width = 0,
+    0, // float $height = 0,
     15, // float $offset = 0,
     1, // float $linespace = 0,
+    'T', // string $valign = 'C',
+    'J', // string $halign = 'C',
+    null, // ?array $cell = null,
+    [], // array $styles = [],
     0, // float $strokewidth = 0,
     0, // float $wordspacing = 0,
     0, // float $leading = 0,
     0, // float $rise = 0,
-    true, // bool $justify = false,
-    false, // bool $justifylast = false,
+    true, // bool $jlast = true,
     true, // bool $fill = true,
     false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
     false, // bool $clip = false,
+    false, // bool $drawcell = true,
     '', // string $forcedir = '',
-    null, // ?array $shadow = null,
+    null // ?array $shadow = null,
 );
 $pdf->page->addContent($txtbox);
 
-
-$bfont4 = $pdf->font->insert($pdf->pon, 'dejavusans', '', 14);
-$pdf->page->addContent($bfont4['out']);
-
-// block of text between two page regions
-$pdf->addTextCol(
-    $txt3,
-    20, // float $posx = 0,
-    275, // float $posy = 0,
-    150, // float $width = 0,
-    15, // float $offset = 0,
-    1, // float $linespace = 0,
-    0, // float $strokewidth = 0,
-    0, // float $wordspacing = 0,
-    0, // float $leading = 0,
-    0, // float $rise = 0,
-    true, // bool $justify = false,
-    false, // bool $justifylast = false,
-    true, // bool $fill = true,
-    false, // bool $stroke = false,
-    false, // bool $clip = false,
-    '', // string $forcedir = '',
-    null, // ?array $shadow = null,
-);
-
-// Text cell
-$style_cell = [
-    'all' => [
-        'lineWidth' => 0.5,
-        'lineCap' => 'butt',
-        'lineJoin' => 'miter',
-        'miterLimit' => 0.5,
-        'dashArray' => [],
-        'dashPhase' => 0,
-        'lineColor' => 'red',
-        'fillColor' => 'yellow',
-    ],
-];
+$col = $pdf->color->getPdfColor('black');
+$pdf->page->addContent($col);
 
 $bfont4 = $pdf->font->insert($pdf->pon, 'freeserif', 'I', 14);
 $pdf->page->addContent($bfont4['out']);
 
-$pdf->setDefaultCellPadding(1,1,1,1);
-$txtcell = $pdf->getTextCell(
-    'Lorem ipsum dolor sit amet', // string $txt,
+$pdf->setDefaultCellPadding(2,2,2,2);
+
+// Text cell
+$style_cell = [
+    'all' => [
+        'lineWidth' => 1,
+        'lineCap' => 'round',
+        'lineJoin' => 'round',
+        'miterLimit' => 1,
+        'dashArray' => [],
+        'dashPhase' => 0,
+        'lineColor' => 'green',
+        'fillColor' => 'yellow',
+    ],
+];
+
+$txtcell1 = $pdf->getTextCell(
+    'DEFAULT', // string $txt,
     20, // float $posx = 0,
-    60, // float $posy = 0,
+    100, // float $posy = 0,
     0, // float $width = 0,
     0, // float $height = 0,
+    0, // float $offset = 0,
+    0, // float $linespace = 0,
     'C', // string $valign = 'C',
     'C', // string $halign = 'C',
     null, // ?array $cell = null,
@@ -1168,18 +1189,456 @@ $txtcell = $pdf->getTextCell(
     0, // float $wordspacing = 0,
     0, // float $leading = 0,
     0, // float $rise = 0,
-    false, // bool $justify = false,
+    true, // bool $jlast = true,
     true, // bool $fill = true,
     false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
     false, // bool $clip = false,
+    true, // bool $drawcell = true,
     '', // string $forcedir = '',
     null // ?array $shadow = null,
 );
-$pdf->page->addContent($txtcell);
+$pdf->page->addContent($txtcell1);
+
+$pdf->setDefaultCellBorderPos($pdf::BORDERPOS_EXTERNAL);
+$txtcell2 = $pdf->getTextCell(
+    'EXTERNAL', // string $txt,
+    49, // float $posx = 0,
+    100, // float $posy = 0,
+    0, // float $width = 0,
+    0, // float $height = 0,
+    0, // float $offset = 0,
+    0, // float $linespace = 0,
+    'C', // string $valign = 'C',
+    'C', // string $halign = 'C',
+    null, // ?array $cell = null,
+    $style_cell, // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
+    false, // bool $clip = false,
+    true, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null // ?array $shadow = null,
+);
+$pdf->page->addContent($txtcell2);
+
+$pdf->setDefaultCellBorderPos($pdf::BORDERPOS_INTERNAL);
+$txtcell2 = $pdf->getTextCell(
+    'INTERNAL', // string $txt,
+    80, // float $posx = 0,
+    100, // float $posy = 0,
+    0, // float $width = 0,
+    0, // float $height = 0,
+    0, // float $offset = 0,
+    0, // float $linespace = 0,
+    'C', // string $valign = 'C',
+    'C', // string $halign = 'C',
+    null, // ?array $cell = null,
+    $style_cell, // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
+    false, // bool $clip = false,
+    true, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null // ?array $shadow = null,
+);
+$pdf->page->addContent($txtcell2);
+
+
+$pdf->setDefaultCellBorderPos($pdf::BORDERPOS_DEFAULT);
+
+$txtcell2 = $pdf->getTextCell(
+    $txt3, // string $txt,
+    20, // float $posx = 0,
+    120, // float $posy = 0,
+    150, // float $width = 0,
+    0, // float $height = 0,
+    0, // float $offset = 0,
+    0, // float $linespace = 0,
+    'C', // string $valign = 'C',
+    'J', // string $halign = 'C',
+    null, // ?array $cell = null,
+    $style_cell, // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
+    false, // bool $clip = false,
+    true, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null // ?array $shadow = null,
+);
+$pdf->page->addContent($txtcell2);
+
+
+$bfont4 = $pdf->font->insert($pdf->pon, 'dejavusans', '', 14);
+$pdf->page->addContent($bfont4['out']);
+
+$pdf->setDefaultCellPadding(2,2,2,2);
+
+$style_cell_b = [
+    'all' => [
+        'lineWidth' => 0.5,
+        'lineCap' => 'round',
+        'lineJoin' => 'round',
+        'miterLimit' => 0.5,
+        'dashArray' => [0,1],
+        'dashPhase' => 2,
+        'lineColor' => 'red',
+    ],
+];
+
+// block of text between two page regions
+$pdf->addTextCell(
+    $txt3, // string $txt,
+    -1, // int $pid = -1,
+    20, // float $posx = 0,
+    165, // float $posy = 0,
+    150, // float $width = 0,
+    0, // float $height = 0,
+    15, // float $offset = 0,
+    1, // float $linespace = 0,
+    'T', // string $valign = 'T',
+    'J', // string $halign = '',
+    null, // ?array $cell = null,
+    $style_cell_b, // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
+    false, // bool $clip = false,
+    true, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null, // ?array $shadow = null,
+);
+
+$txt4 = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?';
+
+$txt5 = 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.';
+
+$pdf->enableZeroWidthBreakPoints(true);
+$pdf->addTextCell(
+    "TEST-TEXT-ENABLE-AUTO-BREAK-POINTS", // string $txt,
+    -1, // int $pid = -1,
+    20, // float $posx = 0,
+    233, // float $posy = 0,
+    85, // float $width = 0,
+    0, // float $height = 0,
+    0, // float $offset = 0,
+    0, // float $linespace = 0,
+    'C', // string $valign = 'T',
+    'L', // string $halign = '',
+    null, // ?array $cell = null,
+    $style_cell, // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
+    false, // bool $clip = false,
+    true, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null, // ?array $shadow = null,
+);
+
+$pdf->enableZeroWidthBreakPoints(false);
+$pdf->addTextCell(
+    "TEST-TEXT-DISABLE-AUTO-BREAK-POINTS", // string $txt,
+    -1, // int $pid = -1,
+    20, // float $posx = 0,
+    252, // float $posy = 0,
+    85, // float $width = 0,
+    0, // float $height = 0,
+    0, // float $offset = 0,
+    0, // float $linespace = 0,
+    'C', // string $valign = 'T',
+    'L', // string $halign = '',
+    null, // ?array $cell = null,
+    $style_cell, // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
+    false, // bool $clip = false,
+    true, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null, // ?array $shadow = null,
+);
+
+// Hyphenation example
+// TEX hyphenation patterns can be downloaded from:
+// https://www.ctan.org/tex-archive/language/hyph-utf8/tex/generic/hyph-utf8/patterns/tex
+//
+//$hyphen_patterns = $pdf->loadTexHyphenPatterns('../../RESOURCES/hyph-la-x-classic.tex');
+//$pdf->setTexHyphenPatterns($hyphen_patterns);
+
+// block of text between two page regions
+$pdf->addTextCell(
+    $txt3 . "\n" . $txt4 . "\n" . $txt5, // string $txt,
+    -1, // int $pid = -1,
+    20, // float $posx = 0,
+    265, // float $posy = 0,
+    120, // float $width = 0,
+    0, // float $height = 0,
+    15, // float $offset = 0,
+    1, // float $linespace = 0,
+    'T', // string $valign = 'T',
+    'J', // string $halign = '',
+    null, // ?array $cell = null,
+    $style_cell, // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    false, //bool $underline = false,
+    false, //bool $linethrough = false,
+    false, //bool $overline = false,
+    false, // bool $clip = false,
+    true, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null, // ?array $shadow = null,
+);
+
+$pdf->addTextCell(
+    'overline, linethrough and underline', // string $txt,
+    -1, // int $pid = -1,
+    15, // float $posx = 0,
+    50, // float $posy = 0,
+    180, // float $width = 0,
+    0, // float $height = 0,
+    0, // float $offset = 0,
+    1, // float $linespace = 0,
+    'T', // string $valign = 'C',
+    'L', // string $halign = 'C',
+    null, // ?array $cell = null,
+    [], // array $styles = [],
+    0, // float $strokewidth = 0,
+    0, // float $wordspacing = 0,
+    0, // float $leading = 0,
+    0, // float $rise = 0,
+    true, // bool $jlast = true,
+    true, // bool $fill = true,
+    false, // bool $stroke = false,
+    true, //bool $underline = false,
+    true, //bool $linethrough = false,
+    true, //bool $overline = false,
+    false, // bool $clip = false,
+    false, // bool $drawcell = true,
+    '', // string $forcedir = '',
+    null // ?array $shadow = null,
+);
+
+// ----------
+
+// Page signature
+
+$pageC01 = $pdf->addPage();
+$pdf->setBookmark('Signature', '', 0, -1, 0, 0, 'B', 'red');
+
+/*
+NOTES:
+ - To create self-signed signature:
+   openssl req -x509 -nodes -days 365000 -newkey rsa:1024 -keyout tcpdf.crt -out tcpdf.crt
+ - To export crt to p12:
+   openssl pkcs12 -export -in tcpdf.crt -out tcpdf.p12
+ - To convert pfx certificate to pem:
+   openssl pkcs12 -in tcpdf.pfx -out tcpdf.crt -nodes
+*/
+
+// set certificate file
+$cert = 'file://data/cert/tcpdf.crt';
+
+$sigdata = [
+    // 'appearance' => [
+    //     'empty' => [],
+    //     'name' => '',
+    //     'page' => 0,
+    //     'rect' => '',
+    // ],
+    // 'approval' => '',
+    'cert_type' => 2,
+    // 'extracerts' => null,
+    'info' => [
+        'ContactInfo' => 'http://www.tcpdf.org',
+        'Location' => 'Office',
+        'Name' => 'tc-lib-pdf',
+        'Reason' => 'PDF signature test',
+    ],
+    'password' => 'tcpdfdemo',
+    'privkey' => $cert,
+    'signcert' => $cert,
+];
+
+$pdf->setSignature($sigdata);
+
+$sigimg = $pdf->image->add('./images/tcpdf_signature.png');
+$sigimg_out = $pdf->image->getSetImage($sigimg, 30, 30, 20, 20, $pageC01['height']);
+$pdf->page->addContent($sigimg_out);
+
+$pdf->setSignatureAppearance(30, 30, 20, 20, -1, 'test');
+
+$pdf->addEmptySignatureAppearance(30, 60, 20, 20, -1, 'test');
 
 
 // ----------
 
+// XOBject template
+
+$pageC02 = $pdf->addPage();
+$pdf->setBookmark('XOBject Template', '', 0, -1, 0, 0, 'B', '');
+
+$tid = $pdf->newXObjectTemplate(80, 80, []);
+
+
+$timg = $pdf->image->add($imgdir . '/200x100_RGB.png');
+$pdf->addXObjectImageID($tid, $timg);
+
+$xcnz = $pdf->image->getSetImage($timg, 10, 10, 80, 80, 80);
+$pdf->addXObjectContent($tid, $xcnz);
+
+$pdf->exitXObjectTemplate();
+
+$tmpl = $pdf->graph->getAlpha(0.33);
+$tmpl .= $pdf->getXObjectTemplate($tid, 10, 10, 30, 30, 'T', 'L');
+$pdf->page->addContent($tmpl);
+
+$tmpl = $pdf->graph->getAlpha(0.66);
+$tmpl .= $pdf->getXObjectTemplate($tid, 20, 20, 40, 40, 'T', 'L');
+$pdf->page->addContent($tmpl);
+
+$tmpl = $pdf->graph->getAlpha(1);
+$tmpl .= $pdf->getXObjectTemplate($tid, 40, 40, 60, 60, 'T', 'L');
+$pdf->page->addContent($tmpl);
+
+// ----------
+
+// Layers
+
+$pageV01 = $pdf->addPage();
+$pdf->setBookmark('Layers', '', 0, -1, 0, 0, 'B', '');
+
+$pdf->page->addContent($bfont4['out']);
+
+$txtV1 = 'LAYERS: You can limit the visibility of PDF objects to screen or printer by using the newLayer() method.
+Check the print preview of this document to display the alternative text.';
+$txtboxV1 = $pdf->getTextCell($txtV1, 15, 15, 150, valign: 'T', halign: 'L');
+$pdf->page->addContent($txtboxV1);
+
+$lyr01 = $pdf->newLayer('screen', [], false, true, false);
+$pdf->page->addContent($lyr01);
+$txtV2 = 'This line is for display on screen only.';
+$txtboxV2 = $pdf->getTextCell($txtV2, 15, 45, 150, valign: 'T', halign: 'L');
+$pdf->page->addContent($txtboxV2);
+$pdf->page->addContent($pdf->closeLayer());
+
+
+$lyr02 = $pdf->newLayer('print', [], true, false, false);
+$pdf->page->addContent($lyr02);
+$txtV3 = 'This line is for print only.';
+$txtboxV3 = $pdf->getTextCell($txtV3, 15, 55, 150, valign: 'T', halign: 'L');
+$pdf->page->addContent($txtboxV3);
+$pdf->page->addContent($pdf->closeLayer());
+
+// Links
+
+$txtlnk1 = $pdf->getTextCell("Link to page 11", 15, 70, 150, valign: 'T', halign: 'L');
+$pdf->page->addContent($txtlnk1);
+$bbox = $pdf->getLastBBox();
+$lnk1 = $pdf->setLink(
+    $bbox['x'],
+    $bbox['y'],
+    $bbox['w'],
+    $bbox['h'],
+    $page11_link,
+);
+$pdf->page->addAnnotRef($lnk1);
+
+$txtlnk2 = $pdf->getTextCell("Link dest to barcode page", 15, 80, 150, valign: 'T', halign: 'L');
+$pdf->page->addContent($txtlnk2);
+$bbox = $pdf->getLastBBox();
+$lnk2 = $pdf->setLink(
+    $bbox['x'],
+    $bbox['y'],
+    $bbox['w'],
+    $bbox['h'],
+    $dest_barcode_page,
+);
+$pdf->page->addAnnotRef($lnk2);
+
+// ----------
+
+$pageTOC = $pdf->addPage();
+$pdf->setBookmark('TOC');
+
+$pdf->page->addContent($bfont4['out']);
+
+$pdf->setDefaultCellMargin(0,0,0,0);
+$pdf->setDefaultCellPadding(1,1,1,1);
+
+$style_cell_toc = [
+    'all' => [
+        'lineWidth' => 0,
+        'lineCap' => 'round',
+        'lineJoin' => 'round',
+        'miterLimit' => 0,
+        'dashArray' => [],
+        'dashPhase' => 0,
+        'lineColor' => '',
+    ],
+];
+
+$pdf->graph->add($style_cell_toc);
+
+$pdf->addTOC(-1, 15, 30, 170, false);
+
+
+// =============================================================
+
+// ----------
 // get PDF document as raw string
 $rawpdf = $pdf->getOutPDFString();
 
