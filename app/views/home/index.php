@@ -968,10 +968,10 @@ $theme = $_SESSION["user"]["theme"];
                       <td>RENSTRA</td>
                       <td>
                         <div class="ui basic icon buttons">
-                          <button class="ui button" name="jalankan" jns="kunci" tbl="renstra" type="button"><i class="lock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renstra" type="button"><i class="unlock icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="setujui" tbl="renstra" type="button"><i class="check square icon"></i></button>
-                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renstra" type="button"><i class="edit icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="kunci" tbl="renstra" type="button" data-tooltip="kunci" data-position="top center"><i class="lock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unkunci" tbl="renstra" type="button" data-tooltip="buka kunci" data-position="top center"><i class="unlock icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="setujui" tbl="renstra" type="button" data-tooltip="setujui" data-position="top center"><i class="check square icon"></i></button>
+                          <button class="ui button" name="jalankan" jns="unsetujui" tbl="renstra" type="button" data-tooltip="batal setujui" data-position="top center"><i class="edit icon"></i></button>
                         </div>
                       </td>
                     </tr>
