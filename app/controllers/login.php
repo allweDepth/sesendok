@@ -7,7 +7,7 @@ class Login extends Controller
             unset($_SESSION["user"]);
         }
         session_start();
-        $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
+        $key_encrypt = $this->scriptConstruct("query", ['jns' => 'key_encrypt', 'tbl' => 'key_encrypt'])->key_encrypt();
         $_SESSION["key_encrypt"] = $key_encrypt;
         $_SESSION["tesbede"] = $key_encrypt;
         $dataHeader['awalHeader'] = '';
@@ -23,10 +23,23 @@ class Login extends Controller
         $this->view('templates/footer_modal');
         $this->view('templates/footer', $dataFooter);
     }
+    // alias agar /Login/login tidak error
+    public function login()
+    {
+        $this->masuk();
+    }
     public function masuk()
-    { 
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Debug tambahan, tapi proses asli tetap jalan
+        error_log("DEBUG LOGIN MASUK: POST -> " . print_r($_POST, true));
+        error_log("DEBUG LOGIN MASUK: SESSION -> " . print_r($_SESSION, true));
         $data = $this->script("masuk")->masuk();
-        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;//gettype($a)
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data; //gettype($a)
+        exit;
     }
     public function register()
     {
@@ -35,14 +48,14 @@ class Login extends Controller
     }
     public function wilayah()
     {
-        $send = ['jns'=>'json_list_dropdown','tbl'=>'wilayah','kondisi'=>[['disable','<= ?',0]]];
-        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        $send = ['jns' => 'json_list_dropdown', 'tbl' => 'wilayah', 'kondisi' => [['disable', '<= ?', 0]]];
+        $data = $this->scriptConstruct("query", $send)->json_list_dropdown();
         echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
     public function organisasi()
     {
-        $send = ['jns'=>'json_list_dropdown','tbl'=>'organisasi','kondisi'=>[['kd_wilayah','= ?',$_POST['kd_wilayah']],['disable','<= ?',0,'AND']]];
-        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        $send = ['jns' => 'json_list_dropdown', 'tbl' => 'organisasi', 'kondisi' => [['kd_wilayah', '= ?', $_POST['kd_wilayah']], ['disable', '<= ?', 0, 'AND']]];
+        $data = $this->scriptConstruct("query", $send)->json_list_dropdown();
         echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
 }
