@@ -3,70 +3,51 @@ class Login extends Controller
 {
     public function index()
     {
-        if (isset($_SESSION["user"])) {
-            unset($_SESSION["user"]);
+        // Pastikan session berjalan
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
-        session_start();
-        $key_encrypt = $this->scriptConstruct("query", ['jns' => 'key_encrypt', 'tbl' => 'key_encrypt'])->key_encrypt();
-        $_SESSION["key_encrypt"] = $key_encrypt;
-        $_SESSION["tesbede"] = $key_encrypt;
-        $dataHeader['awalHeader'] = '';
-        $dataHeader['title'] = '| Login';
-        $dataHeader['css'] = 'css/login.css';
-        $dataHeader['tambahan_css'] = '';
-        $dataFooter['js'] = 'js/login.js';
-        $dataFooter['tambahan_js'] = '';
-        $dataFooter['dok'] = 'Login';
-        $dataFooter['key_encrypt'] = $key_encrypt;
-        $this->view('templates/header_login', $dataHeader);
-        $this->view('login/index');
-        $this->view('templates/footer_modal');
-        $this->view('templates/footer', $dataFooter);
-    }
-    // alias agar /Login/login tidak error
-    public function login()
-    {
-        $this->masuk();
-    }
-    public function masuk()
-    {
-         session_start();
 
+        // Ambil data POST
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
         // Cek user sesuai script asli
         $user = $this->scriptConstruct("query", ['jns'=>'cekUser','tbl'=>'users'])->cek($username, $password);
 
-        // Tampilkan debug langsung di browser (bukan redirect)
+        // Debug langsung di browser (tidak redirect)
         echo "<pre>";
-        echo "POST Data:\n";
+        echo "=== DEBUG SESENDOK LOGIN ===\n\n";
+        echo "POST DATA:\n";
         print_r($_POST);
-        echo "\nUser Ditemukan:\n";
+        echo "\nUSER RESULT:\n";
         var_dump($user);
-        echo "\nSession Saat Ini:\n";
+        echo "\nSESSION BEFORE:\n";
         print_r($_SESSION);
+        echo "\n===========================\n";
         echo "</pre>";
 
-        // Jika ingin lanjut normal, bisa diaktifkan redirect setelah debug
-        // if ($user) $_SESSION['user'] = $user;
-        // header('Location: /public/Dashboard');
+        // Jika user ditemukan, simpan session dan tampilkan sukses
+        if ($user) {
+            $_SESSION['user'] = $user;
+            echo "<p style='color:green;'>LOGIN BERHASIL! SESSION TERISI.</p>";
+            echo "<pre>SESSION NOW:\n";
+            print_r($_SESSION);
+            echo "</pre>";
+            // header('Location: /public/Dashboard'); // Aktifkan nanti jika debug selesai
+        } else {
+            echo "<p style='color:red;'>LOGIN GAGAL! USER TIDAK DITEMUKAN ATAU PASSWORD SALAH.</p>";
+            // header('Location: /public/Login/login'); // Jangan redirect dulu
+        }
     }
-    public function register()
+
+    public function logout()
     {
-        $data = $this->script("register")->register();
-        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
-    }
-    public function wilayah()
-    {
-        $send = ['jns' => 'json_list_dropdown', 'tbl' => 'wilayah', 'kondisi' => [['disable', '<= ?', 0]]];
-        $data = $this->scriptConstruct("query", $send)->json_list_dropdown();
-        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
-    }
-    public function organisasi()
-    {
-        $send = ['jns' => 'json_list_dropdown', 'tbl' => 'organisasi', 'kondisi' => [['kd_wilayah', '= ?', $_POST['kd_wilayah']], ['disable', '<= ?', 0, 'AND']]];
-        $data = $this->scriptConstruct("query", $send)->json_list_dropdown();
-        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        session_destroy();
+        echo "<p style='color:blue;'>LOGOUT BERHASIL!</p>";
+        // header('Location: /public/Login/login'); // Aktifkan nanti
     }
 }
