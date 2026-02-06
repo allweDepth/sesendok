@@ -27,16 +27,14 @@ class Login extends Controller
     {
         session_start(); // pastikan session aktif
 
-        // ambil data login sesuai file asli
-        $data = $this->script("masuk")->masuk();
+        $data = $this->script("masuk")->masuk(); // ambil data login sesuai file asli
 
-        // Sesuai file asli, $data biasanya array
-        // Cek status login sesuai script asli
+        // jika login berhasil, set session user
         if (is_array($data) && !empty($data['user'])) {
-            $_SESSION['user'] = $data['user']; // set session user
+            $_SESSION['user'] = $data['user']; // penting: agar router mengenali login
         }
 
-        // tetap kembalikan data sesuai script asli
+        // kembalikan data JSON sesuai file asli
         echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
     public function register()
