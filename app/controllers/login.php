@@ -25,25 +25,19 @@ class Login extends Controller
     }
     public function masuk()
     {
-        session_start(); // pastikan session dijalankan
+        session_start(); // pastikan session aktif
 
-        // Ambil hasil login dari script asli
+        // ambil data login sesuai file asli
         $data = $this->script("masuk")->masuk();
 
-        // Jika login sukses, set session user
-        if (isset($data['status']) && $data['status'] === 'success') {
-            $_SESSION['user'] = $data['user']; // data user dari database
-            echo json_encode([
-                'status' => 'success',
-                'message' => 'Login berhasil',
-                'redirect' => '/public/Dashboard' // arahkan ke dashboard
-            ]);
-        } else {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Username atau password salah'
-            ]);
+        // Sesuai file asli, $data biasanya array
+        // Cek status login sesuai script asli
+        if (is_array($data) && !empty($data['user'])) {
+            $_SESSION['user'] = $data['user']; // set session user
         }
+
+        // tetap kembalikan data sesuai script asli
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
     public function register()
     {
