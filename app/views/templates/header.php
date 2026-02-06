@@ -11,6 +11,6 @@ echo $data['awalHeader'];
     <link rel="stylesheet" href="<?= BASEURL; ?>/vendor/node_modules/fomantic-ui/dist/semantic.min.css">
     <link rel="stylesheet" href="<?= BASEURL; ?><?= $data['css'] ?>">
     <?= $data['tambahan_css'] ?>
-    <link rel="shortcut icon" href="<?= BASEURL; ?>img/logo.png">
+    <link rel="shortcut icon" href="<?= BASEURL; ?>/img/logo.png">
 </head>
 <body>
