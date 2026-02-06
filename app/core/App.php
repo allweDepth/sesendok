@@ -16,6 +16,7 @@ class App
         // var_dump($url);
         if ($url && file_exists('../app/controllers/' . $url[0] . '.php')) {
             //var_dump($_SESSION["user"]);
+            $url[0] = strtolower($url[0]);
             switch ($url[0]) {
                 case 'login':
                 case 'data_teknis':
@@ -34,7 +35,7 @@ class App
                             $this->controller = $url[0];
                         }
                     } else {
-                        $url[0] == 'login';
+                        $url[0] = 'login';
                         $this->controller = $url[0];
                     }
                     break;
