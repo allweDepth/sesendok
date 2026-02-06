@@ -25,8 +25,35 @@ class Login extends Controller
     }
     public function masuk()
     { 
-        $data = $this->script("masuk")->masuk();
-        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;//gettype($a)
+       if(session_status() === PHP_SESSION_NONE){
+            session_start(); // pastikan session jalan
+        }
+
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        // Cek user sesuai script asli
+        $user = $this->scriptConstruct("query", ['jns'=>'cekUser','tbl'=>'users'])->cek($username, $password);
+
+        // Debug langsung di browser supaya tahu kenapa looping
+        echo "<pre>";
+        echo "POST Data:\n";
+        print_r($_POST);
+        echo "\nUser Ditemukan:\n";
+        var_dump($user);
+        echo "\nSession Sebelum Set:\n";
+        print_r($_SESSION);
+        echo "</pre>";
+
+        // Jika user ditemukan, set session
+        if($user){
+            $_SESSION['user'] = $user;
+            echo "<pre>Login Berhasil, SESSION SET:\n";
+            print_r($_SESSION);
+            echo "</pre>";
+        } else {
+            echo "<pre>Login Gagal</pre>";
+        }
     }
     public function register()
     {
