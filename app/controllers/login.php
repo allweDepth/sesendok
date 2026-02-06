@@ -30,15 +30,28 @@ class Login extends Controller
     }
     public function masuk()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        session_start();
+
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        // panggil model cek user
+        $user = $this->model("UserModel")->cekLogin($username, $password);
+
+        // debug response JSON
+        header('Content-Type: application/json');
+        echo json_encode([
+            'post' => $_POST,
+            'session_before' => $_SESSION,
+            'cekUser' => $user ? 1 : 0,
+            'session_after' => $user ? ['user' => $user] : $_SESSION
+        ]);
+
+        // jika login berhasil, set session
+        if ($user) {
+            $_SESSION['user'] = $user;
         }
 
-        // Debug tambahan, tapi proses asli tetap jalan
-        error_log("DEBUG LOGIN MASUK: POST -> " . print_r($_POST, true));
-        error_log("DEBUG LOGIN MASUK: SESSION -> " . print_r($_SESSION, true));
-        $data = $this->script("masuk")->masuk();
-        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data; //gettype($a)
         exit;
     }
     public function register()
