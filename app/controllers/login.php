@@ -30,29 +30,27 @@ class Login extends Controller
     }
     public function masuk()
     {
-        session_start();
+         session_start();
 
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        // panggil model cek user
-        $user = $this->model("UserModel")->cekLogin($username, $password);
+        // Cek user sesuai script asli
+        $user = $this->scriptConstruct("query", ['jns'=>'cekUser','tbl'=>'users'])->cek($username, $password);
 
-        // debug response JSON
-        header('Content-Type: application/json');
-        echo json_encode([
-            'post' => $_POST,
-            'session_before' => $_SESSION,
-            'cekUser' => $user ? 1 : 0,
-            'session_after' => $user ? ['user' => $user] : $_SESSION
-        ]);
+        // Tampilkan debug langsung di browser (bukan redirect)
+        echo "<pre>";
+        echo "POST Data:\n";
+        print_r($_POST);
+        echo "\nUser Ditemukan:\n";
+        var_dump($user);
+        echo "\nSession Saat Ini:\n";
+        print_r($_SESSION);
+        echo "</pre>";
 
-        // jika login berhasil, set session
-        if ($user) {
-            $_SESSION['user'] = $user;
-        }
-
-        exit;
+        // Jika ingin lanjut normal, bisa diaktifkan redirect setelah debug
+        // if ($user) $_SESSION['user'] = $user;
+        // header('Location: /public/Dashboard');
     }
     public function register()
     {
