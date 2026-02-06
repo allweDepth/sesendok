@@ -3,51 +3,46 @@ class Login extends Controller
 {
     public function index()
     {
-        // Pastikan session berjalan
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (isset($_SESSION["user"])) {
+            unset($_SESSION["user"]);
         }
-
-        // Ambil data POST
-        $username = $_POST['username'] ?? '';
-        $password = $_POST['password'] ?? '';
-
-        // Cek user sesuai script asli
-        $user = $this->scriptConstruct("query", ['jns'=>'cekUser','tbl'=>'users'])->cek($username, $password);
-
-        // Debug langsung di browser (tidak redirect)
-        echo "<pre>";
-        echo "=== DEBUG SESENDOK LOGIN ===\n\n";
-        echo "POST DATA:\n";
-        print_r($_POST);
-        echo "\nUSER RESULT:\n";
-        var_dump($user);
-        echo "\nSESSION BEFORE:\n";
-        print_r($_SESSION);
-        echo "\n===========================\n";
-        echo "</pre>";
-
-        // Jika user ditemukan, simpan session dan tampilkan sukses
-        if ($user) {
-            $_SESSION['user'] = $user;
-            echo "<p style='color:green;'>LOGIN BERHASIL! SESSION TERISI.</p>";
-            echo "<pre>SESSION NOW:\n";
-            print_r($_SESSION);
-            echo "</pre>";
-            // header('Location: /public/Dashboard'); // Aktifkan nanti jika debug selesai
-        } else {
-            echo "<p style='color:red;'>LOGIN GAGAL! USER TIDAK DITEMUKAN ATAU PASSWORD SALAH.</p>";
-            // header('Location: /public/Login/login'); // Jangan redirect dulu
-        }
+        session_start();
+        $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
+        $_SESSION["key_encrypt"] = $key_encrypt;
+        $_SESSION["tesbede"] = $key_encrypt;
+        $dataHeader['awalHeader'] = '';
+        $dataHeader['title'] = '| Login';
+        $dataHeader['css'] = 'css/login.css';
+        $dataHeader['tambahan_css'] = '';
+        $dataFooter['js'] = 'js/login.js';
+        $dataFooter['tambahan_js'] = '';
+        $dataFooter['dok'] = 'Login';
+        $dataFooter['key_encrypt'] = $key_encrypt;
+        $this->view('templates/header_login', $dataHeader);
+        $this->view('login/index');
+        $this->view('templates/footer_modal');
+        $this->view('templates/footer', $dataFooter);
     }
-
-    public function logout()
+    public function masuk()
+    { 
+        $data = $this->script("masuk")->masuk();
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;//gettype($a)
+    }
+    public function register()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        session_destroy();
-        echo "<p style='color:blue;'>LOGOUT BERHASIL!</p>";
-        // header('Location: /public/Login/login'); // Aktifkan nanti
+        $data = $this->script("register")->register();
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
+    }
+    public function wilayah()
+    {
+        $send = ['jns'=>'json_list_dropdown','tbl'=>'wilayah','kondisi'=>[['disable','<= ?',0]]];
+        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
+    }
+    public function organisasi()
+    {
+        $send = ['jns'=>'json_list_dropdown','tbl'=>'organisasi','kondisi'=>[['kd_wilayah','= ?',$_POST['kd_wilayah']],['disable','<= ?',0,'AND']]];
+        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
 }
