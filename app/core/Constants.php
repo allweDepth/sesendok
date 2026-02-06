@@ -6,7 +6,7 @@ define('LOCALURL', 'http://192.168.1.6:8085/');
 // define('BASEURL', 'http://192.168.1.6:8085/public/');
 define('pathURL', 'http://192.168.1.6:8085/public/');
 define('BASEURL',
-    (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
+    (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') .
     '://' . $_SERVER['HTTP_HOST']
 );
 $msx = rand(32, 64);
