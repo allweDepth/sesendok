@@ -7,7 +7,7 @@ class Login extends Controller
             unset($_SESSION["user"]);
         }
         session_start();
-        $key_encrypt = $this->scriptConstruct("query",['jns'=>'key_encrypt','tbl'=>'key_encrypt'])->key_encrypt();
+        $key_encrypt = $this->scriptConstruct("query", ['jns' => 'key_encrypt', 'tbl' => 'key_encrypt'])->key_encrypt();
         $_SESSION["key_encrypt"] = $key_encrypt;
         $_SESSION["tesbede"] = $key_encrypt;
         $dataHeader['awalHeader'] = '';
@@ -24,35 +24,25 @@ class Login extends Controller
         $this->view('templates/footer', $dataFooter);
     }
     public function masuk()
-    { 
-       if(session_status() === PHP_SESSION_NONE){
-            session_start(); // pastikan session jalan
-        }
+    {
+        session_start(); // pastikan session dijalankan
 
-        $username = $_POST['username'] ?? '';
-        $password = $_POST['password'] ?? '';
+        // Ambil hasil login dari script asli
+        $data = $this->script("masuk")->masuk();
 
-        // Cek user sesuai script asli
-        $user = $this->scriptConstruct("query", ['jns'=>'cekUser','tbl'=>'users'])->cek($username, $password);
-
-        // Debug langsung di browser supaya tahu kenapa looping
-        echo "<pre>";
-        echo "POST Data:\n";
-        print_r($_POST);
-        echo "\nUser Ditemukan:\n";
-        var_dump($user);
-        echo "\nSession Sebelum Set:\n";
-        print_r($_SESSION);
-        echo "</pre>";
-
-        // Jika user ditemukan, set session
-        if($user){
-            $_SESSION['user'] = $user;
-            echo "<pre>Login Berhasil, SESSION SET:\n";
-            print_r($_SESSION);
-            echo "</pre>";
+        // Jika login sukses, set session user
+        if (isset($data['status']) && $data['status'] === 'success') {
+            $_SESSION['user'] = $data['user']; // data user dari database
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Login berhasil',
+                'redirect' => '/public/Dashboard' // arahkan ke dashboard
+            ]);
         } else {
-            echo "<pre>Login Gagal</pre>";
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Username atau password salah'
+            ]);
         }
     }
     public function register()
@@ -62,14 +52,14 @@ class Login extends Controller
     }
     public function wilayah()
     {
-        $send = ['jns'=>'json_list_dropdown','tbl'=>'wilayah','kondisi'=>[['disable','<= ?',0]]];
-        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        $send = ['jns' => 'json_list_dropdown', 'tbl' => 'wilayah', 'kondisi' => [['disable', '<= ?', 0]]];
+        $data = $this->scriptConstruct("query", $send)->json_list_dropdown();
         echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
     public function organisasi()
     {
-        $send = ['jns'=>'json_list_dropdown','tbl'=>'organisasi','kondisi'=>[['kd_wilayah','= ?',$_POST['kd_wilayah']],['disable','<= ?',0,'AND']]];
-        $data = $this->scriptConstruct("query",$send)->json_list_dropdown();
+        $send = ['jns' => 'json_list_dropdown', 'tbl' => 'organisasi', 'kondisi' => [['kd_wilayah', '= ?', $_POST['kd_wilayah']], ['disable', '<= ?', 0, 'AND']]];
+        $data = $this->scriptConstruct("query", $send)->json_list_dropdown();
         echo (is_array($data)) ? json_encode($data, JSON_HEX_APOS) : $data;
     }
 }
