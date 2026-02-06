@@ -3,7 +3,8 @@
 // define('BASEURL', 'http://localhost/sesendokneo/public/');
 // define('pathURL', 'http://localhost/sesendokneo/public/');
 define('LOCALURL', 'http://192.168.1.6:8085/');
-define('BASEURL', 'http://192.168.1.6:8085/public/');
+// define('BASEURL', 'http://192.168.1.6:8085/public/');
+define('BASEURL', 'http://192-168-1-6.dpupr-pasangkayu.direct.quickconnect.to:8085/public/');
 define('pathURL', 'http://192.168.1.6:8085/public/');
 // define('BASEURL',
 //     (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') .
